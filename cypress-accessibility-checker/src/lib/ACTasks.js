@@ -5,7 +5,7 @@ const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
 const DeepDiff = require("deep-diff");
 
-const request = require("request");
+const request = require("@cypress/request");
 const fs = require("fs");
 const path = require("path");
 
@@ -81,7 +81,7 @@ let ACTasks = module.exports = {
 
             // Initialize the scanSummary object with summary information for accessibility-checker
             ACTasks.scanSummary = ACTasks.initializeSummary();
-    
+
             // Initialize the global object which will store all the diff results for a scan that is run, using
             // actual and expected.
             ACTasks.diffResults = {};
@@ -263,7 +263,7 @@ let ACTasks = module.exports = {
             if (err) {
                 console.log('Unable to scan directory: ' + err);
                 return resolve(result);
-            } 
+            }
             for (let file of files) {
                 let filePath = path.join(readDirPath,file);
                 file = file.split('.').slice(0, -1).join('.')
@@ -328,7 +328,7 @@ let ACTasks = module.exports = {
             retVal.push(checker.engine.ruleMap[ruleId]);
         }
         return retVal;
-    },    
+    },
     getRulesets: () => new ACTasks.ace.Checker().rulesets,
 
     /**

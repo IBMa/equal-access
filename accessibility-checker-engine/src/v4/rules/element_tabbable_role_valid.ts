@@ -79,7 +79,10 @@ export let element_tabbable_role_valid: Rule = {
         const roles_no_interactive_child =["button", "checkbox", "img", "link", "menuitem", "menuitemcheckbox", "menuitemradio", 
                                "option", "radio", "switch", "tab"];
 
-        const roles = RPTUtil.getRoles(ruleContext, true);
+        let roles = RPTUtil.getRoles(ruleContext, false);
+        if (!roles || roles.length === 0) {
+            roles = RPTUtil.getImplicitRole(ruleContext);
+        }
         const parent = DOMWalker.parentNode(ruleContext);
         const parent_roles = RPTUtil.getRoles(parent as Element, true);
         

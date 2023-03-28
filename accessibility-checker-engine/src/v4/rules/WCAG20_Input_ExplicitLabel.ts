@@ -46,13 +46,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
     act: ["97a4e1", "e086e5"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // JCH - NO OUT OF SCOPE hidden in context
-
-        /* removed the  check role= presentation since according to latest native host semantics https://www.w3.org/TR/html-aria/#docconformance  table,  these two roles are not applicable to the elements are in the  scope of this role
-        if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none"))
-            return RulePass(1);
-        */
-
+        
         if (ruleContext.getAttribute("aria-hidden")) {
             return null;
         }

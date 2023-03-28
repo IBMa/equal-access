@@ -24,7 +24,6 @@ export interface CacheElement extends Element {
      * with its initial value as given */
 export function getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
     let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
-
     if (cacheObj.aceCache === undefined) {
         cacheObj.aceCache = {}
     }
