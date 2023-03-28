@@ -33,21 +33,23 @@ interface IKCMOverviewScreenState {
 
 interface IKCMOverviewScreenProps {
 }
-
+let count = 0;
 export default class KCMOverviewScreen extends React.Component<IKCMOverviewScreenProps, IKCMOverviewScreenState> {
     private bgController = getBGController();
     state: IKCMOverviewScreenState = {
     }
+    myCount = count++;
     async componentDidMount(): Promise<void> {
+        this.bgController.addSettingsListener(async (settings) => {
+            this.setState({ settings });
+        })
         this.setState({
             settings: await this.bgController.getSettings()
         });
     }
 
     render() {
-        if (this.state.settings?.tabStopAlerts === true) {
-            
-        }
+        let showAgainChecked: boolean = this.state.settings ? !this.state.settings?.tabStopAlerts : false;
         return <aside className="kcmOverview">
             {/* KCM Overview Title */}
             <Grid style={{marginTop: "1rem", marginBottom: "1rem"}}>
@@ -85,15 +87,14 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                         <div style={{marginBottom:"1rem"}}>
                             <Checkbox 
                                 labelText="Do not show this again" 
-                                id="checked"
-                                checked={this.state.settings?.tabStopAlerts}
-                                //@ts-ignore
-                                onChange={(value: any, id: any) => {
+                                id={`kcmAlertCheckbox_${this.myCount}`}
+                                checked={ showAgainChecked }
+                                onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
                                     if (this.state.settings !== undefined) {
-                                        let tempState = this.state.settings;
-                                        tempState.tabStopAlerts = !tempState.tabStopAlerts;
-                                        this.setState({settings:tempState}); // internal state
-                                        this.bgController.setSettings(this.state.settings); // App state
+                                        let newState = JSON.parse(JSON.stringify(this.state.settings));
+                                        newState.tabStopAlerts = !evtState.checked;
+                                        this.bgController.setSettings(newState); // App state
+                                        this.setState({ settings: newState }); // internal state
                                     }
                                 }} 
 

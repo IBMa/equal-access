@@ -56,12 +56,18 @@ class BackgroundController extends Controller {
      */
     public async setSettings(settings: ISettings) : Promise<ISettings> {
         return this.hook("setSettings", settings, async () => {
-            return new Promise<ISettings>((resolve, _reject) => {
+            await new Promise<ISettings>((resolve, _reject) => {
                 chrome.storage.local.set({ "OPTIONS": settings }, async function () {
                     resolve(settings!);
                 });
-            })
+            });
+            this.notifyEventListeners("BG_onSettings", -1, settings);
+            return settings;
         });
+    }
+
+    public async addSettingsListener(listener: ListenerType<ISettings>) {
+        this.addEventListener(listener, `BG_onSettings`);
     }
 
     /**

@@ -119,10 +119,24 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
         self.setState({
             lastSettings: settings,
-            archives: archives, selected_archive: selected_archive, rulesets: rulesets,
+            archives: archives, 
+            selected_archive: selected_archive, 
+            rulesets: rulesets,
             selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
             tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+        });
+        bgController.addSettingsListener(async (newSettings) => {
+            let newState : any = {
+                lastSettings: newSettings
+            };
+            let checkKeys = [ "tabStopAlerts" ];
+            for (const key of checkKeys) {
+                if ((this.state.lastSettings as any)[key] !== (newSettings as any)[key]) {
+                    newState[key] = (newSettings as any)[key];
+                }
+            }
+            this.setState(newState);
         });
     }
 
@@ -453,7 +467,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             id="alertToggle"
                             toggled={this.state.tabStopAlerts}
                             onToggle={(value: any) => {
-                                console.log("lines checkbox value = ",value);
                                 this.setState({ tabStopAlerts: value });
                             }} 
                         />

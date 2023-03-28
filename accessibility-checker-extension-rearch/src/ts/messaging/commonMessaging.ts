@@ -45,7 +45,11 @@ export class CommonMessaging {
     {
         let thisListener = (message: IMessage<inT>, sender: chrome.runtime.MessageSender, sendResponse: any) => {
             // If we're listening to tabId and tabId isn't specified, ignore it
-            if (listeningTabId && message.dest.type !== "background" && listeningTabId !== message.dest.tabId) {
+            if (message.dest.type !== "background" 
+                && listeningTabId 
+                && listeningTabId !== message.dest.tabId
+                && message.dest.tabId !== -1) 
+            {
                 return null;
             }
             // Note - only allow background to listen to all for the purposes of routing
@@ -148,7 +152,7 @@ export class CommonMessaging {
                         }
                     // }, 0);
                 };
-                if (message.dest.type === "contentScript" && ((chrome && chrome.tabs) || (browser && browser.tabs))) {
+                if (message.dest.type === "contentScript" && (message.dest.tabId !== -1) && ((chrome && chrome.tabs) || (browser && browser.tabs))) {
                     if (chrome.tabs) {
                         Config.DEBUG && console.log("[DEBUG:chrome.tabs.sendMessage]", message.dest.tabId, myMessage);
                         chrome.tabs.sendMessage(message.dest.tabId, myMessage, callback);

@@ -248,12 +248,15 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             disabled={!this.state.reportContent}
                             iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             onClick={async () => {
+                                let settings = await bgController.getSettings();
                                 let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));                                
                                 newState.kcm = !newState.kcm;
                                 let devtoolsAppController = getDevtoolsAppController();
                                 if (newState.kcm) {
-                                    devtoolsAppController.setSecondaryView("kcm_overview");
-                                    devtoolsAppController.openSecondary("#kcmToggle");
+                                    if (settings.tabStopAlerts) {
+                                        devtoolsAppController.setSecondaryView("kcm_overview");
+                                        devtoolsAppController.openSecondary("#kcmToggle");
+                                    }
                                 } else {
                                     if (devtoolsAppController.getSecondaryView() === "kcm_overview") {
                                         devtoolsAppController.setSecondaryView("summary");
