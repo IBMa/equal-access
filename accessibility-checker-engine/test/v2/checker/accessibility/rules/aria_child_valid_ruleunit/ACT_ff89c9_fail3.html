@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <!--
    /******************************************************************************
      Copyright:: 2020- IBM, Inc
@@ -16,41 +16,46 @@
     limitations under the License.
   *****************************************************************************/
 -->
+<html lang="en-US">
 
-<html lang="en" id="id-32">
-<body id="id-9" aria-atomic="true">
-    <table>
-    <tr>
-		<td></td>
-		<th id="projects2">Projects</th>
-	</tr>
-	<tr>
-		<td headers="projects2">15%</td>
-		<td></td>
-	</tr>
-</table>  
-    <script type="text/javascript">
+<head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <div role="list">
+      <div aria-live="polite">
+        <div role="listitem">List item 1</div>
+        <div role="listitem">List item 2</div>
+      </div>
+    </div>
+    <script>
         UnitTest = {
-            ruleIds: ["table_headers_ref_valid"],
+            ruleIds: ["aria_child_valid"],
             results: [
             {
-            "ruleId": "table_headers_ref_valid",
+            "ruleId": "aria_child_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
-              "aria": "/document[1]/generic[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/list[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"list\" owns the child element with the role \"generic\" that is not one of the allowed role(s): \"listitem\"",
+            "messageArgs": [
+              "list",
+              "generic",
+              "listitem"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }
             ]
-        }
+        };
     </script>
 </body>
 

@@ -2,13 +2,37 @@
 @use '@carbon/styles/scss/colors' as *;
 // @use '@carbon/styles/scss/breakpoint'as *;
 
+.reportSection {
+    .reportSectionColumn {
+        border-top: solid $gray-20 1px;
+    }
+    margin-top: 1rem;
+    .cds--tab-content {
+        padding: 0rem;
+    }
+    .darkLink {
+        color: $black;
+        &:hover {
+            color: $gray-80;
+            cursor: pointer;
+        }
+    }
+}
+
+.reportFilterBorder {
+    border-top: solid $gray-20 1px;    
+}
+
 .reportFilterSection {
-    margin: 1rem 0rem 0rem 0rem;
+    margin: 0rem;
     padding: .125rem 0rem .25rem 0rem;
-    border-top: solid $gray-30 1px;
-    border-bottom: solid $gray-30 1px;
 
     .countCol {
+        @media (max-width:400px) {
+            position: absolute;
+            top: 1.5rem;
+            left: 0rem;
+        }
         white-space: nowrap;
     }
     .reportSecIcon {
@@ -35,11 +59,5 @@
         @media (min-width:1500px) {
             display:inline;
         }
-    }
-}
-
-.reportSection {
-    .cds--tab-content {
-        padding: 1rem 0rem;
     }
 }

@@ -146,9 +146,10 @@ export class DevtoolsAppController {
                     console.error(err);
                 }
             })($0)`, async (result: string) => {
-                await devtoolsController.setSelectedElementPath(result);
+                await devtoolsController.setSelectedElementPath(result, true);
             });
         });
+        chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
 
     ///////////////////////////////////////////////////////////////////////////

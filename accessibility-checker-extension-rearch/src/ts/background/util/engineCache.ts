@@ -34,41 +34,68 @@ export default class EngineCache {
         }
     }
 
+    public static async getArchiveDefinitionById(archiveId: string) {
+        let archiveDefs = await this.getArchives();
+        if (archiveId === "latest") {
+            let latestVersion;
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.id === "latest") {
+                    latestVersion = archiveDef.version;
+                    break;
+                }
+            }
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.id !== "latest" && archiveDef.version === latestVersion) {
+                    return archiveDef;
+                }
+            }
+        } else {
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.id === archiveId) {
+                    return archiveDef;
+                }
+            }
+        }
+        return Promise.reject("Invalid Archive ID");
+    }
+
+    public static async getArchiveDefinitionByVersion(version: string) {
+        let archiveDefs = await this.getArchives();
+        if (version === "latest") {
+            let latestVersion;
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.id === "latest") {
+                    latestVersion = archiveDef.version;
+                    break;
+                }
+            }
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.id !== "latest" && archiveDef.version === latestVersion) {
+                    return archiveDef;
+                }
+            }
+        } else {
+            for (const archiveDef of archiveDefs) {
+                if (archiveDef.version === version) {
+                    return archiveDef;
+                }
+            }
+        }
+        return Promise.reject("Invalid Archive Version");
+    }
+
     public static async getEngine(archiveId: string) : Promise<string> {
         let engineInfo = ((await chrome.storage.local.get(['engineInfo'])) || {}).engineInfo || { engines: {}, ts: 0 };
         let engines = engineInfo.engines;
         if (archiveId in engines && new Date().getTime()-new Date(engineInfo.ts).getTime() >= 30*60*1000) {
             return engines[archiveId];
         } else {
-            let archiveDefs = await this.getArchives();
-            if (archiveId === "latest") {
-                let latestVersion;
-                for (const archiveDef of archiveDefs) {
-                    if (archiveDef.id === "latest") {
-                        latestVersion = archiveDef.version;
-                        break;
-                    }
-                }
-                for (const archiveDef of archiveDefs) {
-                    if (archiveDef.id !== "latest" && archiveDef.version === latestVersion) {
-                        let engineFile = `${archiveDef.path}/js/ace.js`;
-                        engines[archiveId] = engineFile;
-                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
-                        return engineFile;
-                    }
-                }
-            } else {
-                for (const archiveDef of archiveDefs) {
-                    if (archiveDef.id === archiveId) {
-                        let engineFile = `${archiveDef.path}/js/ace.js`;
-                        engines[archiveId] = engineFile;
-                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
-                        return engineFile;
-                    }
-                }
-            }
+            let archiveDef = await this.getArchiveDefinitionById(archiveId);
+            let engineFile = `${archiveDef.path}/js/ace.js`;
+            engines[archiveId] = engineFile;
+            await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+            return engineFile;
         }
-        return Promise.reject("Invalid Archive ID");
     }
 
     public static async getVersion(archiveId: string) : Promise<string> {

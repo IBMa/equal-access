@@ -13,7 +13,7 @@ const myrequest = (url) => {
             })
     } else {
         return new Promise((resolve, reject) => {
-            const request = require("request");
+            const request = require("@cypress/request");
             request.get(url, function (error, response, body) {
                 if (error) {
                     reject(error);
@@ -106,7 +106,7 @@ let ACCommands = module.exports = {
 
             // Initialize the scanSummary object with summary information for accessibility-checker
             ACCommands.scanSummary = ACCommands.initializeSummary();
-    
+
             // Initialize the global object which will store all the diff results for a scan that is run, using
             // actual and expected.
             ACCommands.diffResults = {};
@@ -1177,10 +1177,10 @@ let ACCommands = module.exports = {
                             if (pc !== 0) return pc;
                             return b.ruleId.localeCompare(a.ruleId);
                         })
-                        return ACCommands.diffResultsWithExpected({ 
+                        return ACCommands.diffResultsWithExpected({
                             results: modActual,
                             summary: actualResults.summary
-                        }, { 
+                        }, {
                             results: modExpected ,
                             summary: expected.summary
                         }, true).then((differences2) => {
@@ -1250,7 +1250,7 @@ let ACCommands = module.exports = {
         // return 0 as there were no levels that fall into the failLevels
         return 0;
     },
-    
+
     /**
     * This function is responsible for comparing actual with expected and returning all the differences as an array.
     *

@@ -18,9 +18,12 @@ import React from "react";
 import { Column, InlineLoading, Grid } from "@carbon/react";
 import { IIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
+import { getBGController } from "../../background/backgroundController";
 
 interface IHelpScreenState {
     issue: IIssue | null
+    help1: string | null
+    help2: string | null
     loading: boolean
     errString?: string
 }
@@ -31,6 +34,8 @@ interface IHelpScreenProps {
 export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpScreenState> {
     state : IHelpScreenState = {
         issue: null,
+        help1: null,
+        help2: null,
         loading: true
     }
     private static devtoolsController = getDevtoolsController();
@@ -44,14 +49,34 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
     }
 
     setIssue(issue: IIssue) {
-        this.setState( { issue: null, loading: true, errString: undefined });
-        setTimeout(() => {
-            this.setState( { issue });
+        this.setState( { issue: null, help1: null, help2: null, loading: true, errString: undefined });
+        setTimeout(async () => {
+            let help1 = null;
+            let help2 = null;
+            if (issue) {
+                help1 = issue.help;
+                let m = help1.match(/[^@]*@([^/]*)\/help(.*)/);
+                if (m) {
+                    const version = m[1];
+                    const helpFile = m[2];
+                    let archiveDef = await getBGController().getArchiveDefForVersion(version);
+                    if (version === "latest" && archiveDef.version && archiveDef.version.length > 0) {
+                        help1 = `https://unpkg.com/accessibility-checker-engine@${archiveDef.version}/help${helpFile}`;
+                    }
+                    help2 = `https://able.ibm.com/rules${archiveDef.path}/doc${helpFile}`;
+                }
+            }
+            // Fix help
+            this.setState( { issue, help1, help2 });
         }, 0);
     }
 
-    onHelpLoaded() {
-        this.setState({loading: false});
+    onHelpLoaded1(_evt: any) {
+        this.setState({loading: false, help2: null});
+    }
+
+    onHelpLoaded2(_evt: any) {
+        this.setState({loading: false, help1: null});
     }
 
     render() {
@@ -61,20 +86,38 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                     <div style={{
                         position: "relative", height: "100%", width: "100%", padding: "0rem"
                     }}>
-                        {this.state.issue && <iframe 
-                            title="Accessibility Checker Help" 
-                            src={this.state.issue.help}
-                            onLoad={this.onHelpLoaded.bind(this)}
-                            onError={() => {
-                                this.setState({ errString: `Error while loading ${this.state.issue!.help}`})
-                            }}
-                            style={{
-                                position: "absolute", width: "100%", height: "100%"
-                            }}></iframe>}
+                        {this.state.help1 && <>
+                            {/* {this.state.help1} */}
+                            <iframe 
+                                title="Accessibility Checker Help" 
+                                src={this.state.help1}
+                                onLoad={this.onHelpLoaded1.bind(this)}
+                                onError={() => {
+                                    this.setState({ help1: null})
+                                }}
+                                style={{
+                                    display: this.state.loading ? "none" : undefined,
+                                    position: "absolute", width: "100%", height: "100%"
+                                }}></iframe>
+                        </>}
+                        {this.state.help2 && <>
+                            {/* {this.state.help2} */}
+                            <iframe 
+                                title="Accessibility Checker Help" 
+                                src={this.state.help2}
+                                onLoad={this.onHelpLoaded2.bind(this)}
+                                onError={() => {
+                                    this.setState({ help2: null})
+                                }}
+                                style={{
+                                    display: this.state.loading ? "none" : undefined,
+                                    position: "absolute", width: "100%", height: "100%"
+                                }}></iframe>
+                        </>}
                         {this.state.loading && 
                             <div style={{margin: "1rem"}}><InlineLoading /></div>
                         }
-                        {this.state.errString && <>{this.state.errString}</>}
+                        {this.state.errString && <>ERR: {this.state.errString}</>}
                     </div>
                 </Column>
             </Grid>

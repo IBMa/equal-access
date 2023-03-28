@@ -11,12 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil, RPTUtilStyle } from "../../v2/checker/accessibility/util/legacy";
+import { RPTUtil} from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { setCache } from "../util/CacheUtil";
+import { getWeightNumber, getFontInPixels } from "../util/CSSUtil";
 
 export let IBMA_Color_Contrast_WCAG2AA: Rule = {
     id: "IBMA_Color_Contrast_WCAG2AA",
@@ -219,8 +220,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
-        let size = RPTUtilStyle.getFontInPixels(style.fontSize);
+        let weight = getWeightNumber(style.fontWeight);
+        let size = getFontInPixels(style.fontSize, elem);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;

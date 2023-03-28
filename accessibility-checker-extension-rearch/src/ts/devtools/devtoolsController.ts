@@ -197,7 +197,8 @@ export class DevtoolsController extends Controller {
             setTimeout(async () => {
                 this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
                 this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
-                this.setSelectedElementPath("/html[1]");
+                this.inspectPath("/html[1]");
+                this.setSelectedIssue(null);
             }, 0);
         });
     }
@@ -266,9 +267,8 @@ export class DevtoolsController extends Controller {
         return this.hook("setSelectedIssue", issue, async () => {
             if (issue) {
                 devtoolsState!.lastIssue = issue;
-                setTimeout(() => {
+                setTimeout(async () => {
                     this.notifyEventListeners("DT_onSelectedIssue", this.ctrlDest.tabId, issue);
-                    this.setSelectedElementPath(issue.path.dom);
                 }, 0);
             }
         });
@@ -288,28 +288,45 @@ export class DevtoolsController extends Controller {
         this.addEventListener(listener, `DT_onSelectedIssue`);
     }
 
+    programmaticInspect: boolean = false;
+
     /**
      * Set selected element path
      */
-    public async setSelectedElementPath(path: string | null) : Promise<void> {
-        return this.hook("setSelectedElementPath", path, async () => {
-            if (path) {
-                if (path !== devtoolsState!.lastElementPath) {
-                    devtoolsState!.lastElementPath = path;
-                    let report = await this.getReport();
-                    if (report) {
-                        for (const issue of report.results) {
-                            if (issue.value[1] !== "PASS" && issue.path.dom === path) {
-                                this.setSelectedIssue(issue);
-                                break;
+    public async setSelectedElementPath(path: string | null, fromElemChange?: boolean) : Promise<void> {
+        return this.hook("setSelectedElementPath", { path, fromElemChange }, async () => {
+            devtoolsState!.lastElementPath = path;
+            if (fromElemChange === true) {
+                // This path came from the Elements panel selection changing
+                if (!this.programmaticInspect) {
+                    // User clicked on this
+                    await this.setFocusMode(true);
+                    // if (path && path !== devtoolsState!.lastElementPath) {
+                    if (path) {
+                        let report = await this.getReport();
+                        if (report) {
+                            let newIssue : IIssue | null = null;
+                            for (const issue of report.results) {
+                                if (issue.value[1] !== "PASS" && issue.path.dom === path) {
+                                    newIssue = issue;
+                                    break;
+                                } else if (!newIssue && issue.value[1] !== "PASS" && issue.path.dom.startsWith(path)) {
+                                    newIssue = issue;
+                                }
                             }
+                            await this.setSelectedIssue(newIssue);
                         }
                     }
+                } else {
+                    // Side effect of inspectPath
+                    this.programmaticInspect = false;
                 }
-                setTimeout(() => {
-                    this.notifyEventListeners("DT_onSelectedElementPath", this.ctrlDest.tabId, path);
-                }, 0);
+            } else {
+                // Called by some other process
             }
+            setTimeout(() => {
+                this.notifyEventListeners("DT_onSelectedElementPath", this.ctrlDest.tabId, path);
+            }, 0);
         });
     }
 
@@ -334,6 +351,9 @@ export class DevtoolsController extends Controller {
      */
     public async inspectPath(path: string, focusElem?: HTMLElement | null) {
         await this.hook("inspectPath", path, async () => {
+            // We've already selected that...
+            // let curSelectedPath = await this.getSelectedElementPath();
+            // if (path === curSelectedPath) return;
             let script = `
                 function lookup(doc, xpath) {
                     if (doc.nodeType === 11) {
@@ -395,6 +415,7 @@ export class DevtoolsController extends Controller {
                 selectPath("${path}");
             `;
             await new Promise<void>((resolve, _reject) => {
+                this.programmaticInspect = true;
                 chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
                     if (isException) {
                         console.error(isException);
@@ -404,12 +425,21 @@ export class DevtoolsController extends Controller {
                     }
                     resolve();
                 });
-            })
+            });
+            let count = 0;
+            // Until the programmatic inspect completes, wait
+            while (this.programmaticInspect && count < 2) {
+                ++count;
+                await new Promise((resolve, _reject) => {
+                    setTimeout(resolve, 100);
+                })
+            }
+            // 
+            this.programmaticInspect = false;
         });
+        // This happens after the devtools controller returns to the original caller
         if (focusElem) {
-            setTimeout(() => {
-                focusElem?.focus();
-            }, 100);
+            focusElem.focus();
         }
     }
 
@@ -546,7 +576,7 @@ export class DevtoolsController extends Controller {
                 "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
                 "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
                 "DT_getSelectedIssue": async () => self.getSelectedIssue(),
-                "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content),
+                "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
                 "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content),
                 "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content)

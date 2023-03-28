@@ -936,7 +936,7 @@ export class ARIADefinitions {
             props: null,
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null,
+            htmlEquiv: "div | span",
             roleType: "structure",
             nameFrom: ["prohibited"],
             prohibitedProps: ["aria-label", "aria-labelledby", "aria-roledescription"],
@@ -1663,7 +1663,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "address": {
-            implicitRole: null,
+            implicitRole: ["group"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1683,7 +1683,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "b": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1693,12 +1693,12 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "bdi": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
         "bdo": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1708,7 +1708,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "body": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: null,
             globalAriaAttributesValid: true
         },
@@ -1755,7 +1755,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "data": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1790,13 +1790,7 @@ export class ARIADefinitions {
             validRoles: ["alertdialog"],
             globalAriaAttributesValid: true
         },
-        "div": {
-            //TODO: conditional 'Any', otherwise 'presentation | none'
-            implicitRole: null,
-            validRoles: ["any"],
-            globalAriaAttributesValid: true
-        },
-        "dl": {
+       "dl": {
             implicitRole: null,
             validRoles: ["group", "list", "none", "presentation"],
             globalAriaAttributesValid: true
@@ -1837,7 +1831,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "hgroup": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1883,7 +1877,7 @@ export class ARIADefinitions {
             allowAttributesFromImplicitRole: false
         },
         "i": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2012,7 +2006,7 @@ export class ARIADefinitions {
             otherAllowedAriaAttributes: ["aria-hidden"] 
         },
         "pre": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2023,7 +2017,7 @@ export class ARIADefinitions {
             otherDisallowedAriaAttributes: ["aria-valuemax"] 
         },
         "q": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2048,7 +2042,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "samp": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2063,7 +2057,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "small": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2073,7 +2067,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "span": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2148,7 +2142,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "u": {
-            implicitRole: null,
+            implicitRole: ["generic"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2189,7 +2183,7 @@ export class ARIADefinitions {
                 otherDisallowedAriaAttributes: ["aria-disabled=true"]
             },
             "without-href": {
-                implicitRole: null,
+                implicitRole: ["generic"],
                 //roleCondition: " when href attribute is not present",
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
@@ -2203,7 +2197,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             },
             "without-href": {
-                implicitRole: null,
+                implicitRole: ["generic"],
                 //roleCondition: " when href attribute is not present",
                 validRoles: ["button", "link"],
                 globalAriaAttributesValid: true
@@ -2215,7 +2209,18 @@ export class ARIADefinitions {
 //            validRoles: ["If role defined by ElementInternals", "any role", "no role Otherwise"],
 //            globalAriaAttributesValid: true
 //        },
-
+        "div": {
+            "child-dl": {
+                implicitRole: ["generic"],
+                validRoles: ["presentation", "none"],
+                globalAriaAttributesValid: true
+            },
+            "no-child-dl": {
+                implicitRole: ["generic"],
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            }
+        },
         "figure": {
             "child-figcaption": {
                 implicitRole: ["figure"],
@@ -2230,12 +2235,12 @@ export class ARIADefinitions {
         },
         "footer": {
             "des-section-article-aside-main-nav": {
-                implicitRole: null,
+                implicitRole: ["generic"],
                 //roleCondition: " when descendant of an article, aside, main, nav or section element",
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
-            "not-des-section-article": {
+            "other": {
                 implicitRole: ["contentinfo"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
@@ -2244,19 +2249,19 @@ export class ARIADefinitions {
         },
 // TODO
 //        "form-associated custom element": {
-//            implicitRole: ["Role exposed from author defined ElementInternals. Otherwise no corresponding role."],
+//            implicitRole: ["Role exposed from author defined ElementInternals. Otherwise 'generic'."],
 //            validRoles: ["If role defined by ElementInternals", "form-related roles: button", "checkbox", "combobox", "group", "listbox", "progressbar", "radio", "radiogroup", "searchbox", "slider", "spinbutton", "switch", "textbox", "no role Otherwise"],
 //            globalAriaAttributesValid: true
 //        },
 
         "header": {
             "des-section-article-aside-main-nav": {
-                implicitRole: null,
+                implicitRole: ["generic"],
                 //roleCondition: " when descendant of an article, aside, main, nav or section element",
                 validRoles: ["group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
-            "not-des-section-article": {
+            "other": {
                 implicitRole: ["banner"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
                 validRoles: ["group", "none", "presentation"],
@@ -2458,9 +2463,15 @@ export class ARIADefinitions {
                 otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
-            "default": {
-                implicitRole: null,
-                //roleCondition: "",
+            "default-with-list": {
+                // input with a missing or invalid type, with a list attribute
+                implicitRole: ["combobox"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "default-no-list": {
+                // input with a missing or invalid type, with a list attribute
+                implicitRole: ["textbox"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
@@ -2538,18 +2549,13 @@ export class ARIADefinitions {
             }
         },
         "th": {
-            "des-table": {
-                implicitRole: ["columnheader", "rowheader", "cell"],
+            "des-table-grid-treegrid-row-scope": {
+                implicitRole: ["rowheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "des-grid": {
-                implicitRole: ["columnheader", "rowheader", "gridcell"],
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "des-treegrid": {
-                implicitRole: ["columnheader", "rowheader", "gridcell"],
+            "des-table-grid-treegrid-column-scope": {
+                implicitRole: ["columnheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
@@ -2581,6 +2587,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             }
         },
+        
         "default": {
             implicitRole: null,
             //roleCondition: "",
