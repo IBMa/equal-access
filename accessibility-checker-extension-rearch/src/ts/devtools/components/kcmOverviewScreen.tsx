@@ -84,33 +84,6 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                             You can turn off connecting lines in <a className="link" href={chrome.runtime.getURL("options.html")} target="_blank">options</a> and read more in the <a className="link" href={chrome.runtime.getURL("usingAC.html")} target="_blank">user guide</a>. 
                         </div>
 
-                        <div style={{marginBottom:"1rem"}}>
-                            <Checkbox 
-                                labelText="Do not show this again" 
-                                id={`kcmAlertCheckbox_${this.myCount}`}
-                                checked={ showAgainChecked }
-                                onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
-                                    if (this.state.settings !== undefined) {
-                                        let newState = JSON.parse(JSON.stringify(this.state.settings));
-                                        newState.tabStopAlerts = !evtState.checked;
-                                        this.bgController.setSettings(newState); // App state
-                                        this.setState({ settings: newState }); // internal state
-                                    }
-                                }} 
-
-                            />
-                            {/* <Toggle
-                                aria-label="toggle button"
-                                labelText="Do not show this again"
-                                id="alertToggle"
-                                toggled={this.state.settings?.tabStopAlerts}
-                                onToggle={(value: any) => {
-                                    console.log("tabStopAlerts value = ",value);
-                                    // this.setState({ tabStopAlerts: value });
-                                }} 
-                            /> */}
-                        </div>
-
                     </div>
                 </Column>
 
@@ -203,15 +176,32 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                             </div>
                         </Column>
                         <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                        <div className="kcmExplain">
-                            <div style={{marginBottom:"1rem"}}>
+                            <div className="kcmExplain">
                                 Click on the keyboard icon to return to the regular view.
                             </div>
-                        </div>
                         </Column>
                     </Grid>
                     
 
+                </Column>
+            </Grid>
+            <Grid>
+                <Column sm={4} md={8} lg={8}>
+                    <div style={{marginTop: "1rem", marginBottom:"1rem"}}>
+                        <Checkbox 
+                            labelText="Do not show this again" 
+                            id={`kcmAlertCheckbox_${this.myCount}`}
+                            checked={ showAgainChecked }
+                            onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
+                                if (this.state.settings !== undefined) {
+                                    let newState = JSON.parse(JSON.stringify(this.state.settings));
+                                    newState.tabStopAlerts = !evtState.checked;
+                                    this.bgController.setSettings(newState); // App state
+                                    this.setState({ settings: newState }); // internal state
+                                }
+                            }} 
+                        />
+                    </div>
                 </Column>
             </Grid>
         </aside>;

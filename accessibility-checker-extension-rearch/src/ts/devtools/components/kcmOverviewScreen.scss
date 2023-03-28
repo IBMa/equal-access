@@ -5,20 +5,13 @@
 
 .kcmOverview {
     .kcmTitle {
-        height: 28px;
-        width: 359px;
-        color: #161616;
-        font-family: "IBM Plex Sans";
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: 28px;
+        @include type-style("heading-03");
     }
     .kcmExplain {
-        color: #161616;
-      font-family: "IBM Plex Sans";
-      font-size: 12px;
-      letter-spacing: 0.14px;
-      line-height: 20px;
+        @include type-style("body-01");
+    }
+    .visualization-guide {
+        @include type-style("heading-01");
     }
     
     .path-11-copy {
@@ -28,25 +21,9 @@
         border: 1px solid #CBCDD1;
         transform: scaleX(-1);
     }
-    
-    .visualization-guide {
-        height: 24px;
-        width: 137px;
-        color: #161616;
-        font-family: "IBM Plex Sans";
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.14px;
-        line-height: 20px;
-    }
-    
+        
     .visualization-guide-text {
-        color: #161616;
-        font-family: "IBM Plex Sans";
-        font-size: 12px;
-        font-weight: normal;
-        letter-spacing: 0.32px;
-        line-height: 16px;
+        @include type-style("label-01");
     }
     
     .svgNotificationDot{
