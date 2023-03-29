@@ -361,9 +361,9 @@ class BackgroundController extends Controller {
     private async validateSettings(inSettings?: ISettings) : Promise<ISettings> {
         let settings : any = inSettings || {};
         if (!("tabStopLines" in settings)) { (settings as ISettings).tabStopLines = true; }
-        if (!("tabStopOutlines" in settings)) { (settings as ISettings).tabStopLines = false; }
-        if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopLines = true; }
-        if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopLines = true; }
+        if (!("tabStopOutlines" in settings)) { (settings as ISettings).tabStopOutlines = false; }
+        if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopAlerts = true; }
+        if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopFirstTime = true; }
 
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";
