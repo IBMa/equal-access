@@ -167,6 +167,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         } else {
             await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
+        this.setState({ tabRowId: ReportTreeGrid.getRowId(_group, issue) });
         ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
     }
 
