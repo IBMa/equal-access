@@ -29,7 +29,7 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { getDevtoolsController } from '../devtoolsController';
+import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
@@ -41,6 +41,7 @@ export interface IRowGroup {
 }
 
 interface ReportTreeGridProps {
+    unfilteredCount: number
     panel: ePanel;
     headers: Array<{ key: string, label: string }>
     rowData?: IRowGroup[] | null
@@ -52,6 +53,7 @@ interface ReportTreeGridProps {
 
 
 interface ReportTreeGridState {
+    viewState?: ViewState
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
@@ -104,6 +106,13 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         if (this.props.rowData && this.props.rowData.length > 0) {
             this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData[0].id });
         }
+        ReportTreeGrid.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
+            this.setState({ viewState });
+        })
+        this.setState({
+            viewState: (await ReportTreeGrid.devtoolsController.getViewState())!
+        })
+
     }
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
@@ -402,6 +411,16 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
 
         if (!this.props.rowData) {
             content = <div className="reportTreeGridEmptyText">{this.props.noScanMessage}</div>;
+        } else if (this.props.unfilteredCount === 0) {
+            if (this.state.viewState && this.state.viewState.kcm) {
+                content = <div className="reportTreeGridEmptyText">
+                    No keyboard issues detected.
+                </div>
+            } else {
+                content = <div className="reportTreeGridEmptyText">
+                    No issues detected.
+                </div>
+            }
         } else if (this.props.rowData.length === 0) {
             content = <div className="reportTreeGridEmptyText">
                 No issues detected for the chosen filter criteria. To see all issues, <Link

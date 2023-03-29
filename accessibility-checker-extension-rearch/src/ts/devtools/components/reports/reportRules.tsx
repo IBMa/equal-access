@@ -22,6 +22,7 @@ import { ePanel } from '../../devToolsApp';
 import "../reportSection.scss";
 
 interface ReportProps {
+    unfilteredCount: number
     panel: ePanel
     report: IReport | null
     issues: IIssue[] | null
@@ -77,6 +78,7 @@ export class ReportRules extends React.Component<ReportProps> {
             }
         }
         return <ReportTreeGrid 
+            unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
             noScanMessage={<>This page has not been scanned.</>}
             headers={[

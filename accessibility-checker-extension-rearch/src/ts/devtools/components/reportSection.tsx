@@ -180,7 +180,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let tabbableDetectors: IIssue[] | null = null;
         let counts: CountType = this.initCount();
 
-        console.log(this.state.report);
         if (this.state.report) {
             if (this.state.viewState && this.state.viewState.kcm) {
                 let { tabbable, tabbableErrors } = UtilKCM.processIssues(this.state.report);
@@ -202,7 +201,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 );
                 return retVal;
             });
-            // console.log(filtReport.results.length);
         }
 
         let totalCount = 0;
@@ -230,11 +228,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
                                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                                 {reportIssues && <>
-                                                    {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total &&
+                                                    {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total) ?
                                                         counts[levelStr as eLevel].total
-                                                    ) || <>
-                                                            {counts[levelStr as eLevel].focused}/{counts[levelStr as eLevel].total}
-                                                        </>}
+                                                    : <>
+                                                        {counts[levelStr as eLevel].focused}/{counts[levelStr as eLevel].total}
+                                                    </>}
                                                 </>}
                                             </span>
                                             <span className="summaryBarLabels" style={{ marginLeft: "4px" }}>
@@ -285,7 +283,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             <TabPanel>
                                 { filterSection }
                                 <ReportRoles 
-                                    issues={reportIssues} 
+                                    unfilteredCount={totalCount}
+                                    issues={reportIssues}
                                     panel={this.props.panel} 
                                     checked={this.state.checked} 
                                     selectedPath={this.state.selectedPath} 
@@ -295,6 +294,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             <TabPanel>
                                 { filterSection }
                                 <ReportReqts 
+                                    unfilteredCount={totalCount}
                                     issues={reportIssues} 
                                     panel={this.props.panel} 
                                     checked={this.state.checked} 
@@ -305,6 +305,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             <TabPanel>
                                 { filterSection }
                                 <ReportRules 
+                                    unfilteredCount={totalCount}
                                     report={this.state.report}
                                     issues={reportIssues} 
                                     panel={this.props.panel} 
@@ -327,6 +328,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             <TabPanel>
                                 { filterSection }
                                 <ReportTabs 
+                                    unfilteredCount={totalCount}
                                     issues={reportIssues}
                                     tabbable={tabbableDetectors}
                                     panel={this.props.panel} 

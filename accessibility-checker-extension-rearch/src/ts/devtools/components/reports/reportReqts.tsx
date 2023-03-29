@@ -25,6 +25,7 @@ import { getBGController } from '../../../background/backgroundController';
 import { getTabId } from '../../../util/tabId';
 
 interface ReportProps {
+    unfilteredCount: number
     panel: ePanel
     issues: IIssue[] | null
     checked: {
@@ -82,6 +83,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
             }
         }
         return <ReportTreeGrid 
+            unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
             noScanMessage={<>This page has not been scanned.</>}
             headers={[
