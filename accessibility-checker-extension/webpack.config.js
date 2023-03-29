@@ -35,13 +35,12 @@ module.exports = {
         options: path.join(sourceRootPath, 'ts', 'options', 'index.tsx'),
         popup: path.join(sourceRootPath, 'ts', 'popup', 'index.tsx'),
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
-        devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
-        devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
-        draw: path.join(sourceRootPath, 'ts', 'contentScripts', 'index.ts'),
-        tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
-        usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
+        devtoolsMain: path.join(sourceRootPath, 'ts', 'devtools', 'indexMain.tsx'),
+        devtoolsElements: path.join(sourceRootPath, 'ts', 'devtools', 'indexElements.tsx'),
+        viewKCM: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewKCM.ts'),
+        usingAC: path.join(sourceRootPath, 'ts', 'docs', 'usingAC.tsx'),
         ...contentScripts,
-        quickGuideAC: path.join(sourceRootPath, 'ts', 'quickGuideAC', 'index.tsx'),
+        quickGuideAC: path.join(sourceRootPath, 'ts', 'docs', 'quickGuide.tsx'),
         ...contentScripts,
     },
     output: {
@@ -102,18 +101,18 @@ module.exports = {
             chunks: ['devtools']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'devtoolsPanel.html'),
+            template: path.join(sourceRootPath, 'html', 'devtoolsMain.html'),
             inject: 'body',
-            filename: 'devtoolsPanel.html',
+            filename: 'devtoolsMain.html',
             title: 'Accessibility Checker Extension',
-            chunks: ['devtoolsPanel']
+            chunks: ['devtoolsMain']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'devtoolsSubpanel.html'),
+            template: path.join(sourceRootPath, 'html', 'devtoolsElements.html'),
             inject: 'body',
-            filename: 'devtoolsSubpanel.html',
+            filename: 'devtoolsElements.html',
             title: 'Accessibility Checker Extension',
-            chunks: ['devtoolsSubpanel']
+            chunks: ['devtoolsElements']
         }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'reports.html'),

@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 
-import CommonMessaging from "./commonMessaging";
+import CommonMessaging from "../util/commonMessaging";
 import BrowserDetection from "../util/browserDetection";
 //import { report } from 'process';
 

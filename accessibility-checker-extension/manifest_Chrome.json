@@ -17,6 +17,7 @@
     "permissions": [
         "tabs",
         "storage",
+        "unlimitedStorage",
         "scripting",
         "activeTab"
 	],
@@ -39,15 +40,15 @@
 	"background": {
 		"service_worker": "background.js"
 	},
+	"content_scripts": [ 
+        {
+        "matches": ["<all_urls>"],
+        "js": ["viewKCM.js"]
+        }
+    ], 
 	"options_ui": {
 		"page": "options.html",
 		"open_in_tab": true
     },
-	"content_scripts": [ 
-        {
-        "matches": ["<all_urls>"],
-        "js": ["draw.js"]
-        }
-    ], 
     "incognito": "split"
 }
