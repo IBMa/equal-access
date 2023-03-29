@@ -17,6 +17,18 @@
             cursor: pointer;
         }
     }
+
+    .visHeading {
+        @include type-style("heading-compact-01");
+        button {
+            min-height: 42px;
+        }
+    }
+    .visScore {
+        @include type-style("helper-text-01");
+        margin: calc(.75rem + 2px) 0rem .75rem 0rem;
+        text-align: right;
+    }
 }
 
 .reportFilterBorder {

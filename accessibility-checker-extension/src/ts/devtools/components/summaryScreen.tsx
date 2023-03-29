@@ -83,7 +83,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div style={{ margin: "1rem -1rem 0rem 0rem" }}>
                 <Grid style={{margin: "0rem"}}>
-                    <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                    <Column sm={{ span: 4 }} md={{ span: 6 }} lg={{ span: 6 }}>
                         <h2 id="summaryTitle" className="summaryTitle">Scan summary</h2>
 
                         <div className="summaryTitleDetail">{time}</div>

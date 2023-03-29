@@ -21,6 +21,7 @@ import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
 import {
+    Button,
     Checkbox,
     Link,
     Tabs,
@@ -30,6 +31,10 @@ import {
     TabPanel,
     Tooltip
 } from "@carbon/react";
+
+import {
+    Information
+} from "@carbon/react/icons";
 
 import "./reportSection.scss";
 import { ReportRoles } from './reports/reportRoles';
@@ -178,20 +183,26 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     render() {
         let reportIssues : IIssue[] | null = null;
         let tabbableDetectors: IIssue[] | null = null;
-        let counts: CountType = this.initCount();
+        let filterCounts: CountType = this.initCount();
+        let tabCount = 0;
+        let missingTabCount = 0;
 
         if (this.state.report) {
             if (this.state.viewState && this.state.viewState.kcm) {
                 let { tabbable, tabbableErrors } = UtilKCM.processIssues(this.state.report);
                 tabbableDetectors = tabbable;
                 reportIssues = tabbableErrors;
+                let allSet = new Set(reportIssues.map(iss => iss.path.dom));
+                let tabSet = new Set(tabbableDetectors.map(iss => iss.path.dom));
+                tabCount = tabSet.size;
+                missingTabCount = Array.from(allSet).filter(key => !tabSet.has(key)).length;
             } else {
                 // console.log("Focus Mode:",this.state.focusMode)
                 reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;
             }
         }
         if (reportIssues) {
-            counts = this.getCounts(reportIssues);
+            filterCounts = this.getCounts(reportIssues);
             reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
@@ -208,7 +219,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             <div className="reportFilterBorder" />
             <Grid className="reportFilterSection">
                 {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
-                    totalCount += counts[levelStr as eLevel].total;
+                    totalCount += filterCounts[levelStr as eLevel].total;
                     return <>
                         <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                             <span data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
@@ -218,7 +229,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 >
                                     <Checkbox
                                         className="checkboxLabel"
-                                        disabled={counts[levelStr as eLevel].total === 0}
+                                        disabled={filterCounts[levelStr as eLevel].total === 0}
                                         // title="Filter by violations" // used react tooltip so all tooltips the same
                                         aria-label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
                                         checked={this.state.checked[levelStr as eLevel]}
@@ -228,10 +239,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
                                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                                 {reportIssues && <>
-                                                    {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total) ?
-                                                        counts[levelStr as eLevel].total
+                                                    {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
+                                                        filterCounts[levelStr as eLevel].total
                                                     : <>
-                                                        {counts[levelStr as eLevel].focused}/{counts[levelStr as eLevel].total}
+                                                        {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
                                                     </>}
                                                 </>}
                                             </span>
@@ -316,29 +327,45 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             </TabPanel>
                         </TabPanels>
                     </Tabs>}
-                    {this.state.viewState && this.state.viewState.kcm && <Tabs
-                        // ariaLabel="Report options"
-                        role="navigation"
-                        tabContentClassName="tab-content"
-                    >
-                        <TabList>
-                            <Tab>Keyboard tab stops</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                                { filterSection }
-                                <ReportTabs 
-                                    unfilteredCount={totalCount}
-                                    issues={reportIssues}
-                                    tabbable={tabbableDetectors}
-                                    panel={this.props.panel} 
-                                    checked={this.state.checked} 
-                                    selectedPath={this.state.selectedPath} 
-                                    onResetFilters={this.onResetFilters.bind(this)}
-                                />
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>}
+                    {this.state.viewState && this.state.viewState.kcm && <div>
+                        <div style={{ display: "flex" }}>
+                            <div style={{flex: "1 1 auto"}} className="visHeading">
+                                <span style={{     
+                                    margin: ".75rem 0rem",
+                                    display: "inline-block"
+                                }}>Keyboard tab stops</span>
+                                <span style={{
+                                    verticalAlign: "top"
+                                }}>
+                                    <Button
+                                        id="kcmInfo"
+                                        renderIcon={Information}
+                                        kind="ghost"
+                                        hasIconOnly iconDescription="Keyboard Checker Mode information" tooltipPosition="top"
+                                        onClick={(() => {
+                                            getDevtoolsAppController().setSecondaryView("kcm_overview");
+                                            getDevtoolsAppController().openSecondary("#kcmInfo");
+                                        }).bind(this)}>
+                                    </Button>
+                                </span>
+                            </div>
+                            <div className="visScore" style={{flex: "1 1 auto"}}>
+                                Tab stops: {tabCount} existing, {missingTabCount} missing
+                            </div>
+                        </div>
+                        <div>
+                            { filterSection }
+                            <ReportTabs 
+                                unfilteredCount={totalCount}
+                                issues={reportIssues}
+                                tabbable={tabbableDetectors}
+                                panel={this.props.panel} 
+                                checked={this.state.checked} 
+                                selectedPath={this.state.selectedPath} 
+                                onResetFilters={this.onResetFilters.bind(this)}
+                            />
+                        </div>
+                    </div>}
                 </Column>
             </Grid>
         </>);
