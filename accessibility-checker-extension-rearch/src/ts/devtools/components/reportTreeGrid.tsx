@@ -40,11 +40,11 @@ export interface IRowGroup {
     children: IIssue[]
 }
 
-interface ReportTreeGridProps {
+interface ReportTreeGridProps<RowType extends IRowGroup> {
     unfilteredCount: number
     panel: ePanel;
     headers: Array<{ key: string, label: string }>
-    rowData?: IRowGroup[] | null
+    rowData?: RowType[] | null
     className?: string
     selectedPath: string | null;
     noScanMessage: React.ReactNode;
@@ -59,7 +59,7 @@ interface ReportTreeGridState {
     tabRowId: string;
 }
 
-export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportTreeGridState> {
+export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<ReportTreeGridProps<RowType>, ReportTreeGridState> {
     private static devtoolsAppController = getDevtoolsAppController();
     private static devtoolsController = getDevtoolsController();
 
@@ -115,7 +115,7 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
 
     }
 
-    componentDidUpdate(prevProps: Readonly<ReportTreeGridProps>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
+    componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
         if (!prevProps.rowData && !!this.props.rowData) {
             this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
         }
@@ -434,13 +434,28 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                 >select all issue types</Link>
             </div>
         } else {
+            let numColumns = this.props.headers.length;
             // Generate the header
-            let numLeft = 4;
             let headerContent = <Grid className="gridHeader">
                 {this.props.headers.map((header, idx) => {
-                    let smallCol = idx === this.props.headers.length-1 ? numLeft: 2;
-                    let medCol = idx === this.props.headers.length-1 ? numLeft+4: 2;
-                    numLeft -= 2;
+                    let smallCol = 0;
+                    let medCol = 0;
+                    if (numColumns === 2) {
+                        // Two column layout
+                        smallCol = 2;
+                        medCol = 2;
+                        if (idx === this.props.headers.length -1) {
+                            medCol = 6;
+                        }
+                    } else if (numColumns === 3) {
+                        // Three column layout
+                        smallCol = 1;
+                        medCol = 2;
+                        if (idx === this.props.headers.length -1) {
+                            smallCol = 2;
+                            medCol = 4;
+                        }
+                    }
                     return <Column sm={smallCol} md={medCol}>
                         <div className="gridHeaderCell">
                             {header.label}
@@ -452,7 +467,6 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
             // Generate the body
             let bodyContent : Array<React.ReactNode> = [];
             for (let idxGroup=0; idxGroup < this.props.rowData.length; ++idxGroup) {
-                numLeft = 4;
                 const group = this.props.rowData[idxGroup];
                 const groupExpanded = this.state.expandedGroups.includes(group.id);
                 const counts : {
@@ -482,15 +496,30 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                     }}
                 >
                     {this.props.headers.map((header, idx) => {
-                        let smallCol = idx === this.props.headers.length-1 ? numLeft: 2;
-                        let medCol = idx === this.props.headers.length-1 ? numLeft+4: 2;
-                        numLeft -= 2;
+                        let smallCol = 0;
+                        let medCol = 0;
+                        if (numColumns === 2) {
+                            // Two column layout
+                            smallCol = 2;
+                            medCol = 2;
+                            if (idx === this.props.headers.length -1) {
+                                medCol = 6;
+                            }
+                        } else if (numColumns === 3) {
+                            // Three column layout
+                            smallCol = 1;
+                            medCol = 2;
+                            if (idx === this.props.headers.length -1) {
+                                smallCol = 2;
+                                medCol = 4;
+                            }
+                        }
                         return <Column role="columnheader" sm={smallCol} md={medCol} className={header.key}>
                             <div className="gridGroupCell">
                                 {idx === 0 && groupExpanded && <ChevronUp />}
                                 {idx === 0 && !groupExpanded && <ChevronDown />}
-                                { header.key === "label" && group.label }
                                 { header.key === "issueCount" && childCounts }
+                                { header.key !== "issueCount" && (group as any)[header.key] }
                             </div>
                         </Column>
                     })}

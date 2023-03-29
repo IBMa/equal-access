@@ -35,23 +35,26 @@ interface ReportProps {
     onResetFilters: () => void
 }
 
+type RowProps = IRowGroup & {
+    path: string
+}
+
 export class ReportTabs extends React.Component<ReportProps> {
     render() {
-        let rowData : IRowGroup[] | null = null;
+        let rowData : RowProps[] | null = null;
         if (this.props.issues && this.props.tabbable) {
             rowData = [];
             for (const result of this.props.issues) {
                 let tabInfo = this.props.tabbable.find((issue => issue.path.dom === result.path.dom));
                 // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
                 let id = `${(tabInfo && ""+tabInfo.apiArgs[0].tabOrder || "?")} ${result.path.aria.replace(/\//g, " /")}`;
-                let thisLabel = <>{(tabInfo && ""+tabInfo.apiArgs[0].tabOrder || "?")} 
-                <span style={{ color: "#c6c6c6" }}> &mdash; </span> 
-                {result.path.aria.replace(/\//g, " /")}</>;
+                let thisLabel = tabInfo && ""+tabInfo.apiArgs[0].tabOrder || "?";
                 let curGroup = rowData.find(group => group.id === id);
                 if (!curGroup) {
                     curGroup = {
                         id: ReportTreeGrid.cleanId(id),
                         label: thisLabel,
+                        path: result.path.aria.replace(/\//g, " /"),
                         children: [result]
                     }
                     rowData.push(curGroup);
@@ -75,7 +78,8 @@ export class ReportTabs extends React.Component<ReportProps> {
             noScanMessage={<>This page has not been scanned.</>}
             headers={[
                 { key: "issueCount", label: "Issues" },
-                { key: "label", label: "Tab stop" }
+                { key: "label", label: "Tab stop" },
+                { key: "path", label: "Element Roles"}
             ]}
             rowData={rowData}
             selectedPath={this.props.selectedPath}
