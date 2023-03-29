@@ -19,6 +19,7 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 export let Rpt_Aria_ValidPropertyValue: Rule = {
     id: "Rpt_Aria_ValidPropertyValue",
     context: "dom:*",
+    dependencies: ["Rpt_Aria_ValidProperty"],
     help: {
         "en-US": {
             "group": "Rpt_Aria_ValidPropertyValue.html",

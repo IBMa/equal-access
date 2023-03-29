@@ -223,7 +223,7 @@ export class RPTUtil {
     }
 
     /**
-     * this method returns user-defined aria attribute from dom
+     * this method returns user-defined aria attribute name from dom
      * @param ele  element
      * @returns user defined aria attributes
      */
@@ -239,6 +239,67 @@ export class RPTUtil {
             }
         }
         return ariaAttributes;
+    }
+
+    /**
+     * this method returns user-defined html attribute name from dom
+     * @param ele  element
+     * @returns user defined html attributes
+     */
+    public static getUserDefinedHtmlAttributes(elem) {
+        let htmlAttributes = [];
+        let domAttributes = elem.attributes;
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase(); 
+                let isAria = attrName.substring(0, 5) === 'aria-';
+                if (!isAria)
+                    htmlAttributes.push(attrName);
+            }
+        }
+        return htmlAttributes;
+    }
+
+    /**
+     * this method returns user-defined aria attribute name-value pair from dom
+     * @param ele  element
+     * @returns user defined aria attributes
+     */
+    public static getUserDefinedAriaAttributeNameValuePairs(elem) {
+        let ariaAttributes = [];
+        let domAttributes = elem.attributes;
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase();
+                let attrValue = elem.getAttribute(attrName);
+                if (attrValue === '') attrValue = null;
+                let isAria = attrName.substring(0, 5) === 'aria-';
+                if (isAria)
+                    ariaAttributes.push({name: attrName, value: attrValue});
+            }
+        }
+        return ariaAttributes;
+    }
+
+    /**
+     * this method returns user-defined html attribute name-value pair from dom
+     * @param ele  element
+     * @returns user defined html attributes
+     */
+    public static getUserDefinedHtmlAttributeNameValuePairs(elem) {
+        let htmlAttributes = [];
+        let domAttributes = elem.attributes;
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase(); 
+                let attrValue = elem.getAttribute(attrName);
+                if (attrValue === '') attrValue = null;
+                let isAria = attrName.substring(0, 5) === 'aria-';
+                if (!isAria)
+                    htmlAttributes.push({name: attrName, value: attrValue});
+            }
+        }
+        return htmlAttributes;
     }
 
     /**
