@@ -33,6 +33,7 @@ export default class TabStopLine {
         if (document.getElementById("svgLine") == null) {
             const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             elemSVG.setAttribute("id", "svgLine");
+            elemSVG.classList.add("deleteMe");
             document.body.appendChild(elemSVG);
         }
         document.getElementById('svgLine')?.appendChild(lineClone);

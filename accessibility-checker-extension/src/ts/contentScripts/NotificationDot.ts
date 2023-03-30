@@ -28,12 +28,13 @@ export default class NotificationDot {
         iconClone.style.left = String(x1) + "px";
         iconClone.style.top = String(y1) + "px";
 
-        if (document.getElementById("svgIcons") == null) {
+        if (document.getElementById("svgDot") == null) {
             var elemDIV = document.createElement('div');
-            elemDIV.setAttribute("class", "svgIcons");
+            elemDIV.setAttribute("id", "svgDot");
+            elemDIV.classList.add("deleteMe");
             document.body.appendChild(elemDIV);
         }
-        document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+        document.getElementById('svgDot')?.appendChild(iconClone);
     }
 
     private static notificationDotTemplate() {

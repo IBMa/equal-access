@@ -291,6 +291,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
 
 function injectCSS(styleString: string) {
     const style = document.createElement('style');
+    style.classList.add("deleteMe");
     style.textContent = styleString;
     document.head.append(style);
 }

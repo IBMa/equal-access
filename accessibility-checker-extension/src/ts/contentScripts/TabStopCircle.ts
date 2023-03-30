@@ -38,10 +38,11 @@ export default class TabStopCircle {
             const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             elemSVG.setAttribute("id", "svgCircle");
             elemSVG.classList.add("dynamic");
+            elemSVG.classList.add("deleteMe");
             document.body.appendChild(elemSVG);
         }
         // console.log("Inject circle circleNumber" + circleNumber);
-        document.getElementById('svgCircle')?.appendChild(circleClone)
+        document.getElementById('svgCircle')?.appendChild(circleClone);
     }
     
     private static circleTemplate() {
