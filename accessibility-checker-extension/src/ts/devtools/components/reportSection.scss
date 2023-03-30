@@ -1,6 +1,18 @@
 @use '@carbon/styles/scss/type' as *;
 @use '@carbon/styles/scss/colors' as *;
 // @use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/theme'as *;
+
+// Dark theme overrides
+.cds--g100 {
+    .reportSection {
+        .darkLink {
+            &:hover {
+                color: $gray-20;
+            }
+        }    
+    }
+}
 
 .reportSection {
     .reportSectionColumn {
@@ -11,7 +23,7 @@
         padding: 0rem;
     }
     .darkLink {
-        color: $black;
+        color: $text-primary;
         &:hover {
             color: $gray-80;
             cursor: pointer;

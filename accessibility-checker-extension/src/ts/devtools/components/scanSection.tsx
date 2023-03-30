@@ -154,8 +154,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             <div style={{display: "flex"}}>
                                 <div style={{flex: "1 1 8.75rem" }}>
                                     {this.state.scanInProgress > 0 && <InlineLoading 
+                                        className="inlineLoading"
                                         description={"Scanning"}
-                                        style={{minWidth: "8.75rem", paddingLeft: ".5rem", backgroundColor: "#e0e0e0" }}
+                                        style={{minWidth: "8.75rem", paddingLeft: ".5rem" }}
                                         status={this.state.scanInProgress === 1 ? 'active' : 'finished'}
                                     />}
                                     {this.state.scanInProgress === 0 && <Button 

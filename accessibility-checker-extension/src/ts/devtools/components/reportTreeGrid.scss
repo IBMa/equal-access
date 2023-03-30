@@ -1,7 +1,14 @@
 @use '@carbon/styles/scss/type' as *;
 @use '@carbon/styles/scss/colors' as *;
 @use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/theme'as *;
 
+.cds--g100 {
+    .reportTreeGrid {
+        --selected-node-background: #31135e;
+        --selected-node-border-color: #be95ff;
+    }
+}
 .reportTreeGridEmptyText {
     @include type-style('body-01');
     margin-top: .5rem;
@@ -9,14 +16,14 @@
 .reportTreeGrid {
     --border-width: 1px;
     --focus-width: 2px;
-    --focus-color: black;
+    $focus-color: $text-primary;
     --selected-node-background: #F6F2FF;
     --selected-node-border-color: #8A3FFC;
     .gridBody, .gridHeader { // row
         @include type-style('label-01');
         > div { // column
             > div { // cell
-                border-top: solid white var(--border-width);
+                border-top: solid var(--cds-background) var(--border-width);
                 border-bottom: solid $gray-30 var(--border-width);
                 margin: 0rem -1rem;
                 padding: 0.5rem 0rem .5rem 1rem;
@@ -26,14 +33,14 @@
         > div:first-of-type {
             > div {
                 margin-left: 0rem;
-                border-left: solid white var(--border-width);
+                border-left: solid var(--cds-background) var(--border-width);
             }
         }
         > div:last-of-type {
             > div {
                 padding-right: 1rem;
                 margin-right: 0rem;
-                border-right: solid white var(--border-width);
+                border-right: solid var(--cds-background) var(--border-width);
             }
         }
     }
@@ -59,9 +66,12 @@
 
     .gridHeader {
         font-weight: 600;
+        .gridHeaderCell {
+            color: $text-primary;
+        }
         > div {
             > div {
-                background-color: $gray-20;
+                background-color: $layer;
             }
         }
     }
@@ -101,21 +111,21 @@
         .gridBody.focused {
             > div {
                 > div {
-                    border-top: solid var(--focus-color) var(--focus-width);
-                    border-bottom: solid var(--focus-color) var(--focus-width);
+                    border-top: solid $focus-color var(--focus-width);
+                    border-bottom: solid $focus-color var(--focus-width);
                     padding-top: calc(.5rem - var(--focus-width) + var(--border-width));
                     padding-bottom: calc(.5rem - var(--focus-width) + var(--border-width));
                 }
             }
             > div:first-of-type {
                 > div {
-                    border-left: solid var(--focus-color) var(--focus-width);
+                    border-left: solid $focus-color var(--focus-width);
                     padding-left: calc(1rem - var(--focus-width) + var(--border-width));
                 }
             }
             > div:last-of-type {
                 > div {
-                    border-right: solid var(--focus-color) var(--focus-width);
+                    border-right: solid $focus-color var(--focus-width);
                     padding-right: calc(1rem - var(--focus-width) + var(--border-width));
                 }
             }
