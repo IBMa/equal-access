@@ -194,12 +194,15 @@ export class DevtoolsController extends Controller {
                 }
             }
             devtoolsState!.lastReport = report;
-            setTimeout(async () => {
-                this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
-                this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
-                this.inspectPath("/html[1]");
-                this.setSelectedIssue(null);
-            }, 0);
+            return new Promise((resolve, _reject) => {
+                setTimeout(async () => {
+                    this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
+                    this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
+                    this.inspectPath("/html[1]");
+                    this.setSelectedIssue(null);
+                    resolve();
+                }, 0)
+            });
         });
     }
 
