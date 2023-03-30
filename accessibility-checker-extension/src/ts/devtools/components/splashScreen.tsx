@@ -16,7 +16,7 @@
 
 import React from "react";
 import { Column, Grid } from "@carbon/react";
-import BrowserDetection from "../../util/browserDetection";
+import { BrowserDetection } from "../../util/browserDetection";
 import "./splashScreen.scss";
 
 const splashScreen = "/assets/splash_screen.svg";

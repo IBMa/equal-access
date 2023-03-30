@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import CommonMessaging from "../util/commonMessaging";
-import BrowserDetection from "../util/browserDetection";
+import { BrowserDetection } from "../util/browserDetection";
 //import { report } from 'process';
 
 export default class TabMessaging {

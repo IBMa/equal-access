@@ -15,7 +15,7 @@
   *****************************************************************************/
 
     import React from "react";
-    import BrowserDetection from "../util/browserDetection";
+    import { BrowserDetection } from "../util/browserDetection";
     import { Column, Link, Grid } from "@carbon/react";
     import "./popup.scss";
     
