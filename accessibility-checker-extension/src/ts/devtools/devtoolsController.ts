@@ -364,7 +364,14 @@ export class DevtoolsController extends Controller {
                         let element = doc.querySelector(selector);
                         return element;
                     } else {
-                        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                        xpath = xpath.replace(/\\/svg\\[/g, "/svg:svg[");
+                        let nodes = doc.evaluate(xpath, doc, function(prefix) { 
+                            if (prefix === 'svg') { 
+                                return 'http://www.w3.org/2000/svg';
+                            } else {
+                                return null;
+                            }
+                        }, XPathResult.ANY_TYPE, null);
                         let element = nodes.iterateNext();
                         if (element) {
                             return element;
