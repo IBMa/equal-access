@@ -117,31 +117,59 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
         if (!prevProps.rowData && !!this.props.rowData) {
+            // First time creating the report tree
             this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
-        }
-        if (prevState.tabRowId !== this.state.tabRowId && document) {
+        } else if (prevProps.rowData && this.props.rowData && JSON.stringify(prevProps.rowData) !== JSON.stringify(this.props.rowData)) {
+            // Report tree changed
+            let found = false;
+            if (this.state.tabRowId) {
+                // Try to find the same issue in the new scan
+                for (const group of this.props.rowData) {
+                    for (const issue of group.children) {
+                        if (ReportTreeGrid.getRowId(group, issue) === this.state.tabRowId) {
+                            found = true;
+                            setTimeout(async () => {
+                                await this.onRow(group, issue);
+                                await getDevtoolsController().setFocusMode(false);
+                                this.scrollToRowId(this.state.tabRowId);
+                            }, 0);
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+            }    
+            if (!found) {
+                this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
+            }
+        } else if (prevState.tabRowId !== this.state.tabRowId && document) {
+            // Report tree is the same, but the row changed
             if (this.props.rowData && this.props.rowData.length > 0) {
-                let elem = document.getElementById(this.state.tabRowId);
-                if (elem) {
+                this.scrollToRowId(this.state.tabRowId);
+            }
+        }
+    }
+
+    scrollToRowId(rowId: string) {
+        let elem = document.getElementById(rowId);
+        if (elem) {
+            setTimeout(() => {
+                elem?.scrollIntoView({
+                    // @ts-ignore
+                    block: 'nearest',
+                    inline: 'start'
+                });
+                if (this.state.tabRowId === this.props.rowData![0].id) {
                     setTimeout(() => {
-                        elem?.scrollIntoView({
+                        this.treeGridRef.current!.firstElementChild!.scrollIntoView({
                             // @ts-ignore
                             block: 'nearest',
-                            inline: 'start'
+                            inline: 'start',
+                            behavior: 'smooth'
                         });
-                        if (this.state.tabRowId === this.props.rowData![0].id) {
-                            setTimeout(() => {
-                                this.treeGridRef.current!.firstElementChild!.scrollIntoView({
-                                    // @ts-ignore
-                                    block: 'nearest',
-                                    inline: 'start',
-                                    behavior: 'smooth'
-                                });
-                            }, 0);
-                        }
                     }, 0);
                 }
-            }
+            }, 0);
         }
     }
 
@@ -557,7 +585,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 this.onRow(group, thisIssue);
                             }}
                         >
-                            <Column className="gridChild" role="gridcell" sm={4} md={8} lg={8}>
+                            <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                 <div className="gridDataCell">
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
                                         className="hideLg cds--link hideLg cds--link--inline cds--link--sm"

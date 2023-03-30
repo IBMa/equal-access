@@ -198,8 +198,6 @@ export class DevtoolsController extends Controller {
                 setTimeout(async () => {
                     this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
                     this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
-                    this.inspectPath("/html[1]");
-                    this.setSelectedIssue(null);
                     resolve();
                 }, 0)
             });
