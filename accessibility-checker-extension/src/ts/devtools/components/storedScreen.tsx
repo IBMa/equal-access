@@ -72,7 +72,9 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                     <Theme theme="g10">
                         <h2>Stored Scans</h2>
                         <div style={{marginTop: "1rem"}} />
-                        { !this.state.deleteSelectedRows && !detailRow && <>
+                        <div style={{
+                            display: (this.state.deleteSelectedRows || detailRow) ? "none": "block"
+                        }}>
                             <BasicTable
                                 // title="Stored scans"
                                 emptyLabel="No scans stored."
@@ -134,7 +136,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                     return cellValue;
                                 }}
                             />
-                        </>}
+                        </div>
                         { this.state.deleteSelectedRows && <>
                             <div>
                                 Are you sure you want to delete {this.state.deleteSelectedRows.length} selected scans?
