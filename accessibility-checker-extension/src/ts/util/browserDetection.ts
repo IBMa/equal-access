@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-export default class BrowserDetection {
+export class BrowserDetection {
 
     public static isChrome(): boolean {
         return !BrowserDetection.isFirefrox();
@@ -28,4 +28,7 @@ export default class BrowserDetection {
         }
     };
 
+    public static isDarkMode(): boolean {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
 }

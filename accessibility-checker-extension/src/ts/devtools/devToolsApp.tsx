@@ -21,14 +21,15 @@ import { eSecondaryView, getDevtoolsAppController } from './devtoolsAppControlle
 import { HeaderSection } from './components/headerSection';
 import { ReportSection } from './components/reportSection';
 import { ScanSection } from './components/scanSection';
-
+import { BrowserDetection } from '../util/browserDetection';
 import {
     Button,
     Column,
     ComposedModal,
     Grid,
     ModalBody,
-    ModalHeader
+    ModalHeader,
+    Theme
 } from "@carbon/react";
 
 import "../styles/index.scss";
@@ -93,7 +94,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
 
-        return <>
+        return <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
             <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
                 <Column sm={4} md={8} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
@@ -143,6 +144,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     document.body
                 )
             }
-        </>
+        </Theme>
     }
 }

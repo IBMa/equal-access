@@ -146,6 +146,11 @@ class BackgroundController extends Controller {
                 }, [settings]);
                 
                 if (report) {
+                    for (const result of report.results) {
+                        if (result.ruleTime > 50) {
+                            console.info(`[PERF: ${result.ruleId}] ${result.ruleTime}`);
+                        }
+                    }
                     report.results.sort((resultA, resultB) => {
                         let valueA = UtilIssue.valueToStringSingular(resultA.value);
                         let valueB = UtilIssue.valueToStringSingular(resultB.value);

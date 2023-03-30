@@ -1,6 +1,18 @@
 @use '@carbon/styles/scss/type' as *;
 @use '@carbon/styles/scss/colors' as *;
 // @use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/theme'as *;
+
+// Dark theme overrides
+.cds--g100 {
+    .reportSection {
+        .darkLink {
+            &:hover {
+                color: $gray-20;
+            }
+        }    
+    }
+}
 
 .reportSection {
     .reportSectionColumn {
@@ -11,11 +23,23 @@
         padding: 0rem;
     }
     .darkLink {
-        color: $black;
+        color: $text-primary;
         &:hover {
             color: $gray-80;
             cursor: pointer;
         }
+    }
+
+    .visHeading {
+        @include type-style("heading-compact-01");
+        button {
+            min-height: 42px;
+        }
+    }
+    .visScore {
+        @include type-style("helper-text-01");
+        margin: calc(.75rem + 2px) 0rem .75rem 0rem;
+        text-align: right;
     }
 }
 

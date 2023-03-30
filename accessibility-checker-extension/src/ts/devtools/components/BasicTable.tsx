@@ -46,12 +46,14 @@ interface BasicTableProps<IRowRecord extends IBasicTableRowRecord> {
 interface BasicTableState {
     currentPage: number
     totalOnPage: number
+    init: boolean
 }
 
 export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Component<BasicTableProps<IRowRecord>, BasicTableState> {
     state: BasicTableState = {
         currentPage: 1,
-        totalOnPage: this.props.pageSizes ? this.props.pageSizes[0] : -1
+        totalOnPage: this.props.pageSizes ? this.props.pageSizes[0] : -1,
+        init: false
     }
 
     componentDidMount() {
@@ -115,6 +117,7 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         getTableContainerProps,
                         getToolbarProps,
                         getBatchActionProps,
+                        selectAll
                     }: {
                         rows: any,
                         headers: Array<{key: string, header: string}>,
@@ -125,8 +128,13 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         getSelectionProps: any,
                         getTableContainerProps: any,
                         getToolbarProps: any,
-                        getBatchActionProps: any
+                        getBatchActionProps: any,
+                        selectAll: any
                     }) => {
+                        if (!this.state.init) {
+                            selectAll();
+                            this.setState({ init: true })
+                        }
                         let totals: any[] = [];
                         while (totals.length < headers.length-1) {
                             totals.push(null);

@@ -41,6 +41,7 @@ import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
+import { BrowserDetection } from '../../util/browserDetection';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -73,6 +74,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         focusMode: false,
         confirmClearStored: false
     }
+    scanRef = React.createRef<HTMLButtonElement>()
 
     reportListener : ListenerType<IReport> = async (report) => {
         let self = this;
@@ -90,6 +92,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             if (report) {
                 getDevtoolsAppController().setSecondaryView("summary");
             }
+            setTimeout(() => {
+                this.scanRef.current?.focus();
+            }, 0);
         }, 500);
     }
 
@@ -154,20 +159,26 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             <div style={{display: "flex"}}>
                                 <div style={{flex: "1 1 8.75rem" }}>
                                     {this.state.scanInProgress > 0 && <InlineLoading 
+                                        className="inlineLoading"
                                         description={"Scanning"}
-                                        style={{minWidth: "8.75rem", paddingLeft: ".5rem", backgroundColor: "#e0e0e0" }}
+                                        style={{minWidth: "8.75rem", paddingLeft: ".5rem" }}
                                         status={this.state.scanInProgress === 1 ? 'active' : 'finished'}
                                     />}
-                                    {this.state.scanInProgress === 0 && <Button 
+                                    <Button 
+                                        ref={this.scanRef}
+                                        style={{
+                                            display: this.state.scanInProgress !== 0 ? "none": undefined,
+                                            minWidth: "8.75rem"
+                                        }}
+                                        accesskey="s"
                                         size="sm"
-                                        style={{minWidth: "8.75rem"}}
                                         disabled={this.state.pageStatus !== "complete"} 
                                         onClick={() => { 
                                             this.scan(); 
                                         }
-                                    }>Scan</Button>}
+                                    }>Scan</Button>
                                 </div>
-                                <Theme theme="g100" style={{flex: "0 1 2rem"}}>
+                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g100"} style={{flex: "0 1 2rem"}}>
                                     <OverflowMenu 
                                         size="sm" 
                                         ariaLabel="stored scans" 
