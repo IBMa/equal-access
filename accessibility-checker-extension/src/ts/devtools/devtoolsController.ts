@@ -21,7 +21,7 @@ import { Controller, eControllerType, ListenerType } from "../messaging/controll
 import { genReport } from "../util/htmlReport/genReport";
 import { getTabId } from "../util/tabId";
 import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
-import MultiScanReport from "../util/xlsxReport/multiScanReport/xlsx/multiScanReport";
+import MultiScanReport from "../util/xlsxReport/multiScanReport/xlsx/MultiScanReport";
 
 let devtoolsState : {
     storeReports: boolean
@@ -660,7 +660,10 @@ export class DevtoolsController extends Controller {
     }
 }
 
-let singleton : DevtoolsController;
+let singletons : {
+    [tabId: number] : DevtoolsController;
+} = {};
+
 /**
  * Get a devtools controller
  * @param relay 
@@ -669,11 +672,11 @@ let singleton : DevtoolsController;
  * @returns 
  */
 export function getDevtoolsController(isContentScript?: boolean, type?: eControllerType, tabId?: number) {
-    if (!singleton) {
+    if (!singletons[(tabId || getTabId())!]) {
         // console.log("Creating devtools controller", type);
-        singleton = new DevtoolsController(isContentScript === true, type || "remote", tabId);
+        singletons[(tabId || getTabId())!] = new DevtoolsController(isContentScript === true, type || "remote", tabId);
     }
-    return singleton;
+    return singletons[(tabId || getTabId())!];
 }
 
 
