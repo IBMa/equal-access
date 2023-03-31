@@ -310,3 +310,12 @@ function deleteDrawing(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
     // console.log("Function: deleteDrawing DONE")
 }
+
+document.documentElement.addEventListener("keypress", async (evt: KeyboardEvent) => {
+    if (evt.code === "KeyS" && evt.ctrlKey && evt.altKey) {
+        let tabId = await bgController.getTabId();
+        bgController.requestScan(tabId);    
+        evt.preventDefault();
+        evt.stopPropagation();
+    }
+});

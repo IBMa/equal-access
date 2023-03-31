@@ -32,16 +32,25 @@ let devtoolsState : {
     lastIssue: IIssue | null
     viewState: ViewState
     focusedMode: boolean
+    scanningState: ScanningState
 } | null = null;
 
 export interface ViewState {
     kcm: boolean
 }
 
+export type ScanningState = "initializing" 
+    | "running"
+    | "processing"
+    | "idle";
+
 export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+
+    ///// Stored reports functions /////////////////////////////////////////
+
     /**
      * Get stored reports
      */
@@ -157,7 +166,10 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onStoreReports`);
     }
 
+    ///// Report functions /////////////////////////////////////////
+
     private scanCounter = 1;
+
     /**
      * Set report 
      */
@@ -229,6 +241,24 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onReport`);
     }
 
+    public async setScanningState(newState: ScanningState) {
+        return this.hook("setScanningState", null, async () => {
+            if (!devtoolsState) return;
+            devtoolsState.scanningState = newState;
+            this.notifyEventListeners("DT_onScanningState", this.ctrlDest.tabId, newState);
+        });
+    }
+
+    public async addScanningStateListener(listener: ListenerType<ScanningState>) {
+        this.addEventListener(listener, `DT_onScanningState`);//, listener.callbackTabId);
+    }
+
+    public async rempoveScanningStateListener(listener: ListenerType<ScanningState>) {
+        this.removeEventListener(listener, `DT_onScanningState`);
+    }
+
+    ///// View state (visualization) functions //////////////////////////////////////
+
     /**
      * Set view state
      */
@@ -260,6 +290,8 @@ export class DevtoolsController extends Controller {
     public async removeViewStateListener(listener: ListenerType<ViewState>) {
         this.removeEventListener(listener, `DT_onViewState`);
     }
+
+    ///// Issue/path functions /////////////////////////////////////////
 
     /**
      * Set selected issue
@@ -451,6 +483,8 @@ export class DevtoolsController extends Controller {
         }
     }
 
+    ///// Export report functions /////////////////////////////////////////
+
     public async exportXLS(type: "last" | "all" | "selected") {
         return this.hook("exportXLS", type, async () => {
             if (type === "all" || type === "selected") {
@@ -518,6 +552,8 @@ export class DevtoolsController extends Controller {
         }
     }
 
+    ///// Focus mode functions /////////////////////////////////////////
+
     /**
      * Set selected issue
      */
@@ -545,6 +581,7 @@ export class DevtoolsController extends Controller {
     public async addFocusModeListener(listener: ListenerType<boolean>) {
         this.addEventListener(listener, `DT_onFocusMode`);
     }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -559,6 +596,7 @@ export class DevtoolsController extends Controller {
                 lastReportMeta: null,
                 lastElementPath: null,
                 lastIssue: null,
+                scanningState: "idle",
                 viewState: {
                     kcm: false
                 },
@@ -587,7 +625,8 @@ export class DevtoolsController extends Controller {
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
                 "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content),
-                "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content)
+                "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content),
+                "DT_setScanningState": async(msgBody) => self.setScanningState(msgBody.content)
             }
 
             // Hook the above definitions

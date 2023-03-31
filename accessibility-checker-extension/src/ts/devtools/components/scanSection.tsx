@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { getDevtoolsController, ViewState } from '../devtoolsController';
+import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
 import { 
@@ -47,7 +47,7 @@ let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
-    scanInProgress: number
+    scanningState: ScanningState | "done"
     pageStatus: string
     viewState: ViewState
     reportContent: boolean
@@ -61,7 +61,7 @@ interface ScanSectionState {
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
-        scanInProgress: 0,
+        scanningState: "idle",
         pageStatus: "complete",
         viewState: {
             kcm: false
@@ -83,12 +83,13 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             hasReportContent = true;
         }
         devtoolsController.setFocusMode(false);
+        // If a scan never started, we can't be done
         self.setState( { 
-            scanInProgress: hasReportContent ? 2 : 0, 
+            scanningState: this.state.scanningState !== "idle"? "done" : "idle",
             reportContent: hasReportContent
         });
         setTimeout(() => {
-            self.setState( { scanInProgress: 0 });
+            self.setState( { scanningState: "idle" });
             if (report) {
                 getDevtoolsAppController().setSecondaryView("summary");
             }
@@ -100,6 +101,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
 
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
+        devtoolsController.addScanningStateListener(async (newState) => {
+            this.setState({scanningState: newState });
+        });
         devtoolsController.addViewStateListener(async (newState) => {
             this.setState( { viewState: newState });
         })
@@ -140,7 +144,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     async scan() {
-        this.setState( { scanInProgress: 1, scannedOnce: true });
+        this.setState( { scannedOnce: true });
         await bgController.requestScan(getTabId()!);
     }
 
@@ -158,16 +162,16 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                         <div style={{flex: "0 1 8.75rem"}}>
                             <div style={{display: "flex"}}>
                                 <div style={{flex: "1 1 8.75rem" }}>
-                                    {this.state.scanInProgress > 0 && <InlineLoading 
+                                    {this.state.scanningState !== "idle" && <InlineLoading 
                                         className="inlineLoading"
                                         description={"Scanning"}
                                         style={{minWidth: "8.75rem", paddingLeft: ".5rem" }}
-                                        status={this.state.scanInProgress === 1 ? 'active' : 'finished'}
+                                        status={this.state.scanningState !== "done" ? 'active' : 'finished'}
                                     />}
                                     <Button 
                                         ref={this.scanRef}
                                         style={{
-                                            display: this.state.scanInProgress !== 0 ? "none": undefined,
+                                            display: this.state.scanningState !== "idle" ? "none": undefined,
                                             minWidth: "8.75rem"
                                         }}
                                         accesskey="s"

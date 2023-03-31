@@ -34,50 +34,8 @@ class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    /**
-     * Get settings for the extension
-     */
-    public async getSettings() : Promise<ISettings> {
-        let myThis = this;
-        let retVal = (await this.hook("getSettings", null, async () => {
-            let retVal = await new Promise<ISettings>((resolve, _reject) => {
-                chrome.storage.local.get("OPTIONS", async function (result: { OPTIONS?: ISettings}) {
-                    let retSett = await myThis.validateSettings(result.OPTIONS);
-                    resolve(retSett);
-                });
-            })
-            return retVal;
-        }))!;
-        return retVal;
-    }
 
-    /**
-     * Set settings for the extension
-     */
-    public async setSettings(settings: ISettings) : Promise<ISettings> {
-        return this.hook("setSettings", settings, async () => {
-            await new Promise<ISettings>((resolve, _reject) => {
-                chrome.storage.local.set({ "OPTIONS": settings }, async function () {
-                    resolve(settings!);
-                });
-            });
-            this.notifyEventListeners("BG_onSettings", -1, settings);
-            return settings;
-        });
-    }
-
-    public async addSettingsListener(listener: ListenerType<ISettings>) {
-        this.addEventListener(listener, `BG_onSettings`);
-    }
-
-    /**
-     * Get the archive definitions
-     */
-    public async getArchives() : Promise<IArchiveDefinition[]> {
-        return this.hook("getArchives", null, async () => {
-            return EngineCache.getArchives();
-        });
-    }
+    ///// General extension functions /////////////////////////////////////////
 
     /**
      * Get the tab id of the caller
@@ -85,112 +43,6 @@ class BackgroundController extends Controller {
     public async getTabId(senderTabId?: number) : Promise<number> {
         return this.hook("getTabId", null, async () => {
             return senderTabId!;
-        });
-    }
-
-    /**
-     * Get the rulesets for the currently loaded engine
-     */
-    public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
-        return this.hook("getRulesets", senderTabId, async () => {
-            await this.initTab(senderTabId!);
-            // let isLoaded = await this.isEngineLoaded(senderTabId);
-            // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
-            return await myExecuteScript2(senderTabId, () => {
-                let checker = new (<any>window).aceIBMa.Checker();
-                return checker.rulesets;
-            });
-        });
-    }
-
-    public async requestScan(senderTabId: number) {
-        return this.hook("requestScan", senderTabId, async () => {
-            await this.initTab(senderTabId!);
-            // We want this to execute after the message returns
-            (async () => {
-                let settings = await this.getSettings();
-                let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
-                    let checker = new (<any>window).aceIBMa.Checker();    
-                    return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
-                        try {
-                            for (const result of report.results) {
-                                if (!(result.value[1] === "PASS" && result.value[0] !== "INFORMATION")) {
-                                    // Save all of this for backward compatibility
-                                    let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
-                                    let version = settings.selected_archive.version || "latest";
-                                    if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
-                                        engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
-                                    } else {
-                                        engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
-                                        if (engineHelp.includes("//able.ibm.com/")) {
-                                            engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
-                                        }
-                                    }
-                                    let minIssue = {
-                                        message: result.message,
-                                        snippet: result.snippet,
-                                        value: result.value,
-                                        reasonId: result.reasonId,
-                                        ruleId: result.ruleId,
-                                        messageArgs: result.messageArgs
-                                    };
-                                    result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
-                                }
-                            }
-                            return report;
-                        } catch (err) {
-                            console.error(err);
-                            return null;
-                        }
-                    });
-                }, [settings]);
-                
-                if (report) {
-                    for (const result of report.results) {
-                        if (result.ruleTime > 50) {
-                            console.info(`[PERF: ${result.ruleId}] ${result.ruleTime}`);
-                        }
-                    }
-                    report.results.sort((resultA, resultB) => {
-                        let valueA = UtilIssue.valueToStringSingular(resultA.value);
-                        let valueB = UtilIssue.valueToStringSingular(resultB.value);
-                        if (valueA === valueB) return 0;
-                        if (valueA === "Violation") return -1;
-                        if (valueB === "Violation") return 1;
-                        if (valueA === "Needs review") return -1;
-                        if (valueB === "Needs review") return 1;
-                        if (valueA === "Recommendation") return -1;
-                        if (valueB === "Recommendation") return 1;
-                        return 0;
-                    });
-                    // let passResults = [];
-                    let remainResults = [];
-                    let counts = {
-                        "Violation": 0,
-                        "Needs review": 0,
-                        "Recommendation": 0,
-                        "Pass": 0,
-                        total: 0
-                    };
-                    let xpaths : string[] = report.results.map((result) => result.path.dom);                    
-                    report.testedUniqueElements = Array.from(new Set(xpaths)).length;
-                    for (const result of report.results) {
-                        let sing = UtilIssue.valueToStringSingular(result.value);
-                        ++counts[sing as eLevel];
-                        ++counts.total;
-                        if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
-                            // passResults.push(result);
-                        } else {
-                            remainResults.push(result);
-                        }
-                    }
-                    report.results = remainResults;
-                    report.counts = counts;
-                }
-
-                getDevtoolsController(false, "remote", senderTabId).setReport(report);
-            })();
-            return {};
         });
     }
     
@@ -244,21 +96,6 @@ class BackgroundController extends Controller {
         });
     }
 
-    // private async isEngineLoaded(tabId: number) : Promise<boolean> {
-    //     return await new Promise((resolve, reject) => {
-    //         myExecuteScript({
-    //             target: { tabId: tabId, frameIds: [0] },
-    //             func: () => {
-    //                 return(typeof (window as any).aceIBMa);
-    //             }
-    //         }, function (res: any) {
-    //             if (chrome.runtime.lastError) {
-    //                 reject(chrome.runtime.lastError.message);
-    //             }
-    //             resolve(res[0].result !== "undefined");
-    //         })
-    //     });
-    // }
 
     public async addTabChangeListener(listener: ListenerType<TabChangeType>) {
         this.addEventListener(listener, `BG_onTabUpdate`);
@@ -297,11 +134,168 @@ class BackgroundController extends Controller {
         });
     }
 
+    ///// Settings related functions /////////////////////////////////////////
+    
+    /**
+     * Get settings for the extension
+     */
+    public async getSettings() : Promise<ISettings> {
+        let myThis = this;
+        let retVal = (await this.hook("getSettings", null, async () => {
+            let retVal = await new Promise<ISettings>((resolve, _reject) => {
+                chrome.storage.local.get("OPTIONS", async function (result: { OPTIONS?: ISettings}) {
+                    let retSett = await myThis.validateSettings(result.OPTIONS);
+                    resolve(retSett);
+                });
+            })
+            return retVal;
+        }))!;
+        return retVal;
+    }
+
+    /**
+     * Set settings for the extension
+     */
+    public async setSettings(settings: ISettings) : Promise<ISettings> {
+        return this.hook("setSettings", settings, async () => {
+            await new Promise<ISettings>((resolve, _reject) => {
+                chrome.storage.local.set({ "OPTIONS": settings }, async function () {
+                    resolve(settings!);
+                });
+            });
+            this.notifyEventListeners("BG_onSettings", -1, settings);
+            return settings;
+        });
+    }
+
+    public async addSettingsListener(listener: ListenerType<ISettings>) {
+        this.addEventListener(listener, `BG_onSettings`);
+    }
+
+    /**
+     * Get the archive definitions
+     */
+    public async getArchives() : Promise<IArchiveDefinition[]> {
+        return this.hook("getArchives", null, async () => {
+            return EngineCache.getArchives();
+        });
+    }
+
+    /**
+     * Get the rulesets for the currently loaded engine
+     */
+    public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
+        return this.hook("getRulesets", senderTabId, async () => {
+            await this.initTab(senderTabId!);
+            // let isLoaded = await this.isEngineLoaded(senderTabId);
+            // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
+            return await myExecuteScript2(senderTabId, () => {
+                let checker = new (<any>window).aceIBMa.Checker();
+                return checker.rulesets;
+            });
+        });
+    }
+
     public async getArchiveDefForVersion(version: string) {
         return this.hook("getArchiveDefForVersion", version, async () => {
             return EngineCache.getArchiveDefinitionByVersion(version);
         });
     }
+    ///// Scan related functions /////////////////////////////////////////
+
+    public async requestScan(senderTabId: number) {
+        return this.hook("requestScan", senderTabId, async () => {
+            getDevtoolsController(false, "remote", senderTabId).setScanningState("initializing");
+            await this.initTab(senderTabId!);
+            // We want this to execute after the message returns
+            (async () => {
+                let settings = await this.getSettings();
+                getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
+                let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
+                    let checker = new (<any>window).aceIBMa.Checker();    
+                    return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
+                        try {
+                            for (const result of report.results) {
+                                if (!(result.value[1] === "PASS" && result.value[0] !== "INFORMATION")) {
+                                    // Save all of this for backward compatibility
+                                    let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
+                                    let version = settings.selected_archive.version || "latest";
+                                    if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                                        engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                                    } else {
+                                        engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
+                                        if (engineHelp.includes("//able.ibm.com/")) {
+                                            engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
+                                        }
+                                    }
+                                    let minIssue = {
+                                        message: result.message,
+                                        snippet: result.snippet,
+                                        value: result.value,
+                                        reasonId: result.reasonId,
+                                        ruleId: result.ruleId,
+                                        messageArgs: result.messageArgs
+                                    };
+                                    result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
+                                }
+                            }
+                            return report;
+                        } catch (err) {
+                            console.error(err);
+                            return null;
+                        }
+                    });
+                }, [settings]);
+                getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
+                if (report) {
+                    for (const result of report.results) {
+                        if (result.ruleTime > 50) {
+                            console.info(`[PERF: ${result.ruleId}] ${result.ruleTime}`);
+                        }
+                    }
+                    report.results.sort((resultA, resultB) => {
+                        let valueA = UtilIssue.valueToStringSingular(resultA.value);
+                        let valueB = UtilIssue.valueToStringSingular(resultB.value);
+                        if (valueA === valueB) return 0;
+                        if (valueA === "Violation") return -1;
+                        if (valueB === "Violation") return 1;
+                        if (valueA === "Needs review") return -1;
+                        if (valueB === "Needs review") return 1;
+                        if (valueA === "Recommendation") return -1;
+                        if (valueB === "Recommendation") return 1;
+                        return 0;
+                    });
+                    // let passResults = [];
+                    let remainResults = [];
+                    let counts = {
+                        "Violation": 0,
+                        "Needs review": 0,
+                        "Recommendation": 0,
+                        "Pass": 0,
+                        total: 0
+                    };
+                    let xpaths : string[] = report.results.map((result) => result.path.dom);                    
+                    report.testedUniqueElements = Array.from(new Set(xpaths)).length;
+                    for (const result of report.results) {
+                        let sing = UtilIssue.valueToStringSingular(result.value);
+                        ++counts[sing as eLevel];
+                        ++counts.total;
+                        if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
+                            // passResults.push(result);
+                        } else {
+                            remainResults.push(result);
+                        }
+                    }
+                    report.results = remainResults;
+                    report.counts = counts;
+                }
+                getDevtoolsController(false, "remote", senderTabId).setReport(report);
+                getDevtoolsController(false, "remote", senderTabId).setScanningState("idle");
+            })();
+            return {};
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
