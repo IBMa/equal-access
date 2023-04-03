@@ -17,6 +17,8 @@ export class UtilKCM {
                 result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
                 result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
                 result.ruleId === "RPT_Elem_EventMouseAndKey" ||
+                result.ruleId === "iframe_interactive_tabbable" ||
+                result.ruleId === "element_scrollable_tabbable" ||
                 // 2.4.3 Focus Order
                 result.ruleId === "IBMA_Focus_MultiTab" ||
                 result.ruleId === "IBMA_Focus_Tabbable" ||
