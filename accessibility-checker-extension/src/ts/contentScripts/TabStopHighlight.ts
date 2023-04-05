@@ -14,6 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
+import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
 import XpathUtils from "./XpathUtils";
 
@@ -23,7 +24,7 @@ export default class TabStopHighlight {
     //       So we need to differentiate between regular circles and circles with errors.
     //       The number text inside the circle (doesn't matter if error or not) 
     //       will be normal if not highlighting, bold if highlight
-    public static handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
+    public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
         // console.log("**** Function: TabStopHighlight.handleTabHighlight ****");
         let elementXpath = "";
         
@@ -262,8 +263,9 @@ export default class TabStopHighlight {
                     circleText?.classList.remove("noHighlightSVGText");
                     circleText?.classList.add("highlightSVGText");
                     console.log("circle highlighted = ",circle);
-                    let devtoolsController = getDevtoolsController();
-                    devtoolsController.inspectPath(elementXpath, element);
+                    let tabId = await getBGController().getTabId();
+                    let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                    await devtoolsController.inspectPath(elementXpath, element);
                 } else {
                     console.log("No circle to highlight = ",circle);
                 }
@@ -275,8 +277,9 @@ export default class TabStopHighlight {
                     errorCircleText?.classList.remove("noHighlightSVGText");
                     errorCircleText?.classList.add("highlightSVGText");
                     console.log("errorCircle highlighted = ",errorCircle);
-                    let devtoolsController = getDevtoolsController();
-                    devtoolsController.inspectPath(elementXpath, element);
+                    let tabId = await getBGController().getTabId();
+                    let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                    await devtoolsController.inspectPath(elementXpath, element);
                 } else {
                     console.log("No errorCircle to highlight = ",circle);
                 }
