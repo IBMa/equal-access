@@ -102,7 +102,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     </div>
                 </Column>
                 <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                    <Theme theme="g10" style={{ width: "calc(100% - 1rem", padding: "0rem", height: "100%" }}>
+                    <Theme theme={BrowserDetection.isDarkMode()?"g10":"g10"} style={{ width: "calc(100% - 1rem", padding: "0rem", height: "100%" }}>
                         {secondaryPanel}
                     </Theme>
                 </Column>

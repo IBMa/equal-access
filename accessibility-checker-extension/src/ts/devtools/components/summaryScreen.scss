@@ -16,7 +16,6 @@
 
     .summaryTitleDetail {
         @include type-style('helper-text-01');
-        color: #000000;
     }
 
     .reportButton {
@@ -50,12 +49,10 @@
 
     .tile-description {
         @include type-style('helper-text-01');
-        color: #000000;
     }
     
     .tile-description2 {
         @include type-style('helper-text-01');
-        color: #000000;
     }
 
     .score-tile {
