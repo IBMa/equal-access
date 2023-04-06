@@ -97,7 +97,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             }
             if (elem === null) return;
         }
-
+        
         let style = win.getComputedStyle(elem);
         
         // JCH clip INFO:
@@ -209,9 +209,9 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             // Corner case where item is hidden (accessibility hiding technique)
             return null;
         }
-
+        console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', text='+childStr.trim());
         // First determine the color contrast ratio
-        let colorCombo = ColorUtil.ColorCombo(elem);
+        let colorCombo = ColorUtil.ColorCombo(elem); console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', text='+childStr.trim()+", colorCombo="+JSON.stringify(colorCombo));
         if (colorCombo === null) {
             //some exception occurred, or not able to get color combo for some reason
             console.log("unable to get color combo for element: " + elem.nodeName);
@@ -232,7 +232,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
-
+        console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', fg='+JSON.stringify(fg)+", bg="+JSON.stringify(bg) +", ratio="+ ratio +", weight="+ weight +", size="+ size +", passed="+ passed  +", hasBackground="+ hasBackground +", isDisabled="+ isDisabled);
         if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
