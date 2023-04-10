@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/accessibility-checker-engine@next/ace.js"></script>
+    <script type="text/javascript">
+        function go() {
+            let checker = new ace.Checker();
+            checker.check(document).then((result) => {
+                console.log(result);
+            })
+        }
+    </script>
+  </head>
+  <body onload="go()">
+    <main>
+      <h1>Test page</h1>
+      <div title="one">Test</div>
+      <table id="table1" role="presentation">
+        <tbody>
+            <tr role="presentation">
+                <td role="presentation">
+                    <table id="table2" role="presentation">
+                        <tbody>
+                            <tr role="presentation">
+                                <td role="presentation">
+                                    <table id="table3" role="presentation">
+                                        <tbody>
+                                            <tr role="presentation">
+                                                <td role="presentation">
+                                                    <table id="table4" role="presentation">
+                                                        <tbody>
+                                                            <tr role="presentation">
+                                                                <td role="presentation">
+                                                                    <div>
+                                                                        <table id="table5" role="presentation">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <table id="table6" role="presentation">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td>
+                                                                                                        <table id="table7" role="presentation">
+                                                                                                            <tbody>
+                                                                                                                <tr role="presentation">
+                                                                                                                    <td></td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["Rpt_Aria_RequiredParent_Native_Host_Sematics"],
+        results: []
+      };
+    </script>
+  </body>
+</html>
