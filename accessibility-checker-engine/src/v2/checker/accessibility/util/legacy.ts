@@ -791,32 +791,43 @@ export class RPTUtil {
      */
     public static getImplicitRole(ele) : string[] {
         if (!ele || ele.nodeType !== 1) return [];
-        let tagProperty = RPTUtil.getElementAriaProperty(ele);
-        // check if there are any implicit roles for this element.
-        if (tagProperty && tagProperty.implicitRole) {
-            if (tagProperty.implicitRole.includes("generic")) {
-                // the 'generic' role is only allowed if a valid aria attribute exists.
-                let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
-                if (domAriaAttributes.length === 0) return [];
+        let implicitRoles : string[] = getCache(ele, "RPTUtil_ImplicitRole", null);
+        if (!implicitRoles) {
+            let tagProperty = RPTUtil.getElementAriaProperty(ele);
+            // check if there are any implicit roles for this element.
+            if (tagProperty && tagProperty.implicitRole) {
+                if (tagProperty.implicitRole.includes("generic")) {
+                    // the 'generic' role is only allowed if a valid aria attribute exists.
+                    let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
+                    if (domAriaAttributes.length === 0) {
+                        setCache(ele, "RPTUtil_ImplicitRole", []);
+                        return [];
+                    }    
+                    let roleAttributes = [];
+                    let pattern = ARIADefinitions.designPatterns['generic'];
+                    if (pattern.reqProps && pattern.reqProps.length > 0)
+                        RPTUtil.concatUniqueArrayItemList(pattern.reqProps, roleAttributes);
+                    
+                    if (tagProperty.globalAriaAttributesValid)
+                        RPTUtil.concatUniqueArrayItemList(ARIADefinitions.globalProperties, roleAttributes);
+                    
+                    if (pattern.deprecatedProps && pattern.deprecatedProps.length > 0)
+                        RPTUtil.reduceArrayItemList(pattern.deprecatedProps, roleAttributes); 
 
-                let roleAttributes = [];
-                let pattern = ARIADefinitions.designPatterns['generic'];
-                if (pattern.reqProps && pattern.reqProps.length > 0)
-                    RPTUtil.concatUniqueArrayItemList(pattern.reqProps, roleAttributes);
-                
-                if (tagProperty.globalAriaAttributesValid)
-                    RPTUtil.concatUniqueArrayItemList(ARIADefinitions.globalProperties, roleAttributes);
-                
-                if (pattern.deprecatedProps && pattern.deprecatedProps.length > 0)
-                    RPTUtil.reduceArrayItemList(pattern.deprecatedProps, roleAttributes); 
-
-                // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
-                if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
-                    return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
+                    // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
+                    if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr))) {
+                        let implicit = RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole);
+                        setCache(ele, "RPTUtil_ImplicitRole", implicit);
+                        return implicit;
+                    }    
+                }
+                setCache(ele, "RPTUtil_ImplicitRole", tagProperty.implicitRole);
+                return tagProperty.implicitRole;   
             }
-            return tagProperty.implicitRole;   
-        }
-        return [];
+            setCache(ele, "RPTUtil_ImplicitRole", []);
+            return [];
+        }    
+        return implicitRoles;
     }
 
     /**
