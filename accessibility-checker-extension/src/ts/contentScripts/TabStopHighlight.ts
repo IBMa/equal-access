@@ -28,7 +28,7 @@ export default class TabStopHighlight {
     //       So we need to differentiate between regular circles and circles with errors.
     //       The number text inside the circle (doesn't matter if error or not) 
     //       will be normal if not highlighting, bold if highlight
-    public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IReport) { // doc type is main, iframe, shadowdom, click
+    public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IReport, regularTabstops: IReport) { // doc type is main, iframe, shadowdom, click
         console.log("**** Function: TabStopHighlight.handleTabHighlight ****");
         let elementXpath = "";
         console.log("tabStopsErrors = ", tabStopsErrors);
@@ -270,12 +270,19 @@ export default class TabStopHighlight {
                     circleText?.classList.remove("noHighlightSVGText");
                     circleText?.classList.add("highlightSVGText");
                     console.log("circle highlighted = ",circle);
+                    console.log("Highlight Regular Circle, elementXpath = ", elementXpath);
+
+                    let issue = this.getIssueByXpath(elementXpath,regularTabstops);
+                    console.log("issue = ", issue);
+
                     let tabId = await getBGController().getTabId();
                     let devtoolsController = getDevtoolsController(true, "remote", tabId);
-                    console.log("Highlight Regular Circle, elementXpath = ", elementXpath);
-                    this.getIssueByXpath(elementXpath,tabStopsErrors);
-                    // console.log("issue = ", issue);
-                    await devtoolsController.setSelectedIssue(tabStopsErrors.results[0]);
+                    await devtoolsController.setSelectedIssue(issue);
+                    if (await devtoolsController.getActivePanel() === "elements") {
+                        await devtoolsController.inspectPath(elementXpath,element);
+                    } else {
+                        await devtoolsController.setSelectedElementPath(issue.path.dom);
+                    }
                 } else {
                     console.log("No circle to highlight = ",circle);
                 }
