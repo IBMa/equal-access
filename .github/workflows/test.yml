@@ -39,6 +39,45 @@ jobs:
     - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
 
+  act-results:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: accessibility-checker-engine
+    - run: npm install
+      working-directory: report-react
+    - run: npm run build:all
+      working-directory: accessibility-checker-engine
+    - run: npm install
+      working-directory: rule-server
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
+    - run: npm install
+      working-directory: accessibility-checker
+    - run: npm run build
+      working-directory: accessibility-checker
+    - run: npm test
+      working-directory: accessibility-checker/test-act-w3
+    - name: Upload packed extension
+      uses: actions/upload-artifact@v1
+      with:
+        name: ACT Text Results
+        path: accessibility-checker/test-act-w3/act-report-v2.txt
+        
 ###############################################################################
 # Node basic test Windows
 ####
