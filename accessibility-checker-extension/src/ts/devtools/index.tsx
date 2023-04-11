@@ -19,15 +19,27 @@ import { getDevtoolsController } from "./devtoolsController";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
 
 chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker (new)"+localStr,
-    function(sidebar) {
+    function(newPanel) {
         //sidebar initialization code here
-        sidebar.setPage("devtoolsElements.html");
+        newPanel.setPage("devtoolsElements.html");
+        newPanel.onShown.addListener(() => {
+            devtoolsController.setActivePanel("elements");
+        });
+        newPanel.onHidden.addListener(() => {
+            devtoolsController.setActivePanel(null);
+        });
     }
 );
 
 chrome.devtools.panels.create("Accessibility Assessment"+localStr, "", "devtoolsMain.html", 
-    function(_sidebar) {
+    function(newPanel) {
+        newPanel.onShown.addListener(() => {
+            devtoolsController.setActivePanel("main");
+        });
+        newPanel.onHidden.addListener(() => {
+            devtoolsController.setActivePanel(null);
+        });
     }
 );
 
-getDevtoolsController(false, "local");
+let devtoolsController = getDevtoolsController(false, "local");

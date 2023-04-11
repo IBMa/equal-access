@@ -33,7 +33,10 @@ let devtoolsState : {
     viewState: ViewState
     focusedMode: boolean
     scanningState: ScanningState
+    activePanel: ePanel | null
 } | null = null;
+
+export type ePanel = "main" | "elements";
 
 export interface ViewState {
     kcm: boolean
@@ -597,6 +600,19 @@ export class DevtoolsController extends Controller {
         this.addEventListener(listener, `DT_onFocusMode`);
     }
 
+    public async setActivePanel(newPanel: ePanel | null) {
+        return this.hook("setActivePanel", newPanel, async () => {
+            console.log("setActivePanel", newPanel);
+            devtoolsState!.activePanel = newPanel;
+        });
+    }
+
+    public async getActivePanel() : Promise<ePanel | null> {
+        return this.hook("getActivePanel", null, async () => {
+            return devtoolsState!.activePanel;
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -615,7 +631,8 @@ export class DevtoolsController extends Controller {
                 viewState: {
                     kcm: false
                 },
-                focusedMode: false
+                focusedMode: false,
+                activePanel: null
             };
 
             const listenMsgs : { 
@@ -641,7 +658,9 @@ export class DevtoolsController extends Controller {
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
                 "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content),
                 "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content),
-                "DT_setScanningState": async(msgBody) => self.setScanningState(msgBody.content)
+                "DT_setScanningState": async(msgBody) => self.setScanningState(msgBody.content),
+                "DT_setActivePanel": async(msgBody) => self.setActivePanel(msgBody.content),
+                "DT_getActivePanel": async() => self.getActivePanel()
             }
 
             // Hook the above definitions

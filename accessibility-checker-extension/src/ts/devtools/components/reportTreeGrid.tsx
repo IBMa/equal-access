@@ -29,9 +29,8 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { getDevtoolsController, ViewState } from '../devtoolsController';
+import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
-import { ePanel } from '../devToolsApp';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 export interface IRowGroup {

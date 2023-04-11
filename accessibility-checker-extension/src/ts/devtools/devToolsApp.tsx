@@ -40,8 +40,7 @@ import HelpScreen from "./components/helpScreen";
 import StoredScreen from './components/storedScreen';
 import SummaryScreen from './components/summaryScreen';
 import KCMOverviewScreen from './components/kcmOverviewScreen';
-
-export type ePanel = "main" | "elements";
+import { ePanel } from './devtoolsController';
 
 interface DevToolsAppProps {
     panel: ePanel;
