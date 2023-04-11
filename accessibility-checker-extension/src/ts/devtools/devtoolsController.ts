@@ -327,6 +327,7 @@ export class DevtoolsController extends Controller {
      * Set selected element path
      */
     public async setSelectedElementPath(path: string | null, fromElemChange?: boolean) : Promise<void> {
+        console.log("setSelectedElementPath path = ", path);
         return this.hook("setSelectedElementPath", { path, fromElemChange }, async () => {
             devtoolsState!.lastElementPath = path;
             if (fromElemChange === true) {
@@ -383,12 +384,17 @@ export class DevtoolsController extends Controller {
      * @param focusElem If specified, we will focus this element after the path is inspected
      */
     public async inspectPath(path: string, focusElem?: HTMLElement | null) {
+        console.log("Function: inspectPath");
+        console.log("path = ", path);
+        console.log("focusElem = ", focusElem);
         await this.hook("inspectPath", path, async () => {
             // We've already selected that...
             // let curSelectedPath = await this.getSelectedElementPath();
             // if (path === curSelectedPath) return;
             let script = `
                 function lookup(doc, xpath) {
+                    console.log("Function: lookup");
+                    console.log("doc = ", doc);
                     if (doc.nodeType === 11) {
                         let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
                         let element = doc.querySelector(selector);
@@ -408,10 +414,13 @@ export class DevtoolsController extends Controller {
                         } else {
                             return null;
                         }
+                        console.log("element = ", element);
                     }
                 }
                 function selectPath(srcPath) {
+                    console.log("Function: selectPath");
                     let doc = document;
+                    console.log("doc = ", doc);
                     let element = null;
                     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
                         if (srcPath.includes("iframe")) {
@@ -440,10 +449,13 @@ export class DevtoolsController extends Controller {
                         element = lookup(doc, srcPath) || element;
                     }
                     if (element) {
+                        console.log("inspect element = ", element);
                         inspect(element);
                         let elementRect = element.getBoundingClientRect();
                         let absoluteElementTop = elementRect.top + window.pageYOffset;
                         let middle = absoluteElementTop - 100;
+                        console.log("element.ownerDocument = ", element.ownerDocument);
+                        // this is to scroll the element on the web page into view
                         element.ownerDocument.defaultView.scrollTo({
                             top: middle,
                             behavior: 'smooth'
@@ -457,6 +469,7 @@ export class DevtoolsController extends Controller {
             await new Promise<void>((resolve, _reject) => {
                 this.programmaticInspect = true;
                 chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
+                    console.log("result = ",result);
                     if (isException) {
                         console.error(isException);
                     }
