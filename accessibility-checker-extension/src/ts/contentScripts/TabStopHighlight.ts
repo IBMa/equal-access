@@ -16,7 +16,6 @@
 
 import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { getDevtoolsAppController } from '../devtools/devtoolsAppController';
 import { 
     IIssue, 
     IReport } from "../interfaces/interfaces";
@@ -295,12 +294,9 @@ export default class TabStopHighlight {
 
                     let tabId = await getBGController().getTabId();
                     let devtoolsController = getDevtoolsController(true, "remote", tabId);
-                    let devtoolsAppController = getDevtoolsAppController();
-
                     await devtoolsController.setSelectedIssue(issue);
                     await devtoolsController.setSelectedElementPath(issue.path.dom);
-                    await devtoolsAppController.setSecondaryView("help");
-                    // await devtoolsController.inspectPath(elementXpath,element);
+                    await devtoolsController.inspectPath(elementXpath,element);
                 } else {
                     console.log("No errorCircle to highlight = ",circle);
                 }

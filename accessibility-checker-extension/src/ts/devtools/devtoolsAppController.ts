@@ -33,6 +33,11 @@ export class DevtoolsAppController {
     secondaryCloseQuerySelect: string = "";
     secondaryViewListeners: Array<(view: eSecondaryView) => void> = [];
     secondaryOpenListeners: Array<(open: boolean) => void> = [];
+    constructor() {
+        getDevtoolsController().addSelectedIssueListener(async () => {
+            this.setSecondaryView("help");
+        });
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
