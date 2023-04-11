@@ -211,6 +211,7 @@ class BackgroundController extends Controller {
             (async () => {
                 let settings = await this.getSettings();
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
+                console.info(`[INFO]: Scanning using archive ${settings.selected_archive.id} and guideline ${settings.selected_ruleset.id}`);
                 let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
                     let checker = new (<any>window).aceIBMa.Checker();    
                     return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
@@ -246,6 +247,7 @@ class BackgroundController extends Controller {
                         }
                     });
                 }, [settings]);
+                console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
                 if (report) {
                     for (const result of report.results) {

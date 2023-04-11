@@ -560,6 +560,8 @@ export class DevtoolsController extends Controller {
         let archives = await (await getBGController()).getArchives();
         if (scanType === "current") {
             MultiScanReport.multiScanXlsxDownload([devtoolsState?.lastReportMeta!], archives);
+        } else if (scanType === "all") {
+            MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!, archives);
         } else {
             MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!.filter(report => report.isSelected)!, archives);
         }

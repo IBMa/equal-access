@@ -97,6 +97,10 @@
         .gridDataCell {
             text-indent: -1.25rem;
             padding-left: 3.75rem;
+
+            .cds--link {
+                display: inline;
+            }
         }
 
     }
