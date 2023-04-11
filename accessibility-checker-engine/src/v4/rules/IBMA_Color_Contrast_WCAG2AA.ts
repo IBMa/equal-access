@@ -250,22 +250,22 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             "hasBackground": hasBackground,
             "isDisabled": isDisabled
         });
-        if (hasBackground) {
-            // Allow other color rule to fire if we have a background
-            return null;
-        }
-
+        
         // If element or parent is disabled, this rule does not apply (but may be 3:1 in future)
         if (!passed && isDisabled) {
             passed = true;
         }
-        //return new ValidationResult(passed, [ruleContext], '', '', [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
         if (!passed) {
-            if (fg.toHex() === bg.toHex()) {
-                return RulePotential("Potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+            if (hasBackground) {
+                // fire potential since a text on an image or gradient can still viewable, depending on the text location on the gradient or image
+                return RulePotential("Potential_graphic_background", [ratio.toFixed(2), size, weight]);;
             } else {
-                return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
-            }
+                if (fg.toHex() === bg.toHex()) {
+                    return RulePotential("Potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                } else {
+                    return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                }
+            }    
         } else {
             return RulePass("Pass_0", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
         }
