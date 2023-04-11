@@ -277,11 +277,11 @@ export default class TabStopHighlight {
 
                     let tabId = await getBGController().getTabId();
                     let devtoolsController = getDevtoolsController(true, "remote", tabId);
-                    await devtoolsController.setSelectedIssue(issue);
+                    // await devtoolsController.setSelectedIssue(issue);
                     if (await devtoolsController.getActivePanel() === "elements") {
                         await devtoolsController.inspectPath(elementXpath,element);
                     } else {
-                        await devtoolsController.setSelectedElementPath(issue.path.dom);
+                        // await devtoolsController.setSelectedElementPath(issue.path.dom);
                     }
                 } else {
                     console.log("No circle to highlight = ",circle);
