@@ -209,11 +209,6 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         } 
     }
     
-    // console.log("----------------");
-    // console.log("regularTabstops.length = ",regularTabstops.length);
-    // console.log("tabStopsErrors.length = ",tabStopsErrors.length);
-    // console.log("----------------");
-    
     // JCH - this allows the web to scroll to the top before drawing occurs
     //       we get the lines and outlines (both booleans) from settings
     goToTop().then(function() {
@@ -239,7 +234,6 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
     window.addEventListener('keyup', function(event:any) {
         // console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
-            console.log("CALL FUNCTION handleTabHighlight for main doc");
             TabStopHighlight.handleTabHighlight(event, document, "main", "",tabStopsErrors,regularTabstops);
         }
     });

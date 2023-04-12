@@ -37,7 +37,6 @@ interface ReportProps {
 export class ReportRoles extends React.Component<ReportProps> {
     render() {
         let rowData : IRowGroup[] | null = null;
-        console.log("ReportRoles roleData 1 = ", rowData);
         if (this.props.issues) {
             rowData = [];
             for (const result of this.props.issues) {
@@ -60,7 +59,6 @@ export class ReportRoles extends React.Component<ReportProps> {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
-        console.log("ReportRoles roleData 2 = ", rowData);
         return <ReportTreeGrid 
             unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
