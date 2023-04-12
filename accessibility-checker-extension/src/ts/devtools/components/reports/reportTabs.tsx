@@ -42,7 +42,6 @@ type RowProps = IRowGroup & {
 export class ReportTabs extends React.Component<ReportProps> {
     render() {
         let rowData : RowProps[] | null = null;
-        console.log("ReportTabs roleData 1 = ", rowData);
         if (this.props.issues && this.props.tabbable) {
             rowData = [];
             for (const result of this.props.issues) {
