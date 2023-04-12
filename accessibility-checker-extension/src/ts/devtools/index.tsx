@@ -17,8 +17,8 @@
 import Config from "../util/config";
 import { getDevtoolsController } from "./devtoolsController";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
-
-chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker (new)"+localStr,
+let devStr = (Config.workspace && Config.workspace === "development" && " (dev)") || "";
+chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+devStr+localStr,
     function(newPanel) {
         //sidebar initialization code here
         newPanel.setPage("devtoolsElements.html");
@@ -31,7 +31,7 @@ chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker (new)"+
     }
 );
 
-chrome.devtools.panels.create("Accessibility Assessment"+localStr, "", "devtoolsMain.html", 
+chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "devtoolsMain.html", 
     function(newPanel) {
         newPanel.onShown.addListener(() => {
             devtoolsController.setActivePanel("main");
