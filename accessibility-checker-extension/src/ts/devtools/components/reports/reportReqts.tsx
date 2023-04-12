@@ -18,11 +18,11 @@ import * as React from 'react';
 import { IIssue, IRuleset } from '../../../interfaces/interfaces';
 import { ReportTreeGrid, IRowGroup } from '../reportTreeGrid';
 import { UtilIssue } from '../../../util/UtilIssue';
-import { ePanel } from '../../devToolsApp';
 
 import "../reportSection.scss";
 import { getBGController } from '../../../background/backgroundController';
 import { getTabId } from '../../../util/tabId';
+import { ePanel } from '../../devtoolsController';
 
 interface ReportProps {
     unfilteredCount: number

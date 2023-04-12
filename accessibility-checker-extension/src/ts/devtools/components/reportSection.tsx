@@ -15,11 +15,10 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { getDevtoolsController, ViewState } from '../devtoolsController';
+import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { IIssue, IReport } from '../../interfaces/interfaces';
 import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
-import { ePanel } from '../devToolsApp';
 import {
     Button,
     Checkbox,

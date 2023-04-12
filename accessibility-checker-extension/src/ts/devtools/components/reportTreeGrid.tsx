@@ -29,9 +29,8 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { getDevtoolsController, ViewState } from '../devtoolsController';
+import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
-import { ePanel } from '../devToolsApp';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 export interface IRowGroup {
@@ -88,6 +87,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     treeGridRef = React.createRef<HTMLDivElement>();
 
     async componentDidMount(): Promise<void> {
+        console.log("componentDidMount");
         ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
             for (const group of this.props.rowData!) {
                 for (const groupIssue of group.children) {
@@ -116,10 +116,20 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
+        console.log("componentDidUpdate");
+        console.log("this.state.tabRowId = ", this.state.tabRowId);
+        console.log("prevState.tabRowId = ", prevState.tabRowId);
+        console.log("document = ", document);
+        console.log("prevProps.rowData = ", prevProps.rowData);
+        console.log("this.props.rowData = ", this.props.rowData)
+        console.log("scroll 1 test = ", prevProps.rowData && this.props.rowData && JSON.stringify(prevProps.rowData) !== JSON.stringify(this.props.rowData));
+        console.log("scroll 2 test = ", prevState.tabRowId !== this.state.tabRowId && document);
         if (!prevProps.rowData && !!this.props.rowData) {
+            console.log("First time creating the report tree");
             // First time creating the report tree
             this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
         } else if (prevProps.rowData && this.props.rowData && JSON.stringify(prevProps.rowData) !== JSON.stringify(this.props.rowData)) {
+            console.log("Report tree changed");
             // Report tree changed
             let found = false;
             if (this.state.tabRowId) {
@@ -131,6 +141,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             setTimeout(async () => {
                                 await this.onRow(group, issue);
                                 await getDevtoolsController().setFocusMode(false);
+                                console.log("Scroll 1");
                                 this.scrollToRowId(this.state.tabRowId);
                             }, 0);
                             break;
@@ -143,14 +154,17 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
             }
         } else if (prevState.tabRowId !== this.state.tabRowId && document) {
+            console.log("Report tree is the same, but the row selected changed so scroll into view");
             // Report tree is the same, but the row changed
             if (this.props.rowData && this.props.rowData.length > 0) {
+                console.log("Scroll 2");
                 this.scrollToRowId(this.state.tabRowId);
             }
         }
     }
 
     scrollToRowId(rowId: string) {
+        console.log("Function: scrollToRowId, rowId = ",rowId);
         let elem = document.getElementById(rowId);
         if (elem) {
             setTimeout(() => {
@@ -196,7 +210,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
         this.setState({ tabRowId: ReportTreeGrid.getRowId(_group, issue) });
-        ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
     }
 
     onKeyDown(evt: React.KeyboardEvent) {
@@ -455,11 +468,15 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 No issues detected for the chosen filter criteria. To see all issues, <Link
                     inline={true}
                     onClick={() => {
+                        console.log("TreeGrid onClick 1");
                         getDevtoolsController().setFocusMode(false);
                     }}
                 >turn off focus view</Link> and <Link
                     inline={true}
-                    onClick={this.props.onResetFilters}
+                    onClick={() => {
+                        console.log("TreeGrid onClick 2");
+                        this.props.onResetFilters;
+                    }}
                 >select all issue types</Link>
             </div>
         } else {
@@ -521,6 +538,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         focused: group.id === this.state.tabRowId
                     }} 
                     onClick={() => {
+                        console.log("TreeGrid onClick 3");
                         this.onGroup(group.id);
                     }}
                 >
@@ -582,6 +600,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 focused
                             }} 
                             onClick={() => {
+                                console.log("TreeGrid onClick 4");
                                 this.onRow(group, thisIssue);
                             }}
                         >
@@ -592,6 +611,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                         role="link"
                                         tabIndex={focused? 0 : -1}
                                         onClick={() => {
+                                            console.log("TreeGrid onClick 5");
                                             this.onRow(group, thisIssue);
                                             ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
                                         }}

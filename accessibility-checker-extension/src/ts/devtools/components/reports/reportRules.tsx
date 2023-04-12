@@ -18,8 +18,8 @@ import * as React from 'react';
 import { IIssue, IReport } from '../../../interfaces/interfaces';
 import { ReportTreeGrid, IRowGroup } from '../reportTreeGrid';
 import { UtilIssue } from '../../../util/UtilIssue';
-import { ePanel } from '../../devToolsApp';
 import "../reportSection.scss";
+import { ePanel } from '../../devtoolsController';
 
 interface ReportProps {
     unfilteredCount: number

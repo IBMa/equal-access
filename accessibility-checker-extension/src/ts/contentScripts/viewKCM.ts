@@ -232,7 +232,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         // console.log("-------------------1-------------------");
         // console.log("main doc left mouse click catcher");
         // console.log("event.target = ",event.target);
-        TabStopHighlight.handleTabHighlight(event,document,"click","");
+        TabStopHighlight.handleTabHighlight(event,document,"click","",tabStopsErrors,regularTabstops);
     });
 
     // Tab key listener for main window
@@ -240,7 +240,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         // console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
             console.log("CALL FUNCTION handleTabHighlight for main doc");
-            TabStopHighlight.handleTabHighlight(event, document, "main", "");
+            TabStopHighlight.handleTabHighlight(event, document, "main", "",tabStopsErrors,regularTabstops);
         }
     });
 
@@ -257,7 +257,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
                     // console.log("iframe key catcher");
                     let iframePath:string = DomPathUtils.getDomPathForElement(frames[i]); // since iframes in main doc
                     // console.log("iframePath = ",iframePath);
-                    TabStopHighlight.handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath);
+                    TabStopHighlight.handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath,tabStopsErrors,regularTabstops);
                 });
             } else {
                 console.log("iframe cross-origin");
@@ -282,7 +282,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
                 let focusElementPath = DomPathUtils.getDomPathForElement(focusElement);
                 // JCH TODO 1 for the doc frag ONLY works for 1 level doc frags
                 focusElementPath = "/#document-fragment"+"["+"1"+"]"+ focusElementPath;
-                TabStopHighlight.handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath);
+                TabStopHighlight.handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath,tabStopsErrors,regularTabstops);
             })
         }
     }

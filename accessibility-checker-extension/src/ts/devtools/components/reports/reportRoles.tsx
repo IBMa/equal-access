@@ -18,8 +18,8 @@ import * as React from 'react';
 import { IIssue } from '../../../interfaces/interfaces';
 import { ReportTreeGrid, IRowGroup } from '../reportTreeGrid';
 import { UtilIssue } from '../../../util/UtilIssue';
-import { ePanel } from '../../devToolsApp';
 import "../reportSection.scss";
+import { ePanel } from '../../devtoolsController';
 
 interface ReportProps {
     unfilteredCount: number
@@ -37,6 +37,7 @@ interface ReportProps {
 export class ReportRoles extends React.Component<ReportProps> {
     render() {
         let rowData : IRowGroup[] | null = null;
+        console.log("ReportRoles roleData 1 = ", rowData);
         if (this.props.issues) {
             rowData = [];
             for (const result of this.props.issues) {
@@ -59,6 +60,7 @@ export class ReportRoles extends React.Component<ReportProps> {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
+        console.log("ReportRoles roleData 2 = ", rowData);
         return <ReportTreeGrid 
             unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
