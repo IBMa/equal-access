@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import XpathUtils from "./XpathUtils";
+import DomPathUtils from "./DomPathUtils";
 import TabStopCircle from "./TabStopCircle";
 import TabStopLine from "./TabStopLine";
 import TabStopText from "./TabStopText";
@@ -26,11 +26,11 @@ export default class TabStopErrorCircles {
         // JCH - FIX drawing ? trangle if there is already a tabbable triangle
         // console.log("Function: TabStopErrorCircles.draw");
         setTimeout(() => {
-            let tabbableNodesXpaths = XpathUtils.getNodesXpaths(tabStops);
+            let tabbableNodesXpaths = DomPathUtils.issuesToDomPaths(tabStops);
             
-            let nodes = XpathUtils.getNodesXpaths(tabStopsErrors);
+            let nodes = DomPathUtils.issuesToDomPaths(tabStopsErrors);
             let nodeXpaths = nodes;
-            nodes = XpathUtils.convertXpathsToHtmlElements(nodeXpaths);
+            nodes = DomPathUtils.domPathsToElements(nodeXpaths);
             
             // console.log("tabStopsErrors = ", tabStopsErrors);
             nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent

@@ -14,24 +14,28 @@
   limitations under the License.
 *****************************************************************************/
 
-export default class XpathUtils {
-    public static convertXpathsToHtmlElements(xpaths: any) {
-        // console.log("Function: convertXpathsToHtmlElements: ")
-        let results: any = [];
+import { IIssue } from "../interfaces/interfaces";
+
+export default class DomPathUtils {
+    public static domPathsToElements(xpaths: string[]) {
+        // console.log("Function: domPathsToElements: ")
+        let results: HTMLElement[] = [];
         xpaths.map((xpath: any) => {
             // console.log("xpath ",index);
             let element;
             // console.log("xpath = ",xpath);
-            element = this.selectPath(xpath);
-            results.push(element);
+            element = this.domPathToElem(xpath);
+            if (element) {
+                results.push(element);
+            }
         });
         return results;
     }
     
-    public static getNodesXpaths(nodes: any) {
-        // console.log("Inside getNodesXpaths");
+    public static issuesToDomPaths(issues: IIssue[]) {
+        // console.log("Inside issuesToDomPaths");
         let tabXpaths: any = [];
-        nodes.map((result: any) => {
+        issues.map((result: any) => {
             if (result != null) {
                 // console.log("result.path.dom = "+result.path.dom);
                 tabXpaths.push(result.path.dom);
@@ -40,44 +44,43 @@ export default class XpathUtils {
         return tabXpaths;
     }
 
-    private static lookup(doc: any, xpath:string) {
+    private static docDomPathToElement(doc: Document | ShadowRoot, domPath:string) : HTMLElement | null {
         if (doc.nodeType === 11) { // document fragment 
-            let selector = ":host" + xpath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
+            let selector = ":host" + domPath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
             let element = doc.querySelector(selector);
-            return element;
+            return element as HTMLElement;
         } else { // regular doc type = 9
-            let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+            let nodes = (doc as Document).evaluate(domPath, doc, null, XPathResult.ANY_TYPE, null);
             let element = nodes.iterateNext();
             if (element) {
-                return element;
+                return element as HTMLElement;
             } else {
                 return null;
             }
         }
     }
 
-    // @ts-ignore
-    public static selectPath(srcPath: any) {
-        let doc = document;
+    public static domPathToElem(srcPath: string | null | undefined) {
+        let doc : Document | ShadowRoot = document;
         let element = null;
         while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
             if (srcPath.includes("iframe")) {
                 let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
-                let iframe = this.lookup(doc, parts[1]);
+                let iframe = this.docDomPathToElement(doc, parts![1]) as HTMLIFrameElement;
                 element = iframe || element;
                 if (iframe && iframe.contentDocument) {
                     doc = iframe.contentDocument;
-                    srcPath = parts[2];
+                    srcPath = parts![2];
                 } else {
                     srcPath = null;
                 }
             } else if (srcPath.includes("#document-fragment")) {
                 let parts = srcPath.match(/(.*?)\/#document-fragment\[\d+\](.*)/);
-                let fragment = this.lookup(doc, parts[1]); // get fragment which is in main document
+                let fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
                 element = fragment || element;
                 if (fragment && fragment.shadowRoot) {
                     doc = fragment.shadowRoot;
-                    srcPath = parts[2];
+                    srcPath = parts![2];
                 } else {
                     srcPath = null;
                 }
@@ -86,12 +89,12 @@ export default class XpathUtils {
             }
         }
         if (srcPath) {
-            element = this.lookup(doc, srcPath) || element;
+            element = this.docDomPathToElement(doc, srcPath) || element;
         }
         return element;
     }
 
-    public static getXPathForElement(element: any) {
+    public static getDomPathForElement(element: any) {
         const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
         const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
         return segs(element).join('/');

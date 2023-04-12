@@ -68,7 +68,7 @@ export class CommonMessaging {
                         sendResponse(resultStr);
                         return result;
                     }).catch(err => {
-                        console.error(err);
+                        console.error(message, err);
                         sendResponse(JSON.stringify({ error: err }));
                         return true;
                     });

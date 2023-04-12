@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import XpathUtils from "./XpathUtils";
+import DomPathUtils from "./DomPathUtils";
 import TabStopCircle from "./TabStopCircle";
 import TabStopLine from "./TabStopLine";
 import TabStopText from "./TabStopText";
@@ -30,9 +30,9 @@ export default class TabChainCircles {
 
         setTimeout(() => { 
             let offset = 3;
-            let nodes = XpathUtils.getNodesXpaths(tabstops);
+            let nodes = DomPathUtils.issuesToDomPaths(tabstops);
             let nodeXpaths = nodes;
-            nodes = XpathUtils.convertXpathsToHtmlElements(nodeXpaths); // tabstop HTML elements
+            nodes = DomPathUtils.domPathsToElements(nodeXpaths); // tabstop HTML elements
 
 
             /* ********************************************************

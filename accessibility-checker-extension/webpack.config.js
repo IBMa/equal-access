@@ -38,6 +38,7 @@ module.exports = {
         devtoolsMain: path.join(sourceRootPath, 'ts', 'devtools', 'indexMain.tsx'),
         devtoolsElements: path.join(sourceRootPath, 'ts', 'devtools', 'indexElements.tsx'),
         viewKCM: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewKCM.ts'),
+        viewInspect: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewInspect.ts'),
         usingAC: path.join(sourceRootPath, 'ts', 'docs', 'usingAC.tsx'),
         ...contentScripts,
         quickGuideAC: path.join(sourceRootPath, 'ts', 'docs', 'quickGuide.tsx'),

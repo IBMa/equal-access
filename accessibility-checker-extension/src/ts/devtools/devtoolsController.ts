@@ -388,7 +388,7 @@ export class DevtoolsController extends Controller {
             // let curSelectedPath = await this.getSelectedElementPath();
             // if (path === curSelectedPath) return;
             let script = `
-                function lookup(doc, xpath) {
+                function docDomPathToElement(doc, xpath) {
                     if (doc.nodeType === 11) {
                         let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
                         let element = doc.querySelector(selector);
@@ -410,13 +410,13 @@ export class DevtoolsController extends Controller {
                         }
                     }
                 }
-                function selectPath(srcPath) {
+                function domPathToElem(srcPath) {
                     let doc = document;
                     let element = null;
                     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
                         if (srcPath.includes("iframe")) {
                             let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-                            let iframe = lookup(doc, parts[1]);
+                            let iframe = docDomPathToElement(doc, parts[1]);
                             element = iframe || element;
                             if (iframe && iframe.contentDocument) {
                                 doc = iframe.contentDocument;
@@ -426,7 +426,7 @@ export class DevtoolsController extends Controller {
                             }
                         } else if (srcPath.includes("#document-fragment")) {
                             let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
-                            let fragment = lookup(doc, parts[1]);
+                            let fragment = docDomPathToElement(doc, parts[1]);
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
@@ -437,7 +437,7 @@ export class DevtoolsController extends Controller {
                         }
                     }
                     if (srcPath) {
-                        element = lookup(doc, srcPath) || element;
+                        element = docDomPathToElement(doc, srcPath) || element;
                     }
                     if (element) {
                         inspect(element);
@@ -452,7 +452,7 @@ export class DevtoolsController extends Controller {
                     }
                     return;
                 }
-                selectPath("${path}");
+                domPathToElem("${path}");
             `;
             await new Promise<void>((resolve, _reject) => {
                 this.programmaticInspect = true;

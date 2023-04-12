@@ -200,3 +200,10 @@ export interface IRuleset {
         rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
     }>
 }
+
+export type Bounds = {
+    left: number,
+    top: number,
+    width: number,
+    height: number
+}

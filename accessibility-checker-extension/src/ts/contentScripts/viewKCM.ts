@@ -21,7 +21,7 @@ import { UtilKCM } from "../util/UtilKCM";
 import TabChainCircles from "./TabChainCircles";
 import TabStopErrorCircles from "./TabStopErrorCircles";
 import TabStopHighlight from "./TabStopHighlight";
-import XpathUtils from "./XpathUtils";
+import DomPathUtils from "./DomPathUtils";
 
 let bgController = getBGController();
 let myKCMState = false;
@@ -255,7 +255,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
                 // console.log("add iframe listener");
                 frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
                     // console.log("iframe key catcher");
-                    let iframePath:string = XpathUtils.getXPathForElement(frames[i]); // since iframes in main doc
+                    let iframePath:string = DomPathUtils.getDomPathForElement(frames[i]); // since iframes in main doc
                     // console.log("iframePath = ",iframePath);
                     TabStopHighlight.handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath);
                 });
@@ -279,7 +279,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             shadowDoms[i].shadowRoot?.addEventListener('keyup', function(event:any) {
                 // console.log("shadow dom key catcher");
                 let focusElement = shadowDoms[i].shadowRoot?.activeElement;
-                let focusElementPath = XpathUtils.getXPathForElement(focusElement);
+                let focusElementPath = DomPathUtils.getDomPathForElement(focusElement);
                 // JCH TODO 1 for the doc frag ONLY works for 1 level doc frags
                 focusElementPath = "/#document-fragment"+"["+"1"+"]"+ focusElementPath;
                 TabStopHighlight.handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath);

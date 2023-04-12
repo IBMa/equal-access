@@ -16,7 +16,7 @@
 
 import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import XpathUtils from "./XpathUtils";
+import DomPathUtils from "./DomPathUtils";
 
 export default class TabStopHighlight {
     // JCH - This is where we handle Tab Stop highlighting
@@ -35,23 +35,23 @@ export default class TabStopHighlight {
             if (docType === "main") {
                 console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
-                elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
+                elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
             }
             
             // if we have iframe
             if (docType === "iframe") {
                 // console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
-                elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
+                elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
             }
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
                 // console.log("we have an element in a shadow dom");
-                let sdXpath = XpathUtils.getXPathForElement(doc);
+                let sdXpath = DomPathUtils.getDomPathForElement(doc);
                 let element = doc.shadowRoot.activeElement;
-                elementXpath = XpathUtils.getXPathForElement(element);
+                elementXpath = DomPathUtils.getDomPathForElement(element);
                 // need #document-fragment[n]
                 elementXpath = sdXpath+iframeStr;
             }
@@ -120,23 +120,23 @@ export default class TabStopHighlight {
             if (docType === "main") {
                 // console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
-                elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
+                elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
             }
             
             // if we have iframe
             if (docType === "iframe") {
                 // console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
-                elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
+                elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
             }
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
                 // console.log("Got shadow dom element");
-                let sdXpath = XpathUtils.getXPathForElement(doc);
+                let sdXpath = DomPathUtils.getDomPathForElement(doc);
                 let element = doc.shadowRoot.activeElement;
-                elementXpath = XpathUtils.getXPathForElement(element);
+                elementXpath = DomPathUtils.getDomPathForElement(element);
                 // need #document-fragment[n]
                 elementXpath = sdXpath+iframeStr;
             }
@@ -210,14 +210,14 @@ export default class TabStopHighlight {
                     errorCircle = event.target;
                 }
 
-                let element = XpathUtils.selectPath(event.target.getAttribute("xpath")); // circle's element that we want to have focus
+                let element = DomPathUtils.domPathToElem(event.target.getAttribute("xpath")); // circle's element that we want to have focus
 
-                elementXpath = XpathUtils.getXPathForElement(element); // path if not in iframe
+                elementXpath = DomPathUtils.getDomPathForElement(element); // path if not in iframe
                 
                 // if we have iframe
                 if (docType === "iframe") {
                     element = doc.activeElement;  // get element just tabbed to which has focus
-                    elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
+                    elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
                     elementXpath = iframeStr + elementXpath;
                     // console.log("iframeStr = ",iframeStr)
                 }
