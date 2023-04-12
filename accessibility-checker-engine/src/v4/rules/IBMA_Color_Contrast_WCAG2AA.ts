@@ -27,7 +27,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             "group": `IBMA_Color_Contrast_WCAG2AA.html`,
             "Pass_0": `IBMA_Color_Contrast_WCAG2AA.html`,
             "Fail_1": `IBMA_Color_Contrast_WCAG2AA.html`,
-            "Potential_1": `IBMA_Color_Contrast_WCAG2AA.html`
+            "Potential_same_color": `IBMA_Color_Contrast_WCAG2AA.html`,
+            "Potential_graphic_background": `IBMA_Color_Contrast_WCAG2AA.html`
         }
     },
     messages: {
@@ -210,9 +211,9 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             // Corner case where item is hidden (accessibility hiding technique)
             return null;
         }
-        console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', text='+childStr.trim());
+        
         // First determine the color contrast ratio
-        let colorCombo = ColorUtil.ColorCombo(elem); console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', text='+childStr.trim()+", colorCombo="+JSON.stringify(colorCombo));
+        let colorCombo = ColorUtil.ColorCombo(elem);
         if (colorCombo === null) {
             //some exception occurred, or not able to get color combo for some reason
             console.log("unable to get color combo for element: " + elem.nodeName);
@@ -233,7 +234,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
-        console.log("node=" + nodeName + "， id=" + elem.getAttribute('id') + ', fg='+JSON.stringify(fg)+", bg="+JSON.stringify(bg) +", ratio="+ ratio +", weight="+ weight +", size="+ size +", passed="+ passed  +", hasBackground="+ hasBackground +", isDisabled="+ isDisabled);
+        
         if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
@@ -242,14 +243,14 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             isDisabled = true;
         }
 
-        setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
+        /**setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
             "ratio": ratio,
             "isLargeScale": isLargeScale,
             "weight": weight,
             "size": size,
             "hasBackground": hasBackground,
             "isDisabled": isDisabled
-        });
+        });*/
         
         // If element or parent is disabled, this rule does not apply (but may be 3:1 in future)
         if (!passed && isDisabled) {
