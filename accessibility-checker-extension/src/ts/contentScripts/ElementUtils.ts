@@ -28,8 +28,8 @@ export class ElementUtils {
             // Do a check whether bounds has value as we use different tool (htmlUnit, browser) to call this function
             if (bounds) {
                 return {
-                    "left": Math.ceil(bounds.left * adjustment),
-                    "top": Math.ceil(bounds.top * adjustment),
+                    "left": Math.ceil(bounds.left * adjustment)+window.scrollX,
+                    "top": Math.ceil(bounds.top * adjustment)+window.scrollY,
                     "height": Math.ceil(bounds.height * adjustment),
                     "width": Math.ceil(bounds.width * adjustment)
                 };

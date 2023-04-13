@@ -14,47 +14,106 @@
   limitations under the License.
 *****************************************************************************/
 
+import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
 import { Bounds, IIssue } from "../interfaces/interfaces";
 import DomPathUtils from "./DomPathUtils";
 import { ElementUtils } from "./ElementUtils";
 
-
-function getOverlay() : HTMLDivElement {
-    if (!(window as any).aceOverlay) {
-        (window as any).aceOverlay = document.createElement("div");
-        (window as any).aceOverlay.style.display = "none";
-    }
-    return (window as any).aceOverlay;
-}
-
-function updateOverlay(_issue: IIssue, _elem: HTMLElement, bounds: Bounds) : HTMLElement {
-    let overlay = getOverlay();
-    overlay.style.position = "absolute";
-    overlay.style.top = `${bounds.top+bounds.height}px`;
-    overlay.style.left = `${bounds.left}px`;
-    overlay.innerHTML = "Hello world";
-    return overlay;
-}
-
-function showOverlay(issue: IIssue) {
-    let elem = DomPathUtils.domPathToElem(issue.path.dom);
-    if (elem) {
-        let bounds = ElementUtils.getBounds(elem, false);
-        if (bounds) {
-            let overlay = updateOverlay(issue, elem, bounds);
-            if (!overlay.parentNode) {
-                document.body.insertBefore(overlay, document.body.firstChild);
-            }
-            overlay.style.display = "block"
-        }    
-    }
-}
+type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
 
 (async () => {
-    // let tabId = await getBGController().getTabId();
-    getDevtoolsController().addSelectedIssueListener(async (issue: IIssue) => {
-        if (issue) {
+    let myTabId = await getBGController().getTabId()!;
+    let devtoolsController = getDevtoolsController(true, "remote", myTabId);
+
+    function getOverlays() : Overlays {
+        if (!(window as any).aceOverlays) {
+            let overlays = (window as any).aceOverlays = {
+                elem: document.createElement("div"),
+                info: document.createElement("div")
+            }
+            let ovElemStyle = overlays.elem.style;
+            ovElemStyle.display = "none";
+            ovElemStyle.outline = "solid #8A3FFC 3px";
+            ovElemStyle.position = "absolute";
+            ovElemStyle.zIndex = "2147483647";
+            // ovElemStyle.backgroundColor = "rgba(246, 242, 255, .5)"
+            let ovInfoStyle = overlays.info.style;
+            ovInfoStyle.display = "none";
+            ovInfoStyle.outline = "dashed #8A3FFC 2px";
+            ovInfoStyle.backgroundColor = "#F6F2FF";
+            ovInfoStyle.position = "absolute";
+            ovInfoStyle.padding = "8px";
+            ovInfoStyle.zIndex = "2147483647";
+            ovInfoStyle.fontFamily = "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif";
+        }
+        return (window as any).aceOverlays;
+    }
+    
+    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds) : Promise<Overlays> {
+        let overlays = getOverlays();
+        overlays.elem.style.top = `${bounds.top}px`;
+        overlays.elem.style.left = `${bounds.left}px`;
+        overlays.elem.style.width = `${bounds.width}px`;
+        overlays.elem.style.height = `${bounds.height}px`;
+        overlays.info.style.top = `${bounds.top+bounds.height}px`;
+        overlays.info.style.left = `${bounds.left}px`;
+        if (await devtoolsController.getActivePanel() === "main") {
+            overlays.info.innerHTML = (
+`
+    <div>Issue info here</div>
+    <div style="margin-top: 8px" />
+    <div><a role="link" title="Inspect"><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><path d="M21.4479,20A10.856,10.856,0,0,0,24,13,11,11,0,1,0,13,24a10.856,10.856,0,0,0,7-2.5521L27.5859,29,29,27.5859ZM13,22a9,9,0,1,1,9-9A9.01,9.01,0,0,1,13,22Z"></path><path d="M10 12H8V10a2.0023 2.0023 0 012-2h2v2H10zM18 12H16V10H14V8h2a2.0023 2.0023 0 012 2zM12 18H10a2.0023 2.0023 0 01-2-2V14h2v2h2zM16 18H14V16h2V14h2v2A2.0023 2.0023 0 0116 18z"></path><title>Inspect</title></svg></a></div>
+`);
+        } else {
+            overlays.info.innerHTML = (
+`
+    <div>Issue info here</div>
+`);
+        }
+        overlays.info.querySelector("a")?.addEventListener("click", async () => {
+            await devtoolsController.inspectPath(issue.path.dom);
+            await devtoolsController.inspectPath(issue.path.dom);
+        })
+        return overlays;
+    }
+    
+    async function showOverlay(issue: IIssue) {
+        let elem = DomPathUtils.domPathToElem(issue.path.dom);
+        if (elem) {
+            let bounds = ElementUtils.getBounds(elem, false);
+            if (bounds) {
+                let overlay = await updateOverlay(issue, elem, bounds);
+                if (!overlay.elem.parentNode) {
+                    document.body.appendChild(overlay.elem);
+                }
+                if (!overlay.info.parentNode) {
+                    document.body.appendChild(overlay.info);
+                }
+                overlay.elem.style.display = "block";
+                overlay.info.style.display = "block";
+                if (await devtoolsController.getActivePanel() === "main") {
+                    overlay.elem.scrollIntoView({
+                        // @ts-ignore
+                        block: 'nearest',
+                        behavior: "instant" as any,
+                        inline: 'start'
+                    });
+                    setTimeout(() => {
+                        overlay.info.scrollIntoView({
+                            // @ts-ignore
+                            block: 'nearest',
+                            behavior: "instant" as any,
+                            inline: 'start'
+                        });    
+                    }, 0);
+                }
+            }    
+        }
+    }
+
+    devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
+        if (false && issue) {
             showOverlay(issue);
         }
     });
