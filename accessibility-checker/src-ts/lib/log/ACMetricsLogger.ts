@@ -132,6 +132,8 @@ export class ACMetricsLogger {
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
                     axios.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
+                    }).catch((_err) => {
+                    }).finally(() => {
                         // Decrement the numProfiles to identify that scan has finished
                         --numProfiles;
 
@@ -140,7 +142,7 @@ export class ACMetricsLogger {
                             loggerInScope.debug("END 'sendLogsV2' function");
                             done && done();
                         }
-                    });
+                    })
                 }
             }
 
