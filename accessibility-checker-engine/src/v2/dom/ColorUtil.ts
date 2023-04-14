@@ -231,13 +231,13 @@ export class ColorUtil {
         
         // start
         var cStyle = win.getComputedStyle(ruleContext);
-        var compStyleColor = cStyle.color; console.log("node=" + ruleContext.nodeName + "， id=" + ruleContext.getAttribute('id')+ "， compStyleColor==" + JSON.stringify(compStyleColor)+ "， backgroundColor=" + JSON.stringify(cStyle.backgroundColor)+ "， backgroundImage=" + JSON.stringify(cStyle.backgroundImage));
+        var compStyleColor = cStyle.color;
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = ColorUtil.Color(compStyleColor);
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
-            try {console.log("guessGradColor node=" + ruleContext.nodeName + "， id="+ ruleContext.getAttribute('id') + "， gradList=" + JSON.stringify(gradList)+  "， bgColor=" + JSON.stringify(bgColor)+ "， fgColor=" + JSON.stringify(fgColor));
+            try {
                 // If there's only one color, return that
                 if (typeof gradList.length === "undefined")
                     return gradList;
@@ -245,8 +245,8 @@ export class ColorUtil {
                 var overallWorst = null;
                 var overallWorstRatio = null;
                 for (var iGrad = 1; iGrad < gradList.length; ++iGrad) {
-                    var worstColor = gradList[iGrad - 1]; console.log("guessGradColor node=" + ruleContext.nodeName + "， id="+ ruleContext.getAttribute('id') + "， gradList[i]=" + JSON.stringify(gradList[iGrad - 1])+  "， bgColor=" + JSON.stringify(bgColor)+ "， fgColor=" + JSON.stringify(fgColor));
-                    var worstRatio = fgColor.contrastRatio(gradList[iGrad - 1]); console.log("guessGradColor ratio node=" + ruleContext.nodeName + "， id="+ ruleContext.getAttribute('id') + "， gradList[i]=" + JSON.stringify(gradList[iGrad - 1])+  "， worstRatio=" + JSON.stringify(worstRatio));
+                    var worstColor = gradList[iGrad - 1];
+                    var worstRatio = fgColor.contrastRatio(gradList[iGrad - 1]);
                     var step = .1;
                     var idx = 0;
                     while (step > .0001) {
@@ -267,7 +267,7 @@ export class ColorUtil {
                         overallWorst = worstColor;
                     }
                 }
-                return overallWorst;
+                return overallWorst; // return the darkest color
             } catch (e) {
                 console.log(e);
             }
@@ -285,7 +285,7 @@ export class ColorUtil {
             // cStyle is the computed style of this layer
             var cStyle = win.getComputedStyle(procNext);
             if (cStyle === null) continue;
-            console.log("node=" + ruleContext.nodeName + "， id=" + ruleContext.getAttribute('id')+ "， color==" + JSON.stringify(cStyle.color)+ "， backgroundColor=" + JSON.stringify(cStyle.backgroundColor)+ "， backgroundImage=" + JSON.stringify(cStyle.backgroundImage));
+            
             // thisBgColor is the color of this layer or null if the layer is transparent
             var thisBgColor = null;
             if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
@@ -297,17 +297,22 @@ export class ColorUtil {
                 if (gradColors) {
                     let gradColorComp : ColorObj[] = [];
                     for (var i = 0; i < gradColors.length; ++i) {
-                        let colorComp = ColorUtil.Color(gradColors[i]);console.log("backgroundImage node=" + ruleContext.nodeName + "， id=" + ruleContext.getAttribute('id')+ "， colorComp==" + JSON.stringify(colorComp) + "， alpha==" + colorComp.alpha +", gradColors[i].length" + gradColors[i].length+ "， fg==" + JSON.stringify(fg) + "， thisStackBG==" + JSON.stringify(thisStackBG)+ "， priorStackBG==" + JSON.stringify(priorStackBG));
-                        if (!gradColors[i].length || (colorComp.alpha !== undefined && colorComp.alpha < 0.1)) {
+                        if (!gradColors[i].length) {
                             gradColors.splice(i--, 1);
                         } else {
+                            let colorComp = ColorUtil.Color(gradColors[i]);
+                            if (colorComp.alpha !== undefined && colorComp.alpha < 1) {
+                                // mix the grdient bg color wit parent bg if alpha < 1
+                                let compStackBg = thisStackBG || priorStackBG;
+                                colorComp = colorComp.getOverlayColor(compStackBg);
+                            }
                             gradColorComp.push(colorComp);
                         }
-                    } console.log("backgroundImage node=" + ruleContext.nodeName + "， id=" + ruleContext.getAttribute('id')+ "， gradColorComp==" + JSON.stringify(gradColorComp)+ "， fg==" + JSON.stringify(fg) + "， thisStackBG==" + JSON.stringify(thisStackBG)+ "， priorStackBG==" + JSON.stringify(priorStackBG));
+                    }
                     thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
                 }
             }
-            console.log("bg node =" + ruleContext.nodeName + "， id=" + ruleContext.getAttribute('id')+ "， thisBgColor==" + JSON.stringify(thisBgColor));
+            
             // Handle non-solid opacity
             if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
                 // New stack, reset
@@ -414,11 +419,10 @@ export class ColorObj {
 
     contrastRatio(bgColor : ColorObj) { 
         let fgColor: ColorObj = this;
-        console.log("contrastRatio bgColor1="+JSON.stringify(bgColor) +", fgColor1="+JSON.stringify(fgColor));
+        
         if (typeof (this.alpha) != "undefined")
             fgColor = this.getOverlayColor(bgColor);
              
-        console.log("contrastRatio bgColor2="+JSON.stringify(bgColor) +", fgColor2="+JSON.stringify(fgColor));
         let lum1 = fgColor.relativeLuminance();
         if (!bgColor.relativeLuminance) {
             let s = "";
@@ -462,7 +466,7 @@ export class ColorObj {
         }
     };
 
-    getOverlayColor(bgColor : ColorObj) { console.log("getOverlayColor bgColor11="+JSON.stringify(bgColor) + ", fgColor11="+JSON.stringify(this));
+    getOverlayColor(bgColor : ColorObj) {
         if (typeof (this.alpha) === "undefined" || this.alpha >= 1) {
             // No mixing required - it's opaque
             return this;

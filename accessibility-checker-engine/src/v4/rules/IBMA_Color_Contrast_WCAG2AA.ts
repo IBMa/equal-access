@@ -16,7 +16,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { setCache } from "../util/CacheUtil";
+//import { setCache } from "../util/CacheUtil";
 import { getWeightNumber, getFontInPixels } from "../util/CSSUtil";
 
 export let IBMA_Color_Contrast_WCAG2AA: Rule = {
