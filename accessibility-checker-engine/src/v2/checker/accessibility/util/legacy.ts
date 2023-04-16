@@ -605,6 +605,7 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getElementsByRoleHidden(doc, roles, considerHiddenSetting, considerImplicitRoles?) {
+        
         // In the case that the role to element assoication is already made, and available in the global hasAttribute
         // we can just use that one instead of building a new one.
         let roleToElems = null;
@@ -630,7 +631,6 @@ export class RPTUtil {
                 // Get the parentNode
                 root = DOMWalker.parentNode(root);
             }
-
             // Build a nodewalter based of the root node, this node walter will be use loop over all the nodes
             // and build the roles to Element coralation
             let nw = new NodeWalker(root);
@@ -643,7 +643,7 @@ export class RPTUtil {
             //    navigation: [{div}]
             // }
             while (nw.nextNode()) {
-
+                if (!nw.elem()) continue;                
                 // Only check the elements which have the role attribute assiciated to them
                 if (!nw.bEndTag) {
 
@@ -655,7 +655,7 @@ export class RPTUtil {
                         wRoles = nw.elem().getAttribute("role").split(" ");
                     }
 
-                    if (wRoles.length === 0 && considerImplicitRoles) {
+                    if (nw.elem() && wRoles.length === 0 && considerImplicitRoles) {
                         //check if there are any implicit roles for this element.
                         let implicitRole = RPTUtil.getImplicitRole(nw.node);
                         if (implicitRole !== null && implicitRole.length > 0)
@@ -790,32 +790,44 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getImplicitRole(ele) : string[] {
-        let tagProperty = RPTUtil.getElementAriaProperty(ele);
-        // check if there are any implicit roles for this element.
-        if (tagProperty && tagProperty.implicitRole) {
-            if (tagProperty.implicitRole.includes("generic")) {
-                // the 'generic' role is only allowed if a valid aria attribute exists.
-                let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
-                if (domAriaAttributes.length === 0) return [];
+        if (!ele || ele.nodeType !== 1) return [];
+        let implicitRoles : string[] = getCache(ele, "RPTUtil_ImplicitRole", null);
+        if (!implicitRoles) {
+            let tagProperty = RPTUtil.getElementAriaProperty(ele);
+            // check if there are any implicit roles for this element.
+            if (tagProperty && tagProperty.implicitRole) {
+                if (tagProperty.implicitRole.includes("generic")) {
+                    // the 'generic' role is only allowed if a valid aria attribute exists.
+                    let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
+                    if (domAriaAttributes.length === 0) {
+                        setCache(ele, "RPTUtil_ImplicitRole", []);
+                        return [];
+                    }    
+                    let roleAttributes = [];
+                    let pattern = ARIADefinitions.designPatterns['generic'];
+                    if (pattern.reqProps && pattern.reqProps.length > 0)
+                        RPTUtil.concatUniqueArrayItemList(pattern.reqProps, roleAttributes);
+                    
+                    if (tagProperty.globalAriaAttributesValid)
+                        RPTUtil.concatUniqueArrayItemList(ARIADefinitions.globalProperties, roleAttributes);
+                    
+                    if (pattern.deprecatedProps && pattern.deprecatedProps.length > 0)
+                        RPTUtil.reduceArrayItemList(pattern.deprecatedProps, roleAttributes); 
 
-                let roleAttributes = [];
-                let pattern = ARIADefinitions.designPatterns['generic'];
-                if (pattern.reqProps && pattern.reqProps.length > 0)
-                    RPTUtil.concatUniqueArrayItemList(pattern.reqProps, roleAttributes);
-                
-                if (tagProperty.globalAriaAttributesValid)
-                    RPTUtil.concatUniqueArrayItemList(ARIADefinitions.globalProperties, roleAttributes);
-                
-                if (pattern.deprecatedProps && pattern.deprecatedProps.length > 0)
-                    RPTUtil.reduceArrayItemList(pattern.deprecatedProps, roleAttributes); 
-
-                // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
-                if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
-                    return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
+                    // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
+                    if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr))) {
+                        let implicit = RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole);
+                        setCache(ele, "RPTUtil_ImplicitRole", implicit);
+                        return implicit;
+                    }    
+                }
+                setCache(ele, "RPTUtil_ImplicitRole", tagProperty.implicitRole);
+                return tagProperty.implicitRole;   
             }
-            return tagProperty.implicitRole;   
-        }
-        return [];
+            setCache(ele, "RPTUtil_ImplicitRole", []);
+            return [];
+        }    
+        return implicitRoles;
     }
 
     /**
@@ -1289,6 +1301,7 @@ export class RPTUtil {
             if (DOMWalker.parentNode(element1) && DOMWalker.parentNode(element1).firstChild) {
                 node = DOMWalker.parentNode(element1).firstChild;
             }
+            
             while (node) {
                 if (node === element2) return true;
                 node = node.nextSibling;
@@ -1323,8 +1336,7 @@ export class RPTUtil {
             walkNode = DOMWalker.parentNode(walkNode);
         }
         return walkNode;
-    }
-
+    }   
     /**
      * return the ancestor with the given style properties.
      *
@@ -2451,126 +2463,130 @@ export class RPTUtil {
      * @returns 
      */
     public static getElementAriaProperty(ruleContext) {
-        let tagName = null;
-        let name = null;
+        let tagProperty : IDocumentConformanceRequirement = getCache(ruleContext, "RPTUtil_ElementAriaProperty", null);
+        if (!tagProperty) {
+            let tagName = null;
+            let name = null;
 
-        if (ruleContext.tagName) {
-            tagName = ruleContext.tagName.toLowerCase();
-        } else if (ruleContext.nodeName) {
-            tagName = ruleContext.nodeName.toLowerCase();
-        }
-        
-        // check if the tagProperty exists in the documentConformanceRequirement hash.
-        let tagProperty : IDocumentConformanceRequirement = ARIADefinitions.documentConformanceRequirement[tagName];
-        
-        // The tag needs to check some special attributes
-        if (tagProperty === null || tagProperty === undefined) {
-            let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
-            switch (tagName) { // special cases
-                case "a":
-                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
-                    break;
-                case "area":
-                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
-                    break;
-                case "figure": {
-                    let fcs = RPTUtil.getChildByTag(ruleContext, "figcaption");
-                    fcs !== null && fcs.length > 0 ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
-                    break;
-                }
-                case "footer": 
-                case "header":
-                    if (RPTUtil.getAncestorWithRole(ruleContext, "article", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "complementary", true) !== null
-                       || RPTUtil.getAncestorWithRole(ruleContext, "navigation", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "region", true) !== null
-                       || RPTUtil.getAncestor(ruleContext, ["article", "aside", "main", "nav", "section"]) !== null)
-                       tagProperty = specialTagProperties["des-section-article-aside-main-nav"];
-                    else
-                        tagProperty = specialTagProperties["other"];   
-                    break;
-                case "img":
-                    if (ruleContext.hasAttribute("alt")) {
-                        ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
-                    } else {
-                        RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
+            if (ruleContext.tagName) {
+                tagName = ruleContext.tagName.toLowerCase();
+            } else if (ruleContext.nodeName) {
+                tagName = ruleContext.nodeName.toLowerCase();
+            }
+            
+            // check if the tagProperty exists in the documentConformanceRequirement hash.
+            tagProperty = ARIADefinitions.documentConformanceRequirement[tagName];
+            
+            // The tag needs to check some special attributes
+            if (tagProperty === null || tagProperty === undefined) {
+                let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
+                switch (tagName) { // special cases
+                    case "a":
+                        RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                        break;
+                    case "area":
+                        RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                        break;
+                    case "figure": {
+                        let fcs = RPTUtil.getChildByTag(ruleContext, "figcaption");
+                        fcs !== null && fcs.length > 0 ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
+                        break;
                     }
-                    break;
-                case "input":
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
-                        let type = ruleContext.getAttribute("type").trim().toLowerCase();
-                        tagProperty = specialTagProperties[type];
-                        if (tagProperty === null || tagProperty === undefined) {
-                            switch (type) {
-                                case "checkbox":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
-                                    break;
-                                case "email":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["email-with-list"] : tagProperty = specialTagProperties["email-no-list"];
-                                    break;
-                                case "search":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-with-list"] : tagProperty = specialTagProperties["search-no-list"];
-                                    break;
-                                case "tel":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
-                                    break;
-                                case "text":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
-                                    break;
-                                case "url":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
-                                    break;
-                                default:
-                                    // default
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["default-with-list"] : tagProperty = specialTagProperties["default-no-list"];
-                                    break;
-                            }
+                    case "footer": 
+                    case "header":
+                        if (RPTUtil.getAncestorWithRole(ruleContext, "article", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "complementary", true) !== null
+                        || RPTUtil.getAncestorWithRole(ruleContext, "navigation", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "region", true) !== null
+                        || RPTUtil.getAncestor(ruleContext, ["article", "aside", "main", "nav", "section"]) !== null)
+                        tagProperty = specialTagProperties["des-section-article-aside-main-nav"];
+                        else
+                            tagProperty = specialTagProperties["other"];   
+                        break;
+                    case "img":
+                        if (ruleContext.hasAttribute("alt")) {
+                            ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
+                        } else {
+                            RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
                         }
-                    } else {
-                        // default type is the same as type=text
-                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
-                    }
-                    break;
-                case "section":
-                    name = ARIAMapper.computeName(ruleContext);
-                    if (name && name.trim().length > 0) {
-                        tagProperty = specialTagProperties["with-name"];
-                    } else {
-                        tagProperty = specialTagProperties["without-name"];
-                    }
-                    break;
-                case "select":
-                    specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
-                    if (ruleContext.hasAttribute("multiple") ||
-                        RPTUtil.attributeNonEmpty(ruleContext, "size") && ruleContext.getAttribute("size") > 1)
-                        tagProperty = specialTagProperties["multiple-attr-size-gt1"];
-                    else
-                        tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
-                    break;
-                case "tbody":
-                case "td":
-                case "tr":
-                    if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
-                        tagProperty = specialTagProperties["des-table"];
-                    } else {
-                        RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
-                    }
-                    break;
-                case "th":
-                    if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "grid", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) !== null) {
-                        const scope = RPTUtil.getScopeForTh(ruleContext);
-                        if (scope === 'column') tagProperty = specialTagProperties["des-table-grid-treegrid-column-scope"];
-                        else tagProperty = specialTagProperties["des-table-grid-treegrid-row-scope"];
-                    } else {
-                        tagProperty = specialTagProperties["des-other"];
-                    }
-                    break;    
-                case "div":
-                    let prt = ruleContext.parentElement;
-                    prt !== null && prt.nodeName.toLowerCase() === 'dl' ? tagProperty = specialTagProperties["child-dl"] : tagProperty = specialTagProperties["no-child-dl"];
-                    break;
-                default:
-                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
-            } //switch
+                        break;
+                    case "input":
+                        if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
+                            let type = ruleContext.getAttribute("type").trim().toLowerCase();
+                            tagProperty = specialTagProperties[type];
+                            if (tagProperty === null || tagProperty === undefined) {
+                                switch (type) {
+                                    case "checkbox":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
+                                        break;
+                                    case "email":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["email-with-list"] : tagProperty = specialTagProperties["email-no-list"];
+                                        break;
+                                    case "search":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-with-list"] : tagProperty = specialTagProperties["search-no-list"];
+                                        break;
+                                    case "tel":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
+                                        break;
+                                    case "text":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                        break;
+                                    case "url":
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
+                                        break;
+                                    default:
+                                        // default
+                                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["default-with-list"] : tagProperty = specialTagProperties["default-no-list"];
+                                        break;
+                                }
+                            }
+                        } else {
+                            // default type is the same as type=text
+                            RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                        }
+                        break;
+                    case "section":
+                        name = ARIAMapper.computeName(ruleContext);
+                        if (name && name.trim().length > 0) {
+                            tagProperty = specialTagProperties["with-name"];
+                        } else {
+                            tagProperty = specialTagProperties["without-name"];
+                        }
+                        break;
+                    case "select":
+                        specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
+                        if (ruleContext.hasAttribute("multiple") ||
+                            RPTUtil.attributeNonEmpty(ruleContext, "size") && ruleContext.getAttribute("size") > 1)
+                            tagProperty = specialTagProperties["multiple-attr-size-gt1"];
+                        else
+                            tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
+                        break;
+                    case "tbody":
+                    case "td":
+                    case "tr":
+                        if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
+                            tagProperty = specialTagProperties["des-table"];
+                        } else {
+                            RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
+                        }
+                        break;
+                    case "th":
+                        if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "grid", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) !== null) {
+                            const scope = RPTUtil.getScopeForTh(ruleContext);
+                            if (scope === 'column') tagProperty = specialTagProperties["des-table-grid-treegrid-column-scope"];
+                            else tagProperty = specialTagProperties["des-table-grid-treegrid-row-scope"];
+                        } else {
+                            tagProperty = specialTagProperties["des-other"];
+                        }
+                        break;    
+                    case "div":
+                        let prt = ruleContext.parentElement;
+                        prt !== null && prt.nodeName.toLowerCase() === 'dl' ? tagProperty = specialTagProperties["child-dl"] : tagProperty = specialTagProperties["no-child-dl"];
+                        break;
+                    default:
+                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
+                } //switch
+            }
         }
+        setCache(ruleContext, "RPTUtil_ElementAriaProperty", tagProperty);
         return tagProperty || null;
     }
 
@@ -2605,159 +2621,167 @@ export class RPTUtil {
     }
 
     public static getAllowedAriaRoles(ruleContext, properties: IDocumentConformanceRequirement) {
-        let allowedRoles : string[] = [];
-        let tagProperty : IDocumentConformanceRequirement = null;
-        if (properties !== null && properties !== undefined) {
-            tagProperty = properties;
-        } else {
-            tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
-        }
+        let allowedRoles : string[] = getCache(ruleContext, "RPTUtil_AllowedAriaRoles", null);
+        if (!allowedRoles) {
+            allowedRoles = [];
+            let tagProperty : IDocumentConformanceRequirement = null;
+            if (properties !== null && properties !== undefined) {
+                tagProperty = properties;
+            } else {
+                tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+            }
 
-        if (tagProperty !== null && tagProperty !== undefined) {
-            if (tagProperty.implicitRole !== null) {
-                RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, allowedRoles);
+            if (tagProperty !== null && tagProperty !== undefined) {
+                if (tagProperty.implicitRole !== null) {
+                    RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, allowedRoles);
+                }
+                if (tagProperty.validRoles !== null) {
+                    RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
+                }
+                let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
+                if (implicitRoles && implicitRoles.length > 0) {
+                    RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
+                }
             }
-            if (tagProperty.validRoles !== null) {
-                RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
-            }
-            let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
-            if (implicitRoles && implicitRoles.length > 0) {
-                RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
-            }
+            setCache(ruleContext, "RPTUtil_AllowedAriaRoles", allowedRoles);
         }
-       
         return allowedRoles;
     }
 
     public static getAllowedAriaAttributes(ruleContext, roles, properties) {
-        let permittedRoles = [...roles];
-        let tagName = ruleContext.tagName.toLowerCase();
-        let allowedAttributes = [];
-        let prohibitedAttributes = [];
-        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
-        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
-            // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
-        }
-        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
-        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
-            // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
-        }
+        let allowedAttributes : string[] = getCache(ruleContext, "RPTUtil_AllowedAriaAttributes", null);
+        if (!allowedAttributes) {
+            allowedAttributes = [];
+            let permittedRoles = [...roles];
+            let tagName = ruleContext.tagName.toLowerCase();
+            
+            let prohibitedAttributes = [];
+            // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
+            if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
+                // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
+            }
+            // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
+            if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
+                // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
+            }
 
-        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
-            // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
-        }
-        
-        let tagProperty = null;
-        if (properties != null && properties !== undefined)
-            tagProperty = properties;
-        else
-            tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+            if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
+                // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
+            }
+            
+            let tagProperty = null;
+            if (properties != null && properties !== undefined)
+                tagProperty = properties;
+            else
+                tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
 
-        if (tagProperty !== null && tagProperty !== undefined) {
-            // add the implicit role allowed attributes to the allowed role list if there is no specified role
-            // ignore if the element doesn't allow the attributes from the implicit roles
-            if (tagProperty.implicitRole !== null &&
-                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0)
-                && tagProperty.allowAttributesFromImplicitRole === undefined) {
-                for (let i = 0; i < tagProperty.implicitRole.length; i++) {
-                    let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
-                    if (roleProperty !== null && roleProperty !== undefined) {
-                        let properties = roleProperty.props;
-                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-                        properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
-                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-                        let prohibitedProps = roleProperty.prohibitedProps;
-                        if (prohibitedProps && prohibitedProps.length > 0) 
-                            RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
-                           
-                        // special case of separator
-                        if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                            RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuenow", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
+            if (tagProperty !== null && tagProperty !== undefined) {
+                // add the implicit role allowed attributes to the allowed role list if there is no specified role
+                // ignore if the element doesn't allow the attributes from the implicit roles
+                if (tagProperty.implicitRole !== null &&
+                    (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0)
+                    && tagProperty.allowAttributesFromImplicitRole === undefined) {
+                    for (let i = 0; i < tagProperty.implicitRole.length; i++) {
+                        let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
+                        if (roleProperty !== null && roleProperty !== undefined) {
+                            let properties = roleProperty.props;
+                            RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                            properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
+                            RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                            let prohibitedProps = roleProperty.prohibitedProps;
+                            if (prohibitedProps && prohibitedProps.length > 0) 
+                                RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
+                            
+                            // special case of separator
+                            if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
+                                RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuenow", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
+                            }
                         }
                     }
                 }
-            }
-            // Adding the global properties to the valid attribute list
-            if (tagProperty.globalAriaAttributesValid) {
-                let properties = ARIADefinitions.globalProperties; // global properties
-                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-            } 
-        }
-        // adding the other role to the allowed roles for the attributes
-        if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
-            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);       
-        // adding the specified role properties to the allowed attribute list
-        for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
-            let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
-            if (roleProperties !== null && roleProperties !== undefined) {
-                // ignore the properties if the element doesn't allow attributes from the implicit role
-                if (!tagProperty || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || (tagProperty.implicitRole.includes(permittedRoles[i]) && tagProperty.allowAttributesFromImplicitRole === undefined)) {
-                    let properties = roleProperties.props; // allowed properties
+                // Adding the global properties to the valid attribute list
+                if (tagProperty.globalAriaAttributesValid) {
+                    let properties = ARIADefinitions.globalProperties; // global properties
                     RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-                    properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
-                    RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-                }
-                let prohibitedProps = roleProperties.prohibitedProps;
-                if (prohibitedProps && prohibitedProps.length>0)
-                    RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
-                // special case for separator
-                if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                    RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
+                } 
+            }
+            // adding the other role to the allowed roles for the attributes
+            if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
+                RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);       
+            // adding the specified role properties to the allowed attribute list
+            for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
+                let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
+                if (roleProperties !== null && roleProperties !== undefined) {
+                    // ignore the properties if the element doesn't allow attributes from the implicit role
+                    if (!tagProperty || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || (tagProperty.implicitRole.includes(permittedRoles[i]) && tagProperty.allowAttributesFromImplicitRole === undefined)) {
+                        let properties = roleProperties.props; // allowed properties
+                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
+                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                    }
+                    let prohibitedProps = roleProperties.prohibitedProps;
+                    if (prohibitedProps && prohibitedProps.length>0)
+                        RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
+                    // special case for separator
+                    if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
+                        RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
+                    }
                 }
             }
-        }
-        
-        // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
-        if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
-            let index = -1;
-            if ((index = allowedAttributes.indexOf("aria-level")) > -1)
-                allowedAttributes.splice(index, 1);
+            
+            // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
+            if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
+                let index = -1;
+                if ((index = allowedAttributes.indexOf("aria-level")) > -1)
+                    allowedAttributes.splice(index, 1);
 
-            if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
-                allowedAttributes.splice(index, 1);
+                if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
+                    allowedAttributes.splice(index, 1);
 
-            if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
-                allowedAttributes.splice(index, 1);
+                if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
+                    allowedAttributes.splice(index, 1);
 
-        }
-
-        // add the other allowed attributes for the element
-        if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
-            // check attribute-value pair if exists
-            let allowed = [];
-            for (let p=0; p < tagProperty.otherAllowedAriaAttributes.length; p++) {
-                const attr = tagProperty.otherAllowedAriaAttributes[p];
-                if (attr.includes("=")) {
-                    const pair = attr.split("=");
-                    if (ruleContext.getAttribute(pair[0]) === pair[1])
-                        allowed.push(pair[0]);
-                } else
-                    allowed.push(attr);
-            } 
-            if (allowed.length > 0)    
-                RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
-        }
-        // add the other prohibitted attributes for the element
-        if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
-            // check attribute-value pair if exists
-            let disallowed = [];
-            for (let p=0; p < tagProperty.otherDisallowedAriaAttributes.length; p++) {
-                const attr = tagProperty.otherDisallowedAriaAttributes[p];
-                if (attr.includes("=")) {
-                    const pair = attr.split("="); 
-                    if (ruleContext.getAttribute(pair[0]) === pair[1])
-                        disallowed.push(pair[0]);
-                } else
-                    disallowed.push(attr);
             }
-            if (disallowed.length > 0)
-                RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
+
+            // add the other allowed attributes for the element
+            if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
+                // check attribute-value pair if exists
+                let allowed = [];
+                for (let p=0; p < tagProperty.otherAllowedAriaAttributes.length; p++) {
+                    const attr = tagProperty.otherAllowedAriaAttributes[p];
+                    if (attr.includes("=")) {
+                        const pair = attr.split("=");
+                        if (ruleContext.getAttribute(pair[0]) === pair[1])
+                            allowed.push(pair[0]);
+                    } else
+                        allowed.push(attr);
+                } 
+                if (allowed.length > 0)    
+                    RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
+            }
+            // add the other prohibitted attributes for the element
+            if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
+                // check attribute-value pair if exists
+                let disallowed = [];
+                for (let p=0; p < tagProperty.otherDisallowedAriaAttributes.length; p++) {
+                    const attr = tagProperty.otherDisallowedAriaAttributes[p];
+                    if (attr.includes("=")) {
+                        const pair = attr.split("="); 
+                        if (ruleContext.getAttribute(pair[0]) === pair[1])
+                            disallowed.push(pair[0]);
+                    } else
+                        disallowed.push(attr);
+                }
+                if (disallowed.length > 0)
+                    RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
+            }
+            //exclude the prohibitedAttributes from the allowedAttributes
+            allowedAttributes = RPTUtil.reduceArrayItemList(prohibitedAttributes, allowedAttributes);
+            setCache(ruleContext, "RPTUtil_AllowedAriaAttributes", allowedAttributes);
         }
-        //exclude the prohibitedAttributes from the allowedAttributes
-        allowedAttributes = RPTUtil.reduceArrayItemList(prohibitedAttributes, allowedAttributes);
         return allowedAttributes;
     }
     /**
@@ -3158,6 +3182,10 @@ export class NodeWalker {
     }
 
     nextNode() {
+        if (!this.node) {
+            this.bEndTag = false;
+            return false;
+        }    
         if (!this.bEndTag) {
             let iframeNode = (this.node as HTMLIFrameElement);
             let elementNode = (this.node as HTMLElement);
