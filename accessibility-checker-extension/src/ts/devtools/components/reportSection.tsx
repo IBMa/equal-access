@@ -214,6 +214,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         }
 
         let totalCount = 0;
+        let disableDiv = false;
         let filterSection = <>
             <div className="reportFilterBorder" />
             <Grid className="reportFilterSection">
@@ -266,11 +267,19 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         </Column>
                     </>
                 })}
-                <Column sm={1} md={2} lg={2} className="totalCount">
-                    <Link id="totalIssuesCount" className="darkLink" inline={true} onClick={() => {
-                        let appController = getDevtoolsAppController();
-                        appController.setSecondaryView("summary");
-                        appController.openSecondary("totalIssuesCount");
+                
+                {totalCount === 0 ? disableDiv = true : disableDiv = false}
+                <Column sm={1} md={2} lg={2} classname={disableDiv ? "totalCountDisable" : "totalCountEnable"} >
+                {/* <Column sm={1} md={2} lg={2} classname="totalCountDisable" > */}
+                    <Link 
+                        id="totalIssuesCount" 
+                        className="darkLink" 
+                        classname={disableDiv ? "totalCountDisable" : "totalCountEnable"}
+                        inline={true}
+                        onClick={() => {
+                            let appController = getDevtoolsAppController();
+                            appController.setSecondaryView("summary");
+                            appController.openSecondary("totalIssuesCount");
                     }}>{totalCount} issues found</Link>
                 </Column>
             </Grid>
