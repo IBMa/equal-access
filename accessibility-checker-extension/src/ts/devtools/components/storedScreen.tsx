@@ -26,7 +26,7 @@ import {
     Theme
 } from "@carbon/react";
 import {
-    Delete,
+    TrashCan,
     Download
 } from "@carbon/react/icons";
 
@@ -102,7 +102,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                         }
                                     },
                                     {
-                                        icon: Delete,
+                                        icon: TrashCan,
                                         label: "Delete",
                                         onClick: (selectedRows) => {
                                             this.setState({ deleteSelectedRows: selectedRows });
