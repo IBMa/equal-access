@@ -33,7 +33,7 @@
         <a class="offleft" href="#maincontent">Skip to main content</a>
         <a name="maincontent"></a>
 
-        <input aria-label="test1_1" />
+        <input id='1' aria-label="test1_1" />
         <input aria-label="test1_2" role="application" />
 
         <input type="button" aria-label="test2_3" />
@@ -45,7 +45,7 @@
         <input type="checkbox" aria-label="test3_7" />
         <input type="checkbox" aria-label="test3_8" role="application" />
         <input type="checkbox" aria-label="test3_9" role="checkbox" aria-checked="true" onkeypress="keyEvent()" />
-        <input type="checkbox" aria-label="test3_10" role="button" aria-label="true" onkeypress="keyEvent()"
+        <input id='10' type="checkbox" aria-label="test3_10" role="button" aria-label="true" onkeypress="keyEvent()"
             aria-pressed="true" />
         <input type="checkbox" aria-label="test3_11" role="menuitemcheckbox switch" aria-checked="true"
             onkeypress="keyEvent()" />
@@ -61,7 +61,7 @@
 
         <input type="email" list="test" aria-label="test7_18" />
         <input type="email" list="test" aria-label="test7_19" role="application" />
-        <input type="email" list="test" aria-label="test7_20" role="combobox" aria-expanded="true"
+        <input id='20' type="email" list="test" aria-label="test7_20" role="combobox" aria-expanded="true"
             onkeypress="keyEvent()" />
 
         <input type="email" aria-label="test8_21" />
@@ -76,7 +76,7 @@
 
         <input type="image" aria-label="test11_28" alt="test11" />
         <input type="image" aria-label="test11_29" alt="test11" role="application" />
-        <input type="image" aria-label="test11_30" alt="test11" role="button" onkeypress="keyEvent()" />
+        <input id='30' type="image" aria-label="test11_30" alt="test11" role="button" onkeypress="keyEvent()" />
         <input type="image" aria-label="test11_31" alt="test11"
             role="link menuitem menuitemcheckbox menuitemradio radio switch" onkeypress="keyEvent()" />
 
@@ -92,8 +92,8 @@
         <input type="password" aria-label="test14_38" role="application" />
         <input type="password" aria-label="test14_39" role="textbox" onkeypress="keyEvent()" />
 
-        <input type="radio" aria-label="test15_40" />
-        <input type="radio" aria-label="test15_41" role="application" />
+        <input id='40' type="radio" aria-label="test15_40" />
+        <input  type="radio" aria-label="test15_41" role="application" />
         <input type="radio" aria-label="test15_42" role="radio" aria-checked="true" onkeypress="keyEvent()" />
         <input type="radio" aria-label="test15_43" role="menuitemradio" aria-checked="true" onkeypress="keyEvent()" />
 
@@ -106,7 +106,7 @@
         <input type="reset" aria-label="test17_48" role="application" />
         <input type="reset" aria-label="test17_49" role="button" onkeypress="keyEvent()" />
 
-        <input type="search" aria-label="test18_50" />
+        <input id='50' type="search" aria-label="test18_50" />
         <input type="search" aria-label="test18_51" role="application" />
         <input type="search" aria-label="test18_52" role="searchbox" />
 
@@ -120,7 +120,7 @@
         <input type="submit" aria-label="test20_59" role="button" onkeypress="keyEvent()" />
 
         <input type="tel" aria-label="test21_60" />
-        <input type="tel" aria-label="test21_61" role="application" />
+        <input id='60' type="tel" aria-label="test21_61" role="application" />
         <input type="tel" aria-label="test21_62" role="textbox" onkeypress="keyEvent()" />
 
         <input type="tel" list="test" aria-label="test22_63" />
@@ -134,7 +134,7 @@
 
         <input type="text" list="test" aria-label="test24_69" />
         <input type="text" list="test" aria-label="test24_70" role="application" />
-        <input type="text" list="test" aria-label="test24_71" role="combobox" aria-expanded="true"
+        <input id='70' type="text" list="test" aria-label="test24_71" role="combobox" aria-expanded="true"
             onkeypress="keyEvent()" />
 
         <input type="url" aria-label="test25_72" />
@@ -150,7 +150,7 @@
         <input type="time" aria-label="test27_79" role="application" />
 
         <input type="week" aria-label="test28_80" />
-        <input type="week" aria-label="test28_81" role="application" />
+        <input id='80' type="week" aria-label="test28_81" role="application" />
 
         <input type="password" aria-label="test14_40" aria-required="true" />
 
@@ -167,14 +167,14 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]",
-              "aria": "/document[1]"
+              "aria": "/document[1]/generic[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "body",
-              ""
+              "generic"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -187,7 +187,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -206,7 +206,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -226,7 +226,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[1]",
-              "aria": "/document[1]/region[1]/textbox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -246,7 +246,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[2]",
-              "aria": "/document[1]/region[1]/application[1]"
+              "aria": "/document[1]/generic[1]/region[1]/application[1]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -265,7 +265,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[3]",
-              "aria": "/document[1]/region[1]/button[1]"
+              "aria": "/document[1]/generic[1]/region[1]/button[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -285,7 +285,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[4]",
-              "aria": "/document[1]/region[1]/application[2]"
+              "aria": "/document[1]/generic[1]/region[1]/application[2]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -304,7 +304,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[5]",
-              "aria": "/document[1]/region[1]/button[2]"
+              "aria": "/document[1]/generic[1]/region[1]/button[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -323,7 +323,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[5]",
-              "aria": "/document[1]/region[1]/button[2]"
+              "aria": "/document[1]/generic[1]/region[1]/button[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -343,7 +343,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[6]",
-              "aria": "/document[1]/region[1]/link[2]"
+              "aria": "/document[1]/generic[1]/region[1]/link[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -362,7 +362,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[6]",
-              "aria": "/document[1]/region[1]/link[2]"
+              "aria": "/document[1]/generic[1]/region[1]/link[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -382,7 +382,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[7]",
-              "aria": "/document[1]/region[1]/checkbox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -402,7 +402,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[8]",
-              "aria": "/document[1]/region[1]/application[3]"
+              "aria": "/document[1]/generic[1]/region[1]/application[3]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -421,7 +421,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[9]",
-              "aria": "/document[1]/region[1]/checkbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -440,7 +440,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[9]",
-              "aria": "/document[1]/region[1]/checkbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[2]"
             },
             "reasonId": "Fail_invalid_role_attr",
             "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"checkbox\"",
@@ -460,7 +460,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[10]",
-              "aria": "/document[1]/region[1]/button[3]"
+              "aria": "/document[1]/generic[1]/region[1]/button[3]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -479,7 +479,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[10]",
-              "aria": "/document[1]/region[1]/button[3]"
+              "aria": "/document[1]/generic[1]/region[1]/button[3]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -499,7 +499,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[11]",
-              "aria": "/document[1]/region[1]/menuitemcheckbox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/menuitemcheckbox[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -518,7 +518,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[11]",
-              "aria": "/document[1]/region[1]/menuitemcheckbox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/menuitemcheckbox[1]"
             },
             "reasonId": "Fail_invalid_role_attr",
             "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemcheckbox, switch\"",
@@ -538,7 +538,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[12]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -558,7 +558,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[13]",
-              "aria": "/document[1]/region[1]/application[4]"
+              "aria": "/document[1]/generic[1]/region[1]/application[4]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -577,7 +577,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[14]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -597,7 +597,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[15]",
-              "aria": "/document[1]/region[1]/application[5]"
+              "aria": "/document[1]/generic[1]/region[1]/application[5]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -616,7 +616,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[16]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -636,7 +636,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[17]",
-              "aria": "/document[1]/region[1]/application[6]"
+              "aria": "/document[1]/generic[1]/region[1]/application[6]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -655,7 +655,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[18]",
-              "aria": "/document[1]/region[1]/textbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -675,7 +675,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[19]",
-              "aria": "/document[1]/region[1]/application[7]"
+              "aria": "/document[1]/generic[1]/region[1]/application[7]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -694,7 +694,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[20]",
-              "aria": "/document[1]/region[1]/combobox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -713,7 +713,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[20]",
-              "aria": "/document[1]/region[1]/combobox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -733,7 +733,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[21]",
-              "aria": "/document[1]/region[1]/textbox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[3]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -753,7 +753,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[22]",
-              "aria": "/document[1]/region[1]/application[8]"
+              "aria": "/document[1]/generic[1]/region[1]/application[8]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -772,7 +772,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[23]",
-              "aria": "/document[1]/region[1]/textbox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[4]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -791,7 +791,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[23]",
-              "aria": "/document[1]/region[1]/textbox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[4]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -811,7 +811,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[24]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -831,7 +831,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[25]",
-              "aria": "/document[1]/region[1]/application[9]"
+              "aria": "/document[1]/generic[1]/region[1]/application[9]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -850,7 +850,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[28]",
-              "aria": "/document[1]/region[1]/button[4]"
+              "aria": "/document[1]/generic[1]/region[1]/button[4]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -870,7 +870,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[29]",
-              "aria": "/document[1]/region[1]/application[11]"
+              "aria": "/document[1]/generic[1]/region[1]/application[11]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -889,7 +889,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[30]",
-              "aria": "/document[1]/region[1]/button[5]"
+              "aria": "/document[1]/generic[1]/region[1]/button[5]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -908,7 +908,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[30]",
-              "aria": "/document[1]/region[1]/button[5]"
+              "aria": "/document[1]/generic[1]/region[1]/button[5]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -928,7 +928,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[31]",
-              "aria": "/document[1]/region[1]/link[3]"
+              "aria": "/document[1]/generic[1]/region[1]/link[3]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -947,7 +947,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[31]",
-              "aria": "/document[1]/region[1]/link[3]"
+              "aria": "/document[1]/generic[1]/region[1]/link[3]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -967,7 +967,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[32]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -987,7 +987,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[33]",
-              "aria": "/document[1]/region[1]/application[12]"
+              "aria": "/document[1]/generic[1]/region[1]/application[12]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1006,7 +1006,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[34]",
-              "aria": "/document[1]/region[1]/spinbutton[1]"
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1026,7 +1026,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[35]",
-              "aria": "/document[1]/region[1]/application[13]"
+              "aria": "/document[1]/generic[1]/region[1]/application[13]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1045,7 +1045,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[36]",
-              "aria": "/document[1]/region[1]/spinbutton[2]"
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1064,7 +1064,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[36]",
-              "aria": "/document[1]/region[1]/spinbutton[2]"
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1084,7 +1084,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[37]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1104,7 +1104,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[38]",
-              "aria": "/document[1]/region[1]/application[14]"
+              "aria": "/document[1]/generic[1]/region[1]/application[14]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1123,7 +1123,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[39]",
-              "aria": "/document[1]/region[1]/textbox[5]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[5]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'textbox' is not valid for the element <input>",
@@ -1142,7 +1142,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[40]",
-              "aria": "/document[1]/region[1]/radio[1]"
+              "aria": "/document[1]/generic[1]/region[1]/radio[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1162,7 +1162,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[41]",
-              "aria": "/document[1]/region[1]/application[15]"
+              "aria": "/document[1]/generic[1]/region[1]/application[15]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1181,7 +1181,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[42]",
-              "aria": "/document[1]/region[1]/radio[2]"
+              "aria": "/document[1]/generic[1]/region[1]/radio[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1200,7 +1200,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[42]",
-              "aria": "/document[1]/region[1]/radio[2]"
+              "aria": "/document[1]/generic[1]/region[1]/radio[2]"
             },
             "reasonId": "Fail_invalid_role_attr",
             "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"radio\"",
@@ -1220,7 +1220,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[43]",
-              "aria": "/document[1]/region[1]/menuitemradio[1]"
+              "aria": "/document[1]/generic[1]/region[1]/menuitemradio[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1239,7 +1239,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[43]",
-              "aria": "/document[1]/region[1]/menuitemradio[1]"
+              "aria": "/document[1]/generic[1]/region[1]/menuitemradio[1]"
             },
             "reasonId": "Fail_invalid_role_attr",
             "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemradio\"",
@@ -1259,7 +1259,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[44]",
-              "aria": "/document[1]/region[1]/slider[1]"
+              "aria": "/document[1]/generic[1]/region[1]/slider[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1279,7 +1279,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[45]",
-              "aria": "/document[1]/region[1]/application[16]"
+              "aria": "/document[1]/generic[1]/region[1]/application[16]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1298,7 +1298,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[46]",
-              "aria": "/document[1]/region[1]/slider[2]"
+              "aria": "/document[1]/generic[1]/region[1]/slider[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1317,7 +1317,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[46]",
-              "aria": "/document[1]/region[1]/slider[2]"
+              "aria": "/document[1]/generic[1]/region[1]/slider[2]"
             },
             "reasonId": "Fail_invalid_role_attr",
             "message": "The ARIA attributes \"aria-valuemax, aria-valuemin\" are not valid for the element <input> with ARIA role \"slider\"",
@@ -1337,7 +1337,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[47]",
-              "aria": "/document[1]/region[1]/button[6]"
+              "aria": "/document[1]/generic[1]/region[1]/button[6]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1357,7 +1357,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[48]",
-              "aria": "/document[1]/region[1]/application[17]"
+              "aria": "/document[1]/generic[1]/region[1]/application[17]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1376,7 +1376,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[49]",
-              "aria": "/document[1]/region[1]/button[7]"
+              "aria": "/document[1]/generic[1]/region[1]/button[7]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1395,7 +1395,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[49]",
-              "aria": "/document[1]/region[1]/button[7]"
+              "aria": "/document[1]/generic[1]/region[1]/button[7]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1415,7 +1415,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[50]",
-              "aria": "/document[1]/region[1]/searchbox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1435,7 +1435,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[51]",
-              "aria": "/document[1]/region[1]/application[18]"
+              "aria": "/document[1]/generic[1]/region[1]/application[18]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1454,7 +1454,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[52]",
-              "aria": "/document[1]/region[1]/searchbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1473,7 +1473,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[52]",
-              "aria": "/document[1]/region[1]/searchbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1493,7 +1493,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[53]",
-              "aria": "/document[1]/region[1]/searchbox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[3]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1513,7 +1513,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[54]",
-              "aria": "/document[1]/region[1]/application[19]"
+              "aria": "/document[1]/generic[1]/region[1]/application[19]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1532,7 +1532,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[55]",
-              "aria": "/document[1]/region[1]/combobox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1551,7 +1551,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[55]",
-              "aria": "/document[1]/region[1]/combobox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1571,7 +1571,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[56]",
-              "aria": "/document[1]/region[1]/button[8]"
+              "aria": "/document[1]/generic[1]/region[1]/button[8]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1591,7 +1591,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[57]",
-              "aria": "/document[1]/region[1]/application[20]"
+              "aria": "/document[1]/generic[1]/region[1]/application[20]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1610,7 +1610,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[58]",
-              "aria": "/document[1]/region[1]/button[9]"
+              "aria": "/document[1]/generic[1]/region[1]/button[9]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1629,7 +1629,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[58]",
-              "aria": "/document[1]/region[1]/button[9]"
+              "aria": "/document[1]/generic[1]/region[1]/button[9]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1649,7 +1649,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[59]",
-              "aria": "/document[1]/region[1]/textbox[6]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[6]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1669,7 +1669,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[60]",
-              "aria": "/document[1]/region[1]/application[21]"
+              "aria": "/document[1]/generic[1]/region[1]/application[21]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1688,7 +1688,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[61]",
-              "aria": "/document[1]/region[1]/textbox[7]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[7]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1707,7 +1707,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[61]",
-              "aria": "/document[1]/region[1]/textbox[7]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[7]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1727,7 +1727,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[62]",
-              "aria": "/document[1]/region[1]/textbox[8]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[5]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1747,7 +1747,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[63]",
-              "aria": "/document[1]/region[1]/application[22]"
+              "aria": "/document[1]/generic[1]/region[1]/application[22]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1766,7 +1766,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[64]",
-              "aria": "/document[1]/region[1]/combobox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1785,7 +1785,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[64]",
-              "aria": "/document[1]/region[1]/combobox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1805,7 +1805,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[65]",
-              "aria": "/document[1]/region[1]/textbox[9]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[8]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1825,7 +1825,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[66]",
-              "aria": "/document[1]/region[1]/application[23]"
+              "aria": "/document[1]/generic[1]/region[1]/application[23]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1844,7 +1844,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[67]",
-              "aria": "/document[1]/region[1]/textbox[10]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1863,7 +1863,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[67]",
-              "aria": "/document[1]/region[1]/textbox[10]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1883,7 +1883,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[68]",
-              "aria": "/document[1]/region[1]/textbox[11]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[7]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1903,7 +1903,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[69]",
-              "aria": "/document[1]/region[1]/application[24]"
+              "aria": "/document[1]/generic[1]/region[1]/application[24]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -1922,7 +1922,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[70]",
-              "aria": "/document[1]/region[1]/combobox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1941,7 +1941,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[70]",
-              "aria": "/document[1]/region[1]/combobox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1961,7 +1961,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[71]",
-              "aria": "/document[1]/region[1]/textbox[12]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[10]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1981,7 +1981,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[72]",
-              "aria": "/document[1]/region[1]/application[25]"
+              "aria": "/document[1]/generic[1]/region[1]/application[25]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -2000,7 +2000,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[73]",
-              "aria": "/document[1]/region[1]/textbox[13]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -2019,7 +2019,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[73]",
-              "aria": "/document[1]/region[1]/textbox[13]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2039,7 +2039,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[74]",
-              "aria": "/document[1]/region[1]/textbox[14]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[9]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2059,7 +2059,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[75]",
-              "aria": "/document[1]/region[1]/application[26]"
+              "aria": "/document[1]/generic[1]/region[1]/application[26]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -2078,7 +2078,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[76]",
-              "aria": "/document[1]/region[1]/combobox[5]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -2097,7 +2097,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[76]",
-              "aria": "/document[1]/region[1]/combobox[5]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2117,7 +2117,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[77]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2137,7 +2137,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[78]",
-              "aria": "/document[1]/region[1]/application[27]"
+              "aria": "/document[1]/generic[1]/region[1]/application[27]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -2156,7 +2156,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[79]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2176,7 +2176,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[80]",
-              "aria": "/document[1]/region[1]/application[28]"
+              "aria": "/document[1]/generic[1]/region[1]/application[28]"
             },
             "reasonId": "Fail_1",
             "message": "The ARIA role 'application' is not valid for the element <input>",
@@ -2195,7 +2195,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[81]",
-              "aria": "/document[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",

@@ -12,10 +12,11 @@
   "jest": {
     "setupFilesAfterEnv": [
       "./setupAfterEnv.js"
-    ]
+    ],
+    "transformIgnorePatterns": ["ace-node\\.js"]
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.1",
+    "accessibility-checker": "^3.1.45",
     "jest": "^26.0.1"
   }
 }

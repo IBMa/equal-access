@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getCache, setCache } from "../util/CacheUtil";
+import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
@@ -44,39 +44,30 @@ export let aria_attribute_conflict: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-
-        if (getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
-  
-        let domAttributes = ruleContext.attributes;
-        let ariaAttrs = [];
-        let htmlAttrs = [];
-        if (domAttributes) {
-            for (let i = 0; i < domAttributes.length; i++) {
-                let attrName = domAttributes[i].name.trim().toLowerCase(); 
-                let attrValue = ruleContext.getAttribute(attrName);
-                if (attrValue === '') attrValue = null;
-                if (attrName.substring(0, 5) === 'aria-') 
-                    ariaAttrs.push({name: attrName, value: attrValue});
-                else 
-                    htmlAttrs.push({name: attrName, value: attrValue});
-            }
-        }
+        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        if (invalidAttributes && invalidAttributes.length > 0)
+            return null;
+        
         let ret = [];
-        for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'conflict');
-            if (examinedHtmlAtrNames === null) continue;
-            examinedHtmlAtrNames.forEach(item => {
-                if (item['result'] === 'Pass') { //pass
-                    ret.push(RulePass("pass"));
-                } else if (item['result'] === 'Failed') { //failed
-                    setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
-                    ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
-                }
-            });    
-        }    
+        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+        if (!ariaAttributes || ariaAttributes.length ===0)
+            return null;
+
+        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        for (let i = 0; i < conflictAttributes.length; i++) {
+            ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
+            if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
+                RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
+        }
+
+        for (let i = 0; i < ariaAttributes.length; i++)
+            ret.push(RulePass("pass"));
+        
         if (ret.length > 0) 
             return ret;
-        return null;    
+
+        return null;  
     }
 }

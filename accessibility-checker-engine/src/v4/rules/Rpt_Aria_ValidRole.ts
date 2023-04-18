@@ -12,7 +12,7 @@
  *****************************************************************************/
 
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let Rpt_Aria_ValidRole: Rule = {

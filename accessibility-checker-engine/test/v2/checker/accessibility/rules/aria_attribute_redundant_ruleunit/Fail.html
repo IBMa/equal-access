@@ -72,7 +72,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]/input[1]",
-              "aria": "/document[1]/textbox[1]"
+              "aria": "/document[1]/form[1]/textbox[1]"
             },
             "reasonId": "fail_redundant",
             "message": "The ARIA attribute \"aria-required\" is redundant with the HTML attribute \"required\"",
@@ -91,7 +91,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[3]/input[1]",
-              "aria": "/document[1]/textbox[4]"
+              "aria": "/document[1]/form[3]/textbox[1]"
             },
             "reasonId": "fail_redundant",
             "message": "The ARIA attribute \"aria-readonly\" is redundant with the HTML attribute \"readonly\"",
@@ -110,51 +110,13 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[4]/input[2]",
-              "aria": "/document[1]/textbox[6]"
+              "aria": "/document[1]/form[4]/textbox[2]"
             },
             "reasonId": "fail_redundant",
             "message": "The ARIA attribute \"aria-disabled\" is redundant with the HTML attribute \"disabled\"",
             "messageArgs": [
               "aria-disabled",
               "disabled"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_attribute_redundant",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[3]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_redundant",
-            "message": "The ARIA attribute \"aria-colspan\" is redundant with the HTML attribute \"colspan\"",
-            "messageArgs": [
-              "aria-colspan",
-              "colspan"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_attribute_redundant",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[4]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_redundant",
-            "message": "The ARIA attribute \"aria-rowspan\" is redundant with the HTML attribute \"rowspan\"",
-            "messageArgs": [
-              "aria-rowspan",
-              "rowspan"
             ],
             "apiArgs": [],
             "category": "Accessibility"
