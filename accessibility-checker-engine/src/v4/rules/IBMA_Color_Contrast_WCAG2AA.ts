@@ -80,9 +80,17 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         // Ensure that this element has children with actual text.
         let childStr = RPTUtil.getNodeText(ruleContext);
         
-        if (childStr.trim().length == 0 && (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')))
-            return null;
-        
+        if (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')) {
+            if (childStr.trim().length == 0 )
+                return null;
+            
+            // ignore if the text does not convey anything in human language
+            //const removed = childStr.replace(/[\u0000-\u0008,\u000A-\u001F,\u007F-\u00A0]+/g, '');
+            const removed = childStr.replace(/[\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g, '');
+            if (removed.length === 0)
+                return null;
+        }
+
         let elem = ruleContext;
         // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
         // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
