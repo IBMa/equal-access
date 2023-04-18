@@ -34,14 +34,13 @@
         @include type-style("label-02");
         margin-top: 10px;
         pointer-events: none;
-        opacity: 0.4;
+        color: $text-disabled;
         text-align: right;
     }
     .totalCountEnable {
         @include type-style("label-02");
         margin-top: 10px;
         pointer-events: auto;
-        opacity: 1.0;
         text-align: right;
     }
     
