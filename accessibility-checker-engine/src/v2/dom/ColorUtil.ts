@@ -225,6 +225,7 @@ export class ColorUtil {
         var retVal = {
             "hasGradient": false,
             "hasBGImage": false,
+            "textShadow": false,
             "fg": null,
             "bg": null
         };
@@ -376,6 +377,10 @@ export class ColorUtil {
         }
         retVal.fg = fg;
         retVal.bg = priorStackBG;
+
+        if (cStyle.textShadow && cStyle.textShadow !== 'none')
+            retVal.textShadow = true;
+
         return retVal;
     } catch (err) {
         // something happened, then...

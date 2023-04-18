@@ -28,7 +28,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             "Pass_0": `IBMA_Color_Contrast_WCAG2AA.html`,
             "Fail_1": `IBMA_Color_Contrast_WCAG2AA.html`,
             "Potential_same_color": `IBMA_Color_Contrast_WCAG2AA.html`,
-            "Potential_graphic_background": `IBMA_Color_Contrast_WCAG2AA.html`
+            "Potential_graphic_background": `IBMA_Color_Contrast_WCAG2AA.html`,
+            "Potential_text_shadow": `IBMA_Color_Contrast_WCAG2AA.html`
         }
     },
     messages: {
@@ -37,7 +38,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             "Pass_0": "Rule Passed",
             "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
             "Potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast",
-            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"
+            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}",
+            "Potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"
         }
     },
     rulesets: [{
@@ -241,6 +243,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
+        let textShadow = colorCombo.textShadow;
         let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
             let control = RPTUtil.getControlOfLabel(elem);
@@ -272,8 +275,11 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         }
         if (!passed) {
             if (hasBackground) {
-                // fire potential since a text on an image or gradient can still viewable, depending on the text location on the gradient or image
+                // fire potential since a text on an image or gradient may be still viewable, depending on the text location on the gradient or image
                 return RulePotential("Potential_graphic_background", [ratio.toFixed(2), size, weight]);;
+            } else if (textShadow) {
+                // fire potential since a text with shadow may be still viewable, depending on the shadow efffects
+                return RulePotential("Potential_text_shadow", [ratio.toFixed(2), size, weight]);;
             } else {
                 if (fg.toHex() === bg.toHex()) {
                     return RulePotential("Potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
