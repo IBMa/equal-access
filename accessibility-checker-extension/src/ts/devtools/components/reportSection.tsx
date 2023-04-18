@@ -268,11 +268,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                     </>
                 })}
                 
-                {totalCount === 0 ? disableDiv = true : disableDiv = false}
-                <Column sm={1} md={2} lg={2} className={disableDiv ? "totalCountDisable" : "totalCountEnable"} >
+                <Column sm={1} md={2} lg={2} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
                     <Link 
                         id="totalIssuesCount" 
-                        className= {disableDiv ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                        className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                        aria-disabled={totalCount === 0}
                         inline={true}
                         onClick={() => {
                             let appController = getDevtoolsAppController();
