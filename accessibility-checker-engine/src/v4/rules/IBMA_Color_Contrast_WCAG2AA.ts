@@ -85,8 +85,14 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 return null;
             
             // ignore if the text does not convey anything in human language
-            //const removed = childStr.replace(/[\u0000-\u0008,\u000A-\u001F,\u007F-\u00A0]+/g, '');
-            const removed = childStr.replace(/[\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g, '');
+            /** 
+             * (1) ignore non-alphanumeric or special characters in ASCI: ^(a-zA-Z\d\s)
+             * (2) ignore non-printable unicode characters: \u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF
+             *  see https://stackoverflow.com/questions/3770117/what-is-the-range-of-unicode-printable-characters
+             * (3) for now not consider unicode special characters that are different in different languages
+            */
+            let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
+            const removed = childStr.trim().replace(regex, '');
             if (removed.length === 0)
                 return null;
         }
