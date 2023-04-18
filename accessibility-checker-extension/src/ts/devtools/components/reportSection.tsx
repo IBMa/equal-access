@@ -214,7 +214,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         }
 
         let totalCount = 0;
-        let disableDiv = false;
         let filterSection = <>
             <div className="reportFilterBorder" />
             <Grid className="reportFilterSection">
