@@ -13,7 +13,7 @@ then
     docker build --tag rules:main .
     docker tag rules:main us.icr.io/able/rules:main
     docker push us.icr.io/able/rules:main
-    ibmcloud ce project select -n able
+    ibmcloud ce project select -n able-main
     ibmcloud ce app update --name rules-main
 elif [[ "$TRAVIS_BRANCH" == "sandbox" ]]
 then
@@ -29,7 +29,7 @@ then
     docker build --tag rules:prod .
     docker tag rules:prod us.icr.io/able/rules:prod
     docker push us.icr.io/able/rules:prod
-    ibmcloud ce project select -n able-main
+    ibmcloud ce project select -n able
     ibmcloud ce app update --name rules-prod
 fi
 
