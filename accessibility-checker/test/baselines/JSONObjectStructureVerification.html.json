@@ -533,7 +533,7 @@
 		},
 		"reasonId": "Pass_0",
 		"message": "Rule Passed",
-		"messageArgs": ["21.00", 32, 700],
+		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
 			"left": 8,
@@ -1646,7 +1646,7 @@
 		},
 		"reasonId": "Pass_0",
 		"message": "Rule Passed",
-		"messageArgs": ["9.40", 16, 400],
+		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
 			"left": 8,

@@ -654,7 +654,7 @@
 		},
 		"category": "Accessibility",
 		"message": "Rule Passed",
-		"messageArgs": ["21.00", 32, 700],
+		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]/heading[1]",
 			"dom": "/html[1]/body[1]/div[2]/h1[1]"
@@ -1767,7 +1767,7 @@
 		},
 		"category": "Accessibility",
 		"message": "Rule Passed",
-		"messageArgs": ["9.40", 16, 400],
+		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/navigation[1]/link[1]",
 			"dom": "/html[1]/body[1]/div[1]/a[1]"
