@@ -105,6 +105,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             this.setState({scanningState: newState });
         });
         devtoolsController.addViewStateListener(async (newState) => {
+            console.log("addViewStateListener")
             this.setState( { viewState: newState });
         })
         devtoolsController.addStoreReportsListener(async (newState) => {
@@ -263,6 +264,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             disabled={!this.state.reportContent}
                             iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             onClick={async () => {
+                                console.log("KCM button clicked");
                                 let settings = await bgController.getSettings();
                                 let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));                                
                                 newState.kcm = !newState.kcm;
@@ -278,7 +280,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         devtoolsAppController.closeSecondary();
                                     }
                                 }
+                                console.log("this.state.viewState = ",this.state.viewState);
                                 await devtoolsController.setViewState(newState);
+                                console.log("this.state.viewState = ",this.state.viewState);
                             }}
                             size="sm"
                             kind="secondary"
