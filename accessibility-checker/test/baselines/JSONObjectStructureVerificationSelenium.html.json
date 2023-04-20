@@ -57,10 +57,6 @@
 			"0": "Interactive WAI_ARIA UI components must provide keyboard access",
 			"pass": "Rule Passed"
 		},
-		"Rpt_Aria_MultipleDocumentRoles": {
-			"0": "All elements with a \"document\" role must have unique labels",
-			"Pass_0": "Rule Passed"
-		},
 		"Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
 			"0": "All content must reside within an element with a landmark role",
 			"Pass_0": "Rule Passed"
@@ -122,7 +118,7 @@
 			"pass": "Rule Passed"
 		}
 	},
-	"numExecuted": 113,
+	"numExecuted": 112,
 	"results": [{
 		"apiArgs": [],
 		"bounds": {
@@ -2428,27 +2424,6 @@
 			"dom": "/html[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "Rpt_Aria_MultipleDocumentRoles",
-		"snippet": "<html lang=\"en\">",
-		"value": ["VIOLATION", "PASS"],
-		"ignored": false,
-		"level": "pass"
-	}, {
-		"apiArgs": [],
-		"bounds": {
-			"height": 999,
-			"left": 0,
-			"top": 0,
-			"width": 999
-		},
-		"category": "Accessibility",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"path": {
-			"aria": "/document[1]",
-			"dom": "/html[1]"
-		},
-		"reasonId": "Pass_0",
 		"ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
 		"snippet": "<html lang=\"en\">",
 		"value": ["VIOLATION", "PASS"],
@@ -2504,7 +2479,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 112,
+			"pass": 111,
 			"ignored": 0
 		},
 		"scanTime": 999,
