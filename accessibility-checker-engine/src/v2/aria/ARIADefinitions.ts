@@ -1710,6 +1710,7 @@ export class ARIADefinitions {
         "body": {
             implicitRole: ["generic"],
             validRoles: null,
+            otherDisallowedAriaAttributes: ['aria-hidden'],
             globalAriaAttributesValid: true
         },
         "br": {
