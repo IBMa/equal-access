@@ -48,7 +48,7 @@ module.exports = {
         path: distRootPath,
         filename: '[name].js',
     },
-    optimization: nodeEnv.includes("watch") ? {
+    optimization: nodeEnv.includes("watch") || nodeEnv.includes("production") ? {
         minimize: false
     } : {
         splitChunks: {
