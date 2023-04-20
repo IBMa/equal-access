@@ -2052,6 +2052,11 @@ export class ARIADefinitions {
             validRoles: null,
             globalAriaAttributesValid: false
         },
+        "search": {
+            implicitRole: ['search'],
+            validRoles: ['search', 'form', 'group', 'none', 'presentation', 'region'],
+            globalAriaAttributesValid: true
+        },
         "slot": {
             implicitRole: null,
             validRoles: null,
