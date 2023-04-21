@@ -46,9 +46,11 @@ export class DOMMapper extends CommonMapper {
     
             // Do a check whether bounds has value as we use different tool (htmlUnit, browser) to call this function
             if (bounds) {
+                let scrollX = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollX || 0;
+                let scrollY = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollY || 0;
                 return {
-                    "left": Math.ceil(bounds.left * adjustment),
-                    "top": Math.ceil(bounds.top * adjustment),
+                    "left": Math.ceil((bounds.left + scrollX) * adjustment),
+                    "top": Math.ceil((bounds.top + scrollY) * adjustment),
                     "height": Math.ceil(bounds.height * adjustment),
                     "width": Math.ceil(bounds.width * adjustment)
                 };
