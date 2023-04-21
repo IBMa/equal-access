@@ -27,9 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: report-react
-    - run: npm install
+    - run: npm clean-install
       working-directory: accessibility-checker-extension
-    - run: npm clean:all
     - run: npm install
       working-directory: rule-server
     - run: npm run build
