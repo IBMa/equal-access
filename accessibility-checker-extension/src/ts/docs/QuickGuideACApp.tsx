@@ -25,7 +25,7 @@ import kbIssues from "../../assets/keyboard_issue.svg";
 import element from "../../assets/element.svg";
 import { DocPage } from "./components/DocPage";
 import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
-import "./quickGuide.scss";
+import "./quickguide.scss";
 
 interface quickGuideACAppState { }
 

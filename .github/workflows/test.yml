@@ -391,7 +391,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: report-react
-    - run: npm clean-install
+    - run: npm install
       working-directory: accessibility-checker-extension
     - run: npm install
       working-directory: rule-server
