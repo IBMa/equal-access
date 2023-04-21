@@ -393,8 +393,6 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
-    - run: npm clean:all
-    
     - run: npm install
       working-directory: rule-server
     - run: npm run build
