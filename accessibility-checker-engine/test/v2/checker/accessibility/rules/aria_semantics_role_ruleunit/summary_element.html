@@ -27,8 +27,20 @@
 <body id="id-9" aria-atomic="true">
     <details aria-hidden="true">
         <summary>Some button</summary>
+        <summary>Another button</summary>
         <p>Some details</p>
     </details>
+    <details>
+        <summary>Overview</summary>
+        <ol>
+          <li>Cash on hand: $500.00</li>
+          <li>Current invoice: $75.30</li>
+          <li>Due date: 5/6/19</li>
+        </ol>
+      </details>
+      <ul role=none>
+        <li role="button" ...>li element</li> <!-- allowed because ul is no longer a 'list' -->
+      </ul>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["aria_hidden_focus_misuse"],

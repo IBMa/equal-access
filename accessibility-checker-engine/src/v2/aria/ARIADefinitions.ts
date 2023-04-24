@@ -2087,7 +2087,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "summary": {
-            implicitRole: ["button"],
+            implicitRole: null,
             validRoles: null,
             globalAriaAttributesValid: true
         },
