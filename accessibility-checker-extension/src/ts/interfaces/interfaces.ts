@@ -75,7 +75,7 @@ export type IssueValue = [
 export interface IIssue {
     ruleId: string
     value: IssueValue
-    node: Node
+    node?: Node
     path: {
         dom: string
         aria: string

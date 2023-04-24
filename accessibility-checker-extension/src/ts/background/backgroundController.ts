@@ -69,8 +69,10 @@ class BackgroundController extends Controller {
 
             // Move any existing object out of the way
             await myExecuteScript2(tabId, () => {
-                delete (window as any).aceIBMa;
-                (window as any).aceIBMaTemp =  (window as any).ace;
+                // delete (window as any).aceIBMa;
+                if (typeof (window as any).ace !== "undefined") {
+                    (window as any).aceIBMaTemp = (window as any).ace;
+                }
             });
 
             // Switch to the appropriate engine for this archiveId
@@ -90,8 +92,12 @@ class BackgroundController extends Controller {
             // Move ace to aceIBMa and move the old ace back
             await myExecuteScript2(tabId, () => {
                 ((window as any).aceIBMa = (window as any).ace);
-                (window as any).ace = (window as any).aceIBMaTemp;
-                delete (window as any).aceIBMaTemp;
+                if (typeof (window as any).aceIBMaTemp !== "undefined") {
+                    (window as any).ace = (window as any).aceIBMaTemp;
+                    delete (window as any).aceIBMaTemp;
+                } else {
+                    delete (window as any).ace;
+                }
             })
         });
     }
@@ -239,6 +245,7 @@ class BackgroundController extends Controller {
                                     };
                                     result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
                                 }
+                                delete result.node;
                             }
                             return report;
                         } catch (err) {
@@ -399,10 +406,15 @@ function myExecuteScript(
         chrome.scripting.executeScript(params, pCB);
     } else {
         if (params.func) {
+            let argStr = "";
+            if (params.args) {
+                argStr = JSON.stringify(params.args, null, 2);
+                argStr = argStr.substring(1,argStr.length-1);
+            }
             chrome.tabs.executeScript(
                 params.target.tabId as number,
                 { 
-                    code: `(${params.func.toString()})()`,
+                    code: `(${params.func.toString()})(${argStr})`,
                     frameId: params.target.frameIds[0],
                     matchAboutBlank: true
                 },
@@ -412,7 +424,8 @@ function myExecuteScript(
                     } else {
                         pCB && pCB(res.map(item => ({ result: item })));
                     }
-                })
+                }
+            )
         } else {
             chrome.tabs.executeScript(
                 params.target.tabId as number,
@@ -426,7 +439,8 @@ function myExecuteScript(
                         chrome.tabs.executeScript(
                             params.target.tabId as number,
                             { 
-                                code: `window.aceIBMa = ace`,
+                                // The calling code moves it from ace to aceIBMa, so don't do it here or it confuses the calling code
+                                code: `window.ace = ace`,
                                 frameId: params.target.frameIds[0],
                                 matchAboutBlank: true
                             },
