@@ -266,11 +266,17 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         </Column>
                     </>
                 })}
-                <Column sm={1} md={2} lg={2} className="totalCount">
-                    <Link id="totalIssuesCount" className="darkLink" inline={true} onClick={() => {
-                        let appController = getDevtoolsAppController();
-                        appController.setSecondaryView("summary");
-                        appController.openSecondary("totalIssuesCount");
+                
+                <Column sm={1} md={2} lg={2} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+                    <Link 
+                        id="totalIssuesCount" 
+                        className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                        aria-disabled={totalCount === 0}
+                        inline={true}
+                        onClick={() => {
+                            let appController = getDevtoolsAppController();
+                            appController.setSecondaryView("summary");
+                            appController.openSecondary("totalIssuesCount");
                     }}>{totalCount} issues found</Link>
                 </Column>
             </Grid>
