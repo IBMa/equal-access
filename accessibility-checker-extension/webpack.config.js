@@ -53,7 +53,9 @@ module.exports = {
     } : {
         splitChunks: {
             maxSize: 3500000,
-            chunks: "all"
+            chunks(chunk) {
+              return chunk.name !== "background"; // Don't chunk the background script. Chrome doesn't register the service_worker listeners if we do.
+            }
         }
     },
     resolve: {

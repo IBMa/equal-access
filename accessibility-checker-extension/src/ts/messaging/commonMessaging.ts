@@ -88,6 +88,7 @@ export class CommonMessaging {
             return null;
         }
         chrome.runtime.onMessage.addListener(thisListener);
+        Config.DEBUG && console.log(`[INFO] listening to types: ${types}`);
         this.listenerMetas.push({ 
             types, 
             listeningTabId, 
@@ -125,7 +126,7 @@ export class CommonMessaging {
                             if (shouldRetry && (!retry || retry <= 3)) {
                                 setTimeout(async () => {
                                     resolve(await this.send(message, (retry || 0) + 1));
-                                },0);
+                                },1000);
                             } else {
                                 if (chrome.runtime.lastError.message?.includes("The message port closed")
                                     || chrome.runtime.lastError.message?.includes("Receiving end does not exist")) 
