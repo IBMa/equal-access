@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const ExtensionReloader = require('webpack-ext-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 
 const sourceRootPath = path.join(__dirname, 'src');
 const archivePath = path.join(__dirname, '..', 'rule-server', 'dist', 'static');
@@ -54,9 +55,12 @@ module.exports = {
         splitChunks: {
             maxSize: 3500000,
             chunks(chunk) {
-              return chunk.name !== "background"; // Don't chunk the background script. Chrome doesn't register the service_worker listeners if we do.
+              return chunk.name !== "background" && chunk.name !== "viewKCM" && chunk.name !== "viewInspect"; // Don't chunk the background script. Chrome doesn't register the service_worker listeners if we do.
             }
-        }
+        },
+        minimizer: [new TerserPlugin({
+            exclude: /view(Inspect|KCM)/,
+        })]
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
