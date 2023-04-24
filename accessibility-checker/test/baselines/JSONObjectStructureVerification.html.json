@@ -2289,27 +2289,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "Rpt_Aria_MultipleDocumentRoles",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 144,
-			"width": 800
-		},
-		"snippet": "<html lang=\"en\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2373,7 +2352,7 @@
 		"ignored": false,
 		"level": "pass"
 	}],
-	"numExecuted": 113,
+	"numExecuted": 112,
 	"nls": {
 		"html_lang_valid": {
 			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
@@ -2401,10 +2380,6 @@
 		},
 		"WCAG20_Text_Emoticons": {
 			"0": "Emoticons must have a short text alternative that describes their purpose",
-			"Pass_0": "Rule Passed"
-		},
-		"Rpt_Aria_MultipleDocumentRoles": {
-			"0": "All elements with a \"document\" role must have unique labels",
 			"Pass_0": "Rule Passed"
 		},
 		"IBMA_Color_Contrast_WCAG2AA_PV": {
@@ -2504,7 +2479,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 112,
+			"pass": 111,
 			"ignored": 0
 		},
 		"scanTime": 999,

@@ -31,6 +31,7 @@ export class DOMWalker {
     }
 
     static parentNode(node: Node) : Node | null {
+        if (node === null) return null;
         let p : Node = node.parentNode;
         if ((node as any).slotOwner) {
             p = (node as any).slotOwner;
@@ -55,6 +56,7 @@ export class DOMWalker {
     }
     
     static isNodeVisible(node: Node) {
+        if (node === null) return false;
         try {
             let vis = null;
             while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
