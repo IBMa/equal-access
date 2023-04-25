@@ -161,7 +161,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem"}}>
                         <div style={{flex: "0 1 8.75rem"}}>
                             <div style={{display: "flex"}}>
-                                <div style={{flex: "1 1 8.75rem" }}>
+                                <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem" }}>
                                     {this.state.scanningState !== "idle" && <InlineLoading 
                                         className="inlineLoading"
                                         description={"Scanning"}
