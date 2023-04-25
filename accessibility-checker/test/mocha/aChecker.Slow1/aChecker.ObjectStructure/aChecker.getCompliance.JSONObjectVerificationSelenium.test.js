@@ -61,7 +61,9 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 spath = require('chromedriver').path;
             }
             var service = new chrome.ServiceBuilder(spath).build();
-            chrome.setDefaultService(service);
+            // setDefaultService function is removed since web-driver v4.3.1+
+            //chrome.setDefaultService(service);
+            chrome.Driver.createSession(new chrome.Options(), service);
 
             const options = new chrome.Options();
             options.addArguments("--disable-dev-shm-usage");
