@@ -85,7 +85,8 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     Config.DEBUG && console.log("START 'aChecker.getCompliance' function");
     if (!content) {
         console.error("aChecker: Unable to get compliance of null or undefined object")
-        return null;
+        //return null;
+        return Promise.reject("aChecker: Unable to get compliance of null or undefined object");
     }
 
     // Variable Decleration
@@ -141,7 +142,10 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     }
 
     let parsed = await getParsed(content);
-    if (parsed === null) return null;
+    if (!parsed) {
+        console.error("Invalid content: " + content);
+        return Promise.reject("Invalid content: " + content);
+    }
     await ACEngineManager.loadEngine(parsed);
     // In the case that the label is null or undefined, throw an error using the karma API
     // console.error with the message of the error.
