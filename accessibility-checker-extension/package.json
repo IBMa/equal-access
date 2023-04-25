@@ -33,7 +33,7 @@
 		"webext-redux": "^2.1.9"
 	},
 	"devDependencies": {
-		"@svgr/webpack": "^6.1.2",
+		"@svgr/webpack": "^7.0.0",
 		"@types/chrome": "^0.0.171",
 		"@types/jest": "^27.0.3",
 		"@types/markdown-to-jsx": "^7.0.0",
