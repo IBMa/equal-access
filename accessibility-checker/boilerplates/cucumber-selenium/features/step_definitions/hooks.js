@@ -31,7 +31,7 @@ function getBrowserChrome() {
     let service = new chrome.ServiceBuilder(spath).build();
     // setDefaultService function is removed since web-driver v4.3.1+
     //chrome.setDefaultService(service);
-    chrome.Driver.createSession(new chrome.Options(), service);
+    chrome.Driver.createSession(options, service);
 
     return new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
