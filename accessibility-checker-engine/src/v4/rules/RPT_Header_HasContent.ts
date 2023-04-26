@@ -27,7 +27,7 @@ export let RPT_Header_HasContent: Rule = {
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
+            "Pass_0": "Heading element has descriptive text",
             "Fail_1": "Heading element has no descriptive content",
             "group": "Heading elements must provide descriptive text"
         }
@@ -35,7 +35,7 @@ export let RPT_Header_HasContent: Rule = {
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["2.4.6"],
-        "level": eRulePolicy.VIOLATION,
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
