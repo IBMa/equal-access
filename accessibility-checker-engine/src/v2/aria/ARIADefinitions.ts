@@ -2086,11 +2086,6 @@ export class ARIADefinitions {
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
-        "summary": {
-            implicitRole: null,
-            validRoles: null,
-            globalAriaAttributesValid: true
-        },
         "sup": {
             implicitRole: ["superscript"],
             validRoles: ["any"],
@@ -2502,6 +2497,19 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherDisallowedAriaAttributes: ["aria-multiselectable"]
+            }
+        },
+        "summary": {
+            "first-summary-of-detail": {
+                implicitRole: null,
+                validRoles: null,
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-disabled", "aria-haspopup"]
+            },
+            "not-first-summary-of-detail": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
             }
         },
         "tbody": {

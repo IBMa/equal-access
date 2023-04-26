@@ -21,6 +21,7 @@ import { DOMWalker } from "../../../dom/DOMWalker";
 import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
 import { getDefinedStyles } from "../../../../v4/util/CSSUtil";
+import { DOMUtil } from "../../../dom/DOMUtil";
 
 export class RPTUtil {
 
@@ -376,7 +377,15 @@ export class RPTUtil {
         "video": function (element) {
             return element.hasAttribute("controls");
         },
-        "summary": true
+        "summary": function (element) {
+            // first summary child of a details element is automatically focusable 
+            return element.parentElement && element.parentElement.nodeName.toLowerCase() === 'details' 
+                   && DOMUtil.sameNode([...element.parentElement.children].filter(elem=>elem.nodeName.toLowerCase() === 'summary')[0], element);
+        },
+        "details": function (element) {
+            //details element without a direct summary child is automatically focusable
+            return element.children && [...element.children].filter(elem=>elem.nodeName.toLowerCase() === 'summary').length === 0;
+        }
     }
 
     public static wordCount(str) : number {
@@ -2559,6 +2568,15 @@ export class RPTUtil {
                         else
                             tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
                         break;
+                    case "summary":
+                        specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["summary"];
+                        
+                        if (ruleContext.parentElement && ruleContext.parentElement.nodeName.toLowerCase() === 'details' 
+                            && DOMUtil.sameNode([...ruleContext.parentElement.children].filter(elem=>elem.nodeName.toLowerCase() === 'summary')[0], ruleContext))
+                            tagProperty = specialTagProperties["first-summary-of-detail"];
+                        else
+                            tagProperty = specialTagProperties["no-first-summary-of-detail"];
+                        break;    
                     case "tbody":
                     case "td":
                     case "tr":

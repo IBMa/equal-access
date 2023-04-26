@@ -26,75 +26,492 @@
 
 <body id="id-9" aria-atomic="true">
     <details aria-hidden="true">
-        <summary>Some button</summary>
-        <summary>Another button</summary>
-        <p>Some details</p>
-    </details>
-    <details>
-        <summary>Overview</summary>
+        <summary>first summary</summary>
         <ol>
-          <li>Cash on hand: $500.00</li>
-          <li>Current invoice: $75.30</li>
-          <li>Due date: 5/6/19</li>
+            <li>first content 1</li>
+            <li>first content 2</li>
         </ol>
-      </details>
-      <ul role=none>
-        <li role="button" ...>li element</li> <!-- allowed because ul is no longer a 'list' -->
-      </ul>
+        <summary>Second summary</summary>
+        <ol>
+            <li>second content 1</li>
+            <li>second content 2</li>
+        </ol>
+    </details>
+    
+    <details aria-hidden="true">
+        <ol>
+            <li>third content 1</li>
+            <li>third content 2</li>
+        </ol>
+        <summary>Third summary</summary>
+    </details>
+
+    <details aria-hidden="true">
+        <div>
+            <summary>Forth summary</summary>
+            <ol>
+                <li>fourth content 1</li>
+                <li>fourth content 2</li>
+            </ol>
+        </div>
+    </details>
+
+    <div aria-hidden="true">
+        <summary>Fifth summary</summary>
+        <ol>
+            <li>fifth content 1</li>
+            <li>fifth content 2</li>
+        </ol>
+    </div>
+    
+    <details aria-hidden="true">
+        <p>Sixth details</p>
+    </details>
+
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["aria_hidden_focus_misuse"],
             results: [
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/details[1]",
-                        "aria": "/document[1]/generic[1]/group[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/details[1]/summary[1]",
-                        "aria": "/document[1]/generic[1]/group[1]"
-                    },
-                    "reasonId": "Fail_1",
-                    "message": "Element \"summary\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
-                    "messageArgs": [
-                        "summary"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/details[1]/p[1]",
-                        "aria": "/document[1]/generic[1]/group[1]/paragraph[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]",
+              "aria": "/document[1]/generic[1]/group[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Element \"summary\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
+            "messageArgs": [
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[1]",
+              "aria": "/document[1]/generic[1]/group[1]/list[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[1]/li[1]",
+              "aria": "/document[1]/generic[1]/group[1]/list[1]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[1]/li[2]",
+              "aria": "/document[1]/generic[1]/group[1]/list[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/summary[2]",
+              "aria": "/document[1]/generic[1]/group[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[2]",
+              "aria": "/document[1]/generic[1]/group[1]/list[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[2]/li[1]",
+              "aria": "/document[1]/generic[1]/group[1]/list[2]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/ol[2]/li[2]",
+              "aria": "/document[1]/generic[1]/group[1]/list[2]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]",
+              "aria": "/document[1]/generic[1]/group[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]/ol[1]",
+              "aria": "/document[1]/generic[1]/group[2]/list[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]/ol[1]/li[1]",
+              "aria": "/document[1]/generic[1]/group[2]/list[1]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]/ol[1]/li[2]",
+              "aria": "/document[1]/generic[1]/group[2]/list[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Element \"summary\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
+            "messageArgs": [
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]",
+              "aria": "/document[1]/generic[1]/group[3]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Element \"details\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
+            "messageArgs": [
+              "details"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]",
+              "aria": "/document[1]/generic[1]/group[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]/ol[1]",
+              "aria": "/document[1]/generic[1]/group[3]/list[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]/ol[1]/li[1]",
+              "aria": "/document[1]/generic[1]/group[3]/list[1]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]/ol[1]/li[2]",
+              "aria": "/document[1]/generic[1]/group[3]/list[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/generic[1]/generic[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/generic[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/ol[1]",
+              "aria": "/document[1]/generic[1]/generic[1]/list[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/ol[1]/li[1]",
+              "aria": "/document[1]/generic[1]/generic[1]/list[1]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/ol[1]/li[2]",
+              "aria": "/document[1]/generic[1]/generic[1]/list[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[4]",
+              "aria": "/document[1]/generic[1]/group[4]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Element \"details\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
+            "messageArgs": [
+              "details"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[4]/p[1]",
+              "aria": "/document[1]/generic[1]/group[4]/paragraph[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>
