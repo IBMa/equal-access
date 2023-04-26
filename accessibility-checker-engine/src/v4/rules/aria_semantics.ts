@@ -19,7 +19,7 @@ import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvali
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
     context: "dom:*",
-    dependencies: ["Rpt_Aria_ValidProperty"],
+    dependencies: ["aria_property_valid"],
     help: {
         "en-US": {
             "Pass_0": "aria_semantics_role.html",
