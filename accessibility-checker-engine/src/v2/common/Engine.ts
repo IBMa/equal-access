@@ -493,6 +493,11 @@ export class Engine implements IEngine {
         return this.sortDeps(matches);
     }
 
+    /**
+     * Sorts the rules in order to execute dependencies in the correct order
+     * @param inRules List of wrapped rules to sort
+     * @returns Sorted list of wrapped rules
+     */
     sortDeps(inRules: WrappedRule[]) {
         let depRules: WrappedRule[] = [];
         for (const rule of inRules) {
@@ -501,7 +506,9 @@ export class Engine implements IEngine {
         
         let retVal : WrappedRule[] = [];
         let idToRule = {};
-        // Iterate through rules and put them in an order where dependencies are satisfied and dupes removed
+        // Iterate through the rules. If that rule's dependencies can be met by rules already in the list, add it to the list
+        // Repeat until no changes are made to the satisfied list
+        // If a rule cannot be satisfied, it will never execute, so it can be dropped.
         let change = false;
         do {
             change = false;
