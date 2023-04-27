@@ -59,7 +59,7 @@ export let page_title_valid: Rule = {
         }
 
         if (titleStr.length === 0) {
-            // This is covered by WCAG20_Doc_HasTitle
+            // This is covered by page_title_exists
             return null;//RuleFail("Fail_1");
         } else {
             let passed = !/^\S*\.[a-zA-Z]{1,4}(?!.)|^https?:\/\/\S*/i.test(titleStr);
