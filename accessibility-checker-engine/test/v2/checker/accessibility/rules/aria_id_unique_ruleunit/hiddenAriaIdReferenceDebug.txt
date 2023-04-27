@@ -30,27 +30,27 @@
 
           function runRule() {
           
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('activedescendant'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('activedescendant'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('controls1'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('controls1'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('controls2'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('controls2'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('flowto1'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('flowto1'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('flowto2'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('flowto2'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('owns1'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('owns1'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('owns2'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('owns2'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('describedby1'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('describedby1'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('describedby2'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('describedby2'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('labelledby1'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('labelledby1'));
               console.log(passed);
-              var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('labelledby2'));
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('labelledby2'));
               console.log(passed);
           }
       </script>

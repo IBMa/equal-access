@@ -29,7 +29,7 @@
 <script type="text/javascript">
 
 function runRule() {
-  var rule = OpenAjax.a11y.getRule("Rpt_Aria_WidgetLabels");
+  var rule = OpenAjax.a11y.getRule("aria_widget_labelled");
 
   passed = rule.validate(document.getElementById("alertdialogdiv"));
   console.log("alertdialogdiv:" + passed.result);

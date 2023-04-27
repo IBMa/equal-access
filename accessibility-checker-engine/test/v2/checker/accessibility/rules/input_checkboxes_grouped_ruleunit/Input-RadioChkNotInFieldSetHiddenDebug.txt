@@ -35,19 +35,19 @@
     
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("WCAG20_Input_RadioChkInFieldSet").validate(document.getElementById('female1'));
+            var passed = OpenAjax.a11y.getRule("input_checkboxes_grouped").validate(document.getElementById('female1'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Input_RadioChkInFieldSet").validate(document.getElementById('intelligent1'));
+            var passed = OpenAjax.a11y.getRule("input_checkboxes_grouped").validate(document.getElementById('intelligent1'));
             console.log("expecting true: " + passed.result);                
 
             // Need to set this to simulate setting being set by tools
         	document.PT_CHECK_HIDDEN_CONTENT = true;         
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Input_RadioChkInFieldSet").validate(document.getElementById('female1'));
+            var passed = OpenAjax.a11y.getRule("input_checkboxes_grouped").validate(document.getElementById('female1'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Input_RadioChkInFieldSet").validate(document.getElementById('intelligent1'));
+            var passed = OpenAjax.a11y.getRule("input_checkboxes_grouped").validate(document.getElementById('intelligent1'));
             console.log("expecting false: " + passed.result);              	                     
         }
     </script>

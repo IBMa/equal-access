@@ -35,22 +35,22 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("WCAG20_Img_LinkTextNotRedundant").validate(document.getElementById('img1'));
+            var passed = OpenAjax.a11y.getRule("img_alt_redundant").validate(document.getElementById('img1'));
             console.log("expecting true: " + passed.result);
 
             document.PT_CHECK_HIDDEN_CONTENT = true;
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Img_LinkTextNotRedundant").validate(document.getElementById('img1'));
+            var passed = OpenAjax.a11y.getRule("img_alt_redundant").validate(document.getElementById('img1'));
             console.log("expecting false: " + passed.result);
 
             document.PT_CHECK_HIDDEN_CONTENT = false;
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Img_LinkTextNotRedundant").validate(document.getElementById('img4'));
+            var passed = OpenAjax.a11y.getRule("img_alt_redundant").validate(document.getElementById('img4'));
             console.log("expecting true: " + passed.result);
 
             document.PT_CHECK_HIDDEN_CONTENT = true;
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Img_LinkTextNotRedundant").validate(document.getElementById('img4'));
+            var passed = OpenAjax.a11y.getRule("img_alt_redundant").validate(document.getElementById('img4'));
             console.log("expecting false: " + passed.result);
         }
     </script>

@@ -30,16 +30,16 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("WCAG20_Object_HasText").validate(document.getElementById('object1'));
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object1'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Object_HasText").validate(document.getElementById('object2'));
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object2'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Object_HasText").validate(document.getElementById('object3'));
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object3'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("WCAG20_Object_HasText").validate(document.getElementById('object4'));
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object4'));
             console.log("expecting true: " + passed.result);            
         }
     </script>

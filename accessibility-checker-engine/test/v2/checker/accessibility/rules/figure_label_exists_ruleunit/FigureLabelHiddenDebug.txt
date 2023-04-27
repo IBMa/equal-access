@@ -28,31 +28,31 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure1'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure1'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure2'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure2'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure3'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure3'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure4'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure4'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure5'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure5'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure6'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure6'));
             console.log("expecting false: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure7'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure7'));
             console.log("expecting false: " + passed.result);              
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure8'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure8'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("HAAC_Figure_label").validate(document.getElementById('figure9'));
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure9'));
             console.log("expecting true: " + passed.result);
         }
     </script>

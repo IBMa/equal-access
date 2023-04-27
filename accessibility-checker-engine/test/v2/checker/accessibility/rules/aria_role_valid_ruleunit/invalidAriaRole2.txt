@@ -34,17 +34,17 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementById('id0'));
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('id0'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementById('id1'));
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('id1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementById('id2'));
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('id2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementById('id3'));
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('id3'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementById('id4'));
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('id4'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidRole").validate(document.getElementsByTagName('title')[0]);
+	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementsByTagName('title')[0]);
 	console.log(passed);
 }
 </script>

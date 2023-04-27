@@ -31,13 +31,13 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandlerOnRequiredChildren").validate(document.getElementById('tree2'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_existsOnRequiredChildren").validate(document.getElementById('tree2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandlerOnRequiredChildren").validate(document.getElementById('tree4'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_existsOnRequiredChildren").validate(document.getElementById('tree4'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandlerOnRequiredChildren").validate(document.getElementById('tree5'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_existsOnRequiredChildren").validate(document.getElementById('tree5'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandlerOnRequiredChildren").validate(document.getElementById('tree6'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_existsOnRequiredChildren").validate(document.getElementById('tree6'));
 	console.log(passed);
 }
 </script>

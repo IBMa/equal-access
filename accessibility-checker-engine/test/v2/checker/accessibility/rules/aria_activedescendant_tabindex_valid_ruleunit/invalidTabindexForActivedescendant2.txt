@@ -31,15 +31,15 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('tb1'));
+	var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('tb1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('tb2'));
+	var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('tb2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('tb3'));
+	var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('tb3'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('tb4'));
+	var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('tb4'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('tb5'));
+	var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('tb5'));
 	console.log(passed);
 }
 </script>

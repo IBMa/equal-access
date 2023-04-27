@@ -35,13 +35,13 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("RPT_Block_ShouldBeHeading").validate(document.getElementById('paragraph'));
+            var passed = OpenAjax.a11y.getRule("text_block_heading").validate(document.getElementById('paragraph'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("RPT_Block_ShouldBeHeading").validate(document.getElementById('break'));
+            var passed = OpenAjax.a11y.getRule("text_block_heading").validate(document.getElementById('break'));
             console.log("expecting true: " + passed.result);
 
-            var passed = OpenAjax.a11y.getRule("RPT_Block_ShouldBeHeading").validate(document.getElementById('div'));
+            var passed = OpenAjax.a11y.getRule("text_block_heading").validate(document.getElementById('div'));
             console.log("expecting true: " + passed.result);                        
         }
     </script>

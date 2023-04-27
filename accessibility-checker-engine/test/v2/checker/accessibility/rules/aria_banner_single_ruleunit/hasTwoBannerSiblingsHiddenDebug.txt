@@ -29,7 +29,7 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("Rpt_Aria_OneBannerInSiblingSet").validate(document.getElementById('first'));
+            var passed = OpenAjax.a11y.getRule("aria_banner_single").validate(document.getElementById('first'));
             console.log("Hidden contnet is not being checked, expecting true: " + passed.result);
         }
     </script>

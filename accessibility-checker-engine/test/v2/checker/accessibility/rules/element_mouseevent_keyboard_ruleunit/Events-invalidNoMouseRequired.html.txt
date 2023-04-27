@@ -32,13 +32,13 @@
 
 function runRule() {
 
-  var passed = OpenAjax.a11y.getRule("RPT_Elem_EventMouseAndKey").validate(document.getElementsByTagName('textarea')[0]);
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('textarea')[0]);
   console.log(passed);
 
-  var passed = OpenAjax.a11y.getRule("RPT_Elem_EventMouseAndKey").validate(document.getElementsByTagName('textarea')[1]);
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('textarea')[1]);
   console.log(passed);
 
-  var passed = OpenAjax.a11y.getRule("RPT_Elem_EventMouseAndKey").validate(document.getElementsByTagName('button')[0]);
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('button')[0]);
   console.log(passed);
 
 }

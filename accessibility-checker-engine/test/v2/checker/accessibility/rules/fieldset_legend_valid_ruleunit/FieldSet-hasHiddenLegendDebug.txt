@@ -32,7 +32,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var passed = OpenAjax.a11y.getRule("WCAG20_Fieldset_HasLegend").validate(document.getElementById("fieldset"));
+	var passed = OpenAjax.a11y.getRule("fieldset_legend_valid").validate(document.getElementById("fieldset"));
 	console.log("required:" + passed.result);
 }
 </script>

@@ -58,7 +58,7 @@ export let img_alt_redundant: Rule = {
 
         let altText = ruleContext.getAttribute("alt").trim().toLowerCase();
         if (altText.length == 0) {
-            // If alt text is empty, there's no text to be redundant - let WCAG20_A_HasText
+            // If alt text is empty, there's no text to be redundant - let a_text_purpose
             // trigger in that case.
             // So Out of Scope for this rule
             return null;

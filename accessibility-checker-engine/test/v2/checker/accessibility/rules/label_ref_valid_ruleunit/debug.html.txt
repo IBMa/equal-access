@@ -29,7 +29,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var passed = OpenAjax.a11y.getRule("WCAG20_Label_RefValid").validate(document.getElementsByTagName('label')[0]);
+	var passed = OpenAjax.a11y.getRule("label_ref_valid").validate(document.getElementsByTagName('label')[0]);
 	console.log("label: " + passed.result);
 }
 

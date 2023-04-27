@@ -30,17 +30,17 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithOneHidden'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithOneHidden'));
             console.log(passed);
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithEmbeddedHidden'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithEmbeddedHidden'));
             console.log(passed);
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithHiddenProp'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithHiddenProp'));
             console.log(passed);
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithHiddenVisibility'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithHiddenVisibility'));
             console.log(passed);
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithMultipleChild'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithMultipleChild'));
             console.log(passed);
-            var passed = OpenAjax.a11y.getRule("WCAG20_A_HasText").validate(document.getElementById('awithMultipleChildHidden'));
+            var passed = OpenAjax.a11y.getRule("a_text_purpose").validate(document.getElementById('awithMultipleChildHidden'));
             console.log(passed);
 
         }

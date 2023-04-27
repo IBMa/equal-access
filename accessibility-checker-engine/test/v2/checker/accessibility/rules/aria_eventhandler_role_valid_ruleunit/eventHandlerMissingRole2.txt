@@ -31,7 +31,7 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_EventHandlerMissingRole").validate(document.getElementById('tb1'));
+	var passed = OpenAjax.a11y.getRule("aria_eventhandler_role_valid").validate(document.getElementById('tb1'));
 	console.log(passed);
 
 }

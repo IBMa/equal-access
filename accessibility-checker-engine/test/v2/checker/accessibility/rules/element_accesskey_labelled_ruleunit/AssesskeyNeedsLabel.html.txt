@@ -30,7 +30,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var rule = OpenAjax.a11y.getRule("HAAC_Accesskey_NeedLabel");
+	var rule = OpenAjax.a11y.getRule("element_accesskey_labelled");
 	var passed = rule.validate(document.getElementsByTagName('p')[0]);
 	console.log("has Title:" + passed.result);
 

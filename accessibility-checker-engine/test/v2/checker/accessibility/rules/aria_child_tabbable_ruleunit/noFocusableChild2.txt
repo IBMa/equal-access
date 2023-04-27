@@ -31,13 +31,13 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingFocusableChild").validate(document.getElementById('tree1'));
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('tree1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingFocusableChild").validate(document.getElementById('tree2'));
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('tree2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingFocusableChild").validate(document.getElementById('tree3'));
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('tree3'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingFocusableChild").validate(document.getElementById('tree4'));
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('tree4'));
 	console.log(passed);
 }
 </script>

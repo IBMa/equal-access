@@ -32,15 +32,15 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('test1'));
+	var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('test1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('test2'));
+	var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('test2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('test3'));
+	var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('test3'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('test4'));
+	var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('test4'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidIdRef").validate(document.getElementById('test5'));
+	var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('test5'));
 	console.log(passed);
 }
 </script>

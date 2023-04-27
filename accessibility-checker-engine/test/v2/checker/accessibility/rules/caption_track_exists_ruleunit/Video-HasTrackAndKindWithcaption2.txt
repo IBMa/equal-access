@@ -29,7 +29,7 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("HAAC_Video_HasNoTrack").validate(document.getElementById('video1'));
+	var passed = OpenAjax.a11y.getRule("caption_track_exists").validate(document.getElementById('video1'));
 	console.log(passed);
 }
 </script>

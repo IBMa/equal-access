@@ -30,9 +30,9 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree1'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree2'));
+	var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree2'));
 	console.log(passed);
 }
 </script>

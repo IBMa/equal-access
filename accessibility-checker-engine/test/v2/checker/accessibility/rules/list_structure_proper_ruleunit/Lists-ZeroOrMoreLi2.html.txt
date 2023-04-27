@@ -32,17 +32,17 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist1'));
+	var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist1'));
        console.log(passed);
-  var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist2'));
+  var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist2'));
         console.log(passed);
-  var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist3'));
+  var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist3'));
         console.log(passed);
-  var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist4'));
+  var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist4'));
         console.log(passed);
-  var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist5'));
+  var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist5'));
         console.log(passed);
-  var passed = OpenAjax.a11y.getRule("RPT_List_Misuse").validate(document.getElementById('firstlist'));
+  var passed = OpenAjax.a11y.getRule("list_structure_proper").validate(document.getElementById('firstlist'));
         console.log(passed);                                
 }
 </script>

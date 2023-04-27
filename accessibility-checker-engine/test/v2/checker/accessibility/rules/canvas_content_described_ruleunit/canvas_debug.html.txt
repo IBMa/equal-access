@@ -30,7 +30,7 @@
 
 function runRule() {
 	document.browserWindow = document.defaultView;
-	var rule = OpenAjax.a11y.getRule("HAAC_Canvas");
+	var rule = OpenAjax.a11y.getRule("canvas_content_described");
 	var passed = rule.validate(document.getElementById("Canvas1"));
 	console.log("required:" + passed.result);
 	

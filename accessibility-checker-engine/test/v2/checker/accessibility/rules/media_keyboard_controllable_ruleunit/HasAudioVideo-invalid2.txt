@@ -29,7 +29,7 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("HAAC_Audio_Video_Trigger").validate(document.getElementById('video1'));
+	var passed = OpenAjax.a11y.getRule("media_keyboard_controllable").validate(document.getElementById('video1'));
 	console.log(passed);
 }
 </script>

@@ -16,7 +16,7 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("Rpt_Aria_MultipleRegionsUniqueLabel").validate(document.getElementById('body'));
+            var passed = OpenAjax.a11y.getRule("aria_region_label_unique").validate(document.getElementById('body'));
             console.log("Hidden content SHOULD NOT BE checked so violation should NOT trigger, expecting true: " + passed.result);
         }
     </script>

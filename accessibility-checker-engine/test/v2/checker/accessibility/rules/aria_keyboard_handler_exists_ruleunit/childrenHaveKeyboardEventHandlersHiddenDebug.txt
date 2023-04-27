@@ -36,17 +36,17 @@
 
 function runRule() {
 
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree2'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree2'));
   console.log(passed.result);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree4'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree4'));
   console.log(passed.result);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree5'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree5'));
   console.log(passed.result);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree6'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree6'));
   console.log(passed.result);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree7'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree7'));
   console.log(passed.result);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_MissingKeyboardHandler").validate(document.getElementById('tree8'));
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree8'));
   console.log(passed.result);
 }
 </script>

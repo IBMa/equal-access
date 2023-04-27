@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
         function runRule() {
-            var passed = OpenAjax.a11y.getRule("Rpt_Aria_ContentinfoWithNoMain").validate(document.getElementById('contentinforole'));
+            var passed = OpenAjax.a11y.getRule("aria_contentinfo_misuse").validate(document.getElementById('contentinforole'));
             console.log("Hidden content SHOULD NOT BE checked so violation should trigger, expecting false: " + passed.result);
         }
     </script>

@@ -31,23 +31,23 @@
 
 function runRule() {
 
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('buttondisabled'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('buttondisabled'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('select'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('select'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('input'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('input'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('textarea'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('textarea'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('optgroup'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('optgroup'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('option'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('option'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('menuitem'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('menuitem'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('fieldset'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('fieldset'));
   console.log(passed);
-  var passed = OpenAjax.a11y.getRule("Rpt_Aria_InvalidTabindexForActivedescendant").validate(document.getElementById('POLICYNAME'));
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('POLICYNAME'));
   console.log(passed);
 }
 </script>

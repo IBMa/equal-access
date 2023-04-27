@@ -29,7 +29,7 @@
 
  function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("HAAC_Aria_ImgAlt").validate(document.getElementById('Rating1'));
+	var passed = OpenAjax.a11y.getRule("aria_img_labelled").validate(document.getElementById('Rating1'));
 	console.log(passed);
 } 
  </script> 

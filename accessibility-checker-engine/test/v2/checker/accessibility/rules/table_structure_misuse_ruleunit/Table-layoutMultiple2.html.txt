@@ -32,15 +32,15 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("WCAG20_Table_Structure").validate(document.getElementById('layout_table1'));
+	var passed = OpenAjax.a11y.getRule("table_structure_misuse").validate(document.getElementById('layout_table1'));
         console.log(passed);
-        var passed = OpenAjax.a11y.getRule("WCAG20_Table_Structure").validate(document.getElementById('layout_table2'));
+        var passed = OpenAjax.a11y.getRule("table_structure_misuse").validate(document.getElementById('layout_table2'));
         console.log(passed);
-        var passed = OpenAjax.a11y.getRule("WCAG20_Table_Structure").validate(document.getElementById('layout_table3'));
+        var passed = OpenAjax.a11y.getRule("table_structure_misuse").validate(document.getElementById('layout_table3'));
         console.log(passed);
-        var passed = OpenAjax.a11y.getRule("WCAG20_Table_Structure").validate(document.getElementById('layout_table4'));
+        var passed = OpenAjax.a11y.getRule("table_structure_misuse").validate(document.getElementById('layout_table4'));
 	    console.log(passed);
-	    var passed = OpenAjax.a11y.getRule("WCAG20_Table_Structure").validate(document.getElementById('layout_table5'));
+	    var passed = OpenAjax.a11y.getRule("table_structure_misuse").validate(document.getElementById('layout_table5'));
 	    console.log(passed);
 }
 </script>

@@ -31,17 +31,17 @@
 
 function runRule() {
 	
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id1'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id2'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id3'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id3'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id4'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id4'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id5'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id5'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredParent").validate(document.getElementById('id6'));
+	var passed = OpenAjax.a11y.getRule("aria_parent_required").validate(document.getElementById('id6'));
 	console.log(passed);
 }
 </script>

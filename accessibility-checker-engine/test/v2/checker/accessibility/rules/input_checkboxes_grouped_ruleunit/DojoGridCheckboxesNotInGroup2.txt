@@ -30,7 +30,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var passed = OpenAjax.a11y.getRule("WCAG20_Input_RadioChkInFieldSet").validate(document.getElementById('checkbox1'));
+	var passed = OpenAjax.a11y.getRule("input_checkboxes_grouped").validate(document.getElementById('checkbox1'));
 	console.log(passed);
 }
 </script>

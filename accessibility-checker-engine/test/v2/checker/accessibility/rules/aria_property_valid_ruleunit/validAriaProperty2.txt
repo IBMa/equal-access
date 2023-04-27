@@ -30,14 +30,14 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidProperty").validate(document.getElementById('empty1'));
+	var passed = OpenAjax.a11y.getRule("aria_property_valid").validate(document.getElementById('empty1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidProperty").validate(document.getElementById('empty2'));
+	var passed = OpenAjax.a11y.getRule("aria_property_valid").validate(document.getElementById('empty2'));
 	console.log(passed);
 
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidProperty").validate(document.getElementById('app1'));
+	var passed = OpenAjax.a11y.getRule("aria_property_valid").validate(document.getElementById('app1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_ValidProperty").validate(document.getElementById('app2'));
+	var passed = OpenAjax.a11y.getRule("aria_property_valid").validate(document.getElementById('app2'));
 	console.log(passed);
 }
 </script>
