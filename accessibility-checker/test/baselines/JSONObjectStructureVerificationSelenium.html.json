@@ -31,7 +31,7 @@
 		},
 		"RPT_Header_HasContent": {
 			"0": "Heading elements must provide descriptive text",
-			"Pass_0": "Rule Passed"
+			"Pass_0": "Heading element has descriptive text"
 		},
 		"RPT_Headers_FewWords": {
 			"0": "Heading elements must not be used for presentation",
@@ -611,7 +611,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "Rule Passed",
+		"message": "Heading element has descriptive text",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]/heading[1]",
@@ -620,7 +620,7 @@
 		"reasonId": "Pass_0",
 		"ruleId": "RPT_Header_HasContent",
 		"snippet": "<h1>",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"ignored": false,
 		"level": "pass"
 	}, {
