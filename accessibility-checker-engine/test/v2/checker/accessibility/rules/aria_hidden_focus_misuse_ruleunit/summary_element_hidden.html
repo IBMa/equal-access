@@ -20,35 +20,35 @@
 <html lang="en" id="id-32">
 
 <head id="id-29">
-    <title id="id-36">Summary Element</title>
+    <title id="id-36">Element with aria-hidden has no focusable content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 
 <body id="id-9" aria-atomic="true">
-    <details>
-        <summary id='s1' role="button">first summary</summary>
+    <details aria-hidden="true">
+        <summary>first summary</summary>
         <ol>
             <li>first content 1</li>
             <li>first content 2</li>
         </ol>
-        <summary id='s2' role="button">Second summary</summary>
+        <summary>Second summary</summary>
         <ol>
             <li>second content 1</li>
             <li>second content 2</li>
         </ol>
     </details>
     
-    <details>
+    <details aria-hidden="true">
         <ol>
             <li>third content 1</li>
             <li>third content 2</li>
         </ol>
-        <summary  id='s3' role="button">Third summary</summary>
+        <summary>Third summary</summary>
     </details>
 
-    <details>
+    <details aria-hidden="true">
         <div>
-            <summary  id='s4' role="button">Forth summary</summary>
+            <summary>Forth summary</summary>
             <ol>
                 <li>fourth content 1</li>
                 <li>fourth content 2</li>
@@ -57,16 +57,20 @@
     </details>
 
     <div aria-hidden="true">
-        <summary  id='s5' role="button">Fifth summary</summary>
+        <summary>Fifth summary</summary>
         <ol>
             <li>fifth content 1</li>
             <li>fifth content 2</li>
         </ol>
     </div>
     
+    <details aria-hidden="true">
+        <p>Sixth details</p>
+    </details>
+
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role"],
+            ruleIds: ["aria_hidden_focus_misuse"],
             results: [
             {
             "ruleId": "aria_hidden_focus_misuse",
