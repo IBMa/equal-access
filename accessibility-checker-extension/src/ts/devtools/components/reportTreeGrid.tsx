@@ -129,7 +129,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             found = true;
                             setTimeout(async () => {
                                 await this.onRow(group, issue);
-                                await getDevtoolsController().setFocusMode(false);
+                                
                                 this.scrollToRowId(this.state.tabRowId);
                             }, 0);
                             break;
@@ -139,6 +139,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 }
             }    
             if (!found) {
+                getDevtoolsController().setFocusMode(false); // turn off focus view when scan
                 this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
             }
         } else if (prevState.tabRowId !== this.state.tabRowId && document) {
