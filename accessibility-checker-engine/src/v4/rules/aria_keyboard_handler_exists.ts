@@ -19,7 +19,7 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 export let aria_keyboard_handler_exists: Rule = {
     id: "aria_keyboard_handler_exists",
     context: "dom:*[role]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_MissingKeyboardHandler": {
             "pass": "pass",

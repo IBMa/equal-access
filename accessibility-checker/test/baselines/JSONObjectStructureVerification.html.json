@@ -2482,7 +2482,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "aria_role_valid",
+            "ruleId": "aria_role_allowed",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2508,7 +2508,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "aria_role_valid",
+            "ruleId": "aria_role_allowed",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3020,7 +3020,7 @@
             "0": "No deprecated ARIA role or attribute should be used",
             "pass": "The ARIA roles and attribute are used per specification"
         },
-        "aria_role_valid": {
+        "aria_role_allowed": {
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
         },

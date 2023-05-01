@@ -32,9 +32,9 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('alertid'));
+	var passed = OpenAjax.a11y.getRule("aria_role_allowed").validate(document.getElementById('alertid'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("aria_role_valid").validate(document.getElementById('banner'));
+	var passed = OpenAjax.a11y.getRule("aria_role_allowed").validate(document.getElementById('banner'));
 	console.log(passed);
 }
 </script>

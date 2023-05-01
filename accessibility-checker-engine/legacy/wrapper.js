@@ -99,7 +99,7 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "emoticons_alt_exists": "1068",
     "style_before_after_review": "1069",
     "text_whitespace_valid": "1070",
-    "aria_role_valid": "1074",
+    "aria_role_allowed": "1074",
     "aria_property_value_valid": "1076",
     "aria_id_unique": "1077",
     "aria_property_required": "1079",

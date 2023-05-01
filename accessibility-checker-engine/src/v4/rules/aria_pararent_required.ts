@@ -20,7 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let aria_pararent_required: Rule = {
     id: "aria_pararent_required",
     context: "dom:*[role]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
             "Pass_0": "Pass_0",

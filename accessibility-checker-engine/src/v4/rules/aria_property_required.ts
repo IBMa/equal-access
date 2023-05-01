@@ -20,7 +20,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 export let aria_property_required: Rule = {
     id: "aria_property_required",
     context: "dom:*[role]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_RequiredProperties": {
             "Pass_0": "Pass_0",

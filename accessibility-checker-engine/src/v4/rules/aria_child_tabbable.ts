@@ -20,7 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let aria_child_tabbable: Rule = {
     id: "aria_child_tabbable",
     context: "dom:*[role]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_MissingFocusableChild": {
             "pass": "pass",

@@ -20,7 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let aria_property_exists: Rule = {
     id: "aria_property_exists",
     context: "dom:*[role]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_EmptyPropertyValue": {
             "pass": "pass",

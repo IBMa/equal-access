@@ -15,8 +15,8 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let aria_role_valid: Rule = {
-    id: "aria_role_valid",
+export let aria_role_allowed: Rule = {
+    id: "aria_role_allowed",
     context: "dom:*[role]",
     refactor: {
         "Rpt_Aria_ValidRole": {
@@ -27,10 +27,10 @@ export let aria_role_valid: Rule = {
     },
     help: {
         "en-US": {
-            "group": `aria_role_valid.html`,
-            "Pass_0": `aria_role_valid.html`,
-            "Fail_2": `aria_role_valid.html`,
-            "Potential_1": `aria_role_valid.html`
+            "group": `aria_role_allowed.html`,
+            "Pass_0": `aria_role_allowed.html`,
+            "Fail_2": `aria_role_allowed.html`,
+            "Potential_1": `aria_role_allowed.html`
         }
     },
     messages: {

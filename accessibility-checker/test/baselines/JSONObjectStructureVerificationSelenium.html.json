@@ -24,7 +24,7 @@
             "0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
             "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
         },
-        "aria_role_valid": {
+        "aria_role_allowed": {
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
         },
@@ -2617,7 +2617,7 @@
                 "dom": "/html[1]/body[1]/div[2]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "aria_role_valid",
+            "ruleId": "aria_role_allowed",
             "ruleTime": 0,
             "snippet": "<div role=\"main\">",
             "value": [
@@ -2643,7 +2643,7 @@
                 "dom": "/html[1]/body[1]/div[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "aria_role_valid",
+            "ruleId": "aria_role_allowed",
             "ruleTime": 0,
             "snippet": "<div role=\"navigation\">",
             "value": [
