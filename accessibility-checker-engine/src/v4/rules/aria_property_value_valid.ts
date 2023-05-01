@@ -19,7 +19,7 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 export let aria_property_value_valid: Rule = {
     id: "aria_property_value_valid",
     context: "dom:*",
-    dependencies: ["aria_property_valid"],
+    dependencies: ["aria_attribute_allowed"],
     refactor: {
         "Rpt_Aria_ValidPropertyValue": {
             "Pass_0": "Pass_0",

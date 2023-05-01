@@ -1160,7 +1160,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1178,7 +1178,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1196,7 +1196,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1214,7 +1214,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1232,7 +1232,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1250,7 +1250,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1268,7 +1268,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1286,7 +1286,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1304,7 +1304,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -1322,7 +1322,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -6912,7 +6912,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -6930,7 +6930,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -6948,7 +6948,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -6966,7 +6966,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -6984,7 +6984,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7002,7 +7002,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7020,7 +7020,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_valid:Pass_0,Fail_1",
+            "title": "aria_attribute_allowed:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7614,7 +7614,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7632,7 +7632,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7650,7 +7650,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7668,7 +7668,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7686,7 +7686,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7704,7 +7704,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7722,7 +7722,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7740,7 +7740,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7758,7 +7758,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7776,7 +7776,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7794,7 +7794,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7812,7 +7812,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7830,7 +7830,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7848,7 +7848,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7866,7 +7866,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7884,7 +7884,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_attribute_allowed:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
+            "title": "aria_attribute_valid:Pass,Fail_invalid_role_attr,Fail_invalid_implicit_role_attr",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]

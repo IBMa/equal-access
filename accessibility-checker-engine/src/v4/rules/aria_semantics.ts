@@ -19,7 +19,7 @@ import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvali
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
     context: "dom:*",
-    dependencies: ["aria_property_valid"],
+    dependencies: ["aria_attribute_allowed"],
     help: {
         "en-US": {
             "Pass_0": "aria_semantics_role.html",
@@ -90,17 +90,24 @@ export let aria_semantics_role: Rule = {
 // This rule is in the same file because there is a dependency that aria_semantics_role runs first,
 // and the info is passed by cache, but there isn't a dependency in the Fail_2 scenario, so regular
 // dependency cannot be used
-export let aria_attribute_allowed: Rule = {
-    id: "aria_attribute_allowed",
+export let aria_attribute_valid: Rule = {
+    id: "aria_attribute_valid",
     context: "dom:*",
     // The the ARIA role is completely invalid, skip this check
     dependencies: ["aria_attribute_deprecated", "aria_semantics_role"],
+    refactor: {
+        "aria_attribute_allowed": {
+            "Pass": "Pass",
+            "Fail_invalid_role_attr": "Fail_invalid_role_attr",
+            "Fail_invalid_implicit_role_attr": "Fail_invalid_implicit_role_attr"
+        }
+    },
     help: {
         "en-US": {
-            "group": "aria_attribute_allowed.html",
-            "Pass": "aria_attribute_allowed.html",
-            "Fail_invalid_role_attr": "aria_attribute_allowed.html",
-            "Fail_invalid_implicit_role_attr": "aria_attribute_allowed.html"
+            "group": "aria_attribute_valid.html",
+            "Pass": "aria_attribute_valid.html",
+            "Fail_invalid_role_attr": "aria_attribute_valid.html",
+            "Fail_invalid_implicit_role_attr": "aria_attribute_valid.html"
         }
     },
     messages: {
