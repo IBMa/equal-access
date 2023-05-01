@@ -16,8 +16,8 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
-export let aria_property_value_valid: Rule = {
-    id: "aria_property_value_valid",
+export let aria_attribute_value_valid: Rule = {
+    id: "aria_attribute_value_valid",
     context: "dom:*",
     dependencies: ["aria_attribute_allowed"],
     refactor: {
@@ -28,9 +28,9 @@ export let aria_property_value_valid: Rule = {
     },
     help: {
         "en-US": {
-            "group": "aria_property_value_valid.html",
-            "Pass_0": "aria_property_value_valid.html",
-            "Fail_1": "aria_property_value_valid.html"
+            "group": "aria_attribute_value_valid.html",
+            "Pass_0": "aria_attribute_value_valid.html",
+            "Fail_1": "aria_attribute_value_valid.html"
         }
     },
     messages: {

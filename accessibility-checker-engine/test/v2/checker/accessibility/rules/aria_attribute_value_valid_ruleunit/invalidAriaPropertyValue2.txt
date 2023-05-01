@@ -30,7 +30,7 @@
 <script type="text/javascript">
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("aria_property_value_valid").validate(document.getElementsByTagName('p')[0]);
+	var passed = OpenAjax.a11y.getRule("aria_attribute_value_valid").validate(document.getElementsByTagName('p')[0]);
 	console.log(passed);
 }
 </script>

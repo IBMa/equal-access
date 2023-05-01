@@ -44,23 +44,19 @@
 
 ### Why is this important?
 
-When elements are assigned a ARIA `role`, ARIA specifies which attributes are valid for that role. If invalid ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
+When elements are assigned a ARIA `role`, there are required attributes for that role. These attributes represent states and properties of the element. The ARIA attributes accept a specific set of tokens as values along with implicit values termed as ‘default’ when no values are indicated. The correct value of the attribute must be specified as it dictates the behavior of the control and is used by the user agent (Browsers) to process the behavior of the control as prescribed.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Remove ARIA state or property attributes that are not valid for the element role;
-* **Or**, change the `role` value to a role that supports the intended behavior of the element, using the ARIA specification as a guide.
-In the following example the element references only valid ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
+* Provide a valid value for the attribute defined on the element, using the ARIA specification as a guide.
 
-For example:
+For example, the following paragraph element defines an `aria-live` property with a valid value of `"polite"`.
 
 ```
-<ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1">
-    
-<li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"><span>Fruits</span>
+<p aria-live="polite">Live region content.</p>
 ```
 
 </script></mark-down>
@@ -75,7 +71,7 @@ For example:
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [ARIA - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
+* [ARIA specification - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
 
 ### Who does this affect?
 
