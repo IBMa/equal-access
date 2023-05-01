@@ -2552,6 +2552,13 @@ export class RPTUtil {
                             RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
                         }
                         break;
+                    case "li":
+                        specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["li"];
+                        if (ruleContext.parentElement && RPTUtil.hasRoleInSemantics(ruleContext.parentElement, "list"))
+                            tagProperty = specialTagProperties["child-of-list-role"];
+                        else
+                            tagProperty = specialTagProperties["no-child-of-list-role"];
+                        break;
                     case "section":
                         name = ARIAMapper.computeName(ruleContext);
                         if (name && name.trim().length > 0) {
@@ -2559,7 +2566,7 @@ export class RPTUtil {
                         } else {
                             tagProperty = specialTagProperties["without-name"];
                         }
-                        break;
+                        break;    
                     case "select":
                         specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
                         if (ruleContext.hasAttribute("multiple") ||

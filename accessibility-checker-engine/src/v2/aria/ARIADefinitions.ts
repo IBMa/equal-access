@@ -1906,11 +1906,6 @@ export class ARIADefinitions {
             validRoles: null,
             globalAriaAttributesValid: true
         },
-        "li": {
-            implicitRole: ["listitem"],
-            validRoles: ["menuitem", "menuitemcheckbox", "menuitemradio", "none", "option", "presentation", "radio", "separator", "tab", "treeitem"],
-            globalAriaAttributesValid: true
-        },
         "link": {
             implicitRole: null,
             validRoles: null,
@@ -2468,6 +2463,18 @@ export class ARIADefinitions {
                 // input with a missing or invalid type, with a list attribute
                 implicitRole: ["textbox"],
                 validRoles: null,
+                globalAriaAttributesValid: true
+            }
+        },
+        "li": {
+            "child-of-list-role": {
+                implicitRole: ['listitem'],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "no-child-of-list-role": {
+                implicitRole: ['listitem'],
+                validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
         },
