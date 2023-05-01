@@ -63,7 +63,7 @@ export let element_tabbable_role_valid: Rule = {
             } 
             if (value) return null;
         } 
-
+        
         // handle the case: no tabindex or tabindex < 0
         if (!ruleContext.hasAttribute("tabindex") || parseInt(ruleContext.getAttribute("tabindex")) < 0)
             return null;
@@ -74,12 +74,16 @@ export let element_tabbable_role_valid: Rule = {
             || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
             return null;
 
+        let roles = RPTUtil.getRoles(ruleContext, false);
+        // ignore 'application' role that contains one or more focusable elements that do not follow a standard interaction pattern supported by a widget role:https://www.w3.org/TR/2023/PR-WAI-ARIA-1.2-20230328/#application 
+        if (roles && roles.includes("application"))
+            return null;
+        
         // elements whose roles allow no descendants that are interactive or with a tabindex >= 0 
         // this case should be handled in IBMA_Focus_MultiTab and Rpt_Aria_MissingFocusableChild
         const roles_no_interactive_child =["button", "checkbox", "img", "link", "menuitem", "menuitemcheckbox", "menuitemradio", 
                                "option", "radio", "switch", "tab"];
 
-        let roles = RPTUtil.getRoles(ruleContext, false);
         if (!roles || roles.length === 0) {
             roles = RPTUtil.getImplicitRole(ruleContext);
         }
