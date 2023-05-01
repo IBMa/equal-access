@@ -16,16 +16,23 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvalidRoles } from "../util/CommonUtil";
 
-export let aria_semantics_role: Rule = {
-    id: "aria_semantics_role",
+export let aria_role_valid: Rule = {
+    id: "aria_role_valid",
     context: "dom:*",
     dependencies: ["aria_attribute_allowed"],
+    refactor: {
+        "aria_semantics_role": {
+            "Pass_0": "Pass_0",
+            "Fail_1": "Fail_1",
+            "Fail_2": "Fail_2"
+        }
+    },
     help: {
         "en-US": {
-            "Pass_0": "aria_semantics_role.html",
-            "Fail_1": "aria_semantics_role.html",
-            "Fail_2": "aria_semantics_role.html",
-            "group": "aria_semantics_role.html"
+            "Pass_0": "aria_role_valid.html",
+            "Fail_1": "aria_role_valid.html",
+            "Fail_2": "aria_role_valid.html",
+            "group": "aria_role_valid.html"
         }
     },
     messages: {
@@ -87,14 +94,14 @@ export let aria_semantics_role: Rule = {
     }
 }
 
-// This rule is in the same file because there is a dependency that aria_semantics_role runs first,
+// This rule is in the same file because there is a dependency that aria_role_valid runs first,
 // and the info is passed by cache, but there isn't a dependency in the Fail_2 scenario, so regular
 // dependency cannot be used
 export let aria_attribute_valid: Rule = {
     id: "aria_attribute_valid",
     context: "dom:*",
     // The the ARIA role is completely invalid, skip this check
-    dependencies: ["aria_attribute_deprecated", "aria_semantics_role"],
+    dependencies: ["aria_attribute_deprecated", "aria_role_valid"],
     refactor: {
         "aria_attribute_allowed": {
             "Pass": "Pass",

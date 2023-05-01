@@ -2424,7 +2424,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "aria_semantics_role",
+            "ruleId": "aria_role_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2453,7 +2453,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "aria_semantics_role",
+            "ruleId": "aria_role_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3032,7 +3032,7 @@
             "0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
             "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
         },
-        "aria_semantics_role": {
+        "aria_role_valid": {
             "0": "ARIA roles must be valid for the element to which they are assigned",
             "Pass_0": "Rule Passed"
         },

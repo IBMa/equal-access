@@ -28,7 +28,7 @@
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
         },
-        "aria_semantics_role": {
+        "aria_role_valid": {
             "0": "ARIA roles must be valid for the element to which they are assigned",
             "Pass_0": "Rule Passed"
         },
@@ -2562,7 +2562,7 @@
                 "dom": "/html[1]/body[1]/div[2]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "aria_semantics_role",
+            "ruleId": "aria_role_valid",
             "ruleTime": 0,
             "snippet": "<div role=\"main\">",
             "value": [
@@ -2591,7 +2591,7 @@
                 "dom": "/html[1]/body[1]/div[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "aria_semantics_role",
+            "ruleId": "aria_role_valid",
             "ruleTime": 0,
             "snippet": "<div role=\"navigation\">",
             "value": [
