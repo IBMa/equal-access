@@ -2570,13 +2570,12 @@ export class RPTUtil {
                         break;
                     case "summary":
                         specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["summary"];
-                        
                         if (ruleContext.parentElement && ruleContext.parentElement.nodeName.toLowerCase() === 'details' 
                             && DOMUtil.sameNode([...ruleContext.parentElement.children].filter(elem=>elem.nodeName.toLowerCase() === 'summary')[0], ruleContext))
                             tagProperty = specialTagProperties["first-summary-of-detail"];
                         else
                             tagProperty = specialTagProperties["no-first-summary-of-detail"];
-                        break;    
+                        break;
                     case "tbody":
                     case "td":
                     case "tr":

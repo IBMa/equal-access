@@ -2506,7 +2506,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-disabled", "aria-haspopup"]
             },
-            "not-first-summary-of-detail": {
+            "no-first-summary-of-detail": {
                 implicitRole: null,
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
