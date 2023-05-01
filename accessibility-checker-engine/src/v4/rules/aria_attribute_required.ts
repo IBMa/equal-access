@@ -17,8 +17,8 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let aria_property_required: Rule = {
-    id: "aria_property_required",
+export let aria_attribute_required: Rule = {
+    id: "aria_attribute_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
     refactor: {
@@ -29,9 +29,9 @@ export let aria_property_required: Rule = {
     },
     help: {
         "en-US": {
-            "group": `aria_property_required.html`,
-            "Pass_0": `aria_property_required.html`,
-            "Fail_1": `aria_property_required.html`
+            "group": `aria_attribute_required.html`,
+            "Pass_0": `aria_attribute_required.html`,
+            "Fail_1": `aria_attribute_required.html`
         }
     },
     messages: {

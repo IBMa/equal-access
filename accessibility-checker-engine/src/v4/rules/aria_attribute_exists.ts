@@ -17,8 +17,8 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
-export let aria_property_exists: Rule = {
-    id: "aria_property_exists",
+export let aria_attribute_exists: Rule = {
+    id: "aria_attribute_exists",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
     refactor: {
@@ -29,9 +29,9 @@ export let aria_property_exists: Rule = {
     },
     help: {
         "en-US": {
-            "pass": "aria_property_exists.html",
-            "fail_empty_attribute": "aria_property_exists.html",
-            "group": "aria_property_exists.html"
+            "pass": "aria_attribute_exists.html",
+            "fail_empty_attribute": "aria_attribute_exists.html",
+            "group": "aria_attribute_exists.html"
         }
     },
     messages: {

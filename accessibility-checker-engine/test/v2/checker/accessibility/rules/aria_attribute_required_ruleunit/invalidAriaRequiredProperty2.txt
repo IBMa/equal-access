@@ -31,11 +31,11 @@
 
 function runRule() {
 
-	var passed = OpenAjax.a11y.getRule("aria_property_required").validate(document.getElementById('id1'));
+	var passed = OpenAjax.a11y.getRule("aria_attribute_required").validate(document.getElementById('id1'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("aria_property_required").validate(document.getElementById('id2'));
+	var passed = OpenAjax.a11y.getRule("aria_attribute_required").validate(document.getElementById('id2'));
 	console.log(passed);
-	var passed = OpenAjax.a11y.getRule("aria_property_required").validate(document.getElementById('id3'));
+	var passed = OpenAjax.a11y.getRule("aria_attribute_required").validate(document.getElementById('id3'));
 	console.log(passed);
 }
 </script>
@@ -51,14 +51,17 @@ function runRule() {
 
 <h3>WAI-ARIA role valid attribute test</h3>
 
-<p id="id1" role="application" aria-label="application label">
-Application content.
+<!-- Role missing required property: aria-labelledby -->
+<p id="id1" role="application">
+Some hidden content.
 </p>
 
-<div id="id2" role="progressbar" aria-valuemax="1" aria-valuemin="10" aria-valuenow="5">
+<!-- Role missing required property: aria-valuenow  -->
+<div id="id2" role="progressbar" aria-valuemax="1" aria-valuemin="10">
 </div>
 
-<div id="id3" role="application" aria-labelledby="label2">
+<!-- Missing required slider properties -->
+<div id="id3" role="application slider" aria-labelledby="label2">
 </div>
 
 <p id="label2">Label for application with id="id3"</p>
@@ -75,6 +78,8 @@ Application content.
       passedXpaths: [
       ],
       failedXpaths: [
+       "/html/body/p",
+       "/html/body/div"
       ]
     },
   ];

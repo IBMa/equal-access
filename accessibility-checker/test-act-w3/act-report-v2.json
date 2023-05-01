@@ -7914,7 +7914,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7956,7 +7956,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -7998,7 +7998,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8040,7 +8040,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8082,7 +8082,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8124,7 +8124,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8166,7 +8166,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8208,7 +8208,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8250,7 +8250,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8292,7 +8292,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8334,7 +8334,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8376,7 +8376,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8418,7 +8418,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8460,7 +8460,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8502,7 +8502,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8544,7 +8544,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8586,7 +8586,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8628,7 +8628,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8670,7 +8670,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8712,7 +8712,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -8754,7 +8754,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_exists:pass,fail_empty_attribute",
+            "title": "aria_attribute_exists:pass,fail_empty_attribute",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10200,7 +10200,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10230,7 +10230,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10260,7 +10260,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10290,7 +10290,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10320,7 +10320,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10350,7 +10350,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10380,7 +10380,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10410,7 +10410,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10440,7 +10440,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10470,7 +10470,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10500,7 +10500,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10530,7 +10530,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10560,7 +10560,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10590,7 +10590,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
@@ -10620,7 +10620,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_property_required:Pass_0,Fail_1",
+            "title": "aria_attribute_required:Pass_0,Fail_1",
             "isPartOf": [
               "WCAG2:name-role-value"
             ]
