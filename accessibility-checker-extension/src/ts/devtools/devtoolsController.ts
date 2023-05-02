@@ -420,7 +420,7 @@ export class DevtoolsController extends Controller {
                     let doc = document;
                     let element = null;
                     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                        let parts = srcPath.match(/(.*?)(\\/#document-fragment|iframe\\[\\d+\\])(.*)/);
+                        let parts = srcPath.match(/(.*?)(\\/#document-fragment\\[\\d+\\]|iframe\\[\\d+\\])(.*)/);
                         if (parts[2].includes("iframe")) {
                             let iframe = docDomPathToElement(doc, parts[1]+parts[2]);
                             element = iframe || element;

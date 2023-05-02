@@ -64,7 +64,7 @@ export default class DomPathUtils {
         let doc : Document | ShadowRoot = document;
         let element = null;
         while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-            let parts = srcPath.match(/(.*?)(\/#document-fragment|iframe\[\d+\])(.*)/)!;
+            let parts = srcPath.match(/(.*?)(\/#document-fragment\[\d+\]|iframe\[\d+\])(.*)/)!;
             if (parts[2].includes("iframe")) {
                 let iframe = this.docDomPathToElement(doc, parts[1]+parts[2]) as HTMLIFrameElement;
                 element = iframe || element;
