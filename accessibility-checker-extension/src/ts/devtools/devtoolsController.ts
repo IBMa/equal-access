@@ -426,7 +426,7 @@ export class DevtoolsController extends Controller {
                             element = iframe || element;
                             if (iframe && iframe.contentDocument) {
                                 doc = iframe.contentDocument;
-                                srcPath = parts[2];
+                                srcPath = parts[3];
                             } else {
                                 srcPath = null;
                             }
@@ -435,7 +435,7 @@ export class DevtoolsController extends Controller {
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
-                                srcPath = parts[2];
+                                srcPath = parts[3];
                             } else {
                                 srcPath = null;
                             }
