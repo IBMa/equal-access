@@ -419,8 +419,8 @@ export class DevtoolsController extends Controller {
                 function domPathToElem(srcPath) {
                     let doc = document;
                     let element = null;
-                    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                        let parts = srcPath.match(/(.*?)(\\/#document-fragment\\[\\d+\\]|iframe\\[\\d+\\])(.*)/);
+                    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment") || srcPath.includes("slot"))) {
+                        let parts = srcPath.match(/(.*?)(\\/#document-fragment\\[\\d+\\]|iframe\\[\\d+\\]|slot\\[\\d+\\]\\/[^/]*)(.*)/);
                         if (parts[2].includes("iframe")) {
                             let iframe = docDomPathToElement(doc, parts[1]+parts[2]);
                             element = iframe || element;
@@ -430,8 +430,11 @@ export class DevtoolsController extends Controller {
                             } else {
                                 srcPath = null;
                             }
-                        } else {
-                            let fragment = docDomPathToElement(doc, parts[1]); // get fragment which is in main document
+                        } else if (parts[2].includes("#document-fragment")) {
+                            let fragment = element;
+                            if (parts[1].length > 0) {
+                                fragment = docDomPathToElement(doc, parts[1]); // get fragment which is in main document
+                            }
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
@@ -439,7 +442,28 @@ export class DevtoolsController extends Controller {
                             } else {
                                 srcPath = null;
                             }
+                        } else {
+                            // slots
+                            let slotParts = parts[2].match(/(slot\\[\\d+\\])\\/([^[]*)\\[(\\d+)\\]/);
+                            let slot = docDomPathToElement(doc, parts[1]+slotParts[1]);
+                            let count = parseInt(slotParts[3]);
+                            for (let slotIdx=0; slotIdx < slot.assignedNodes().length; ++slotIdx) {
+                                let slotNode = slot.assignedNodes()[slotIdx];
+                                if (slotNode.nodeName.toLowerCase() === slotParts[2].toLowerCase()) {
+                                    --count;
+                                    if (count === 0) {
+                                        element = slotNode;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (count !== 0) {
+                                srcPath = null;
+                            } else {
+                                srcPath = parts[3];
+                            }
                         }
+                        // console.log(doc, element, srcPath)
                     }
                     if (srcPath) {
                         element = docDomPathToElement(doc, srcPath) || element;
