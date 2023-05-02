@@ -417,23 +417,22 @@ export class DevtoolsController extends Controller {
                     let doc = document;
                     let element = null;
                     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                        if (srcPath.includes("iframe")) {
-                            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-                            let iframe = docDomPathToElement(doc, parts[1]);
+                        let parts = srcPath.match(/(.*?)(\/#document-fragment|iframe\[\d+\])(.*)/)!;
+                        if (parts[2].includes("iframe")) {
+                            let iframe = this.docDomPathToElement(doc, parts[1]+parts[2]) as HTMLIFrameElement;
                             element = iframe || element;
                             if (iframe && iframe.contentDocument) {
                                 doc = iframe.contentDocument;
-                                srcPath = parts[2];
+                                srcPath = parts![2];
                             } else {
                                 srcPath = null;
                             }
-                        } else if (srcPath.includes("#document-fragment")) {
-                            let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
-                            let fragment = docDomPathToElement(doc, parts[1]);
+                        } else {
+                            let fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
-                                srcPath = parts[2];
+                                srcPath = parts![2];
                             } else {
                                 srcPath = null;
                             }

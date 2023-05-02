@@ -64,9 +64,9 @@ export default class DomPathUtils {
         let doc : Document | ShadowRoot = document;
         let element = null;
         while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-            if (srcPath.includes("iframe")) {
-                let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
-                let iframe = this.docDomPathToElement(doc, parts![1]) as HTMLIFrameElement;
+            let parts = srcPath.match(/(.*?)(\/#document-fragment|iframe\[\d+\])(.*)/)!;
+            if (parts[2].includes("iframe")) {
+                let iframe = this.docDomPathToElement(doc, parts[1]+parts[2]) as HTMLIFrameElement;
                 element = iframe || element;
                 if (iframe && iframe.contentDocument) {
                     doc = iframe.contentDocument;
@@ -74,8 +74,7 @@ export default class DomPathUtils {
                 } else {
                     srcPath = null;
                 }
-            } else if (srcPath.includes("#document-fragment")) {
-                let parts = srcPath.match(/(.*?)\/#document-fragment\[\d+\](.*)/);
+            } else {
                 let fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
                 element = fragment || element;
                 if (fragment && fragment.shadowRoot) {
@@ -84,8 +83,6 @@ export default class DomPathUtils {
                 } else {
                     srcPath = null;
                 }
-            } else {
-                srcPath = null;
             }
         }
         if (srcPath) {
