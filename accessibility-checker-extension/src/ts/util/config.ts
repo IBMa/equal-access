@@ -21,4 +21,5 @@ export default class Config {
     public static DEBUG=false;
 
     public static SECONDARY_MODAL=false;
+    public static ELEM_FOCUS_MODE=false;
 }

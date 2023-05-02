@@ -18,6 +18,7 @@ import { getBGController, TabChangeType } from "../background/backgroundControll
 import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
+import Config from "../util/config";
 import { genReport } from "../util/htmlReport/genReport";
 import { getTabId } from "../util/tabId";
 import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
@@ -336,7 +337,9 @@ export class DevtoolsController extends Controller {
                 // This path came from the Elements panel selection changing
                 if (!this.programmaticInspect) {
                     // User clicked on this
-                    await this.setFocusMode(true);
+                    if (Config.ELEM_FOCUS_MODE) {
+                        await this.setFocusMode(true);
+                    }
                     // if (path && path !== devtoolsState!.lastElementPath) {
                     if (path) {
                         let report = await this.getReport();
@@ -417,22 +420,22 @@ export class DevtoolsController extends Controller {
                     let doc = document;
                     let element = null;
                     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                        let parts = srcPath.match(/(.*?)(\/#document-fragment|iframe\[\d+\])(.*)/)!;
+                        let parts = srcPath.match(/(.*?)(\\/#document-fragment|iframe\\[\\d+\\])(.*)/);
                         if (parts[2].includes("iframe")) {
-                            let iframe = this.docDomPathToElement(doc, parts[1]+parts[2]) as HTMLIFrameElement;
+                            let iframe = docDomPathToElement(doc, parts[1]+parts[2]);
                             element = iframe || element;
                             if (iframe && iframe.contentDocument) {
                                 doc = iframe.contentDocument;
-                                srcPath = parts![2];
+                                srcPath = parts[2];
                             } else {
                                 srcPath = null;
                             }
                         } else {
-                            let fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
+                            let fragment = docDomPathToElement(doc, parts[1]); // get fragment which is in main document
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
-                                srcPath = parts![2];
+                                srcPath = parts[2];
                             } else {
                                 srcPath = null;
                             }
