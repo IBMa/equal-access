@@ -395,7 +395,11 @@ export class DevtoolsController extends Controller {
             // if (path === curSelectedPath) return;
             let script = `
                 function docDomPathToElement(doc, xpath) {
-                    if (doc.nodeType === 11) {
+                    if (doc.nodeType === 1) {
+                        let selector = xpath.substring(1).replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
+                        let element = doc.querySelector(selector);
+                        return element;
+                    } else if (doc.nodeType === 11) {
                         let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
                         let element = doc.querySelector(selector);
                         return element;
@@ -461,6 +465,7 @@ export class DevtoolsController extends Controller {
                                 srcPath = null;
                             } else {
                                 srcPath = parts[3];
+                                doc = element;
                             }
                         }
                         // console.log(doc, element, srcPath)

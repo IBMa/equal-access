@@ -45,12 +45,23 @@ export default class DomPathUtils {
     }
 
     private static docDomPathToElement(doc: Document | ShadowRoot, domPath:string) : HTMLElement | null {
-        if (doc.nodeType === 11) { // document fragment 
+        if (doc.nodeType === 1) { // element
+            let selector = domPath.substring(1).replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
+            let element = doc.querySelector(selector);
+            return element as HTMLElement;
+        } else if (doc.nodeType === 11) { // document fragment 
             let selector = ":host" + domPath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
             let element = doc.querySelector(selector);
             return element as HTMLElement;
         } else { // regular doc type = 9
-            let nodes = (doc as Document).evaluate(domPath, doc, null, XPathResult.ANY_TYPE, null);
+            domPath = domPath.replace(/\/svg\[/g, "/svg:svg[");
+            let nodes = (doc as Document).evaluate(domPath, doc, function(prefix) { 
+                if (prefix === 'svg') { 
+                    return 'http://www.w3.org/2000/svg';
+                } else {
+                    return null;
+                }
+            }, XPathResult.ANY_TYPE, null);
             let element = nodes.iterateNext();
             if (element) {
                 return element as HTMLElement;
@@ -105,6 +116,7 @@ export default class DomPathUtils {
                     srcPath = null;
                 } else {
                     srcPath = parts[3];
+                    doc = element;
                 }
             }
         }
