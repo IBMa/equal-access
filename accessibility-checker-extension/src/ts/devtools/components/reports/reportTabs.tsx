@@ -49,7 +49,7 @@ export class ReportTabs extends React.Component<ReportProps> {
                 // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
                 let id = `${(tabInfo && ""+tabInfo.apiArgs[0].tabOrder || "?")} ${result.path.aria.replace(/\//g, " /")}`;
                 let thisLabel = tabInfo && ""+tabInfo.apiArgs[0].tabOrder || "?";
-                let curGroup = rowData.find(group => group.id === id);
+                let curGroup = rowData.find(group => group.id === ReportTreeGrid.cleanId(id));
                 if (!curGroup) {
                     curGroup = {
                         id: ReportTreeGrid.cleanId(id),
