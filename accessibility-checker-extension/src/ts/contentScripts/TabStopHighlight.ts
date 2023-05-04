@@ -148,8 +148,6 @@ export default class TabStopHighlight {
                 // console.log("No errorCircle to highlight = ",circle);
             }
         } else if (event.detail !== 0) {
-            console.log("We got a mouse click on a circle");
-            console.log("doctype = ",docType);
             if (event.target.tagName === "circle" && !event.target.classList.contains('error') || event.target.tagName === "circle" && event.target.classList.contains('error')) {
                 let circle = null;
                 if (event.target.tagName === "circle" && !event.target.classList.contains('error')) {
@@ -181,8 +179,6 @@ export default class TabStopHighlight {
                         docType = "shadowdom";
                     }
                 }
-
-                console.log("doctype = ",docType);
                 
                 // if we have iframe
                 if (docType === "iframe" || docType === "shadowdom") {
@@ -191,15 +187,6 @@ export default class TabStopHighlight {
                     if (errorCircle != null)
                         elementXpath = errorCircle.getAttribute("xpath");
                 }
-
-                // if we have shadow dom no need to do anything special
-                // if (docType === "shadowdom") {
-                //     if (circle != null)
-                //         elementXpath = circle.getAttribute("xpath");
-                //     if (errorCircle != null)
-                //         elementXpath = errorCircle.getAttribute("xpath");
-                // }
-    
 
                 // get circle or errorCircle with matching xpath
                 circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
