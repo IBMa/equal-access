@@ -30,9 +30,11 @@ export default class TabStopHighlight {
     //       will be normal if not highlighting, bold if highlight
     public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IReport, regularTabstops: IReport) { // doc type is main, iframe, shadowdom, click
         let elementXpath = "";
+        console.log("Function: handleTabHighlight");
+        console.log("doc = ", doc);
+        console.log("docType = ", docType);
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            // console.log("Got TAB Key");
-            // console.log("TAB doc = ", doc);
+            console.log("Got TAB Key");
             if (docType === "main") {
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
@@ -40,29 +42,29 @@ export default class TabStopHighlight {
             
             // if we have iframe
             if (docType === "iframe") {
-                // console.log("Got iframe element");
+                console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
+                console.log("iframe Xpath = ",elementXpath);
             }
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
-                // console.log("we have an element in a shadow dom");
+                console.log("Got shadowDom element");
                 let sdXpath = DomPathUtils.getDomPathForElement(doc);
-                let element = doc.shadowRoot.activeElement;
-                elementXpath = DomPathUtils.getDomPathForElement(element);
-                // need #document-fragment[n]
                 elementXpath = sdXpath+iframeStr;
+                console.log("shadowDom Xpath = ",elementXpath);
             }
 
             // get circle or errorCircle with matching xpath
             let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-            // console.log("circle test = ", circle);
+            console.log("circle test = ", circle);
             let errorCircle = null;
             if (circle?.classList.contains('error')) {
                 errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
             }
+            console.log("errorCircle test = ", errorCircle);
             
             let prevHighlightedElement;
             // find previous highlighted element which is either a circle or errorCircle so will be within document
@@ -115,8 +117,8 @@ export default class TabStopHighlight {
                 // console.log("No errorCircle to highlight = ",errorCircle);
             }
         } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
-            // console.log("Got SHIFT TAB Key");
-            // console.log("TAB doc = ", doc);
+            console.log("Got SHIFT TAB Key");
+            console.log("TAB doc = ", doc);
             if (docType === "main") {
                 // console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
@@ -125,7 +127,7 @@ export default class TabStopHighlight {
             
             // if we have iframe
             if (docType === "iframe") {
-                // console.log("Got iframe element");
+                console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
@@ -133,12 +135,10 @@ export default class TabStopHighlight {
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
-                // console.log("Got shadow dom element");
+                console.log("Got shadowDom element");
                 let sdXpath = DomPathUtils.getDomPathForElement(doc);
-                let element = doc.shadowRoot.activeElement;
-                elementXpath = DomPathUtils.getDomPathForElement(element);
-                // need #document-fragment[n]
                 elementXpath = sdXpath+iframeStr;
+                console.log("shadowDom Xpath = ",elementXpath);
             }
 
             // get circle or errorCircle with matching xpath
@@ -200,7 +200,8 @@ export default class TabStopHighlight {
                 // console.log("No errorCircle to highlight = ",circle);
             }
         } else if (event.detail !== 0) {
-            // console.log("We got a mouse click on a circle");
+            console.log("We got a mouse click on a circle");
+            console.log("doctype = ",docType);
             if (event.target.tagName === "circle" && !event.target.classList.contains('error') || event.target.tagName === "circle" && event.target.classList.contains('error')) {
                 let circle = null;
                 if (event.target.tagName === "circle" && !event.target.classList.contains('error')) {
@@ -211,18 +212,76 @@ export default class TabStopHighlight {
                     errorCircle = event.target;
                 }
 
+                console.log("circle = ",circle);
+                if (circle != null)
+                    console.log("circle.xpath = ", circle.getAttribute("xpath"));
+                console.log("errorCircle = ", errorCircle);
+                if (errorCircle != null)
+                    console.log("errorCircle.xpath = ", errorCircle.getAttribute("xpath"));
+
                 let element = DomPathUtils.domPathToElem(event.target.getAttribute("xpath")); // circle's element that we want to have focus
 
                 elementXpath = DomPathUtils.getDomPathForElement(element); // path if not in iframe
+
+                if (circle != null) {
+                    console.log("circle = ", circle.getAttribute("xpath"));
+                    if (circle.getAttribute("xpath").includes("iframe")) {
+                        docType = "iframe";
+
+                    }
+                } else if (errorCircle != null) {
+                    console.log("errorCircle = ", errorCircle.getAttribute("xpath"));
+                    if (errorCircle.getAttribute("xpath").includes("iframe")) {
+                        docType = "iframe";
+                    }
+                }
+                if (circle != null) {
+                    console.log("circle = ", circle.getAttribute("xpath"));
+                    if (circle.getAttribute("xpath").includes("document-fragment")) {
+                        docType = "shadowdom";
+                    }
+                } else if (errorCircle != null) {
+                    console.log("errorCircle = ", errorCircle.getAttribute("xpath"));
+                    if (errorCircle.getAttribute("xpath").includes("document-fragment")) {
+                        docType = "shadowdom";
+                    }
+                }
+
+                console.log("doctype = ",docType);
                 
                 // if we have iframe
                 if (docType === "iframe") {
-                    element = doc.activeElement;  // get element just tabbed to which has focus
-                    elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
-                    elementXpath = iframeStr + elementXpath;
+                    // element = doc.activeElement;  // get element just tabbed to which has focus
+                    // elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
+                    // elementXpath = iframeStr + elementXpath;
                     // console.log("iframeStr = ",iframeStr)
+                    console.log("Got iframe element");
+                    if (circle != null)
+                        elementXpath = circle.getAttribute("xpath");
+                    if (errorCircle != null)
+                        elementXpath = errorCircle.getAttribute("xpath");
+                    console.log("shadowDom Xpath = ",elementXpath);
                 }
 
+                // if we have shadow dom no need to do anything special
+                if (docType === "shadowdom") {
+                    console.log("Got shadowDom element");
+                    if (circle != null)
+                        elementXpath = circle.getAttribute("xpath");
+                    if (errorCircle != null)
+                        elementXpath = errorCircle.getAttribute("xpath");
+                    console.log("shadowDom Xpath = ",elementXpath);
+                }
+    
+
+                // get circle or errorCircle with matching xpath
+                circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+                // console.log("circle test = ", circle);
+                errorCircle = null;
+                if (circle?.classList.contains('error')) {
+                    errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+                }
+                
                 
                 // get circle or polygon with matching xpath
                 // let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
@@ -262,11 +321,14 @@ export default class TabStopHighlight {
                     let circleText = this.findCircleTextElement(circle);
                     circleText?.classList.remove("noHighlightSVGText");
                     circleText?.classList.add("highlightSVGText");
-                    // console.log("circle highlighted = ",circle);
-                    // console.log("Highlight Regular Circle, elementXpath = ", elementXpath);
+                    console.log("circle highlighted = ",circle);
+                    console.log("Highlight Regular Circle, elementXpath = ", elementXpath);
 
                     let issue = this.getIssueByXpath(elementXpath,regularTabstops);
-                    // console.log("issue = ", issue);
+                    console.log("issue = ", issue);
+                    console.log("issue.path.dom = ", issue.path.dom);
+                    console.log("element = ", element);
+                    console.log("elementXpath = ", elementXpath);
 
                     let tabId = await getBGController().getTabId();
                     let devtoolsController = getDevtoolsController(true, "remote", tabId);
@@ -286,11 +348,14 @@ export default class TabStopHighlight {
                     let errorCircleText = this.findErrorCircleTextElement(errorCircle);
                     errorCircleText?.classList.remove("noHighlightSVGText");
                     errorCircleText?.classList.add("highlightSVGText");
-                    // console.log("errorCircle highlighted = ",errorCircle);
-                    // console.log("Highlight Error Circle, elementXpath = ",elementXpath, "   element = ",element);
+                    console.log("errorCircle highlighted = ",errorCircle);
+                    console.log("Highlight Error Circle, elementXpath = ",elementXpath, "   element = ",element);
 
                     let issue = this.getIssueByXpath(elementXpath,tabStopsErrors);
-                    // console.log("issue = ", issue);
+                    console.log("issue = ", issue);
+                    console.log("issue.path.dom = ", issue.path.dom);
+                    console.log("element = ", element);
+                    console.log("elementXpath = ", elementXpath);
 
                     let tabId = await getBGController().getTabId();
                     let devtoolsController = getDevtoolsController(true, "remote", tabId);
