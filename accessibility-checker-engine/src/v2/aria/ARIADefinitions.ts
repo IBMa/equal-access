@@ -1720,7 +1720,7 @@ export class ARIADefinitions {
         },
         "button": {
             implicitRole: ["button"],
-            validRoles: ["checkbox", "combobox", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
+            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slidwe", "switch", "tab", "treeitem"],
             globalAriaAttributesValid: true
         },
         "canvas": {
@@ -2294,7 +2294,7 @@ export class ARIADefinitions {
         "input": {
             "button": {
                 implicitRole: ["button"],
-                validRoles: ["checkbox", "combobox", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
+                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "checkbox-with-aria-pressed": {
@@ -2358,7 +2358,7 @@ export class ARIADefinitions {
             },
             "image": {
                 implicitRole: ["button"],
-                validRoles: ["link", "menuitem", "menuitemcheckbox", "menuitemradio", "radio", "switch"],
+                validRoles: ["checkbox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "month": {
@@ -2396,7 +2396,7 @@ export class ARIADefinitions {
             },
             "reset": {
                 implicitRole: ["button"],
-                validRoles: null,
+                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "search-no-list": {
@@ -2412,7 +2412,7 @@ export class ARIADefinitions {
             },
             "submit": {
                 implicitRole: ["button"],
-                validRoles: null,
+                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "tel-no-list": {
