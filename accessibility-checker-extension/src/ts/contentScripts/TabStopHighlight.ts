@@ -30,7 +30,6 @@ export default class TabStopHighlight {
     public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IReport, regularTabstops: IReport) { // doc type is main, iframe, shadowdom, click
         let elementXpath = "";
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            console.log("Got TAB Key");
             if (docType === "main") {
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
@@ -157,8 +156,11 @@ export default class TabStopHighlight {
                 if (event.target.tagName === "circle" && event.target.classList.contains('error')) {
                     errorCircle = event.target;
                 }
-
+                
                 let element = DomPathUtils.domPathToElem(event.target.getAttribute("xpath")); // circle's element that we want to have focus
+                // element = doc.activeElement;  // get element just tabbed to which has focus
+                elementXpath = DomPathUtils.getDomPathForElement(element); // in main doc so just get xpath
+           
 
                 if (circle != null) {
                     if (circle.getAttribute("xpath").includes("iframe")) {
@@ -179,6 +181,8 @@ export default class TabStopHighlight {
                         docType = "shadowdom";
                     }
                 }
+
+                
                 
                 // if we have iframe
                 if (docType === "iframe" || docType === "shadowdom") {
@@ -215,6 +219,10 @@ export default class TabStopHighlight {
                 } else {
                     console.log("No prevHighlightedElement to highlight")
                 }
+
+                
+                
+
                 // Highlight circle and select code in dom
                 if (circle && !circle.classList.contains('error')) {
                     this.highlightCircle(circle,"circle");
