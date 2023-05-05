@@ -1720,7 +1720,7 @@ export class ARIADefinitions {
         },
         "button": {
             implicitRole: ["button"],
-            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slidwe", "switch", "tab", "treeitem"],
+            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
             globalAriaAttributesValid: true
         },
         "canvas": {
@@ -2358,7 +2358,7 @@ export class ARIADefinitions {
             },
             "image": {
                 implicitRole: ["button"],
-                validRoles: ["checkbox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
+                validRoles: ["checkbox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "month": {
@@ -2396,7 +2396,7 @@ export class ARIADefinitions {
             },
             "reset": {
                 implicitRole: ["button"],
-                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
+                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "search-no-list": {
@@ -2412,7 +2412,7 @@ export class ARIADefinitions {
             },
             "submit": {
                 implicitRole: ["button"],
-                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slide", "switch", "tab", "treeitem"],
+                validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "tel-no-list": {
