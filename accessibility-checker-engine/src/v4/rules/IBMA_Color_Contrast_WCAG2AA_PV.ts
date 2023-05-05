@@ -19,6 +19,7 @@ import { getCache } from "../util/CacheUtil";
 
 export let IBMA_Color_Contrast_WCAG2AA_PV: Rule = {
     id: "IBMA_Color_Contrast_WCAG2AA_PV",
+     // keeping old ruleID for archive purposes, functionality merged into new ruleID text_contrast_sufficient 
     context: "dom:*",
     dependencies: ["text_contrast_sufficient"],
     help: {
