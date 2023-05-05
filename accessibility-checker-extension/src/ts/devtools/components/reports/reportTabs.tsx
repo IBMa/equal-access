@@ -72,7 +72,6 @@ export class ReportTabs extends React.Component<ReportProps> {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
-        console.log("ReportTabs roleData 2 = ", rowData);
         return <ReportTreeGrid 
             unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
