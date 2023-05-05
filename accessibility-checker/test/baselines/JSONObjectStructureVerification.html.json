@@ -484,13 +484,13 @@
 		"level": "pass"
 	}, {
 		"ruleId": "RPT_Header_HasContent",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/h1[1]",
 			"aria": "/document[1]/main[1]/heading[1]"
 		},
 		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"message": "Heading element has descriptive text",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -2460,7 +2460,7 @@
 		},
 		"RPT_Header_HasContent": {
 			"0": "Heading elements must provide descriptive text",
-			"Pass_0": "Rule Passed"
+			"Pass_0": "Heading element has descriptive text"
 		},
 		"RPT_Headers_FewWords": {
 			"0": "Heading elements must not be used for presentation",
