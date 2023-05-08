@@ -18,6 +18,7 @@ import { getBGController, TabChangeType } from "../background/backgroundControll
 import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
+import Config from "../util/config";
 import { genReport } from "../util/htmlReport/genReport";
 import { getTabId } from "../util/tabId";
 import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
@@ -336,7 +337,9 @@ export class DevtoolsController extends Controller {
                 // This path came from the Elements panel selection changing
                 if (!this.programmaticInspect) {
                     // User clicked on this
-                    await this.setFocusMode(true);
+                    if (Config.ELEM_FOCUS_MODE) {
+                        await this.setFocusMode(true);
+                    }
                     // if (path && path !== devtoolsState!.lastElementPath) {
                     if (path) {
                         let report = await this.getReport();
@@ -392,7 +395,11 @@ export class DevtoolsController extends Controller {
             // if (path === curSelectedPath) return;
             let script = `
                 function docDomPathToElement(doc, xpath) {
-                    if (doc.nodeType === 11) {
+                    if (doc.nodeType === 1) {
+                        let selector = xpath.substring(1).replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
+                        let element = doc.querySelector(selector);
+                        return element;
+                    } else if (doc.nodeType === 11) {
                         let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
                         let element = doc.querySelector(selector);
                         return element;
@@ -416,28 +423,52 @@ export class DevtoolsController extends Controller {
                 function domPathToElem(srcPath) {
                     let doc = document;
                     let element = null;
-                    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                        if (srcPath.includes("iframe")) {
-                            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-                            let iframe = docDomPathToElement(doc, parts[1]);
+                    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment") || srcPath.includes("slot"))) {
+                        let parts = srcPath.match(/(.*?)(\\/#document-fragment\\[\\d+\\]|iframe\\[\\d+\\]|slot\\[\\d+\\]\\/[^/]*)(.*)/);
+                        if (parts[2].includes("iframe")) {
+                            let iframe = docDomPathToElement(doc, parts[1]+parts[2]);
                             element = iframe || element;
                             if (iframe && iframe.contentDocument) {
                                 doc = iframe.contentDocument;
-                                srcPath = parts[2];
+                                srcPath = parts[3];
                             } else {
                                 srcPath = null;
                             }
-                        } else if (srcPath.includes("#document-fragment")) {
-                            let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
-                            let fragment = docDomPathToElement(doc, parts[1]);
+                        } else if (parts[2].includes("#document-fragment")) {
+                            let fragment = element;
+                            if (parts[1].length > 0) {
+                                fragment = docDomPathToElement(doc, parts[1]); // get fragment which is in main document
+                            }
                             element = fragment || element;
                             if (fragment && fragment.shadowRoot) {
                                 doc = fragment.shadowRoot;
-                                srcPath = parts[2];
+                                srcPath = parts[3];
                             } else {
                                 srcPath = null;
                             }
+                        } else {
+                            // slots
+                            let slotParts = parts[2].match(/(slot\\[\\d+\\])\\/([^[]*)\\[(\\d+)\\]/);
+                            let slot = docDomPathToElement(doc, parts[1]+slotParts[1]);
+                            let count = parseInt(slotParts[3]);
+                            for (let slotIdx=0; slotIdx < slot.assignedNodes().length; ++slotIdx) {
+                                let slotNode = slot.assignedNodes()[slotIdx];
+                                if (slotNode.nodeName.toLowerCase() === slotParts[2].toLowerCase()) {
+                                    --count;
+                                    if (count === 0) {
+                                        element = slotNode;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (count !== 0) {
+                                srcPath = null;
+                            } else {
+                                srcPath = parts[3];
+                                doc = element;
+                            }
                         }
+                        // console.log(doc, element, srcPath)
                     }
                     if (srcPath) {
                         element = docDomPathToElement(doc, srcPath) || element;

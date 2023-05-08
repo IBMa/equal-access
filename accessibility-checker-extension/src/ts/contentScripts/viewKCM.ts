@@ -31,9 +31,7 @@ let myKCMState = false;
     let devtoolsController = getDevtoolsController(true, "remote", myTabId);
     // console.log("ADDING ViewState LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
-        // console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);
         if (viewState.kcm === myKCMState) return;
-        // console.log("[DEBUG:KCM ViewState]", viewState.kcm);
         if (viewState.kcm === true) {
             myKCMState = true;
             // if viewState.kcm === true then scan has occurred and KCM button has been pushed
@@ -49,20 +47,13 @@ let myKCMState = false;
 })();
 
 function getKCMData (report:IReport | null, settings: ISettings) {
-    // console.log("Function: getKCMData");
     /* JCH before finish scan collect and order tab stops
         * Note: report contains all issues
         * 
         * tabbable will contain the elements that are tabbable
         * tabbableErrors will contain the elements that are tabbable and have keyboard issues
         */
-    // console.log("JCH DO TABBABLE");
     let { tabbable, tabbableErrors } = UtilKCM.processIssues(report!);
-    // console.log("viewState.kcm = ", view);
-    // console.log("tabbable = ",tabbable);
-    // console.log("tabbableErrors = ",tabbableErrors);
-   
-    // now call function to draw (or delete)
 
     // @ts-ignore
     drawDeleteKCM(tabbable,tabbableErrors,settings);
@@ -204,7 +195,6 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             }
         });
         if (flagMatchFound) {
-            // console.log("index = ",index," reg tabstop has error");
             regularTabstops[index].nodeHasError = true;
         } 
     }
@@ -224,15 +214,11 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
 
     // left mouse click listener for the circles and triangles
     window.addEventListener('mousedown', function(event:any) {
-        // console.log("-------------------1-------------------");
-        // console.log("main doc left mouse click catcher");
-        // console.log("event.target = ",event.target);
         TabStopHighlight.handleTabHighlight(event,document,"click","",tabStopsErrors,regularTabstops);
     });
 
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
-        // console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
             TabStopHighlight.handleTabHighlight(event, document, "main", "",tabStopsErrors,regularTabstops);
         }
@@ -240,17 +226,12 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
 
     // Find all iframes nodes 
     let frames = document.getElementsByTagName("iframe");
-    // console.log("frames = ",frames);
-    // console.log("frames.length = ",frames.length);
+
     for (let i = 0; i < frames.length; i++) {
-        // console.log("frames[",i,"]=",frames[i]);
         if (frames[i] != null) {
             if (frames[i].contentDocument) {
-                // console.log("add iframe listener");
                 frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
-                    // console.log("iframe key catcher");
                     let iframePath:string = DomPathUtils.getDomPathForElement(frames[i]); // since iframes in main doc
-                    // console.log("iframePath = ",iframePath);
                     TabStopHighlight.handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath,tabStopsErrors,regularTabstops);
                 });
             } else {
@@ -266,18 +247,16 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             shadowDoms.push(allNodes[i]);
         }
     }
-    // console.log(shadowDoms.length);
+   
     for (let i = 0; i < shadowDoms.length; i++) {
         if (shadowDoms[i] != null) {
-            // console.log("Got shadow dom: ",shadowDoms[i]);
             shadowDoms[i].shadowRoot?.addEventListener('keyup', function(event:any) {
-                // console.log("shadow dom key catcher");
                 let focusElement = shadowDoms[i].shadowRoot?.activeElement;
                 let focusElementPath = DomPathUtils.getDomPathForElement(focusElement);
                 // JCH TODO 1 for the doc frag ONLY works for 1 level doc frags
                 focusElementPath = "/#document-fragment"+"["+"1"+"]"+ focusElementPath;
                 TabStopHighlight.handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath,tabStopsErrors,regularTabstops);
-            })
+            });
         }
     }
     return true;       

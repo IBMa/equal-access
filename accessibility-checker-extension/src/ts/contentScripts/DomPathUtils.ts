@@ -45,12 +45,23 @@ export default class DomPathUtils {
     }
 
     private static docDomPathToElement(doc: Document | ShadowRoot, domPath:string) : HTMLElement | null {
-        if (doc.nodeType === 11) { // document fragment 
+        if (doc.nodeType === 1) { // element
+            let selector = domPath.substring(1).replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
+            let element = doc.querySelector(selector);
+            return element as HTMLElement;
+        } else if (doc.nodeType === 11) { // document fragment 
             let selector = ":host" + domPath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
             let element = doc.querySelector(selector);
             return element as HTMLElement;
         } else { // regular doc type = 9
-            let nodes = (doc as Document).evaluate(domPath, doc, null, XPathResult.ANY_TYPE, null);
+            domPath = domPath.replace(/\/svg\[/g, "/svg:svg[");
+            let nodes = (doc as Document).evaluate(domPath, doc, function(prefix) { 
+                if (prefix === 'svg') { 
+                    return 'http://www.w3.org/2000/svg';
+                } else {
+                    return null;
+                }
+            }, XPathResult.ANY_TYPE, null);
             let element = nodes.iterateNext();
             if (element) {
                 return element as HTMLElement;
@@ -63,29 +74,50 @@ export default class DomPathUtils {
     public static domPathToElem(srcPath: string | null | undefined) {
         let doc : Document | ShadowRoot = document;
         let element = null;
-        while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-            if (srcPath.includes("iframe")) {
-                let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
-                let iframe = this.docDomPathToElement(doc, parts![1]) as HTMLIFrameElement;
+        while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment") || srcPath.includes("slot"))) {
+            let parts = srcPath.match(/(.*?)(\/#document-fragment\[\d+\]|iframe\[\d+\]|slot\[\d+\]\/[^/]*)(.*)/)!;
+            if (parts[2].includes("iframe")) {
+                let iframe = this.docDomPathToElement(doc, parts[1]+parts[2]) as HTMLIFrameElement;
                 element = iframe || element;
                 if (iframe && iframe.contentDocument) {
                     doc = iframe.contentDocument;
-                    srcPath = parts![2];
+                    srcPath = parts![3];
                 } else {
                     srcPath = null;
                 }
-            } else if (srcPath.includes("#document-fragment")) {
-                let parts = srcPath.match(/(.*?)\/#document-fragment\[\d+\](.*)/);
-                let fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
+            } else if (parts[2].includes("#document-fragment")) {
+                let fragment : any = element;
+                if (parts[1].length > 0) {
+                    fragment = this.docDomPathToElement(doc, parts![1]); // get fragment which is in main document
+                }
                 element = fragment || element;
                 if (fragment && fragment.shadowRoot) {
                     doc = fragment.shadowRoot;
-                    srcPath = parts![2];
+                    srcPath = parts![3];
                 } else {
                     srcPath = null;
                 }
             } else {
-                srcPath = null;
+                // slots
+                let slotParts = parts[2].match(/(slot\[\d+\])\/([^[]*)\[(\d+)\]/)!;
+                let slot = this.docDomPathToElement(doc, parts[1]+slotParts[1]);
+                let count = parseInt(slotParts[3]);
+                for (let slotIdx=0; slotIdx < (slot as any).assignedNodes().length; ++slotIdx) {
+                    let slotNode = (slot as any).assignedNodes()[slotIdx];
+                    if (slotNode.nodeName.toLowerCase() === slotParts[2].toLowerCase()) {
+                        --count;
+                        if (count === 0) {
+                            element = slotNode;
+                            break;
+                        }
+                    }
+                }
+                if (count !== 0) {
+                    srcPath = null;
+                } else {
+                    srcPath = parts[3];
+                    doc = element;
+                }
             }
         }
         if (srcPath) {
