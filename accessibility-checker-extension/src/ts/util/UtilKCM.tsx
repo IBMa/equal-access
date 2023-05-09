@@ -56,7 +56,7 @@ export class UtilKCM {
 
                 // 4.1.2 Name, Role, Value
                 result.ruleId === "Rpt_Aria_ValidRole" ||
-                result.ruleId === "aria_role_valid")) {
+                result.ruleId === "aria_role_allowed")) {
                 tabbableErrors?.push(result);
             }
         });
