@@ -107,13 +107,13 @@ class BackgroundController extends Controller {
         this.addEventListener(listener, `BG_onTabUpdate`);
     }
 
-    public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab> {
+    public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
         return this.hook("getTabInfo", tabId, async () => {
             return await new Promise((resolve, _reject) => {
-                chrome.tabs.get(tabId!, async function (tab: any) {
+                chrome.tabs.get(tabId!, async function (tab: chrome.tabs.Tab) {
                     //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-                    let canScan = await new Promise((resolve, _reject) => {
-                        if (tab.id < 0) return resolve(false);
+                    let canScan : boolean = await new Promise((resolve, _reject) => {
+                        if (typeof tab.id === "undefined" || tab.id < 0) return resolve(false);
                         myExecuteScript({
                             target: { tabId: tab.id, frameIds: [0] },
                             func: () => (typeof (window as any).aceIBMa)
@@ -121,8 +121,8 @@ class BackgroundController extends Controller {
                             resolve(!!res);
                         })
                     });
-                    tab.canScan = canScan;
-                    resolve(tab);
+                    let retVal = { canScan, ...tab };
+                    resolve(retVal);
                 });
             });
         });
