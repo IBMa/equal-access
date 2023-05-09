@@ -17,8 +17,8 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
-export let aria_pararent_required: Rule = {
-    id: "aria_pararent_required",
+export let aria_parent_required: Rule = {
+    id: "aria_parent_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
     refactor: {
@@ -29,9 +29,9 @@ export let aria_pararent_required: Rule = {
     },
     help: {
         "en-US": {
-            "group": "aria_pararent_required.html",
-            "Pass_0": "aria_pararent_required.html",
-            "Fail_1": "aria_pararent_required.html"
+            "group": "aria_parent_required.html",
+            "Pass_0": "aria_parent_required.html",
+            "Fail_1": "aria_parent_required.html"
         }
     },
     messages: {

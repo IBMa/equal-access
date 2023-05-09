@@ -130,7 +130,7 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "skip_main_exists": "1150",
     "skip_main_described": "1151",
     "aria_child_valid": "1152",
-    "aria_pararent_required": "1153",
+    "aria_parent_required": "1153",
     "aria_eventhandler_role_valid": "1154",
     "aria_widget_labelled": "1156",
     "aria_content_in_landmark": "1157",
