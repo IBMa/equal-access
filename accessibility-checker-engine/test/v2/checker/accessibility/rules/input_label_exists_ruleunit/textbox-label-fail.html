@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <div role="textbox"></div>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Form control with \"textbox\" role has no associated label",
+            "messageArgs": [
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

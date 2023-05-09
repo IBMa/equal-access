@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <body>
+<object title="" data="/test-assets/rabbit-video/video.mp4"></object>
+
+<script>
+  UnitTest = {
+      ruleIds: ["object_text_exists"],
+      results: [
+      {
+            "ruleId": "object_text_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/object[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_no_text_alternative",
+            "message": "An <object> element does not have a text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  };
+</script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<body>
+  <main>
+    <div class="testcase">
+      <label>
+        Animal:
+        <input name=animal list=animals>
+      </label>
+      <datalist id=animals>
+        <label>
+          or select from the list:
+          <select name=animal role="xx">
+            <option value="">
+            <option>Cat
+            <option>Dog
+          </select>
+        </label>
+      </datalist>
+    </div>
+  </main>
+  <script>
+    UnitTest = {
+      ruleIds: ["aria_attribute_valid", "input_label_exists", "widget_tabbable_exists", "aria_keyboard_handler_exists"],
+      results: [
+        {
+          "ruleId": "input_label_exists",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+            "aria": "/document[1]/main[1]/combobox[1]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Rule Passed",
+          "messageArgs": [],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "widget_tabbable_exists",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+            "aria": "/document[1]/main[1]/combobox[1]"
+          },
+          "reasonId": "pass",
+          "message": "Rule Passed",
+          "messageArgs": [],
+          "apiArgs": [],
+          "category": "Accessibility"
+        }
+      ]
+    };
+  </script>
+</body>
+
+</html>
