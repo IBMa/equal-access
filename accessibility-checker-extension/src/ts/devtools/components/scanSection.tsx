@@ -56,7 +56,8 @@ interface ScanSectionState {
     storedReportsCount: number,
     selectedElemPath: string,
     focusMode: boolean,
-    confirmClearStored: boolean
+    confirmClearStored: boolean,
+    canScan: boolean
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
@@ -72,7 +73,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         storedReportsCount: 0,
         selectedElemPath: "html",
         focusMode: false,
-        confirmClearStored: false
+        confirmClearStored: false,
+        canScan: true
     }
     scanRef = React.createRef<HTMLButtonElement>()
 
@@ -128,6 +130,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             if (content.changeInfo.status) {
                 this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
             }
+            if (content.changeInfo.status === "complete") {
+                this.setState({
+                    canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+                });
+            }
         });
         this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
@@ -135,7 +142,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             storeReports: (await devtoolsController.getStoreReports()),
             selectedElemPath: (await devtoolsController.getSelectedElementPath())! || "/html",
             focusMode: (await devtoolsController.getFocusMode()),
-            storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length
+            storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length,
+            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
         });
     }
 
@@ -176,7 +184,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         }}
                                         accesskey="s"
                                         size="sm"
-                                        disabled={this.state.pageStatus !== "complete"} 
+                                        disabled={this.state.pageStatus !== "complete" || !this.state.canScan} 
                                         onClick={() => { 
                                             this.scan(); 
                                         }

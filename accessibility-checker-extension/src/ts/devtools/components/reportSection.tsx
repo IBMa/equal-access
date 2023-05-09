@@ -44,6 +44,8 @@ import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ReportTabs } from './reports/reportTabs';
 import { UtilKCM } from '../../util/UtilKCM';
+import { getBGController } from '../../background/backgroundController';
+import { getTabId } from '../../util/tabId';
 
 let devtoolsController = getDevtoolsController();
 
@@ -61,6 +63,7 @@ interface ReportSectionState {
     selectedPath: string | null
     focusMode: boolean,
     viewState?: ViewState
+    canScan: boolean
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
@@ -84,6 +87,8 @@ type CountType = {
     }
 }
 
+let bgController = getBGController();
+
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
     state: ReportSectionState = {
         report: null,
@@ -93,12 +98,16 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             "Recommendation": true
         },
         selectedPath: null,
-        focusMode: false
+        focusMode: false,
+        canScan: true
     }
 
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
         let report = await devtoolsController.getReport();
+        this.setState({
+            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+        });
         this.reportListener(report!);
 
         devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
@@ -134,7 +143,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS" || issue.ruleId === "detector_tabbable");
         }
-        this.setState({ report });
+        this.setState({ 
+            report,
+            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+        });
     }
     selectedElementListener: ListenerType<string> = async (path) => {
         this.setPath(path);
@@ -305,6 +317,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                     checked={this.state.checked} 
                                     selectedPath={this.state.selectedPath} 
                                     onResetFilters={this.onResetFilters.bind(this)}
+                                    canScan={this.state.canScan}
                                 />
                             </TabPanel>
                             <TabPanel>
@@ -316,6 +329,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                     checked={this.state.checked} 
                                     selectedPath={this.state.selectedPath} 
                                     onResetFilters={this.onResetFilters.bind(this)}
+                                    canScan={this.state.canScan}
                                 />
                             </TabPanel>
                             <TabPanel>
@@ -328,6 +342,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                     checked={this.state.checked} 
                                     selectedPath={this.state.selectedPath} 
                                     onResetFilters={this.onResetFilters.bind(this)}
+                                    canScan={this.state.canScan}
                                 />
                             </TabPanel>
                         </TabPanels>
@@ -368,6 +383,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 checked={this.state.checked} 
                                 selectedPath={this.state.selectedPath} 
                                 onResetFilters={this.onResetFilters.bind(this)}
+                                canScan={this.state.canScan}
                             />
                         </div>
                     </div>}

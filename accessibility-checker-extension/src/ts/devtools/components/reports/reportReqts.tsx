@@ -34,6 +34,7 @@ interface ReportProps {
         "Recommendation": boolean
     }
     selectedPath: string | null;
+    canScan: boolean;
     onResetFilters: () => void
 }
 
@@ -85,7 +86,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
         return <ReportTreeGrid 
             unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
-            noScanMessage={<>This page has not been scanned.</>}
+            noScanMessage={this.props.canScan ? <>This page has not been scanned.</> : <>The browser has restricted IBM Equal Access Accesibility Checker from loading for this URL. Please go to a different page.</>}
             headers={[
                 { key: "issueCount", label: "Issues" },
                 { key: "label", label: "Requirements" }
