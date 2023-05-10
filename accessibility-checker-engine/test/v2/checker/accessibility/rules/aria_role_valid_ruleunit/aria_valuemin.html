@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="flex">
+        <div class="widgetDemo">
+          <h3>Test 1</h3>
+          <p>
+            Authors SHOULD NOT use the <code>aria-valuemin</code> attribute on any element which allows the <code>min</code> attribute. Use the <code>min</code> attribute instead.
+          </p>
+  
+          <div class="testcase">
+            <p>inputs</p>
+            <input type="date" aria-valuemin="1979-12-31">
+            <input type="month" aria-valuemin="2021-12">
+            <input type="week" aria-valuemin="2018-W26">
+            <input type="time" aria-valuemin="12:00">
+            <input type="datetime-local" aria-valuemin="2022-12-31T00:00">
+            <input type="number" aria-valuemin="6">
+            <input type="range" aria-valuemin="10">
+            <p>meter</p>
+            <meter value="6" aria-valuemin="2" max="8">6 blocks used (out of 8 total)</meter>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+          <br>Flag error or warning to authors to use <code>min</code> attribute instead. Authors may not be able to replicate all the necessary functionality of the native <code>min</code> attribute.</p>
+        </div>
+  
+        <div class="widgetDemo">
+          <h3>Test 2</h3>
+          <p>
+            Authors MUST NOT use the <code>aria-valuemin</code> on any element which also has a <code>min</code> attribute, even if the values of each attribute match.
+          </p>
+  
+          <div class="testcase">
+            <p>inputs</p>
+            <input type="date" aria-valuemin="1979-12-31" min="1979-12-31">
+            <input type="month" aria-valuemin="2021-12" min="2021-12">
+            <input type="week" aria-valuemin="2018-W26" min="2018-W26">
+            <input type="time" aria-valuemin="12:00" min="12:00">
+            <input type="datetime-local" aria-valuemin="2022-12-31T00:00" min="2022-12-31T00:00">
+            <input type="number" aria-valuemin="5" min="6">
+            <input type="range" aria-valuemin="9" min="3">
+            <p>meter</p>
+            <meter value="6" min="2" aria-valuemin="3" max="8">6 blocks used (out of 8 total)</meter>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+          <br>Error and tell authors to use <code>min</code> attribute by itself. Authors may not be able to replicate all the necessary functionality of the native <code>min</code> attribute.</p>
+        </div>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_valid"],
+        results: [
+        {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[2]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[3]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[4]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[5]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[6]",
+              "aria": "/document[1]/main[1]/spinbutton[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[7]",
+              "aria": "/document[1]/main[1]/slider[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with implicit ARIA role \"slider\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "slider"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/meter[1]",
+              "aria": "/document[1]/main[1]/meter[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <meter> with implicit ARIA role \"meter\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "meter",
+              "meter"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[2]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[3]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[4]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[5]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[6]",
+              "aria": "/document[1]/main[1]/spinbutton[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[7]",
+              "aria": "/document[1]/main[1]/slider[2]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with implicit ARIA role \"slider\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "input",
+              "slider"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/meter[1]",
+              "aria": "/document[1]/main[1]/meter[2]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <meter> with implicit ARIA role \"meter\"",
+            "messageArgs": [
+              "aria-valuemin",
+              "meter",
+              "meter"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

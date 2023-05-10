@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="flex">
+        <div class="widgetDemo">
+          <h3>Test 1</h3>
+          <p>Authors SHOULD NOT use the <code>aria-checked</code> attribute on any element where the checkedness of the element can be in opposition to the current value of the <code>aria-checked</code> attribute. </p>
+  
+          <p>The following <code>input type=checkbox</code> has an <code>aria-checked=true</code>, which does not update to match the checked state of the native element.</p>
+  
+          <div class="testcase">
+            <label for="c">test 1</label>
+            <input type="checkbox" id="c" aria-checked="true">
+          </div>
+  
+          <p><strong>Expected result:</strong>
+          <br>Warning that authors should not use <code>aria-checked</code> on the <code>input</code>.</p>
+        </div>
+  
+        <div class="widgetDemo">
+          <h3>Test 2</h3>
+          <p>Authors SHOULD NOT use the <code>aria-checked</code> attribute on any element where the checkedness of the element can be in opposition to the current value of the aria-checked attribute. </p>
+  
+          <p>The following <code>input type=radio</code> elements each have an <code>aria-checked=true</code>, which does not update to match the checked state of the native element.</p>
+  
+          <div class="testcase">
+            <fieldset>
+              <legend>test 2</legend>
+              <label for="r">radio 1</label>
+              <input type="radio" name="r" id="r" aria-checked="true">
+              <label for="r2">radio 2</label>
+              <input type="radio" name="r" id="r2" aria-checked="true">
+            </fieldset>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+          <br>Warning that authors should not use <code>aria-checked</code> on the <code>input</code>s.</p>
+        </div>
+  
+  
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_valid"],
+        results: [
+        {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]/checkbox[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with implicit ARIA role \"checkbox\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/fieldset[1]/input[1]",
+              "aria": "/document[1]/main[1]/group[1]/radio[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with implicit ARIA role \"radio\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/fieldset[1]/input[2]",
+              "aria": "/document[1]/main[1]/group[1]/radio[2]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with implicit ARIA role \"radio\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

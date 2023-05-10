@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+    <script src="../../src/oaa-a11y.js"></script>
+    <script src="../../src/scripts/util-rpt.js"></script>
+    <script src="../../src/scripts/util.js"></script>
+    <script src="../../src/scripts/cross-browser-util.js"></script>
+    <script src="../../src/wai-aria/aria_definitions.js"></script>
+    <script src="../../src/rules/rpt-object-rules.js"></script>
+
+    <script type="text/javascript">
+        function runRule() {
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object1'));
+            console.log("expecting false: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object2'));
+            console.log("expecting false: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object3'));
+            console.log("expecting true: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("object_text_exists").validate(document.getElementById('object4'));
+            console.log("expecting true: " + passed.result);            
+        }
+    </script>
+
+	<title>RPT Test Suite</title>
+</head>
+
+<body onload="runRule()">
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Object-hasHiddenTextDebug.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Object text Tests</h3>
+
+
+<ul>
+	<li>Test - Valid Object text as text</li>
+	<li>Test - Valid Object text as image</li>
+</ul>
+
+<object id="object1" data="../support/fish.gif" Type="image/gif" Title="Fish" width="200" height="200">
+	<span style="display: none">An image of a fish</span>
+</object>
+
+<object id="object2" data="../support/chicken.gif" Type="image/gif" Title="Chicken" width="200" height="200">
+	<img hidden src="../support/chicken.gif" alt="An image of a chicken if browser cannot load data" />
+</object>
+
+<object role="application" aria-label="object" id="object3" data="../support/chicken.gif" title="Object one">
+  <param aria-label="param" id="param" name="foo" value="bar">You have an unsupportive browser
+</object>
+
+<object id="object4" data="../support/fish.gif" Type="image/gif" Title="Fish" width="200" height="200">An image of a fish
+  <span style="display: none">An image of a fish</span>
+</object>
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "20",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      //"/html/body/object", // Val engine Has issues with hidden content checking causing false positive violation
+      "/html/body/object[2]"
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

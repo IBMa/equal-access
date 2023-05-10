@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Button Template</title>
+    <meta charset="UTF-8" />
+    <!-- <script type="text/javascript" src="src/index.js"></script>
+    <link rel="stylesheet" href="src/styles.css" /> -->
+    <template id="my-button">
+      <button id="button">
+        <slot></slot>
+      </button>
+    </template>
+
+    <script type="text/javascript">
+      customElements.define(
+        "my-button",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            let template = document.getElementById("my-button");
+            let templateContent = template.content;
+
+            const shadowRoot = this.attachShadow({ mode: "open" }).appendChild(
+              templateContent.cloneNode(true)
+            );
+          }
+        }
+      );
+    </script>
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <my-button></my-button>
+      <my-button>Test Button 2</my-button>
+      <button id="button" />
+      <button>Test Button 4</button>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["input_label_exists", "element_id_unique"],
+        results: [
+          {
+            "ruleId": "element_id_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/head[1]/template[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_id_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/my-button[1]/#document-fragment[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/my-button[1]/#document-fragment[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Form control element <button> has no associated label",
+            "messageArgs": [
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_id_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/my-button[2]/#document-fragment[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/my-button[2]/#document-fragment[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_id_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[3]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Form control element <button> has no associated label",
+            "messageArgs": [
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/button[2]",
+              "aria": "/document[1]/main[1]/button[4]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

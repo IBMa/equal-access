@@ -76,57 +76,57 @@ var skipList = [
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps zombie when loaded as a string
     path.join(testRoot, "Hidden_ruleunit", "unitTestisNodeVisible.html"),
-    path.join(testRoot, "HAAC_BackgroundImg_HasTextOrTitle_ruleunit", "APassedFileWithNoImg.html"),
-    path.join(testRoot, "RPT_Blink_CSSTrigger1_ruleunit", "TextDecoration-Blink.html"),
+    path.join(testRoot, "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
+    path.join(testRoot, "blink_css_review_ruleunit", "TextDecoration-Blink.html"),
     // CSS processing errors
     path.join(testRoot, "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
-    path.join(testRoot, "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics_ruleunit", "eventHandlerMissingRole2.html"),
-    path.join(testRoot, "Rpt_Aria_WidgetLabels_Implicit_ruleunit", "menuItemCheckboxNoInnerText.html"),
+    path.join(testRoot, "aria_eventhandler_role_valid_ruleunit", "eventHandlerMissingRole2.html"),
+    path.join(testRoot, "aria_widget_labelled_ruleunit", "menuItemCheckboxNoInnerText.html"),
     // Can't access referenced files
     // no baseline found
-    path.join(testRoot, "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 
-    path.join(testRoot, "WCAG20_Img_LinkTextNotRedundant_ruleunit", "Img-redundantLink.html"),
-    path.join(testRoot, "WCAG20_Input_LabelAfter_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(testRoot, "WCAG20_Input_LabelBefore_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(testRoot, "RPT_Elem_EventMouseAndKey_ruleunit", "Events-invalidNoMouseRequired.html"),
-    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "D766.html"),
-    path.join(testRoot, "WCAG20_A_HasText_ruleunit", "A-nonTabable.html"),
+    path.join(testRoot, "img_alt_redundant_ruleunit", "Img-redundantLink.html"),
+    path.join(testRoot, "input_label_after_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(testRoot, "input_label_before_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(testRoot, "element_mouseevent_keyboard_ruleunit", "Events-invalidNoMouseRequired.html"),
+    path.join(testRoot, "input_label_exists_ruleunit", "D766.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     //in karma conf file skip list
-    path.join(testRoot, "WCAG20_A_HasText_ruleunit", "A-hasTextEmbedded.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
 
     // Meta refresh
-    path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-validRefresh.html"),
-    path.join(testRoot, "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // Blank titles are removed from the DOM
-    // path.join(testRoot, "RPT_Title_Valid_ruleunit","Title-empty.html"),
-    // path.join(testRoot, "RPT_Title_Valid_ruleunit", "Title-invalidSpaces.html"),
+    // path.join(testRoot, "page_title_valid_ruleunit","Title-empty.html"),
+    // path.join(testRoot, "page_title_valid_ruleunit", "Title-invalidSpaces.html"),
     path.join(testRoot, "HAAC_Aria_Or_HTML5_Attr_ruleunit", "Fail.html"),
     path.join(testRoot, "RPT_Blockquote_WrapsTextQuote_ruleunit", "BlockquoteQ-validHidden.html"),
-    path.join(testRoot, "RPT_Elem_UniqueId_ruleunit", "Identifiers-notUniqueHidden.html"),
-    path.join(testRoot, "RPT_Style_ColorSemantics1_ruleunit", "D543.html"),
-    path.join(testRoot, "RPT_Text_SensoryReference_ruleunit", "Content-notSensoryHidden.html"),
-    path.join(testRoot, "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit_ruleunit", "hasMultipleContentinfoHidden.html"),
-    path.join(testRoot, "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit_ruleunit", "hasMultipleContentinfoHiddenImplicit.html"),
-    path.join(testRoot, "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2_ruleunit", "noDuplicateLandmarks.html"),
+    path.join(testRoot, "element_id_unique_ruleunit", "Identifiers-notUniqueHidden.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
+    path.join(testRoot, "text_sensory_misuse_ruleunit", "Content-notSensoryHidden.html"),
+    path.join(testRoot, "aria_contentinfo_single_ruleunit", "hasMultipleContentinfoHidden.html"),
+    path.join(testRoot, "aria_contentinfo_single_ruleunit", "hasMultipleContentinfoHiddenImplicit.html"),
+    path.join(testRoot, "aria_main_label_unique_ruleunit", "noDuplicateLandmarks.html"),
     path.join(testRoot, "Rpt_Aria_RequiredChildren_Native_Host_Sematics_ruleunit", "validAriaRequiredChildrenHidden.html"),
-    path.join(testRoot, "Valerie_Table_DataCellRelationships_ruleunit", "table-cellRelationshipsHidden.html"),
-    path.join(testRoot, "WCAG20_A_HasText_ruleunit", "A-hasHiddenText.html"),
-    path.join(testRoot, "WCAG20_Input_InFieldSet_ruleunit", "Input-notInFieldSetHidden.html"),
-    path.join(testRoot, "WCAG20_Input_LabelBefore_ruleunit", "D870.html"),
-    path.join(testRoot, "WCAG20_Style_BeforeAfter_ruleunit", "D100.html"),
-    path.join(testRoot, "WCAG20_Style_BeforeAfter_ruleunit", "D99.html"),
-    path.join(testRoot, "WCAG21_Style_Viewport_ruleunit", "viewport.html"),
-    path.join(testRoot, "HAAC_Video_HasNoTrack_ruleunit", "Video-HasTrackAndKindWithcaptionDynamic.html"),
+    path.join(testRoot, "table_headers_related_ruleunit", "table-cellRelationshipsHidden.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-hasHiddenText.html"),
+    path.join(testRoot, "input_fields_grouped_ruleunit", "Input-notInFieldSetHidden.html"),
+    path.join(testRoot, "input_label_before_ruleunit", "D870.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit", "D99.html"),
+    path.join(testRoot, "style_viewport_resizable_ruleunit", "viewport.html"),
+    path.join(testRoot, "caption_track_exists_ruleunit", "Video-HasTrackAndKindWithcaptionDynamic.html"),
 
     // Zombie does not support shadow dom
-    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "shadowdom.html"),
-    path.join(testRoot, "Rpt_Aria_OrphanedContent_Native_Host_Sematics_ruleunit", "shadowdom.html"),
-    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "Button-template-shadow.html"),
-    path.join(testRoot, "WCAG20_Input_RadioChkInFieldSet_ruleunit", "shadow.html")
+    path.join(testRoot, "input_label_exists_ruleunit", "shadowdom.html"),
+    path.join(testRoot, "aria_content_in_landmark_ruleunit", "shadowdom.html"),
+    path.join(testRoot, "input_label_exists_ruleunit", "Button-template-shadow.html"),
+    path.join(testRoot, "input_checkboxes_grouped_ruleunit", "shadow.html")
 ]
 
 var skipMap = {}

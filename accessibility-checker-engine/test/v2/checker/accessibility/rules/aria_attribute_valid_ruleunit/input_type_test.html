@@ -1,0 +1,2215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+
+<head id="id-29">
+    <title id="id-36">The WAI ARIA role should meet the implicit ARIA semantic restriction(s) for the element</title>
+    <link id="id-38" href="google.com" rel="test">
+    </link>
+    <base id="id-8">
+    </base>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body id="id-9" aria-atomic="true">
+    <div id="id-20" aria-label="true" role="region" aria-label="Realtime message log">
+        <a class="offleft" href="#maincontent">Skip to main content</a>
+        <a name="maincontent"></a>
+
+        <input id='1' aria-label="test1_1" />
+        <input aria-label="test1_2" role="application" />
+
+        <input type="button" aria-label="test2_3" />
+        <input type="button" aria-label="test2_4" role="application" />
+        <input type="button" aria-label="test2_5" role="button" onkeypress="keyEvent()" />
+        <input type="button" aria-label="test2_6" role="link menuitem menuitemcheckbox menuitemradio radio switch"
+            aria-checked="true" onkeypress="keyEvent()" />
+
+        <input type="checkbox" aria-label="test3_7" />
+        <input type="checkbox" aria-label="test3_8" role="application" />
+        <input type="checkbox" aria-label="test3_9" role="checkbox" aria-checked="true" onkeypress="keyEvent()" />
+        <input id='10' type="checkbox" aria-label="test3_10" role="button" aria-label="true" onkeypress="keyEvent()"
+            aria-pressed="true" />
+        <input type="checkbox" aria-label="test3_11" role="menuitemcheckbox switch" aria-checked="true"
+            onkeypress="keyEvent()" />
+
+        <input type="color" aria-label="test4_12" />
+        <input type="color" aria-label="test4_13" role="application" />
+
+        <input type="date" aria-label="test5_14" />
+        <input type="date" aria-label="test5_15" role="application" />
+
+        <input type="datetime" aria-label="test6_16" />
+        <input type="datetime" aria-label="test6_17" role="application" />
+
+        <input type="email" list="test" aria-label="test7_18" />
+        <input type="email" list="test" aria-label="test7_19" role="application" />
+        <input id='20' type="email" list="test" aria-label="test7_20" role="combobox" aria-expanded="true"
+            onkeypress="keyEvent()" />
+
+        <input type="email" aria-label="test8_21" />
+        <input type="email" aria-label="test8_22" role="application" />
+        <input type="email" aria-label="test8_23" role="textbox" onkeypress="keyEvent()" />
+
+        <input type="file" aria-label="test9_24" />
+        <input type="file" aria-label="test9_25" role="application" />
+
+        <input type="hidden" />
+        <input type="hidden" role="application" />
+
+        <input type="image" aria-label="test11_28" alt="test11" />
+        <input type="image" aria-label="test11_29" alt="test11" role="application" />
+        <input id='30' type="image" aria-label="test11_30" alt="test11" role="button" onkeypress="keyEvent()" />
+        <input type="image" aria-label="test11_31" alt="test11"
+            role="link menuitem menuitemcheckbox menuitemradio radio switch" onkeypress="keyEvent()" />
+
+        <input type="month" aria-label="test12_31" />
+        <input type="month" aria-label="test12_33" role="application" />
+
+        <input type="number" aria-label="test13_34" />
+        <input type="number" aria-label="test13_35" role="application" />
+        <input type="number" aria-label="test13_36" role="spinbutton" aria-valuemax="10" aria-valuemin="0"
+            aria-valuenow="5" onkeypress="keyEvent()" />
+
+        <input type="password" aria-label="test14_37" />
+        <input type="password" aria-label="test14_38" role="application" />
+        <input type="password" aria-label="test14_39" role="textbox" onkeypress="keyEvent()" />
+
+        <input id='40' type="radio" aria-label="test15_40" />
+        <input  type="radio" aria-label="test15_41" role="application" />
+        <input type="radio" aria-label="test15_42" role="radio" aria-checked="true" onkeypress="keyEvent()" />
+        <input type="radio" aria-label="test15_43" role="menuitemradio" aria-checked="true" onkeypress="keyEvent()" />
+
+        <input type="range" aria-label="test16_44" />
+        <input type="range" aria-label="test16_45" role="application" />
+        <input type="range" aria-label="test16_46" role="slider" aria-valuemax="10" aria-valuemin="0" aria-valuenow="5"
+            onkeypress="keyEvent()" />
+
+        <input type="reset" aria-label="test17_47" />
+        <input type="reset" aria-label="test17_48" role="application" />
+        <input type="reset" aria-label="test17_49" role="button" onkeypress="keyEvent()" />
+
+        <input id='50' type="search" aria-label="test18_50" />
+        <input type="search" aria-label="test18_51" role="application" />
+        <input type="search" aria-label="test18_52" role="searchbox" />
+
+        <input type="search" list="test" aria-label="test19_53" />
+        <input type="search" list="test" aria-label="test19_54" role="application" />
+        <input type="search" list="test" aria-label="test19_56" role="combobox" aria-expanded="true"
+            onkeypress="keyEvent()" />
+
+        <input type="submit" aria-label="test20_57" />
+        <input type="submit" aria-label="test20_58" role="application" />
+        <input type="submit" aria-label="test20_59" role="button" onkeypress="keyEvent()" />
+
+        <input type="tel" aria-label="test21_60" />
+        <input id='60' type="tel" aria-label="test21_61" role="application" />
+        <input type="tel" aria-label="test21_62" role="textbox" onkeypress="keyEvent()" />
+
+        <input type="tel" list="test" aria-label="test22_63" />
+        <input type="tel" list="test" aria-label="test22_64" role="application" />
+        <input type="tel" list="test" aria-label="test22_65" role="combobox" aria-expanded="true"
+            onkeypress="keyEvent()" />
+
+        <input type="text" aria-label="test23_66" />
+        <input type="text" aria-label="test23_67" role="application" />
+        <input type="text" aria-label="test23_68" role="textbox" onkeypress="keyEvent()" />
+
+        <input type="text" list="test" aria-label="test24_69" />
+        <input type="text" list="test" aria-label="test24_70" role="application" />
+        <input id='70' type="text" list="test" aria-label="test24_71" role="combobox" aria-expanded="true"
+            onkeypress="keyEvent()" />
+
+        <input type="url" aria-label="test25_72" />
+        <input type="url" aria-label="test25_73" role="application" />
+        <input type="url" aria-label="test25_74" role="textbox" onkeypress="keyEvent()" />
+
+        <input type="url" list="test" aria-label="test26_75" />
+        <input type="url" list="test" aria-label="test26_76" role="application" />
+        <input type="url" list="test" aria-label="test26_77" role="combobox" aria-expanded="true"
+            onkeypress="keyEvent()" />
+
+        <input type="time" aria-label="test27_78" />
+        <input type="time" aria-label="test27_79" role="application" />
+
+        <input type="week" aria-label="test28_80" />
+        <input id='80' type="week" aria-label="test28_81" role="application" />
+
+        <input type="password" aria-label="test14_40" aria-required="true" />
+
+    </div>
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["aria_role_valid", "aria_attribute_valid"],
+            results: [
+            {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]/generic[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-atomic",
+              "body",
+              "generic"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "region",
+              "div"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "div",
+              "region"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[1]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[2]",
+              "aria": "/document[1]/generic[1]/region[1]/application[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[3]",
+              "aria": "/document[1]/generic[1]/region[1]/button[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[4]",
+              "aria": "/document[1]/generic[1]/region[1]/application[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[5]",
+              "aria": "/document[1]/generic[1]/region[1]/button[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[5]",
+              "aria": "/document[1]/generic[1]/region[1]/button[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[6]",
+              "aria": "/document[1]/generic[1]/region[1]/link[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[6]",
+              "aria": "/document[1]/generic[1]/region[1]/link[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-checked",
+              "input",
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[7]",
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[8]",
+              "aria": "/document[1]/generic[1]/region[1]/application[3]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[9]",
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "checkbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[9]",
+              "aria": "/document[1]/generic[1]/region[1]/checkbox[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"checkbox\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[10]",
+              "aria": "/document[1]/generic[1]/region[1]/button[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[10]",
+              "aria": "/document[1]/generic[1]/region[1]/button[3]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-pressed",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[11]",
+              "aria": "/document[1]/generic[1]/region[1]/menuitemcheckbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitemcheckbox, switch",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[11]",
+              "aria": "/document[1]/generic[1]/region[1]/menuitemcheckbox[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemcheckbox, switch\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "menuitemcheckbox, switch"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[12]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[13]",
+              "aria": "/document[1]/generic[1]/region[1]/application[4]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[14]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[15]",
+              "aria": "/document[1]/generic[1]/region[1]/application[5]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[16]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[17]",
+              "aria": "/document[1]/generic[1]/region[1]/application[6]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[18]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[19]",
+              "aria": "/document[1]/generic[1]/region[1]/application[7]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[20]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[20]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-expanded",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[21]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[3]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[22]",
+              "aria": "/document[1]/generic[1]/region[1]/application[8]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[23]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[4]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "textbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[23]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[4]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[24]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[25]",
+              "aria": "/document[1]/generic[1]/region[1]/application[9]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[28]",
+              "aria": "/document[1]/generic[1]/region[1]/button[4]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[29]",
+              "aria": "/document[1]/generic[1]/region[1]/application[11]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[30]",
+              "aria": "/document[1]/generic[1]/region[1]/button[5]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[30]",
+              "aria": "/document[1]/generic[1]/region[1]/button[5]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[31]",
+              "aria": "/document[1]/generic[1]/region[1]/link[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[31]",
+              "aria": "/document[1]/generic[1]/region[1]/link[3]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[32]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[33]",
+              "aria": "/document[1]/generic[1]/region[1]/application[12]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[34]",
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[35]",
+              "aria": "/document[1]/generic[1]/region[1]/application[13]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[36]",
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "spinbutton",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[36]",
+              "aria": "/document[1]/generic[1]/region[1]/spinbutton[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-valuemax, aria-valuemin, aria-valuenow",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[37]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[38]",
+              "aria": "/document[1]/generic[1]/region[1]/application[14]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[39]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[5]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'textbox' is not valid for the element <input>",
+            "messageArgs": [
+              "textbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[40]",
+              "aria": "/document[1]/generic[1]/region[1]/radio[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[41]",
+              "aria": "/document[1]/generic[1]/region[1]/application[15]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[42]",
+              "aria": "/document[1]/generic[1]/region[1]/radio[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "radio",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[42]",
+              "aria": "/document[1]/generic[1]/region[1]/radio[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"radio\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[43]",
+              "aria": "/document[1]/generic[1]/region[1]/menuitemradio[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitemradio",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[43]",
+              "aria": "/document[1]/generic[1]/region[1]/menuitemradio[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemradio\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[44]",
+              "aria": "/document[1]/generic[1]/region[1]/slider[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "slider"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[45]",
+              "aria": "/document[1]/generic[1]/region[1]/application[16]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[46]",
+              "aria": "/document[1]/generic[1]/region[1]/slider[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "slider",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[46]",
+              "aria": "/document[1]/generic[1]/region[1]/slider[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemax, aria-valuemin\" are not valid for the element <input> with ARIA role \"slider\"",
+            "messageArgs": [
+              "aria-valuemax, aria-valuemin",
+              "input",
+              "slider"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[47]",
+              "aria": "/document[1]/generic[1]/region[1]/button[6]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[48]",
+              "aria": "/document[1]/generic[1]/region[1]/application[17]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[49]",
+              "aria": "/document[1]/generic[1]/region[1]/button[7]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[49]",
+              "aria": "/document[1]/generic[1]/region[1]/button[7]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[50]",
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "searchbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[51]",
+              "aria": "/document[1]/generic[1]/region[1]/application[18]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[52]",
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "searchbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[52]",
+              "aria": "/document[1]/generic[1]/region[1]/searchbox[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "searchbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[53]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[3]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[54]",
+              "aria": "/document[1]/generic[1]/region[1]/application[19]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[55]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[55]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-expanded",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[56]",
+              "aria": "/document[1]/generic[1]/region[1]/button[8]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[57]",
+              "aria": "/document[1]/generic[1]/region[1]/application[20]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[58]",
+              "aria": "/document[1]/generic[1]/region[1]/button[9]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[58]",
+              "aria": "/document[1]/generic[1]/region[1]/button[9]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[59]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[6]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[60]",
+              "aria": "/document[1]/generic[1]/region[1]/application[21]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[61]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[7]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "textbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[61]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[7]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[62]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[5]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[63]",
+              "aria": "/document[1]/generic[1]/region[1]/application[22]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[64]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[64]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-expanded",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[65]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[8]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[66]",
+              "aria": "/document[1]/generic[1]/region[1]/application[23]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[67]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "textbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[67]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[68]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[7]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[69]",
+              "aria": "/document[1]/generic[1]/region[1]/application[24]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[70]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[70]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-expanded",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[71]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[10]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[72]",
+              "aria": "/document[1]/generic[1]/region[1]/application[25]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[73]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "textbox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[73]",
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[74]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[9]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[75]",
+              "aria": "/document[1]/generic[1]/region[1]/application[26]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[76]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[76]",
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-expanded",
+              "input",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[77]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[78]",
+              "aria": "/document[1]/generic[1]/region[1]/application[27]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[79]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[80]",
+              "aria": "/document[1]/generic[1]/region[1]/application[28]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'application' is not valid for the element <input>",
+            "messageArgs": [
+              "application",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/input[81]",
+              "aria": "/document[1]/generic[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-required",
+              "input",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
+</body>
+
+</html>
