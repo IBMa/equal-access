@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <ul role="listbox" tabindex="0" aria-activedescendant="first">
+      <li id="first" role="option" aria-selected="true">First</li>
+      <li id="second" role="option" aria-selected="false">Second</li>
+      <li id="third" role="option" aria-selected="false">Third</li>
+  </ul>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]",
+              "aria": "/document[1]/listbox[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Form control with \"listbox\" role has no associated label",
+            "messageArgs": [
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

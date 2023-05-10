@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Sandbox</title>
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+        <main>
+            <h1>Test page</h1>
+            <div aria-hidden="true">
+                <button tabindex="-1">Some button</button>
+            </div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_hidden_nontabbable"],
+                results: [
+                    {
+                        ruleId: "aria_hidden_nontabbable",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/main[1]/div[1]",
+                            aria: "/document[1]/main[1]/generic[1]"
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility"
+                    },
+                    {
+                        ruleId: "aria_hidden_nontabbable",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/main[1]/div[1]/button[1]",
+                            aria: "/document[1]/main[1]/generic[1]/button[1]"
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility"
+                    }
+                ]
+            };
+        </script>
+    </body>
+</html>

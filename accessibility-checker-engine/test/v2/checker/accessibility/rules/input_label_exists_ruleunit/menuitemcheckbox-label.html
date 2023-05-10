@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+    <ul role='menu' tabindex='0' aria-activedescendant='first'>
+      <li id='first' role='menuitem' tabindex='-1'>First</li>
+      <li id='second' role='menuitem' >Second</li>
+      <li id='third' role='menuitemcheckbox' aria-checked='true'>Third</li>
+    </ul>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[3]",
+              "aria": "/document[1]/menu[1]/menuitemcheckbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

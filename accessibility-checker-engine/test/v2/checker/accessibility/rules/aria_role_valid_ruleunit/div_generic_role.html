@@ -1,0 +1,111 @@
+<html lang="en-US">
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <head>
+        <title>The 'generic' role test</title>
+    </head>    
+    <body>
+        <main> 
+            <div>generic content without role</div>
+            <div role='presentation'>generic content with presentation role</div>
+            <div aria-live="polite"> content with a global aria prop </div>
+            <hr>
+
+            <div hidden id="comment">generic content</div>    
+            <div aria-labelledby="comment"> content with aria labelledby</div>
+            <hr>
+
+            <div id="8" tabindex='0'>tabbable content without role</div>
+            <div id='9' tabindex='0' role='presentation' id="">tabbable content with presentation role</div>
+            <div id="12" tabindex='0' aria-live="polite"> tabbable content with a global aria prop </div>
+            <hr>
+
+            <div role="list">
+                <div aria-live="polite">
+                    <div role="listitem"><div>List item 1</div></div>
+                    <div role="listitem">List item 2</div>
+                </div>
+            </div>
+            <hr>
+
+            <div role="list">
+                <div style="display:inline;">
+                    <div role="listitem">List Item with aria-live 1</div>
+                    <div role="listitem">List Item with aria-live 2</div>
+                </div>
+            </div>
+            <hr>
+
+            <div role="list">
+                <div role='presentation' aria-live="polite">
+                    <div role="listitem">List Item with presentation aria-live 1</div>
+                    <div role="listitem">List Item with presentation aria-live 2</div>
+                </div>
+            </div>
+            <hr>
+
+            <div role="list">
+                <div aria-label="label list">
+                    <div role="listitem">List Item with aria-label 1</div>
+                    <div role="listitem">List Item with aria-label 2</div>
+                </div>
+            </div>
+            <hr>
+
+            <div role="list">
+                <div aria-labelledby="comment">
+                    <div role="listitem">List Item with aria-labelledby 1</div>
+                    <div role="listitem">List Item with aria-labelledby 2</div>
+                </div>
+            </div>
+            <hr>
+
+            <div role="list">
+                <div title="title list">
+                    <div role="listitem">List Item with title 1</div>
+                    <div role="listitem">List Item with title 2</div>
+                </div>
+            </div>
+            <hr>
+
+
+            <div> div with buttons
+                <div>
+                    <button>Play</button>
+                    <button>RePlay</button>
+                    <button>Cancel</button>
+                </div>
+            </div>
+            <hr>
+
+            <div><div>
+                <button>Play</button>
+                <button>RePlay</button>
+                <button>Cancel</button>
+                <div>after button content</div>
+            </div></div>
+            <hr>
+
+        </main>  
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_role_valid, aria_attribute_valid"],
+                results: [
+                
+          ]
+      };
+        </script> 
+    </body>
+</html>

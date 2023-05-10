@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+<script src="../../src/oaa-a11y.js"></script>
+<script src="../../src/scripts/util-rpt.js"></script>
+<script src="../../src/scripts/util.js"></script>
+<script src="../../src/scripts/cross-browser-util.js"></script>
+<script src="../../src/wai-aria/aria_definitions.js"></script>
+<script src="../../src/rules/rpt-elem-rules.js"></script>
+
+<script type="text/javascript">
+
+function runRule() {
+
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('textarea')[0]);
+  console.log(passed);
+
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('textarea')[1]);
+  console.log(passed);
+
+  var passed = OpenAjax.a11y.getRule("element_mouseevent_keyboard").validate(document.getElementsByTagName('button')[0]);
+  console.log(passed);
+
+}
+</script>
+  <title>RPT Test Suite</title>
+</head>
+
+<body onload="runRule()">
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Events-invalidNoMouseRequired.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Events Tests</h3>
+
+
+<ul>
+  <li>Test - Events with Javascript</li>
+</ul>
+
+<!-- Events -->
+<form action="..." method="post">
+  <fieldset>
+    <legend>Legend text: Automobiles</legend>
+    <p>Fieldset text: Events while inside this textarea!</p>
+
+    <label for="cars0">List of Automobiles </label>
+    <textarea rows="2" cols="50" name="autos" id="cars4" ondblclick="alert( 'onDblClick event' )">    Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars10" onmousemove="alert( 'onmousemove event' )">   Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars9" onmousedown="alert( 'onmousedown event' )">    Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars0" onmouseup="alert( 'onmouseup event' )">    Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars3" onclick="alert( 'onclick event' )">    Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars11" onmouseover="alert( 'onmouseover event' )">   Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos" id="cars12" onmouseout="alert( 'onmouseout event' )">   Ford, GM, Chrysler</textarea>
+
+    <!--multipe events-->
+
+    <textarea rows="2" cols="50" name="autos13" id="cars13" onmousedown="alert( 'onmousedown event' )" onmouseup="alert( 'onmouseup event' )">Ford, GM, Chrysler</textarea>
+
+    <textarea rows="2" cols="50" name="autos14" id="cars14" onmouseover="alert( 'onmouseover event' )" onmouseout="alert( 'onmouseout event' )">Ford, GM, Chrysler</textarea>
+
+    <Div id="cars15" onmousedown="alert( 'onmousedown event' )" onmouseup="alert( 'onmouseup event' )"> Ford, GM, Chrysler</textarea>
+      <p>
+        Mouse and Keyboard Events
+      </p>
+    </DiV>
+    <Div  id="cars16" onmouseover="alert( 'onmouseover event' )" onmouseout="alert( 'onmouseout event' )">Ford, GM, Chrysler</textarea>
+    <p>
+        Mouse and Keyboard Events
+      </p>
+    </DiV>
+
+    <input type="text" id="cars17" onmousedown="alert( 'onmousedown event' )" onkeydown = "alert( 'onkeydown event' )" onmouseup="alert( 'onmouseup event' )">    Ford, GM, Chrysler</textarea>
+
+    <input  type="text" id="cars18" onmouseup="alert( 'onmouseup event' )"  onkeydown = "alert( 'onkeydown event' )" onclick="alert( 'onclick event' )">    Ford, GM, Chrysler</textarea>
+
+    <input  type="text" id="cars19" onclick="alert( 'onclick event' )">   Ford, GM, Chrysler</textarea>
+
+    <input type="text" id="cars20" onmouseover="alert( 'onmouseover event' )">    Ford, GM, Chrysler</textarea>
+
+    <input type="text"id="cars21" onmouseout="alert( 'onmouseout event' )">   Ford, GM, Chrysler</textarea>
+
+    <p ondblclick="myFunction()">Double-click me</p>
+
+    <button type="submit" id="cars22">Submit</button>
+
+    <button type="button" id="cars23" onclick="alert( 'onclick event' )" >Submit</button>
+    <button type="button" id="cars24" onclick="alert( 'onclick event' )" onmousedown="alert( 'onmousedown event' )" >Submit</button>
+    <button type="button" id="cars26" onclick="alert( 'onclick event' )" onmousedown="alert( 'onmousedown event' )" onmouseup="alert( 'onmouseup event' )">>Submit</button>
+
+    <div id="cars24" onclick="alert( 'onclick event' )" onmousedown="alert( 'onmousedown event' )" >Submit</div>
+
+    <a id="cars25" onclick="alert( 'onclick event' )">a</button>
+
+  </fieldset>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "269",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form/fieldset/textarea[1]",
+        "/html/body/form/fieldset/textarea[2]",
+        "/html/body/form/fieldset/textarea[3]",
+        "/html/body/form/fieldset/textarea[4]",
+        "/html/body/form/fieldset/textarea[6]",
+        "/html/body/form/fieldset/textarea[7]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

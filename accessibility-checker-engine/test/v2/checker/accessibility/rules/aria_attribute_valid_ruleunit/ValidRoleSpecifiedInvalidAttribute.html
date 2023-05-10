@@ -1,0 +1,1156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+
+<head id="id-29">
+    <title id="id-36">The WAI ARIA role should meet the implicit ARIA semantic restriction(s) for the element</title>
+    <link id="id-38" href="google.com" rel="test">
+    </link>
+    <base id="id-8">
+    </base>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body id="id-9" role="document" aria-atomic="true">
+
+    <a class="offleft" href="#maincontent">Skip to main content</a>
+
+    <div id="id-20" role="document" aria-relevant="true" aria-label="true">
+        <a name="maincontent"></a>
+    </div>
+    <a href="google.com" id="id-1" role="tab" aria-expanded="true">Pass case</a>
+    <a id="id-2" role="option" aria-checked="true">Pass case</a>
+    <address id="id-3" role="contentinfo" aria-pressed="true">address element</address>
+    <map name="planetmap">
+        <area role="link" aria-selected="true" id="id-4" shape="rect" coords="0,0,82,126" alt="Sun" href="sun.htm">
+    </map>
+    <article id="id-5" role="main" aria-label="true">
+
+        <header id="id-30" role="presentation" aria-busy="true" aria-atomic="true">
+            <h1 id="id-28" role="tab" aria-selected="true">Most important heading here</h1>
+            <h3>Less important heading here</h3>
+            <p role="any-role">Some <strong id="id-40" role="any-role">additional information</strong> here</p>
+        </header>
+        <p>Google Chrome is a free, open-source web browser developed by Google, released in 2008.</p>
+    </article>
+    <aside id="id-6" role="complementary" aria-pressed="true">
+        <h4>Epcot Center</h4>
+        <p>The Epcot Center is a theme park in Disney World, Florida.</p>
+    </aside>
+    <audio controls id="id-7" role="application">
+        Your browser does not support the audio tag.
+    </audio>
+    <button type="button" onclick="alert('Hello world!')" id="id-10" role="menuitemradio">Click Me!</button>
+    <button onclick="alert('Hello world!')" id="id-11" role="link">Click Me!</button>
+    <table id="id-36" role="table">
+        <caption id="id-12">Monthly savings</caption>
+        <colgroup id="id-14">
+            <col span="2" style="background-color:red" id="id-13">
+            <col style="background-color:yellow">
+        </colgroup>
+        <tr>
+            <th>
+                <dialog open id="id-19" role="alertdialog" aria-label="true">This is an open dialog window</dialog>
+            </th>
+            <th>Savings</th>
+        </tr>
+    </table>
+    <form action="demo_form.asp" method="get">
+        <input list="browsers" name="browser">
+        <datalist id="id-15" role="listbox" aria-required="true" aria-activedescendant="true" aria-pressed="true">
+            <option value="Internet Explorer">
+        </datalist>
+        <input type="submit">
+    </form>
+    <dl id="id-21" role="list" aria-label="true">
+        <dt id="id-17" aria-busy="true">Coffee</dt>
+        <dd id="id-16" aria-atomic="true" aria-activedescendant="true">Black hot drink</dd>
+        <dt>Milk</dt>
+        <dd>White cold drink</dd>
+    </dl>
+
+    <details id="id-18" role="group" aria-label="true">
+        <summary>Copyright 1999-2014.</summary>
+        <p id="id-27" role="any-role"> - by Refsnes Data. All Rights Reserved.</p>
+        <hr id="id-31" role="separator" tabindex="0" aria-valuetext="small">
+        <p>All content and graphics on this web site are the property of the company Refsnes Data.</p>
+    </details>
+
+    <embed src="helloworld.swf" id="id-22" role="img" aria-label="true"></embed>
+
+    <form id="id-26" role="search" aria-orientation="horizontal">
+        <fieldset id="id-23" role="group" aria-label="true">
+            <legend>Personalia:</legend>
+            Name: <input type="text"><br>
+            Email: <input type="text"><br>
+            Date of birth: <input type="text">
+        </fieldset>
+    </form>
+    <figure id="id-24" role="group" aria-label="true">
+        <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+    </figure>
+    <footer id="id-25" role="contentinfo" aria-label="true">
+        <p>Posted by: Hege Refsnes</p>
+        <p>Contact information: <a href="mailto:someone@example.com">
+                someone@example.com</a>.</p>
+    </footer>
+
+    <h1 id="contents1">Button 1 Label</h1>
+    <input type="button" id="id-33" value="button1" name="myButton1" role="menuitem" aria-atomic="true" />
+    <input type="checkbox" id="id-34" value="button2" name="myButton2" role="switch" aria-checked="true" />
+
+
+    <ol>
+        <li id="id-35" role="listitem" aria-level="3">Coffee</li>
+    </ol>
+
+
+    <ul>
+        <li>Coffee</li>
+    </ul>
+
+    <h6 aria-level="0" aria-label="h6_El_3" id="h6_El_3" aria-roledescription="role description" aria-atomic="false"
+        aria-expanded="false" aria-colcount="1">Heading level 6</h6>
+
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["aria_role_valid", "aria_attribute_valid"],
+            results: [
+            {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'document' is not valid for the element <body>",
+            "messageArgs": [
+              "document",
+              "body"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/document[1]/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "document",
+              "div"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/document[1]/document[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-relevant, aria-label",
+              "div",
+              "document"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[2]",
+              "aria": "/document[1]/document[1]/tab[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "tab",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[2]",
+              "aria": "/document[1]/document[1]/tab[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-expanded",
+              "a",
+              "tab"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[3]",
+              "aria": "/document[1]/document[1]/option[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "option",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[3]",
+              "aria": "/document[1]/document[1]/option[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-checked",
+              "a",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/address[1]",
+              "aria": "/document[1]/document[1]/contentinfo[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "contentinfo",
+              "address"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/address[1]",
+              "aria": "/document[1]/document[1]/contentinfo[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <address> with ARIA role \"contentinfo\"",
+            "messageArgs": [
+              "aria-pressed",
+              "address",
+              "contentinfo"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/map[1]/area[1]",
+              "aria": "/document[1]/document[1]/link[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "link",
+              "area"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/map[1]/area[1]",
+              "aria": "/document[1]/document[1]/link[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-selected\" are not valid for the element <area> with ARIA role \"link\"",
+            "messageArgs": [
+              "aria-selected",
+              "area",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]",
+              "aria": "/document[1]/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "main",
+              "article"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]",
+              "aria": "/document[1]/document[1]/main[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "article",
+              "main"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]",
+              "aria": "/document[1]/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "presentation",
+              "header"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]",
+              "aria": "/document[1]/document[1]/main[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-busy, aria-atomic",
+              "header",
+              "presentation"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]/h1[1]",
+              "aria": "/document[1]/document[1]/main[1]/tab[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "tab",
+              "h1"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]/h1[1]",
+              "aria": "/document[1]/document[1]/main[1]/tab[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-selected",
+              "h1",
+              "tab"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/aside[1]",
+              "aria": "/document[1]/document[1]/complementary[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "complementary",
+              "aside"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/aside[1]",
+              "aria": "/document[1]/document[1]/complementary[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <aside> with ARIA role \"complementary\"",
+            "messageArgs": [
+              "aria-pressed",
+              "aside",
+              "complementary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/audio[1]",
+              "aria": "/document[1]/document[1]/application[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "application",
+              "audio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/document[1]/menuitemradio[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitemradio",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/document[1]/link[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "link",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/document[1]/table[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "table",
+              "table"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]/dialog[1]",
+              "aria": "/document[1]/document[1]/table[1]/rowgroup[1]/row[1]/rowheader[1]/alertdialog[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "alertdialog",
+              "dialog"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]/dialog[1]",
+              "aria": "/document[1]/document[1]/table[1]/rowgroup[1]/row[1]/rowheader[1]/alertdialog[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "dialog",
+              "alertdialog"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/datalist[1]",
+              "aria": "/document[1]/document[1]/form[1]/listbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "listbox",
+              "datalist"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/datalist[1]",
+              "aria": "/document[1]/document[1]/form[1]/listbox[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-required, aria-activedescendant, aria-pressed\" are not valid for the element <datalist> with ARIA role \"listbox\"",
+            "messageArgs": [
+              "aria-required, aria-activedescendant, aria-pressed",
+              "datalist",
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/dl[1]",
+              "aria": "/document[1]/document[1]/list[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "list",
+              "dl"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/dl[1]",
+              "aria": "/document[1]/document[1]/list[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "dl",
+              "list"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/dl[1]/dt[1]",
+              "aria": "/document[1]/document[1]/list[1]/term[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-busy",
+              "dt",
+              "term"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/dl[1]/dd[1]",
+              "aria": "/document[1]/document[1]/list[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-activedescendant\" are not valid for the element <dd> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-activedescendant",
+              "dd",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]",
+              "aria": "/document[1]/document[1]/group[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "group",
+              "details"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]",
+              "aria": "/document[1]/document[1]/group[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "details",
+              "group"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/hr[1]",
+              "aria": "/document[1]/document[1]/group[1]/separator[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "separator",
+              "hr"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/hr[1]",
+              "aria": "/document[1]/document[1]/group[1]/separator[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-valuetext",
+              "hr",
+              "separator"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/embed[1]",
+              "aria": "/document[1]/document[1]/img[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "img",
+              "embed"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/embed[1]",
+              "aria": "/document[1]/document[1]/img[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "embed",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]",
+              "aria": "/document[1]/document[1]/search[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "search",
+              "form"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]",
+              "aria": "/document[1]/document[1]/search[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-orientation\" are not valid for the element <form> with ARIA role \"search\"",
+            "messageArgs": [
+              "aria-orientation",
+              "form",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
+              "aria": "/document[1]/document[1]/search[1]/group[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "group",
+              "fieldset"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
+              "aria": "/document[1]/document[1]/search[1]/group[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "fieldset",
+              "group"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/figure[1]",
+              "aria": "/document[1]/document[1]/group[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "group",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/figure[1]",
+              "aria": "/document[1]/document[1]/group[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "figure",
+              "group"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/footer[1]",
+              "aria": "/document[1]/document[1]/contentinfo[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "contentinfo",
+              "footer"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/footer[1]",
+              "aria": "/document[1]/document[1]/contentinfo[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "footer",
+              "contentinfo"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[1]",
+              "aria": "/document[1]/document[1]/menuitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitem",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[1]",
+              "aria": "/document[1]/document[1]/menuitem[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-atomic",
+              "input",
+              "menuitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/document[1]/switch[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "switch",
+              "input"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/document[1]/switch[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"switch\"",
+            "messageArgs": [
+              "aria-checked",
+              "input",
+              "switch"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[1]",
+              "aria": "/document[1]/document[1]/list[2]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "listitem",
+              "li"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[1]",
+              "aria": "/document[1]/document[1]/list[2]/listitem[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-level",
+              "li",
+              "listitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[1]",
+              "aria": "/document[1]/document[1]/heading[2]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded, aria-colcount\" are not valid for the element <h6> with implicit ARIA role \"heading\"",
+            "messageArgs": [
+              "aria-expanded, aria-colcount",
+              "h6",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
+
+</body>
+
+</html>

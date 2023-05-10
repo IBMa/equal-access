@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+<head id="id-29">
+<title id="id-36">The WAI ARIA role should meet the implicit ARIA semantic restriction(s) for the element</title>
+<link  id="id-38" href="google.com" rel="test"></link>
+<base id="id-8"></base>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body id="id-9">
+
+	<a class="offleft" href="#maincontent">Skip to main content</a>
+
+    <div id="id-20">
+             	<a name="maincontent"></a>
+    </div>
+	<a href="google.com"  id="id-1">Pass case</a>
+	<a id="id-2">Pass case</a>
+	<address id="id-3">address element</address>
+	<map name="planetmap">
+  		<area id="id-4" shape="rect" coords="0,0,82,126" alt="Sun" href="sun.htm">
+    </map>
+    <article id="id-5">
+
+  		<header id="id-30">
+    <h1 id="id-28">Most important heading here</h1>
+    <h3>Less important heading here</h3>
+    <p>Some <strong id="id-40">additional information</strong> here</p>
+  </header>
+  		<p>Google Chrome is a free, open-source web browser developed by Google, released in 2008.</p>
+	</article>
+	<aside id="id-6">
+  		<h4>Epcot Center</h4>
+  		<p>The Epcot Center is a theme park in Disney World, Florida.</p>
+	</aside>
+	 <audio controls id="id-7">
+  		<source src="horse.ogg" type="audio/ogg">
+  		<source src="horse.mp3" type="audio/mpeg">
+  		Your browser does not support the audio tag.
+	</audio>
+	<button type="button" onclick="alert('Hello world!')" id="id-10">Click Me!</button>
+	<button type="menu" onclick="alert('Hello world!')" id="id-11">Click Me!</button>
+	<table id="id-36">
+  		<caption id="id-12">Monthly savings</caption>
+  		<colgroup id="id-14">
+    		<col span="2" style="background-color:red" id="id-13">
+    		<col style="background-color:yellow">
+  		</colgroup>
+  			<tr>
+    		<th><dialog open id="id-19">This is an open dialog window</dialog></th>
+    		<th>Savings</th>
+  			</tr>
+	</table>
+	<form action="demo_form.asp" method="get">
+  		<input list="browsers" name="browser">
+  			<datalist id="id-15">
+    		<option value="Internet Explorer">
+    		</datalist>
+  		<input type="submit">
+	</form>
+	<dl id="id-21">
+  		<dt id="id-17">Coffee</dt>
+  		<dd id="id-16">Black hot drink</dd>
+  		<dt>Milk</dt>
+  		<dd>White cold drink</dd>
+	</dl>
+
+   <details id="id-18">
+    <summary>Copyright 1999-2014.</summary>
+    <p id="id-27"> - by Refsnes Data. All Rights Reserved.</p>
+    <hr id="id-31">
+    <p>All content and graphics on this web site are the property of the company Refsnes Data.</p>
+  </details>
+
+  <embed src="helloworld.swf" id="id-22">
+
+  <form id="id-26">
+  		<fieldset id="id-23">
+    	<legend>Personalia:</legend>
+    Name: <input type="text"><br>
+    Email: <input type="text"><br>
+    Date of birth: <input type="text">
+  		</fieldset>
+	</form>
+	<figure id="id-24">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  </figure>
+  <footer id="id-25">
+  <p>Posted by: Hege Refsnes</p>
+  <p>Contact information: <a href="mailto:someone@example.com">
+  someone@example.com</a>.</p>
+</footer>
+
+    <h1 id="contents1">Button 1 Label</h1>
+	<input type="button" id="id-33" value="button1" name="myButton1"/>
+	<input type="checkbox" id="id-34" value="button2" name="myButton2"/>
+
+
+	<ol>
+  <li id="id=35">Coffee</li>
+
+</ol>
+
+<ul>
+  <li>Coffee</li>
+
+</ul>
+
+
+<script type="text/javascript">
+    UnitTest = {
+        ruleIds: ["aria_role_valid", "aria_attribute_valid"],
+        results: [
+
+        ]
+    }
+</script>
+
+</body>
+</html>

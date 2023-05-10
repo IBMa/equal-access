@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+<script src="../../src/oaa-a11y.js"></script>
+<script src="../../src/scripts/util-rpt.js"></script>
+<script src="../../src/scripts/util.js"></script>
+<script src="../../src/scripts/cross-browser-util.js"></script>
+<script src="../../src/wai-aria/aria_definitions.js"></script>
+<script src="../../src/rules/rpt-aria-rules.js"></script>
+
+    <script>
+        // Need to set this to simulate setting being set by tools
+        document.PT_CHECK_HIDDEN_CONTENT = true;
+    </script>
+
+<script type="text/javascript">
+
+function runRule() {
+
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree2'));
+  console.log(passed.result);
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree4'));
+  console.log(passed.result);
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree5'));
+  console.log(passed.result);
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree6'));
+  console.log(passed.result);
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree7'));
+  console.log(passed.result);
+  var passed = OpenAjax.a11y.getRule("aria_keyboard_handler_exists").validate(document.getElementById('tree8'));
+  console.log(passed.result);
+}
+</script>
+<title>RPT Test Suite</title>
+</head>
+
+<body onload="runRule()">
+
+<a href="#navskip">skip to main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h3>WAI-ARIA keyboard equivalent test</h3>
+
+<a name="navskip"></a>
+
+<div role="tree" tabindex="0" id="tree2" >
+  <div id="tree2Item1" role="treeitem" tabindex="0" hidden>Tree item</div>
+</div>
+
+<div role="tree" tabindex="0" id="tree4" >
+  <div id="tree4Item1" role="treeitem" tabindex="0" style="display: none">Tree item</div>
+</div>
+
+<!-- Parent element has multiple roles -->
+<div role="tree navigation" tabindex="0" id="tree5" >
+  <div id="tree5Item1" role="treeitem" tabindex="0" style="visibility: hidden">Tree item</div>
+</div>
+
+<!-- Parent and child elements have multiple roles -->
+<div role="tree navigation" tabindex="0" id="tree6" >
+  <div id="tree6Item1" role="link treeitem" tabindex="0" hidden>Tree item</div>
+</div>
+
+<div role="tree navigation" tabindex="0" id="tree7">
+  <div id="tree7Item1" role="link treeitem" tabindex="0" style="display: none">Tree item
+    <div onkeydown="navKeyEvent();">Has keyboard Event</div>
+  </div>
+</div>
+
+<div role="tree navigation" tabindex="0" id="tree8">
+  <div id="tree8Item1" role="link treeitem" tabindex="0">Tree item
+    <div tabindex="0" onkeydown="navKeyEvent();" style="visibility: hidden">Has keyboard Event</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1087",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/div[6]"
+      ]
+    },
+  ];
+//]]>
+</script></body>
+</html>

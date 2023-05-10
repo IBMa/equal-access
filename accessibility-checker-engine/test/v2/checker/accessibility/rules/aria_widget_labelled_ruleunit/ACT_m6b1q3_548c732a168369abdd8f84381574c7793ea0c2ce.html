@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <main>
+        <h1>Test page</h1>
+        <div role="menu">
+            <button role="menuitem">
+                <img src="/test-assets/shared/file.svg" alt="">
+            </button>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_widget_labelled"],
+            results: [
+                {
+                    "ruleId": "aria_widget_labelled",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/main[1]/div[1]/button[1]",
+                        "aria": "/document[1]/main[1]/menu[1]/menuitem[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "Interactive component with ARIA role 'menuitem' does not have a programmatically associated name",
+                    "messageArgs": ["menuitem"],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                }
+            ]
+        };
+    </script>
+</body>
+
+</html>
