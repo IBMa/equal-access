@@ -52,9 +52,9 @@ export let imagemap_alt_exists: Rule = {
         let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt") ||
             (!ruleContext.hasAttribute("ismap") && !RPTUtil.attributeNonEmpty(ruleContext, "usemap"));
         if (!passed) {
-            return RuleFail("Pass_0");
+            return RuleFail("Fail_1");
         } else {
-            return RulePass("Fail_1");
+            return RulePass("Pass_0");
         }
     }
 }
