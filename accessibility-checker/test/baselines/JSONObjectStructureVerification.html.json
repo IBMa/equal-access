@@ -1660,7 +1660,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1690,7 +1690,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1716,7 +1716,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1742,7 +1742,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1768,7 +1768,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1794,7 +1794,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1824,7 +1824,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1850,7 +1850,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1876,7 +1876,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "ruleId": "text_contrast_sufficient_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2980,7 +2980,7 @@
             "0": "Use proper HTML list elements to create lists",
             "Pass_0": "Rule Passed"
         },
-        "IBMA_Color_Contrast_WCAG2AA_PV": {
+        "text_contrast_sufficient_PV": {
             "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed"
         },
