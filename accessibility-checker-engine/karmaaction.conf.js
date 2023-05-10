@@ -53,7 +53,7 @@ module.exports = (config) => {
         ],
         exclude: [
             //Disable  - due to a defect that needs to be addressed regarding visibility.
-            'test/v2/checker/accessibility/rules/WCAG20_A_HasText_ruleunit/A-hasTextEmbedded.html'
+            'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html'
         ],
 
         frameworks: ['jasmine'],

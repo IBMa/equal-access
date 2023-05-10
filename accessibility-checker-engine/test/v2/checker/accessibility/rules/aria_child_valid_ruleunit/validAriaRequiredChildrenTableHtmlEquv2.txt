@@ -30,7 +30,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var passed = OpenAjax.a11y.getRule("Rpt_Aria_RequiredChildren").validate(document.getElementById('restrictOption_row'));
+	var passed = OpenAjax.a11y.getRule("aria_child_valid").validate(document.getElementById('restrictOption_row'));
 	console.log(passed);
 }
 </script>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <body>
+<object aria-label="Moon speech" data="/test-assets/moon-audio/moon-speech.mp3"></object>
+
+<script>
+  UnitTest = {
+      ruleIds: ["object_text_exists"],
+      results: [
+      {
+            "ruleId": "object_text_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/object[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass",
+            "message": "<object> element has a text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  };
+</script>
+</body>
+
+</html>

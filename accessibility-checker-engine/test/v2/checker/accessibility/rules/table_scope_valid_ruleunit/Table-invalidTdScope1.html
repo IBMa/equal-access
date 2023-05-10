@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+	<style type='text/css'>
+        table { border: solid gray 1px; }
+        td, th { border-style: inset; border-width: 1px; }
+    </style>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Table-validScope.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Data Table Tests</h3>
+
+
+<ul>
+	<li>Test - Simple Data Table with valid summary and valid caption and valid th scope and td scope</li>
+</ul>
+
+<table id="data_table1" summary="An example of a simple data table showing the number of boys and girls in each grade of an elementary school">
+	<caption>Boys and Girls in Elementary School Classes</caption>
+
+	<tr>
+		<th scope="col">Class</th>
+		<th scope="col"># of Boys</th>
+		<th scope="col"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th scope="row">1st Grade</th>
+		<td scope="rowgroup">11</td>
+		<td>10</td>
+	</tr>
+
+	<tr>
+		<th scope="row">2nd Grade</th>
+		<td scope="colgroup">7</td>
+		<td>12</td>
+	</tr>
+
+	<tr>
+		<th scope="row">3rd Grade</th>
+		<td>12</td>
+		<td>14</td>
+	</tr>
+</table>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+  UnitTest = {
+      ruleIds: ["table_scope_valid"],
+      results: [
+      {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/columnheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[2]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/columnheader[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[3]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/columnheader[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used on a <th> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used on a <th> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_scope_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[4]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[4]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  }
+</script>
+</body>
+
+</html>

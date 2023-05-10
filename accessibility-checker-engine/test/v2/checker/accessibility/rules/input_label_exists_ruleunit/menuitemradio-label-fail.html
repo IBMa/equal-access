@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+    <ul role='menu' tabindex='0' aria-activedescendant='first'>
+      <li id='first' role='menuitemradio' aria-checked='true'>First</li>
+      <li id='second' role='menuitemradio' aria-checked='false'>Second</li>
+      <li id='third' role='menuitemradio' aria-checked='false'>  </li>
+    </ul>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[1]",
+              "aria": "/document[1]/menu[1]/menuitemradio[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[2]",
+              "aria": "/document[1]/menu[1]/menuitemradio[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[3]",
+              "aria": "/document[1]/menu[1]/menuitemradio[3]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Form control with \"menuitemradio\" role has no associated label",
+            "messageArgs": [
+              "menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+  <script>
+    const shadowRoot = document.getElementById('p').attachShadow({ mode: 'open' })
+    shadowRoot.innerHTML = '<span id="span1" style="color: #333;">Some text in English</span>'
+  </script>
+</head>
+
+<body>
+
+  <p style="color: #CCC; background: #fff;" id="p"></p>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["text_contrast_sufficient"],
+            results: [
+            
+        ]
+        }
+        
+</script></body>
+
+</html>

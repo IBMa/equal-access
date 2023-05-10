@@ -30,9 +30,9 @@ var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","
 var gdirs = fs.readdirSync(testRootDir);
 
 // gdirs = [
-//     "RPT_Style_ColorSemantics1_ruleunit",
-//     "WCAG20_A_HasText_ruleunit",
-//     "WCAG20_Style_BeforeAfter_ruleunit"]
+//     "style_color_misuse_ruleunit",
+//     "a_text_purpose_ruleunit",
+//     "style_before_after_review_ruleunit"]
 var expect = require("chai").expect;
 
 const mapRuleToG = aChecker.ruleIdToLegacyId;
@@ -139,20 +139,20 @@ let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "t
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 var skipList = [
     //not in karma conf file
-    path.join(testRoot, "WCAG20_A_HasText_ruleunit", "A-hasTextEmbedded.html"),
-    path.join(testRoot, "WCAG20_A_HasText_ruleunit", "A-nonTabable.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     // Meta refresh
-    path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-validRefresh.html"),
-    path.join(testRoot, "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // CSS test issues
-    path.join(testRoot, "RPT_Style_ColorSemantics1_ruleunit","D543.html"),
-    path.join(testRoot, "WCAG20_Style_BeforeAfter_ruleunit","D100.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit","D543.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit","D100.html"),
 
     // Misc
-    path.join(testRoot, "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html")
+    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html")
 ]
 
 var skipMap = {}

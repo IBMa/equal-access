@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+<script src="../../src/oaa-a11y.js"></script>
+<script src="../../src/scripts/util-rpt.js"></script>
+<script src="../../src/scripts/util.js"></script>
+<script src="../../src/scripts/cross-browser-util.js"></script>
+<script src="../../src/wai-aria/aria_definitions.js"></script>
+<script src="../../src/rules/rpt-aria-rules.js"></script>
+
+<script type="text/javascript">
+
+function runRule() {
+
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('buttondisabled'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('select'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('input'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('textarea'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('optgroup'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('option'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('menuitem'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('fieldset'));
+  console.log(passed);
+  var passed = OpenAjax.a11y.getRule("aria_activedescendant_tabindex_valid").validate(document.getElementById('POLICYNAME'));
+  console.log(passed);
+}
+</script>
+<title>RPT Test Suite</title>
+</head>
+
+<body onload="runRule()">
+
+<a href="#navskip">skip to main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h3>WAI-ARIA keyboard equivalent test</h3>
+
+<a name="navskip"></a>
+
+<button id="buttondisabled" aria-activedescendant="button1" type="button" disabled>Click Me!</button>
+
+<select aria-activedescendant="button1" id="select" disabled="true">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
+
+<form action="demo_form.asp">
+  First name: <input type="text" name="fname" placeholder="I am a placeholder"><br>
+  Last name: <input type="text" name="lname" aria-activedescendant="button1" id="input" disabled="disabled" placeholder="I am a placeholder for the disabled input element."><br>
+  <input type="submit" value="Submit">
+</form>
+
+Address:<br>
+<textarea aria-activedescendant="button1" id="textarea" disabled="" id="myTextarea">
+342 Alvin Road
+Ducksburg</textarea>
+
+<select>
+  <optgroup label="Swedish Cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+  </optgroup>
+  <optgroup disabled id="optgroup" aria-activedescendant="button1" label="German Cars">
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+  </optgroup>
+</select>
+
+<select>
+  <option value="volvo" aria-activedescendant="button1" id="option" disabled="true">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="vw">VW</option>
+  <option value="audi">Audi</option>
+</select>
+
+<menu type="context" id="mymenu">
+  <menuitem aria-activedescendant="button1" id="menuitem" disabled="true" label="Refresh" onclick="window.location.reload();" icon="ico_reload.png"></menuitem>
+  <menu label="Share on...">
+    <menuitem label="Twitter" icon="ico_twitter.png" onclick="window.open('//twitter.com/intent/tweet?text=' + window.location.href);"></menuitem>
+    <menuitem label="Facebook" icon="ico_facebook.png" onclick="window.open('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+  </menu>
+  <menuitem label="Email This Page" onclick="window.location='mailto:?body='+window.location.href;"></menuitem>
+</menu>
+
+
+<fieldset id="fieldset" disabled="false" aria-activedescendant="button1" style="color: rgb(255, 0, 0);">
+  <legend>Personalia:</legend>
+  Name: <input type="text"><br>
+  Email: <input type="text"><br>
+  Date of birth: <input type="text">
+</fieldset>
+
+<table aria-activedescendant="selected_option_POLICYNAME" role="listbox" id="POLICYNAME" aria-expanded="false" aria-disabled="true">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <span>Two</span>
+        </div>
+        <div>
+          <input type="text" role="presentation" readonly="readonly" tabindex="-1" value="Χ ">
+        </div>
+        <input type="hidden" aria-hidden="true" value="2" data-dojo-attach-point="valueNode" name="POLICYNAME" disabled="">
+      </td>
+      <td>
+        <input type="text" role="presentation" readonly="readonly" tabindex="-1" value="▼ ">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1084",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+		"/html/body/div[1]",
+		"/html/body/div[2]",
+		"/html/body/div[3]",
+		"/html/body/div[4]",
+		"/html/body/div[5]"
+      ]
+    },
+  ];
+//]]>
+</script></body>
+</html>
