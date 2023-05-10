@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US" id="html1">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body id="body1">
+    <main id="main">
+      <h1>Test page</h1>
+      <div title="one" id="div1">Test</div>
+      <table id="table1" role="presentation">
+        <tbody id="tbody1">
+            <tr role="presentation" id="tr1">
+                <td role="presentation" id="td1">
+                    <table id="table2" role="presentation">
+                        <tbody id="tbody2">
+                            <tr role="presentation" id="tr2">
+                                <td role="presentation" id="td2">
+                                    <table id="table3" role="presentation">
+                                        <tbody id="tbody3">
+                                            <tr role="presentation">
+                                                <td role="presentation">
+                                                    <table id="table4" role="presentation">
+                                                        <tbody>
+                                                            <tr role="presentation">
+                                                                <td role="presentation">
+                                                                    <div>
+                                                                        <table id="table5" role="presentation">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <table id="table6" role="presentation">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td>
+                                                                                                        <table id="table7" role="presentation">
+                                                                                                            <tbody>
+                                                                                                                <tr role="presentation">
+                                                                                                                    <td></td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_document_label_unique"],
+        results: []
+      };
+    </script>
+  </body>
+</html>

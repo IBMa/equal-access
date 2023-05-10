@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+      <main>
+        <h2>Tests:</h2>
+    
+        <div class="flex">
+          <div class="widgetDemo">
+            <div class="testcase">
+              <label for="t1">not multiselectable</label>
+              <select id="t1" aria-multiselectable="true">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </div>
+          <div class="widgetDemo">
+            <div class="testcase">
+              <label for="t2">not multiselectable 2</label>
+              <select id="t2" aria-multiselectable="true" size="4">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </div>
+        </div>
+    
+    
+          <div class="widgetDemo">
+            <div class="testcase">
+              <label for="t3">is multiselectable</label>
+              <select id="t3" aria-multiselectable="false" multiple="">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </div>
+    
+            <div class="testcase">
+              <label for="t3b">is multiselectable</label>
+              <select id="t3b" aria-multiselectable="true" multiple="">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </div>
+    
+          </div>
+    
+        </div>
+      </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_attribute_valid"],
+                results: [
+                {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/select[1]",
+              "aria": "/document[1]/main[1]/combobox[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-multiselectable\" are not valid for the element <select> with implicit ARIA role \"combobox\"",
+            "messageArgs": [
+              "aria-multiselectable",
+              "select",
+              "combobox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]/div[1]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-multiselectable\" are not valid for the element <select> with implicit ARIA role \"listbox\"",
+            "messageArgs": [
+              "aria-multiselectable",
+              "select",
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[3]/div[1]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[2]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-multiselectable\" are not valid for the element <select> with implicit ARIA role \"listbox\"",
+            "messageArgs": [
+              "aria-multiselectable",
+              "select",
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[3]/div[2]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[3]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-multiselectable\" are not valid for the element <select> with implicit ARIA role \"listbox\"",
+            "messageArgs": [
+              "aria-multiselectable",
+              "select",
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+      };
+        </script>
+    </body>
+</html>

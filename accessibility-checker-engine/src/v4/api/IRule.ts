@@ -176,7 +176,7 @@ export type Rule = {
     // Array of rules that must pass to allow this validate to run - they must have the same context property
     dependencies?: string[]
 
-    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) => RuleResult | RuleResult[]
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) => RuleResult | RuleResult[] | null
 
     enabled?: boolean
 }

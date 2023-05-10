@@ -55,7 +55,7 @@ export let element_tabbable_role_valid: Rule = {
         if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
         const nodeName = ruleContext.nodeName.toLowerCase();
-        // if the elemen is tabbable by default with or without tabindex, let the other rules (such as IBMA_Focus_MultiTab) to handle it
+        // if the element is tabbable by default with or without tabindex, let the other rules (such as widget_tabbable_single) to handle it
         if (nodeName in RPTUtil.tabTagMap ) {
             let value = RPTUtil.tabTagMap[nodeName];
             if (typeof (value) === "function") {
@@ -80,7 +80,7 @@ export let element_tabbable_role_valid: Rule = {
             return null;
         
         // elements whose roles allow no descendants that are interactive or with a tabindex >= 0 
-        // this case should be handled in IBMA_Focus_MultiTab and Rpt_Aria_MissingFocusableChild
+        // this case should be handled in widget_tabbable_single and aria_child_tabbable
         const roles_no_interactive_child =["button", "checkbox", "img", "link", "menuitem", "menuitemcheckbox", "menuitemradio", 
                                "option", "radio", "switch", "tab"];
 

@@ -1,0 +1,19 @@
+<html lang="en">
+	<head>
+		<title>Page with some content</title>
+	</head>
+	<body>
+		    <div role="checkbox" aria-hidden="true">Wrong, no 'aria-checked' no 'checked'</div>
+        <div role="checkbox" aria-hidden="true" aria-checked="">with  empty 'aria-checked' and no 'checked'</div>
+        <div role="checkbox" hidden aria-checked>with default 'aria-checked' and no 'checked'</div>
+        
+		<script>
+            UnitTest = {
+              ruleIds: ["aria_attribute_exists"],
+              results: [
+              
+              ]
+        }
+        </script>
+	</body>
+</html>

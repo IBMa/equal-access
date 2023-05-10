@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+    <head>
+        <title>
+            Checks that the HTML autocomplete attribute has a correct value
+        </title>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Ship the blue gift to...</legend>
+            <div>
+                <label>
+                    Address:
+                    <input
+                        name="ba"
+                        autocomplete="section-blue shipping street-address"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    City:
+                    <input
+                        name="bc"
+                        autocomplete="section-blue shipping address-level2"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    Postal Code:
+                    <input
+                        name="bp"
+                        autocomplete="section-blue shipping postal-code"
+                    />
+                </label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Ship the red gift to...</legend>
+            <div>
+                <label>
+                    Address:
+                    <input
+                        name="ra"
+                        autocomplete="section-red shipping street-address"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    City:
+                    <input
+                        name="rc"
+                        autocomplete="section-red shipping address-level2"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    Postal Code:
+                    <input
+                        name="rp"
+                        autocomplete="section-red shipping postal-code"
+                    />
+                </label>
+            </div>
+        </fieldset>
+
+        <script>
+            UnitTest = {
+                ruleIds: ["input_autocomplete_valid"],
+                results: [
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "FAIL"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[1]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[1]",
+                        },
+                        reasonId: "Fail_2",
+                        message:
+                            "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[2]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[2]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[3]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[3]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "FAIL"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[1]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[1]",
+                        },
+                        reasonId: "Fail_2",
+                        message:
+                            "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[2]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[2]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "input_autocomplete_valid",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[3]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[3]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    }
+                ]
+            };
+        </script>
+    </body>
+</html>
