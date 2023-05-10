@@ -2782,6 +2782,7 @@ export class RPTUtil {
             allowedAttributes = RPTUtil.reduceArrayItemList(prohibitedAttributes, allowedAttributes);
 
             //exclude aria attribute for elements without implicit role and with 'Naming Prohibited'
+            console.log("tag=" + tagName + ", roles="+roles+", tagProperty.implicitRole="+tagProperty.implicitRole+", tagProperty.prohibitedAriaAttributesWhenNoImplicitRole="+tagProperty.prohibitedAriaAttributesWhenNoImplicitRole);
             if ((!roles || roles.length === 0) && tagProperty.implicitRole === null && tagProperty.prohibitedAriaAttributesWhenNoImplicitRole)
                 allowedAttributes = RPTUtil.reduceArrayItemList(tagProperty.prohibitedAriaAttributesWhenNoImplicitRole, allowedAttributes);
             
