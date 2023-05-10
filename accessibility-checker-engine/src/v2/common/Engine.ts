@@ -460,15 +460,11 @@ export class Engine implements IEngine {
     }
 
     private getMatchingRules(ctxHier : RuleContextHierarchy) : WrappedRule[] {
-        let dupeCheck = {};
         let matches : WrappedRule[] = [];
         function addMatches(rules: WrappedRule[]) {
             for (const rule of rules) {
                 if (rule.rule.enabled && Engine.match(rule, ctxHier)) {
-                    if (!(rule.rule.id in dupeCheck)) {
-                        matches.push(rule);
-                        dupeCheck[rule.rule.id] = true;
-                    }
+                    matches.push(rule);
                 }
             }
         }
@@ -494,29 +490,54 @@ export class Engine implements IEngine {
                 }
             }
         }
-        // Sort for dependencies
-        for (let idx=0; idx < matches.length; ++idx) {
-            matches[idx].idx = idx;
+        return this.sortDeps(matches);
+    }
+
+    /**
+     * Sorts the rules in order to execute dependencies in the correct order
+     * @param inRules List of wrapped rules to sort
+     * @returns Sorted list of wrapped rules
+     */
+    sortDeps(inRules: WrappedRule[]) {
+        let depRules: WrappedRule[] = [];
+        for (const rule of inRules) {
+            depRules.push(rule);
         }
-        matches.sort((a,b) => {
-            // a before b: -1
-            // a after b: 1
-            // equiv: 0
-            const ruleA : Rule = a.rule;
-            const ruleB : Rule = b.rule;
-            if ((ruleA.dependencies || ruleA.prereqs) && !(ruleB.dependencies || ruleB.prereqs)) {
-                return 1;
-            } else if (!(ruleA.dependencies || ruleA.prereqs) && (ruleB.dependencies || ruleB.prereqs)) {
-                return -1;
-            } else if ((ruleA.dependencies || ruleA.prereqs) && (ruleB.prereqs || ruleB.dependencies)) {
-                if ((ruleA.dependencies && ruleA.dependencies.includes(ruleB.id)) || (ruleA.prereqs && ruleA.prereqs.includes(ruleB.id))) {
-                    return 1;
-                } else if ((ruleB.dependencies && ruleB.dependencies.includes(ruleA.id)) || (ruleB.prereqs && ruleB.prereqs.includes(ruleA.id))) {
-                    return -1;
+        
+        let retVal : WrappedRule[] = [];
+        let idToRule = {};
+        // Iterate through the rules. If that rule's dependencies can be met by rules already in the list, add it to the list
+        // Repeat until no changes are made to the satisfied list
+        // If a rule cannot be satisfied, it will never execute, so it can be dropped.
+        let change = false;
+        do {
+            change = false;
+            for (let idx=0; idx<depRules.length; ++idx) {
+                const depRule = depRules[idx];
+                if (depRule.rule.id in idToRule) continue;
+                let allMatch = true;
+                if (depRule.rule.dependencies && depRule.rule.dependencies.length > 0) {
+                    for (const depId of depRule.rule.dependencies) {
+                        if (!(depId in idToRule)) {
+                            allMatch = false;
+                        }
+                    }
+                }
+                if (depRule.rule.prereqs && depRule.rule.prereqs.length > 0) {
+                    for (const depId of depRule.rule.prereqs) {
+                        if (!(depId in idToRule)) {
+                            allMatch = false;
+                        }                        
+                    }
+                }
+                if (allMatch) {
+                    change = true;
+                    retVal.push(depRule);
+                    idToRule[depRule.rule.id] = true;
+                    depRules.splice(idx--, 1);
                 }
             }
-            return a.idx-b.idx;
-        })
-        return matches;
+        } while (change);
+        return retVal;
     }
 }

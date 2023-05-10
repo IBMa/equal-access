@@ -20,7 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let combobox_popup_reference: Rule = {
     id: "combobox_popup_reference",
     context: "aria:combobox",
-    dependencies: ["combobox_version"],
+    dependencies: ["combobox_design_valid"],
     help: {
         "en-US": {
             "group": "combobox_popup_reference.html",

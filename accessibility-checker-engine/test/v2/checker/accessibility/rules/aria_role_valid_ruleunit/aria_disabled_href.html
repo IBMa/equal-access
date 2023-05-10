@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="flex">
+        <div class="widgetDemo">
+          <h3>Test 1</h3>
+          <p>Authors are NOT RECOMMENDED to use the <code>aria-disabled</code> attribute on the <code>a</code> element with an <code>href</code> attribute. </p>
+  
+          <div class="testcase">
+            <a href="https://w3c.github.io/html-aria/#el-a" aria-disabled="true">a with href - not really disabled</a>
+          </div>
+  
+          <div class="testcase">
+            <a href="https://w3c.github.io/html-aria/#el-a" aria-disabled="false">a with href - not really disabled</a>
+          </div>
+
+          <p><strong>Expected result:</strong>
+          <br> warn authors aria-disabled is not to be used on native <code>a</code> element with <code>href</code>.  (authors should use <code>a</code> without <code>href</code> instead)</p>
+        </div>
+  
+  
+        <div class="widgetDemo">
+          <h3>Test 2</h3>
+          <p>Authors can use the <code>aria-disabled</code> attribute on the <code>a</code> element if it has no <code>href</code>. </p>
+  
+  
+          <div class="testcase">
+            <a role="link" aria-disabled="true" style="opacity: .5">a without href - actually disabled</a>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+          <br>no warning/error. This is valid.</p>
+        </div>
+  
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_valid"],
+        results: [
+        {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-disabled\" are not valid for the element <a> with implicit ARIA role \"link\"",
+            "messageArgs": [
+              "aria-disabled",
+              "a",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]/a[1]",
+              "aria": "/document[1]/main[1]/link[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-disabled",
+              "a",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[3]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-disabled",
+              "a",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

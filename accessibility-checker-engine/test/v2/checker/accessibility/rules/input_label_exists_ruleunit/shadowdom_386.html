@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test accessibility checker in shadow DOM</title>
+  </head>
+  <body>
+    <header>
+      <h1>
+        Test if accessibility checker flags &lt;input&gt;s with &lt;label>s
+        inside shadow DOM
+      </h1>
+    </header>
+    <main>
+      <div id="container1"></div>
+      <script>
+        var root = container1.attachShadow({ mode: "open" });
+        var label = document.createElement("label");
+        label.setAttribute("for", "foo");
+        label.textContent = "Input 1";
+        root.appendChild(label);
+        var input = document.createElement("input");
+        input.id = "foo";
+        root.appendChild(input);
+      </script>
+
+      <div id="container2"></div>
+      <script>
+        var root = container2.attachShadow({ mode: "open" });
+        var label = document.createElement("label");
+        label.setAttribute("for", "foo1");
+        label.textContent = "Input 2";
+        root.appendChild(label);
+        var input = document.createElement("input");
+        input.id = "foo1";
+        root.appendChild(input);
+      </script>
+
+      <div id="container3"></div>
+      <script>
+        var root = container3.attachShadow({ mode: "open" });
+        var label = document.createElement("label");
+        label.setAttribute("for", "bar");
+        label.textContent = "Input 3";
+        root.appendChild(label);
+        var input = document.createElement("input");
+        input.id = "bar";
+        root.appendChild(input);
+      </script>
+      <script>
+        UnitTest = {
+          ruleIds: ["input_label_exists"],
+          results: [
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/#document-fragment[1]/input[1]",
+              "aria": "/document[1]/main[1]/textbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/#document-fragment[1]/input[1]",
+              "aria": "/document[1]/main[1]/textbox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[3]/#document-fragment[1]/input[1]",
+              "aria": "/document[1]/main[1]/textbox[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+        };
+      </script>
+    </main>
+  </body>
+</html>

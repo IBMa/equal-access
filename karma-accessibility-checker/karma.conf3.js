@@ -77,7 +77,7 @@ module.exports = function (config) {
         exclude: [
             "test/client/aChecker.Content.test.js",
             "test/client/aChecker.assertionCompliance.test.js",
-            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/WCAG20_A_HasText_ruleunit/A-hasTextEmbedded.html",
+            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html",
             // 
             "test/client/**/aChecker.LocalFile.test.js",
             // host server was shutdown

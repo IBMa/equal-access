@@ -1,0 +1,41 @@
+<html>
+    <body>
+        <div role="grid" aria-label="This is a table sample showing row actions">
+            <div role="row">
+                <div role="gridcell">
+                    <button aria-label="Actions" title="Actions">
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                             width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
+                            <circle cx="16" cy="8" r="2"></circle>
+                            <circle cx="16" cy="16" r="2"></circle>
+                            <circle cx="16" cy="24" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            UnitTest = {
+                ruleIds: ["aria_widget_labelled"],
+                results: [
+                    {
+                        "ruleId": "aria_widget_labelled",
+                        "value": [
+                        "INFORMATION",
+                        "PASS"
+                        ],
+                        "path": {
+                        "dom": "/html[1]/body[1]/div[1]",
+                        "aria": "/document[1]/grid[1]"
+                        },
+                        "reasonId": "Pass_0",
+                        "message": "Rule Passed",
+                        "messageArgs": [],
+                        "apiArgs": [],
+                        "category": "Accessibility"
+                    }
+                ]
+            }
+        </script>
+    </body>
+</html>

@@ -74,38 +74,38 @@ var skipList = [
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps zombie when loaded as a string
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Hidden_ruleunit", "unitTestisNodeVisible.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "HAAC_BackgroundImg_HasTextOrTitle_ruleunit", "APassedFileWithNoImg.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Blink_CSSTrigger1_ruleunit", "TextDecoration-Blink.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "blink_css_review_ruleunit", "TextDecoration-Blink.html"),
     // CSS processing errors
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics_ruleunit", "eventHandlerMissingRole2.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_WidgetLabels_Implicit_ruleunit", "menuItemCheckboxNoInnerText.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_eventhandler_role_valid_ruleunit", "eventHandlerMissingRole2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_widget_labelled_ruleunit", "menuItemCheckboxNoInnerText.html"),
     // Can't access referenced files
     // no baseline found
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Img_LinkTextNotRedundant_ruleunit", "Img-redundantLink.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_LabelAfter_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_LabelBefore_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Elem_EventMouseAndKey_ruleunit", "Events-invalidNoMouseRequired.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_ExplicitLabel_ruleunit", "D766.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_A_HasText_ruleunit", "A-nonTabable.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "img_alt_redundant_ruleunit", "Img-redundantLink.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_after_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_before_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_mouseevent_keyboard_ruleunit", "Events-invalidNoMouseRequired.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_exists_ruleunit", "D766.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     //in karma conf file skip list
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_A_HasText_ruleunit", "A-hasTextEmbedded.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
 
     // Meta refresh
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Meta_Refresh_ruleunit", "Meta-validRefresh.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // Blank titles are removed from the DOM
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Title_Valid_ruleunit","Title-empty.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Title_Valid_ruleunit","Title-invalidSpaces.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-empty.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-invalidSpaces.html"),
 
     // CSS linkage via data URL issues
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Style_ColorSemantics1_ruleunit","D543.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Style_BeforeAfter_ruleunit","D100.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "style_color_misuse_ruleunit","D543.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "style_before_after_review_ruleunit","D100.html"),
 ]
 
 var skipMap = {}

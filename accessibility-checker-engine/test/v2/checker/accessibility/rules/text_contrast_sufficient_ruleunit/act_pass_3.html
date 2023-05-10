@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+  <style>
+    p {
+      color: #CCC;
+      height: 50px;
+      padding-top: 15px;
+      background: #000 no-repeat -20px -20px url('/test-assets/contrast/black-hole.jpeg');
+      text-shadow: 0px 0px 2px black;
+    }
+    </style>
+</head>
+
+<body>
+
+  <p>Black hole sun</p>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["text_contrast_sufficient"],
+            results: [
+            {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/paragraph[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "13.08",
+              16,
+              400,
+              "#cccccc",
+              "#000000",
+              true,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>
