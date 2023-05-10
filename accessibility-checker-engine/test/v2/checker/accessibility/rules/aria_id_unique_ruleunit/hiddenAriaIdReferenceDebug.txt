@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+   <head> 
+       <script src="../../src/oaa-a11y.js"></script>
+       <script src="../../src/scripts/cross-browser-util.js"></script>
+       <script src="../../src/scripts/util-rpt.js"></script>
+       <script src="../../src/scripts/util.js"></script>
+       <script src="../../src/wai-aria/aria_definitions.js"></script>
+       <script src="../../src/rules/rpt-aria-rules.js"></script>
+
+       <script type="text/javascript">
+
+          function runRule() {
+          
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('activedescendant'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('controls1'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('controls2'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('flowto1'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('flowto2'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('owns1'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('owns2'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('describedby1'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('describedby2'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('labelledby1'));
+              console.log(passed);
+              var passed = OpenAjax.a11y.getRule("aria_id_unique").validate(document.getElementById('labelledby2'));
+              console.log(passed);
+          }
+      </script>
+      <title>g1077 Hidden Testcase</title>
+   </head>  
+
+    <body role="document" aria-labelledby="PASS" onload="runRule()">
+        <div role="navigation"> 
+            <a href="#navskip" alt="skip to main content"> NavSkip </a>
+        </div>
+
+        <div role="main">
+            <a name="navskip"></a>
+            <h2 id="PASS">g1077 Hidden Testcase</h2>
+
+            <!-- Supports ID Reference/ID Reference List values -->
+
+            <!-- aria-activedescendant correct ID reference value (string) -->
+            <fieldset>
+                <legend>Display</legend>
+                <input id="activedescendant" type="text" role="combobox" aria-activedescendant="selected_option">
+                    <ul role="listbox" id="owned_listbox" aria-label="List 1" onkeypress="keyEvent()">
+                        <li role="option" tabindex="0">Zebra</li>
+                        <li role="option" id="selected_option" hidden>Zoom</li>
+                    </ul>
+                </input>
+            </fieldset>
+
+            <!-- Supports ID Reference/ID Reference List values -->
+
+            <!-- aria-controls correct ID reference value/ID reference list (string) -->
+            <ul role="tablist">
+                <li role="presentation">
+                    <a id="controls1" href="#" onclick="displayTab(1);" role="tab" aria-controls="panel1" aria-selected="true">Tab 1</a>
+                </li>
+                <li role="presentation">
+                    <a id="controls2" href="#" onclick="displayTab(2);" role="tab" aria-controls="panel2 panel1" aria-selected="false">Tab 2</a>
+                </li>
+            </ul>
+
+            <div role="tabpanel" id="panel1" aria-label="Panel One" style="display: none">Panel 1</div>
+            <div role="tabpanel" id="panel2" aria-label="Panel Two" style="visibility: hidden">Panel 2</div>
+
+            <!-- aria-flowto correct ID reference value/ID reference list (string) -->
+            <h1 id="flowto1" aria-flowto="main">The Daily Planet Part One</h1>
+  
+            <article role="article" aria-label="Article For Election Results" id="main" title="Election Results" hidden>
+                <p> Whoever you vote for government wins. ANOK 1984</p>
+            </article>
+
+            <h1 id="flowto2" aria-flowto="election sportsTwo weather">The Daily Planet Part Two</h1>
+  
+            <article role="article" aria-label="Article for weather" id="weather" title="Weather" style="display: none">
+                The forecast for today will be ...
+            </article>
+  
+            <article role="article" aria-label="Article For Election Result" id="election" title="Election Results" style="visibility: hidden">
+                Talk about election results
+            </article>
+  
+            <article role="article" aria-label="Article For Sports" id="sportsTwo" title="Sports">
+                Talk about sports
+            </article>
+
+            <!-- aria-owns correct ID reference value/ID reference list (string) -->
+            <div id="owns1" type="button" aria-label="Combobox aria-owns test" role="combobox" aria-expanded="true" aria-owns="owned_listboxone" tabindex="0">
+                <ul role="listbox" id="owned_listboxone" aria-label="List 2" onkeypress="keyEvent()" hidden>
+                    <li role="option" tabindex="0">Zebra</li>
+                    <li role="option" id="selected_option2">Zoom</li>
+                </ul>
+            </div>
+
+            <div id="owns2" type="button" aria-label="Combobox aria-owns test" role="combobox" aria-expanded="true" aria-owns="owned_listboxthree owned_listboxtwo" tabindex="0">
+                <ul role="listbox" id="owned_listboxtwo" aria-label="List 2" onkeypress="keyEvent()" style="display: none">
+                    <li role="option" tabindex="0">Zebra</li>
+                    <li role="option" id="selected_optionthree">Zoom</li>
+                </ul>
+                <ul role="listbox" id="owned_listboxthree" aria-label="List 2" onkeypress="keyEvent()" style="visibility: hidden">
+                    <li role="option" tabindex="0">Zebra</li>
+                    <li role="option" id="selected_optionfour">Zoom</li>
+                </ul>
+            </div>
+
+            <!-- aria-describedby correct ID reference value/ID reference list (string) -->
+            <div id="describedby1" role="document" aria-labelledby="calendar" aria-describedby="information">
+                <h1 id="calendar" hidden>Calendar<h1>
+                <p id="information" style="display: none">
+                    This calendar shows the game schedule for the Boston Red Sox.
+                </p>
+                <div id="describedby2" role="article" aria-label="information" aria-describedby="calendar information">
+                
+                </div>
+            </div>
+
+            <!-- aria-labelledby correct ID reference value/ID reference list (string) -->
+            <h2 id="ONE" hidden>ONE</h2>
+            <h2 id="TWO" style="visibility: hidden">TWO</h2>
+            <h2 id="THREE" style="display: none">THREE</h2>
+            <h2 id="FOUR" hidden>FOUR</h2>
+            <h2 id="FIVE">FIVE</h2>
+            <h2 id="SIX">SIX</h2>
+
+            <div hidden>
+                <h2 id="SEVEN">SEVEN</h2>
+                <h2 id="EIGHT">EIGHT</h2>
+                <h2 id="NINE">NINE</h2>   
+                <h2 id="additions">additions</h2>
+            </div>
+
+            <p id="labelledby1" aria-labelledby="additions">Initial live region content.</p>
+            <p id="labelledby2" aria-labelledby="additions ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE">Initial live region content.</p>
+
+        </div>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1077",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+       "/html/body/div[2]/fieldset/input",
+       "/html/body/div[2]/ul/li[1]/a",
+       "/html/body/div[2]/ul/li[2]/a",
+       "/html/body/div[2]/h1[1]",
+       "/html/body/div[2]/h1[2]",
+       "/html/body/div[2]/div[3]",
+       "/html/body/div[2]/div[4]",
+       "/html/body/div[2]/div[5]",
+       "/html/body/div[2]/div[5]/h1[2]/div",
+       "/html/body/div[2]/div[5]/p[1]", // The val engine created the wrong xpath because the engine is old works fine in DAP, batch scanner and ACC
+       "/html/body/div[2]/div[5]/p[2]" // The val engine created the wrong xpath because the engine is old works fine in DAP, batch scanner and ACC
+      ]
+    },
+  ];
+//]]>
+</script></body>
+</html>

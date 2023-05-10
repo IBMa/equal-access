@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+<script src="../../common/oaa-a11y.js"></script>
+<script src="../../common/scripts/util-rpt.js"></script>
+<script src="../../common/scripts/util.js"></script>
+<script src="../../common/wai-aria/aria_definitions.js"></script>
+<script src="../../accessibility/rules/rpt-aria-rules.js"></script>
+
+<script type="text/javascript">
+
+function runRule() {
+
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('tree1'));
+	console.log(passed);
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('dlgTitle_0'));
+	console.log(passed);
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('dlgText_0'));
+	console.log(passed);
+	var passed = OpenAjax.a11y.getRule("aria_child_tabbable").validate(document.getElementById('Button_0'));
+	console.log(passed);
+}
+</script>
+	
+<title>RPT Test Suite</title>
+</head>
+
+<body onload="runRule();">
+
+<a href="#navskip">skip to main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h3>WAI-ARIA keyboard equivalent test</h3>
+
+<a name="navskip"></a>
+
+<div role="tree" tabindex="0" id="tree1" onkeypress="return navKeyEvent(event);">
+	<div id="item1" role="treeitem" tabindex="x">Tree item</div>
+</div>
+
+<div role="tree" tabindex="0" id="tree2" onkeypress="return navKeyEvent(event);">
+	<div id="item2" role="treeitem" tabindex="">Tree item</div>
+</div>
+
+<div role="tree" tabindex="0" id="tree3" onkeypress="return navKeyEvent(event);">
+	<div id="item3" role="treeitem" tabindex=" ">Tree item</div>
+</div>
+
+<div role="tree" tabindex="0" id="tree4" onkeypress="navKeyEvent();">
+	<div id="tree4item1" role="group">
+		Nothing to see here.
+	</div>
+	<div id="tree3item2" role="treeitem">Tree item 2</div>
+</div>
+
+<ul id="TabBar1" data-dojo-props="barType:&quot;segmentedControl&quot;, fixed:&quot;top&quot;" data-dojo-type="dojox.mobile.TabBar" role="tablist" class="mblTabBarSegmentedControl mblTabBar mblFixedHeaderBar mblTabBarNoIcons" id="dojox_mobile_TabBar_0" style="top: 0px; padding-left: 648px;" widgetid="dojox_mobile_TabBar_0">
+	<li id="TabBarButton1" class="mblTabBarButton mblTabBarButtonSelected" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="moveTo:&quot;view1&quot;, selected:true" role="tab" aria-selected="true" aria-controls="view1" tabindex="0" style="-moz-user-select: none;" widgetid="dojox_mobile_TabBarButton_0"><div class="mblTabBarButtonIconArea"><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent1"></div><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent2"></div></div><div class="mblTabBarButtonLabel">New</div></li>
+	<li id="TabBarButton1a" class="mblTabBarButton" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="moveTo:&quot;view2&quot;" role="tab" aria-selected="false" aria-controls="view2" tabindex="0" style="-moz-user-select: none;" widgetid="dojox_mobile_TabBarButton_1"><div class="mblTabBarButtonIconArea"><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent1"></div><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent2"></div></div><div class="mblTabBarButtonLabel">What's Hot</div></li>
+	<li id="TabBarButton1b" class="mblTabBarButton" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="moveTo:&quot;view3&quot;" role="tab" aria-selected="false" aria-controls="view3" tabindex="0" style="-moz-user-select: none;" widgetid="dojox_mobile_TabBarButton_2"><div class="mblTabBarButtonIconArea"><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent1"></div><div class="mblTabBarButtonIconParent mblTabBarButtonIconParent2"></div></div><div class="mblTabBarButtonLabel">Genius</div></li>
+</ul>
+
+<div data-dojo-type="dojox.mobile.SimpleDialog" role="dialog" id="dlg_message" class="mblSimpleDialog mblSimpleDialogDecoration" aria-labelledby="dojo_mobile_mblSimpleDialogTitle_0" aria-describedby="dojo_mobile_mblSimpleDialogText_0" style="top: 145px; left: 662px;" tabindex="0" widgetid="dlg_message">
+	<div class="mblSimpleDialogContainer">
+		<div class="mblSimpleDialogTitle" id="dlgTitle_0">Information</div>
+		<div class="mblSimpleDialogText" id="dlgText_0">This is a sample dialog.</div>
+		<button style="width: 100px; -moz-user-select: none;" role="button" class="Button mblSimpleDialogButton" data-dojo-type="dojox.mobile.Button" tabindex=" " id="Button_0" widgetid="dojox_mobile_Button_0">OK</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1086",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+</html>

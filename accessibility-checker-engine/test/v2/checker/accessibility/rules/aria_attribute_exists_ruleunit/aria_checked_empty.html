@@ -1,0 +1,90 @@
+<html lang="en">
+	<head>
+		<title>Page with some content</title>
+	</head>
+	<body>
+		    <div role="checkbox">Wrong, no 'aria-checked' no 'checked'</div>
+        <div role="checkbox" checked>with invalid 'checked' but no 'aria-checked'</div>
+        <div role="checkbox" checked aria-checked="true">with a valid 'aria-checked' and invalid 'checked'</div>
+        <div role="checkbox" aria-checked="true">with valid 'aria-checked' and no 'checked'</div>
+        
+        <div role="checkbox" aria-checked="">with  empty 'aria-checked' and no 'checked'</div>
+        <div role="checkbox" aria-checked>with default 'aria-checked' and no 'checked'</div>
+        
+		<script>
+            UnitTest = {
+              ruleIds: ["aria_attribute_exists"],
+              results: [
+              {
+            "ruleId": "aria_attribute_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/checkbox[3]"
+            },
+            "reasonId": "pass",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/checkbox[4]"
+            },
+            "reasonId": "pass",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]",
+              "aria": "/document[1]/checkbox[5]"
+            },
+            "reasonId": "fail_empty_attribute",
+            "message": "The element attribute(s): 'aria-checked' value is empty",
+            "messageArgs": [
+              "aria-checked"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[6]",
+              "aria": "/document[1]/checkbox[6]"
+            },
+            "reasonId": "fail_empty_attribute",
+            "message": "The element attribute(s): 'aria-checked' value is empty",
+            "messageArgs": [
+              "aria-checked"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+              ]
+        }
+        </script>
+	</body>
+</html>

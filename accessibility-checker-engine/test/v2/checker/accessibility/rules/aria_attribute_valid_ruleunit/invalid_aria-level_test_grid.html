@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+    <title>RPT Test Suite: Defect 225</title>
+</head>
+
+<body>
+
+    <h2>Test case: aria-level_test.html</h2>
+
+    <!-- ################################################################### -->
+
+    <table id="grid" role="grid" aria-readonly="true" summary="ARIA grid example">
+        <tbody>
+          <tr id="1" role="row" aria-level="1" aria-posinset="1" aria-setsize="1" aria-expanded="true">
+            <td role="gridcell">grids are broken</td>
+            <td role="gridcell">How do we fix them?</td>
+          </tr>
+          <tr id="1.1" role="row" aria-level="2" aria-posinset="1" aria-setsize="3">
+             <td role="gridcell">re: grids are broken</td>
+             <td role="gridcell">I agree with you, but ...</td>
+           </tr>
+          <tr id="1.2" role="row" aria-level="2" aria-posinset="2" aria-setsize="3" aria-expanded="true">
+             <td role="gridcell">re: grids are broken
+             <td role="gridcell">Not that many people use them
+           </tr>
+        </tbody>
+      </table>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["aria_attribute_valid"],
+            results: [
+            {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/grid[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-readonly",
+              "table",
+              "grid"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/grid[1]/rowgroup[1]/row[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
+            "messageArgs": [
+              "aria-level, aria-posinset, aria-setsize",
+              "tr",
+              "row"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
+              "aria": "/document[1]/grid[1]/rowgroup[1]/row[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
+            "messageArgs": [
+              "aria-level, aria-posinset, aria-setsize",
+              "tr",
+              "row"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
+              "aria": "/document[1]/grid[1]/rowgroup[1]/row[3]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
+            "messageArgs": [
+              "aria-level, aria-posinset, aria-setsize",
+              "tr",
+              "row"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
+</body>
+
+</html>
