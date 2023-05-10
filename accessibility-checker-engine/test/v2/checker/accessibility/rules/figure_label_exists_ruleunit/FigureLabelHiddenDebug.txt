@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+    <script src="../../src/oaa-a11y.js"></script>
+    <script src="../../src/scripts/util-rpt.js"></script>
+    <script src="../../src/scripts/util.js"></script>
+    <script src="../../src/scripts/cross-browser-util.js"></script>
+    <script src="../../src/wai-aria/aria_definitions.js"></script>
+    <script src="../../src/rules/rpt-figure-rules.js"></script>
+
+    <script type="text/javascript">
+        function runRule() {
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure1'));
+            console.log("expecting false: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure2'));
+            console.log("expecting true: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure3'));
+            console.log("expecting false: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure4'));
+            console.log("expecting true: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure5'));
+            console.log("expecting true: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure6'));
+            console.log("expecting false: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure7'));
+            console.log("expecting false: " + passed.result);              
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure8'));
+            console.log("expecting true: " + passed.result);
+
+            var passed = OpenAjax.a11y.getRule("figure_label_exists").validate(document.getElementById('figure9'));
+            console.log("expecting true: " + passed.result);
+        }
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Verify Figure has label</title>
+</head>
+
+<body role="noDocument" onload="runRule()">
+
+<figure id="figure1">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption hidden>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+</figure>
+
+<figure id="figure2">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption hidden>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+  <figcaption>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+</figure>
+
+<figure id="figure8">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption hidden>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+  <figcaption>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+  <figcaption>                              </figcaption>
+</figure>
+
+<figure id="figure3"> 
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+</figure>
+
+<figure id="figure4">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+</figure>
+
+<div id="foo">foo</div>
+<figure id="figure5" aria-labelledby="foo"> 
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+</figure>
+
+<figure id="figure6">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption> </figcaption>
+</figure>
+
+<figure id="figure7" aria-labelledby=" "> 
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+</figure>
+
+<figure id="figure9">
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption> </figcaption>
+  <figcaption>Figure 1: The Pulpit Rock</figcaption>
+</figure>
+	
+</body>
+</html>

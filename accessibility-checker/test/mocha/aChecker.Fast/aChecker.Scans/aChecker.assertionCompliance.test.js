@@ -45,11 +45,11 @@ var skipList = [
     // Testcase has a script reference to a file, which traps zombie when loaded as a string
     // Not in Karma conf skip list
     path.join(testRoot, "Hidden", "unitTestisNodeVisible.html"),
-    path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(testRoot, "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
-    path.join(testRoot, "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html"),
-    path.join(testRoot, "HAAC_Accesskey_NeedLabel_ruleunit", "AssesskeyNeedsLabelHidden.html"),
-    path.join(testRoot, "HAAC_ActiveDescendantCheck_ruleunit", "ActiveDescendant.html")
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
+    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRoot, "element_accesskey_labelled_ruleunit", "AssesskeyNeedsLabelHidden.html"),
+    path.join(testRoot, "aria_activedescendant_valid_ruleunit", "ActiveDescendant.html")
 ]
 var skipMap = {}
 skipList.forEach(function (skip) {

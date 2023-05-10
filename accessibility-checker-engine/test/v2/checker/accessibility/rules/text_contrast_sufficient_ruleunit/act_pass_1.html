@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <p style="color: #333; background: #FFF;">
+    Some text in a human language
+  </p>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["text_contrast_sufficient"],
+            results: [
+            {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/paragraph[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "12.63",
+              16,
+              400,
+              "#333333",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>

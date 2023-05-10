@@ -19,7 +19,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let aria_descendant_valid: Rule = {
     id: "aria_descendant_valid",
     context: "dom:*",
-    dependencies: ["aria_semantics_role"],
+    dependencies: ["aria_role_valid"],
     help: {
         "en-US": {
             "group": "aria_descendant_valid.html",

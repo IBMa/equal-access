@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h4 id="grid1Label">
+        Transactions January 1 through January 6
+      </h4>
+      <div role="grid" aria-labelledby="grid1Label" class="data">
+        <tbody>
+          <tr>
+            <th>
+              Selected
+            </th>
+            <th>
+              Date
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Description
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Balance
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              01-Jan-16
+            </td>
+            <td tabindex="-1">
+              Deposit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                Cash Deposit
+              </a>
+            </td>
+            <td tabindex="-1">
+              $1,000,000.00
+            </td>
+            <td tabindex="-1">
+              $1,000,000.00
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              02-Jan-16
+            </td>
+            <td tabindex="-1">
+              Debit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                Down Town Grocery
+              </a>
+            </td>
+            <td tabindex="-1">
+              $250.00
+            </td>
+            <td tabindex="-1">
+              $999,750.00
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              03-Jan-16
+            </td>
+            <td tabindex="-1">
+              Debit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                Hot Coffee
+              </a>
+            </td>
+            <td tabindex="-1">
+              $9.00
+            </td>
+            <td tabindex="-1">
+              $999,741.00
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              04-Jan-16
+            </td>
+            <td tabindex="-1">
+              Debit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                The Filling Station
+              </a>
+            </td>
+            <td tabindex="-1">
+              $88.00
+            </td>
+            <td tabindex="-1">
+              $999,653.00
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              05-Jan-16
+            </td>
+            <td tabindex="-1">
+              Debit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                Tinker's Hardware
+              </a>
+            </td>
+            <td tabindex="-1">
+              $3,421.00
+            </td>
+            <td tabindex="-1">
+              $996,232.00
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input aria-label="test" type="radio" name="test" value="a" />
+            </td>
+            <td tabindex="-1">
+              06-Jan-16
+            </td>
+            <td tabindex="-1">
+              Debit
+            </td>
+            <td>
+              <a tabindex="-1" href="#">
+                Cutey's Salon
+              </a>
+            </td>
+            <td tabindex="-1">
+              $700.00
+            </td>
+            <td tabindex="-1">
+              $995,532.00
+            </td>
+          </tr>
+        </tbody>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["input_checkboxes_grouped"],
+        results: [
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[1]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[2]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[2]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[3]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[3]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[4]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[4]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[5]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[5]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/input[6]",
+              "aria": "/document[1]/main[1]/grid[1]/radio[6]"
+            },
+            "reasonId": "Pass_Grouped",
+            "message": "Radio input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

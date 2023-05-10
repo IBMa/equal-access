@@ -44,30 +44,20 @@
 
 ### Why is this important?
 
-Functionally, ARIA roles, states, and properties are analogous to CSS for assistive technologies. 
-For screen reader users, ARIA controls the rendering of their non-visual experience. 
-Incorrect ARIA misrepresents the visual experience, with potentially devastating effects on their corresponding non-visual experience. 
-Incorrect ARIA misrepresents the intended experience to _*all*_ assistive technology users, with potentially devastating effects.
-
-Many HTML elements have native semantics that map, by default, to implied ARIA semantics (roles). 
-Other elements specified as having _*No corresponding role*_ do not have implicit ARIA semantics. 
-Although they still have meaning it's not provided by ARIA. 
-In order for assistive technologies to predictably represent the context and behavior of these elements (UI controls), 
-these implicit semantics should not be overridden as defined in the [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) specification. 
-It is therefore recommended that developers only add a role attribute to a semantically neutral and allowed HTML element such as a `<div>` or `<span>`, rather than incorrectly attempting to override the semantics of the detected element. 
-No ARIA is better than bad ARIA for assistive technology users.
-
-<!-- the "detected element" and the "unallowed semantics" will be displayed in the rule message above, so the paragraph assumes the reader will have understand that in context -->
+When elements are assigned a ARIA `role`, there are required attributes for that role. These attributes represent states and properties of the element. The ARIA attributes accept a specific set of tokens as values along with implicit values termed as ‘default’ when no values are indicated. The correct value of the attribute must be specified as it dictates the behavior of the control and is used by the user agent (Browsers) to process the behavior of the control as prescribed.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If a native HTML element fits the intended behavior, use that instead of adding ARIA markup;
-* **Or**, update the allowed attributes on the element using the guidance in the [Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) section of 
-the ARIA in HTML specification. 
-This reference provides details of allowed ARIA markup and when _*not*_ to use them on native HTML elements.
+* Provide a valid value for the attribute defined on the element, using the ARIA specification as a guide.
+
+For example, the following paragraph element defines an `aria-live` property with a valid value of `"polite"`.
+
+```
+<p aria-live="polite">Live region content.</p>
+```
 
 </script></mark-down>
 <!-- End main panel -->
@@ -80,14 +70,13 @@ This reference provides details of allowed ARIA markup and when _*not*_ to use t
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)    
-* [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance)
-* [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA specification - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People using other assistive technologies that expose accessibility information
+* People with dexterity impairment using voice control
 
 </script></mark-down>
 <!-- End side panel -->

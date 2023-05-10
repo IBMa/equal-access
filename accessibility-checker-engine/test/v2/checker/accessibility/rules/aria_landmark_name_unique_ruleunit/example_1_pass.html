@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2021- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+
+<head>
+</head>
+
+<body id="body">
+	<!-- PASS Example 1: This is two navs in different parts of the page with the same label. Passes everything, clearly differentiated. -->
+	<main>
+		<div id="leftnav" role="navigation" aria-labelledby="leftnavheading">
+			<h2 id="leftnavheading">Institutional Links</h2>
+			<ul>
+				<li>...a list of links here ...</li>
+			</ul>
+		</div>
+		<aside>
+			<div id="rightnav" role="navigation" aria-labelledby="rightnavheading">
+				<h2 id="rightnavheading">Institutional Links</h2>
+				<ul>
+					<li>...a list of links here ...</li>
+				</ul>
+			</div>
+		</aside>
+	</main>
+
+	<script>
+		UnitTest = {
+			ruleIds: ["aria_landmark_name_unique"],
+			results:
+				[
+				]
+		}
+	</script>
+</body>
+
+</html>
