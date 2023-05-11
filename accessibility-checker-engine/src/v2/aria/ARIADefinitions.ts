@@ -1907,11 +1907,6 @@ export class ARIADefinitions {
             validRoles: null,
             globalAriaAttributesValid: true
         },
-        "li": {
-            implicitRole: ["listitem"],
-            validRoles: ["menuitem", "menuitemcheckbox", "menuitemradio", "none", "option", "presentation", "radio", "separator", "tab", "treeitem"],
-            globalAriaAttributesValid: true
-        },
         "link": {
             implicitRole: null,
             validRoles: null,
@@ -2090,11 +2085,6 @@ export class ARIADefinitions {
         "sub": {
             implicitRole: ["subscript"],
             validRoles: ["any"],
-            globalAriaAttributesValid: true
-        },
-        "summary": {
-            implicitRole: ["button"],
-            validRoles: null,
             globalAriaAttributesValid: true
         },
         "sup": {
@@ -2482,6 +2472,18 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             }
         },
+        "li": {
+            "child-of-list-role": {
+                implicitRole: ['listitem'],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "no-child-of-list-role": {
+                implicitRole: ['listitem'],
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            }
+        },
         "section": {
             "with-name": {
                 implicitRole: ["region"],
@@ -2508,6 +2510,19 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherDisallowedAriaAttributes: ["aria-multiselectable"]
+            }
+        },
+        "summary": {
+            "first-summary-of-detail": {
+                implicitRole: null,
+                validRoles: null,
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-disabled", "aria-haspopup"]
+            },
+            "no-first-summary-of-detail": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
             }
         },
         "tbody": {
