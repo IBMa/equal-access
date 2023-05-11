@@ -1710,6 +1710,7 @@ export class ARIADefinitions {
         "body": {
             implicitRole: ["generic"],
             validRoles: null,
+            otherDisallowedAriaAttributes: ['aria-hidden'],
             globalAriaAttributesValid: true
         },
         "br": {
@@ -2050,6 +2051,11 @@ export class ARIADefinitions {
             implicitRole: null,
             validRoles: null,
             globalAriaAttributesValid: false
+        },
+        "search": {
+            implicitRole: ['search'],
+            validRoles: ['search', 'form', 'group', 'none', 'presentation', 'region'],
+            globalAriaAttributesValid: true
         },
         "slot": {
             implicitRole: null,
