@@ -1,0 +1,27 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+.splashScreen {
+    margin: 0rem;
+    padding: 1rem 0rem;
+
+    .title {
+        @include type-style('productive-heading-04');
+    }
+
+    .subtitle {
+        @include type-style('productive-heading-03');
+    }
+
+    .version {
+        @include type-style("label-01");
+        color: $gray-70;
+        margin-top: .5rem;
+    }
+
+    .description {
+        @include type-style('body-long-01');
+        margin-top: 2rem;
+    }
+}

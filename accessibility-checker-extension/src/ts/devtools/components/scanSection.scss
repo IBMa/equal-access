@@ -1,0 +1,24 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/theme'as *;
+
+.cds--overflow-menu-options[aria-label='stored scans'] {
+    min-width: 12rem;
+    .cds--overflow-menu-options__btn {
+        min-width: 12rem;
+    }
+}
+
+.scanSection {
+    .cds--overflow-menu--sm {
+        min-height: 2rem;
+    }
+    
+    .storedCount {
+        margin-top:.5rem;
+        @include type-style("label-01");
+    }
+
+    .inlineLoading {
+        background-color: $layer;
+    }
+}

@@ -1,0 +1,140 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+html,
+body {
+    height: 100%;
+}
+#pageapp-root {
+    min-height: 100%;
+    height: 100%;
+    color: $gray-90;
+    
+    > .cds--css-grid {
+        margin-left: 0rem;
+        padding-left: 0rem;
+        margin-right: 0rem;
+        padding-right: 0rem;
+        @include breakpoint('lg') {
+            min-height: 100%;
+        }
+    }
+    .leftCol {
+        background-color: $gray-10;
+        padding-right: var(--cds-grid-gutter-end);
+        padding-left: var(--cds-grid-gutter-start);
+        margin-left: 0rem;
+        margin-right: 0rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+
+        ul, ol {
+            margin-left: 1.5rem;
+        }
+        ol.cds--list--ordered.cds--list--nested, ol.cds--list--ordered--native.cds--list--nested {
+            list-style-type: decimal;
+        }
+
+        .icon {
+            height: 2.5rem;
+        }
+
+        .division {
+            @include type-style("body-02");
+        }
+        .brand {
+            @include type-style("heading-03");
+        }
+        .product {
+            @include type-style("heading-03");
+        }
+        .op_version {
+            @include type-style("label-01");
+            color: $gray-70;
+            margin-top: .5rem;
+        }
+        p {
+            @include breakpoint('md') {
+                max-width: 75%
+            }
+            @include breakpoint('lg') {
+                max-width: 100%
+            }
+        }
+    }
+    .rightCol {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        @include breakpoint('lg') {
+            padding-top: 6.5rem;
+        }
+
+        h1 {
+            @include type-style("heading-04");
+        }
+        h2 {
+            @include type-style("heading-03");
+            margin-top: 2rem;
+        }
+        h3 {
+            @include type-style("heading-02");
+            margin-top: 2rem;
+        }
+
+        p {
+            @include breakpoint('md') {
+                max-width: 75%;
+            }
+            @include breakpoint('lg') {
+                max-width: 100%;
+
+            }
+        }
+        p:has(img) {
+            max-width: 100%;
+        }
+
+        ol, ul {
+            @include breakpoint('md') {
+                max-width: calc(75% - 1.5rem)
+            }
+            @include breakpoint('lg') {
+                max-width: calc(72.72727272% - 1.5rem)
+            }
+        }
+
+        .select-a-rule-set {
+            @include type-style("body-02");
+        }
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        ul ol, ul ul, ol ul, ol ol {
+            margin-bottom: initial;
+        }
+        ul:has(ol) > li, ul:has(ul) > li, ol:has(ul) > li, ol:has(ol) > li {
+            margin-bottom: 1.5rem;
+        }
+        
+        p + ol, p+ ul {
+            margin-top: -1rem;
+        }
+        
+        h3 + p {
+            margin-top: .5rem;
+        }
+    }
+    p {
+        margin-top: 1.5rem;
+    }
+
+    img {
+        max-width: 100%;
+    }
+}
+
+.cds--modal {
+    z-index: 9500 !important;
+}
