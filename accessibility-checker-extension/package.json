@@ -4,7 +4,7 @@
 	"description": "Accessibility Checker Extension for Browsers",
 	"main": "index.js",
 	"scripts": {
-		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
+		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/util/htmlReport/)",
 		"build:dev": "node preprocess && npm run build:report && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",
 		"build:prod": "node preprocess && npm run build:report && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production && shx mv dist/background*.js dist/background.js",
 		"build:watch:noreport": "node preprocess && cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",
@@ -18,8 +18,8 @@
 	},
 	"license": "Apache-2.0",
 	"dependencies": {
-		"@carbon/react": "1.0.1",
-		"@carbon/themes": "^11.0.1",
+		"@carbon/react": "1.25.0",
+		"@carbon/themes": "^11.17.0",
 		"dotenv-webpack": "^7.0.3",
 		"exceljs": "^4.3.0",
 		"markdown-to-jsx": "^7.1.5",
@@ -56,6 +56,7 @@
 		"sass-loader": "^12.4.0",
 		"shx": "^0.3.3",
 		"style-loader": "^3.3.1",
+		"terser-webpack-plugin": "^5.3.7",
 		"ts-jest": "^27.1.2",
 		"ts-loader": "^9.2.6",
 		"tslint": "^5.20.1",
@@ -63,7 +64,7 @@
 		"url-loader": "^4.1.1",
 		"use-resize-observer": "^8.0.0",
 		"web-ext": "^7.6.1",
-		"webpack": "^5.76.0",
+		"webpack": "^5.79.0",
 		"webpack-cli": "^4.9.1",
 		"webpack-ext-reloader": "^1.1.9"
 	},

@@ -1,0 +1,22 @@
+@use '@carbon/styles/scss/type'as *;
+#pageapp-root {
+    .rightCol {
+        main, *[role=main] {
+            p > img {
+                background-color: rgba(0,0,0,.5);
+            }
+            li > img {
+                vertical-align: text-top;
+            }
+            >p, >img, >ul {
+                margin-bottom: 1.5rem;
+            }
+            ul {
+                margin-left: 1rem;
+            }
+            h2 + p {
+                margin-top: .5rem;
+            }
+        }
+    }
+}
