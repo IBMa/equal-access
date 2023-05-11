@@ -106,7 +106,7 @@ export let text_contrast_sufficient: Rule = {
             */
             let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
             const removed = childStr.trim().replace(regex, '');
-            if (removed.length === 0)
+            if (removed.trim().length === 0)
                 return null;
         }
 
