@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+
+<head id="id-29">
+    <title id="id-36">Summary Element</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body id="id-9" aria-atomic="true">
+    <details>
+        <summary id='s1' role="button">first summary</summary>
+        <ol>
+            <li>first content 1</li>
+            <li>first content 2</li>
+        </ol>
+        <summary id='s2' role="button">Second summary</summary>
+        <ol>
+            <li>second content 1</li>
+            <li>second content 2</li>
+        </ol>
+    </details>
+    
+    <details>
+        <ol>
+            <li>third content 1</li>
+            <li>third content 2</li>
+        </ol>
+        <summary  id='s3' role="button">Third summary</summary>
+    </details>
+
+    <details>
+        <div>
+            <summary  id='s4' role="button">Forth summary</summary>
+            <ol>
+                <li>fourth content 1</li>
+                <li>fourth content 2</li>
+            </ol>
+        </div>
+    </details>
+
+    <div aria-hidden="true">
+        <summary  id='s5' role="button">Fifth summary</summary>
+        <ol>
+            <li>fifth content 1</li>
+            <li>fifth content 2</li>
+        </ol>
+    </div>
+    
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["aria_role_valid" ],
+            results: [
+            {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[1]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'button' is not valid for the element <summary>",
+            "messageArgs": [
+              "button",
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[1]/summary[2]",
+              "aria": "/document[1]/generic[1]/group[1]/button[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[2]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[2]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'button' is not valid for the element <summary>",
+            "messageArgs": [
+              "button",
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/details[3]/div[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/group[3]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/summary[1]",
+              "aria": "/document[1]/generic[1]/generic[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "summary"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
+</body>
+
+</html>
