@@ -1,0 +1,104 @@
+<html lang="en-US">
+<head>
+    <title>iframe_interactive_tabbable - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Iframe with interactive content should not be excluded from tab order using tabindex","pass":"The iframe with interactive content is not excluded from the tab order using tabindex","fail_invalid":"The <iframe> with interactive content is excluded from tab order using tabindex"}};
+        RULE_ID = "iframe_interactive_tabbable"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Many users need to be able to use the keyboard and keyboard-like emulators to navigate to and interact with content and web applications even within any `<iframe>` elements. 
+Setting the `tabindex` attribute on an `<iframe>` element to a negative value excludes its content from the tab-order. 
+For example, a `button` should be in the tab-order within an `iframe`, 
+but if the `<iframe>` itself is taken out of the tab-order, 
+the `button` is removed from the tab-order and effectively is keyboard inaccessible and blocks some users.
+
+<!-- the "detected element" and the "unallowed semantics" will be displayed in the rule message above, so the "Why important" paragraph assumes the reader will understand it in context -->
+
+<!-- This is where the code snippet that triggered the rule is injected -->
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Ensure visible interactive elements are not excluded from the tab-order by adding a `tabindex` attribute value greater than or equal to `"0"` to  the `<iframe>` element
+* **Or**, if not intended to be interactable, remove or hide the content from within the `<iframe>` element
+
+Example of a tabbable `<iframe>`:
+```
+<iframe title="Inline example" srcdoc="<a href="http://xyz">link text</a>" tabindex="0" />
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [ARIA practices - Developing a keyboard interface]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [ARIA practices - The tab sequence]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#keyboardnavigationbetweencomponents(thetabsequence))
+* [HTML - The tabindex attribute]( https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
+* [Verify phase – Test with a keyboard](https://www.ibm.com/able/toolkit/verify/manual/#test-with-a-keyboard)
+
+### Who does this affect?
+
+* People who physically cannot use a pointing device
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software and on-screen keyboards
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
