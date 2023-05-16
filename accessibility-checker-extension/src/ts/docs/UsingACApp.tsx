@@ -510,15 +510,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
                 <p>View the issues by element roles, requirements, or rules and select the expand icon next to a requirement/element role/rule to see the related issues, and select an issue to see the detailed description in the right panel. </p>
-                <p>
-                    <img
-
-                        src="assets/img/4_A11yAssess3.png"
-                        alt="IBM Checker tool's accessibility assessment view highlighting the 'reports' icon button"
-                    />
-                </p>
-                <p>Select the ‘Reports’ icon to download a generated accessibility report. See <Link inline={true} size="lg" href="#the_report">Accessibility Checker reports</Link> for more details.</p>
-
+                
                 <h2 id="t_select_settings">5. Options</h2>
                 <p>
                     By default, the IBM Accessibility Checker uses the latest deployment with a set of rules that correspond to the most recent WCAG standards, plus additional IBM requirements. Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
@@ -773,6 +765,54 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Reopen the browser DevTools</ListItem>
                     <ListItem>Click the 'Scan' button</ListItem>
                 </UnorderedList>
+                <p><strong>
+                    Helpful hints
+                </strong>
+                </p>
+                <UnorderedList>
+                    <ListItem>
+                        For Chrome, you can move between the keyboard tab stop visualization on the webpage, and your dev tools with the following keyboard shortcut:
+                    </ListItem>
+                    <OrderedList>
+                        <ListItem>
+                            If you are in a webpage <strong>Option+Command+Up</strong> four times to get to dev tools DOM (more or less depending on which bars you have open)
+                        </ListItem>
+                        <ListItem>
+                            If you are in dev tools  <strong>Option_Command_Down</strong> approximately five times to get to webpage (More or less depending on how you have Chrome set up)
+                        </ListItem>
+                    </OrderedList>
+                </UnorderedList>
+                <UnorderedList>
+                    <p><strong>
+                        Known issues
+                    </strong>
+                    </p>
+                </UnorderedList>
+                <UnorderedList>
+                    <ListItem>
+                        The Acessibility Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
+                    </ListItem>
+                    <ListItem>
+                        Currently the Keyboard tab stops only checks the first level, and not nested, iframes and shadow DOMSs.
+                    </ListItem>
+                    <ListItem>
+                        In rare situations, you cannot use the mouse pointer to select underlying items on the web page when keyboard tab stops is on.
+                    </ListItem>
+                    <ListItem>
+                        For certain websites on Firefox the keyboard tab stops visualization may stay visible after turning it off and either partially work, or not work at all.
+                    </ListItem>
+                    <ListItem>
+                        For carousel elements, each item is a tab stop. While only some of the carousel items are visible, you will see stacked tab stop indicators for all carousel items.
+                    </ListItem>
+                </UnorderedList>
+                <p>
+                    <img
+                        src="assets/img/Carousel.png"
+                        alt="keyboard tab stop indicators stacked on amazon's carousel banner"
+                    />
+                </p>
+                <OrderedList></OrderedList>
+                
             </main>
         </DocPage>
         );
