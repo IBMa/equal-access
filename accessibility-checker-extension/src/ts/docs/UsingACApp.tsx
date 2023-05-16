@@ -811,8 +811,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="keyboard tab stop indicators stacked on amazon's carousel banner"
                     />
                 </p>
-                <OrderedList></OrderedList>
-                
             </main>
         </DocPage>
         );
