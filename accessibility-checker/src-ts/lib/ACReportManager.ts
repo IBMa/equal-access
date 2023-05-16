@@ -1,16 +1,17 @@
-import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger, ReportResult } from "./api/IChecker";
-import { ACConfigManager } from "./ACConfigManager";
-import { ACMetricsLogger } from "./log/ACMetricsLogger";
+import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger, ReportResult } from "./api/IChecker.js";
+import { ACConfigManager } from "./ACConfigManager.js";
+import { ACMetricsLogger } from "./log/ACMetricsLogger.js";
 import * as path from "path";
-import { ACEngineManager } from "./ACEngineManager";
-import { ruleIdToLegacyId } from "..";
+import { ACEngineManager } from "./ACEngineManager.js";
+import { ruleIdToLegacyId } from "../index.js";
 import * as DeepDiff from "deep-diff";
-import { ACReporterCSV } from "./reporters/ACReporterCSV";
-import { ACReporterXLSX } from "./reporters/ACReporterXLSX";
-import { initializeSummary, IScanSummary } from "./reporters/ReportUtil";
-import { ACReporterHTML } from "./reporters/ACReporterHTML";
-import { ACReporterJSON } from "./reporters/ACReporterJSON";
-import { eRuleLevel, Report, Rule } from "./api/IEngine";
+import { ACReporterCSV } from "./reporters/ACReporterCSV.js";
+import { ACReporterXLSX } from "./reporters/ACReporterXLSX.js";
+import { initializeSummary, IScanSummary } from "./reporters/ReportUtil.js";
+import { ACReporterHTML } from "./reporters/ACReporterHTML.js";
+import { ACReporterJSON } from "./reporters/ACReporterJSON.js";
+import { eRuleLevel, Report, Rule } from "./api/IEngine.js";
+import { readFileSync } from "fs";
 
 export class ACReportManager {
     static config: IConfigUnsupported;
@@ -1059,7 +1060,7 @@ export class ACReportManager {
      */
     static getBaseline(label) {
         try {
-            let retVal = require(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label));
+            let retVal : ICheckerReport = JSON.parse(readFileSync(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label)).toString());
             if (retVal && retVal.results) {
                 if (!this.refactorMap) {
                     this.refactorMap = {}

@@ -1,4 +1,4 @@
-import { eRuleLevel, RuleDetails } from "./IEngine";
+import { eRuleLevel, RuleDetails } from "./IEngine.js";
 
 export enum eAssertResult {
     ERROR = -1,

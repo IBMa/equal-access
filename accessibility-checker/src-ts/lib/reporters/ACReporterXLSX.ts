@@ -17,12 +17,12 @@
 // Load all the modules that are needed
 import * as pathLib from "path";
 import * as fs from "fs";
-import { ACEngineManager } from "../ACEngineManager";
-import { ACConfigManager } from "../ACConfigManager";
-import { IConfigUnsupported } from "../api/IChecker";
-import { IScanSummary } from "./ReportUtil";
-import { MultiScanData } from "./multiScanData";
-import MultiScanReport from "./multiScanReport";
+import { ACEngineManager } from "../ACEngineManager.js";
+import { ACConfigManager } from "../ACConfigManager.js";
+import { IConfigUnsupported } from "../api/IChecker.js";
+import { IScanSummary } from "./ReportUtil.js";
+import { MultiScanData } from "./multiScanData.js";
+import MultiScanReport from "./multiScanReport.js";
 
 declare var after;
 

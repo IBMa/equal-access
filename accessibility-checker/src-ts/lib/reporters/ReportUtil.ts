@@ -1,4 +1,4 @@
-import { IConfigUnsupported } from "../api/IChecker";
+import { IConfigUnsupported } from "../api/IChecker.js";
 
 export interface IPageScanSummary {
     label: string

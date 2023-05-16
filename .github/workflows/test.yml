@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -44,7 +44,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -86,7 +86,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -136,7 +136,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -182,7 +182,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -222,7 +222,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -263,7 +263,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -302,7 +302,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
           # test-file: [karma.conf1.js, karma.conf1b.js, karma.conf2.js, karma.conf2b.js, karma.conf3.js] // conf1 and conf2 fail a lot
           test-file: [karma.conf1b.js, karma.conf2b.js, karma.conf3.js]
 
@@ -346,7 +346,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -382,7 +382,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -426,7 +426,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3

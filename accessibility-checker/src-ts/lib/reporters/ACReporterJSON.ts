@@ -17,8 +17,8 @@
 // Load all the modules that are needed
 import * as pathLib from "path";
 import * as fs from "fs";
-import { IConfigUnsupported } from "../api/IChecker";
-import { IScanSummary, IScanSummaryCounts } from "./ReportUtil";
+import { IConfigUnsupported } from "../api/IChecker.js";
+import { IScanSummary, IScanSummaryCounts } from "./ReportUtil.js";
 
 declare var after;
 

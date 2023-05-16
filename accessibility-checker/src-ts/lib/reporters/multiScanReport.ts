@@ -14,14 +14,8 @@
  limitations under the License.
  *****************************************************************************/
 
-import { writeFileSync } from 'fs';
-import ReportUtil from "./multiScanReportUtil";
-// import ReportSummaryUtil from '../../../util/reportSummaryUtil';
-
-// import ExcelJS from "exceljs"
-const ExcelJS = require('exceljs');
-const fs = require('fs');
-
+import * as ExcelJS from "exceljs";
+import * as fs from "fs";
 
 export default class MultiScanReport {
 
@@ -30,7 +24,7 @@ export default class MultiScanReport {
         var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives, toolID);
 
         // create binary buffer
-        const buffer = await reportWorkbook.xlsx.writeBuffer();
+        const buffer : any = await reportWorkbook.xlsx.writeBuffer();
         fs.writeFileSync(fileName, buffer);
     }
 

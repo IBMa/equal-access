@@ -1,21 +1,19 @@
 {
     "compilerOptions": {
+        "target": "ES6",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "lib": ["es2016", "esnext", "dom"],
         "declaration": true,
         "allowJs": true,
-        "target": "ES5",
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,
-        "moduleResolution": "node",
         "alwaysStrict": true,
-        "experimentalDecorators": true,
-        // "module": "commonjs",
+        "esModuleInterop": true,
         "outDir": "src",
-        "emitDecoratorMetadata": true,
-        "lib": [
-            "dom",
-            "es7"
-         ]
     },
     "include": [
         "src-ts/**/*.ts",
