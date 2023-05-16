@@ -793,9 +793,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         The Acessibility Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
                     </ListItem>
                     <ListItem>
-                        Currently the Keyboard tab stops only checks the first level, and not nested, iframes and shadow DOMSs.
-                    </ListItem>
-                    <ListItem>
                         In rare situations, you cannot use the mouse pointer to select underlying items on the web page when keyboard tab stops is on.
                     </ListItem>
                     <ListItem>
