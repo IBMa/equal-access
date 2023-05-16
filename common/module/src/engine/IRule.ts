@@ -14,10 +14,17 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eGuidelineCategory } from "./IGuideline";
-import { IMapResult } from "./IMapper";
-import { eToolkitLevel as eToolkitLevelNew } from "./IGuideline"
-import { Bounds } from "./IBounds";
+import { IMapResult } from "./IMapper.js";
+
+export enum eRuleLevel {
+    violation = "violation",
+    potentialviolation = "potentialviolation",
+    recommendation = "recommendation",
+    potentialrecommendation = "potentialrecommendation",
+    manual = "manual",
+    pass = "pass",
+    ignored = "ignored"
+}
 
 export enum eRuleConfidence {
     PASS = "PASS",

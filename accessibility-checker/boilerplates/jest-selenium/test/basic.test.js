@@ -19,7 +19,7 @@ beforeAll(function() {
         
         const options = new chrome.Options();
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless");
+        options.addArguments("--headless=new");
         options.addArguments('--ignore-certificate-errors')
 
         const service = new chrome.ServiceBuilder(spath).build();

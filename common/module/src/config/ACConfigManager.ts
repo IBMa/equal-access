@@ -17,12 +17,13 @@
 import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
-import { ACConstants } from "./ACConstants";
 import * as crypto from 'crypto';
-import { IConfig, IConfigInternal } from "./IConfig";
 import { fetch_get } from "../api-ext/Fetch";
 import { ReporterManager } from "../report/ReporterManager";
 import { IArchive } from "./IArchive";
+import { ACConstants } from "./ACConstants.js";
+import { v4 as uuidv4 } from 'uuid';
+import { IConfig, IConfigUnsupported } from "./api/IChecker.js";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -157,7 +158,8 @@ async function processACConfig(ACConfig: IConfigInternal) {
         if (ACConfig.ignoreHTTPSErrors) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
         }
-        ruleArchiveParse = await fetch_get(ruleArchiveFile);
+        const response = await fetch(ruleArchiveFile);
+        ruleArchiveParse = await response.json();
     } catch (err) {
         console.log(err);
         throw new Error(err);
@@ -247,11 +249,7 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    let packageDir = __dirname;
-    while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
-        packageDir = pathLib.join(packageDir, "..");
-    }
-    const packageObject = JSON.parse(fs.readFileSync(pathLib.join(packageDir, 'package.json')).toString());
+    const packageObject = JSON.parse(fs.readFileSync('../package.json').toString());
 
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;
@@ -348,7 +346,7 @@ async function loadConfigFromYAMLorJSONFile() {
                     ACConstants.DEBUG && console.log("Loading: " + jsOrJSONFile)
 
                     // Load in as json or js and return this object
-                    try {
+                   /**  try {
                         return require(fileToCheck);
                     } catch (err) {
                         try {
@@ -356,7 +354,8 @@ async function loadConfigFromYAMLorJSONFile() {
                         } catch (err) {
                             return JSON.parse(fs.readFileSync(jsOrJSONFile).toString());
                         }
-                    }
+                    }*/
+                    return JSON.parse(fs.readFileSync(fileToCheck).toString());
                 }
             } catch (e) {
                 ACConstants.DEBUG && console.log("JSON or JS file does not exists, will load default config.")

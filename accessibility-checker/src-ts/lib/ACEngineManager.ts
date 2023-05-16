@@ -1,8 +1,12 @@
-import * as path from "path";
+/**import * as path from "path";
 import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
+*/
+import { ACConfigManager } from "./ACConfigManager.js";
+import * as path from "path";
+import * as fs from "fs";
 
 let ace;
 
@@ -251,12 +255,15 @@ export class ACEngineManager {
         if (!ACEngineManager.localLoadPromise) {
             ACEngineManager.localLoadPromise = new Promise<void>(async (resolve, reject) => {
                 let config = await ACConfigManager.getConfigUnsupported();
-                const data = await fetch_get_text(`${config.rulePack}/ace-node.js`);
+               /** const data = await fetch_get_text(`${config.rulePack}/ace-node.js`);
+                const response = await fetch(`${config.rulePack}/ace-node.js`);
+                const data = await response.text();
+                */
                 let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
-
+            /**
                 let fileSuffix = "";
                 if (!config.toolVersion) {
                     fileSuffix = config.ruleArchiveVersion;
@@ -287,6 +294,19 @@ export class ACEngineManager {
                         }
                     });
                 }
+             */       
+                let nodePath = path.join(engineDir, "ace-node") + ".js";
+                fs.writeFile(nodePath, data, async (err) => {
+                    try {
+                        err && console.log(err);
+                        let ace_ibma : any = await import(nodePath);
+                        checker = new ace_ibma.default.Checker();
+                    } catch (e) {
+                        console.log(e);
+                        return reject(e);
+                    }
+                    resolve();
+                });
             });
         }
         return ACEngineManager.localLoadPromise;

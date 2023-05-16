@@ -1,5 +1,6 @@
 import { eRuleLevel } from "../common/config/IConfig";
 import { IBaselineReport } from "../common/engine/IReport";
+import { eRuleLevel, RuleDetails } from "./IEngine.js";
 
 export enum eAssertResult {
     ERROR = -1,

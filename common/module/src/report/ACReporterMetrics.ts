@@ -26,6 +26,9 @@ import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager";
  *              to upload metrics of the tool to the metrics server.
  *******************************************************************************/
 
+// Load required modules
+import { ILogger } from "../api/IChecker.js";
+
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
  * that are needed to upload scan metrics to the metric server.
@@ -123,7 +126,8 @@ export class ACReporterMetrics implements IReporter {
                     // Dispatch the call to the metrics server
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
-                    await fetch_get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
+                    //await fetch_get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
+                    fetch(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
                     }).catch((_err) => {
                     }).finally(() => {
                         // Decrement the numProfiles to identify that scan has finished

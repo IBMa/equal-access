@@ -66,7 +66,7 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
 
             const options = new chrome.Options();
             options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--headless");
+            options.addArguments("--headless=new");
             options.addArguments('--ignore-certificate-errors')
 
             browser = new webdriver.Builder()

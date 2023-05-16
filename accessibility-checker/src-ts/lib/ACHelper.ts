@@ -1,4 +1,4 @@
-import { ICheckerReport, ICheckerResult } from "./api/IChecker";
+/**import { ICheckerReport, ICheckerResult } from "./api/IChecker";
 import { ACBrowserManager } from "./ACBrowserManager";
 import { ACEngineManager } from "./ACEngineManager";
 import { ACConfigManager } from "./common/config/ACConfigManager";
@@ -9,6 +9,13 @@ import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
 import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
 import { dirname, join, resolve as pathResolve } from "path";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
+*/
+import { ICheckerReport, ICheckerResult, IConfigUnsupported } from "./api/IChecker.js";
+import { ACBrowserManager } from "./ACBrowserManager.js";
+import { ACConfigManager } from "./ACConfigManager.js";
+import { ACEngineManager } from "./ACEngineManager.js";
+import { ACReportManager } from "./ACReportManager.js";
+import { Report } from "./api/IEngine.js";
 
 declare var after;
 
@@ -73,14 +80,22 @@ async function initialize() {
 
 try {
     // If cucumber is the platform...
-    let {AfterAll} = require('cucumber');
+    /**let {AfterAll} = require('cucumber');
     AfterAll(function (done) {
         // const rulePack = `${Config.rulePack}`;
         initialize()
             .then(() => ReporterManager.generateSummaries())
             .then(() => ACBrowserManager.close())
             .then(done);
-    });
+    });*/
+    import("cucumber"!).then((module) => {
+        if (module.default.AfterAll) {
+            module.default.AfterAll(function (done) {
+                const rulePack = `${Config.rulePack}`;
+                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+            });        
+        }
+    })
 } catch (e) {
     if (typeof (after) !== "undefined") {
         after(function (done) {

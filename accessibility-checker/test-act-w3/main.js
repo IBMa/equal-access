@@ -12,7 +12,7 @@ const fs = require("fs");
     }
     
     // Setup the Puppeteer test environment
-    let browser = await puppeteer.launch({ headless: true, ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: 'new', ignoreHTTPSErrors: true });
     let pupPage = await browser.newPage();
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {
