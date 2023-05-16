@@ -7,30 +7,37 @@
 
 <body>
 
-  <p style="color: #AAA; background: linear-gradient(to right, #FFF, #00F); width: 300px">
-    Some text in English
+  <p style="color: #000; background: #666;">
+    ----=====++++++++___________****a***** **%%%%%%%%%% #%±±±±@@@@@@@@
+  </p>
+  <p style="color: #000; background: #666;">
+    **%%%%%%%%%----=====++++++++___________******* ****%%%%%%% %%%%±±±±@@@@@@@@
   </p>
 
 <script type="text/javascript">
         UnitTest = {
             ruleIds: ["text_contrast_sufficient"],
-            results: [
+            results: [  
             {
             "ruleId": "text_contrast_sufficient",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/p[1]",
               "aria": "/document[1]/paragraph[1]"
             },
-            "reasonId": "Potential_graphic_background",
-            "message": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size 16px and weight of 400",
+            "reasonId": "Fail_1",
+            "message": "Text contrast of 3.66 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
             "messageArgs": [
-              "1.00",
+              "3.66",
               16,
-              400
+              400,
+              "#000000",
+              "#666666",
+              false,
+              false
             ],
             "apiArgs": [],
             "category": "Accessibility"

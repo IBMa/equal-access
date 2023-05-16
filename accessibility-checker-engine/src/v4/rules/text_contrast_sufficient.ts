@@ -16,7 +16,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { setCache } from "../util/CacheUtil";
+//import { setCache } from "../util/CacheUtil";
 import { getWeightNumber, getFontInPixels } from "../util/CSSUtil";
 
 export let text_contrast_sufficient: Rule = {
@@ -26,7 +26,11 @@ export let text_contrast_sufficient: Rule = {
         "IBMA_Color_Contrast_WCAG2AA": {
             "Pass_0": "Pass_0",
             "Fail_1": "Fail_1",
-            "Potential_1": "Potential_1"
+            "Potential_1": "Potential_same_color"
+        },
+        "IBMA_Color_Contrast_WCAG2AA_PV": {
+            "Pass_0": "Pass_0",
+            "Potential_1": "Potential_graphic_background"
         }
     },
     help: {
@@ -34,7 +38,9 @@ export let text_contrast_sufficient: Rule = {
             "group": `text_contrast_sufficient.html`,
             "Pass_0": `text_contrast_sufficient.html`,
             "Fail_1": `text_contrast_sufficient.html`,
-            "Potential_1": `text_contrast_sufficient.html`
+            "Potential_same_color": `text_contrast_sufficient.html`,
+            "Potential_graphic_background": `text_contrast_sufficient.html`,
+            "Potential_text_shadow": `text_contrast_sufficient.html`
         }
     },
     messages: {
@@ -42,7 +48,9 @@ export let text_contrast_sufficient: Rule = {
             "group": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed",
             "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
-            "Potential_1": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast"
+            "Potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast",
+            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}",
+            "Potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"
         }
     },
     rulesets: [{
@@ -85,9 +93,23 @@ export let text_contrast_sufficient: Rule = {
         // Ensure that this element has children with actual text.
         let childStr = RPTUtil.getNodeText(ruleContext);
         
-        if (childStr.trim().length == 0 && (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')))
-            return null;
-        
+        if (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')) {
+            if (childStr.trim().length == 0 )
+                return null;
+            
+            // ignore if the text does not convey anything in human language
+            /** 
+             * (1) ignore non-alphanumeric or special characters in ASCI: ^(a-zA-Z\d\s)
+             * (2) ignore non-printable unicode characters: \u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF
+             *  see https://stackoverflow.com/questions/3770117/what-is-the-range-of-unicode-printable-characters
+             * (3) for now not consider unicode special characters that are different in different languages
+            */
+            let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
+            const removed = childStr.trim().replace(regex, '');
+            if (removed.trim().length === 0)
+                return null;
+        }
+
         let elem = ruleContext;
         // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
         // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
@@ -104,7 +126,7 @@ export let text_contrast_sufficient: Rule = {
             }
             if (elem === null) return;
         }
-
+        
         let style = win.getComputedStyle(elem);
         
         // JCH clip INFO:
@@ -216,7 +238,7 @@ export let text_contrast_sufficient: Rule = {
             // Corner case where item is hidden (accessibility hiding technique)
             return null;
         }
-
+        
         // First determine the color contrast ratio
         let colorCombo = ColorUtil.ColorCombo(elem);
         if (colorCombo === null) {
@@ -232,6 +254,7 @@ export let text_contrast_sufficient: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
+        let textShadow = colorCombo.textShadow;
         let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
             let control = RPTUtil.getControlOfLabel(elem);
@@ -239,7 +262,7 @@ export let text_contrast_sufficient: Rule = {
                 isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
-
+        
         if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
@@ -248,30 +271,33 @@ export let text_contrast_sufficient: Rule = {
             isDisabled = true;
         }
 
-        setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
+        /**setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
             "ratio": ratio,
             "isLargeScale": isLargeScale,
             "weight": weight,
             "size": size,
             "hasBackground": hasBackground,
             "isDisabled": isDisabled
-        });
-        if (hasBackground) {
-            // Allow other color rule to fire if we have a background
-            return null;
-        }
-
+        });*/
+        
         // If element or parent is disabled, this rule does not apply (but may be 3:1 in future)
         if (!passed && isDisabled) {
             passed = true;
         }
-        //return new ValidationResult(passed, [ruleContext], '', '', [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
         if (!passed) {
-            if (fg.toHex() === bg.toHex()) {
-                return RulePotential("Potential_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+            if (hasBackground) {
+                // fire potential since a text on an image or gradient may be still viewable, depending on the text location on the gradient or image
+                return RulePotential("Potential_graphic_background", [ratio.toFixed(2), size, weight]);;
+            } else if (textShadow) {
+                // fire potential since a text with shadow may be still viewable, depending on the shadow efffects
+                return RulePotential("Potential_text_shadow", [ratio.toFixed(2), size, weight]);;
             } else {
-                return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
-            }
+                if (fg.toHex() === bg.toHex()) {
+                    return RulePotential("Potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                } else {
+                    return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                }
+            }    
         } else {
             return RulePass("Pass_0", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
         }

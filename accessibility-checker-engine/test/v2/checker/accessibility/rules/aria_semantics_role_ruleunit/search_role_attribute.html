@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <search>
+        <label for=s>Site</label>
+        <input type=search id=s>
+        <button>Go!</button>
+      </search>
+      <search role="search" aria-checked="true"> </search>
+      <search role="alert" > </search>
+      <search role="form" aria-atomic="true"> </search>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_valid", "aria_role_valid", "aria_role_redundant"],
+        results: [
+        {
+            "ruleId": "aria_role_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[2]",
+              "aria": "/document[1]/main[1]/search[2]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"search\" is redundant with the implicit role of the element <search>",
+            "messageArgs": [
+              "search",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[2]",
+              "aria": "/document[1]/main[1]/search[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "search",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[2]",
+              "aria": "/document[1]/main[1]/search[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <search> with ARIA role \"search\"",
+            "messageArgs": [
+              "aria-checked",
+              "search",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_redundant",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[3]",
+              "aria": "/document[1]/main[1]/alert[1]"
+            },
+            "reasonId": "pass",
+            "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[3]",
+              "aria": "/document[1]/main[1]/alert[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'alert' is not valid for the element <search>",
+            "messageArgs": [
+              "alert",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_redundant",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[4]",
+              "aria": "/document[1]/main[1]/form[1]"
+            },
+            "reasonId": "pass",
+            "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[4]",
+              "aria": "/document[1]/main[1]/form[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "form",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/search[4]",
+              "aria": "/document[1]/main[1]/form[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-atomic",
+              "search",
+              "form"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

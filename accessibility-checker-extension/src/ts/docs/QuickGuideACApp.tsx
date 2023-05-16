@@ -20,9 +20,9 @@ import React from "react";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
-import tabStop from "../../assets/tab_stop.svg";
-import kbIssues from "../../assets/keyboard_issue.svg";
-import element from "../../assets/element.svg";
+// import tabStop from "../../assets/tab_stop.svg";
+// import kbIssues from "../../assets/keyboard_issue.svg";
+// import element from "../../assets/element.svg";
 import { DocPage } from "./components/DocPage";
 import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
 import "./quickGuide.scss";
@@ -110,7 +110,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>Here’s a quick look at what all the functionalities are in the Checker tool.</p>
 
-                    <h2 id="checker">1. Accessibility Checker</h2>
+                    <h2 id="checker">1. Accessibility Checker Scan button</h2>
                     <p>
                         The Accessibility Checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component. For more in-depth guidance, view
                         {" "}
@@ -190,34 +190,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/3.5Keyboard2.png"
+                            src="assets/img/3.5Keyboard2a.png"
                             alt="webpage with keyboard visualization overlay"
                         />
                     </p>
-                    <p>Select these icons or tab through the page to see code and keyboard access issues:</p>
-                    <UnorderedList>
-                        <ListItem>
-                            <img
-                                src={tabStop}
-                                alt="tab stop icon"
-                            />{" "}
-                            tab stops numbered by tab order of the page
-                        </ListItem>
-                        <ListItem>
-                            <img
-                                src={kbIssues}
-                                alt="keyboard issues icon"
-                            />{" "}
-                            keyboard access issue with tab stop number
-                        </ListItem>
-                        <ListItem>
-                            <img
-                                src={element}
-                                alt="element issues icon"
-                            />{" "}
-                            element with keyboard access issue (not a tab stop)
-                        </ListItem>
-                    </UnorderedList>
+                    <p>Select the info icon next to ‘Keyboard tab stops’ to understand the basic functions.</p>
+                    
 
                     <h2 id="troubleshooting">6. Troubleshooting</h2>
                     <p>
