@@ -1,5 +1,6 @@
 {
   "name": "accessibility-checker",
+  "type": "module",
   "version": "3.0.0",
   "description": "Accessibility Checker for Node",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
