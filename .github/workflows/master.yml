@@ -13,11 +13,11 @@ jobs:
 # Extension package and artifact on master
 ####
   extension-build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -57,11 +57,11 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
 
   act-results:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -96,11 +96,11 @@ jobs:
         path: accessibility-checker/test-act-w3/act-report-v2.txt
 
   rule-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
