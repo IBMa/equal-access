@@ -57,7 +57,7 @@ async function getAceMapping() {
     return retVal;
 }
 
-async function getTestcases() {
+export async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
     let resp = await fetch("https://act-rules.github.io/testcases.json");
@@ -75,7 +75,7 @@ async function getTestcases() {
     return ruleTestInfo;
 }
 
-async function getResult(page, testcaseId, aceRules, bSkip) {
+export async function getResult(page, testcaseId, aceRules, bSkip) {
     if (aceRules.length === 0) {
         return {
             title: "",
@@ -151,5 +151,3 @@ async function getResult(page, testcaseId, aceRules, bSkip) {
         issuesAll: issues2
     }
 }
-
-module.exports = { getTestcases, getResult }

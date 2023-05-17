@@ -58,7 +58,7 @@ async function getAceMapping() {
     return retVal;
 }
 
-async function getTestcases() {
+export async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
     let resp = await fetch("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json");
@@ -107,7 +107,7 @@ async function getAssertion(ruleId, aceRules, result) {
     }
 }
 
-async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
+export async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
     const ruleset = await rulesetP;
     let assertions = [];
     if (aceRules.length === 0) {
@@ -226,5 +226,3 @@ async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
         issuesAll: bSkip ? [] : results.report.results
     }
 }
-
-module.exports = { getTestcases, getResult }
