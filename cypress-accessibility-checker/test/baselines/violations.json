@@ -187,7 +187,7 @@
             "potentialviolation": 0,
             "ignored": 0
         },
-        "scanTime": 3,
+        "scanTime": 10,
         "ruleArchive": "Latest Deployment (latest)",
         "policies": [
             "IBM_Accessibility"
@@ -196,10 +196,10 @@
             "violation",
             "potentialviolation"
         ],
-        "startScan": 1684264245596,
+        "startScan": 1684344654747,
         "URL": "http://localhost:8080/test/sample-html/violations.html"
     },
-    "scanID": "9206438f-bca0-4d40-b847-939e2ae107e8",
+    "scanID": "155b5277-dee6-44a8-a591-9d6fad5241c4",
     "toolID": "cypress-accessibility-checker-v3.0.0",
     "label": "violations"
 }

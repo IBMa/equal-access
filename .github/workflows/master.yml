@@ -13,7 +13,7 @@ jobs:
 # Extension package and artifact on master
 ####
   extension-build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -57,7 +57,7 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
 
   act-results:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -96,7 +96,7 @@ jobs:
         path: accessibility-checker/test-act-w3/act-report-v2.txt
 
   rule-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:

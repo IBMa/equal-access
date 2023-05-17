@@ -10,7 +10,7 @@ jobs:
 # Engine test
 ####
   accessibility-checker-engine-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -40,7 +40,7 @@ jobs:
       working-directory: accessibility-checker-engine
 
   act-results:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -132,7 +132,7 @@ jobs:
 # Node basic test
 ####
   accessibility-checker-test-basic:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
@@ -178,7 +178,7 @@ jobs:
 # Node basic test
 ####
   accessibility-checker-test-basic2:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
@@ -218,7 +218,7 @@ jobs:
 # Node Selenium test
 ####
   accessibility-checker-test-selenium:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
@@ -259,7 +259,7 @@ jobs:
 # Node Playwright test
 ####
   accessibility-checker-test-playwright:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -298,7 +298,7 @@ jobs:
 # Karma Tests
 ####
   karma-accessibility-checker-test:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
@@ -380,7 +380,7 @@ jobs:
 # Extension Build verification
 ####
   extension-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -424,7 +424,7 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
 
   rule-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
