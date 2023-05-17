@@ -7,8 +7,7 @@
 
 'use strict';
 
-const aChecker = require("../src/index");
-const request = require("request");
+import * as aChecker from "../src/index.js";
 const rulesetP = aChecker.getRuleset('IBM_Accessibility');
 
 async function getAceMapping() {
@@ -62,22 +61,19 @@ async function getAceMapping() {
 async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
-    return await new Promise((resolve, reject) => {
-        request("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json", (err, req, body) => {
-            let testcaseInfo = JSON.parse(body);
-            for (const testcase of testcaseInfo.testcases) {
-                // if (testcase.ruleId in aceMapping) {
-                    ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
-                        aceRules: aceMapping[testcase.ruleId],
-                        label: testcase.ruleName,
-                        testcases: []
-                    }
-                    ruleTestInfo[testcase.ruleId].testcases.push(testcase);
-                // }
+    let resp = await fetch("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json");
+    let testcaseInfo = await resp.json();
+    for (const testcase of testcaseInfo.testcases) {
+        // if (testcase.ruleId in aceMapping) {
+            ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
+                aceRules: aceMapping[testcase.ruleId],
+                label: testcase.ruleName,
+                testcases: []
             }
-            resolve(ruleTestInfo);
-        });
-    });
+            ruleTestInfo[testcase.ruleId].testcases.push(testcase);
+        // }
+    }
+    return ruleTestInfo;
 }
 
 async function getAssertion(ruleId, aceRules, result) {

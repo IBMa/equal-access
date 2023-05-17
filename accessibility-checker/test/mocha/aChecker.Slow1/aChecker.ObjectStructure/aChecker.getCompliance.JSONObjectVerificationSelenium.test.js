@@ -14,27 +14,24 @@
     limitations under the License.
   *****************************************************************************/
 
- 'use strict';
-var userBrowser = process.env.USER_BROWSER || "CHROME";
+'use strict';
+import * as fs from "fs";
+import * as path from "path";
+import * as aChecker from "../../../../src/index.js";
+import { expect } from "chai";
+import { Builder, Capabilities } from "selenium-webdriver";
+import {fileURLToPath} from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+let userBrowser = process.env.USER_BROWSER || "CHROME";
+let unitTestcaseHTML = {};
 
-var webdriver = require('selenium-webdriver'),
-    By = webdriver.By,
-    until = webdriver.until;
-
-var fs = require("fs");
-var path = require("path");
-const { loadSeleniumTestFile } = require("../../util/Util");
-
-var unitTestcaseHTML = {};
-var aChecker = require("../../../../src");
-var expect = require("chai").expect;
-
-var browser;
+let browser;
 if (userBrowser.toUpperCase() === "FIREFOX") {
     before(function (done) {
         try {
             this.timeout(10000);
-            browser = new webdriver.Builder()
+            browser = new Builder()
                 .forBrowser('firefox')
                 .usingServer('http://localhost:4444/wd/hub')
                 .build();
@@ -45,40 +42,43 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
         }
     });
 } else if (userBrowser.toUpperCase() === "CHROME") {
-    var chrome = require('selenium-webdriver/chrome');
     before(function (done) {
-        try {
-            this.timeout(10000);
-            var spath;
-            if (process.platform !== 'win32'){
-                spath = require('chromedriver').path;
-                spath = path.join(spath, "..");
-                spath = path.join(spath, "..");
-                spath = path.join(spath, "..");
-                spath = path.join(spath, "bin");
-                spath = path.join(spath, "chromedriver");
-            }
-            else {
-                spath = require('chromedriver').path;
-            }
-            var service = new chrome.ServiceBuilder(spath).build();
-            chrome.setDefaultService(service);
+        this.timeout(10000);
+        (async () => {
+            try {
+                const chrome = (await import('selenium-webdriver/chrome.js'));
+                const chromedriver = (await import("chromedriver"));
+                let spath;
+                if (process.platform !== 'win32'){
+                    spath = chromedriver.path;
+                    spath = path.join(spath, "..");
+                    spath = path.join(spath, "..");
+                    spath = path.join(spath, "..");
+                    spath = path.join(spath, "bin");
+                    spath = path.join(spath, "chromedriver");
+                }
+                else {
+                    spath = chromedriver.path;
+                }
+                let service = new chrome.ServiceBuilder(spath).build();
+                chrome.setDefaultService(service);
 
-            const options = new chrome.Options();
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--headless=new");
-            options.addArguments('--ignore-certificate-errors')
+                const options = new chrome.Options();
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--headless=new");
+                options.addArguments('--ignore-certificate-errors')
 
-            browser = new webdriver.Builder()
-                .withCapabilities(webdriver.Capabilities.chrome())
-                .setChromeOptions(options)
-                .build();
-            browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
-            expect(typeof browser).to.not.equal("undefined");
-            done();
-        } catch (e) {
-            console.log(e);
-        }
+                browser = new Builder()
+                    .withCapabilities(Capabilities.chrome())
+                    .setChromeOptions(options)
+                    .build();
+                browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
+                expect(typeof browser).to.not.equal("undefined");
+                done();
+            } catch (e) {
+                console.log(e);
+            }
+        })();
     })
 }
 
@@ -86,11 +86,11 @@ after(function (done) {
     browser.quit().then(done);
 })
 
-var files = ["JSONObjectStructureVerificationSelenium.html"];
+let files = ["JSONObjectStructureVerificationSelenium.html"];
 files.forEach(function (f) {
-    var fileExtension = f.substr(f.lastIndexOf('.') + 1);
+    let fileExtension = f.substr(f.lastIndexOf('.') + 1);
     if (fileExtension === 'html' || fileExtension === 'htm') {
-        var f = path.join(__dirname, f);
+        f = path.join(__dirname, f);
         unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
     };
 });
@@ -102,10 +102,10 @@ describe("JSON Structure Verification Selenium", function () {
     });
 
     // Variable Decleration
-    var originalPolicies;
+    let originalPolicies;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (let unitTestFile in unitTestcaseHTML) {
 
         // This function is used to execute for each of the unitTestFiles, we have to use this type of function
         // to allow dynamic creation/execution of the Unit Testcases. This is like forcing an syncronous execution
@@ -128,20 +128,20 @@ describe("JSON Structure Verification Selenium", function () {
                 it('JSON structure should match baseline for selenium', function (done) {
                     this.timeout(0);
 
-                    var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
+                    let labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
 
                     loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         // Decleare the actualMap which will store all the actual xpath results
-                        var actualMap = {};
+                        let actualMap = {};
                         // Perform the accessibility scan using the IBMaScan Wrapper
                         aChecker.getCompliance(browser, labelName, function (report, doc) {
                             try {
                                 // Make sure that the structure of the result match with expected structure
                                 // Fetch the baseline object based on the label provided
-                                var expected = aChecker.getBaseline(labelName);
+                                let expected = aChecker.getBaseline(labelName);
                                 
                                 // Define the differences with some content as we expect it to be null or undefined if pass
-                                var differences = "Something";
+                                let differences = "Something";
 
                                 // Update all the items in the results which dynamically change over scans to the values
                                 // already defined in the baseline file.

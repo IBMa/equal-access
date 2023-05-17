@@ -14,20 +14,25 @@
     limitations under the License.
   *****************************************************************************/
 
- 'use strict';
-
-var fs = require("fs");
-var path = require("path");
-var unitTestcaseHTML = {};
+'use strict';
+import * as fs from "fs";
+import * as path from "path";
 //Using local checker and location 
-var aChecker = require("../../src");
+import * as aChecker from "../../src/index.js";
+import ace from "../../../accessibility-checker-engine/dist/ace-node.js";
 //Using a checker local checker engine 
-const ace = require("../../../accessibility-checker-engine/dist/ace-node");
+import { expect } from "chai";
+import {fileURLToPath} from 'url';
+import * as puppeteer from "puppeteer";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+let unitTestcaseHTML = {};
 //Location of tests with path so fs can read?
 const urlList = fs.readFileSync(path.join(__dirname,"listofURLs.txt")).toString();
 console.log(urlList);
 const urls = urlList.split(/[\r\n]+/);
-var expect = require("chai").expect;
 
 const mapRuleToG = aChecker.ruleIdToLegacyId;
 
@@ -40,7 +45,6 @@ for (const key in mapRuleToG) {
 let validList = {};
 let policyMap = {};
 const checker = new ace.Checker();
-const puppeteer = require('puppeteer');
 let browser;
 let page;
 before(async function () {
@@ -71,7 +75,7 @@ after(async function () {
 })
 
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
-var skipList = [
+let skipList = [
 
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps when loaded as a string
@@ -107,7 +111,7 @@ var skipList = [
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-empty.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-invalidSpaces.html"),
 ]
-var skipMap = {}
+let skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
 });
@@ -119,7 +123,7 @@ describe("Rule Unit Tests As File URL", function () {
     });
 
     // Variable Decleration
-    var originalTimeout;
+    let originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
     for (const url of urls) {
@@ -142,7 +146,7 @@ describe("Rule Unit Tests As File URL", function () {
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
-                    var actualMap = {};
+                    let actualMap = {};
                     let report = null;
                     let puppeteer = null;
                     await page.goto(url);

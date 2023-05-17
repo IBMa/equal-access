@@ -1,8 +1,8 @@
 'use strict';
 
-const puppeteer = require('puppeteer');
-const { getTestcases, getResult } = require("./act");
-const fs = require("fs");
+import * as puppeteer from 'puppeteer';
+import { getTestcases, getResult } from "./act";
+import * as fs from "fs";
 (async () => {
     let earlResult = {
         "@context": "https://act-rules.github.io/earl-context.json",
