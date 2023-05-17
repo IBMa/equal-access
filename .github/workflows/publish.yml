@@ -13,11 +13,11 @@ jobs:
 # NPM Node
 ####
   accessibility-checker-engine-publish:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -52,11 +52,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accessibility-checker-publish:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -75,11 +75,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   karma-accessibility-checker-publish:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -98,11 +98,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   cypress-accessibility-checker-publish:
-      runs-on: ubuntu-20.04
+      runs-on: ubuntu-22.04
 
       strategy:
         matrix:
-          node-version: [16.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -123,11 +123,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   extension-build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -193,11 +193,11 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
 
   rule-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
