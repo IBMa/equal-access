@@ -4,7 +4,7 @@ import { ACMetricsLogger } from "./log/ACMetricsLogger.js";
 import * as path from "path";
 import { ACEngineManager } from "./ACEngineManager.js";
 import { ruleIdToLegacyId } from "../index.js";
-import * as DeepDiff from "deep-diff";
+import DeepDiff from 'deep-diff';
 import { ACReporterCSV } from "./reporters/ACReporterCSV.js";
 import { ACReporterXLSX } from "./reporters/ACReporterXLSX.js";
 import { initializeSummary, IScanSummary } from "./reporters/ReportUtil.js";
@@ -1060,7 +1060,8 @@ export class ACReportManager {
      */
     static getBaseline(label) {
         try {
-            let retVal : ICheckerReport = JSON.parse(readFileSync(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label)).toString());
+            let baselineFilename = path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label+".json");
+            let retVal : ICheckerReport = JSON.parse(readFileSync(baselineFilename).toString());
             if (retVal && retVal.results) {
                 if (!this.refactorMap) {
                     this.refactorMap = {}
@@ -1141,8 +1142,6 @@ export class ACReportManager {
     };
 
     static ignoreExtraBaselineViolations(actualReport, baselineReport) {
-        let result = null;
-        let existingRuleIDs = [];
         // Using for loop to make is sync code
         let ignoredCount = 0;
         let changedCounts = actualReport.summary.counts;
@@ -1150,44 +1149,44 @@ export class ACReportManager {
         let currentActualReport = actualReport.results;
         const currentBaselineReport = baselineReport;
         // a report exists in the baseline for the iframe
+        let legacyBaseline = false;
         if (currentBaselineReport && currentBaselineReport.length === 1) {
-            let legacyBaseline = !!currentBaselineReport[0].issues;
-            for (const issue of currentActualReport) {
-                let currentRuleID = issue.ruleId;
-                let currentLevel = issue.level;
-                let currentXPATH = issue.path.dom;
-                //check if the issue exists in baseline already
-                let result =
-                    legacyBaseline && currentBaselineReport[0].issues.filter(issue => issue.ruleId in ruleIdToLegacyId && ruleIdToLegacyId[issue.ruleId] === currentRuleID && issue.level === currentLevel && issue.xpath === currentXPATH)
-                    || !legacyBaseline && currentBaselineReport.results.filter(issue => issue.ruleId === currentRuleID && issue.level === currentLevel && issue.dom.path === currentXPATH);
-                if (result && result.length !== 0) {
-                    //violation exists in baseline, add ignore:true
-                    issue.ignored = true;
-                    ignoredCount++;
-                    if (issue.level === "violation") {
-                        changedCounts.violation--;
-                    }
-                    if (issue.level === "potentialviolation") {
-                        changedCounts.potentialviolation--;
-                    }
-                    if (issue.level === "recommendation") {
-                        changedCounts.recommendation--;
-                    }
-                    if (issue.level === "potentialrecommendation") {
-                        changedCounts.potentialrecommendation--;
-                    }
-                    if (issue.level === "manual") {
-                        changedCounts.manual--;
-                    }
-                    if (issue.level === "pass") {
-                        changedCounts.pass--;
-                    }
-
-                } else {
-                    issue.ignored = false;
+            legacyBaseline = !!currentBaselineReport[0].issues;
+        }
+        for (const issue of currentActualReport) {
+            let currentRuleID = issue.ruleId;
+            let currentLevel = issue.level;
+            let currentXPATH = issue.path.dom;
+            //check if the issue exists in baseline already
+            let result =
+                legacyBaseline && currentBaselineReport[0].issues.filter(issue => issue.ruleId in ruleIdToLegacyId && ruleIdToLegacyId[issue.ruleId] === currentRuleID && issue.level === currentLevel && issue.xpath === currentXPATH)
+                || !legacyBaseline && currentBaselineReport.results.filter(issue => issue.ruleId === currentRuleID && issue.level === currentLevel && issue.path.dom === currentXPATH);
+            if (result && result.length !== 0) {
+                //violation exists in baseline, add ignore:true
+                issue.ignored = true;
+                ignoredCount++;
+                if (issue.level === "violation") {
+                    changedCounts.violation--;
                 }
-            }
+                if (issue.level === "potentialviolation") {
+                    changedCounts.potentialviolation--;
+                }
+                if (issue.level === "recommendation") {
+                    changedCounts.recommendation--;
+                }
+                if (issue.level === "potentialrecommendation") {
+                    changedCounts.potentialrecommendation--;
+                }
+                if (issue.level === "manual") {
+                    changedCounts.manual--;
+                }
+                if (issue.level === "pass") {
+                    changedCounts.pass--;
+                }
 
+            } else {
+                issue.ignored = false;
+            }
         }
 
         // adding ignore count to summary

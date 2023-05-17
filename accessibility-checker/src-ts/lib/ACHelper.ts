@@ -29,36 +29,38 @@ async function initialize() {
     return ACEngineManager.loadEngineLocal();
 }
 
-try {
-    // If cucumber is the platform...
-    import("cucumber"!).then((module) => {
+(async () => {
+    try {
+        // If cucumber is the platform...
+        let module = (await import("cucumber"!));
         if (module.default.AfterAll) {
             module.default.AfterAll(function (done) {
                 const rulePack = `${Config.rulePack}`;
                 initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
             });        
         }
-    })
-} catch (e) {
-    if (typeof (after) !== "undefined") {
-        after(function (done) {
-            if (Config) {
-                const rulePack = `${Config.rulePack}/ace`;
-                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
-            } else {
-                done();
-            }
-        });
-    } else {
-        process.on('beforeExit', async function () {
-            if (Config) {
-                const rulePack = `${Config.rulePack}/ace`;
-                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
-                ACBrowserManager.close();
-            }
-        });
+    } catch (e) {
+        if (typeof (after) !== "undefined") {
+            after(function (done) {
+                if (Config) {
+                    const rulePack = `${Config.rulePack}/ace`;
+                    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+                } else {
+                    done();
+                }
+            });
+        } else {
+            process.on('beforeExit', async function () {
+                if (Config) {
+                    const rulePack = `${Config.rulePack}/ace`;
+                    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
+                    ACBrowserManager.close();
+                }
+            });
+        }
     }
-}
+})();
+
 
 function areValidPolicy(valPolicies, curPol) {
     let isValPol = false;

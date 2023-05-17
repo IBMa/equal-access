@@ -1,8 +1,8 @@
 'use strict';
 
-const puppeteer = require('puppeteer');
-const { getTestcases, getResult } = require("./act");
-const fs = require("fs");
+import * as puppeteer from "puppeteer";
+import { getTestcases, getResult } from "./act";
+import * as fs from "fs";
 (async () => {
     // Fetch the testcases from ACT
     let ruleTestInfo = await getTestcases();

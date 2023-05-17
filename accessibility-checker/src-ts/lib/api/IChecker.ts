@@ -105,7 +105,7 @@ export type IConfigUnsupported = IConfig & {
     /**
      * (optional) If the tool allows, should we run headless
      */
-    headless?: boolean
+    headless?: boolean | "new"
 
     /**
      * (optional) If the tool allows, set the maximum number of tabs to open

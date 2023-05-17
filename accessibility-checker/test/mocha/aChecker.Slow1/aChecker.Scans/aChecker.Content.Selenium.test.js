@@ -14,26 +14,24 @@
     limitations under the License.
   *****************************************************************************/
 
- 'use strict';
-var userBrowser = process.env.USER_BROWSER || "CHROME";
+'use strict';
+import * as fs from "fs";
+import * as path from "path";
+import * as aChecker from "../../../../src/index.js";
+import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
+import { expect } from "chai";
+import { Builder, Capabilities } from "selenium-webdriver";
 
-var webdriver = require('selenium-webdriver'),
-    By = webdriver.By,
-    until = webdriver.until;
+let userBrowser = process.env.USER_BROWSER || "CHROME";
 
-var fs = require("fs");
-var path = require("path");
-var unitTestcaseHTML = {};
-var aChecker = require("../../../../src");
-const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
-var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
-var gdirs = fs.readdirSync(testRootDir);
+let unitTestcaseHTML = {};
+let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
+let gdirs = fs.readdirSync(testRootDir);
 
 // gdirs = [
 //     "style_color_misuse_ruleunit",
 //     "a_text_purpose_ruleunit",
 //     "style_before_after_review_ruleunit"]
-var expect = require("chai").expect;
 
 const mapRuleToG = aChecker.ruleIdToLegacyId;
 
@@ -64,12 +62,12 @@ before(async function () {
     });
 });
 
-var browser;
+let browser;
 if (userBrowser.toUpperCase() === "FIREFOX") {
     before(function (done) {
         try {
             this.timeout(10000);
-            browser = new webdriver.Builder()
+            browser = new Builder()
                 .forBrowser('firefox')
                 .usingServer('http://localhost:4444/wd/hub')
                 .build();
@@ -80,37 +78,40 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
         }
     })
 } else if (userBrowser.toUpperCase() === "CHROME") {
-    var chrome = require('selenium-webdriver/chrome');
     before(function (done) {
-        try {
-            this.timeout(10000);
-            var spath = require('chromedriver').path;
-            spath = path.join(spath, "..");
-            spath = path.join(spath, "..");
-            spath = path.join(spath, "..");
-            spath = path.join(spath, "bin");
-            spath = path.join(spath, "chromedriver");
-
-            var service = new chrome.ServiceBuilder(spath).build();
+        this.timeout(10000);
+        (async () => {
             try {
-                chrome.setDefaultService(service);
-            } catch (e) {}
-            const options = new chrome.Options();
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--headless=new");
-            options.addArguments('--ignore-certificate-errors')
+                const chrome = await import('selenium-webdriver/chrome.js');
+                const chromedriver = await import('chromedriver');
+                let spath = chromedriver.path;
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "bin");
+                spath = path.join(spath, "chromedriver");
 
-            browser = new webdriver.Builder()
-                .withCapabilities(webdriver.Capabilities.chrome())
-                .setChromeOptions(options)
-                .build();
-                
-            browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
-            expect(typeof browser).to.not.equal("undefined");
-            done();
-        } catch (e) {
-            console.log(e);
-        }
+                let service = new chrome.ServiceBuilder(spath).build();
+                try {
+                    chrome.setDefaultService(service);
+                } catch (e) {}
+                const options = new chrome.Options();
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--headless=new");
+                options.addArguments('--ignore-certificate-errors')
+
+                browser = new Builder()
+                    .withCapabilities(Capabilities.chrome())
+                    .setChromeOptions(options)
+                    .build();
+                    
+                browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
+                expect(typeof browser).to.not.equal("undefined");
+                done();
+            } catch (e) {
+                console.log(e);
+            }
+        })();
     })
 }
 
@@ -119,13 +120,13 @@ after(function (done) {
 })
 
 gdirs.forEach(function (gdir) {
-    var gdir = path.join(testRootDir, gdir)
+    gdir = path.join(testRootDir, gdir)
     if (fs.lstatSync(gdir).isDirectory()) {
-        var files = fs.readdirSync(gdir);
+        let files = fs.readdirSync(gdir);
         files.forEach(function (f) {
-            var fileExtension = f.substr(f.lastIndexOf('.') + 1);
+            let fileExtension = f.substr(f.lastIndexOf('.') + 1);
             if (fileExtension === 'html' || fileExtension === 'htm') {
-                var f = path.join(gdir, f);
+                f = path.join(gdir, f);
                 unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
             };
         });
@@ -134,7 +135,7 @@ gdirs.forEach(function (gdir) {
 
 let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules");
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
-var skipList = [
+let skipList = [
     //not in karma conf file
     path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
     path.join(testRoot, "a_text_purpose_ruleunit", "A-nonTabable.html"),
@@ -152,7 +153,7 @@ var skipList = [
     path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html")
 ]
 
-var skipMap = {}
+let skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
 });
@@ -164,14 +165,14 @@ describe("Rule Unit Tests from Selenium", function () {
     });
 
     // Variable Decleration
-    var originalTimeout;
+    let originalTimeout;
     // let count = 10;
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (let unitTestFile in unitTestcaseHTML) {
         if (unitTestFile in skipMap) continue;
         // if (count-- < 0) continue;
         // Get the extension of the file we are about to scan
-        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.
@@ -194,7 +195,7 @@ describe("Rule Unit Tests from Selenium", function () {
                 it('a11y scan should match expected value', function (done) {
                     this.timeout(0);
 
-                    var regex = "test.*html?$";
+                    let regex = "test.*html?$";
 
                     browser.get("file://" + unitTestFile).then(function () {
                         let report = null;
