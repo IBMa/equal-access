@@ -443,7 +443,8 @@ jobs:
         working-directory: common/module
       - run: npm install
         working-directory: cypress-accessibility-checker
-      - run: npm run build:common
+      ###### - run: npm run build:common
+      - run: npm run build:report
         working-directory: cypress-accessibility-checker
       - run: npm run test:start-http &
         working-directory: cypress-accessibility-checker
