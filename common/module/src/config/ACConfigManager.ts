@@ -249,7 +249,7 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    const packageObject = JSON.parse(fs.readFileSync('../package.json').toString());
+    const packageObject = JSON.parse(fs.readFileSync('./package.json').toString());
 
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;
