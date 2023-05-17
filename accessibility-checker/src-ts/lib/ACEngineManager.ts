@@ -126,7 +126,7 @@ try {
                 fs.writeFile(nodePath, data, async (err) => {
                     try {
                         err && console.log(err);
-                        let ace_ibma : any = await import(nodePath);
+                        let ace_ibma : any = await import(`file://${path.resolve(nodePath)}`);
                         checker = new ace_ibma.default.Checker();
                     } catch (e) {
                         console.log(e);
