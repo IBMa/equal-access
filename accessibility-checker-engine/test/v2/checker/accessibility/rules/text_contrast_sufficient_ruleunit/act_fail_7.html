@@ -23,7 +23,26 @@
         UnitTest = {
             ruleIds: ["text_contrast_sufficient"],
             results: [
-            
+            {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/span[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Potential_graphic_background",
+            "message": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "1.00",
+              16,
+              400
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
         ]
         }
         

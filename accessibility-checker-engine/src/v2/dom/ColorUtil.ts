@@ -225,6 +225,7 @@ export class ColorUtil {
         var retVal = {
             "hasGradient": false,
             "hasBGImage": false,
+            "textShadow": false,
             "fg": null,
             "bg": null
         };
@@ -267,7 +268,7 @@ export class ColorUtil {
                         overallWorst = worstColor;
                     }
                 }
-                return overallWorst;
+                return overallWorst; // return the darkest color
             } catch (e) {
                 console.log(e);
             }
@@ -285,7 +286,7 @@ export class ColorUtil {
             // cStyle is the computed style of this layer
             var cStyle = win.getComputedStyle(procNext);
             if (cStyle === null) continue;
-
+            
             // thisBgColor is the color of this layer or null if the layer is transparent
             var thisBgColor = null;
             if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
@@ -300,13 +301,19 @@ export class ColorUtil {
                         if (!gradColors[i].length) {
                             gradColors.splice(i--, 1);
                         } else {
-                            gradColorComp.push(ColorUtil.Color(gradColors[i]));
+                            let colorComp = ColorUtil.Color(gradColors[i]);
+                            if (colorComp.alpha !== undefined && colorComp.alpha < 1) {
+                                // mix the grdient bg color wit parent bg if alpha < 1
+                                let compStackBg = thisStackBG || priorStackBG;
+                                colorComp = colorComp.getOverlayColor(compStackBg);
+                            }
+                            gradColorComp.push(colorComp);
                         }
                     }
                     thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
                 }
             }
-
+            
             // Handle non-solid opacity
             if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
                 // New stack, reset
@@ -370,6 +377,10 @@ export class ColorUtil {
         }
         retVal.fg = fg;
         retVal.bg = priorStackBG;
+
+        if (cStyle.textShadow && cStyle.textShadow !== 'none')
+            retVal.textShadow = true;
+
         return retVal;
     } catch (err) {
         // something happened, then...
@@ -413,10 +424,10 @@ export class ColorObj {
 
     contrastRatio(bgColor : ColorObj) { 
         let fgColor: ColorObj = this;
-
+        
         if (typeof (this.alpha) != "undefined")
             fgColor = this.getOverlayColor(bgColor);
-
+             
         let lum1 = fgColor.relativeLuminance();
         if (!bgColor.relativeLuminance) {
             let s = "";

@@ -17,27 +17,38 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
+
+import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
+import { getBGController } from "../background/backgroundController";
+import { DocPage } from "../docs/components/DocPage";
+
 import {
-    Column, Grid, Dropdown,
-    Button, Checkbox, Toggle,
+    Button,
+    ButtonSet,
+    Checkbox, 
+    Dropdown, 
+    DropdownSkeleton,
+    InlineLoading,
+    InlineNotification,
+    Link,
     Modal,
-    Theme
+    Toggle
 } from "@carbon/react";
 
-import { Restart, Save, Information } from "@carbon/react/icons/lib/index";
-import OptionMessaging from "../util/optionMessaging";
-// import OptionUtil  from '../util/optionUtil';
-import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
+import { 
+    Information,
+    Restart, 
+    Save
+} from "@carbon/react/icons";
+
+import "./option.scss";
 
 interface OptionsAppState {
-    archives: any;
-    selected_archive: any;
-    currentArchive: any;
-    rulesets: any;
-    selected_ruleset: any;
-    currentRuleset: any;
-    show_notif: boolean;
-    show_reset_notif: boolean;
+    lastSettings?: ISettings
+    archives: IArchiveDefinition[];
+    selected_archive: IArchiveDefinition | null;
+    rulesets: IPolicyDefinition[];
+    selected_ruleset: IPolicyDefinition | null;
     modalRuleSet: boolean;
     modalGuidelines: boolean;
     // Keyboard Checker Mode options
@@ -45,18 +56,17 @@ interface OptionsAppState {
     tabStopOutlines: boolean;
     tabStopAlerts: boolean;
     tabStopFirstTime: boolean;
+    savePending: number;
 }
 
-class OptionsApp extends React.Component<{}, OptionsAppState> {
+let bgController = getBGController();
+
+export class OptionsApp extends React.Component<{}, OptionsAppState> {
     state: OptionsAppState = {
         archives: [],
         selected_archive: null,
-        currentArchive: null,
-        rulesets: null,
+        rulesets: [],
         selected_ruleset: null,
-        currentRuleset: null,
-        show_notif: false,
-        show_reset_notif: false,
         modalRuleSet: false,
         modalGuidelines: false,
          // Keyboard Checker Mode options
@@ -64,164 +74,201 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopOutlines: false,
         tabStopAlerts: true,
         tabStopFirstTime: true,
+        savePending: 0
     };
 
     async componentDidMount() {
-        console.log("Options App ComponentDidMount");
-        var self = this;
+        let self = this;
+        let settings = await bgController.getSettings();
+        // console.log("***", settings);
+        let archives = await bgController.getArchives();
+        let selected_archive: IArchiveDefinition | null = null;
+        let rulesets: IPolicyDefinition[] | null = null;
+        let selectedRulesetId: string | null = null;
+        // Keyboard Mode options
+        let tabStopLines: boolean = true;
+        let tabStopOutlines: boolean = false;
+        let tabStopAlerts: boolean = true;
+        let tabStopFirstTime: boolean = true;
 
-        // get OPTIONS from storage
-        chrome.storage.local.get("OPTIONS", async function (result: any) {
-            //always sync archives with server
-            var archives = await self.getArchives();
-            var selected_archive: any = null;
-            var currentArchive: any = null;
-            var rulesets: any = null;
-            var selected_ruleset: any = null;
-            var currentRuleset: any = null;
-            // Keyboard Mode options
-            var tabStopLines: any = true;
-            var tabStopOutlines: any = false;
-            var tabStopAlerts: any = true;
-            var tabStopFirstTime: any = true;
 
-            console.log("_____________");
-            console.log(result.OPTIONS);
-            console.log("_____________");
-
-            // OPTIONS are not in storage
-            // JCH make this test stronger
-            if (result == null || result.OPTIONS == undefined || 
-                result.OPTIONS.selected_archive == undefined || 
-                result.OPTIONS.selected_ruleset == undefined) {
-                // OPTIONS are NOT in storage
-                console.log("OPTIONS are NOT in storage");
-                //find the latest archive
-                selected_archive = self.getLatestArchive(archives);
-
-                rulesets = await self.getRulesets(selected_archive);
-                selected_ruleset = rulesets[0];
-                // leave all Keyboard mode options to true, i.e., show all
+        selected_archive = settings.selected_archive;
+        rulesets = selected_archive.rulesets.default;
+        selectedRulesetId = settings.selected_ruleset.id;
+        tabStopLines = settings.tabStopLines;
+        tabStopOutlines = settings.tabStopOutlines;
+        tabStopAlerts = settings.tabStopAlerts;
+        tabStopFirstTime = settings.tabStopFirstTime;
+        if (selected_archive) {
+            if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id && archive.name === selected_archive.name))) {
+                // do nothing
+            } else if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id))) {
+                // Name change
+                selected_archive.name = archives.find((archive: IArchiveDefinition) => (archive.id === selected_archive!.id))!.name;
             } else {
-                //OPTIONS are in storage
-                console.log("OPTIONS ARE in storage");
-                selected_archive = result.OPTIONS.selected_archive;
-                rulesets = result.OPTIONS.rulesets;
-                selected_ruleset = result.OPTIONS.selected_ruleset;
-                tabStopLines = result.OPTIONS.tabStopLines;
-                tabStopOutlines = result.OPTIONS.tabStopOutlines;
-                tabStopAlerts = result.OPTIONS.tabStopAlerts;
-                tabStopFirstTime = result.OPTIONS.tabStopFirstTime;
+                // Archive missing
+                selected_archive = null;
+            }
+        }
+        if (!selected_archive) {
+            // No pre-selected archive
+            selected_archive = self.getLatestArchiveDefinition(archives);
+            rulesets = self.getGuidelines(selected_archive);
+            selectedRulesetId = rulesets[0].id;
+        }
 
-                if (selected_archive) {
-                    if (archives.some((archive: any) => (archive.id === selected_archive.id && archive.name === selected_archive.name))) {
-                        // do nothing
-                    } else if (archives.some((archive: any) => (archive.id === selected_archive.id))) {
-                        // Name change
-                        selected_archive.name = archives.find((archive: any) => (archive.id === selected_archive.id)).name;
-                    } else {
-                        // Archive missing
-                        selected_archive = null;
-                    }
-                }
-                if (!selected_archive) {
-                    // No pre-selected archive
-                    selected_archive = self.getLatestArchive(archives);
-                    rulesets = self.getRulesets(selected_ruleset.id);
-                    selected_ruleset = rulesets[0];
+        self.setState({
+            lastSettings: settings,
+            archives: archives, 
+            selected_archive: selected_archive, 
+            rulesets: rulesets,
+            selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
+            tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
+            tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+        });
+        bgController.addSettingsListener(async (newSettings) => {
+            let newState : any = {
+                lastSettings: newSettings
+            };
+            let checkKeys = [ "tabStopAlerts" ];
+            for (const key of checkKeys) {
+                if ((this.state.lastSettings as any)[key] !== (newSettings as any)[key]) {
+                    newState[key] = (newSettings as any)[key];
                 }
             }
-
-            currentArchive = selected_archive.name;
-            currentRuleset = selected_ruleset.name;
-            
-            self.setState({
-                archives: archives, selected_archive: selected_archive, rulesets: rulesets,
-                selected_ruleset: selected_ruleset, currentArchive: currentArchive,
-                currentRuleset: currentRuleset, tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
-                tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
-            });
-            self.save_options_to_storage(self.state);
+            this.setState(newState);
         });
     }
 
-    //get archives from server
-    getArchives = async () => {
-        return await OptionMessaging.sendToBackground("OPTIONS", {
-            command: "getArchives",
-        });
+    /**
+     * Return the archive definition corresponding to the 'latest' id
+     * @param archives 
+     * @returns 
+     */
+    getLatestArchiveDefinition(archives: IArchiveDefinition[]) : IArchiveDefinition{
+        return archives.find((archive: IArchiveDefinition) => {
+            return archive.id === "latest";
+        })!;
     };
 
-    getLatestArchive = (archives: any) => {
-        return archives.find((archive: any) => {
-            return archive.id == "latest";
-        });
+    /**
+     * Get all of the guideline/policy definitions
+     * @param selected_archive 
+     * @returns 
+     */
+    getGuidelines(selected_archive: IArchiveDefinition) : IPolicyDefinition[] {
+        return selected_archive.rulesets.default;
     };
 
-    getRulesets = async (selected_archive: any) => {
-        return selected_archive.policies;
-    };
+    /**
+     * Get guideline definition in the archive for the specificed guidlineId
+     * @param archive 
+     * @param guidelineId 
+     * @returns 
+     */
+    getGuideline(archive: IArchiveDefinition, guidelineId: string) : IPolicyDefinition {
+        let retVal = archive.rulesets.default.find((pol => pol.id === guidelineId))!;
+        return retVal;
+    }
 
-    
-
-    handleArchiveSelect = async (item: any) => {
-        var rulesets = await this.getRulesets(item.selectedItem);
-        var selected_ruleset = rulesets[0];
+    /**
+     * Action to perform when an archive is selected
+     * @param item 
+     */
+    async onSelectArchive (item: any) {
+        let rulesets = this.getGuidelines(item.selectedItem);
+        let selected_ruleset = rulesets[0];
         this.setState({
             selected_archive: item.selectedItem,
             rulesets,
-            selected_ruleset,
-            show_notif: false,
+            selected_ruleset
         });
     };
 
-    handleRulesetSelect = (item: any) => {
-        this.setState({ selected_ruleset: item.selectedItem, show_notif: false });
+    /**
+     * Action to perform when a guideline is selected
+     * @param item 
+     */
+    onSelectGuideline(item: any) {
+        this.setState({ selected_ruleset: item.selectedItem });
     };
 
-    handleSave = () => {
+    /**
+     * Action to perform when settings are saved
+     * @param item 
+     */
+    async onSave() {
         // TODO if there are stored scans we need to put up modal
         //      modal choices  
         //            delete scans and update ruleset
         //            keep stored scans and don't update rulset (ali says don't give this choice)
-        console.log("handleSave");
-        console.log("this.state.selected_archive.name = ",this.state.selected_archive.name);
-        console.log("this.state.selected_ruleset.name = ",this.state.selected_ruleset.name,);
-        console.log("this.state.tabStopLines = ",this.state.tabStopLines);
-        console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
-        console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
-        console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
 
         this.setState({ 
-            currentArchive: this.state.selected_archive.name, 
-            currentRuleset: this.state.selected_ruleset.name,
-            tabStopLines: this.state.tabStopLines,
-            tabStopOutlines: this.state.tabStopOutlines,
-            tabStopAlerts: this.state.tabStopAlerts,
             tabStopFirstTime: false,
          })
-        this.save_options_to_storage(this.state);
-        this.setState({ show_notif: true, show_reset_notif: false, });
+         let newSettings: ISettings = this.settingsFromState()
+         this.setState({ savePending: 1 });
+         await bgController.setSettings(newSettings);
+         setTimeout(() => { 
+             this.setState({ savePending: 2 })
+             setTimeout(() => { 
+                 this.setState({ lastSettings: newSettings, savePending: 0 })
+                 setTimeout(() => {
+                     document.getElementById("saveButton")!.focus();
+                 }, 0);
+             }, 500);
+         }, 300);
     };
 
-    //save options into browser's storage
-    save_options_to_storage = async (state: any) => {
-        var options = { OPTIONS: state };
-        await chrome.storage.local.set(options, function () {
-            // console.log("options is set to ", options);
-        });
-        
-    };
+    /**
+     * Generate a settings object from the current state
+     * @returns 
+     */
+    settingsFromState() : ISettings {
+        let retVal : ISettings = JSON.parse(JSON.stringify(this.state.lastSettings));
+        retVal.selected_archive = this.state.selected_archive!;
+        retVal.selected_ruleset = this.state.selected_ruleset!;
+        retVal.tabStopLines = this.state.tabStopLines;
+        retVal.tabStopAlerts = this.state.tabStopAlerts;
+        retVal.tabStopFirstTime = this.state.tabStopFirstTime;
+        retVal.tabStopOutlines = this.state.tabStopOutlines;
+        return retVal;
+    }
 
-    handleReset = () => {
-        var selected_archive: any = this.getLatestArchive(this.state.archives);
-        var selected_ruleset: any = this.state.rulesets[0];
+    /**
+     * Determine if the settings are the same as the loaded settings
+     * @returns 
+     */
+    settingsEqual() : boolean {
+        if (!this.state.lastSettings) return true;
+        let newSettings = this.settingsFromState();
+        for (const key in newSettings) {
+            switch (key) {
+                case "selected_ruleset":
+                case "selected_archive":
+                    if (this.state.lastSettings[key].id !== newSettings[key].id) {
+                        return false;
+                    }
+                    break;
+                default:
+                    if ((this.state.lastSettings as any)[key] !== (newSettings as any)[key]) {
+                        return false;
+                    }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Action to perform on the reset button
+     */
+    onReset() {
+        let selected_archive: IArchiveDefinition = this.getLatestArchiveDefinition(this.state.archives);
+        let selected_ruleset: IPolicyDefinition = selected_archive.rulesets.default[0];
 
         this.setState({
             selected_archive,
             selected_ruleset,
-            show_reset_notif: true,
-            show_notif: false,
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
@@ -234,250 +281,233 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             archives,
             selected_archive,
             rulesets,
-            selected_ruleset,
+            selected_ruleset
         } = {
             ...this.state,
         };
-
         // only show keyboard first time notification on first time 
         // user uses the keyboard visualization - note it is can be 
         // reset with "Reset to defaults"
-        
 
-        const manifest = chrome.runtime.getManifest();
-        function displayVersion() {
-            let extVersion = manifest.version;
-            if (extVersion.endsWith(".9999")) {
-                return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
-            } else {
-                return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
-            }
-        }
-        if (archives && rulesets) {
-            return (
-                <div style={{height: "100%"}}>
-                    <Grid fullWidth style={{height: "100%", padding: "0rem"}}>
-                        <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 4 }} className="leftPanel">
-                            <Theme theme="g10">
-                                <div role="banner">
-                                    <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-                                    <div style={{marginTop:"2rem"}}>
-                                        <span className="ibm">IBM</span> <span className="accessibility">Accessibility</span>
-                                        <br /> <span className="equal-access-toolkit">Equal Access Toolkit:</span>
-                                        <br /> <span className="equal-access-toolkit">Accessibility Checker</span>
-                                    </div>
-                                </div>
-                                <aside aria-label="About Accessibility Checker Options">
-                                    <div className="op_version" style={{ marginTop: "8px" }}>
-                                        Version {displayVersion()}
-                                    </div>
-                                    <p>
-                                    By default, the Accessibility Checker uses a set of rules that correspond to 
-                                    the most recent WCAG standards plus some additional IBM requirements. Rule sets 
-                                    for specific WCAG versions are also available. The rule sets are updated regularly, 
-                                    and each update has a date of deployment. If you need to replicate an earlier test, 
-                                    choose the deployment date of the original test.
-                                    <br/><br/>
-                                    For more in-depth guidance, see  <a
-                                    href={chrome.runtime.getURL("usingAC.html")}
-                                    target="_blank"
-                                    rel="noopener noreferred"
-                                    >
-                                    user guide
-                                    </a>
-                                    .
-                                    </p>
-                                </aside>
-                            </Theme>
-                        </Column>
-                        <Column sm={{span: 0}} md={{span: 0}} lg={{span: 1}} />
-                        <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}} className="rightPanel">
-                            <Theme theme="white">
-                                <main aria-labelledby="options">
-                                    <div id="options" className="checker-options">IBM Accessibility Checker options</div>
+        let aside = <aside aria-label="About Accessibility Checker Options">
+            <p>
+                By default, the Accessibility Checker uses a set of rules that correspond to 
+                the most recent WCAG standards plus some additional IBM requirements. Rule sets 
+                for specific WCAG versions are also available. The rule sets are updated regularly, 
+                and each update has a date of deployment. If you need to replicate an earlier test, 
+                choose the deployment date of the original test.
+            </p>
+            <p>
+                For more in-depth guidance, see <Link 
+                    size="lg"
+                    inline={true}
+                    href={chrome.runtime.getURL("usingAC.html")}
+                    target="_blank"
+                    rel="noopener noreferred"
+                >user guide</Link>.
+            </p>
+        </aside>;
+        return (<DocPage aside={aside} sm={4} md={6} lg={6}>
+            <main aria-labelledby="options">
+                <h1 id="options">IBM Accessibility Checker options</h1>
+                {!archives || !rulesets && <>
+                    <InlineNotification
+                        kind="error"
+                        lowContrast={true}
+                        hideCloseButton={true}
+                        title="An error occurred while loading this page"
+                        subtitle="Please check your internet connection and try again."
+                    />
+                    <p> Please also follow <Link 
+                        href={chrome.runtime.getURL("usingAC.html")} 
+                        target="_blank" 
+                        rel="noopener noreferred"
+                        inline={true}
+                        size="lg">User Guide</Link> to give the browser permission to run the Option page. </p>
+                </>}
+                { archives && rulesets && <>
+                    <h2>Rule sets</h2>
 
-                                    <div className="rule-sets">Rule sets</div>
+                    {/**** Select archive  */}
+                    <div>
+                        <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
+                            Select a rule set deployment date
+                            <Button
+                                renderIcon={Information}
+                                kind="ghost"
+                                hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
+                                style={{
+                                    color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
+                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px", paddingBottom:"8px"
+                                }}
+                                onClick={(() => {
+                                    this.setState({ modalRuleSet: true });
+                                }).bind(this)}>
+                            </Button>
+                        </div>
 
-                                    <div>
-                                        <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
-                                            Select a rule set deployment date
-                                            <Button
-                                                renderIcon={Information}
-                                                kind="ghost"
-                                                hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
-                                                style={{
-                                                    color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
-                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px", paddingBottom:"8px"
-                                                }}
-                                                onClick={(() => {
-                                                    this.setState({ modalRuleSet: true });
-                                                }).bind(this)}>
-                                            </Button>
-                                        </div>
+                        {!this.state.selected_archive && <DropdownSkeleton />}
+                        {this.state.selected_archive && <>
+                            <Dropdown
+                                ariaLabel="Select a rule set deployment date"
+                                disabled={false}
+                                helperText={this.state.selected_archive && ("Currently active: " + this.state.lastSettings?.selected_archive!.name)}
+                                id="archivedRuleset"
+                                items={archives}
+                                itemToString={(item: any) => (item ? item["name"] : "")}
+                                label="Rule set deployment date"
+                                light={false}
+                                titleText=""
+                                type="default"
+                                selectedItem={selected_archive}
+                                onChange={this.onSelectArchive.bind(this)}
+                            />
+                        </>}
 
-                                        <Dropdown
-                                            ariaLabel={undefined}
-                                            disabled={false}
-                                            helperText={"Currently active: " + this.state.currentArchive}
-                                            id="archivedRuleset"
-                                            items={archives}
-                                            itemToString={(item: any) => (item ? item["name"] : "")}
-                                            label="Rule set deployment date"
-                                            light={false}
-                                            titleText=""
-                                            type="default"
-                                            selectedItem={selected_archive}
-                                            onChange={this.handleArchiveSelect}
-                                        />
+                        <Modal
+                            aria-label="Version information"
+                            modalHeading="Selecting a rule set deployment date"
+                            passiveModal={true}
+                            open={this.state.modalRuleSet}
+                            onRequestClose={(() => {
+                                this.setState({ modalRuleSet: false });
+                            }).bind(this)}
+                        >
+                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
+                                for consistent testing throughout a project to replicate an earlier test</p>
 
-                                        <Modal
-                                            aria-label="Version information"
-                                            modalHeading="Selecting a rule set deployment date"
-                                            passiveModal={true}
-                                            open={this.state.modalRuleSet}
-                                            onRequestClose={(() => {
-                                                this.setState({ modalRuleSet: false });
-                                            }).bind(this)}
-                                        >
-                                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
-                                                for consistent testing throughout a project to replicate an earlier test</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
 
-                                            <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
+                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
+                        </Modal>
+                    </div>
+                    {/**** Select ruleset / policy  */}
+                    <div>
+                        <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
+                            Select accessibility guidelines
+                            <Button
+                                renderIcon={Information}
+                                kind="ghost"
+                                hasIconOnly iconDescription="Guidelines info" tooltipPosition="top"
+                                style={{
+                                    color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
+                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
+                                }}
+                                onClick={(() => {
+                                    this.setState({ modalGuidelines: true });
+                                }).bind(this)}>
+                            </Button>
+                        </div>
 
-                                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <a className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</a></p>
-                                        </Modal>
+                        {!this.state.selected_archive && <DropdownSkeleton />}
+                        {this.state.selected_archive && <>
+                            <Dropdown
+                                ariaLabel="Select accessibility guidelines"
+                                disabled={false}
+                                helperText={this.state.selected_ruleset && ("Currently active: " + this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!).name)}
+                                id="rulesetSelection"
+                                items={rulesets}
+                                itemToString={(item: any) => (item ? item["name"] : "")}
+                                label="Guideline selection"
+                                light={false}
+                                titleText=""
+                                type="default"
+                                selectedItem={selected_ruleset}
+                                onChange={this.onSelectGuideline.bind(this)}
+                            />
+                        </>}
+
+                        <Modal
+                            aria-label="Guidelines information"
+                            modalHeading="Selecting accessibility guidelines"
+                            passiveModal={true}
+                            open={this.state.modalGuidelines}
+                            onRequestClose={(() => {
+                                this.setState({ modalGuidelines: false });
+                            }).bind(this)}
+                        >
+                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
+                        </Modal>
+                    </div>
 
 
-                                    </div>
+                    <h2>Keyboard checker mode</h2>
+                    <div>
+                        <div style={{marginTop: "1rem"}} />
+                        <fieldset className="cds--fieldset">
+                            <legend className="cds--label">Visualization options</legend>
+                            <Checkbox 
+                                labelText="Lines connecting tab stops" 
+                                id="checked"
+                                checked={this.state.tabStopLines}
+                                //@ts-ignore
+                                onChange={(value: any, id: any) => {
+                                    // console.log("lines checkbox id.checked = ",id.checked);
+                                    this.setState({ tabStopLines: id.checked });
+                                }} 
 
-                                    <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
-                                        Select accessibility guidelines
-                                        <Button
-                                            renderIcon={Information}
-                                            kind="ghost"
-                                            hasIconOnly iconDescription="Guidelines info" tooltipPosition="top"
-                                            style={{
-                                                color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
-                                                paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
-                                            }}
-                                            onClick={(() => {
-                                                this.setState({ modalGuidelines: true });
-                                            }).bind(this)}>
-                                        </Button>
-                                    </div>
+                            />
+                            <Checkbox 
+                                labelText="Element outlines" 
+                                id="checked-2"
+                                checked={this.state.tabStopOutlines}
+                                //@ts-ignore
+                                onChange={(value: any, id: any) => {
+                                    // console.log("lines checkbox id.checked = ",id.checked);
+                                    this.setState({ tabStopOutlines: id.checked });
+                                }} 
+                            />
+                        </fieldset>
+                        <div style={{marginTop: "1rem"}} />
+                        <Toggle
+                            aria-label="toggle button"
+                            labelText="Alert Notifications"
+                            id="alertToggle"
+                            toggled={this.state.tabStopAlerts}
+                            onToggle={(value: any) => {
+                                this.setState({ tabStopAlerts: value });
+                            }} 
+                        />
+                    </div>
+                    <div style={{marginTop: "1.5rem"}} />
+                    <ButtonSet>
+                        <Button
+                            disabled={false}
+                            kind="tertiary"
+                            onClick={this.onReset.bind(this)}
+                            renderIcon={Restart}
+                            size="default"
+                            tabIndex={0}
+                            type="button"
+                            style={{maxWidth: "calc(50% - .5rem"}}
+                        >
+                            Reset to defaults
+                        </Button>
+                        {this.state.savePending > 0 && <InlineLoading
+                            style={{ marginLeft: '1rem' }}
+                            description={"Saving"}
+                            status={this.state.savePending === 1 ? 'active' : 'finished'}
+                        />}
+                        {this.state.savePending === 0 && <Button
+                            id="saveButton"
+                            disabled={this.settingsEqual()}
+                            kind="primary"
+                            onClick={this.onSave.bind(this)}
+                            renderIcon={Save}
+                            size="default"
+                            tabIndex={0}
+                            type="button"
+                            style={{marginLeft: "1rem", maxWidth: "calc(50% - .5rem"}}
+                        >
+                            Save
+                        </Button>}
+                    </ButtonSet>
+                </>}
+            </main>
 
-                                    <Dropdown
-                                        ariaLabel={undefined}
-                                        disabled={false}
-                                        helperText={"Currently active: " + this.state.currentRuleset}
-                                        id="rulesetSelection"
-                                        items={rulesets}
-                                        itemToString={(item: any) => (item ? item["name"] : "")}
-                                        label="Guideline selection"
-                                        light={false}
-                                        titleText=""
-                                        type="default"
-                                        selectedItem={selected_ruleset}
-                                        onChange={this.handleRulesetSelect}
-                                    />
-
-                                    <Modal
-                                        aria-label="Guidelines information"
-                                        modalHeading="Selecting accessibility guidelines"
-                                        passiveModal={true}
-                                        open={this.state.modalGuidelines}
-                                        onRequestClose={(() => {
-                                            this.setState({ modalGuidelines: false });
-                                        }).bind(this)}
-                                    >
-                                        <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
-                                        <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
-                                        <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
-                                    </Modal>
-
-                                    <div className="rule-sets" style={{marginTop:"57px"}}>Keyboard checker mode</div>
-                                    <div style={{marginBottom:"2rem"}}>
-                                        <fieldset className="cds--fieldset" style={{marginBottom:"24px"}}>
-                                            <legend className="cds--label">Visualization options</legend>
-                                            <Checkbox 
-                                                labelText="Lines connecting tab stops" 
-                                                id="checked"
-                                                checked={this.state.tabStopLines}
-                                                //@ts-ignore
-                                                onChange={(value: any, id: any) => {
-                                                    // console.log("lines checkbox id.checked = ",id.checked);
-                                                    this.setState({ tabStopLines: id.checked });
-                                                }} 
-
-                                            />
-                                            <Checkbox 
-                                                labelText="Element outlines" 
-                                                id="checked-2"
-                                                checked={this.state.tabStopOutlines}
-                                                //@ts-ignore
-                                                onChange={(value: any, id: any) => {
-                                                    // console.log("lines checkbox id.checked = ",id.checked);
-                                                    this.setState({ tabStopOutlines: id.checked });
-                                                }} 
-                                            />
-                                        </fieldset>
-
-                                        <Toggle
-                                            aria-label="toggle button"
-                                            labelText="Alert Notifications"
-                                            id="alertToggle"
-                                            toggled={this.state.tabStopAlerts}
-                                            onToggle={(value: any) => {
-                                                // console.log("lines checkbox value = ",value);
-                                                this.setState({ tabStopAlerts: value });
-                                            }} 
-                                        />
-                                    </div>
-
-                                    <div className="buttonRow">
-                                        <Button
-                                            disabled={false}
-                                            kind="tertiary"
-                                            onClick={this.handleReset}
-                                            renderIcon={Restart}
-                                            size="default"
-                                            tabIndex={0}
-                                            type="button"
-                                        >
-                                            Reset to defaults
-                                        </Button>
-                                        <Button
-                                            disabled={false}
-                                            kind="primary"
-                                            onClick={this.handleSave}
-                                            renderIcon={Save}
-                                            size="default"
-                                            tabIndex={0}
-                                            type="button"
-                                        >
-                                            Save
-                                        </Button>
-                                    </div>
-                                    
-                                </main>
-                            </Theme>
-                        </Column>
-                        <Column sm={{span: 0}} md={{span: 0}} lg={{span: 3}} className="buffer"></Column>
-                    </Grid>
-                </div>
-            );
-        } else {
-            return (
-                <Theme theme="g10">
-                    <p>An error occurred while loading this page. Please check your internet connection and try again.</p>
-                    <br />
-                    <p> Please also follow  {" "}
-                        <a href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User Guide</a>
-                        {" "} to give the browser permission to run the Option page. </p>
-                </Theme>
-            )
-        }
+        </DocPage>);
     }
 }
 
-export default OptionsApp;

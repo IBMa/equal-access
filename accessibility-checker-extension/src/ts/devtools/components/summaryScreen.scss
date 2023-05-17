@@ -1,0 +1,80 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+.reportSummary {
+    padding: 0rem;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+
+    .summaryTitle {
+        @include type-style('productive-heading-02');
+        color: #171717;
+    }
+
+    .summaryTitleDetail {
+        @include type-style('helper-text-01');
+    }
+
+    .reportButton {
+        margin-top: 1rem;
+
+        @include breakpoint('lg') {
+            margin-top: 0rem;
+            position: relative;
+
+            button {
+                position: absolute;
+                right: 0px;
+            }
+        }
+    }
+
+    .tile {
+        margin-left: -1rem;
+    }
+    
+    .tile-title {
+        @include type-style('productive-heading-01');            
+        color: #121619;
+    }
+
+    .tile-score {
+        @include type-style('heading-07');
+        margin-top: 8px;
+        color: #161616;
+    }
+
+    .tile-description {
+        @include type-style('helper-text-01');
+    }
+    
+    .tile-description2 {
+        @include type-style('helper-text-01');
+    }
+
+    .score-tile {
+        box-sizing: border-box;
+        border: solid #8A3FFC 1px;
+        background-color: #E8DAFF;
+        margin-top: 18px;
+        height: 10rem;
+    }
+
+    .status-score-tile {
+        box-sizing: border-box;
+        border: solid #8A3FFC 1px;
+        background-color: #E8DAFF;
+        margin-top: 18px;
+        height: 10rem;
+    }
+
+    .count-tile {
+        box-sizing: border-box;
+        background-color: #FFFFFF;
+        margin-top: 18px;
+        height: 154px
+    }
+}

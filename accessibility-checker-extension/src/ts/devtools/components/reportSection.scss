@@ -1,0 +1,97 @@
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/colors' as *;
+// @use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/theme'as *;
+
+// Dark theme overrides
+.cds--g100 {
+    .reportSection {
+        .darkLink {
+            &:hover {
+                color: $gray-20;
+            }
+        }    
+    }
+}
+
+.reportSection {
+    .reportSectionColumn {
+        border-top: solid $gray-20 1px;
+    }
+    margin-top: 1rem;
+    .cds--tab-content {
+        padding: 0rem;
+    }
+    .darkLink {
+        color: $text-primary;
+        &:hover {
+            color: $gray-80;
+            cursor: pointer;
+        }
+    }
+
+    .totalCountDisable {
+        @include type-style("label-02");
+        margin-top: 10px;
+        pointer-events: none;
+        color: $text-disabled;
+        text-align: right;
+    }
+    .totalCountEnable {
+        @include type-style("label-02");
+        margin-top: 10px;
+        pointer-events: auto;
+        text-align: right;
+    }
+    
+    .visHeading {
+        @include type-style("heading-compact-01");
+        button {
+            min-height: 42px;
+        }
+    }
+    .visScore {
+        @include type-style("helper-text-01");
+        margin: calc(.75rem + 2px) 0rem .75rem 0rem;
+        text-align: right;
+    }
+}
+
+.reportFilterBorder {
+    border-top: solid $gray-20 1px;    
+}
+
+.reportFilterSection {
+    margin: 0rem;
+    padding: .125rem 0rem .25rem 0rem;
+
+    .countCol {
+        @media (max-width:400px) {
+            position: absolute;
+            top: 1.5rem;
+            left: 0rem;
+        }
+        white-space: nowrap;
+    }
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
+    
+    .reportSecCounts {
+        font-weight: 600;
+    }
+    .summaryBarLabels {
+        @include type-style("label-02");
+        font-weight: 600;
+        display:none;
+        @media (min-width:780px) {
+            display:inline;
+        }
+        @media (min-width:1056px) {
+            display:none;
+        }
+        @media (min-width:1500px) {
+            display:inline;
+        }
+    }
+}

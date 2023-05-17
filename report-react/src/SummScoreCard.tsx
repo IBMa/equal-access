@@ -24,55 +24,46 @@ interface SummScoreCardProps {
 
 export default class SummScoreCard extends React.Component<SummScoreCardProps, {}> {
     calcSummary(report: IReport) {
-        let summaryResults:any = [];
-        let results = report.results.filter((result: any) => {
-            return result.value[1] !== "PASS";
-        })
-        // console.log("report.results.length = "+report.results.length);
-        // console.log("all issues = "+results.length);
-    
-        let violations = results.filter((result: any) => {
+        let summaryResults:number[] = [];
+
+        // JCH find unique elements that have violations and needs review issues
+        let violations = (report && report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-        })
-        summaryResults.push(violations.length);
-        // console.log("Violations = "+summaryResults[0]);
-        // console.log(violations);
-    
-        let potentials = results.filter((result: any) => {
-            return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
-        })
-        summaryResults.push(potentials.length);
-        // console.log("summaryPotential = "+summaryResults[1]);
-        // console.log(potentials);
-        
-    
-        let recommendations = results.filter((result: any) => {
+        })) || []
+
+        let potentials = (report && report.results.filter((result: any) => {
+            return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
+        })) || [];
+        let recommendations = (report && report.results.filter((result: any) => {
             return result.value[0] === "RECOMMENDATION";
-        })
-        summaryResults.push(recommendations.length);
-        // console.log("summaryRecommendation = "+summaryResults[2]);
-    
-        let violationsPlusPotentials = violations.concat(potentials);
-        // console.log("violationsPlusPotentials = ", violationsPlusPotentials)
-    
-        let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
-       
-        let failUniqueElements = Array.from(new Set(failXpaths));
-        summaryResults.push(failUniqueElements.length);
-        // console.log("elementsWithIssues = "+summaryResults[3]);
+        })) || [];
+        let allXpaths = (report && report.results.map((result: any) => {
+            return result.path.dom;
+        })) || [];
         
-        let passUniqueElements = report.passUniqueElements;
-        summaryResults[4] = passUniqueElements.length;
-        // console.log("totalElements = "+summaryResults[4]);
-        // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
+        let violationsPlusPotentials = violations.concat(potentials);
+        let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
+        let failUniqueElements = new Set(failXpaths).size;
+
+        let testedElements = 0;
+        if (report) {
+            if (report.testedUniqueElements) {
+                testedElements = report.testedUniqueElements;
+            } else if (report.passUniqueElements) {
+                testedElements = new Set(allXpaths.concat(report.passUniqueElements)).size;
+            }
+        }
+                
+        summaryResults.push(violations.length);
+        summaryResults.push(potentials.length);
+        summaryResults.push(recommendations.length);
+        summaryResults.push(100-(failUniqueElements / testedElements) * 100);
         return summaryResults;
     }
 
     render() {
         let summaryNumbers = this.calcSummary(this.props.report);
-
-         // Calculate score
-         let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
+        let currentStatus = summaryNumbers[3].toFixed(0);
 
         return <div className="scoreCard" style={{border: "1px solid #9E63FB", backgroundColor:'#E8DAFF'}}>
             

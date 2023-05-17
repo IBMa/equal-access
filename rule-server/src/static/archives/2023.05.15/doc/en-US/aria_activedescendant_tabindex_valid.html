@@ -1,0 +1,106 @@
+<html lang="en-US">
+<head>
+    <title>aria_activedescendant_tabindex_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"Rule Passed","Fail_1":"The <{0}> element using 'aria-activedescendant' set to \"{1}\" is not tabbable","group":"Element using 'aria-activedescendant' property should be tabbable"}};
+        RULE_ID = "aria_activedescendant_tabindex_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Elements (component containers) use the `aria-activedescendant` property to manage the focus of their active descendants.
+Assistive technologies do not require the developer to manipulate the `tabindex` attribute among [focusable elements within the container](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant).
+Instead, only the container element needs to be included in the tab sequence.
+
+Setting the `tabindex` value to `"0"` or greater ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access.
+The `tabindex` value defines the order (sequence) in which elements will receive focus when users navigate via the keyboard:
+* `"-1"` will remove the element from the tab sequence (ignored during tabbing) but may remain focusable
+* `"0"` will be handled in the order (tab sequence) as it appears in the DOM source code order
+* `">0"` (positive number) [creates a relative ordering](https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute) that starts from the element(s) with the lowest value (e.g. 1) and then proceeds to the element(s) with the next higher value
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Set the value of the `tabindex` attribute equal to `"0"` or greater on the element using the `aria-activedescendant` property to include the element in the tab sequence
+* Ensure the tab sequence is in a logical order and the component is keyboard operable
+
+ The following example shows a toolbar element using the `aria-activedescendant` property with a `tabindex` attribute set to zero:
+
+```
+<div role="toolbar" aria-label="Toolbar Widget" tabindex="0" aria-activedescendant="button2" id="tb3" onkeypress="keyEvent();">
+    <div id="button1" role="button1">tool 1</div>
+    <div id="button2" role="button2">tool 2</div>
+</div>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)  
+* [ARIA practices - Managing focus with aria-activedescendant](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant)
+* [HTML - the tabindex attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People who physically cannot use a pointing device
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
