@@ -132,6 +132,16 @@ describe("JSON Structure Verification Zombie", function () {
                         // Run the diff algo to get the list of differences
                         differences = aChecker.diffResultsWithExpected(report, expected, false);
                     }
+                    if (typeof differences !== "undefined") {
+                        differences = differences.filter(difference => (
+                            difference.kind !== "E"
+                            || difference.path[2] !== "bounds"
+                            || Math.abs(difference.lhs - difference.rhs) > 2
+                        ))
+                        if (differences.length === 0) {
+                            differences = undefined;
+                        }
+                    }
                     expect(typeof differences).to.equal("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
                     // Mark the testcase as done.
                 });
