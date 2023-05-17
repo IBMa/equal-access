@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const ExtensionReloader = require('webpack-ext-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 
 const sourceRootPath = path.join(__dirname, 'src');
 const archivePath = path.join(__dirname, '..', 'rule-server', 'dist', 'static');
@@ -35,13 +36,13 @@ module.exports = {
         options: path.join(sourceRootPath, 'ts', 'options', 'index.tsx'),
         popup: path.join(sourceRootPath, 'ts', 'popup', 'index.tsx'),
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
-        devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
-        devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
-        draw: path.join(sourceRootPath, 'ts', 'contentScripts', 'index.ts'),
-        tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
-        usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
+        devtoolsMain: path.join(sourceRootPath, 'ts', 'devtools', 'indexMain.tsx'),
+        devtoolsElements: path.join(sourceRootPath, 'ts', 'devtools', 'indexElements.tsx'),
+        viewKCM: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewKCM.ts'),
+        viewInspect: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewInspect.ts'),
+        usingAC: path.join(sourceRootPath, 'ts', 'docs', 'usingAC.tsx'),
         ...contentScripts,
-        quickGuideAC: path.join(sourceRootPath, 'ts', 'quickGuideAC', 'index.tsx'),
+        quickGuideAC: path.join(sourceRootPath, 'ts', 'docs', 'quickGuide.tsx'),
         ...contentScripts,
     },
     output: {
@@ -53,8 +54,13 @@ module.exports = {
     } : {
         splitChunks: {
             maxSize: 3500000,
-            chunks: "all"
-        }
+            chunks(chunk) {
+              return chunk.name !== "background" && chunk.name !== "viewKCM" && chunk.name !== "viewInspect"; // Don't chunk the background script. Chrome doesn't register the service_worker listeners if we do.
+            }
+        },
+        minimizer: [new TerserPlugin({
+            exclude: /view(Inspect|KCM)/,
+        })]
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
@@ -102,18 +108,18 @@ module.exports = {
             chunks: ['devtools']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'devtoolsPanel.html'),
+            template: path.join(sourceRootPath, 'html', 'devtoolsMain.html'),
             inject: 'body',
-            filename: 'devtoolsPanel.html',
+            filename: 'devtoolsMain.html',
             title: 'Accessibility Checker Extension',
-            chunks: ['devtoolsPanel']
+            chunks: ['devtoolsMain']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'devtoolsSubpanel.html'),
+            template: path.join(sourceRootPath, 'html', 'devtoolsElements.html'),
             inject: 'body',
-            filename: 'devtoolsSubpanel.html',
+            filename: 'devtoolsElements.html',
             title: 'Accessibility Checker Extension',
-            chunks: ['devtoolsSubpanel']
+            chunks: ['devtoolsElements']
         }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'reports.html'),

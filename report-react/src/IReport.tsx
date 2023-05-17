@@ -31,7 +31,8 @@ export interface IReport {
     counts: {
         total: { [key: string]: number }
     }
-    passUniqueElements: string[]
+    passUniqueElements?: string[]
+    testedUniqueElements?: number
 }
 
 export interface IReportItem {

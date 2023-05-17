@@ -575,17 +575,37 @@
             "ruleId": "aria_role_valid",
             "value": [
               "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[3]",
+              "aria": "/document[1]/generic[1]/region[1]/slider[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "slider",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
               "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/button[3]",
               "aria": "/document[1]/generic[1]/region[1]/slider[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA role 'slider' is not valid for the element <button>",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-expanded, aria-pressed\" are not valid for the element <button> with ARIA role \"slider\"",
             "messageArgs": [
-              "slider",
-              "button"
+              "aria-expanded, aria-pressed",
+              "button",
+              "slider"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -1159,14 +1179,14 @@
             "ruleId": "aria_role_valid",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[1]",
               "aria": "/document[1]/generic[1]/region[1]/slider[4]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA role 'slider' is not valid for the element <input>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "slider",
               "input"
@@ -1293,14 +1313,14 @@
             "ruleId": "aria_role_valid",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/li[1]",
               "aria": "/document[1]/generic[1]/region[1]/slider[9]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA role 'slider' is not valid for the element <li>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "slider",
               "li"

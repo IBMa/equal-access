@@ -1,0 +1,91 @@
+<html lang="en-US">
+<head>
+    <title>blink_elem_deprecated - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Content that blinks persistently must not be used","Pass_0":"Rule Passed","Fail_1":"Content found that blinks persistently"}};
+        RULE_ID = "blink_elem_deprecated"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+The text inside a `blink` element can blink at a predetermined rate as there is no way to interrupt or disable blinking. Although blinking draws attention to content, it can be a problem for some users if it persists and may make it difficult or impossible to interact with the rest of the page. The use of the `blink` element has been deprecated.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* If there is a need to include blinking content, use a technology that stops blinking in 5 seconds or less;
+* **Or**, provide an option to turn off blinking;
+* **Or**, provide a link to an alternative page without the blinking content.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.2.2 Pause, Stop, Hide](https://www.ibm.com/able/requirements/requirements/#2_2_2)
+* [WCAG technique F47](https://www.w3.org/WAI/WCAG21/Techniques/failures/F47)
+
+### Who does this affect?
+
+* People with attention deficit disorders
+* People with reading disabilities
+* People with intellectual disabilities
+* People with low vision
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

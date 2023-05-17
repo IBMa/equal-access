@@ -1,0 +1,10 @@
+@use '@carbon/styles/scss/type'as *;
+
+.headerSection {
+    padding: 0rem;
+
+    h1 {
+        @include type-style("heading-02");
+        padding: .75rem 0rem;
+    }
+}

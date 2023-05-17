@@ -1,0 +1,20 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+#pageapp-root {    
+    .rightCol {
+        p {
+            @include breakpoint('md') {
+                max-width: 75%
+            }
+            @include breakpoint('lg') {
+                max-width: 72.72727272%
+            }
+        }
+
+        .select-a-rule-set {
+            @include type-style("body-02");
+        }
+    }
+}

@@ -1,0 +1,75 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+
+.kcmOverview {
+    .rightCol {
+        border-top: solid $gray-30 1px;
+        padding-top: 1rem;
+        @include breakpoint('md') {
+            padding-top: 0rem;
+            border-left: solid $gray-30 1px;
+            border-top: unset;
+        }
+    }
+    .kcmTitle {
+        @include type-style("heading-03");
+    }
+    .visualization-guide {
+        @include type-style("heading-01");
+    }
+
+    .kcmExplain {
+        @include type-style("body-01");
+    }
+    .noIconText {
+        @include type-style("label-01");
+        margin-left: 4rem;
+    }
+
+    .iconText {
+        @include type-style("label-01");
+        margin-left: 4rem;
+        > svg {
+            float: left;
+            margin-left: -4rem;
+        }
+        max-width: 17rem;
+    }
+
+    .iconBox {
+        float: left;
+        margin-left: -3rem;
+        width: 2rem;
+        height: 2rem;
+        background-color: $gray-70;
+        > svg {
+            margin: .5rem;
+        }
+    }
+    
+    .path-11-copy {
+        box-sizing: border-box;
+        height: 375px;
+        width: 5px;
+        border: 1px solid #CBCDD1;
+        transform: scaleX(-1);
+    }
+        
+    .visualization-guide-text {
+        @include type-style("label-01");
+    }
+    
+    .svgNotificationDot{
+        position: absolute !important;
+        overflow: visible !important;
+        pointer-events: none !important;
+        z-index: 2147483646 !important;
+    }
+
+    .step {
+        margin-left: 3rem;
+        text-indent: -3rem;
+    }
+}
