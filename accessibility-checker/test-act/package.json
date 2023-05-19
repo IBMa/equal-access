@@ -4,6 +4,6 @@
   "description": "Run ACT testcases",
   "type": "module",
   "scripts": {
-    "test": "echo \"Results output to testOutput.txt\" && node main.js > testOutput.txt"
+    "test": "echo \"Results output to testOutput.txt\" && node main.mjs > testOutput.txt"
   }
 }
