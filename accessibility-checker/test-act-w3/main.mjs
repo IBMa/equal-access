@@ -63,12 +63,14 @@ import * as fs from "fs";
                         while (!succeeded) {
                             try {
                                 await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded' });
-                                await pupPage._client.send("Page.stopLoading");
+                                const client = await pupPage.target().createCDPSession();
+                                await client.send("Page.stopLoading");
                                 let win = await pupPage.evaluate("document");
                                 if (win) {
                                     succeeded = true;
                                 }
                             } catch (err) {
+                                console.log(err);
                             }
                         }
                     } else {
