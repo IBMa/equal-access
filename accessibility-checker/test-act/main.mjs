@@ -1,7 +1,7 @@
 'use strict';
 
 import * as puppeteer from 'puppeteer';
-import { getTestcases, getResult } from "./act.js";
+import { getTestcases, getResult } from "./act.mjs";
 import * as fs from "fs";
 (async () => {
     let earlResult = {
