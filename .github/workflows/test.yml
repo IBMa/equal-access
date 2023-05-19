@@ -225,9 +225,9 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.URL.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.URL.test.mjs
         working-directory: accessibility-checker
 
 ###############################################################################
