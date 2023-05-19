@@ -43,7 +43,7 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
     });
 } else if (userBrowser.toUpperCase() === "CHROME") {
     before(function (done) {
-        this.timeout(10000);
+       /** this.timeout(10000);
         (async () => {
             try {
                 const chrome = (await import('selenium-webdriver/chrome.js'));
@@ -67,6 +67,31 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--headless=new");
                 options.addArguments('--ignore-certificate-errors')
+        */        
+        try {
+            this.timeout(10000);
+            var spath;
+            if (process.platform !== 'win32'){
+                spath = require('chromedriver').path;
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "bin");
+                spath = path.join(spath, "chromedriver");
+            }
+            else {
+                spath = require('chromedriver').path;
+            }
+            var service = new chrome.ServiceBuilder(spath).build();
+            
+            const options = new chrome.Options();
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--headless");
+            options.addArguments('--ignore-certificate-errors')
+            
+            // setDefaultService function is removed since web-driver v4.3.1+
+            //chrome.setDefaultService(service);
+            chrome.Driver.createSession(options, service);
 
                 browser = new Builder()
                     .withCapabilities(Capabilities.chrome())
@@ -78,7 +103,7 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
             } catch (e) {
                 console.log(e);
             }
-        })();
+   //     })();
     })
 }
 

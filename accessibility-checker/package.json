@@ -58,7 +58,7 @@
     "natives": "1.1.6",
     "playwright": "^1.21.1",
     "rimraf": "^3.0.2",
-    "selenium-webdriver": "4.3.0",
+    "selenium-webdriver": "4.9.2",
     "serve-index": "^1.9.1",
     "shx": "^0.3.4",
     "tmp": "0.2.1",

@@ -168,9 +168,11 @@ export class ACEngineManager {
                     return ACEngineManager.loadEngineLocal();
                 }).catch(function (err) {
                     console.log(err);
+                    return Promise.reject(err);
                 });
             } catch (e) {
                 console.log(e);
+                return Promise.reject(e);
             }
         } else if (ACEngineManager.isWebDriverIO(content)) {
 

@@ -29,6 +29,8 @@ function getBrowserChrome() {
     options.addArguments('--ignore-certificate-errors')
 
     let service = new chrome.ServiceBuilder(spath).build();
+    // setDefaultService function is removed since web-driver v4.3.1+
+    //chrome.setDefaultService(service);
     chrome.Driver.createSession(options, service);
 
     return new webdriver.Builder()
