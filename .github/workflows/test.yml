@@ -183,9 +183,9 @@ jobs:
         working-directory: accessibility-checker
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
         working-directory: accessibility-checker
 
 ###############################################################################
