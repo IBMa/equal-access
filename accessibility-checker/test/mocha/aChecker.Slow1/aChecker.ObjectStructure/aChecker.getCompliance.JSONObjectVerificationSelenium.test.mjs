@@ -60,15 +60,15 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 else {
                     spath = chromedriver.path;
                 }
-                const service = new chrome.ServiceBuilder(spath).build();
-                // setDefaultService function is removed since web-driver v4.3.1+
-                //chrome.setDefaultService(service);
-                chrome.Driver.createSession(options, service);
 
                 const options = new chrome.Options();
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--headless=new");
                 options.addArguments('--ignore-certificate-errors')
+                const service = new chrome.ServiceBuilder(spath).build();
+                // setDefaultService function is removed since web-driver v4.3.1+
+                //chrome.setDefaultService(service);
+                chrome.Driver.createSession(options, service);
 
                 browser = new Builder()
                     .withCapabilities(Capabilities.chrome())
