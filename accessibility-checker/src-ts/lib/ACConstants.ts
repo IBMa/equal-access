@@ -22,8 +22,8 @@
 // Load all the modules that are needed
 import { tmpdir } from "os";
 import * as pathLib from "path";
-import { IConfigUnsupported } from "./api/IChecker";
-import { eRuleLevel } from "./api/IEngine";
+import { IConfigUnsupported } from "./api/IChecker.js";
+import { eRuleLevel } from "./api/IEngine.js";
 
 // Used to specify all the constant
 export const ACConstants : IConfigUnsupported = {
@@ -81,5 +81,6 @@ export const ACConstants : IConfigUnsupported = {
     // both json and js are present it loads js first.
     configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), pathLib.join(".config", "aceconfig")],
 
-    ignoreHTTPSErrors: false
+    ignoreHTTPSErrors: false,
+    headless: "new"
 };

@@ -31,13 +31,13 @@ function notice(years) {
         " *****************************************************************************/\n";
 }
 
-const gulp = require("gulp"),
-    ginsert = require("gulp-insert"),
-    greplace = require("gulp-replace"),
-    terser = require("gulp-terser");
+import gulp from "gulp";
+import ginsert from "gulp-insert";
+import greplace from "gulp-replace";
+import terser from "gulp-terser";
 
 gulp.task("build-uglify", function () {
-    return gulp.src(["../src/**/lib/**/*.js", "../src/index.js", "!../src/node_modules/**"])
+    return gulp.src(["../src/**/lib/**/*.js", "../src/*/index.js", "!../src/node_modules/**"])
         .pipe(terser())
         .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
         .pipe(ginsert.prepend(notice("2016,2017,2018,2019")))

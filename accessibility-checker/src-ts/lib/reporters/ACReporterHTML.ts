@@ -17,10 +17,10 @@
 // Load all the modules that are needed
 import * as pathLib from "path";
 import * as fs from "fs";
-import { ACEngineManager } from "../ACEngineManager";
-import { IConfigUnsupported } from "../api/IChecker";
-import { IScanSummary } from "./ReportUtil";
-import { genReport } from "./genReport";
+import { ACEngineManager } from "../ACEngineManager.js";
+import { IConfigUnsupported } from "../api/IChecker.js";
+import { IScanSummary } from "./ReportUtil.js";
+import { genReport } from "./genReport.js";
 
 declare var after;
 

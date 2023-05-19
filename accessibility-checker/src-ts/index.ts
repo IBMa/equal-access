@@ -14,12 +14,12 @@
     limitations under the License.
   *****************************************************************************/
 
-import { ACBrowserManager } from "./lib/ACBrowserManager";
-import { ACConfigManager } from "./lib/ACConfigManager";
-import { ACEngineManager } from "./lib/ACEngineManager";
-import { getComplianceHelper } from "./lib/ACHelper";
-import { ACReportManager } from "./lib/ACReportManager";
-import { eAssertResult, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker";
+import { ACBrowserManager } from "./lib/ACBrowserManager.js";
+import { ACConfigManager } from "./lib/ACConfigManager.js";
+import { ACEngineManager } from "./lib/ACEngineManager.js";
+import { getComplianceHelper } from "./lib/ACHelper.js";
+import { ACReportManager } from "./lib/ACReportManager.js";
+import { eAssertResult, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker.js";
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
  * the supported context type:

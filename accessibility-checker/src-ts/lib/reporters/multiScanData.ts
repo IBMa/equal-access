@@ -15,8 +15,8 @@
  *****************************************************************************/
 
 
-const stringHash = require("string-hash");
-import { IConfigUnsupported } from "../api/IChecker";
+import * as stringHash from "string-hash";
+import { IConfigUnsupported } from "../api/IChecker.js";
 import { report } from 'process';
 
     export class MultiScanData { 

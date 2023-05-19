@@ -1,7 +1,6 @@
-import { ACConfigManager } from "./ACConfigManager";
+import { ACConfigManager } from "./ACConfigManager.js";
 import * as path from "path";
 import * as fs from "fs";
-import axios from "axios";
 
 let ace;
 
@@ -119,17 +118,25 @@ try {
         if (!ACEngineManager.localLoadPromise) {
             ACEngineManager.localLoadPromise = new Promise<void>(async (resolve, reject) => {
                 let config = await ACConfigManager.getConfigUnsupported();
-                const response = await axios.get(`${config.rulePack}/ace-node.js`);
-                const data = await response.data;
+                const response = await fetch(`${config.rulePack}/ace-node.js`);
+                const data = await response.text();
                 let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
-                let nodePath = path.join(engineDir, "ace-node")
-                fs.writeFile(nodePath + ".js", data, function (err) {
+                let nodePath = path.join(engineDir, "ace-node") + ".js";
+                fs.writeFile(nodePath, data, async (err) => {
                     try {
                         err && console.log(err);
-                        var ace_ibma = require(nodePath);
+                        let ace_ibma : any;
+                        if (typeof require !== "undefined") {
+                            ace_ibma = require(path.resolve(nodePath));
+                        } else {
+                            ace_ibma = await import(`file://${path.resolve(nodePath)}`);
+                            if (ace_ibma.default) {
+                                ace_ibma = ace_ibma.default;
+                            }
+                        }
                         checker = new ace_ibma.Checker();
                     } catch (e) {
                         console.log(e);

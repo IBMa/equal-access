@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IMapResult } from "./IMapper";
+import { IMapResult } from "./IMapper.js";
 
 export enum eRuleLevel {
     violation = "violation",

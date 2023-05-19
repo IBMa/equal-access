@@ -25,12 +25,10 @@ function getBrowserChrome() {
 
     const options = new chrome.Options();
     options.addArguments("--disable-dev-shm-usage");
-    options.addArguments("--headless");
+    options.addArguments("--headless=new");
     options.addArguments('--ignore-certificate-errors')
 
     let service = new chrome.ServiceBuilder(spath).build();
-    // setDefaultService function is removed since web-driver v4.3.1+
-    //chrome.setDefaultService(service);
     chrome.Driver.createSession(options, service);
 
     return new webdriver.Builder()
@@ -61,7 +59,6 @@ const {BeforeAll, AfterAll, Before} = require("cucumber");
 
     BeforeAll(function() {
         driver = getBrowser();
-
         /*
         return new Promise(function(resolve, reject) {
             aChecker.onRunComplete(resolve);
