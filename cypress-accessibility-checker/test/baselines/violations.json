@@ -18,8 +18,8 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 660,
-                "width": 1000
+                "height": 1320,
+                "width": 2000
             },
             "snippet": "<html>",
             "category": "Accessibility",
@@ -42,10 +42,10 @@
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 644,
-                "width": 984
+                "left": 16,
+                "top": 16,
+                "height": 1288,
+                "width": 1968
             },
             "snippet": "<body>",
             "category": "Accessibility",
@@ -68,10 +68,10 @@
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 37,
-                "width": 984
+                "left": 16,
+                "top": 16,
+                "height": 74,
+                "width": 1968
             },
             "snippet": "<h1>",
             "category": "Accessibility",
@@ -94,10 +94,10 @@
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
-                "left": 8,
-                "top": 67,
-                "height": 16,
-                "width": 16
+                "left": 16,
+                "top": 133,
+                "height": 32,
+                "width": 32
             },
             "snippet": "<img src=\"missing-alt.jpg\">",
             "category": "Accessibility",

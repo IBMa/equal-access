@@ -90,7 +90,8 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     Config.DEBUG && console.log("START 'aChecker.getCompliance' function");
     if (!content) {
         console.error("aChecker: Unable to get compliance of null or undefined object")
-        return null;
+        //return null;
+        throw new Error("aChecker: Unable to get compliance of null or undefined object");
     }
 
     // Variable Decleration
@@ -146,7 +147,10 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     }
 
     let parsed = await getParsed(content);
-    if (parsed === null) return null;
+    if (!parsed) {
+        console.error("Invalid content: " + content);
+        throw new Error("Invalid content: " + content);
+    }
     await ACEngineManager.loadEngine(parsed);
     // In the case that the label is null or undefined, throw an error using the karma API
     // console.error with the message of the error.
@@ -257,6 +261,10 @@ cb(e);
         }
 
         let report : Report = await browser.executeAsyncScript(scriptStr);
+        if (!report.results || typeof report.results.length === "undefined") {
+            console.error("Failed to get the report: " + JSON.stringify(report));
+            throw new Error("Failed to get the report: " + JSON.stringify(report));
+        }
         report = ACReportManager.setLevels(report);
         const getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
         if (curPol != null && !checkPolicy) {
@@ -267,44 +275,44 @@ cb(e);
 
         // If there is something to report...
         let finalReport : ICheckerReport;
-        if (report.results) {
-            // Add URL to the result object
-            const url = await browser.getCurrentUrl();
-            let origReport = JSON.parse(JSON.stringify(report));
-            origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
+        
+        // Add URL to the result object
+        const url = await browser.getCurrentUrl();
+        let origReport = JSON.parse(JSON.stringify(report));
+        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
 
-            // Filter the violations based on the reportLevels
-            report = ACReportManager.filterViolations(report);
+        // Filter the violations based on the reportLevels
+        report = ACReportManager.filterViolations(report);
 
-            // Add the count object, to data a recount after the filtering of violations is done.
-            let counts = ACReportManager.getCounts(report);
+        // Add the count object, to data a recount after the filtering of violations is done.
+        let counts = ACReportManager.getCounts(report);
 
-            // Add the violation count to global summary object
-            ACReportManager.addToSummaryCount(counts);
+        // Add the violation count to global summary object
+        ACReportManager.addToSummaryCount(counts);
 
-            // Build the report object for this scan, to follow a specific format. Refer to the
-            // function prolog for more information on the object creation.
-            finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
+        // Build the report object for this scan, to follow a specific format. Refer to the
+        // function prolog for more information on the object creation.
+        finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
 
-            // Add the scan results to global karma result object which can be accessed when users testcase
-            // finishes, user can also access it to alter it for any reason.
-            ACReportManager.addResultsToGlobal(finalReport);
+        // Add the scan results to global karma result object which can be accessed when users testcase
+        // finishes, user can also access it to alter it for any reason.
+        ACReportManager.addResultsToGlobal(finalReport);
 
-            // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-            // saved to a file by the server side reporter.
-            ACReportManager.sendResultsToReporter(origReport, finalReport, "Selenium");
+        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+        // saved to a file by the server side reporter.
+        ACReportManager.sendResultsToReporter(origReport, finalReport, "Selenium");
 
-            if (Config.captureScreenshots && browser.takeScreenshot) {
-                const image = await browser.takeScreenshot();
-                let screenshotResult = {
-                    image: image,
-                    label: label,
-                    scanID: finalReport.scanID
-                };
+        if (Config.captureScreenshots && browser.takeScreenshot) {
+            const image = await browser.takeScreenshot();
+            let screenshotResult = {
+                image: image,
+                label: label,
+                scanID: finalReport.scanID
+            };
 
-                ACReportManager.sendScreenShotToReporter(screenshotResult);
-            }
+            ACReportManager.sendScreenShotToReporter(screenshotResult);
         }
+        
         return {
             "report": finalReport,
             "webdriver": parsed
@@ -335,6 +343,12 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                 }, 0)
             })
         }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
+
+        if (!report.results || typeof report.results.length === "undefined") {
+            console.error("Failed to get the report: " + JSON.stringify(report));
+            throw new Error("Failed to get the report: " + JSON.stringify(report));
+        }
+
         report = ACReportManager.setLevels(report);
         if (curPol != null && !checkPolicy) {
             const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.evaluate("new window.ace_ibma.Checker().rulesetIds"));
@@ -345,47 +359,47 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         let finalReport: ICheckerReport;
 
         // If there is something to report...
-        if (report.results) {
-            let url = await page.evaluate("document.location.href");
+        
+        let url = await page.evaluate("document.location.href");
 
-            let origReport = JSON.parse(JSON.stringify(report));
-            origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
+        let origReport = JSON.parse(JSON.stringify(report));
+        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
 
-            // Filter the violations based on the reporLevels
-            report = ACReportManager.filterViolations(report);
+        // Filter the violations based on the reporLevels
+        report = ACReportManager.filterViolations(report);
 
-            // Add the count object, to data a recount after the filtering of violations is done.
-            let counts = ACReportManager.getCounts(report);
+        // Add the count object, to data a recount after the filtering of violations is done.
+        let counts = ACReportManager.getCounts(report);
 
-            // Add the violation count to global summary object
-            ACReportManager.addToSummaryCount(counts);
+        // Add the violation count to global summary object
+        ACReportManager.addToSummaryCount(counts);
 
-            // Build the report object for this scan, to follow a specific format. Refer to the
-            // function prolog for more information on the object creation.
-            finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
+        // Build the report object for this scan, to follow a specific format. Refer to the
+        // function prolog for more information on the object creation.
+        finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
 
-            // Add the scan results to global karma result object which can be accessed when users testcase
-            // finishes, user can also access it to alter it for any reason.
-            ACReportManager.addResultsToGlobal(finalReport);
+        // Add the scan results to global karma result object which can be accessed when users testcase
+        // finishes, user can also access it to alter it for any reason.
+        ACReportManager.addResultsToGlobal(finalReport);
 
-            // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-            // saved to a file by the server side reporter.
-            ACReportManager.sendResultsToReporter(origReport, finalReport, "Puppeteer");
+        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+        // saved to a file by the server side reporter.
+        ACReportManager.sendResultsToReporter(origReport, finalReport, "Puppeteer");
 
-            if (Config.captureScreenshots) {
-                let image = await page.screenshot({
-                    fullPage: true,
-                    encoding: "base64"
-                });
-                let screenshotResult = {
-                    image: image,
-                    label: label,
-                    scanID: Config.scanID
-                };
+        if (Config.captureScreenshots) {
+            let image = await page.screenshot({
+                fullPage: true,
+                encoding: "base64"
+            });
+            let screenshotResult = {
+                image: image,
+                label: label,
+                scanID: Config.scanID
+            };
 
-                ACReportManager.sendScreenShotToReporter(screenshotResult);
-            }
+            ACReportManager.sendScreenShotToReporter(screenshotResult);
         }
+        
         page.aceBusy = false;
 
         return {
@@ -410,6 +424,12 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
                 }
                 return report;
             })
+
+        if (!report.results || typeof report.results.length === "undefined") {
+            console.error("Failed to get the report: " + JSON.stringify(report));
+            throw new Error("Failed to get the report: " + JSON.stringify(report));
+        }
+
         report = ACReportManager.setLevels(report);
 
         if (curPol != null && !checkPolicy) {
@@ -418,37 +438,34 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             areValidPolicy(valPolicies, curPol);
         }
 
-        let finalReport: ICheckerReport;
-
         // If there is something to report...
-        if (report.results) {
-            let url = parsed.location && parsed.location.href;
+        let finalReport: ICheckerReport;
+        let url = parsed.location && parsed.location.href;
 
-            let origReport = JSON.parse(JSON.stringify(report));
-            origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
+        let origReport = JSON.parse(JSON.stringify(report));
+        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
 
-            // Filter the violations based on the reporLevels
-            report = ACReportManager.filterViolations(report);
+        // Filter the violations based on the reporLevels
+        report = ACReportManager.filterViolations(report);
 
-            // Add the count object, to data a recount after the filtering of violations is done.
-            let counts = ACReportManager.getCounts(report);
+        // Add the count object, to data a recount after the filtering of violations is done.
+        let counts = ACReportManager.getCounts(report);
 
-            // Add the violation count to global summary object
-            ACReportManager.addToSummaryCount(counts);
+        // Add the violation count to global summary object
+        ACReportManager.addToSummaryCount(counts);
 
-            // Build the report object for this scan, to follow a specific format. Refer to the
-            // function prolog for more information on the object creation.
-            finalReport = ACReportManager.buildReport(report, counts, URL, label, startScan);
+        // Build the report object for this scan, to follow a specific format. Refer to the
+        // function prolog for more information on the object creation.
+        finalReport = ACReportManager.buildReport(report, counts, URL, label, startScan);
 
-            // Add the scan results to global karma result object which can be accessed when users testcase
-            // finishes, user can also access it to alter it for any reason.
-            ACReportManager.addResultsToGlobal(finalReport);
+        // Add the scan results to global karma result object which can be accessed when users testcase
+        // finishes, user can also access it to alter it for any reason.
+        ACReportManager.addResultsToGlobal(finalReport);
 
-            // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-            // saved to a file by the server side reporter.
-            ACReportManager.sendResultsToReporter(origReport, finalReport, "Native");
-        }
-
+        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+        // saved to a file by the server side reporter.
+        ACReportManager.sendResultsToReporter(origReport, finalReport, "Native");
+        
         return {
             "report": finalReport
         };
