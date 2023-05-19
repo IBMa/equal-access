@@ -14,8 +14,11 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../../src/mjs/index.js";
-import { expect } from "chai";
+//import * as aChecker from "../../../../src/mjs/index.js";
+//import { expect } from "chai";
+
+/// <reference types="cypress" />
+import "cypress-accessibility-checker";
 
 describe("aChecker", function () {
     it("Should be defined", function () {

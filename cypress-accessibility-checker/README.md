@@ -17,7 +17,7 @@ The Toolkit is a major part of the accessibility information and applications at
 ## Requirements
 
 * [Node Version 18](https://nodejs.org/en/download/)
-* Cypress 13 from [cypress.io](https://www.cypress.io/)
+* Cypress 12
 
 ## Installation
 
@@ -54,6 +54,7 @@ module.exports = defineConfig({
 ```
 
 ### 2. Import commands
+In the spec file where you run tests, add the following import statement. This will register the custom checker commands.
 
 In the `cypress/support/e2e.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
 
