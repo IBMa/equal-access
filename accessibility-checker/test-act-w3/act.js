@@ -7,7 +7,7 @@
 
 'use strict';
 
-import * as aChecker from "../src/index.js";
+import * as aChecker from "../src/mjs/index.js";
 const rulesetP = aChecker.getRuleset('IBM_Accessibility');
 
 async function getAceMapping() {

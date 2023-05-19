@@ -6,13 +6,16 @@ import * as path from "path";
 import { expect } from "chai";
 import { before, after, describe, it } from "mocha";
 import { ICheckerReport } from "accessibility-checker/lib/api/IChecker";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 let browser: Puppeteer.Browser;
 let page: Puppeteer.Page;
 
 before(async () => {
     try {
-        browser = await Puppeteer.launch();
+        browser = await Puppeteer.launch({ headless: "new"});
         page = await browser.newPage();
     } catch (e) {
         console.log(e);
@@ -32,15 +35,15 @@ describe("Hello World Basics", function () {
         await page.goto(`file://${sample}`);
 
         const result = await getCompliance(page, "HOME");
-        const report : ICheckerReport = result!.report as ICheckerReport;
-        expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
+        const report = result!.report;
+        expect(assertCompliance(report as ICheckerReport)).to.equal(0, stringifyResults(report as ICheckerReport));
     }).timeout(10000);
 
     it("Homepage, Show Card", async() => {
         await page.click("#clickMe");
         const result = await getCompliance(page, "HOME_CARD");
-        const report : ICheckerReport = result!.report as ICheckerReport;
-        expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
+        const report = result!.report;
+        expect(assertCompliance(report as ICheckerReport)).to.equal(0, stringifyResults(report as ICheckerReport));
     }).timeout(10000);
 });
 //# sourceMappingURL=basic.test.js.map

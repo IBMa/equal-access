@@ -1,19 +1,17 @@
 {
   "name": "accessibility-checker",
   "version": "3.0.0",
-  "type": "module",
   "description": "Accessibility Checker for Node",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src",
     "test": "mocha -R dot test/mocha/**/*.test.js test/a11y-rule-test-able/*.test.js",
-    "build": "npm run build:common && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
-    "build:ts": "npx tsc",
-    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/common/report/genReport.ts)",
-    "build:common": "shx rm -rf ./src-ts/lib/common && shx cp -R ../common/module/src ./src-ts/lib/common && npm run build:report",
-    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js && cd package && npm pack",
-    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js"
+    "build": "npm run build:report && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
+    "build:ts": "npx tsc -p tsconfig.json && npx tsc -p tsconfig-cjs.json",
+    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/reporters/genReport.ts)",
+    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/bin/*.js && cd package && npm pack",
+    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/bin/*.js"
   },
   "repository": {
     "type": "git",

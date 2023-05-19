@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../src/index.js";
+import * as aChecker from "../../../src/mjs/index.js";
 import { expect } from "chai";
 
 // Test to make sure the getRule function still exists in global space (window.getRule)

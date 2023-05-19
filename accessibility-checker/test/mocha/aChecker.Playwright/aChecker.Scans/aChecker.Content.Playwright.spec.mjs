@@ -20,7 +20,7 @@ import { chromium } from "playwright";
 
 import * as fs from "fs";
 import * as path from "path";
-import * as aChecker from "../../../../src/index.js";
+import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 /** import Util from '../../util/Util.js';
 const { loadPuppeteerTestFile } = Util;

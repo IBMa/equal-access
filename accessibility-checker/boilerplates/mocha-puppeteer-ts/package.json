@@ -2,6 +2,7 @@
   "name": "@ibma/ac-boilerplate-mocha-ts",
   "version": "3.0.0",
   "description": "Example usage of Accessibility Checker with Mocha and typescript",
+  "type": "module",
   "main": "src/app.js",
   "scripts": {
     "test": "tsc && mocha test/*.test.js"

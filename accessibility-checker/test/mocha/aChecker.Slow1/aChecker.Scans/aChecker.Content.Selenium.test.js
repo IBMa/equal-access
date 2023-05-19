@@ -18,7 +18,7 @@
 // var userBrowser = process.env.USER_BROWSER || "CHROME";
 import * as fs from "fs";
 import * as path from "path";
-import * as aChecker from "../../../../src/index.js";
+import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";

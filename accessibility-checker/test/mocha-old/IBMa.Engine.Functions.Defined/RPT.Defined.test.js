@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../src/index.js";
+import * as aChecker from "../../../src/mjs/index.js";
 import { expect } from "chai";
     
 // This Test Suite is to make sure all the objects/function in the RPT namespace are
