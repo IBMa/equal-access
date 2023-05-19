@@ -22,23 +22,7 @@ var uuid = require('uuid');
 const { resolve } = require('path');
 
 const myrequest = (url) => {
-    if (typeof cy !== "undefined") {
-        return cy.request(url)
-            .then((data) => {
-                return data.body;
-            })
-    } else {
-        return new Promise((resolve, reject) => {
-            var request = require("@cypress/request");
-            request.get(url, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
-    }
+    return fetch(url).then(resp => resp.json());
 }
 
 /**
