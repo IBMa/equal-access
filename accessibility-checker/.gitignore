@@ -9,3 +9,4 @@ package-lock.json
 src/**/*.js
 src/**/*.map
 src/**/*.d.ts
+!src/bin/achecker.js

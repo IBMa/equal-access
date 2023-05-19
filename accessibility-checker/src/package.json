@@ -1,9 +1,15 @@
 {
   "name": "accessibility-checker",
   "version": "3.0.0",
-  "type": "module",
   "description": "An automated testing tools for accessibility testing using Puppeteer, Selenium, or Zombie",
-  "main": "index.js",
+  "main": "cjs/index.js",
+  "module": "mjs/index.js",
+  "exports": {
+    ".": {
+        "import": "./mjs/index.js",
+        "require": "./cjs/index.js"
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

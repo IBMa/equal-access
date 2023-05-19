@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../../src/index.js";
+import * as aChecker from "../../../../src/mjs/index.js";
 import { expect } from "chai";
 
 before(async () => {

@@ -17,7 +17,7 @@
 'use strict';
 import * as fs from "fs";
 import * as path from "path";
-import * as aChecker from "../../../../src/index.js";
+import * as aChecker from "../../../../src/mjs/index.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
 import {fileURLToPath} from 'url';
