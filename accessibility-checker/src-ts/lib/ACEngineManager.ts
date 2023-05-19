@@ -127,7 +127,7 @@ try {
                     try {
                         err && console.log(err);
                         let ace_ibma : any;
-                        if (require) {
+                        if (typeof require !== "undefined") {
                             ace_ibma = require(path.resolve(nodePath));
                         } else {
                             ace_ibma = await import(`file://${path.resolve(nodePath)}`);
