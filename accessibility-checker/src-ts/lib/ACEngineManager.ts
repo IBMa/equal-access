@@ -29,7 +29,7 @@ export class ACEngineManager {
 
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
-            if (ENGINE_LOAD_MODE === "REMOTE") {
+    /**   if (ENGINE_LOAD_MODE === "REMOTE") {
                 await page.evaluate((scriptUrl) => {
                     try {
                         var ace_backup_in_ibma;
@@ -76,8 +76,24 @@ export class ACEngineManager {
                         if ('undefined' === typeof (ace) || ace === null) {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
+        */                        
+            await page.evaluate((scriptUrl) => {
+                try {
+                    var ace_backup_in_ibma;
+                    if ('undefined' !== typeof ace) {
+                        if (!ace || !ace.Checker)
+                            ace_backup_in_ibma = ace;
+                        ace = null;
+                    }
+                    if ('undefined' === typeof ace || ace === null) {
+                        return new Promise<void>((resolve, reject) => {
+                            let script = document.createElement('script');
+                            script.setAttribute('type', 'text/javascript');
+                            script.setAttribute('aChecker', 'ACE');
+                            script.setAttribute('src', scriptUrl);
+                            script.addEventListener('load', function () {
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof(ace)) {
+                                if ('undefined' !== typeof ace) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
@@ -93,7 +109,7 @@ export class ACEngineManager {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
             try {
                 let browser = content;
-                let scriptStr;
+   /**        let scriptStr;
                 if (ENGINE_LOAD_MODE === "REMOTE") {
                     scriptStr =
                         `let cb = arguments[arguments.length - 1];
@@ -134,14 +150,27 @@ export class ACEngineManager {
     try {
         var ace_backup_in_ibma;
         if ('undefined' !== typeof(ace)) {
+    */    
+                // Selenium
+                let scriptStr =
+                    `let cb = arguments[arguments.length - 1];
+try {
+    var ace_backup_in_ibma;
+        if ('undefined' !== typeof ace) {
             if (!ace || !ace.Checker) 
                 ace_backup_in_ibma = ace;
             ace = null; 
         } 
-        if ('undefined' === typeof (ace) || ace === null) {
-            eval(${JSON.stringify(ACEngineManager.engineContent)})
+        // if ('undefined' === typeof (ace) || ace === null) {
+        //    eval(${JSON.stringify(ACEngineManager.engineContent)})
+        if ('undefined' === typeof ace || ace === null) {
+        let script = document.createElement('script');
+        script.setAttribute('type', 'text/javascript');
+        script.setAttribute('aChecker', 'ACE');
+        script.setAttribute('src', '${config.rulePack}/ace.js');
+        script.addEventListener('load', function() {
             globalThis.ace_ibma = ace;
-            if ('undefined' !== typeof(ace)) {
+            if ('undefined' !== typeof ace) {
                 ace = ace_backup_in_ibma;
             } 
             cb();
