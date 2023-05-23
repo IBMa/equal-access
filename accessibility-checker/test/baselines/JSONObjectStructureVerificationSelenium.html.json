@@ -1,9 +1,5 @@
 {
     "nls": {
-        "IBMA_Color_Contrast_WCAG2AA_PV": {
-            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
-            "Pass_0": "Rule Passed"
-        },
         "a_text_purpose": {
             "0": "Hyperlinks must have a text description of their purpose",
             "Pass_0": "Hyperlink has a description of its purpose"
@@ -20,13 +16,13 @@
             "0": "Interactive WAI_ARIA UI components must provide keyboard access",
             "pass": "Rule Passed"
         },
-        "aria_role_redundant": {
-            "0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
-            "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
-        },
         "aria_role_allowed": {
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
+        },
+        "aria_role_redundant": {
+            "0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
+            "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
         },
         "aria_role_valid": {
             "0": "ARIA roles must be valid for the element to which they are assigned",
@@ -118,7 +114,7 @@
             "pass": "Rule Passed"
         }
     },
-    "numExecuted": 112,
+    "numExecuted": 103,
     "results": [
         {
             "apiArgs": [],
@@ -146,7 +142,7 @@
                 "VIOLATION",
                 "FAIL"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "violation"
         },
         {
@@ -172,7 +168,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -198,7 +194,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -224,7 +220,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -250,7 +246,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -276,7 +272,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -302,7 +298,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -328,7 +324,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -354,7 +350,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -380,7 +376,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -406,7 +402,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -432,7 +428,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -458,7 +454,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -484,7 +480,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -510,7 +506,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -536,7 +532,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -562,7 +558,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -588,7 +584,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -614,7 +610,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -640,7 +636,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -666,7 +662,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -692,7 +688,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -718,7 +714,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -744,7 +740,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -770,7 +766,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -796,7 +792,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -822,7 +818,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -856,7 +852,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -884,13 +880,13 @@
             },
             "reasonId": "Pass_0",
             "ruleId": "text_contrast_sufficient",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "value": [
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -916,7 +912,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -942,7 +938,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -968,7 +964,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -994,7 +990,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1020,7 +1016,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1040,13 +1036,13 @@
             },
             "reasonId": "Pass_0",
             "ruleId": "skip_main_described",
-            "ruleTime": 1,
+            "ruleTime": 0,
             "snippet": "<body>",
             "value": [
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1074,7 +1070,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1100,7 +1096,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1126,7 +1122,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1152,7 +1148,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1178,7 +1174,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1204,7 +1200,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1230,7 +1226,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1256,7 +1252,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1282,7 +1278,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1308,7 +1304,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1334,7 +1330,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1360,7 +1356,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1386,7 +1382,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1412,7 +1408,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1438,7 +1434,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1464,7 +1460,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1490,7 +1486,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1516,7 +1512,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1542,7 +1538,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1568,7 +1564,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1594,7 +1590,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1620,7 +1616,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1646,7 +1642,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1672,7 +1668,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1698,7 +1694,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1724,7 +1720,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1750,7 +1746,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -1776,249 +1772,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 74,
-                "left": 16,
-                "top": 96,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [
-                "21.00",
-                32,
-                700
-            ],
-            "path": {
-                "aria": "/document[1]/main[1]/heading[1]",
-                "dom": "/html[1]/body[1]/div[2]/h1[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<h1>",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 16,
-                "top": 213,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/div[2]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<div id=\"firstDiv\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 16,
-                "top": 213,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/div[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<div id=\"firstDiv\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 16,
-                "top": 96,
-                "width": 0
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/a[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<a name=\"navskip\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 74,
-                "left": 16,
-                "top": 96,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<div role=\"main\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 36,
-                "left": 16,
-                "top": 16,
-                "width": 112
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [
-                "9.40",
-                16,
-                400
-            ],
-            "path": {
-                "aria": "/document[1]/navigation[1]/link[1]",
-                "dom": "/html[1]/body[1]/div[1]/a[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 37,
-                "left": 16,
-                "top": 16,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/navigation[1]",
-                "dom": "/html[1]/body[1]/div[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<div role=\"navigation\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 154,
-                "left": 16,
-                "top": 16,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]",
-                "dom": "/html[1]/body[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<body>",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 213,
-                "left": 0,
-                "top": 0,
-                "width": 27332
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]",
-                "dom": "/html[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
-            "ruleTime": 0,
-            "snippet": "<html lang=\"en\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2044,7 +1798,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2070,7 +1824,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2098,7 +1852,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2124,7 +1878,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2150,7 +1904,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2176,7 +1930,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2202,7 +1956,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2228,7 +1982,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2254,7 +2008,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2280,7 +2034,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2306,7 +2060,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2332,7 +2086,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2358,7 +2112,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2384,7 +2138,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2410,7 +2164,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2436,7 +2190,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2456,13 +2210,13 @@
             },
             "reasonId": "Pass_0",
             "ruleId": "emoticons_alt_exists",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<body>",
             "value": [
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2488,7 +2242,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2514,7 +2268,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2540,7 +2294,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2569,7 +2323,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2598,59 +2352,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 74,
-                "left": 16,
-                "top": 96,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "aria_role_allowed",
-            "ruleTime": 0,
-            "snippet": "<div role=\"main\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 37,
-                "left": 16,
-                "top": 16,
-                "width": 27300
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/navigation[1]",
-                "dom": "/html[1]/body[1]/div[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "aria_role_allowed",
-            "ruleTime": 0,
-            "snippet": "<div role=\"navigation\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2676,7 +2378,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2702,7 +2404,59 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
+            "level": "pass"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 74,
+                "left": 16,
+                "top": 96,
+                "width": 27300
+            },
+            "category": "Accessibility",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/main[1]",
+                "dom": "/html[1]/body[1]/div[2]"
+            },
+            "reasonId": "Pass_0",
+            "ruleId": "aria_role_allowed",
+            "ruleTime": 0,
+            "snippet": "<div role=\"main\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": true,
+            "level": "pass"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 37,
+                "left": 16,
+                "top": 16,
+                "width": 27300
+            },
+            "category": "Accessibility",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/navigation[1]",
+                "dom": "/html[1]/body[1]/div[1]"
+            },
+            "reasonId": "Pass_0",
+            "ruleId": "aria_role_allowed",
+            "ruleTime": 0,
+            "snippet": "<div role=\"navigation\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2728,7 +2482,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2748,13 +2502,13 @@
             },
             "reasonId": "pass",
             "ruleId": "aria_keyboard_handler_exists",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<div role=\"navigation\">",
             "value": [
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2780,7 +2534,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2806,7 +2560,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2832,7 +2586,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2858,7 +2612,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2884,7 +2638,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2910,7 +2664,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2936,7 +2690,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2962,7 +2716,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -2988,7 +2742,7 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -3014,7 +2768,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -3040,7 +2794,7 @@
                 "RECOMMENDATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         },
         {
@@ -3066,21 +2820,21 @@
                 "VIOLATION",
                 "PASS"
             ],
-            "ignored": false,
+            "ignored": true,
             "level": "pass"
         }
     ],
     "summary": {
         "counts": {
-            "violation": 1,
+            "violation": 0,
             "potentialviolation": 0,
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 111,
-            "ignored": 0
+            "pass": 0,
+            "ignored": 103
         },
-        "scanTime": 14,
+        "scanTime": 17,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
             "IBM_Accessibility"
@@ -3093,10 +2847,10 @@
             "manual",
             "pass"
         ],
-        "startScan": 1682626904826,
+        "startScan": 1684509457968,
         "URL": "file:///Users/thbrunet/Tom/Git/equal-access/accessibility-checker/test/mocha/aChecker.Slow1/aChecker.ObjectStructure/JSONObjectStructureVerificationSelenium.html"
     },
-    "scanID": "c74a3935-230e-4e54-b839-066072bace58",
+    "scanID": "7e0c8ff6-44a0-4055-b272-515509738717",
     "toolID": "accessibility-checker-v3.0.0",
     "label": "JSONObjectStructureVerificationSelenium.html"
 }

@@ -110,7 +110,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>Here’s a quick look at what all the functionalities are in the Checker tool.</p>
 
-                    <h2 id="checker">1. Accessibility Checker</h2>
+                    <h2 id="checker">1. Accessibility Checker Scan button</h2>
                     <p>
                         The Accessibility Checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component. For more in-depth guidance, view
                         {" "}
@@ -190,7 +190,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/3.5Keyboard2.png"
+                            src="assets/img/3.5Keyboard2a.png"
                             alt="webpage with keyboard visualization overlay"
                         />
                     </p>

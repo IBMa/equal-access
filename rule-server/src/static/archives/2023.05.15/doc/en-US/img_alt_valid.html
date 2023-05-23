@@ -1,0 +1,93 @@
+<html lang="en-US">
+<head>
+    <title>img_alt_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"Images has required 'alt' attribute, ARIA label or title if they convey meaning, or 'alt=\"\" if decorative","fail_blank_alt":"Image 'alt' attribute value consists only of blank space(s)","fail_no_alt":"The image has neither an alt atttribute nor an ARIA label or title","fail_blank_title":"The image does not have an alt attribute or ARIA label and 'title' attribute value consists only of blank space(s)","group":"Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"}};
+        RULE_ID = "img_alt_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+When an image contains important information, providing a text alternative makes the same information accessible through audio or other channels such as a Braille display.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the image conveys meaning, use the `alt` attribute on the `<img>` element to provide a short description that serves the same purpose as the image. 
+* **Or**, use an `aria-label` or `aria-labbelledby` to provide a short description that correctly follows the [accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
+* **And**, if the image contains important words, include them in the short description (e.g., `alt="submit"`)
+* **Or**, if the image is decorative or redundant, use the attribute with an empty string as its value (e.g., `<img alt="">`)
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [WCAG technique H37](https://www.w3.org/WAI/WCAG21/Techniques/html/H37)
+* [ARIA specification - accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People who turn off image-loading on their web browsers
+* People using text only, monochrome, or Braille displays
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

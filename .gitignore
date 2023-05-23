@@ -35,3 +35,4 @@ jspm_packages
 .gz
 .tar
 accessibility-checker-engine/karma.conf.js
+karma-accessibility-checker/package.json
