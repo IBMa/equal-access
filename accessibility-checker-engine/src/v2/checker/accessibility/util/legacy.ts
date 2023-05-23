@@ -2804,6 +2804,11 @@ export class RPTUtil {
             }
             //exclude the prohibitedAttributes from the allowedAttributes
             allowedAttributes = RPTUtil.reduceArrayItemList(prohibitedAttributes, allowedAttributes);
+
+            //exclude aria attribute for elements without implicit role and with 'Naming Prohibited'
+            if ((!roles || roles.length === 0) && tagProperty.implicitRole === null && tagProperty.prohibitedAriaAttributesWhenNoImplicitRole)
+                allowedAttributes = RPTUtil.reduceArrayItemList(tagProperty.prohibitedAriaAttributesWhenNoImplicitRole, allowedAttributes);
+            
             setCache(ruleContext, "RPTUtil_AllowedAriaAttributes", allowedAttributes);
         }
         return allowedAttributes;

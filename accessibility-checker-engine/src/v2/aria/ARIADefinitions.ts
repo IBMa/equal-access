@@ -26,7 +26,8 @@ export interface IDocumentConformanceRequirement {
     otherDisallowedAriaAttributes?: string[],
     otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed
     // a few elements (such as datalist, html, caption) that have an implicit role but disallow some or all attributes allowed for the role.
-    allowAttributesFromImplicitRole?: boolean  
+    allowAttributesFromImplicitRole?: boolean,
+    prohibitedAriaAttributesWhenNoImplicitRole?: string[]  //some elements (var,abbr etc.) have no implicit role but naming prohibited   
 }
 
 export class ARIADefinitions {
@@ -1705,7 +1706,8 @@ export class ARIADefinitions {
         "abbr": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "address": {
             implicitRole: ["group"],
@@ -1783,7 +1785,8 @@ export class ARIADefinitions {
         "cite": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "code": {
             implicitRole: ["code"],
@@ -1864,7 +1867,8 @@ export class ARIADefinitions {
         "figcaption": {
             implicitRole: null,
             validRoles: ["group", "none", "presentation"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "form": {
             implicitRole: ["form"],
@@ -1940,17 +1944,20 @@ export class ARIADefinitions {
         "kbd": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "label": {
             implicitRole: null,
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "legend": {
             implicitRole: null,
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "link": {
             implicitRole: null,
@@ -1970,7 +1977,8 @@ export class ARIADefinitions {
         "mark": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "math": {
             implicitRole: ["math"],
@@ -2070,7 +2078,8 @@ export class ARIADefinitions {
         "rt": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "ruby": {
             implicitRole: null,
@@ -2080,7 +2089,8 @@ export class ARIADefinitions {
         "s": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "samp": {
             implicitRole: ["generic"],
@@ -2195,7 +2205,8 @@ export class ARIADefinitions {
         "var": {
             implicitRole: null,
             validRoles: ["any"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
         },
         "video": {
             implicitRole: null,
