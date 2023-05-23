@@ -22,8 +22,8 @@ import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
 import tabStop from "../../assets/tab_stop.svg";
-import kbIssues from "../../assets/keyboard_issue.svg";
-import element from "../../assets/element.svg";
+import tabStopChainError from "../../assets/tabStopChainError.svg";
+import tabStopError from "../../assets/tabStopError.svg";
 import enter from "../../assets/enter.svg";
 import esc from "../../assets/esc.svg";
 import leftRight from "../../assets/left_right.svg";
@@ -362,28 +362,34 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>Select these icons or tab through the page to see code and keyboard access issues:</p>
                 <UnorderedList>
-                    <ListItem>
-                        <img
-                            src={tabStop}
-                            alt="tab stop icon"
-                        />{" "}
-                        tab stops numbered by tab order of the page
-                    </ListItem>
-                    <ListItem>
-                        <img
-                            src={kbIssues}
-                            alt="keyboard issues icon"
-                        />{" "}
-                        keyboard access issue with tab stop number
-                    </ListItem>
-                    <ListItem>
-                        <img
-                            src={element}
-                            alt="element issues icon"
-                        />{" "}
-                        element with keyboard access issue (not a tab stop)
-                    </ListItem>
-                </UnorderedList>
+                        <ListItem style={{marginBottom:".5rem"}}>
+                            <div style={{textAlign: "center", display: "inline-block", width: "2.5rem"}}>
+                                <img
+                                src={tabStop}
+                                alt="tab stop chain icon"
+                                style={{verticalAlign:"middle"}}
+                            /></div>{" "}
+                            tab stops numbered by tab order of the page
+                        </ListItem>
+                        <ListItem style={{marginBottom: ".5rem"}}>
+                            <div style={{textAlign: "center", display: "inline-block", width: "2.5rem"}}>
+                                <img
+                                    src={tabStopChainError}
+                                    alt="tab stop with issues chain icon"
+                                    style={{verticalAlign:"middle", marginTop: "-7px"}}
+                                /></div>{" "}
+                            keyboard access issue with tab stop number
+                        </ListItem>
+                        <ListItem>
+                            <div style={{textAlign: "center", display: "inline-block", width: "2.5rem"}}>
+                                <img
+                                    src={tabStopError}
+                                    alt="tab stop not in chain with issues icon"
+                                    style={{verticalAlign:"middle", marginTop: "-7px"}}
+                                /></div>{" "}
+                            element not in tab stop chain with issues
+                        </ListItem>
+                    </UnorderedList>
                 <p><strong>Manual keyboard testing</strong></p>
                 <p>Automated tools can’t find all keyboard access issues. Using the visualization, test for basic keyboard navigation:</p>
                 <OrderedList>
