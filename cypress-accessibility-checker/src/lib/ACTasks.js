@@ -247,9 +247,6 @@ let ACTasks = module.exports = {
                 if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
                     ACTasks.reporterHTML.report(unFilteredResults);
                 }
-                if (ACTasks.Config.outputFormat.includes("xlsx")) {
-                    ACTasks.reporterXLSX.report(unFilteredResults);
-                }
             }
             // Only perform the profiling if profiling was not disabled on purpose
             if (!ACTasks.Config.label || ACTasks.Config.label.indexOf("IBMa-Node-TeSt") === -1) {
