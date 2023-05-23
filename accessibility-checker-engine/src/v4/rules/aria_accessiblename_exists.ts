@@ -20,7 +20,7 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
     context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]",
-    dependencies: ["aria_role_valid"],
+    dependencies: ["aria_role_valid", "aria_role_redundant"],
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
