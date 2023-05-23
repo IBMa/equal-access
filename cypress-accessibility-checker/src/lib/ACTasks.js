@@ -234,14 +234,16 @@ let ACTasks = module.exports = {
     sendResultsToReporter: function (unFilteredResults, results, profile) {
         return ACTasks.initialize().then(() => {
             ACTasks.DEBUG && console.log("sendResultsToReporter:", ACTasks.Config.outputFormat);
-            if (ACTasks.Config.outputFormat.indexOf("json") !== -1) {
-                ACTasks.reporterJSON.report(results);
-            }
-            if (ACTasks.Config.outputFormat.includes("csv")) {
-                ACTasks.reporterCSV.report(results);
-            }
-            if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
-                ACTasks.reporterHTML.report(unFilteredResults);
+            if (!ACReportManager.config.outputFormat.includes("disable")) {
+                if (ACTasks.Config.outputFormat.includes("json")) {
+                    ACTasks.reporterJSON.report(results);
+                }
+                if (ACTasks.Config.outputFormat.includes("csv")) {
+                    ACTasks.reporterCSV.report(results);
+                }
+                if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
+                    ACTasks.reporterHTML.report(unFilteredResults);
+                }
             }
             // Only perform the profiling if profiling was not disabled on purpose
             if (!ACTasks.Config.label || ACTasks.Config.label.indexOf("IBMa-Node-TeSt") === -1) {
