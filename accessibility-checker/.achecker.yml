@@ -45,7 +45,7 @@ reportLevels:
 captureScreenshots: false
 
 # Optional - Which type should the results be outputted to
-#   outputFormat: json, csv, xlsx
+#   outputFormat: json, csv, xlsx, disable
 # Default: json
 outputFormat:
     - json
