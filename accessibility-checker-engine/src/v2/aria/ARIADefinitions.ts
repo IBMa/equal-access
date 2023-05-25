@@ -974,7 +974,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             nameRequired: false,
-            nameFrom: ["contents", "author"]
+            nameFrom: ["author"]
         },
         
         "graphics-symbol": {

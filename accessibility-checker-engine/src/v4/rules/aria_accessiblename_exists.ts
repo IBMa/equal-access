@@ -19,7 +19,8 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]",
+    context: "aria:alertdialog, aria:application, aria:button, aria:checkbox, aria:columnheader,   aria:combobox, aria:form, aria:heading, aria:img, aria:link, aria:meter, aria:menuitem, aria:menuitemcheckbox, aria:menuitemradio, aria:option, aria:progressbar, aria:radio, aria:radiogroup, aria:region,  aria:rowheader, aria:searchbox, aria:slider, aria:spinbutton, aria:switch,  aria:tab, aria:table, aria:tabpanel, aria:textbox, aria:treegrid, aria:treeitem",
+    //context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]",
     dependencies: ["aria_role_valid", "aria_role_redundant"],
     help: {
         "en-US": {
