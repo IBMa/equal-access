@@ -1,0 +1,90 @@
+<html lang="en-US">
+<head>
+    <title>text_contrast_sufficient - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"The contrast ratio of text with its background must meet WCAG 2.1 AA requirements","Pass_0":"Rule Passed","Fail_1":"Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}","Potential_same_color":"The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast","Potential_graphic_background":"Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}","Potential_text_shadow":"Verify the contrast ratio of the text with shadow meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"}};
+        RULE_ID = "text_contrast_sufficient"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+When text and its background colors have less than a 4.5 to 1 contrast ratio it can be difficult for people with moderately low vision to read the text without a contrast-enhancing technology. For larger text of 18 point or more, or bold 14 point text, the text and background colors must give at least a 3 to 1 contrast ratio.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * For large text that is at least 18 point or at least 14 point when bold, adjust the color of the text or its background to give at least a 3 to 1 contrast ratio;
+ * **Or**, for body text that is less than 18 point or less than 14 point when bold, adjust the color of the text or its background to give at least a 4.5 to 1 contrast ratio.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.4.3 Contrast (Minimum)](https://www.ibm.com/able/requirements/requirements/#1_4_3)
+* [WCAG technique G18](https://www.w3.org/WAI/WCAG21/Techniques/general/G18)
+* [WCAG technique G145](https://www.w3.org/WAI/WCAG21/Techniques/general/G145)
+
+### Who does this affect?
+
+ * People with moderately low vision who do not use a contrast-enhancing technology
+ * People with visual impairment using color contrast enhancement
+ * People who cannot see color, have limited color vision or have color blindness
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

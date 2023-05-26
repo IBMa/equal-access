@@ -1,0 +1,93 @@
+<html lang="en-US">
+<head>
+    <title>style_focus_visible - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"The keyboard focus indicator must be highly visible when default border or outline is modified by CSS","Potential_1":"Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'"}};
+        RULE_ID = "style_focus_visible"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+All focus indicators should be highly visible and distinguishable. When navigating a Web page with a keyboard, users need to know which element has the keyboard focus. A visual focus indicator might be a vertical bar (a typical cursor) or a visible border surrounding a user interface control.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If the keyboard focus meets visibility standards when tabbing on to the component, no action is needed;
+ * **Or**, use the default focus indicator for the platform;
+ * **Or**, adjust the CSS styling to make the keyboard focus highly visible;
+ * **Or**, use interface components that are highlighted by the user agent when they receive focus;
+ * **Or**, use a script to change the background color or border of the element to make it visually distinct when it receives focus
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+* [WCAG technique C15](https://www.w3.org/WAI/WCAG21/Techniques/css/C15)
+* [WCAG technique SCR31](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR31)
+* [WCAG technique F78](https://www.w3.org/WAI/WCAG21/Techniques/failures/F78)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People who physically cannot use a pointing device
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
