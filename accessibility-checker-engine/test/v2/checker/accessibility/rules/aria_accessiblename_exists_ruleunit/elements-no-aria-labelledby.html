@@ -21,15 +21,10 @@
 <html lang="en">
 
 <head>
-	<title>RPT Test Suite</title>
+	<title> Test Suite</title>
 </head>
 
 <body>
-
-<a href="#navskip">skip to main content</a>
-
-
-<h2>Test case: Button-hasText.html</h2>
 
 
 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -38,32 +33,26 @@
 <h3>Accessible Name Tests</h3>
 
 
-<ol>
-	<li>Test - Valid Accessible Name - button text</li>
-</ol>
 
-<form>
-    <input type="reset">
-    <input type="submit">
-</form>
+<div role="form" aria-label="">
+    <p>Form section</p>
+    <div id="b1" role="button">press 1</div>
+    <div id="b2" role="application"></div>
+    <button>Press</button>
+</div>
+
 
 <a name="navskip"></a>
 
 
 <script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "41",
-      passedXpaths: [
-      ],
-      failedXpaths: [
+  UnitTest = {
+      ruleIds: ["input_label_exists", "aria_accessiblename_exists"],
+      results: [
+          
       ]
-    },
-  ];
-//]]>
-</script></body>
+  }
+</script>
+</body>
 
 </html>

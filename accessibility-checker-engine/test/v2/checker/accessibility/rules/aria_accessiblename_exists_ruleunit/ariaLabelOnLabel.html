@@ -25,13 +25,11 @@
 <body>
     <main>
         <div>
-            <label for="pass1" aria-label="Pass1"></label>
-            <input id="pass1" />
+            <input id="pass1" aria-label="my input"/>
         </div>
 
         <div>
-            <label for="fail1" aria-label=""></label>
-            <input id="fail1" />
+            <input id="fail1" aria-label=""/>
         </div>
 
         <div>
@@ -59,7 +57,7 @@
     </main>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["input_label_exists"],
+            ruleIds: ["input_label_exists", "aria_accessiblename_exists"],
             results: [
                 {
                     "ruleId": "input_label_exists",
