@@ -16,10 +16,13 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let input_label_exists: Rule = {
     id: "input_label_exists",
     context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]",
+    //dependencies: ["aria_role_redundant", "aria_role_valid"],
     refactor: {
         "WCAG20_Input_ExplicitLabel": {
             "Pass_0": "Pass_0",
@@ -53,7 +56,7 @@ export let input_label_exists: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
-        if (ruleContext.getAttribute("aria-hidden")) {
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) {
             return null;
         }
 
@@ -159,7 +162,7 @@ export let input_label_exists: Rule = {
             passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
         }
-        if (!passed) {
+        /**if (!passed) {
             // check aria role
             //any more roles for input? 
             const nameFromBoth = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
@@ -175,6 +178,16 @@ export let input_label_exists: Rule = {
                 if (nameFromBoth || nameFromAuthorOnly)
                 passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
             } 
+        }*/
+        if (!passed)
+            passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
+                
+        if (!passed) {
+            // check aria role to figure out if the accessible name can be from content 
+            const roles = RPTUtil.getRoles(ruleContext, true);
+            //when multiple roles specified, only the first valid role (guaranteed by dependencies) is applied, and the others just as fallbacks
+            if (ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents"))
+                passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
         }
 
         if (passed) {
