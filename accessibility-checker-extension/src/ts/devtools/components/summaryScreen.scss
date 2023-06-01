@@ -38,13 +38,13 @@
     
     .tile-title {
         @include type-style('productive-heading-01');            
-        color: #121619;
+        // color: #121619; // JCH remove for Dark Mode
     }
 
     .tile-score {
         @include type-style('heading-07');
         margin-top: 8px;
-        color: #161616;
+        // color: #161616; // JCH remove for Dark Mode
     }
 
     .tile-description {
@@ -58,7 +58,7 @@
     .score-tile {
         box-sizing: border-box;
         border: solid #8A3FFC 1px;
-        background-color: #E8DAFF;
+        // background-color: #E8DAFF; // JCH remove for Dark Mode
         margin-top: 18px;
         height: 10rem;
     }
@@ -66,14 +66,14 @@
     .status-score-tile {
         box-sizing: border-box;
         border: solid #8A3FFC 1px;
-        background-color: #E8DAFF;
+        // background-color: #E8DAFF; // JCH remove for Dark Mode
         margin-top: 18px;
         height: 10rem;
     }
 
     .count-tile {
-        box-sizing: border-box;
-        background-color: #FFFFFF;
+        box-sizing: border-box; // JCH remove for Dark Mode
+        // background-color: #FFFFFF;
         margin-top: 18px;
         height: 154px
     }

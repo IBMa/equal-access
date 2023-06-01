@@ -19,6 +19,7 @@ import React from "react";
 import { Column, Grid, Checkbox, Theme } from '@carbon/react';
 import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
+import { BrowserDetection } from '../../util/browserDetection';
 
 import "./kcmOverviewScreen.scss";
 
@@ -52,6 +53,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
         let showAgainChecked: boolean = this.state.settings ? !this.state.settings?.tabStopAlerts : false;
         return <aside className="kcmOverview">
             {/* KCM Overview Title */}
+            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <Grid style={{marginTop: "1rem", marginBottom: "1rem"}}>
                 <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 8 }}>
                     <span className="kcmTitle">Keyboard tab stops </span>
@@ -157,6 +159,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     </div>
                 </Column>
             </Grid>
+            </Theme>
         </aside>;
     }
 }

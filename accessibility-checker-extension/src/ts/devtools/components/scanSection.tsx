@@ -190,7 +190,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         }
                                     }>Scan</Button>
                                 </div>
-                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g100"} style={{flex: "0 1 2rem"}}>
+                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"} style={{flex: "0 1 2rem"}}>
                                     <OverflowMenu 
                                         size="sm" 
                                         ariaLabel="stored scans" 

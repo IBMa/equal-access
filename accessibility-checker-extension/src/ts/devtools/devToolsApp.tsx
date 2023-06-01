@@ -93,18 +93,16 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
 
-        return <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
+        return <Theme theme={BrowserDetection.isDarkMode()?"g90":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
             <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
                 <Column sm={4} md={8} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                         {primaryPanel}
                     </div>
                 </Column>
-                <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                    <Theme theme={BrowserDetection.isDarkMode()?"g10":"g10"} style={{ width: "calc(100% - 1rem", padding: "0rem", height: "100%" }}>
-                        {secondaryPanel}
-                    </Theme>
-                </Column>
+                    <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
+                            {secondaryPanel}
+                    </Column>
             </Grid>
             {typeof document === 'undefined'
                 ? null
@@ -136,7 +134,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                 </div>
                             </>}
                             <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
-                                {secondaryPanelModal}
+                                    {secondaryPanelModal}
                             </ModalBody>
                         </ComposedModal>
                     </div>,
