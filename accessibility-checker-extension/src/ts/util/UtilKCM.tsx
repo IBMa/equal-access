@@ -37,6 +37,7 @@ export class UtilKCM {
                 result.ruleId === "widget_tabbable_single" ||
 
                 result.ruleId === "IBMA_Focus_Tabbable" ||
+                result.ruleId === "widget_tabbable_exists" ||
 
                 result.ruleId === "element_tabbable_role_valid" ||
 
