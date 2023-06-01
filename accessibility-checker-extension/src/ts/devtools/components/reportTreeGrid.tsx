@@ -18,7 +18,7 @@ import * as React from 'react';
 import {
     Column,
     Grid,
-    Link
+    Link, Theme
 } from "@carbon/react";
 
 import {
@@ -32,6 +32,7 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { BrowserDetection } from "../../util/browserDetection";
 
 export interface IRowGroup {
     id: string
@@ -569,7 +570,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         let selectedDescendant: boolean = !!this.props.selectedPath 
                             && thisIssue.path.dom.startsWith(this.props.selectedPath);
                         let focused: boolean = this.state.tabRowId === rowId
-                        bodyContent.push(<Grid 
+                        bodyContent.push(
+                        <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
+                        <Grid 
                             id={rowId}
                             role="row" 
                             aria-level="2" 
@@ -586,6 +589,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 this.onRow(group, thisIssue);
                             }}
                         >
+                            
                             <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                 <div className="gridDataCell">
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
@@ -605,7 +609,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                     >Learn more</a>
                                 </div>
                             </Column>
-                        </Grid>);
+                        </Grid>
+                        </Theme>
+                        );
                     }
                 }
             }

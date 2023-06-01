@@ -47,7 +47,7 @@
     .gridBody.selectedNode {
         > div { // column
             > div {
-                background-color: var(--selected-node-background);
+                // background-color: var(--selected-node-background); // JCH remove for Dark Mode
                 border-top: solid var(--selected-node-border-color) var(--border-width);
                 border-bottom: solid var(--selected-node-border-color) var(--border-width);
             }
