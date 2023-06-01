@@ -161,7 +161,7 @@ export let input_label_exists: Rule = {
             // Is a non-empty value attribute also enough for an option element?
             passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
-        }
+        } 
         /**if (!passed) {
             // check aria role
             //any more roles for input? 
@@ -187,7 +187,7 @@ export let input_label_exists: Rule = {
             const roles = RPTUtil.getRoles(ruleContext, true);
             //when multiple roles specified, only the first valid role (guaranteed by dependencies) is applied, and the others just as fallbacks
             if (ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents"))
-                passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
+                passed = RPTUtil.hasInnerContentHidden(ruleContext);
         }
 
         if (passed) {

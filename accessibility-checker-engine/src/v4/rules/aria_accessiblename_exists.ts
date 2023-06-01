@@ -50,7 +50,9 @@ export let aria_accessiblename_exists: Rule = {
             let roles = RPTUtil.getRoles(ruleContext, true);
             //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
             if (roles && roles.length > 0 && ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents")) {
-                if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
+                //if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
+                //exclude the hidden text?
+                if (!RPTUtil.hasInnerContentHidden(ruleContext))
                     return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);  
             } else 
                 return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);   

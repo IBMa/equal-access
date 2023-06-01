@@ -12,9 +12,25 @@
 
   <script>
     UnitTest = {
-      ruleIds: ["input_label_exists"],
+      ruleIds: ["input_label_exists","aria_accessiblename_exists"],
       results: [
       {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/radiogroup[1]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
             "ruleId": "input_label_exists",
             "value": [
               "INFORMATION",
