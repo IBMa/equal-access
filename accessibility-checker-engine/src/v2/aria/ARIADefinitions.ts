@@ -50,7 +50,7 @@ export class ARIADefinitions {
 
     // deprecated roles
     static globalDeprecatedRoles : string[] = [
-        'directory'
+        'directory', 'doc-biblioentry', 'doc-endnote'
     ];
 
     // the following are deprecated in ARIA 1.1 for all the roles
@@ -512,7 +512,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-acknowledgments": {
@@ -522,7 +522,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-afterword": {
@@ -532,7 +532,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-appendix": {
@@ -542,7 +542,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-backlink": {
@@ -572,7 +572,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-biblioref": {
@@ -592,7 +592,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-colophon": {
@@ -612,7 +612,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-cover": {
@@ -622,6 +622,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "img",
             roleType: "structure",
+            nameRequired: false,
             nameFrom: ["author"],
             presentationalChildren: true
         },
@@ -632,7 +633,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-credits": {
@@ -642,7 +643,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-dedication": {
@@ -652,7 +653,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-endnote": {
@@ -662,6 +663,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "li",
             roleType: "structure",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-endnotes": {
@@ -681,7 +683,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-epilogue": {
@@ -691,7 +693,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-errata": {
@@ -701,7 +703,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-example": {
@@ -711,7 +713,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-footnote": {
@@ -721,7 +723,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-foreword": {
@@ -731,7 +733,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-glossary": {
@@ -741,7 +743,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-glossref": {
@@ -761,6 +763,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-introduction": {
@@ -770,7 +773,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-noteref": {
@@ -790,6 +793,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-pagebreak": {
@@ -799,7 +803,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure", // or widget if focusable
-            nameFrom: ["author"],
+            nameRequired: true,
+            nameFrom: ["author", "contents"],
             presentationalChildren: true
         },
         "doc-pagelist": {
@@ -809,7 +814,28 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
+            nameRequired: false,
             nameFrom: ["author"]
+        },
+        "doc-pagefooter": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+        },
+        "doc-pageheader": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
         },
         "doc-part": {
             container: null,
@@ -818,7 +844,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-preface": {
@@ -828,7 +854,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-prologue": {
@@ -838,7 +864,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-pullquote": {
@@ -848,6 +874,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-qna": {
@@ -857,7 +884,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-subtitle": {
@@ -867,7 +894,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameRequired: false,
+            nameFrom: ["author", "contents"]
         },
         "doc-tip": {
             container: null,
@@ -876,6 +904,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "doc-toc": {
@@ -885,6 +914,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
+            nameRequired: false,
             nameFrom: ["author"]
         },
         "document": {
@@ -2276,7 +2306,7 @@ export class ARIADefinitions {
         "figure": {
             "child-figcaption": {
                 implicitRole: ["figure"],
-                validRoles: null,
+                validRoles: ['doc-example'],
                 globalAriaAttributesValid: true
             },
             "no-child-figcaption": {
@@ -2535,7 +2565,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             },
             "no-child-of-list-role": {
-                implicitRole: ['listitem'],
+                implicitRole: ['generic'],
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
