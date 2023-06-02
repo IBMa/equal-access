@@ -16,11 +16,11 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
 
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
     context: "aria:alertdialog, aria:columnheader, aria:form, aria:heading, aria:link, aria:menuitem, aria:option, aria:radiogroup, aria:rowheader, aria:tab, aria:table, aria:tabpanel, aria:treegrid, aria:treeitem",
-    dependencies: ["aria_role_redundant", "aria_role_valid"],
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -45,6 +45,13 @@ export let aria_accessiblename_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         //skip the rule
+        const invalidRoles = getRolesUndefinedByAria(ruleContext);
+        if (invalidRoles && invalidRoles.length > 0) return null;
+        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        if (deprecatedRoles && deprecatedRoles.length > 0) return null;
+        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
+
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {
             let roles = RPTUtil.getRoles(ruleContext, true);
