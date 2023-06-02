@@ -190,13 +190,14 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         }
                                     }>Scan</Button>
                                 </div>
-                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"} style={{flex: "0 1 2rem"}}>
+                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
                                     <OverflowMenu 
                                         size="sm" 
                                         ariaLabel="stored scans" 
-                                        align="bottom" 
+                                        //align="bottom" 
                                         renderIcon={ChevronDown}
                                     >
+                                        <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
                                         <OverflowMenuItem
                                             disabled={!this.state.reportContent}
                                             itemText="Download current scan" 
@@ -231,6 +232,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                                 this.setState({ confirmClearStored: true });
                                             }}
                                         />
+                                        </Theme>
                                     </OverflowMenu>
                                 </Theme>
                             </div>

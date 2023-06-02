@@ -21,7 +21,7 @@ body {
         }
     }
     .leftCol {
-        background-color: $gray-10;
+        // background-color: $gray-10; // JCH remove for Dark Mode
         padding-right: var(--cds-grid-gutter-end);
         padding-left: var(--cds-grid-gutter-start);
         margin-left: 0rem;

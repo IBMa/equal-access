@@ -21,6 +21,8 @@ import React from "react";
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import { DocPage } from "../docs/components/DocPage";
+import {  Theme } from "@carbon/react";
+import { BrowserDetection } from "../util/browserDetection";
 
 import {
     Button,
@@ -289,7 +291,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         // user uses the keyboard visualization - note it is can be 
         // reset with "Reset to defaults"
 
-        let aside = <aside aria-label="About Accessibility Checker Options">
+        let aside = (<>
+            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
+            <aside aria-label="About Accessibility Checker Options">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
                 the most recent WCAG standards plus some additional IBM requirements. Rule sets 
@@ -307,7 +311,10 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                 >user guide</Link>.
             </p>
         </aside>;
+        </Theme>
+        </>)
         return (<DocPage aside={aside} sm={4} md={6} lg={6}>
+            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <main aria-labelledby="options">
                 <h1 id="options">IBM Accessibility Checker options</h1>
                 {!archives || !rulesets && <>
@@ -506,7 +513,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                     </ButtonSet>
                 </>}
             </main>
-
+            </Theme>
         </DocPage>);
     }
 }

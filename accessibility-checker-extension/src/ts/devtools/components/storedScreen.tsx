@@ -34,6 +34,7 @@ import { IStoredReportMeta } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
 import "./storedScreen.scss";
 import { BasicTable } from "./BasicTable";
+import { BrowserDetection } from "../../util/browserDetection";
 
 interface IStoredScreenState {
     storedReports: IStoredReportMeta[]
@@ -69,8 +70,8 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
         return (
             <Grid className="storedScreen">
                 <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
-                    <Theme theme="g10">
-                        <h2>Stored Scans</h2>
+                    <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
+                        <h2>Stored scans</h2>
                         <div style={{marginTop: "1rem"}} />
                         <div style={{
                             display: (this.state.deleteSelectedRows || detailRow) ? "none": "block"

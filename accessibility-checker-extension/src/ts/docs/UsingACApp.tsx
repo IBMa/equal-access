@@ -33,12 +33,8 @@ import tab from "../../assets/tab.svg";
 import upDown from "../../assets/up_down.svg";
 import { DocPage } from "./components/DocPage";
 import "./usingAC.scss";
-import {
-    Link,
-    ListItem,
-    OrderedList,
-    UnorderedList
-} from "@carbon/react";
+import { Link, ListItem, OrderedList, UnorderedList, Theme } from "@carbon/react";
+import { BrowserDetection } from "../util/browserDetection";
 
 interface UsingACAppState { }
 
@@ -46,7 +42,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     state: UsingACAppState = {};
 
     render() {
-        let aside = <>
+        let aside = (<>
+            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList>
                 <ListItem><Link href="#install">How to install</Link></ListItem>
@@ -68,10 +65,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
             </OrderedList>
             <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">quick guide</Link>
-            </p></>
+            </p>
+            </Theme>
+            </>)
 
-        return (<DocPage aside={aside} sm={4} md={8} lg={8}>
-
+        return (
+            
+            <DocPage aside={aside} sm={4} md={8} lg={8}>
+            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <main
                 aria-label="User guide details"
             >
@@ -814,8 +815,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="keyboard tab stop indicators stacked on amazon's carousel banner"
                     />
                 </p>
+                
             </main>
+            </Theme>
         </DocPage>
+        
         );
     }
 }

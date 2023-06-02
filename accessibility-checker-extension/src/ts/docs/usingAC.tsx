@@ -16,13 +16,14 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-    
+import {  Theme } from "@carbon/react";
+import { BrowserDetection } from "../util/browserDetection";
 import "../styles/index.scss";
 import UsingACApp from './UsingACApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <UsingACApp />
+        return <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}><UsingACApp /></Theme>
     }
 }
 
