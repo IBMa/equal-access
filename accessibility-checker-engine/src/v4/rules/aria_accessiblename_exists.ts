@@ -45,6 +45,8 @@ export let aria_accessiblename_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         //skip the rule
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+
         const invalidRoles = getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
         const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
@@ -52,7 +54,6 @@ export let aria_accessiblename_exists: Rule = {
         const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
-        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {
             let roles = RPTUtil.getRoles(ruleContext, true);
             //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
