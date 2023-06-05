@@ -20,7 +20,7 @@ import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedB
 
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:link, aria:rowheader, aria:table",
+    context: "aria:columnheader, aria:form, aria:heading, aria:link, aria:rowheader, aria:table, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
