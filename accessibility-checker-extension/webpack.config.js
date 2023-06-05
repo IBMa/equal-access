@@ -159,8 +159,8 @@ module.exports = {
                 toType: 'file'
             },
             {
-                from: path.join(archivePath, "archives", "**", "*"),
-                to: path.join(distRootPath, "archives", "**", "*"),
+                from: path.join(archivePath, "archives"),
+                to: path.join(distRootPath, "archives"),
                 globOptions: {
                     ignore: [
                         path.join("**", "ace-*.js")
