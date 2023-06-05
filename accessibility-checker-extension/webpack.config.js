@@ -160,7 +160,12 @@ module.exports = {
             },
             {
                 from: path.join(archivePath, "archives"),
-                to: path.join(distRootPath, "archives")
+                to: path.join(distRootPath, "archives"),
+                globOptions: {
+                    ignore: [
+                        path.join("**", "ace-*.js")
+                    ]
+                }
             }
         ]}),
        
