@@ -234,7 +234,7 @@ let ACTasks = module.exports = {
     sendResultsToReporter: function (unFilteredResults, results, profile) {
         return ACTasks.initialize().then(() => {
             ACTasks.DEBUG && console.log("sendResultsToReporter:", ACTasks.Config.outputFormat);
-            if (!ACReportManager.config.outputFormat.includes("disable")) {
+            if (!ACTasks.Config.outputFormat.includes("disable")) {
                 if (ACTasks.Config.outputFormat.includes("json")) {
                     ACTasks.reporterJSON.report(results);
                 }
