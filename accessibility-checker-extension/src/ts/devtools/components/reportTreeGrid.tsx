@@ -18,7 +18,7 @@ import * as React from 'react';
 import {
     Column,
     Grid,
-    Link, Theme
+    Link
 } from "@carbon/react";
 
 import {
@@ -32,7 +32,6 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
-import { BrowserDetection } from "../../util/browserDetection";
 
 export interface IRowGroup {
     id: string
@@ -571,7 +570,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             && thisIssue.path.dom.startsWith(this.props.selectedPath);
                         let focused: boolean = this.state.tabRowId === rowId
                         bodyContent.push(
-                        <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
                         <Grid 
                             id={rowId}
                             role="row" 
@@ -610,7 +608,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 </div>
                             </Column>
                         </Grid>
-                        </Theme>
                         );
                     }
                 }

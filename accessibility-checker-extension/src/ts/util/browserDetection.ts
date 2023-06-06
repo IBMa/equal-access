@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 *****************************************************************************/
+declare var document: Document;
 
 export class BrowserDetection {
 
@@ -30,5 +31,15 @@ export class BrowserDetection {
 
     public static isDarkMode(): boolean {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    public static setDarkLight() {
+        if (typeof document !== "undefined" && typeof document.body !== "undefined") {
+            if (BrowserDetection.isDarkMode()) {
+                document.body.setAttribute("class", "cds--g90");
+            } else {
+                document.body.setAttribute("class", "cds--g10");
+            }
+        }
     }
 }

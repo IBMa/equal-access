@@ -29,6 +29,6 @@ class PageApp extends React.Component<{}, {}> {
     }
 }
 
-ReactDOM.render(<Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}><PageApp /></Theme>
+ReactDOM.render(<PageApp />
     , document.getElementById('pageapp-root'));
     

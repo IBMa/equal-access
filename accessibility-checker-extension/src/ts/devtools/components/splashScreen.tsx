@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import React from "react";
-import { Column, Grid, Theme } from "@carbon/react";
+import { Column, Grid } from "@carbon/react";
 import { BrowserDetection } from "../../util/browserDetection";
 import "./splashScreen.scss";
 
@@ -39,7 +39,6 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
             }
         }
         return (
-            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g100"}>
             <Grid className="splashScreen">
                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
                     <h2>
@@ -60,7 +59,6 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
                     <img src={splashScreen} alt="Splash screen" style={{ maxWidth: "100%", marginTop: "36px" }}></img>
                 </Column>
             </Grid>
-            </Theme>
         )
     }
 }

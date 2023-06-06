@@ -29,7 +29,6 @@ import {
     OverflowMenu,
     OverflowMenuItem,
     Switch,
-    Theme,
     Tooltip
 } from "@carbon/react";
 import {
@@ -41,7 +40,6 @@ import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { BrowserDetection } from '../../util/browserDetection';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -190,51 +188,47 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         }
                                     }>Scan</Button>
                                 </div>
-                                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
-                                    <OverflowMenu 
-                                        size="sm" 
-                                        ariaLabel="stored scans" 
-                                        //align="bottom" 
-                                        renderIcon={ChevronDown}
-                                    >
-                                        <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
-                                        <OverflowMenuItem
-                                            disabled={!this.state.reportContent}
-                                            itemText="Download current scan" 
-                                            onClick={() => devtoolsController.exportXLS("last") }
-                                        />
-                                        <OverflowMenuItem 
-                                            // if scanStorage false not storing scans, if true storing scans
-                                            itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
-                                            onClick={() => {
-                                                devtoolsController.setStoreReports(!this.state.storeReports);
-                                            }}
-                                        />
-                                        <OverflowMenuItem 
-                                            disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                            itemText="Download stored scans" 
-                                            onClick={() => devtoolsController.exportXLS("all") }
-                                        />
-                                        <OverflowMenuItem 
-                                            disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                            itemText="View stored scans" 
-                                            onClick={async () => {
-                                                await devtoolsAppController.setSecondaryView("stored");
-                                                devtoolsAppController.openSecondary(".cds--overflow-menu[aria-label='stored scans']");
-                                            }}
-                                        />
-                                        <OverflowMenuItem 
-                                            disabled={this.state.storedReportsCount === 0}
-                                            isDelete={this.state.storedReportsCount > 0}
-                                            hasDivider
-                                            itemText="Delete stored scans" 
-                                            onClick={() => {
-                                                this.setState({ confirmClearStored: true });
-                                            }}
-                                        />
-                                        </Theme>
-                                    </OverflowMenu>
-                                </Theme>
+                                <OverflowMenu 
+                                    size="sm" 
+                                    ariaLabel="stored scans" 
+                                    //align="bottom" 
+                                    renderIcon={ChevronDown}
+                                >
+                                    <OverflowMenuItem
+                                        disabled={!this.state.reportContent}
+                                        itemText="Download current scan" 
+                                        onClick={() => devtoolsController.exportXLS("last") }
+                                    />
+                                    <OverflowMenuItem 
+                                        // if scanStorage false not storing scans, if true storing scans
+                                        itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
+                                        onClick={() => {
+                                            devtoolsController.setStoreReports(!this.state.storeReports);
+                                        }}
+                                    />
+                                    <OverflowMenuItem 
+                                        disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
+                                        itemText="Download stored scans" 
+                                        onClick={() => devtoolsController.exportXLS("all") }
+                                    />
+                                    <OverflowMenuItem 
+                                        disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
+                                        itemText="View stored scans" 
+                                        onClick={async () => {
+                                            await devtoolsAppController.setSecondaryView("stored");
+                                            devtoolsAppController.openSecondary(".cds--overflow-menu[aria-label='stored scans']");
+                                        }}
+                                    />
+                                    <OverflowMenuItem 
+                                        disabled={this.state.storedReportsCount === 0}
+                                        isDelete={this.state.storedReportsCount > 0}
+                                        hasDivider
+                                        itemText="Delete stored scans" 
+                                        onClick={() => {
+                                            this.setState({ confirmClearStored: true });
+                                        }}
+                                    />
+                                </OverflowMenu>
                             </div>
                         </div>
                         <div style={{flex: "1 1 8.75rem"}}>

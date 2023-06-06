@@ -16,13 +16,12 @@
 
 import React from "react";
 
-import { Column, Grid, Tile, Theme } from '@carbon/react';
+import { Column, Grid, Tile } from '@carbon/react';
 import Violation16 from "../../../assets/Violation16.svg";
 import NeedsReview16 from "../../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../../assets/Recommendation16.svg";
 import { IReport, IStoredReportMeta } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
-import { BrowserDetection } from "../../util/browserDetection";
 import "./summaryScreen.scss";
 
 interface ISummaryScreenState {
@@ -83,7 +82,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div style={{ margin: "1rem -1rem 0rem 0rem" }}>
-            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
                 <Grid style={{margin: "0rem"}}>
                     <Column sm={{ span: 4 }} md={{ span: 6 }} lg={{ span: 6 }}>
                         <h2 id="summaryTitle" className="summaryTitle">Scan summary</h2>
@@ -135,7 +133,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                         </Tile>
                     </Column>
                 </Grid>
-            </Theme>
             </div>
         </aside>;
     }

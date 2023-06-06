@@ -160,6 +160,6 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                 </Column>
             </Grid>
             </Theme>
-        </aside>;
+        </aside>
     }
 }

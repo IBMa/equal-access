@@ -28,6 +28,7 @@
     export default class PopupApp extends React.Component {
     
       render() {
+        BrowserDetection.setDarkLight();
         const manifest = chrome.runtime.getManifest();
         function displayVersion() {
             let extVersion = manifest.version;

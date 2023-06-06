@@ -28,8 +28,7 @@ import {
     ComposedModal,
     Grid,
     ModalBody,
-    ModalHeader,
-    Theme
+    ModalHeader
 } from "@carbon/react";
 
 import "../styles/index.scss";
@@ -72,6 +71,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     }
 
     render() {
+        BrowserDetection.setDarkLight();
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
@@ -93,8 +93,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
 
-        return <Theme theme={BrowserDetection.isDarkMode()?"g90":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
-            <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
+        return <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
                 <Column sm={4} md={8} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                         {primaryPanel}
@@ -121,7 +120,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
                                 <div style={{
-                                    backgroundColor: "white",
+                                    // backgroundColor: "white",
                                     padding: "1rem"
                                 }}>
                                     <Button 
@@ -141,6 +140,5 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     document.body
                 )
             }
-        </Theme>
     }
 }

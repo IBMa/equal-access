@@ -24,7 +24,11 @@ import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
 import { DocPage } from "./components/DocPage";
-import { Link, ListItem, OrderedList, UnorderedList, Theme } from "@carbon/react";
+import { Link, 
+    ListItem, 
+    OrderedList, 
+    UnorderedList, 
+} from "@carbon/react";
 import "./quickGuide.scss";
 import { BrowserDetection } from "../util/browserDetection";
 
@@ -34,8 +38,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
     state: quickGuideACAppState = {};
 
     render() {
+        BrowserDetection.setDarkLight();
         let aside = (<>
-            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList style={{ marginLeft: "1.5rem" }}>
                 <ListItem><Link href="#checker">Accessibility Checker</Link></ListItem>
@@ -53,11 +57,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     inline={true}
                     size="lg">user guide</Link>
             </p>
-            </Theme>
         </>)
         return (
             <DocPage aside={aside} sm={4} md={8} lg={8}>
-                <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
                 <main
                     role="main"
                     aria-label="Quick guide details"
@@ -243,7 +245,6 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </UnorderedList>
                     
                 </main>
-                </Theme>
             </DocPage>
         );
     }

@@ -21,7 +21,6 @@ import React from "react";
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import { DocPage } from "../docs/components/DocPage";
-import {  Theme } from "@carbon/react";
 import { BrowserDetection } from "../util/browserDetection";
 
 import {
@@ -279,6 +278,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
     };
 
     render() {
+        BrowserDetection.setDarkLight();
         let {
             archives,
             selected_archive,
@@ -292,7 +292,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         // reset with "Reset to defaults"
 
         let aside = (<>
-            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <aside aria-label="About Accessibility Checker Options">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
@@ -310,11 +309,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                     rel="noopener noreferred"
                 >user guide</Link>.
             </p>
-        </aside>;
-        </Theme>
+        </aside>
         </>)
         return (<DocPage aside={aside} sm={4} md={6} lg={6}>
-            <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
             <main aria-labelledby="options">
                 <h1 id="options">IBM Accessibility Checker options</h1>
                 {!archives || !rulesets && <>
@@ -513,7 +510,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                     </ButtonSet>
                 </>}
             </main>
-            </Theme>
         </DocPage>);
     }
 }
