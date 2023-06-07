@@ -118,8 +118,8 @@ function processACConfig(ACConfig) {
                     constants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
                     ACConfig.ruleArchiveSet = ruleArchiveParse;
                     let ruleArchive = ACConfig.ruleArchive;
+                    ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
                     let ruleArchivePath = null;
-                    let ruleArchiveVersion = null;
                     for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
                         if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                             ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
@@ -132,10 +132,16 @@ function processACConfig(ACConfig) {
                         console.log(`[ERROR] RuleArchiveInvalid (${ruleArchive}): Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md`);
                         process.exit(-1);
                     }
-
+                    for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+                        if (ACConfig.ruleArchiveVersion === ACConfig.ruleArchiveSet[i].version && ACConfig.ruleArchiveSet[i].id !== "latest" && ACConfig.ruleArchiveSet[i].id !== "preview") {
+                            ACConfig.ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                            break;
+                        }
+                    }
+                    //}
                     // Build the new rulePack based of the baseA11yServerURL and archive info
                     if (baseA11yServerURL.includes("jsdelivr.net")) {
-                        ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
+                        ACConfig.rulePack = `${baseA11yServerURL}@${ACConfig.ruleArchiveVersion}`;
                     } else {
                         ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
                     }
