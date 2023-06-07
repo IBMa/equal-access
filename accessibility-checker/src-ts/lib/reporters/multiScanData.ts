@@ -16,6 +16,7 @@
 
 
 const stringHash = require("string-hash");
+import { ACEngineManager } from "../ACEngineManager";
 import { IConfigUnsupported } from "../api/IChecker";
 import { report } from 'process';
 
@@ -97,8 +98,8 @@ import { report } from 'process';
                     MultiScanData.get_element(item.snippet),
                     item.snippet,
                     item.path.aria,
+                    ACEngineManager.getHelpURL(item)
                     // engine_end_point + '/tools/help/' + item.ruleId
-                    engine_end_point + item.ruleId + ".html"
                 ]
     
                 ret.push(row);
