@@ -18,7 +18,7 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -39,7 +39,7 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -60,7 +60,7 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -81,7 +81,7 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -102,7 +102,7 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -123,7 +123,7 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -144,7 +144,7 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -165,7 +165,7 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -186,7 +186,7 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -207,7 +207,7 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -228,7 +228,7 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -249,7 +249,7 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -270,7 +270,7 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -291,7 +291,7 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -312,7 +312,7 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -333,7 +333,7 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -354,7 +354,7 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -375,7 +375,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -396,7 +396,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -417,7 +417,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_contrast_sufficient",
@@ -438,7 +438,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -459,7 +459,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -480,7 +480,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "heading_markup_misuse",
@@ -501,7 +501,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "heading_content_exists",
@@ -522,7 +522,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -543,7 +543,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -564,7 +564,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_accessiblename_exists",
@@ -585,7 +585,7 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -606,7 +606,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -627,7 +627,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -648,7 +648,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_block_heading",
@@ -669,7 +669,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -690,7 +690,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -711,7 +711,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -732,7 +732,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "element_id_unique",
@@ -753,7 +753,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "violation"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -774,7 +774,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -795,7 +795,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -816,7 +816,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -837,7 +837,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_block_heading",
@@ -858,7 +858,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -879,7 +879,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -900,7 +900,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -921,7 +921,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "element_id_unique",
@@ -942,7 +942,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -963,7 +963,7 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -984,7 +984,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -1005,7 +1005,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -1026,7 +1026,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -1047,7 +1047,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -1068,7 +1068,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -1089,7 +1089,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -1110,7 +1110,7 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -1131,7 +1131,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -1152,7 +1152,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -1173,7 +1173,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_block_heading",
@@ -1194,7 +1194,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -1215,7 +1215,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -1236,7 +1236,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -1257,7 +1257,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_valid",
@@ -1278,7 +1278,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_redundant",
@@ -1299,7 +1299,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_allowed",
@@ -1320,7 +1320,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_keyboard_handler_exists",
@@ -1341,7 +1341,7 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "widget_tabbable_single",
@@ -1362,7 +1362,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "widget_tabbable_exists",
@@ -1383,7 +1383,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -1404,7 +1404,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -1425,7 +1425,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -1446,7 +1446,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_contrast_sufficient",
@@ -1467,7 +1467,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -1488,7 +1488,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -1509,7 +1509,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -1530,7 +1530,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "element_tabbable_visible",
@@ -1551,7 +1551,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_content_in_landmark",
@@ -1572,7 +1572,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_accessiblename_exists",
@@ -1593,7 +1593,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "a_text_purpose",
@@ -1614,7 +1614,7 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -1635,7 +1635,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -1656,7 +1656,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -1677,7 +1677,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_block_heading",
@@ -1698,7 +1698,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -1719,7 +1719,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -1740,7 +1740,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -1761,7 +1761,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_valid",
@@ -1782,7 +1782,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_redundant",
@@ -1803,7 +1803,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_role_allowed",
@@ -1824,7 +1824,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "aria_keyboard_handler_exists",
@@ -1845,7 +1845,7 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_whitespace_valid",
@@ -1866,7 +1866,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_sensory_misuse",
@@ -1887,7 +1887,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "text_quoted_correctly",
@@ -1908,7 +1908,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "skip_main_exists",
@@ -1929,7 +1929,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "skip_main_described",
@@ -1950,7 +1950,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -1971,7 +1971,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -1992,7 +1992,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -2013,7 +2013,7 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "page_title_exists",
@@ -2034,7 +2034,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "list_markup_review",
@@ -2055,7 +2055,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "img_alt_background",
@@ -2076,7 +2076,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "html_skipnav_exists",
@@ -2097,7 +2097,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "html_lang_valid",
@@ -2118,7 +2118,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "html_lang_exists",
@@ -2139,7 +2139,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}, {
 		"ruleId": "emoticons_alt_exists",
@@ -2160,7 +2160,7 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": false,
+		"ignored": true,
 		"level": "pass"
 	}],
 	"numExecuted": 103,
@@ -2281,13 +2281,13 @@
 	},
 	"summary": {
 		"counts": {
-			"violation": 1,
+			"violation": 0,
 			"potentialviolation": 0,
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 102,
-			"ignored": 0
+			"pass": 0,
+			"ignored": 103
 		},
 		"scanTime": 999,
 		"ruleArchive": "Preview Rules (preview)",
