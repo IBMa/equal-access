@@ -50,7 +50,7 @@ let ACTasks = module.exports = {
         ACTasks.reporterHTML && ACTasks.reporterHTML.onRunComplete();
         ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
         ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
-        ACTasks.metricsLogger.sendLogsV2();
+        ACTasks.reporterXLSX && ACTasks.reporterXLSX.onRunComplete();
         return true;
     },
 
@@ -246,6 +246,9 @@ let ACTasks = module.exports = {
                 }
                 if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
                     ACTasks.reporterHTML.report(unFilteredResults);
+                }
+                if (ACTasks.Config.outputFormat.includes("xlsx")) {
+                    ACTasks.reporterXLSX.report(unFilteredResults);
                 }
             }
             // Only perform the profiling if profiling was not disabled on purpose
