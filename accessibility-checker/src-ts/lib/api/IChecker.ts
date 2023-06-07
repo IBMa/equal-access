@@ -97,6 +97,9 @@ export type IConfigUnsupported = IConfig & {
 
     rulePack?: string
 
+    ruleArchivePath?: string
+    ruleArchiveVersion?: string
+
     /**
      * (optional) If the tool allows, should we capture screenshots
      */
