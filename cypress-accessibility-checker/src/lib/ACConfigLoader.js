@@ -123,13 +123,14 @@ function processACConfig(ACConfig) {
                     for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
                         if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                             ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                            ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
+                            ACConfig.ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                             ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                             break;
                         }
                     }
-                    if (!ruleArchivePath || ruleArchiveVersion === null) {
-                        console.log(`[ERROR] RuleArchiveInvalid (${ruleArchive}): Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md`);
+                    if (!ruleArchivePath || ACConfig.ruleArchiveVersion === null) {
+                        const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
+                        console.error(errStr);
                         process.exit(-1);
                     }
                     for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
