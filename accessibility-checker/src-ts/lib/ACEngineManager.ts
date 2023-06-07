@@ -35,6 +35,9 @@ export class ACEngineManager {
                                 }
                                 resolve();
                             });
+                            script.addEventListener('error', function (evt) {
+                                reject(new Error(`Unable to load engine into ${document.location.href}. This can happen if the page server sets a Content-Security-Policy that prevents ${scriptUrl} from loading.`))
+                            });
                             let heads = document.getElementsByTagName('head');
                             if (heads.length > 0) { heads[0].appendChild(script); }
                             else if (document.body) { document.body.appendChild(script); }
