@@ -181,7 +181,7 @@ try {
      */
     static getHelpURL(issue) {
         let config = ACConfigManager.getConfigNow();
-        let helpUrl = checker.engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
+        let helpUrl = checker.engine.getHelp(issue.ruleId, issue.reasonId, config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
         let minIssue = {
             message: issue.message,
             snippet: issue.snippet,
