@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+       <a href="https://ibm.com" role="doc-backlink">IBM</a>
+       <a href="https://ibm.com" role="doc-noteref">IBM</a>
+       <a role="doc-backlink">IBM</a>
+       <a role="doc-noteref">IBM</a>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_role_valid"],
+        results: [
+        {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/a[1]",
+              "aria": "/document[1]/main[1]/doc-backlink[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-backlink",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/a[2]",
+              "aria": "/document[1]/main[1]/doc-noteref[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-noteref",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/a[3]",
+              "aria": "/document[1]/main[1]/doc-backlink[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-backlink",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/a[4]",
+              "aria": "/document[1]/main[1]/doc-noteref[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-noteref",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

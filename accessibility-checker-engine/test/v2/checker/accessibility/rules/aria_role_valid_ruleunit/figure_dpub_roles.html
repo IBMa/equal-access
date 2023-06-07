@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+       <figure role="doc-backlink">
+         <figcaption>figure 1</figcaption>
+       </figure>
+       <figure role=" doc-acknowledgments">
+        <figcaption>figure 1</figcaption>
+      </figure>  
+       <figure role="doc-example">
+        <figcaption>figure 2</figcaption>
+      </figure>
+      <figure role="doc-backlink">
+      </figure>
+      <figure role="doc-example">
+      </figure>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_role_valid"],
+        results: [
+        {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/figure[1]",
+              "aria": "/document[1]/main[1]/doc-backlink[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'doc-backlink' is not valid for the element <figure>",
+            "messageArgs": [
+              "doc-backlink",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/figure[2]",
+              "aria": "/document[1]/main[1]/doc-acknowledgments[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'doc-acknowledgments' is not valid for the element <figure>",
+            "messageArgs": [
+              "doc-acknowledgments",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/figure[3]",
+              "aria": "/document[1]/main[1]/doc-example[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-example",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/figure[4]",
+              "aria": "/document[1]/main[1]/doc-backlink[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-backlink",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/figure[5]",
+              "aria": "/document[1]/main[1]/doc-example[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "doc-example",
+              "figure"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
