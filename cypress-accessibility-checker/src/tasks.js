@@ -110,7 +110,7 @@ function getConfig() {
 module.exports = ({ task, data }) => {
     switch (task) {
         case 'sendResultsToReporter':
-            return ACTasks.sendResultsToReporter(data.origReport, data.report);
+            return ACTasks.sendResultsToReporter(data.result.origReport, data.result.report, data.profile);
         case 'assertCompliance':
             return assertCompliance(data);
         case 'getBaseline':
