@@ -27,7 +27,7 @@ let checkNls = {};
 let checkHelp = {};
 
 function _initialize() {
-    const langs = Engine.getLanguages();
+    const langs = JSON.parse(JSON.stringify(Engine.getLanguages()));
     // Default lang to en-US if nothing else specified is found
     langs.push("en-US");
     // Process V4 rules into the V2 format
