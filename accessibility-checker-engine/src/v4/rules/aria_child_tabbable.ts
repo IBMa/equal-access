@@ -68,10 +68,22 @@ export let aria_child_tabbable: Rule = {
             return null;
         }
 
+        //ignore datalist element check since it will be part of a input element or hidden by default
+        if (ruleContext.nodeName.toLowerCase() === 'datalist')
+            return null;
+
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         // Determine if this is referenced by a combobox. If so, focus is controlled by the combobox
         let id = ruleContext.getAttribute("id");
         if (id && id.trim().length > 0) {
             if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+                return null;
+            }
+        
+            // ignore if the id of the element is referenced by another element with "aria-controls" and with certain roles. If so, focus is controlled by the referencing element
+            const containers = ['listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
+            if (roles && roles.length >0 && roles.some(r=>containers.includes(r) 
+                && ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}']`))) {
                 return null;
             }
         }
@@ -83,7 +95,6 @@ export let aria_child_tabbable: Rule = {
         let nodeName = "";
         let inScope = false;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         for (let j = 0; j < roles.length; ++j) {
             if (ARIADefinitions.containers.includes(roles[j])) {
                 let disabled = hasAttribute(ruleContext, 'aria-disabled') ? ruleContext.getAttribute("aria-disabled") : '';
