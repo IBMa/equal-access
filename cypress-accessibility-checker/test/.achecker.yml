@@ -54,6 +54,7 @@ outputFormat:
 # Default: N/A
 label:
     - master
+    - IBMa-Node-TeSt
 
 # optional - Where the scan results should be saved.
 # Default: results
