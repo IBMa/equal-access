@@ -6,23 +6,7 @@ const ACReporterCSV = require("./reporters/ACReporterCSV");
 const DeepDiff = require("deep-diff");
 
 const myrequest = (url) => {
-    if (typeof cy !== "undefined") {
-        return cy.request(url)
-            .then((data) => {
-                return data.body;
-            })
-    } else {
-        return new Promise((resolve, reject) => {
-            const request = require("@cypress/request");
-            request.get(url, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
-    }
+    return fetch(url).then(resp => resp.text());
 }
 
 let loggerFunction = function (output) {
@@ -67,27 +51,27 @@ let ace;
 
 let ACCommands = module.exports = {
     DEBUG: false,
-    initializeConfig: () => {
+    initializeConfig: (fileConfig) => {
         if (ACCommands.initConfigOnce) return ACCommands.initConfigOnce;
 
         ACCommands.DEBUG && console.log("START 'initialize' function");
-        return ACCommands.initConfigOnce = ACConfigLoader()
-        .then((config) => {
-            ACCommands.Config = config;
-            return config;
-        });
+        return ACCommands.initConfigOnce = ACConfigLoader(fileConfig)
+            .then((config) => {
+                ACCommands.Config = config;
+                return config;
+            });
     },
-    initialize: () => {
+    initialize: (win, fileConfig) => {
         if (ACCommands.initOnce) {
             return ACCommands.initOnce.then(() => {
                 if (!ACCommands.ace) {
                     ACCommands.initOnce = false;
-                    return ACCommands.initialize();
+                    return ACCommands.initialize(win);
                 }
             })
         }
 
-        return ACCommands.initOnce = ACCommands.initializeConfig().then(() => {
+        return ACCommands.initOnce = ACCommands.initializeConfig(fileConfig).then(() => {
             if (ACCommands.Config.rulePack.includes("localhost")) {
                 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
             }
@@ -109,17 +93,17 @@ let ACCommands = module.exports = {
 
             // Initialize the global object which will store all the diff results for a scan that is run, using
             // actual and expected.
-            ACCommands.diffResults = {};
+            ACCommands.diffResults = ACCommands.diffResults || {};
 
             // Initialize the global object which will store all the scan results indexed by the label.
             ACCommands.scanResults = {};
 
             ACCommands.engineLoaded = false;
-            return ACCommands.loadEngine()
+            return ACCommands.loadEngine(win)
         })
-        .then(() => {
-            ACCommands.DEBUG && console.log("END 'initialize' function");
-        })
+            .then(() => {
+                ACCommands.DEBUG && console.log("END 'initialize' function");
+            })
     },
     initializeSummary: () => {
         // Variable Decleration
@@ -182,41 +166,28 @@ let ACCommands = module.exports = {
      *
      * @return N/A - This function will not return any thing, as it is full async
      */
-    loadEngine: (content) => {
+    loadEngine: (win, content) => {
         ACCommands.DEBUG && console.log("START 'aChecker.loadEngine' function");
 
-        if (typeof cy === "undefined") {
-            // We aren't loading the engine in tasks outside of the cypress browser engine
-            if (ace) {
-                return Promise.resolve();
-            } else {
-                return module.exports.loadLocalEngine((engine) => {
-                    return ace = engine;
-                });
-            }
-        }
-        return cy.window()
-        .then((win) => {
-            ACCommands.myWindow = win.parent;
-            if (!ACCommands.myWindow.ace) {
-                return ACCommands.loadCypressEngine()
+        ACCommands.myWindow = win.parent;
+        if (!ACCommands.myWindow.ace) {
+            return ACCommands.loadCypressEngine()
                 .then(() => {
                     ace = win.ace = ACCommands.myWindow.ace;
                     win.ace.checker = new ace.Checker();
                     ACCommands.DEBUG && console.log("END 'aChecker.loadEngine' function1");
                 })
-            } else {
-                ace = win.ace = ACCommands.myWindow.ace;
-                ACCommands.DEBUG && console.log("END 'aChecker.loadEngine' function2");
-            }
-        });
+        } else {
+            ace = win.ace = ACCommands.myWindow.ace;
+            ACCommands.DEBUG && console.log("END 'aChecker.loadEngine' function2");
+        }
     },
 
     loadCypressEngine: () => {
         ACCommands.DEBUG && console.log("START 'aChecker.loadCypressEngine' function");
         if (ace) {
             ACCommands.DEBUG && console.log("END 'aChecker.loadCypressEngine' function");
-            return Promise.resolve();
+            return;
         }
         return myrequest(ACCommands.Config.rulePack + "/ace.js")
             .then((data) => {
@@ -292,82 +263,81 @@ let ACCommands = module.exports = {
 
     getComplianceHelper: function (content, label) {
         ACCommands.DEBUG && console.log("START 'ACCommands.getComplianceHelper' function");
-        return ACCommands.initialize().then(() => {
-            if (!content) {
-                console.error("aChecker: Unable to get compliance of null or undefined object")
-                return null;
+        if (!content) {
+            console.error("aChecker: Unable to get compliance of null or undefined object")
+            return null;
+        }
+
+        // In the case that the label is null or undefined, throw an error using the karma API
+        // console.error with the message of the error.
+        if (label === null || typeof label === "undefined" || label === undefined) {
+
+            // Variable Decleration
+            let testcaseWhichIsMissingRequiredLabel = null;
+            let generalErrorMessageLabelNotUnique = "\n[Error] labelNotProvided: Label must be provided when calling aChecker.getCompliance.";
+
+            // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
+            // This way we can make it the error more descriptive and would help the user identify where the issues is.
+            // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
+            // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
+            // testcase which called this function.
+            try {
+                // Throw Error() object
+                throw new Error();
+            } catch (exception) {
+                // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
+                testcaseWhichIsMissingRequiredLabel = exception.stack.split("\n")[1];
+
+                // Call the Karma error API, to send message to the Karma server that there was an error on the client side
+                console.error("Label was not provided at: " + testcaseWhichIsMissingRequiredLabel + generalErrorMessageLabelNotUnique);
             }
+        }
 
-            // In the case that the label is null or undefined, throw an error using the karma API
-            // console.error with the message of the error.
-            if (label === null || typeof label === "undefined" || label === undefined) {
+        // Check to make sure that the label that is provided is unique with all the other ones
+        // that we have gone through.
+        let labelUnique = ACCommands.isLabelUnique(label);
+        // In the case that the label is not unique
+        if (!labelUnique) {
+            // Variable Decleration dependencies/tools-rules-html/v2/a11y/test/g471/Table-DataNoSummaryARIA.html
+            let testcaseDoesNotUseUniqueLabel = null;
+            let generalErrorMessageLabelNotUnique = "\n[Error] labelNotUnique: Label provided to aChecker.getCompliance should be unique across all testcases in a single accessibility-checker session.";
 
-                // Variable Decleration
-                let testcaseWhichIsMissingRequiredLabel = null;
-                let generalErrorMessageLabelNotUnique = "\n[Error] labelNotProvided: Label must be provided when calling aChecker.getCompliance.";
+            // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
+            // This way we can make it the error more descriptive and would help the user identify where the issues is.
+            // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
+            // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
+            // testcase which called this function.
+            try {
+                // Throw Error() object
+                throw new Error();
+            } catch (exception) {
+                // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
+                testcaseDoesNotUseUniqueLabel = exception.stack.split("\n")[1];
 
-                // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
-                // This way we can make it the error more descriptive and would help the user identify where the issues is.
-                // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
-                // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
-                // testcase which called this function.
-                try {
-                    // Throw Error() object
-                    throw new Error();
-                } catch (exception) {
-                    // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
-                    testcaseWhichIsMissingRequiredLabel = exception.stack.split("\n")[1];
-
-                    // Call the Karma error API, to send message to the Karma server that there was an error on the client side
-                    console.error("Label was not provided at: " + testcaseWhichIsMissingRequiredLabel + generalErrorMessageLabelNotUnique);
-                }
+                // Call the Karma error API, to send message to the Karma server that there was an error on the client side
+                console.error("Label \"" + label + "\" provided at: " + testcaseDoesNotUseUniqueLabel + " is not unique." + generalErrorMessageLabelNotUnique);
             }
+        }
 
-            // Check to make sure that the label that is provided is unique with all the other ones
-            // that we have gone through.
-            let labelUnique = ACCommands.isLabelUnique(label);
+        // Get the Data when the scan is started
+        // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
+        let policies = ACCommands.Config.policies;
+        let curPol = null;
+        if (policies) {
+            curPol = JSON.parse(JSON.stringify(policies));
+        }
 
-            // In the case that the label is not unique
-            if (!labelUnique) {
-                // Variable Decleration dependencies/tools-rules-html/v2/a11y/test/g471/Table-DataNoSummaryARIA.html
-                let testcaseDoesNotUseUniqueLabel = null;
-                let generalErrorMessageLabelNotUnique = "\n[Error] labelNotUnique: Label provided to aChecker.getCompliance should be unique across all testcases in a single accessibility-checker session.";
-
-                // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
-                // This way we can make it the error more descriptive and would help the user identify where the issues is.
-                // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
-                // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
-                // testcase which called this function.
-                try {
-                    // Throw Error() object
-                    throw new Error();
-                } catch (exception) {
-                    // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
-                    testcaseDoesNotUseUniqueLabel = exception.stack.split("\n")[1];
-
-                    // Call the Karma error API, to send message to the Karma server that there was an error on the client side
-                    console.error("Label \"" + label + "\" provided at: " + testcaseDoesNotUseUniqueLabel + " is not unique." + generalErrorMessageLabelNotUnique);
-                }
-            }
-
-            // Get the Data when the scan is started
-            // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-            let policies = ACCommands.Config.policies;
-            let curPol = null;
-            if (policies) {
-                curPol = JSON.parse(JSON.stringify(policies));
-            }
-
-            ACCommands.DEBUG && console.log("getComplianceHelper:Cypress");
-            return ACCommands.getComplianceHelperCypress(label, content, curPol);
-        })
+        ACCommands.DEBUG && console.log("getComplianceHelper:Cypress");
+        return ACCommands.getComplianceHelperCypress(label, content, curPol);
     },
 
     getComplianceHelperCypress: (label, parsed, curPol) => {
         try {
             let startScan = Date.now();
             let checker = new ace.Checker();
-            return checker.check(parsed, ACCommands.Config.policies)
+            return new Cypress.Promise((resolve, reject) => {
+                checker.check(parsed, ACCommands.Config.policies).then((report) => resolve(report));
+            })
                 .then(function (report) {
                     for (const result of report.results) {
                         delete result.node;
@@ -411,7 +381,7 @@ let ACCommands = module.exports = {
 
                     }
 
-                    ACCommands.DEBUG && console.log("getComplianceHelperCypress:",report);
+                    ACCommands.DEBUG && console.log("getComplianceHelperCypress:", report);
 
                     return {
                         "origReport": origReport,
@@ -843,7 +813,7 @@ let ACCommands = module.exports = {
         for (let i = 0; i < pageResults.length; ++i) {
 
             // Set the default ignore value to false if disableIgnore field in config file is not true
-            if (ACCommands.Config.disableIgnore === undefined || ACCommands.Config.disableIgnore == false || ACCommands.Config.disableIgnore === null){
+            if (ACCommands.Config.disableIgnore === undefined || ACCommands.Config.disableIgnore == false || ACCommands.Config.disableIgnore === null) {
                 pageResults[i].ignored = false;
             }
             if (ACCommands.Config.disable && ACCommands.Config.disable.indexOf(pageResults[i].ruleId) !== -1) {
@@ -1152,48 +1122,45 @@ let ACCommands = module.exports = {
             // check to make sure there are no violations that are listed in the fails on.
             if (expected !== null && typeof (expected) !== "undefined") {
                 // Run the diff algo to get the list of differences
-                return ACCommands.diffResultsWithExpected(actualResults, expected, true).then((differences) => {
+                let differences = ACCommands.diffResultsWithExpected(actualResults, expected, true);
 
-                    // In the case that there are no differences then that means it passed
-                    if (differences === null || typeof (differences) === "undefined") {
+                // In the case that there are no differences then that means it passed
+                if (differences === null || typeof (differences) === "undefined") {
+                    return 0;
+                } else {
+                    // Re-sort results and check again
+                    let modActual = JSON.parse(JSON.stringify(actualResults.results));
+                    modActual.sort((a, b) => {
+                        let cc = b.category.localeCompare(a.category);
+                        if (cc != 0) return cc;
+                        let pc = b.path.dom.localeCompare(a.path.dom);
+                        if (pc !== 0) return pc;
+                        return b.ruleId.localeCompare(a.ruleId);
+                    })
+                    let modExpected = JSON.parse(JSON.stringify(expected.results));
+                    modExpected.sort((a, b) => {
+                        let cc = b.category.localeCompare(a.category);
+                        if (cc != 0) return cc;
+                        let pc = b.path.dom.localeCompare(a.path.dom);
+                        if (pc !== 0) return pc;
+                        return b.ruleId.localeCompare(a.ruleId);
+                    })
+                    let differences2 = ACCommands.diffResultsWithExpected({
+                        results: modActual,
+                        summary: actualResults.summary
+                    }, {
+                        results: modExpected,
+                        summary: expected.summary
+                    }, true);
+                    if (differences2 === null || typeof (differences2) === "undefined") {
                         return 0;
                     } else {
-                        // Re-sort results and check again
-                        let modActual = JSON.parse(JSON.stringify(actualResults.results));
-                        modActual.sort((a, b) => {
-                            let cc = b.category.localeCompare(a.category);
-                            if (cc != 0) return cc;
-                            let pc = b.path.dom.localeCompare(a.path.dom);
-                            if (pc !== 0) return pc;
-                            return b.ruleId.localeCompare(a.ruleId);
-                        })
-                        let modExpected = JSON.parse(JSON.stringify(expected.results));
-                        modExpected.sort((a, b) => {
-                            let cc = b.category.localeCompare(a.category);
-                            if (cc != 0) return cc;
-                            let pc = b.path.dom.localeCompare(a.path.dom);
-                            if (pc !== 0) return pc;
-                            return b.ruleId.localeCompare(a.ruleId);
-                        })
-                        return ACCommands.diffResultsWithExpected({
-                            results: modActual,
-                            summary: actualResults.summary
-                        }, {
-                            results: modExpected ,
-                            summary: expected.summary
-                        }, true).then((differences2) => {
-                            if (differences2 === null || typeof (differences2) === "undefined") {
-                                return 0;
-                            } else {
-                                // In the case that there are failures add the whole diff array to
-                                // global space indexed by the label so that user can access it.
-                                ACCommands.diffResults[label] = differences;
-
-                                return 1;
-                            }
-                        })
+                        // In the case that there are failures add the whole diff array to
+                        // global space indexed by the label so that user can access it.
+                        ACCommands.diffResults[label] = differences;
+                        return 1;
                     }
-                })
+                }
             } else {
                 // In the case that there was no baseline data found compare the results based on
                 // the failLevels array, which was defined by the user.
@@ -1286,69 +1253,67 @@ let ACCommands = module.exports = {
     *
     * @memberOf this
     */
-   diffResultsWithExpected: function (actual, expected, clean) {
-       return ACCommands.initialize().then(() => {
-           // In the case clean is set to true then run the cleanComplianceObjectBeforeCompare function on
-           // both the actual and expected objects passed in. This is to make sure that the objcet follow a
-           // simalar structure before compareing the objects.
-           if (clean) {
-               // Clean actual and expected objects
-               actual = ACCommands.cleanComplianceObjectBeforeCompare(actual);
-               expected = ACCommands.cleanComplianceObjectBeforeCompare(expected);
-           }
+    diffResultsWithExpected: function (actual, expected, clean) {
+        // In the case clean is set to true then run the cleanComplianceObjectBeforeCompare function on
+        // both the actual and expected objects passed in. This is to make sure that the objcet follow a
+        // simalar structure before compareing the objects.
+        if (clean) {
+            // Clean actual and expected objects
+            actual = ACCommands.cleanComplianceObjectBeforeCompare(actual);
+            expected = ACCommands.cleanComplianceObjectBeforeCompare(expected);
+        }
 
-           // Run Deep diff function to compare the actual and expected values.
-           let differences = DeepDiff.diff(actual, expected);
+        // Run Deep diff function to compare the actual and expected values.
+        let differences = DeepDiff.diff(actual, expected);
 
-           // Return the results of the diff, which will include the differences between the objects
-           if (!differences) return null;
+        // Return the results of the diff, which will include the differences between the objects
+        if (!differences) return null;
 
-           return differences;
-       })
-   },
-   /**
-     * This function is responsible for cleaning up the compliance baseline or actual results, based on
-     * a pre-defined set of criterias, such as the following:
-     *      1. No need to compare summary object
-     *      2. Only need to compare the ruleId and xpath in for each of the issues
-     *
-     * @param {Object} objectToClean - Provide either an baseline or actual results object which would be in the
-     *                                 the same format as outlined in the return of aChecker.buildReport function.
-     *
-     * @return {Object} objectToClean - return an object that was cleaned to only contain the information that is
-     *                                  needed for compare. Following is a sample of how the cleaned object will look like:
-     * {
-     *     "label": "unitTestContent",
-     *     "reports": [
-     *         {
-     *             "frameIdx": "0",
-     *             "frameTitle": "Frame 0",
-     *             "issues": [
-     *                 {
-     *                     "ruleId": "1",
-     *                     "xpath": "/html[1]/head[1]/style[1]"
-     *                 }
-     *                 ....
-     *             ]
-     *         },
-     *         {
-     *             "frameIdx": "1",
-     *             "frameTitle": "Frame 1",
-     *             "issues": [
-     *                 {
-     *                     "ruleId": "471",
-     *                     "xpath": "/html[1]/body[1]/div[2]/table[3]"
-     *                 }
-     *                 ....
-     *             ]
-     *         }
-     *     ]
-     * }
-     *
-     * PRIVATE METHOD
-     *
-     * @memberOf this
-     */
+        return differences;
+    },
+    /**
+      * This function is responsible for cleaning up the compliance baseline or actual results, based on
+      * a pre-defined set of criterias, such as the following:
+      *      1. No need to compare summary object
+      *      2. Only need to compare the ruleId and xpath in for each of the issues
+      *
+      * @param {Object} objectToClean - Provide either an baseline or actual results object which would be in the
+      *                                 the same format as outlined in the return of aChecker.buildReport function.
+      *
+      * @return {Object} objectToClean - return an object that was cleaned to only contain the information that is
+      *                                  needed for compare. Following is a sample of how the cleaned object will look like:
+      * {
+      *     "label": "unitTestContent",
+      *     "reports": [
+      *         {
+      *             "frameIdx": "0",
+      *             "frameTitle": "Frame 0",
+      *             "issues": [
+      *                 {
+      *                     "ruleId": "1",
+      *                     "xpath": "/html[1]/head[1]/style[1]"
+      *                 }
+      *                 ....
+      *             ]
+      *         },
+      *         {
+      *             "frameIdx": "1",
+      *             "frameTitle": "Frame 1",
+      *             "issues": [
+      *                 {
+      *                     "ruleId": "471",
+      *                     "xpath": "/html[1]/body[1]/div[2]/table[3]"
+      *                 }
+      *                 ....
+      *             ]
+      *         }
+      *     ]
+      * }
+      *
+      * PRIVATE METHOD
+      *
+      * @memberOf this
+      */
     cleanComplianceObjectBeforeCompare: function (objectToClean) {
         // Clone the object so that we do not reference the original or else it causes the original
         // results object or baseline object to get updated, which we do not want as users are allowed
