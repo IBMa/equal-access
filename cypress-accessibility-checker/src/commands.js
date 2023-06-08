@@ -78,7 +78,7 @@ Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
         // To write to disk, we have to be outside of the browser, so that's a task
         return cy.task('accessibilityChecker', {
             task: 'sendResultsToReporter',
-            data: { result, profile: Cypress.browser.displayName }
+            data: result
         }, { log: false }).then(() => {
             return result.report;
         });
