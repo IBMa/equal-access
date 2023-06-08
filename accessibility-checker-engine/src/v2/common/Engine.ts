@@ -124,8 +124,10 @@ export class Engine implements IEngine {
         let nodeLang = "en-US";
         if (env) {
             nodeLang = env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES;
-            if (nodeLang) {
+            if (nodeLang && nodeLang.length > 0) {
                 nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
+            } else {
+                nodeLang = "en-US";
             }
         }
         return typeof navigator !== "undefined" && navigator.languages || [nodeLang];
