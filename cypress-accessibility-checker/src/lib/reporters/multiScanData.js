@@ -196,6 +196,10 @@ let MultiScanData = function (config, aChecker) {
             format_date(report.timestamp)
             stringHash(item.ruleId + item.path.dom)
             parseInt(rule_map.get(item.ruleId).toolkitLevel) 
+            let snipTrunc = item.snippet;
+            if (snipTrunc && snipTrunc.length > 32000) {
+                snipTrunc = snipTrunc.substring(0, 32000-3)+"...";
+            }
 
             var row = [
                 tab_title,
@@ -209,7 +213,7 @@ let MultiScanData = function (config, aChecker) {
                 item.ruleId,
                 item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                 get_element(item.snippet),
-                item.snippet,
+                snipTrunc,
                 item.path.aria,
                 this.aChecker.getHelpURL(item)
                 // engine_end_point + '/tools/help/' + item.ruleId
