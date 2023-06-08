@@ -32,6 +32,12 @@ context('Accessibility checker tests', () => {
                 console.warn(report);
                 expect(report.results).to.have.length.greaterThan(0);
             });
+        cy.visit('potentialviolations.html')
+            .getCompliance('getComplianceOfDocument with potential violations')
+            .then((report) => {
+                console.warn(report);
+                expect(report.results).to.have.length.greaterThan(0);
+            });
     });
     context('assertCompliance()', () => {
         it('Is successful when there are no violations', () => {
