@@ -28,7 +28,8 @@ let checkHelp = {};
 
 function _initialize() {
     const langs = Engine.getLanguages();
-    // Process V4 rules into the V2 format
+    console.log(langs)
+     // Process V4 rules into the V2 format
     for (let rulename in checkRulesV4) {
         // Convert rule
         let v4Rule: RuleV4 = checkRulesV4[rulename];
