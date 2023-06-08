@@ -182,6 +182,7 @@ describe("Rule Unit Tests As File URL", function () {
                                     delete issue.bounds;
                                     delete issue.ignored;
                                     delete issue.level;
+                                    delete issue.help;
                                     issue.value[0] = "INFORMATION";
                                     if (expectedInfo.ruleIds.includes(issue.ruleId)) {
                                         // These are too variable between runs - don't test these
@@ -221,6 +222,7 @@ describe("Rule Unit Tests As File URL", function () {
                                     delete issue.node;
                                     delete issue.ruleTime;
                                     delete issue.bounds;
+                                    delete issue.help;
                                     const ruleId = mapRuleToG[issue.ruleId];
                                     if (ruleId in expectedInfo && issue.value[1] !== "PASS") {
                                         actualInfo[ruleId].push(issue.path.dom);
