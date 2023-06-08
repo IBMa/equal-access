@@ -28,8 +28,9 @@ let checkHelp = {};
 
 function _initialize() {
     const langs = Engine.getLanguages();
-    console.log(langs)
-     // Process V4 rules into the V2 format
+    // Default lang to en-US if nothing else specified is found
+    langs.push("en-US");
+    // Process V4 rules into the V2 format
     for (let rulename in checkRulesV4) {
         // Convert rule
         let v4Rule: RuleV4 = checkRulesV4[rulename];
