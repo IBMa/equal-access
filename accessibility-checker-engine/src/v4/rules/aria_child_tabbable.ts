@@ -74,18 +74,17 @@ export let aria_child_tabbable: Rule = {
 
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         // Determine if this is referenced by a combobox. If so, focus is controlled by the combobox
+        // ignore if the id of the element is referenced by another element with "aria-controls" or "aria-expanded" and with certain roles. If so, focus is controlled by the referencing element
         let id = ruleContext.getAttribute("id");
         if (id && id.trim().length > 0) {
-            if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+            /**if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
                 return null;
             }
-        
-            // ignore if the id of the element is referenced by another element with "aria-controls" and with certain roles. If so, focus is controlled by the referencing element
-            const containers = ['listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
-            if (roles && roles.length >0 && roles.some(r=>containers.includes(r) 
-                && ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}']`))) {
+            */
+            const elem = ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][aria-haspopup='true'], *[aria-controls='${id}'][aria-expanded='true']`);
+            const containers = ['combobox', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
+            if (elem && RPTUtil.isTabbable(elem) && roles && roles.length >0 && roles.some(r=>containers.includes(r)))
                 return null;
-            }
         }
 
         let passed = true;
