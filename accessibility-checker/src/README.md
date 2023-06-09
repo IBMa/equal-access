@@ -94,7 +94,7 @@ reportLevels:
     - manual
 
 # Optional - In which formats should the results be output
-# Valid values: json, csv, xlsx, html
+# Valid values: json, csv, xlsx, html, disable
 # Default: json
 outputFormat:
     - json
