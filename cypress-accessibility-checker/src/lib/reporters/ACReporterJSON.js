@@ -266,7 +266,7 @@ var ACReporterJSON = function (aChecker) {
      * @memberOf this
      */
     var saveSummary = function (summary) {
-        if (Config.outputFormat.indexOf("json") === -1) {
+        if (Config.outputFormat.indexOf("json") === -1 || Config.outputFormat.includes("disable")) {
             return;
         }
         Config.DEBUG && console.log("START 'saveSummary' function");

@@ -187,7 +187,7 @@ export class ACReporterJSON {
      * @memberOf this
      */
     saveSummary(summary) {
-        if (this.Config.outputFormat.indexOf("json") === -1) {
+        if (this.Config.outputFormat.indexOf("json") === -1 || this.Config.outputFormat.includes("disable")) {
             return;
         }
         this.Config.DEBUG && console.log("START 'saveSummary' function");
