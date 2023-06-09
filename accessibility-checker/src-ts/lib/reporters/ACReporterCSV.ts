@@ -169,7 +169,7 @@ export class ACReporterCSV {
      * @memberOf this
      */
     saveSummary() {
-        if (this.Config.outputFormat.indexOf("csv") === -1) {
+        if (this.Config.outputFormat.indexOf("csv") === -1 || this.Config.outputFormat.includes("disable")) {
             return;
         }
         this.Config.DEBUG && console.log("START 'saveSummary' function");

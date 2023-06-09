@@ -338,7 +338,7 @@ export class ACReporterXLSX {
      */
     saveSummary() {
         this.Config.DEBUG && console.log("START 'saveSummary' function");
-        if (this.Config.outputFormat.indexOf("xlsx") === -1) {
+        if (this.Config.outputFormat.indexOf("xlsx") === -1 || this.Config.outputFormat.includes("disable")) {
             return;
         }
         // this.writeObjectToFile("results.xlsx", this.resultStr);

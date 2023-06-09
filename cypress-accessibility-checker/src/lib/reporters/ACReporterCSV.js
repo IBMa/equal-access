@@ -203,7 +203,7 @@ var ACReporter = function (aChecker) {
      * @memberOf this
      */
     var saveSummary = function (summary, done) {
-        if (Config.outputFormat.indexOf("csv") === -1) {
+        if (Config.outputFormat.indexOf("csv") === -1 || Config.outputFormat.includes("disable")) {
             return;
         }
         Config.DEBUG && console.log("START 'saveSummary' function");
