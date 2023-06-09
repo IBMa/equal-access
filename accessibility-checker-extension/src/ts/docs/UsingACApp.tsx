@@ -17,7 +17,7 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
+import beeLogoUrl from "../../assets/BE_for_DarkMode.svg";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
@@ -34,7 +34,7 @@ import upDown from "../../assets/up_down.svg";
 import { DocPage } from "./components/DocPage";
 import "./usingAC.scss";
 import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
-import { BrowserDetection } from "../util/browserDetection";
+// import { BrowserDetection } from "../util/browserDetection";
 
 interface UsingACAppState { }
 
@@ -42,7 +42,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     state: UsingACAppState = {};
 
     render() {
-        BrowserDetection.setDarkLight();
+        // BrowserDetection.setDarkLight();
         let aside = (<>
             {/* <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}> */}
             <div style={{ marginTop: "1.5rem" }} />

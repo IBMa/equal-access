@@ -9,7 +9,7 @@ body {
 #pageapp-root {
     min-height: 100%;
     height: 100%;
-    color: $gray-90;
+    color: $gray-30;
     
     > .cds--css-grid {
         margin-left: 0rem;
@@ -51,7 +51,7 @@ body {
         }
         .op_version {
             @include type-style("label-01");
-            color: $gray-70;
+            color: $gray-30;
             margin-top: .5rem;
         }
         p {

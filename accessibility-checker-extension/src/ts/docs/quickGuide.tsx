@@ -16,11 +16,14 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import {  Theme } from "@carbon/react";
+// import {  Theme } from "@carbon/react";
 import { BrowserDetection } from "../util/browserDetection";
 import {QuickGuideACApp} from "./QuickGuideACApp";
 import "../styles/index.scss";
 
-ReactDOM.render(<Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}><QuickGuideACApp /></Theme>
-    , document.getElementById('pageapp-root'));
+let element = document.getElementById('pageapp-root');
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g100":"white")
+
+ReactDOM.render(<QuickGuideACApp />
+    , element);
     

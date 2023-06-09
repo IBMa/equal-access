@@ -30,7 +30,6 @@ import { Link,
     UnorderedList, 
 } from "@carbon/react";
 import "./quickGuide.scss";
-import { BrowserDetection } from "../util/browserDetection";
 
 interface quickGuideACAppState { }
 
@@ -38,8 +37,10 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
     state: quickGuideACAppState = {};
 
     render() {
-        BrowserDetection.setDarkLight();
+        // BrowserDetection.setDarkLight();
+        
         let aside = (<>
+            
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList style={{ marginLeft: "1.5rem" }}>
                 <ListItem><Link href="#checker">Accessibility Checker</Link></ListItem>
@@ -57,9 +58,11 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     inline={true}
                     size="lg">user guide</Link>
             </p>
+            
         </>)
         return (
             <DocPage aside={aside} sm={4} md={8} lg={8}>
+                
                 <main
                     role="main"
                     aria-label="Quick guide details"
@@ -245,6 +248,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </UnorderedList>
                     
                 </main>
+               
             </DocPage>
         );
     }
