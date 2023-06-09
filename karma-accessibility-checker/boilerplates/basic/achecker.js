@@ -31,7 +31,7 @@ module.exports = {
   ],
 
   // Optional - Which type should the results be outputted to
-  // Valid values: json, csv
+  // Valid values: json, csv, disable
   // Default: json
   outputFormat: [ "json" ],
 
