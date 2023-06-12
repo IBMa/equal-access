@@ -110,17 +110,19 @@ export class ACReportManager {
      */
     static async sendResultsToReporter(unFilteredResults, results, profile) {
         ACReportManager.config.DEBUG && console.log("ACReportManager:sendResultsToReporter:", ACReportManager.config.outputFormat);
-        if (ACReportManager.config.outputFormat.indexOf("json") != -1) {
-            ACReportManager.reporters.json.report(results);
-        }
-        if (ACReportManager.config.outputFormat.includes("csv")) {
-            ACReportManager.reporters.csv.report(results);
-        }
-        if (ACReportManager.config.outputFormat.includes("xlsx")) {
-            ACReportManager.reporters.xlsx.report(results);
-        }
-        if (ACReportManager.config.outputFormat.indexOf("html") != -1) {
-            await ACReportManager.reporters.html.report(unFilteredResults);
+        if (!ACReportManager.config.outputFormat.includes("disable")) {
+            if (ACReportManager.config.outputFormat.includes("json")) {
+                ACReportManager.reporters.json.report(results);
+            }
+            if (ACReportManager.config.outputFormat.includes("csv")) {
+                ACReportManager.reporters.csv.report(results);
+            }
+            if (ACReportManager.config.outputFormat.includes("xlsx")) {
+                ACReportManager.reporters.xlsx.report(results);
+            }
+            if (ACReportManager.config.outputFormat.includes("html")) {
+                await ACReportManager.reporters.html.report(unFilteredResults);
+            }
         }
         // Only perform the profiling if profiling was not disabled on purpose
         if (!ACReportManager.config.label || ACReportManager.config.label.indexOf("IBMa-Node-TeSt") === -1) {

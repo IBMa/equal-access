@@ -50,7 +50,7 @@ export interface IConfig {
      * (optional) In which fornats should the results be output
      * Default: "json"
      */
-    outputFormat?: "json" | "html" | "csv"
+    outputFormat?: "json" | "html" | "csv" | "disable"
 
     /**
      * (optional) Specify any labels that you would like associated to your scan
