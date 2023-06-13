@@ -63,13 +63,26 @@
         height: 10rem;
     }
 
+    &.cds--g10 {
+        .status-score-tile {
+            background-color: #BE95FF; // purple / 40
+        }
+    }
+
+    &.cds--g90 {
+        .status-score-tile {
+            background-color: #31135E; // purple / 90
+        }
+    }
+
     .status-score-tile {
         box-sizing: border-box;
         border: solid #8A3FFC 1px;
-        // background-color: #E8DAFF; // JCH remove for Dark Mode
         margin-top: 18px;
         height: 10rem;
     }
+
+    
 
     .count-tile {
         box-sizing: border-box; // JCH remove for Dark Mode

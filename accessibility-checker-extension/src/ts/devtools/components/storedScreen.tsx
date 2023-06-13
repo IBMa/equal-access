@@ -31,6 +31,7 @@ import {
 
 import { IStoredReportMeta } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
+import { BrowserDetection } from '../../util/browserDetection';
 import "./storedScreen.scss";
 import { BasicTable } from "./BasicTable";
 
@@ -66,7 +67,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
     render() {
         let detailRow = typeof this.state.detailSelectedRow !== "undefined" && this.state.storedReports[this.state.detailSelectedRow] || undefined;
         return (
-            <Grid className="storedScreen">
+            <Grid className={`storedScreen ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}>
                 <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                     <h2>Stored scans</h2>
                     <div style={{marginTop: "1rem"}} />

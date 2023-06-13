@@ -124,10 +124,11 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                         >
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
-                                <div style={{
-                                    backgroundColor: "#262626",
-                                    padding: "1rem"
-                                }}>
+                                <div 
+                                    className={`${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}
+                                    style={{
+                                        padding: "1rem"
+                                    }}>
                                     <Button 
                                         id="backToListViewButton"
                                         size="sm"
