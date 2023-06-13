@@ -28,7 +28,8 @@ import {
     ComposedModal,
     Grid,
     ModalBody,
-    ModalHeader
+    ModalHeader,
+    Theme
 } from "@carbon/react";
 
 import "../styles/index.scss";
@@ -71,7 +72,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     }
 
     render() {
-        BrowserDetection.setDarkLight();
+        
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
@@ -93,20 +94,24 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
 
-        return <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
+        return <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
+        <Grid fullWidth={true} narrow={true} className="primaryColumn" style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
+                
                 <Column className="primaryPanelColumn" sm={4} md={8} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                         {primaryPanel}
                     </div>
                 </Column>
-                    <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                            {secondaryPanel}
-                    </Column>
+                    
+                <Column sm={0} md={0} lg={8} className={`secondaryColumn ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`} style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
+                        {secondaryPanel}
+                </Column>
             </Grid>
             {typeof document === 'undefined'
                 ? null
                 : ReactDOM.createPortal(
-                    <div className="secondaryDialog">
+                    
+                    <div className={`secondaryDialog ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}>
                         <ComposedModal 
                             open={this.state.secondaryOpen} 
                             onClose={() => {
@@ -120,7 +125,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
                                 <div style={{
-                                    // backgroundColor: "white",
+                                    backgroundColor: "#262626",
                                     padding: "1rem"
                                 }}>
                                     <Button 
@@ -140,5 +145,8 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     document.body
                 )
             }
+        </Theme>   
     }
+    
+    
 }

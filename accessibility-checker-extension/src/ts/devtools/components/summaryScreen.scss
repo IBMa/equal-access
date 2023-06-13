@@ -11,7 +11,7 @@
 
     .summaryTitle {
         @include type-style('productive-heading-02');
-        color: #171717;
+        // color: #171717; // JCH remove for Dark Mode
     }
 
     .summaryTitleDetail {

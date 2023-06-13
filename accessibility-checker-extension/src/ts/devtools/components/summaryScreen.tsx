@@ -16,12 +16,13 @@
 
 import React from "react";
 
-import { Column, Grid, Tile } from '@carbon/react';
+import { Column, Grid, Tile, } from '@carbon/react';
 import Violation16 from "../../../assets/Violation16.svg";
 import NeedsReview16 from "../../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../../assets/Recommendation16.svg";
 import { IReport, IStoredReportMeta } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
+import { BrowserDetection } from '../../util/browserDetection';
 import "./summaryScreen.scss";
 
 interface ISummaryScreenState {
@@ -80,7 +81,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         // Calculate score
         let currentStatus = (100 - ((failUniqueElements.length / testedElements) * 100)).toFixed(0);
 
-        return <aside className="reportSummary" aria-labelledby="summaryTitle">
+        return <aside className={`reportSummary ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`} aria-labelledby="summaryTitle">
             <div style={{ margin: "1rem -1rem 0rem 0rem" }}>
                 <Grid style={{margin: "0rem"}}>
                     <Column sm={{ span: 4 }} md={{ span: 6 }} lg={{ span: 6 }}>
@@ -134,6 +135,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                     </Column>
                 </Grid>
             </div>
-        </aside>;
+        </aside>
     }
 }

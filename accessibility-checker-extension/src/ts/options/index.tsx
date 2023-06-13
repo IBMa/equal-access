@@ -23,7 +23,7 @@ import { OptionsApp } from './OptionsApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}>
+        return <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
                     <OptionsApp />
                 </Theme>
     }

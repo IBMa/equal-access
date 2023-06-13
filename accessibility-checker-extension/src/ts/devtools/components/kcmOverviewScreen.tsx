@@ -132,7 +132,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     </div>
                     <div style={{clear: "both", marginTop: "1rem"}} />
                     <div className="iconText">
-                        <Theme theme="g90" className="iconBox">
+                        <Theme theme="g100" className="iconBox">
                             <KeyboardOff size={16} />
                         </Theme>
                         Click on the keyboard icon to return to the regular view.

@@ -36,9 +36,9 @@ export class BrowserDetection {
     public static setDarkLight() {
         if (typeof document !== "undefined" && typeof document.body !== "undefined") {
             if (BrowserDetection.isDarkMode()) {
-                document.body.setAttribute("class", "cds--g90");
+                document.body.setAttribute("class", "cds--g100");
             } else {
-                document.body.setAttribute("class", "cds--g10");
+                document.body.setAttribute("class", "white");
             }
         }
     }
