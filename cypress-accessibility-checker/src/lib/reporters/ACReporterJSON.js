@@ -113,6 +113,9 @@ var ACReporterJSON = function (aChecker) {
         var resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
         ***************************************************************************************************************************************/
 
+        for (const item of results.results) {
+            item.help = aChecker.getHelpURL(item);
+        }
         // Write the results object as JSON to a file.
         writeObjectToFileAsJSON(resultsFileName, results);
 

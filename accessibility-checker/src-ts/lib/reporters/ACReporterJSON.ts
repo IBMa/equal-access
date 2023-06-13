@@ -19,9 +19,10 @@ import * as pathLib from "path";
 import * as fs from "fs";
 import { IConfigUnsupported } from "../api/IChecker";
 import { IScanSummary, IScanSummaryCounts } from "./ReportUtil";
+import { ACEngineManager } from "../ACEngineManager";
 
 declare var after;
-
+declare var afterAll;
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
  * the scan results, such as writing the page results and the summary to a JSON file. This reporter function
@@ -50,6 +51,11 @@ export class ACReporterJSON {
         let myThis = this;
         if (typeof(after) !== "undefined") {
             after(function(done) {
+                myThis.onRunComplete();
+                done && done();
+            });
+        } else if (typeof(afterAll) !== "undefined") {
+            afterAll(function(done) {
                 myThis.onRunComplete();
                 done && done();
             });
@@ -130,6 +136,9 @@ export class ACReporterJSON {
         ***************************************************************************************************************************************/
 
         // Write the results object as JSON to a file.
+        for (const item of results.results) {
+            item.help = ACEngineManager.getHelpURL(item);
+        }
         this.writeObjectToFileAsJSON(resultsFileName, results);
 
         this.Config.DEBUG && console.log("END 'savePageResults' function");
