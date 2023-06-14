@@ -3,6 +3,7 @@ const ACMetricsLogger = require('./log/ACMetricsLogger');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
+const ACReporterXLSX = require("./reporters/ACReporterXLSX");
 const DeepDiff = require("deep-diff");
 
 const myrequest = (url) => {
@@ -79,6 +80,7 @@ let ACCommands = module.exports = {
             ACCommands.reporterHTML = new ACReporterHTML(ACCommands);
             ACCommands.reporterJSON = new ACReporterJSON(ACCommands);
             ACCommands.reporterCSV = new ACReporterCSV(ACCommands);
+            ACCommands.reporterXLSX = new ACReporterXLSX(ACCommands);
 
             // Specify if debug information should be printed or not
             ACCommands.DEBUG = ACCommands.Config.DEBUG;

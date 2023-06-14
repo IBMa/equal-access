@@ -3,6 +3,7 @@ const ACMetricsLogger = require('./log/ACMetricsLogger');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
+const ACReporterXLSX = require("./reporters/ACReporterXLSX");
 const DeepDiff = require("deep-diff");
 
 const request = require("@cypress/request");
@@ -49,6 +50,7 @@ let ACTasks = module.exports = {
         ACTasks.reporterHTML && ACTasks.reporterHTML.onRunComplete();
         ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
         ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
+        ACTasks.reporterXLSX && ACTasks.reporterXLSX.onRunComplete();
         ACTasks.metricsLogger.sendLogsV2();
         return true;
     },
@@ -71,6 +73,7 @@ let ACTasks = module.exports = {
             ACTasks.reporterHTML = new ACReporterHTML(ACTasks);
             ACTasks.reporterJSON = new ACReporterJSON(ACTasks);
             ACTasks.reporterCSV = new ACReporterCSV(ACTasks);
+            ACTasks.reporterXLSX = new ACReporterXLSX(ACTasks);
 
             // Specify if debug information should be printed or not
             ACTasks.DEBUG = ACTasks.Config.DEBUG;
@@ -245,6 +248,9 @@ let ACTasks = module.exports = {
                 if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
                     ACTasks.reporterHTML.report(unFilteredResults);
                 }
+                if (ACTasks.Config.outputFormat.includes("xlsx")) {
+                    ACTasks.reporterXLSX.report(unFilteredResults);
+                }
             }
             // Only perform the profiling if profiling was not disabled on purpose
             if (!ACTasks.Config.label || ACTasks.Config.label.indexOf("IBMa-Node-TeSt") === -1) {
@@ -369,8 +375,7 @@ let ACTasks = module.exports = {
     },
 
     getHelpURL: function (issue) {
-        let archiveId = ACTasks.Config.ruleArchive;
-        let engineHelp = new ACTasks.ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, archiveId);
+        let engineHelp = new ACTasks.ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, ACTasks.Config.ruleArchivePath.substring(ACTasks.Config.ruleArchivePath.lastIndexOf("/")+1));
         let minIssue = {
             message: issue.message,
             snippet: issue.snippet,
