@@ -21,7 +21,7 @@ import React from "react";
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import { DocPage } from "../docs/components/DocPage";
-import { BrowserDetection } from "../util/browserDetection";
+// import { BrowserDetection } from "../util/browserDetection";
 
 import {
     Button,
@@ -278,7 +278,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
     };
 
     render() {
-        BrowserDetection.setDarkLight();
+        // BrowserDetection.setDarkLight();
         let {
             archives,
             selected_archive,

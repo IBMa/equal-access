@@ -16,19 +16,19 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import {  Theme } from "@carbon/react";
 import { BrowserDetection } from "../util/browserDetection";
 import "../styles/index.scss";
 import { OptionsApp } from './OptionsApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
-                    <OptionsApp />
-                </Theme>
+        return <OptionsApp />
     }
 }
 
+let element = document.getElementById('pageapp-root');
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"cds--g10")
+
 ReactDOM.render(<PageApp />
-    , document.getElementById('pageapp-root'));
+    , element);
     

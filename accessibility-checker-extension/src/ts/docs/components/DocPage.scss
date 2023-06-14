@@ -8,7 +8,7 @@ body {
 }
 #pageapp-root {
     min-height: 100%;
-    // height: 100%; // JCH remove for Dark Mode
+    height: 100%;
     color: $gray-30;
     
     > .cds--css-grid {
@@ -21,7 +21,6 @@ body {
         }
     }
     .leftCol {
-        // background-color: $gray-10; // JCH remove for Dark Mode
         padding-right: var(--cds-grid-gutter-end);
         padding-left: var(--cds-grid-gutter-start);
         margin-left: 0rem;

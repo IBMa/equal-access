@@ -34,7 +34,6 @@ import upDown from "../../assets/up_down.svg";
 import { DocPage } from "./components/DocPage";
 import "./usingAC.scss";
 import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
-// import { BrowserDetection } from "../util/browserDetection";
 
 interface UsingACAppState { }
 
@@ -42,9 +41,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     state: UsingACAppState = {};
 
     render() {
-        // BrowserDetection.setDarkLight();
         let aside = (<>
-            {/* <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}> */}
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList>
                 <ListItem><Link href="#install">How to install</Link></ListItem>
@@ -73,7 +70,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
         return (
             
             <DocPage aside={aside} sm={4} md={8} lg={8}>
-            {/* <Theme theme={BrowserDetection.isDarkMode()?"g90":"g10"}> */}
             <main
                 aria-label="User guide details"
             >
