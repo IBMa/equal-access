@@ -1,0 +1,102 @@
+<html lang="en-US">
+<head>
+    <title>input_haspopup_conflict - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"<input> element with 'list' attribute does not use 'aria-haspopup' attribute","Potential_1":"<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"{0}\"","Potential_2":"<input> element with 'list' attribute also uses 'aria-haspopup' attribute with missing or invalid input type","group":"<input> element with 'list' attribute should not also use 'aria-haspopup' attribute"}};
+        RULE_ID = "input_haspopup_conflict"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+* Input types of 
+[text](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [search](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-%28type=tel%29), [url](https://html.spec.whatwg.org/multipage/input.html#url-state-%28type=url%29), and [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29) 
+(or inputs with a missing or invalid type) that also have a [list](https://html.spec.whatwg.org/multipage/input.html#attr-input-list) attribute have an implicit role of combobox, which in turn has an implicit `aria-haspopup="listbox"`;
+therefore, developers should not explicitly assign the `aria-haspopup` attribute, which will be either redundant or possibly conflicting.
+When HTML elements use both `aria-*` attributes and their HTML implied equivalents, browsers **_must_** ignore the explicit (redundant or conflicting) ARIA attribute – the native HTML attribute with their [implied ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/#implicit_semantics) take precedence.
+
+* To ensure that Assistive Technologies (AT) can gather information, proper coding is required so that the end users can understand and interact with the content.
+If standard HTML controls are created according to specification, the conditions of this provision will be met.
+For this reason, to avoid unintended consequences, developers **_should not_** specify both the native HTML attribute and an equivalent (redundant or conflicting) `aria-haspopup` attribute on the indicated inputs with a `list` attribute.
+Otherwise, any global `aria-*` attributes and any other `aria-*` attributes applicable to the combobox role **_may_** be used.
+    
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute with input `type=` 
+[text](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [search](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-%28type=tel%29), [url](https://html.spec.whatwg.org/multipage/input.html#url-state-%28type=url%29), or [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29).
+* **And/Or**, add an input type if missing or correct the invalid input type.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA in HTML specification](https://www.w3.org/TR/html-aria/#el-input-text-list)
+* [WCAG technique ARIA5](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA5)
+* [WCAG technique G108](https://www.w3.org/WAI/WCAG21/Techniques/general/G108)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairment using voice control
+* People who physically cannot use a pointing device
+ 
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
