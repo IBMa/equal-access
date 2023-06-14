@@ -15,15 +15,11 @@
  *****************************************************************************/
 
 
-import * as stringHash from "string-hash";
-import { ACEngineManager } from "../ACEngineManager";
-import { IConfigUnsupported } from "../api/IChecker.js";
+const stringHash = require("string-hash");
 
-export class MultiScanData { 
-    Config: IConfigUnsupported;
-    constructor(config: IConfigUnsupported) {
-        this.Config = config;
-    }    
+let MultiScanData = function (config, aChecker) {
+    this.Config = config;
+    this.aChecker = aChecker;
 
     // this class barrows heavily from singlePageReport
     // however, our purpose here is just to generate the data
@@ -36,82 +32,7 @@ export class MultiScanData {
     // sheet as all other data is either static or can be calculated
     // from the issue data
 
-    public issues_sheet_rows(xlsx_props: any) {
-        var ret: any = [];
-
-        var report = xlsx_props.report;
-        var tab_url = xlsx_props.tabURL;
-        var tab_title = xlsx_props.tabTitle;
-        var engine_end_point = xlsx_props.helpPath;
-        // const engine_end_point = "process.env.engineEndpoint";
-        const rule_map = MultiScanData.id_rule_map(xlsx_props);
-        const rule_checkpoints_map = MultiScanData.ruleId_checkpoints_map(xlsx_props);
-
-        const valueMap: { [key: string]: { [key2: string]: string } } = {
-            "VIOLATION": {
-                "POTENTIAL": "Needs review",
-                "FAIL": "Violation",
-                "PASS": "Pass",
-                "MANUAL": "Needs review"
-            },
-            "RECOMMENDATION": {
-                "POTENTIAL": "Recommendation",
-                "FAIL": "Recommendation",
-                "PASS": "Pass",
-                "MANUAL": "Recommendation"
-            },
-            "INFORMATION": {
-                "POTENTIAL": "Needs review",
-                "FAIL": "Violation",
-                "PASS": "Pass",
-                "MANUAL": "Recommendation"
-            }
-        };
-
-        if (report == null) {
-            return [];
-        }
-
-        for (const item of report.results) {
-            if (item.value[1] === "PASS") {
-                continue;
-            }
-            let test = MultiScanData.checkpoints_string(rule_checkpoints_map, item.ruleId)
-            let test2 = MultiScanData.wcag_string(rule_checkpoints_map, item.ruleId)
-            MultiScanData.get_element(item.snippet)
-            MultiScanData.format_date(report.timestamp)
-            stringHash(item.ruleId + item.path.dom)
-            parseInt(rule_map.get(item.ruleId).toolkitLevel) 
-            let snipTrunc = item.snippet;
-            if (snipTrunc && snipTrunc.length > 32000) {
-                snipTrunc = snipTrunc.substring(0, 32000-3)+"...";
-            }
-
-            var row = [
-                tab_title,
-                tab_url,
-                MultiScanData.format_date(report.timestamp),
-                stringHash(item.ruleId + item.path.dom),
-                valueMap[item.value[0]][item.value[1]],
-                parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
-                MultiScanData.checkpoints_string(rule_checkpoints_map, item.ruleId),
-                MultiScanData.wcag_string(rule_checkpoints_map, item.ruleId),
-                item.ruleId,
-                item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
-                MultiScanData.get_element(item.snippet),
-                snipTrunc,
-                item.path.aria,
-                ACEngineManager.getHelpURL(item)
-                // engine_end_point + '/tools/help/' + item.ruleId
-            ]
-
-            ret.push(row);
-        }
-
-        return ret;
-    }
-
-    public static checkpoints_string(rule_checkpoints_map: any, rule_id: string) {
+    let checkpoints_string = (rule_checkpoints_map, rule_id) => {
 
         var checkpoint_string = '';
 
@@ -128,7 +49,7 @@ export class MultiScanData {
         return checkpoint_string;
     }
 
-    public static wcag_string(rule_checkpoints_map: any, rule_id: string) {
+    let wcag_string = (rule_checkpoints_map, rule_id) => {
 
         var wcag_string = '';
 
@@ -145,7 +66,7 @@ export class MultiScanData {
         return wcag_string;
     }
 
-    public static id_rule_map(xlsx_props: any) {
+    let id_rule_map = (xlsx_props) => {
         const ruleset = xlsx_props.report.ruleset;
 
         const checkpoints = ruleset.checkpoints;
@@ -168,7 +89,7 @@ export class MultiScanData {
         return rule_map;
     }
 
-    public static ruleId_checkpoints_map(xlsx_props: any) {
+    let ruleId_checkpoints_map = (xlsx_props) => {
         // const guideline_id = xlsx_props.report.option.guideline.id;
 
         //ruleset used for scanning
@@ -208,7 +129,7 @@ export class MultiScanData {
         return checkpoint_map;
     }
 
-    public static get_element(code: string) {
+    let get_element = (code) => {
 
         if (code) {
             const ind_s = code.indexOf(' ');
@@ -219,7 +140,7 @@ export class MultiScanData {
         return '';
     }
 
-    public static format_date(timestamp: string) {
+    let format_date = (timestamp) => {
         var date = new Date(timestamp);
 
         return date.getFullYear() + '-' + ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
@@ -228,4 +149,81 @@ export class MultiScanData {
             ("00" + date.getMinutes()).slice(-2) + "-" +
             ("00" + date.getSeconds()).slice(-2);
     }
+
+    this.issues_sheet_rows = (xlsx_props) => {
+        var ret = [];
+
+        var report = xlsx_props.report;
+        var tab_url = xlsx_props.tabURL;
+        var tab_title = xlsx_props.tabTitle;
+        var engine_end_point = xlsx_props.helpPath;
+        // const engine_end_point = "process.env.engineEndpoint";
+        const rule_map = id_rule_map(xlsx_props);
+        const rule_checkpoints_map = ruleId_checkpoints_map(xlsx_props);
+
+        const valueMap = {
+            "VIOLATION": {
+                "POTENTIAL": "Needs review",
+                "FAIL": "Violation",
+                "PASS": "Pass",
+                "MANUAL": "Needs review"
+            },
+            "RECOMMENDATION": {
+                "POTENTIAL": "Recommendation",
+                "FAIL": "Recommendation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            },
+            "INFORMATION": {
+                "POTENTIAL": "Needs review",
+                "FAIL": "Violation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            }
+        };
+
+        if (report == null) {
+            return [];
+        }
+
+        for (const item of report.results) {
+            if (item.value[1] === "PASS") {
+                continue;
+            }
+            let test = checkpoints_string(rule_checkpoints_map, item.ruleId)
+            let test2 = wcag_string(rule_checkpoints_map, item.ruleId)
+            get_element(item.snippet)
+            format_date(report.timestamp)
+            stringHash(item.ruleId + item.path.dom)
+            parseInt(rule_map.get(item.ruleId).toolkitLevel) 
+            let snipTrunc = item.snippet;
+            if (snipTrunc && snipTrunc.length > 32000) {
+                snipTrunc = snipTrunc.substring(0, 32000-3)+"...";
+            }
+
+            var row = [
+                tab_title,
+                tab_url,
+                format_date(report.timestamp),
+                stringHash(item.ruleId + item.path.dom),
+                valueMap[item.value[0]][item.value[1]],
+                parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
+                checkpoints_string(rule_checkpoints_map, item.ruleId),
+                wcag_string(rule_checkpoints_map, item.ruleId),
+                item.ruleId,
+                item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
+                get_element(item.snippet),
+                snipTrunc,
+                item.path.aria,
+                this.aChecker.getHelpURL(item)
+                // engine_end_point + '/tools/help/' + item.ruleId
+            ]
+
+            ret.push(row);
+        }
+
+        return ret;
+    }
 }
+
+module.exports = MultiScanData;

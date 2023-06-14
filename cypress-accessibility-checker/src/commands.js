@@ -44,8 +44,14 @@ after(() => {
 Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
     let scanObj = cyObj;
     let label = scanLabel;
-    cy.window({log: false}).then(win => {
-        return ACCommands.initialize(win);
+    let fileConfig;
+    cy.task('accessibilityChecker', {
+        task: 'getConfig'
+    }, { log: false }).then((config) => {
+        fileConfig = config;
+        return cy.window({log: false});
+    }).then(win => {
+        return ACCommands.initialize(win, fileConfig);
     }).then(() => {
         if (typeof cyObj === "string") {
             return cy.document({ log: false })
@@ -72,7 +78,7 @@ Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
         // To write to disk, we have to be outside of the browser, so that's a task
         return cy.task('accessibilityChecker', {
             task: 'sendResultsToReporter',
-            data: result
+            data: { result, profile: `${Cypress.browser.displayName} ${Cypress.browser.version}` }
         }, { log: false }).then(() => {
             return result.report;
         });
@@ -95,8 +101,14 @@ Cypress.Commands.add(
  * Retrieves the diff of the results for the given label against the baseline.
  */
 Cypress.Commands.add('getDiffResults', (label) => {
-    cy.window({log: false}).then(win => {
-        return ACCommands.initialize(win);
+    let fileConfig;
+    cy.task('accessibilityChecker', {
+        task: 'getConfig'
+    }, { log: false }).then((config) => {
+        fileConfig = config;
+        return cy.window({log: false});
+    }).then(win => {
+        return ACCommands.initialize(win, fileConfig);
     }).then(() => {
         return cy.wrap(ACCommands.getDiffResults(label), { log: false });
     })

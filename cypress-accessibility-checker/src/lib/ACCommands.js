@@ -3,6 +3,7 @@ const ACMetricsLogger = require('./log/ACMetricsLogger');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
+const ACReporterXLSX = require("./reporters/ACReporterXLSX");
 const DeepDiff = require("deep-diff");
 
 const myrequest = (url) => {
@@ -51,17 +52,17 @@ let ace;
 
 let ACCommands = module.exports = {
     DEBUG: false,
-    initializeConfig: () => {
+    initializeConfig: (fileConfig) => {
         if (ACCommands.initConfigOnce) return ACCommands.initConfigOnce;
 
         ACCommands.DEBUG && console.log("START 'initialize' function");
-        return ACCommands.initConfigOnce = ACConfigLoader()
+        return ACCommands.initConfigOnce = ACConfigLoader(fileConfig)
             .then((config) => {
                 ACCommands.Config = config;
                 return config;
             });
     },
-    initialize: (win) => {
+    initialize: (win, fileConfig) => {
         if (ACCommands.initOnce) {
             return ACCommands.initOnce.then(() => {
                 if (!ACCommands.ace) {
@@ -71,7 +72,7 @@ let ACCommands = module.exports = {
             })
         }
 
-        return ACCommands.initOnce = ACCommands.initializeConfig().then(() => {
+        return ACCommands.initOnce = ACCommands.initializeConfig(fileConfig).then(() => {
             if (ACCommands.Config.rulePack.includes("localhost")) {
                 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
             }
@@ -79,6 +80,7 @@ let ACCommands = module.exports = {
             ACCommands.reporterHTML = new ACReporterHTML(ACCommands);
             ACCommands.reporterJSON = new ACReporterJSON(ACCommands);
             ACCommands.reporterCSV = new ACReporterCSV(ACCommands);
+            ACCommands.reporterXLSX = new ACReporterXLSX(ACCommands);
 
             // Specify if debug information should be printed or not
             ACCommands.DEBUG = ACCommands.Config.DEBUG;

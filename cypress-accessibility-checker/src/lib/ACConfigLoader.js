@@ -1,19 +1,19 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+ Copyright:: 2020- IBM, Inc
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-  *****************************************************************************/
- // Load all the modules that are needed
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*****************************************************************************/
+// Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
 var YAML = require('js-yaml');
@@ -98,6 +98,7 @@ function processACConfig(ACConfig) {
 
         // Set the ruleArchive to empty for custom rule server
         ACConfig.ruleArchive = "";
+        ACConfig.ruleArchiveLabel = "";
         // Set the rulePack with what is provided in the configuration
         ACConfig.rulePack = ACConfig.rulePack;
     } else {
@@ -117,24 +118,31 @@ function processACConfig(ACConfig) {
                     constants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
                     ACConfig.ruleArchiveSet = ruleArchiveParse;
                     let ruleArchive = ACConfig.ruleArchive;
+                    ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
                     let ruleArchivePath = null;
-                    let ruleArchiveVersion = null;
                     for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
                         if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                             ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                            ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
-                            ACConfig.ruleArchive = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
+                            ACConfig.ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
+                            ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                             break;
                         }
                     }
-                    if (!ruleArchivePath || ruleArchiveVersion === null) {
-                        console.log("[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md");
+                    if (!ruleArchivePath || ACConfig.ruleArchiveVersion === null) {
+                        console.log(`[ERROR] RuleArchiveInvalid (${ruleArchive}): Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md`);
+                        console.error(errStr);
                         process.exit(-1);
                     }
-
+                    for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+                        if (ACConfig.ruleArchiveVersion === ACConfig.ruleArchiveSet[i].version && ACConfig.ruleArchiveSet[i].id !== "latest" && ACConfig.ruleArchiveSet[i].id !== "preview") {
+                            ACConfig.ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                            break;
+                        }
+                    }
+                    //}
                     // Build the new rulePack based of the baseA11yServerURL and archive info
                     if (baseA11yServerURL.includes("jsdelivr.net")) {
-                        ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
+                        ACConfig.rulePack = `${baseA11yServerURL}@${ACConfig.ruleArchiveVersion}`;
                     } else {
                         ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
                     }
@@ -333,10 +341,10 @@ function processConfiguration(config) {
         "checkHiddenContent"
     ]
 
-    let configFromFile = { }
+    let configFromFile = config || { }
     if (typeof Cypress !== "undefined") {
         keys.forEach((key) => {
-            configFromFile[key] = Cypress.env(key);
+            configFromFile[key] = Cypress.env(key) || configFromFile[key];
         })
     } else {
         configFromFile = loadConfigFromYAMLorJSONFile();

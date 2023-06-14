@@ -106,24 +106,29 @@ async function processACConfig(ACConfig) {
         throw new Error(err);
     }
     let ruleArchivePath = null;
-    let ruleArchiveVersion = null;
     if (ruleArchiveParse && ruleArchiveParse.length > 0) {
         ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
         ACConfig.ruleArchiveSet = ruleArchiveParse;
         let ruleArchive = ACConfig.ruleArchive;
         ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-            if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
+            if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                 ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
+                ACConfig.ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                 ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                 break;
             }
         }
-        if (!ruleArchivePath || ruleArchiveVersion === null) {
+        if (!ruleArchivePath || ACConfig.ruleArchiveVersion === null) {
             const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
             console.error(errStr);
             throw new Error(errStr);
+        }
+        for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+            if (ACConfig.ruleArchiveVersion === ACConfig.ruleArchiveSet[i].version && ACConfig.ruleArchiveSet[i].id !== "latest" && ACConfig.ruleArchiveSet[i].id !== "preview") {
+                ACConfig.ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                break;
+            }
         }
         //}
     } else {
@@ -134,7 +139,7 @@ async function processACConfig(ACConfig) {
 
     // Build the new rulePack based of the baseA11yServerURL
     if (ruleServer.includes("jsdelivr.net")) {
-        ACConfig.rulePack = `${ruleServer}@${ruleArchiveVersion}`;
+        ACConfig.rulePack = `${ruleServer}@${ACConfig.ruleArchiveVersion}`;
     } else {
         ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
     }
