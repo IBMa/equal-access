@@ -1,19 +1,19 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+ Copyright:: 2020- IBM, Inc
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-  *****************************************************************************/
- // Load all the modules that are needed
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*****************************************************************************/
+// Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
 var YAML = require('js-yaml');
@@ -22,23 +22,7 @@ var uuid = require('uuid');
 const { resolve } = require('path');
 
 const myrequest = (url) => {
-    if (typeof cy !== "undefined") {
-        return cy.request(url)
-            .then((data) => {
-                return data.body;
-            })
-    } else {
-        return new Promise((resolve, reject) => {
-            var request = require("@cypress/request");
-            request.get(url, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
-    }
+    return fetch(url).then(resp => resp.json());
 }
 
 /**
@@ -114,6 +98,7 @@ function processACConfig(ACConfig) {
 
         // Set the ruleArchive to empty for custom rule server
         ACConfig.ruleArchive = "";
+        ACConfig.ruleArchiveLabel = "";
         // Set the rulePack with what is provided in the configuration
         ACConfig.rulePack = ACConfig.rulePack;
     } else {
@@ -144,7 +129,7 @@ function processACConfig(ACConfig) {
                         }
                     }
                     if (!ruleArchivePath || ACConfig.ruleArchiveVersion === null) {
-                        const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
+                        console.log(`[ERROR] RuleArchiveInvalid (${ruleArchive}): Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md`);
                         console.error(errStr);
                         process.exit(-1);
                     }
@@ -356,10 +341,10 @@ function processConfiguration(config) {
         "checkHiddenContent"
     ]
 
-    let configFromFile = { }
+    let configFromFile = config || { }
     if (typeof Cypress !== "undefined") {
         keys.forEach((key) => {
-            configFromFile[key] = Cypress.env(key);
+            configFromFile[key] = Cypress.env(key) || configFromFile[key];
         })
     } else {
         configFromFile = loadConfigFromYAMLorJSONFile();

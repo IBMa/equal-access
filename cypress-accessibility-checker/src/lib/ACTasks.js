@@ -51,6 +51,7 @@ let ACTasks = module.exports = {
         ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
         ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
         ACTasks.reporterXLSX && ACTasks.reporterXLSX.onRunComplete();
+        ACTasks.metricsLogger.sendLogsV2();
         return true;
     },
 

@@ -219,9 +219,29 @@ class BackgroundController extends Controller {
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
                 console.info(`[INFO]: Scanning using archive ${settings.selected_archive.id} and guideline ${settings.selected_ruleset.id}`);
                 let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
-                    let checker = new (<any>window).aceIBMa.Checker();    
+                    let checker = new (<any>window).aceIBMa.Checker();
+                    if (Object.keys(checker.engine.nlsMap).length === 0) {
+                        // Some problem grabbing messages for given locale. Let's try to get en-US data out of the engine
+                        for (const ruleId in checker.engine.ruleMap) {
+                            const rule = checker.engine.ruleMap[ruleId];
+                            checker.engine.nlsMap[ruleId] = rule.messages["en-US"];
+                            checker.engine.nlsMap[ruleId][0] = checker.engine.nlsMap[ruleId].group;
+                            checker.engine.helpMap[ruleId] = {}
+                            for (const reasonId in rule.help["en-US"]) {
+                                checker.engine.helpMap[ruleId][reasonId] = `/en-US/${rule.help["en-US"][reasonId]}`;
+                            }
+                        }
+                    }
                     return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
                         try {
+                            if (Object.keys(report.nls).length === 0) {
+                                // Some problem grabbing messages for given locale. Let's try to get en-US data out of the engine
+                                for (const ruleId in checker.engine.ruleMap) {
+                                    const rule = checker.engine.ruleMap[ruleId];
+                                    report.nls[ruleId] = rule.messages["en-US"];
+                                    report.nls[ruleId][0] = report.nls[ruleId].group;
+                                }
+                            }
                             for (const result of report.results) {
                                 if (!(result.value[1] === "PASS" && result.value[0] !== "INFORMATION")) {
                                     // Save all of this for backward compatibility
