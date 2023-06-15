@@ -9,10 +9,21 @@
 }
 
 .scanSection {
+
     .cds--overflow-menu--sm {
         min-height: 2rem;
-        background-color: #6f6f6f;
     }
+
+    // &.cds--g100 {
+    //     .cds--overflow-menu__wrapper {
+    //         background-color: #696969;
+    //     }
+    // }
+
+    .cds--100 .cds--overflow-menu__wrapper {
+        background-color: #696969;
+    }
+    
 
     .cds--btn {
         min-height: none;
@@ -24,7 +35,6 @@
     }
 
     .inlineLoading {
-        // background-color: $layer;
-        background-color: #161616
+        background-color: $layer;
     }
 }
