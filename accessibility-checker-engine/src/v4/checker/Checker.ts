@@ -27,13 +27,18 @@ let checkNls = {};
 let checkHelp = {};
 
 function _initialize() {
-    const langs = Engine.getLanguages();
+    const langs = JSON.parse(JSON.stringify(Engine.getLanguages()));
+    // Default lang to en-US if nothing else specified is found
+    langs.push("en-US");
     // Process V4 rules into the V2 format
     for (let rulename in checkRulesV4) {
         // Convert rule
         let v4Rule: RuleV4 = checkRulesV4[rulename];
         checkRules.push(v4Rule);
-        for (const langId of langs) {
+        // Go backwards because the first lang is the preferred, so
+        // earlier languages will override later languages
+        for (let idx=langs.length-1; idx >=0; --idx) {
+            const langId = langs[idx];
             if (langId in v4Rule.messages) {
                 checkNls[v4Rule.id] = v4Rule.messages[langId];
                 checkNls[v4Rule.id][0] = checkNls[v4Rule.id].group;

@@ -34,12 +34,13 @@ reportLevels:
     - manual
 
 # Optional - Which type should the results be outputted to
-# Valid values: json, csv
+# Valid values: json, csv, html, xlsx, disable
 # Default: json
 outputFormat:
     - json
     - html
     - csv
+    - xlsx
 
 # Optional - Specify labels that you would like associated to your scan
 #
@@ -53,6 +54,7 @@ outputFormat:
 # Default: N/A
 label:
     - master
+    - IBMa-Node-TeSt
 
 # optional - Where the scan results should be saved.
 # Default: results
