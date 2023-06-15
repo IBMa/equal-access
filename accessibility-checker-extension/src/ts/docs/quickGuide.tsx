@@ -22,7 +22,7 @@ import {QuickGuideACApp} from "./QuickGuideACApp";
 import "../styles/index.scss";
 
 let element = document.getElementById('pageapp-root');
-element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"g10")
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"white")
 
 ReactDOM.render(<QuickGuideACApp />
     , element);

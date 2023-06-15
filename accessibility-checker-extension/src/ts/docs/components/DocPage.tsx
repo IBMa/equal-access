@@ -58,7 +58,7 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
 
         return (<>
             <Grid className={BrowserDetection.isDarkMode()?"cds--g90":"g10"}>
-                <Column sm={4} md={8} lg={4} className={`leftCol ${BrowserDetection.isDarkMode()?"cds--g100":"white"}`}>
+                <Column sm={4} md={8} lg={4} className={`leftCol ${BrowserDetection.isDarkMode()?"cds--g100":"cds--g10"}`}>
                     <div role="banner">
                         <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
                         <div style={{marginTop:"2rem"}} />
@@ -79,7 +79,7 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
                 </Column>
                 <Column sm={0} md={0} lg={1}>
                 </Column>
-                <Column sm={this.props.sm} md={this.props.md} lg={this.props.lg} className={`rightCol ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}>
+                <Column sm={this.props.sm} md={this.props.md} lg={this.props.lg} className={`rightCol ${BrowserDetection.isDarkMode()?"cds--g90":"white"}`}>
                     {this.props.children}
                 </Column>
             </Grid>

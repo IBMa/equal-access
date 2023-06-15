@@ -28,7 +28,7 @@ class PageApp extends React.Component<{}, {}> {
 }
 
 let element = document.getElementById('pageapp-root');
-element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"cds--g10")
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"white")
 
 ReactDOM.render(<PageApp />
     , element);
