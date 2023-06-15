@@ -191,7 +191,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                 <OverflowMenu 
                                     size="sm" 
                                     ariaLabel="stored scans" 
-                                    //align="bottom" 
                                     renderIcon={ChevronDown}
                                 >
                                     <OverflowMenuItem
