@@ -19,7 +19,7 @@
     import { Column, Link, Grid } from "@carbon/react";
     import "./popup.scss";
     
-    const purple_bee = "/assets/Bee_Logo@64px.png";
+    const purple_bee = "/assets/Mask group2";
     const checker_chrome = "/assets/img/Chrome_Checker.png";
     const checker_firefox = "/assets/img/Firefox_Checker.png";
     const assessment_chrome = "/assets/img/Chrome_Assessment.png";

@@ -17,7 +17,7 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import beeLogoUrl from "../../assets/BE_for_DarkMode.svg";
+import beeLogoUrl from "../../assets/Mask group2.svg";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";

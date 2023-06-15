@@ -24,7 +24,7 @@ import {
 } from "@carbon/react";
 
 // import OptionUtil  from '../util/optionUtil';
-import beeLogoUrl from "../../../assets/BE_for_DarkMode.svg";
+import beeLogoUrl from "../../../assets/Mask group2.svg";
 import "./DocPage.scss";
 import { BrowserDetection } from "../../util/browserDetection";
 
