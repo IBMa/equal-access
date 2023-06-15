@@ -9,22 +9,6 @@
 }
 
 .scanSection {
-
-    .cds--overflow-menu--sm {
-        min-height: 2rem;
-    }
-
-    // &.cds--g100 {
-    //     .cds--overflow-menu__wrapper {
-    //         background-color: #696969;
-    //     }
-    // }
-
-    .cds--100 .cds--overflow-menu__wrapper {
-        background-color: #696969;
-    }
-    
-
     .cds--btn {
         min-height: none;
     }
@@ -36,5 +20,52 @@
 
     .inlineLoading {
         background-color: $layer;
+    }
+}
+
+.cds--g100 {
+    .scanSection {
+        .cds--overflow-menu__wrapper {
+            button {
+                height: 2rem;
+                width: 2rem;
+                background-color: #696969;
+                min-height: 2rem;
+                .cds--btn--md.cds--btn--icon-only {
+                    padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                }
+                svg {
+                    .cds--overflow-menu__icon {
+                        fill: black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cds--white {
+    .scanSection {
+        .cds--overflow-menu__wrapper {
+            .cds--overflow-menu__icon {
+                fill: white;
+            }
+            button {
+                height: 2rem;
+                width: 2rem;
+                background-color: #161616;
+                min-height: 2rem;
+                .cds--btn--md.cds--btn--icon-only {
+                    padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                }
+                svg {
+                    .cds--overflow-menu__icon {
+                        fill: white;
+                    }
+                }
+            }
+        }
     }
 }
