@@ -19,7 +19,11 @@ import * as pathLib from "path";
 import * as fs from "fs";
 import { IConfigUnsupported } from "../api/IChecker";
 import { IScanSummary, IScanSummaryCounts } from "./ReportUtil";
-import { ACEngineManager } from "../ACEngineManager";
+// Some circular loading problem
+let ACEngineManager;
+(async () => {
+    ACEngineManager = (await import("../ACEngineManager")).ACEngineManager;
+})();
 
 declare var after;
 declare var afterAll;

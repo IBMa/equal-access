@@ -16,8 +16,12 @@
 
 
 import * as stringHash from "string-hash";
-import { ACEngineManager } from "../ACEngineManager";
 import { IConfigUnsupported } from "../api/IChecker.js";
+// Some circular loading problem
+let ACEngineManager;
+(async () => {
+    ACEngineManager = (await import("../ACEngineManager")).ACEngineManager;
+})();
 
 export class MultiScanData { 
     Config: IConfigUnsupported;
