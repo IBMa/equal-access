@@ -20,7 +20,7 @@ import { IConfigUnsupported } from "../api/IChecker.js";
 // Some circular loading problem
 let ACEngineManager;
 (async () => {
-    ACEngineManager = (await import("../ACEngineManager")).ACEngineManager;
+    ACEngineManager = (await import("../ACEngineManager.js")).ACEngineManager;
 })();
 
 export class MultiScanData { 

@@ -22,7 +22,7 @@ import { IScanSummary, IScanSummaryCounts } from "./ReportUtil";
 // Some circular loading problem
 let ACEngineManager;
 (async () => {
-    ACEngineManager = (await import("../ACEngineManager")).ACEngineManager;
+    ACEngineManager = (await import("../ACEngineManager.js")).ACEngineManager;
 })();
 
 declare var after;
