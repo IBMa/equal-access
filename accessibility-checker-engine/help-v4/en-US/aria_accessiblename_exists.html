@@ -44,18 +44,34 @@
 
 ### Why is this important?
 
-Associating a meaningful label with every UI control allows the browser and assistive technology to expose and announce the control to a user. Associating a visible label also provides a larger clickable area.
+The [accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name) helps people using assistive technologies to identify the user interface element and its purpose which is critical in finding, navigating, and interacting with the content.
+Most assistive technologies expect elements with certain ARIA roles to have an accessible name per the ARIA specification.
+The browser provides the accessible name property to the assistive technologies. 
+The value of the accessible name is derived via one of the following means:
+- **author**: name comes from values provided by the author in explicit markup such as the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest precedence
+- **contents**: name comes from the text content of the element
+- **required**: names are required for certain roles
+- **allowed**: names are supported for certain roles 
+- **prohibited**: authors **must not** use the `aria-label` or `aria-labelledby` attributes to name the element with certain roles
+
+#### Important terms:
+    
+- [Accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name)
+- [Accessible description](https://www.w3.org/TR/accname-1.2/#dfn-accessible-description)
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
+    
+See the [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/#namecalculation) to determine where an accessible name is allowed, required, and prohibited for the particular role:
+- [Roles supporting name from the author](https://www.w3.org/TR/wai-aria-1.2/#namefromauthor)
+- [Roles supporting name from content](https://www.w3.org/TR/wai-aria-1.2/#namefromcontent)
+- [Roles which must not be named (Name prohibited)](https://www.w3.org/TR/wai-aria-1.2/#namefromprohibited)
 
-* If the control is a [labelable](https://html.spec.whatwg.org/multipage/forms.html#category-label) element, add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
-* **Or**, if the  control is a labelable element, put the control inside a visible `<label>` element;
-* **Or**, add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
-* **Or**, if the design cannot have a visible label, provide a label using the `aria-label` attribute (e.g. `aria-label="Activities"`);
-* **Or**, if the design cannot have a visible label, use the `title` attribute to provide a label.
+If the element supports a role with a required or allowed accessible name:
+- set the element's accessible name via the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest priority
+- **Or**, remove or change the invalid use of the ARIA role on the element
 
 </script></mark-down>
 <!-- End main panel -->
@@ -69,14 +85,17 @@ Associating a meaningful label with every UI control allows the browser and assi
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [WCAG technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
-* [WCAG technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16)
+* [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/)
+* [Accessible Name and Description Computation specification](https://www.w3.org/TR/accname-1.2/)
+* [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with dexterity impairment using voice control
-
+* People with low vision using screen magnification
+* People using other assistive technologies that expose accessibility information
+    
 </script></mark-down>
 <!-- End side panel -->
             </div>
