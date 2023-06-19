@@ -29,7 +29,7 @@ import {
     OverflowMenu,
     OverflowMenuItem,
     Switch,
-    Tooltip
+    Tooltip,
 } from "@carbon/react";
 import {
     Keyboard,
@@ -40,6 +40,7 @@ import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
+// import { BrowserDetection } from '../../util/browserDetection';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -189,6 +190,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     }>Scan</Button>
                                 </div>
                                 <OverflowMenu 
+                                    data-floating-menu-container
                                     size="sm" 
                                     ariaLabel="stored scans" 
                                     renderIcon={ChevronDown}
