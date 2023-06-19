@@ -50,6 +50,7 @@ let ACTasks = module.exports = {
         ACTasks.reporterHTML && ACTasks.reporterHTML.onRunComplete();
         ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
         ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
+        ACTasks.reporterXLSX && ACTasks.reporterXLSX.onRunComplete();
         ACTasks.metricsLogger.sendLogsV2();
         return true;
     },
@@ -237,7 +238,7 @@ let ACTasks = module.exports = {
     sendResultsToReporter: function (unFilteredResults, results, profile) {
         return ACTasks.initialize().then(() => {
             ACTasks.DEBUG && console.log("sendResultsToReporter:", ACTasks.Config.outputFormat);
-            if (!ACReportManager.config.outputFormat.includes("disable")) {
+            if (!ACTasks.Config.outputFormat.includes("disable")) {
                 if (ACTasks.Config.outputFormat.includes("json")) {
                     ACTasks.reporterJSON.report(results);
                 }
@@ -246,6 +247,9 @@ let ACTasks = module.exports = {
                 }
                 if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
                     ACTasks.reporterHTML.report(unFilteredResults);
+                }
+                if (ACTasks.Config.outputFormat.includes("xlsx")) {
+                    ACTasks.reporterXLSX.report(unFilteredResults);
                 }
             }
             // Only perform the profiling if profiling was not disabled on purpose
