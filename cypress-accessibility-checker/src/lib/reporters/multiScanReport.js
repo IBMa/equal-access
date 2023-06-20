@@ -17,14 +17,11 @@ const ExcelJS = require('exceljs');
 const fs = require('fs');
 
 let multiScanXlsxDownload = async (storedScans, scanType, storedScanCount, archives, toolID, fileName) => {
-    console.log("AAAAA");
     // create workbook
     var reportWorkbook = createReportWorkbook(storedScans, scanType, storedScanCount, archives, toolID);
-    console.log("BBBBB");
 
     // create binary buffer
     const buffer = await reportWorkbook.xlsx.writeBuffer();
-    console.log("CCCC", fileName);
     fs.writeFileSync(fileName, buffer);
 }
 

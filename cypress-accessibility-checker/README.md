@@ -8,7 +8,8 @@ All bugs or issues related to the cypress-accessibility-checker code can be crea
 
 ## Requirements
 
-* [Node Version 16](https://nodejs.org/en/download/)
+* [Node Version 18](https://nodejs.org/en/download/)
+* Cypress 12
 
 ## Installation
 
@@ -39,7 +40,7 @@ module.exports = (on, config) => {
 ```
 
 ### 2. Import commands
-In the `cypress/support/index.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
+In the spec file where you run tests, add the following import statement. This will register the custom checker commands.
 
 ```
 import 'cypress-accessibility-checker';

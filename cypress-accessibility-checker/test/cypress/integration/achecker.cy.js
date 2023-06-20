@@ -25,7 +25,7 @@ context('Accessibility checker tests', () => {
                 console.warn(report);
                 expect(report.results).to.have.lengthOf(0);
             });
-            
+
         cy.visit('violations.html')
             .getCompliance('getComplianceOfDocument with violations')
             .then((report) => {
