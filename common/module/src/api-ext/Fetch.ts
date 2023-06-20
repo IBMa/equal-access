@@ -14,22 +14,17 @@
     limitations under the License.
 *****************************************************************************/
 
-import { eRuleCategory, eRulePolicy, eRulesetType, eToolkitLevel } from "./IReport"
+let axios;
 
-export interface IRuleset {
-    id: string,
-    name: string,
-    category: eRuleCategory,
-    description: string,
-    type?: eRulesetType,
-    checkpoints: Array<{
-        num: string,
-        // See https://github.com/act-rules/act-tools/blob/main/src/data/sc-urls.json
-        scId?: string,
-        // JCH: add name of checkpoint and summary description
-        name: string,
-        wcagLevel: string,
-        summary: string,
-        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
-    }>
+export async function fetch_get(url: string) {
+    if (typeof fetch === "function") {
+        const resp = await fetch(url);
+        return await resp.json();
+    } else {
+        if (!axios) {
+            axios = import("axios");
+        }
+        const response = await axios.get(url);
+        return JSON.parse(await response.data);
+    }
 }

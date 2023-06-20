@@ -16,7 +16,7 @@
 
 import { IConfigInternal } from "../config/IConfig";
 import { IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReportManager";
+import { IReporter, IReporterStored } from "./ReporterManager";
 
 export class ACReporterCSV implements IReporter {
     private static toCSV = function(str) {
@@ -42,8 +42,9 @@ export class ACReporterCSV implements IReporter {
                 resultStr += `${toCSV(reportStored.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(result.help)}\n`
             }
         }
+        let startScan = new Date(summaryData[0].startScan);
         return {
-            summaryPath: "results.csv",
+            summaryPath: `results_${startScan.toISOString()}.csv`,
             summary: resultStr
         }
     }

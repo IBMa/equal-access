@@ -1,7 +1,7 @@
-import { ACConfigManager } from "./ACConfigManager";
 import * as path from "path";
 import * as fs from "fs";
 import axios from "axios";
+import { ACConfigManager } from "./common/config/ACConfigManager";
 
 let ace;
 

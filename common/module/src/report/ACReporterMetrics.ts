@@ -14,15 +14,16 @@
     limitations under the License.
  *****************************************************************************/
 
+import { fetch_get } from "../api-ext/Fetch";
+import { IConfigInternal } from "../config/IConfig";
+import { IRuleset } from "../engine/IReport";
+import { IReporter, IReporterStored } from "./ReporterManager";
+
 /*******************************************************************************
  * NAME: ACMetricsLogger.js
  * DESCRIPTION: Common Metrics logger object which can be shared between tools
  *              to upload metrics of the tool to the metrics server.
  *******************************************************************************/
-
-// Load required modules
-import { ILogger } from "../api/IChecker";
-import axios from "axios";
 
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
@@ -36,21 +37,17 @@ import axios from "axios";
  *
  * @memberOf this
  */
-export class ACMetricsLogger {
+export class ACReporterMetrics implements IReporter {
     policies: string;
     metricsURLV2: string = "https://able.ibm.com/tools";
-    log: ILogger;
     toolName: string;
     scanTimesV1 = [];
     scanTimesV2 : {
         [profile: string]: number[]
     } = {};
 
-    constructor(toolName: string, logger: ILogger, policies: string[]) {
+    constructor(toolName: string, policies: string[]) {
         this.policies = policies.join(",");
-
-        // accessibility-checker Metrics Logger
-        this.log = logger;
 
         // Init all the local object variables
         this.toolName = toolName;
@@ -72,17 +69,15 @@ export class ACMetricsLogger {
      *
      * @memberOf this
      */
-    profileV2(scanTime: number, profile: string) {
-        this.log.debug("START 'profileV2' function");
+    public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
+        if (!config.label || !config.label.includes("IBMa-Node-TeSt")) {
+            // URI encode the profile text provided
+            let profile = encodeURIComponent(storedReport.scanProfile);
 
-        // URI encode the profile text provided
-        profile = encodeURIComponent(profile);
-
-        // Add the time it took for the testcase to run to the global array, indexed by the profile
-        this.scanTimesV2[profile] = this.scanTimesV2[profile] || [];
-        this.scanTimesV2[profile].push(scanTime);
-
-        this.log.debug("END 'profileV2' function");
+            // Add the time it took for the testcase to run to the global array, indexed by the profile
+            this.scanTimesV2[profile] = this.scanTimesV2[profile] || [];
+            this.scanTimesV2[profile].push(storedReport.engineReport.summary.scanTime);
+        }
     };
 
     /**
@@ -95,12 +90,7 @@ export class ACMetricsLogger {
      *
      * @memberOf this
      */
-    async sendLogsV2(done, rulePack) {
-        this.log.debug("START 'sendLogsV2' function");
-
-        // Copy this.log into loggerInScope so that it can be used in callback function
-        let loggerInScope = this.log;
-
+    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void> {
         try {
             // Variable Decleration
             let numProfiles = 0;
@@ -126,38 +116,18 @@ export class ACMetricsLogger {
                     });
                     qs = qs.substr(0, qs.length - 1);
 
-                    this.log.debug("Uploading: " + this.metricsURLV2 + "/api/pub/meter/v2" + qs);
-
                     // Dispatch the call to the metrics server
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
-                    axios.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
+                    await fetch_get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
                     }).catch((_err) => {
                     }).finally(() => {
                         // Decrement the numProfiles to identify that scan has finished
                         --numProfiles;
-
-                        // Once all metrics for all profiles have been uploaded we end this function call
-                        if (numProfiles === 0) {
-                            loggerInScope.debug("END 'sendLogsV2' function");
-                            done && done();
-                        }
                     })
                 }
             }
-
-            // Once all metrics for all profiles have been uploaded we end this function call
-            if (numProfiles === 0) {
-                this.log.debug("END 'sendLogsV2' function");
-                done && done();
-            }
         } catch (e) {
-            /* istanbul ignore next */
-            this.log.debug("Error uploading metrics logs: " + e);
-            /* istanbul ignore next */
-            this.log.debug("END 'sendLogsV2' function");
-            /* istanbul ignore next */
-            done && done();
         }
     };
 };

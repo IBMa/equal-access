@@ -79,6 +79,7 @@ export interface IEngineReport {
     ruleTime: number,
     // This may be undefined for a filtered report
     totalTime?: number,
+    screenshot?: string,
     nls?: {
         [ruleId: string]: {
             [reasonId: string]: string

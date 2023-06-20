@@ -16,7 +16,7 @@
 
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
 import { IBaselineResult, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReportManager";
+import { IReporter, IReporterStored } from "./ReporterManager";
 import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {
@@ -25,6 +25,16 @@ type PolicyInfo = {
     cps: string[]
 };
 
+function dropDupes<T>(arr: T[]): T[] {
+    let dupes = {}
+    return arr.filter(item => {
+        if (item.toString() in dupes) {
+            return false;
+        } {
+            return dupes[item.toString()] = true;
+        }
+    })
+}
 export class ACReporterXLSX implements IReporter {
     public generateReport(_reportData): { reportPath: string, report: string } | void {
     }
@@ -49,9 +59,9 @@ export class ACReporterXLSX implements IReporter {
             }
         }
         for (const ruleId in policyInfo) {
-            policyInfo[ruleId].tkLevels = [...new Set(policyInfo[ruleId].tkLevels)];
-            policyInfo[ruleId].cps = [...new Set(policyInfo[ruleId].cps)];
-            policyInfo[ruleId].wcagLevels = [...new Set(policyInfo[ruleId].wcagLevels)];
+            policyInfo[ruleId].tkLevels = dropDupes(policyInfo[ruleId].tkLevels);
+            policyInfo[ruleId].cps = dropDupes(policyInfo[ruleId].cps);
+            policyInfo[ruleId].wcagLevels = dropDupes(policyInfo[ruleId].wcagLevels);
             policyInfo[ruleId].tkLevels.sort();
             policyInfo[ruleId].cps.sort();
             policyInfo[ruleId].wcagLevels.sort();
@@ -65,9 +75,9 @@ export class ACReporterXLSX implements IReporter {
         ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData, workbook);
         ACReporterXLSX.createDefinitionsSheet(workbook);
         const buffer: any = await workbook.xlsx.writeBuffer();
-        console.log(buffer);
+        let startScan = new Date(summaryData[0].startScan);
         return {
-            summaryPath: "results.xlsx",
+            summaryPath: `results_${startScan.toISOString()}.xlsx`,
             summary: buffer
         }
     }

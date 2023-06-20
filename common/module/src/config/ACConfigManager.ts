@@ -20,7 +20,8 @@ import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants";
 import { v4 as uuidv4 } from 'uuid';
 import { IConfig, IConfigInternal } from "./IConfig";
-import axios from 'axios';
+import { fetch_get } from "../api-ext/Fetch";
+import { ReporterManager } from "../report/ReporterManager";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -100,13 +101,7 @@ async function processACConfig(ACConfig) {
         if (ACConfig.ignoreHTTPSErrors) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
         }
-        if (typeof fetch === "function") {
-            const response = await fetch(ruleArchiveFile);
-            ruleArchiveParse = await response.json();
-        } else {
-            const response = await axios.get(ruleArchiveFile);
-            ruleArchiveParse = JSON.parse(await response.data);
-        }
+        ruleArchiveParse = await fetch_get(ruleArchiveFile);
     } catch (err) {
         console.log(err);
         throw new Error(err);
@@ -186,10 +181,15 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    const packageObject = JSON.parse(fs.readFileSync('./package.json').toString());
+    let packageDir = __dirname;
+    while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
+        packageDir = pathLib.join(packageDir, "..");
+    }
+    const packageObject = JSON.parse(fs.readFileSync(pathLib.join(packageDir, 'package.json')).toString());
 
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;
+    config.toolName = packageObject.name;
 
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
@@ -358,6 +358,7 @@ let config : IConfigInternal = null;
 export class ACConfigManager {
     static async setConfig(inConfig?: IConfig | IConfigInternal) : Promise<void> {
         config = await processConfiguration(inConfig);
+        ReporterManager.setConfig(config);
     }
 
     static async getConfig() : Promise<IConfig> {

@@ -164,6 +164,7 @@ export type IConfigInternal = IConfig & {
     configFiles?: string[]
 
     toolID?: string
+    toolName?: string
 
     scanID?: string
 

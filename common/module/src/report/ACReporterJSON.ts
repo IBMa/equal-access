@@ -16,7 +16,7 @@
 
 import { IConfigInternal } from "../config/IConfig";
 import { IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReportManager";
+import { IReporter, IReporterStored } from "./ReporterManager";
 
 export class ACReporterJSON implements IReporter {
     public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {

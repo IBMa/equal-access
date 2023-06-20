@@ -16,7 +16,7 @@
 
 import { IConfigInternal } from "../config/IConfig";
 import { IBaselineReport, IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReportManager";
+import { IReporter, IReporterStored } from "./ReporterManager";
 import { genReport } from "./genReport";
 
 export class ACReporterHTML implements IReporter {
