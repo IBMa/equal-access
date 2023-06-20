@@ -23,7 +23,6 @@ import { ReportSection } from './components/reportSection';
 import { ScanSection } from './components/scanSection';
 import { BrowserDetection } from '../util/browserDetection';
 import {
-    // Button,
     Column,
     ComposedModal,
     Grid,
@@ -34,7 +33,6 @@ import {
 
 import "../styles/index.scss";
 import "./devToolsApp.scss";
-// import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
 import HelpScreen from "./components/helpScreen";
 import StoredScreen from './components/storedScreen';
@@ -117,7 +115,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             }}
                             style={{height: "100%"}}
                             isFullWidth={true}
-                            passiveModal={true}
                             size="lg"
                             selectorPrimaryFocus=".secondaryDialog button"
                         >
