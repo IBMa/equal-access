@@ -80,5 +80,7 @@ export const ACConstants : IConfigInternal = {
     // both json and js are present it loads js first.
     configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), pathLib.join(".config", "aceconfig")],
 
-    ignoreHTTPSErrors: false
+    ignoreHTTPSErrors: false,
+
+    perfMetrics: true
 };

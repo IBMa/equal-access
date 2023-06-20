@@ -169,4 +169,6 @@ export type IConfigInternal = IConfig & {
     scanID?: string
 
     ignoreHTTPSErrors: boolean
+
+    perfMetrics: boolean
 }

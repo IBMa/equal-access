@@ -36,7 +36,7 @@ export type RefactorMap = {
 export class BaselineManager {
     private static baselineIssueList = ["ruleId", "xpath"];
     private static config: IConfigInternal;
-    private static diffResults;
+    private static diffResults = {}
     private static absAPI: IAbstractAPI;
     private static refactorMap: RefactorMap;
 

@@ -4,9 +4,9 @@ import { ACEngineManager } from "./ACEngineManager";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { IConfigInternal } from "./common/config/IConfig";
 import { ReporterManager } from "./common/report/ReporterManager";
-import { writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
-import { IEngineReport } from "./common/engine/IReport";
+import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
 import { join } from "path";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
 
@@ -29,7 +29,11 @@ let checkPolicy = false;
 
 class MyFS implements IAbstractAPI {
     writeFileSync(filePath: string, data: string | Buffer) {
-        writeFileSync(filePath, data);
+        let outDir = join(process.cwd(), Config.outputFolder);
+        if (!existsSync(outDir)) {
+            mkdirSync(outDir, { recursive: true });
+        }
+        writeFileSync(join(outDir, filePath), data);
     }
     log(...output) { Config && Config.DEBUG && console.debug(...output) }
     info(...output) { Config && Config.DEBUG && console.info(...output) }
@@ -42,19 +46,19 @@ class MyFS implements IAbstractAPI {
 async function initialize() {
     if (Config) return;
     Config = await ACConfigManager.getConfigUnsupported();
+    await ACEngineManager.loadEngineLocal();
     let absAPI = new MyFS();
     let refactorMap : RefactorMap = {}
     let rules = ACEngineManager.getRulesSync();
     for (const rule of rules) {
         if (rule.refactor) {
             for (const key in rule.refactor) {
-                this.refactorMap[key] = rule;
+                refactorMap[key] = rule;
             }
         }
     }
     ReporterManager.initialize(Config, absAPI, await ACEngineManager.getRulesets());
     BaselineManager.initialize(Config, absAPI, refactorMap);
-    return ACEngineManager.loadEngineLocal();
 }
 
 try {
@@ -243,7 +247,7 @@ cb(e);
         }
 
         // If there is something to report...
-        let finalReport : ICheckerReport;
+        let finalReport : IBaselineReport;
         if (report.results) {
             // Add URL to the result object
             const url = await browser.getCurrentUrl();
@@ -253,7 +257,7 @@ cb(e);
                 const image = await browser.takeScreenshot();
                 origReport.screenshot = image;
             }
-            ReporterManager.addEngineReport("Selenium", startScan, url, title, label, origReport);
+            finalReport = ReporterManager.addEngineReport("Selenium", startScan, url, title, label, origReport);
         }
         return {
             "report": finalReport,
@@ -291,7 +295,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
             areValidPolicy(valPolicies, curPol);
         }
 
-        let finalReport: ICheckerReport;
+        let finalReport: IBaselineReport;
 
         // If there is something to report...
         if (report.results) {
@@ -306,7 +310,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                 });
                 origReport.screenshot = image;
             }
-            ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
+            finalReport = ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
         }
         page.aceBusy = false;
 
@@ -346,7 +350,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             let url = parsed.location && parsed.location.href;
 
             let origReport = JSON.parse(JSON.stringify(report));
-            ReporterManager.addEngineReport("Native", startScan, url, parsed.title, label, origReport);
+            finalReport = ReporterManager.addEngineReport("Native", startScan, url, parsed.title, label, origReport);
         }
 
         return {

@@ -14,6 +14,8 @@
     limitations under the License.
 *****************************************************************************/
 
+import { IBaselineReport } from "../engine/IReport";
+
 /**
  * Interface for writing files
  */
@@ -25,7 +27,7 @@ export interface IAbstractAPI {
      */
     writeFileSync(filePath: string, data: string | Buffer)
 
-    loadBaseline(label: string);
+    loadBaseline(label: string): IBaselineReport | undefined;
 
     info(...args: any[])
 

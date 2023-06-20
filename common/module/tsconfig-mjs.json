@@ -1,5 +1,5 @@
 {
-    "extends": "./tsconfig-basetest.json",
+    "extends": "./tsconfig-base.json",
     "compilerOptions": {
         "module": "esnext",
         "outDir": "dist/mjs",

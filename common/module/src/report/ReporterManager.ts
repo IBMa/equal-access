@@ -54,7 +54,9 @@ export class ReporterManager {
         ReporterManager.config = config;
         ReporterManager.absAPI = absAPI;
         ReporterManager.rulesets = rulesets;
-        ReporterManager.reporters.push(new ACReporterMetrics(config.toolName, config.policies));
+        if (config.perfMetrics) {
+            ReporterManager.reporters.push(new ACReporterMetrics(config.toolName, config.policies));
+        }
 
         if (!config.outputFormat.includes("disable")) {
             if (config.outputFormat.includes("json")) {
@@ -129,10 +131,10 @@ export class ReporterManager {
         return resultsString;
     };
 
-    public static addEngineReport(scanProfile: string, startScan: number, url: string, pageTitle: string, label: string, engineReport: IEngineReport, baselineReport?: IBaselineReport): IBaselineReport {
+    public static addEngineReport(scanProfile: string, startScan: number, url: string, pageTitle: string, label: string, engineReport: IEngineReport): IBaselineReport {
         ReporterManager.verifyLabel(label);
         ReporterManager.usedLabels[label] = true;
-        let filteredReport = ReporterManager.filterReport(engineReport, baselineReport);
+        let filteredReport = ReporterManager.filterReport(engineReport, label);
         if (ReporterManager.reporters.length > 0) {
             ReporterManager.reports.push({
                 startScan,
@@ -180,8 +182,9 @@ export class ReporterManager {
         }
     }
 
-    private static filterReport(engineResult: IEngineReport, baselineReport?: IBaselineReport): IBaselineReport {
+    private static filterReport(engineResult: IEngineReport, scanLabel: string): IBaselineReport {
         let ignoreLookup = {}
+        let baselineReport = ReporterManager.absAPI.loadBaseline(scanLabel);
         if (baselineReport) {
             for (const issue of baselineReport.results) {
                 ignoreLookup[issue.path.dom] = ignoreLookup[issue.path.dom] || {}
