@@ -91,7 +91,8 @@ export class ARIAMapper extends CommonMapper {
                 const ownIds = owner.getAttribute("aria-owns").split(/ +/g);
                 for (let iId=0; iId < ownIds.length; ++iId) {
                     const owned = doc.getElementById(ownIds[iId]);
-                    if (owned) {
+                    //ignore if the aria-owns point to the element itself
+                    if (owned && !DOMUtil.sameNode(owner, owned)) {
                         setCache(owned, "aria-owned", owner);
                     }
                 }

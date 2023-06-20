@@ -1819,6 +1819,9 @@ export class RPTUtil {
 
             // Get the element for the reference ID
             referencedElement = FragmentUtil.getById(element, referenceID);
+            //ignore if the aria-owns point to the element itself
+            if (DOMUtil.sameNode(element, referencedElement))
+                return null;
 
             // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
             // or not.
@@ -1919,7 +1922,24 @@ export class RPTUtil {
 
     /* Return specified element attribute if present else return null */
     public static getElementAttribute(element, attr) {
-        return (element && element.hasAttribute && element.hasAttribute(attr)) ? element.getAttribute(attr) : null;
+        //return (element && element.hasAttribute && element.hasAttribute(attr)) ? element.getAttribute(attr) : null;
+        if (!attr || !element || !element.hasAttribute || !element.hasAttribute(attr)) return null;
+        const atrValue = element.getAttribute(attr)
+        if (!ARIADefinitions.referenceProperties.includes(attr))
+            return atrValue;
+        
+        //attr is a reference to other elements(s)
+        const values = atrValue.split(/ +/g);
+        //ignore if none of the referred element(s) exist or all point to the element itself
+        let exist = false;
+        for (let id=0; values < values.length; ++id) {
+            const referred = document.getElementById(values[id]);
+            if (referred && !DOMUtil.sameNode(referred, element)) {
+                exist = true;
+                break;
+            }
+        }
+        return exist ? atrValue : null;   
     }
 
     // Return true if the element has an ARIA label
@@ -2020,7 +2040,7 @@ export class RPTUtil {
 
                     let labelID = elements[i].getAttribute("aria-labelledby");
                     let labelNode = FragmentUtil.getById(elements[i], labelID);
-                    let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                    let label = labelNode && !DOMUtil.sameNode(labelNode, elements[i]) ? RPTUtil.getInnerText(labelNode) : "";
                     let normalizedLabel = RPTUtil.normalizeSpacing(label).toLowerCase();
                     hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
                     uniqueAriaLabels[normalizedLabel] = true;
@@ -2045,7 +2065,7 @@ export class RPTUtil {
                 for (let j = 0, length = labelIDs.length; j < length; ++j) {
                     let labelID = labelIDs[j];
                     let labelNode = FragmentUtil.getById(ele, labelID);
-                    let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                    let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? RPTUtil.getInnerText(labelNode) : "";
                     normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
                 }
                 return normalizedLabel.trim();
@@ -2112,7 +2132,7 @@ export class RPTUtil {
                     for (let j = 0, length = labelIDs.length; j < length; ++j) {
                         let labelID = labelIDs[j];
                         let labelNode = FragmentUtil.getById(elements[i], labelID);
-                        let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                        let label = labelNode && !DOMUtil.sameNode(labelNode, elements[i]) ? RPTUtil.getInnerText(labelNode) : "";
                         normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
                     }
                     hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;

@@ -48,6 +48,9 @@ export class ARIADefinitions {
         , 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'
     ];
 
+    //properties contains id(s) that refer to other element(s)
+    static referenceProperties : string[] = ["aria-owns", "aria-controls", "aria-describedby", "aria-labelledby", "aria-flowto", "aria-activedescendant"];
+
     // deprecated roles
     static globalDeprecatedRoles : string[] = [
         'directory', 'doc-biblioentry', 'doc-endnote'
