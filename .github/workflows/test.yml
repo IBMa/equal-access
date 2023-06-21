@@ -326,6 +326,8 @@ jobs:
       - run: npm install
         working-directory: report-react
       - run: npm install
+        working-directory: common/module
+      - run: npm install
         working-directory: karma-accessibility-checker
       - run: npm run setup
         working-directory: karma-accessibility-checker
