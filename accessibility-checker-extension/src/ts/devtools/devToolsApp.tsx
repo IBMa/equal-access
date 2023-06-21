@@ -28,7 +28,7 @@ import {
     Grid,
     ModalBody,
     ModalHeader,
-    Theme,
+    Theme
 } from "@carbon/react";
 
 import "../styles/index.scss";
