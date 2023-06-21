@@ -525,7 +525,7 @@ export class ARIAMapper extends CommonMapper {
             if (role === "combobox") {
                 if (elem.hasAttribute("aria-activedescendant")) {
                     let selected = FragmentUtil.getById(elem, "aria-activedescendant");
-                    if (selected) {
+                    if (selected && !DOMUtil.sameNode(elem, selected)) {
                         return ARIAMapper.computeNameHelp(walkId, selected, false, false);
                     }
                 }
