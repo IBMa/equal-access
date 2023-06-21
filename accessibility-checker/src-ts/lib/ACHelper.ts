@@ -7,7 +7,7 @@ import { ReporterManager } from "./common/report/ReporterManager";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
 import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
-import { join } from "path";
+import { dirname, join } from "path";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
 
 declare var after;
@@ -30,10 +30,11 @@ let checkPolicy = false;
 class MyFS implements IAbstractAPI {
     writeFileSync(filePath: string, data: string | Buffer) {
         let outDir = join(process.cwd(), Config.outputFolder);
-        if (!existsSync(outDir)) {
-            mkdirSync(outDir, { recursive: true });
+        let outFile = join(outDir, filePath);
+        if (!existsSync(dirname(outFile))) {
+            mkdirSync(dirname(outFile), { recursive: true });
         }
-        writeFileSync(join(outDir, filePath), data);
+        writeFileSync(outFile, data);
     }
     log(...output) { Config && Config.DEBUG && console.debug(...output) }
     info(...output) { Config && Config.DEBUG && console.info(...output) }
