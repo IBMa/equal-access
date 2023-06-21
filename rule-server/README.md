@@ -1,15 +1,15 @@
 # rule-server
 
-This README covers some topics related to build and deploy the rules / rule server.
+This README covers topics related to build and deploy the rules and rule server.
 
 ## Branches and rule archives
 
-By default, deployments build the current rulepack as the `preview` archive.
+By default, deployments build the current ruleset as the `preview` archive.
 However, different branches deploy to different servers.
-The `master` branch deploys to `rules-dev.mybluemix.net/rules`.
-For end users to see the `preview` archive, changes must be merged into the `prod` branch.
+The `master` branch deploys to [able-main.xcc2slstt6y.us-south.codeengine.appdomain.cloud/rules](https://able-main.xcc2slstt6y.us-south.codeengine.appdomain.cloud/rules).
+For end users to see and be able to select the `preview` rule set in the settings, changes must be merged into the `prod` branch.
 
-## Create a new archive
+## Create a new rule set archive
 
 1. Install
 
@@ -19,9 +19,13 @@ For end users to see the `preview` archive, changes must be merged into the `pro
 
 * Delete `rule-server/dist`
 * In `rule-server`, `npm run build`
-* The new archive will be found in `rule-server/dist/static/archives/preview`. Copy and rename `preview` to the archive directory (e.g., `rule-server/src/static/archives/yyyy.mm.dd`)
 
-3. Metadata
+3. Deploy
+
+* The new archive will be found in `rule-server/dist/static/archives/preview`. 
+* Copy and rename `preview` to the archive directory (e.g., `rule-server/src/static/archives/yyyy.mm.dd`)
+
+4. Metadata
 
 * Add an entry to `rule-server/src/static/archives.json`. See other entries for examples. Ensure that you move the `latest` property to the new archive.
 

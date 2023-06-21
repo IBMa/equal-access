@@ -2,10 +2,6 @@
 
 Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). The plugin works by injecting the accessibility-checker engine into the Cypress browser and scanning the page in context. Please see the `Usage` section in this README for more details.
 
-## Bugs and Issues
-
-All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
-
 ## Requirements
 
 * [Node Version 16](https://nodejs.org/en/download/)
@@ -81,7 +77,7 @@ You can chain the commands similar to other Cypress commands. For example, `cy.g
 
 Baselines are a helpful feature of `accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for things like false positives or issues you plan on not fixing.
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker documentation](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](src/README.md) for details.
 
 ## Development
 
@@ -90,7 +86,7 @@ The baseline feature is documented and implemented as part of `accessibility-che
 There is a suite of tests located in the `test/` directory which execute each of the added Cypress commands. You can run this test suite by doing one of the following:
 
 * `npm test`: Executes the tests in a headless environment
-* `npm run test:open`: Opens the Cypress interactive mode. You must run `npm run test:start-http` in order for the tests to work.
+* `npm run test:open`: Opens the Cypress interactive mode. Run `npm run test:start-http` in order for the tests to work.
 
 ### Building
 
@@ -100,3 +96,11 @@ The plugin does not really need to be built to be used. However there is a packa
 npm install
 npm run package:npm  or  npm run package:zip
 ```
+
+## Bugs and Issues
+
+All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

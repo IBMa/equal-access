@@ -3,8 +3,6 @@
 This Git repository hosts tools and supporting components that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
 
-[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
-
 ## Overview
 
 This README covers topics for users who want to find the deployed tools as well as topics for developers who want to better understand the various components and build the tools.
@@ -97,3 +95,7 @@ Please check the README for each individual tool for its build instructions:
 * [accessibility-checker/README](accessibility-checker/README.md)
 * [cypress-accessibility-checker/README](accessibility-checker/README.md)
 * [karma-accessibility-checker/README](karma-accessibility-checker/README.md)
+
+#### License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
