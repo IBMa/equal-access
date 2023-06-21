@@ -1,9 +1,10 @@
-[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
-
 # accessibility-checker
-An automated accessibility testing for Node-based test environments from [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 
-To get started, please review [NPM](https://www.npmjs.com/package/accessibility-checker).
+Automated accessibility testing for Node-based test environments.
+
+To get started, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM: automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, Jest and Zombie; the ability to validate results against baseline files, and scan local files.
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
 
 ## Features
 
@@ -13,6 +14,31 @@ To get started, please review [NPM](https://www.npmjs.com/package/accessibility-
 - Configure policies to scan
 - Set violation levels that trigger test failures
 - Set violation levels that should be reported
+
+## Boilerplates
+
+Review the [boilerplates/README](boilerplates/README.md) and see examples for the following:
+
+- [batch-scan](batch-scan): scan a batch of local files
+- [cucumber-selenium](cucumber-selenium): Using [Cucumber](https://www.npmjs.com/package/cucumber) with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
+- [jest](jest): Using a [Jest](https://www.npmjs.com/package/jest) test environment
+- [jest-selenium](jest-selenium): Using a [Jest](https://www.npmjs.com/package/jest) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
+- [mocha-selenium](mocha-selenium): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
+- [mocha-zombie](mocha-zombie): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Zombie](https://www.npmjs.com/package/zombie) browser simulator
+- [protractor](protractor): Using a [Protractor](https://www.npmjs.com/package/protractor) test environment
+- and others
+
+## Baselines
+
+Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues determined as false positives, issues scheduled to be fixed later, and capturing new regression issues.
+
+The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+Review the examples of validating automated accessibility testing results against baseline files:
+
+- [jest baselines](jest/baselines)
+- [jest-selenium baselines](jest-selenium/baselines)
+- [mocha-zombie baselines](mocha-zombie/baselines)
+- and others
 
 ## Running Locally
 
@@ -36,13 +62,19 @@ $ npm run package:zip  or  npm run package:npm
 $ npm test
 ```
 
-### Reporting bugs 
+### Reporting bugs
 
 If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
 
 ## Known issues and workarounds
 
-1. If you see `TypeError: ace.Checker is not a constructor`: 
-    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
+1. If you see `TypeError: ace.Checker is not a constructor`:
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework.
+  
+2. If your site has a Content Security Policy, the engine script may be prevented from loading. In the browser console, you'll see something like:
 
+```bash
+VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
+```
 
+If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
