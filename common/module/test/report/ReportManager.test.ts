@@ -3,7 +3,7 @@ import { IAbstractAPI } from "../../src/api-ext/IAbstractAPI";
 import { IConfigInternal, eRuleLevel } from "../../src/config/IConfig";
 import { ReporterManager } from "../../src/report/ReporterManager";
 import { join } from "path";
-import { IBaselineReport } from "../../src/engine/IReport";
+import { IBaselineReport, IBaselineResult } from "../../src/engine/IReport";
 
 const expected = {
     "report1.json": readFileSync(join(__dirname, "report1_expected.json")).toString(),
@@ -40,6 +40,7 @@ class FakeFS implements IAbstractAPI {
         }
         return null;
     }
+    getChecker() {}
 }
 
 const myConfig : IConfigInternal = {

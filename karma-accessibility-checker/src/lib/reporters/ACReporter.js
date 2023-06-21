@@ -36,6 +36,7 @@ let Config;
 (async () => {
     Config = await ACConfigManager.getConfig();
 })();
+let checker;
 class MyFS {
     writeFileSync(filePath, data) {
         if (Config) {
@@ -57,6 +58,7 @@ class MyFS {
         }
         return null;
     }
+    getChecker() {}
 }
 let initialized = false;
 /**

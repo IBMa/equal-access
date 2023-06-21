@@ -249,6 +249,13 @@ let aChecker = {
                 delete result.node;
             }
 
+            ReporterManager.config = BaselineManager.config = aChecker.Config;
+
+            if (engineReport && engineReport.results) {
+                for (const issue of engineReport.results) {
+                    issue.help = ReporterManager.getHelpUrl(issue);
+                }
+            }
 
             // If there is something to report...
             if (engineReport.results) {
@@ -262,7 +269,6 @@ let aChecker = {
                 });
             }
 
-            ReporterManager.config = BaselineManager.config = aChecker.Config;
             let filteredReport = ReporterManager.filterReport(engineReport, label);
             let { report } = ReporterManager.generateReport(aChecker.Config, null, {
                 startScan,
@@ -603,30 +609,6 @@ let aChecker = {
      */
     aChecker.stringifyResults = function (report) {
         return ReporterManager.stringifyResults(report);
-    };
-
-    /**
-     * This function is responsible for building the full help file URL using rule server.
-     *
-     * @param {String} helpFileName - Provide the help file name
-     *
-     * @return {String} helpFileName - The full help file URL
-     *
-     * PRIVATE METHOD
-     *
-     * @memberOf this
-     */
-    aChecker.getHelpURL = function (issue) {
-        let engineHelp = new ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, aChecker.Config.ruleArchive);
-        let minIssue = {
-            message: issue.message,
-            snippet: issue.snippet,
-            value: issue.value,
-            reasonId: issue.reasonId,
-            ruleId: issue.ruleId,
-            msgArgs: issue.msgArgs
-        };
-        return `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     aChecker.ruleIdToLegacyId = {

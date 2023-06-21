@@ -40,6 +40,9 @@ class MyFS {
         }
         return null;
     }
+    getChecker() {
+        return ACEngineManager.getChecker();
+    }
 }
 
 let ACTasks = module.exports = {

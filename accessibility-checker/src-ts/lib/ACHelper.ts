@@ -44,6 +44,9 @@ class MyFS implements IAbstractAPI {
         if (!existsSync(baselineFile)) return null;
         return require(baselineFile);
     }
+    getChecker() {
+        return ACEngineManager.getChecker();
+    }
 }
 
 async function initialize() {

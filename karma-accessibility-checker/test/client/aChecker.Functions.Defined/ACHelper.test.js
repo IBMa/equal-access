@@ -56,7 +56,9 @@ describe("Check objects/function added by ACHelper.js are defined", function () 
         expect(typeof aChecker.stringifyResults).not.toBe("undefined");
     });
 
-    it("aChecker.getHelpURL Should be defined", function() {
-        expect(typeof aChecker.getHelpURL).not.toBe("undefined");
+    it("aChecker.getBaseline Should work", function() {
+        expect(aChecker.getBaseline("JSONObjectStructureVerification.html")).toBeDefined();
+        expect(aChecker.getBaseline("JSONObjectStructureVerification.html")).not.toBeNull();
     });
+
 });

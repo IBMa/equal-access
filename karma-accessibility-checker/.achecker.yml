@@ -69,6 +69,11 @@ label:
 # Default: results
 outputFolder: results
 
+
+# optional - Where the baseline results should be loaded
+# Default: baselines
+baselineFolder: test/client/baseline
+
 # Following are the non published config options
 
 # optional - Should Hidden content be scanned

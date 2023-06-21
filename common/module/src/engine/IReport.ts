@@ -100,6 +100,7 @@ export interface IEngineResult {
     message: string,
     bounds?: Bounds,
     snippet: string,
+    help?: string
 }
 
 export interface IBaselineResult extends IEngineResult {

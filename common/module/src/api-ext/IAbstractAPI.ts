@@ -14,7 +14,7 @@
     limitations under the License.
 *****************************************************************************/
 
-import { IBaselineReport } from "../engine/IReport";
+import { IBaselineReport, IBaselineResult } from "../engine/IReport";
 
 /**
  * Interface for writing files
@@ -28,6 +28,9 @@ export interface IAbstractAPI {
     writeFileSync(filePath: string, data: string | Buffer)
 
     loadBaseline(label: string): IBaselineReport | null;
+
+    // Get the checker engine
+    getChecker(): any
 
     info(...args: any[])
 

@@ -38,6 +38,7 @@ let eRuleConfidence = {
 class ReporterManager {
     static usedLabels = {}
     static config;
+    static checker;
 
     /**
      * This function is responsible for printing the scan results to string with the intent of that going to the console.
@@ -74,6 +75,24 @@ class ReporterManager {
 
         return resultsString;
     };
+
+    static getHelpUrl(issue) {
+        if (issue.help) return issue.help;
+        if (!ReporterManager.checker) {
+            ReporterManager.checker = new ace.Checker();
+        }
+        let config = ReporterManager.config;
+        let helpUrl = ReporterManager.checker.engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId,
+            msgArgs: issue.messageArgs
+        };
+        return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
+    }
 
     static filterReport(engineResult, scanLabel) {
         ReporterManager.usedLabels[scanLabel] = true;

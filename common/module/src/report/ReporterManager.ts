@@ -16,7 +16,7 @@
 
 import { IAbstractAPI } from "../api-ext/IAbstractAPI";
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { IBaselineReport, IEngineReport, IRuleset, eRuleConfidence } from "../engine/IReport";
+import { IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence } from "../engine/IReport";
 import { ACReporterMetrics } from "./ACReporterMetrics";
 import { ACReporterCSV } from "./ACReporterCSV";
 import { ACReporterHTML } from "./ACReporterHTML";
@@ -131,10 +131,30 @@ export class ReporterManager {
         return resultsString;
     };
 
+    private static getHelpUrl(issue: IBaselineResult) : string {
+        if (issue.help) return issue.help;
+        let config = ReporterManager.config;
+        let helpUrl = ReporterManager.absAPI.getChecker().engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId,
+            msgArgs: issue.messageArgs
+        };
+        return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
+    }
+
     public static addEngineReport(scanProfile: string, startScan: number, url: string, pageTitle: string, label: string, engineReport: IEngineReport): IBaselineReport {
         ReporterManager.verifyLabel(label);
         ReporterManager.usedLabels[label] = true;
         let filteredReport = ReporterManager.filterReport(engineReport, label);
+        if (filteredReport && filteredReport.results) {
+            for (const issue of filteredReport.results) {
+                issue.help = ReporterManager.getHelpUrl(issue);
+            }
+        }
         if (ReporterManager.reporters.length > 0) {
             ReporterManager.reports.push({
                 startScan,
