@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let label_content_exists: Rule = {
     id: "label_content_exists",
@@ -60,7 +61,7 @@ export let label_content_exists: Rule = {
             return RulePass("Pass_AriaLabel");
         } else if (ruleContext.hasAttribute("aria-labelledby")) {
             let labelElem = FragmentUtil.getById(ruleContext, ruleContext.getAttribute('aria-labelledby'));
-            if (labelElem && RPTUtil.hasInnerContent(labelElem)) {
+            if (labelElem && !DOMUtil.sameNode(labelElem, ruleContext) && RPTUtil.hasInnerContent(labelElem)) {
                 return RulePass("Pass_LabelledBy");
             }
         }

@@ -2082,6 +2082,21 @@ export class RPTUtil {
         return "";
     }
 
+    /**
+     * @param element 
+     * @param idStr 
+     * @returns true if any one (if multiple Ids) id points to itself
+     */
+    public static isIdReferToSelf(element, idStr:String) {
+        if (!idStr || idStr.trim() === '') return false;
+        let ids = idStr.trim().split(" ");
+        for (let j = 0, length = ids.length; j < length; ++j) {
+            let referredNode = FragmentUtil.getById(element, ids[j]);
+            if (referredNode && DOMUtil.sameNode(referredNode, element)) return true;
+        }
+        return false;   
+    }
+
     public static findAriaLabelDupes(elements) {
         let dupeMap = {}
         elements.forEach(function (ele) {
@@ -2163,7 +2178,7 @@ export class RPTUtil {
 
         for (let i = 0; !hasDuplicateLabels && i < elements.length; ++i) {
 
-            if (elements[i].hasAttribute && elements[i].hasAttribute("aria-labelledby")) {
+            if (elements[i].hasAttribute && elements[i].hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(elements[i],elements[i].getAttribute("aria-labelledby"))) {
                 let labelRef = RPTUtil.normalizeSpacing(elements[i].getAttribute("aria-labelledby"));
                 hasDuplicateLabels = labelRef in labelRefs;
                 labelRefs[labelRef] = true;
@@ -3001,7 +3016,7 @@ export class RPTUtil {
             const ariaLabelledBy = inputUsingLabelledBy.getAttribute("aria-labelledby");
             const sp = ariaLabelledBy.split(" ");
             for (const id of sp) {
-                if (id in idDict) {
+                if (id in idDict && !RPTUtil.isIdReferToSelf(node, (node as Element).getAttribute("aria-labelledby"))) {
                     return inputUsingLabelledBy;
                 }
             }

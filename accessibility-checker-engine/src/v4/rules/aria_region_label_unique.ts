@@ -52,7 +52,7 @@ export let aria_region_label_unique: Rule = {
         if (
             ruleContext.getAttribute("role") === "region" ||
             ruleContext.hasAttribute("aria-label") ||
-            ruleContext.hasAttribute("aria-labelledby") ||
+            (ruleContext.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"))) ||
             ruleContext.hasAttribute("title")
         ) {
             // Consider the Check Hidden Content setting that is set by the rules

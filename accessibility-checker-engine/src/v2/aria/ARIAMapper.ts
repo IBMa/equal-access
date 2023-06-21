@@ -428,7 +428,7 @@ export class ARIAMapper extends CommonMapper {
             let validElems = [];
             for (const ref of labelledby) {
                 const refElem = FragmentUtil.getById(cur, ref);
-                if (refElem) {
+                if (refElem && !DOMUtil.sameNode(elem, refElem)) {
                     validElems.push(refElem);
                 }
             }
@@ -477,7 +477,7 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    if (label.hasAttribute("aria-label") || label.hasAttribute("aria-labelledby")) {
+                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
                         return this.computeNameHelp(walkId, label, false, false);
                     } else {
                         return label.textContent;

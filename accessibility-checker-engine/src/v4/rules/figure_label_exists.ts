@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let figure_label_exists: Rule = {
     id: "figure_label_exists",
@@ -63,7 +64,7 @@ export let figure_label_exists: Rule = {
 
         if (!passed) {
             // we only check if the "aria-labelledby" is there. There is a different rule to check if the id is valid.
-            passed = ruleContext.hasAttribute("aria-labelledby") && ruleContext.getAttribute("aria-labelledby").trim().length > 0;
+            passed = ruleContext.hasAttribute("aria-labelledby") && ruleContext.getAttribute("aria-labelledby").trim().length > 0 && !RPTUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"));
         }
 
         //return new ValidationResult(passed, [ruleContext], '', '', []);
