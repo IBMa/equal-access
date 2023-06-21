@@ -95,7 +95,7 @@ let ACTasks = module.exports = {
                     }
                 }
             }
-            ReporterManager.initialize(ACTasks.Config, absAPI, ACEngineManager.getRulesets());
+            ReporterManager.initialize(ACTasks.Config, absAPI, await ACEngineManager.getRulesets());
             BaselineManager.initialize(ACTasks.Config, absAPI, refactorMap);
         })
         .then(() => {
