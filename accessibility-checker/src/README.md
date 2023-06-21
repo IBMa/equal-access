@@ -2,11 +2,47 @@
 
 ## Overview
 
-`accessibility-checker` is a NodeJS Module that allows you to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI. It works with parsing engines such as Selenium, Puppeteer, Playwright, and Zombie. Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
+`accessibility-checker` is a NodeJS Module that allows you to do the following:
 
-`accessibility-checker` works with a variety of test frameworks such as Cucumber, Mocha, or Jasmine. `accessibility-checker` allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string. Aside from just performing accessibility scanning, `accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan.
+- perform integrated accessibility testing within a continuous integration pipeline such as Travis CI
+- works with parsing engines such as Selenium, Puppeteer, Playwright, and Zombie
+- allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
+- aside from just performing accessibility scanning, `accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan
 
-## Quick Start
+Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
+
+## Usage
+
+### Command-line and multi-scan
+
+This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
+
+- Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Run `npx achecker`
+
+### Programmatic
+
+The following is how to perform an accessibility scan within your testcases and verifying the scan results:
+
+```javascript
+const aChecker = require("accessibility-checker");
+// Perform the accessibility scan using the aChecker.getCompliance API
+aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
+    const report = results.report;
+
+    // Call the aChecker.assertCompliance API which is used to compare the results with baseline object if we can find one that
+    // matches the same label which was provided.
+    const returnCode = aChecker.assertCompliance(report);
+
+    // In the case that the violationData is not defined then trigger an error right away.
+    expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
+});
+```
+
+Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
+
+## Quick Start and installation
 
 Grab a [boilerplate](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates)
 
@@ -26,7 +62,7 @@ $ npm install -g accessibility-checker
 $ achecker
 ```
 
-## Getting Started
+## Setup
 
 1. Setup and Initialize - Follow the [Prerequisites](#prerequisites) and [Install](#install) instructions.
 1. Configure accessibility-checker - Follow the [Configuration](#Configuration) instructions.
@@ -148,32 +184,6 @@ module.exports = {
 };
 ```
 
-## Usage
-
-### Command-line and multi-scan
-
-The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. You can also create a .txt file with path(s) to files, directories or a list of urls to be scanned, then provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`). Run `npx achecker` for more information.
-
-### Programmatic
-
-Following is how to perform an accessibility scan within your testcases and verifying the scan results:
-
-```javascript
-const aChecker = require("accessibility-checker");
-// Perform the accessibility scan using the aChecker.getCompliance API
-aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
-    const report = results.report;
-
-    // Call the aChecker.assertCompliance API which is used to compare the results with baseline object if we can find one that
-    // matches the same label which was provided.
-    const returnCode = aChecker.assertCompliance(report);
-
-    // In the case that the violationData is not defined then trigger an error right away.
-    expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
-});
-```
-
-Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
 
 ## APIs
 
@@ -296,19 +306,16 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
 
 Perform assertion on the scan results. Will perform one of the following assertions based on the condition that is met:
 
-1. In the case of a baseline file is provided and available in memory for these scan results, a compare of baseline to `report` will be made. In this case if `report` matches baseline, it returns 0, otherwise returns 1. For this case, assertion is only run on the xpath and ruleId.
+1. In the case a baseline file is provided and available in memory for these scan results, a compare of baseline to `report` will be made. In this case if `report` matches baseline, it returns 0, otherwise returns 1. For this case, assertion is only run on the xpath and ruleId.
 
-2. In the case of NO baseline file is provided for this particular scan, assertion will be made based on the provided `failLevels`. In this case, it returns 2 if there are failures based on failLevels. (violation level matches at least one provided in the `failLevels` object)
+2. In the case **_no baseline_** file is provided for this particular scan, assertion will be made based on the provided `failLevels`. In this case, it returns 2 if there are failures based on failLevels. (violation level matches at least one provided in the `failLevels` object)
 
--   `report` - (Object) results for which assertion needs to be run. See above for report format.
+`report` - (Object) results for which assertion needs to be run. See above for report format.
 
-Returns `0` in the case actualResults matches baseline or no violations fall into the failLevels
-
-Returns `1` in the case actualResults DON'T match baseline
-
-Returns `2` in the case that there is a failure based on failLevels.
-
-Returns `-1` in the case that an exception has occurred during scanning and the results reflected that.
+- Returns `0` in the case `actualResults` matches baseline or no violations fall into the failLevels
+- Returns `1` in the case `actualResults` **_don't match_** baseline
+- Returns `2` in the case that there is a failure based on failLevels.
+- Returns `-1` in the case that an exception has occurred during scanning and the results reflected that.
 
 ### aChecker.getDiffResults(`label`)
 
@@ -354,8 +361,8 @@ Returns `undefined` if there are no differences.
 
 Retrieve the readable stringified representation of the scan results.
 
--   `report` - (Object) results which need to be stringified.
-    Refer to aChecker.assertCompliance APIs for details on properties include.
+- `report` - (Object) results which need to be stringified.
+    Refer to aChecker.assertCompliance APIs for details on properties to include
 
 Returns `String` representation of the scan results which can be logged to console.
 
@@ -397,13 +404,9 @@ This is a subtype of `Error` defined by the `accessibility-checker` plugin. It i
 `ValidPoliciesMissing` is thrown from `[aChecker.getCompliance(...)]` method call when no valid policies are in the configuration file.
 Note: The valid policies will vary depending on the selected `ruleArchive`.
 
-## Feedback
+## Feedback and reporting bugs
 
-If you are an IBM employee, feel free to provide any feedback by in the `#accessibility-at-ibm` channel in IBM Slack. For all other users, please give use any feedback in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
-
-### Reporting bugs
-
-If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## Known issues and workarounds
 
@@ -415,3 +418,7 @@ If you think you've found a bug, have questions or suggestions, please report th
     > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
 
     If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

@@ -1,21 +1,22 @@
 # equal-access
 
 This Git repository hosts tools and supporting components that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
-The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
 
 ## Overview
 
 This README covers topics for users who want to find the deployed tools as well as topics for developers who want to better understand the various components and build the tools.
 
-### Usage
+The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
 
-The tools that have been deployed to the various stores so they can be easily downloaded and installed:
+## Usage
+
+The tools that have been deployed to the various stores and NPM so they can be easily downloaded and installed:
 
 * [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
 * [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
 * [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
 * [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of accessibility-checker in the Cypress environment
+* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
 
 ## Requirements
 
@@ -96,6 +97,10 @@ Please check the README for each individual tool for its build instructions:
 * [cypress-accessibility-checker/README](accessibility-checker/README.md)
 * [karma-accessibility-checker/README](karma-accessibility-checker/README.md)
 
-#### License
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
 
 [![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

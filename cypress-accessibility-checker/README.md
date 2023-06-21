@@ -1,6 +1,8 @@
 # cypress-accessibility-checker
 
-Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). The plugin works by injecting the accessibility-checker engine into the Cypress browser and scanning the page in context. Please see the `Usage` section in this README for more details.
+Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). 
+
+The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next generation front end testing tool built for the modern web and scanning the page in context. Please see the `Usage` section in this README for more details.
 
 ## Requirements
 
@@ -71,7 +73,7 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
 
-You can chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
+Chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
 ### Using Baselines
 
@@ -97,9 +99,9 @@ npm install
 npm run package:npm  or  npm run package:zip
 ```
 
-## Bugs and Issues
+## Bugs and feedback
 
-All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
+All bugs or feedback related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
 
 ## License
 

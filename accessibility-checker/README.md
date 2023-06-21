@@ -2,14 +2,14 @@
 
 Automated accessibility testing for Node-based test environments.
 
-To get started, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
+To get started using the deployed packages, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
 
 ## Features
 
 - Scan single or multiple files, directories, or URLs
 - Output scan results in JSON, CSV, HTML or XLSX formats
 - Automate accessibility testing within a continuous integration pipeline such as Travis CI
-- Intergrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
+- Integrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
 - Validate test results against baselines
 - Set a target rule archive
 - Configure policies (rulesets) to scan
@@ -78,22 +78,20 @@ $ npm run package:zip  or  npm run package:npm
 $ npm test
 ```
 
-## Reporting bugs
+## Reporting bugs and feedback
 
-If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+If you think you've found a bug, have questions, or suggestions, open a [GitHub Issues](https://github.com/IBMa/equal-access/issues).
 
 ## Known issues and workarounds
 
-1. If you see `TypeError: ace.Checker is not a constructor`:
-    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework.
-  
-2. If your site has a Content Security Policy, the engine script may be prevented from loading. In the browser console, you'll see something like:
+1. If you see `TypeError: ace.Checker is not a constructor`: 
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
 
- ```bash
-VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
-```
+2. If your site has a `Content Security Policy`, the engine script may be
+    prevented from loading. In the browser console, you'll see something like:
+    > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
 
-- If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+    If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
 
 ## License
 
