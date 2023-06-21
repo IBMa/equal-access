@@ -2,12 +2,12 @@
 
 ## Overview
 
-`accessibility-checker` is a NodeJS Module that allows you to do the following:
+`accessibility-checker` is a NodeJS module that allows you to do the following:
 
 - perform integrated accessibility testing within a continuous integration pipeline such as Travis CI
-- works with parsing engines such as Selenium, Puppeteer, Playwright, and Zombie
+- works with test frameworks (parsing engines) such as Selenium, Puppeteer, Playwright, and Zombie
 - allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
-- aside from just performing accessibility scanning, `accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan
+- aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
 Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
 
@@ -23,7 +23,7 @@ This module provides some basic command-line utilities that will allow scanning 
 
 ### Programmatic
 
-The following is how to perform an accessibility scan within your testcases and verifying the scan results:
+The following is how to perform an accessibility scan within your test cases and verifying the scan results:
 
 ```javascript
 const aChecker = require("accessibility-checker");
@@ -184,29 +184,28 @@ module.exports = {
 };
 ```
 
-
 ## APIs
 
 ### async aChecker.getCompliance(`content`, `label` : string)
 
 Execute accessibility scan on provided content. `content` can be in the following form:
 
--   HTML content (String)
--   Single node/widget (HTMLElement)
--   Local file path (String)
--   URL (String)
--   Document node (HTMLDocument)
--   Selenium WebDriver (WebDriver)
--   Puppeteer page
--   Playwright page
+- HTML content (String)
+- Single node/widget (HTMLElement)
+- Local file path (String)
+- URL (String)
+- Document node (HTMLDocument)
+- Selenium WebDriver (WebDriver)
+- Puppeteer page
+- Playwright page
 
 Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using puppeteer, aChecker.getCompliance expects the Page object.
 
 Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
--   `content` - (String | HTMLElement | HTMLDocument | Selenium WebDriver) content to be scanned for accessibility violations.
--   `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
--   Returns a promise with an object of the form below:
+- `content` - (String | HTMLElement | HTMLDocument | Selenium WebDriver) content to be scanned for accessibility violations.
+- `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
+- Returns a promise with an object of the form below:
 
 ```javascript
 {
@@ -333,7 +332,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the baseline result object based on the label provided.
 
--   `label` - (String) label for which to get the baseline for. (should match the one provided for aChecker.getCompliance(...))
+- `label` - (String) label for which to get the baseline for. (should match the one provided for aChecker.getCompliance(...))
 
 Returns `object` which will follow the same structure as the results object outlined in aChecker.getCompliance
 and aChecker.assertCompliance APIs.
@@ -344,11 +343,11 @@ Returns `undefined` in the case baseline is not found for the label provided.
 
 Compare provided `actual` and `expected` objects and get the differences if there are any.
 
--   `actual` - (Object) actual results which need to be compared.
+- `actual` - (Object) actual results which need to be compared.
     Refer to aChecker.assertCompliance APIs for details on properties include.
--   `expected` - (Object) expected results to compare to.
+- `expected` - (Object) expected results to compare to.
     Refer to aChecker.assertCompliance APIs for details on properties include.
--   `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance
+- `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance
     compare of only xpath and ruleID
 
 Returns a diff object, where **left hand side (lhs) is actualResults** and **right hand side (rhs) is baseline**.
@@ -404,10 +403,6 @@ This is a subtype of `Error` defined by the `accessibility-checker` plugin. It i
 `ValidPoliciesMissing` is thrown from `[aChecker.getCompliance(...)]` method call when no valid policies are in the configuration file.
 Note: The valid policies will vary depending on the selected `ruleArchive`.
 
-## Feedback and reporting bugs
-
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
-
 ## Known issues and workarounds
 
 1. If you see `TypeError: ace.Checker is not a constructor`: 
@@ -418,6 +413,12 @@ If you think you've found a bug, have questions or suggestions, open a [GitHub I
     > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
 
     If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 

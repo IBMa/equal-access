@@ -1,4 +1,4 @@
-# accessibility-checker
+# accessibility-checker NODE
 
 Automated accessibility testing for Node-based test environments.
 
@@ -12,7 +12,7 @@ To get started using the deployed packages, review [Node accessibility-checker](
 - Integrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
 - Validate test results against baselines
 - Set a target rule archive
-- Configure policies (rulesets) to scan
+- Configure policies (rule sets) to scan
 - Set violation levels that trigger test failures
 - Set violation levels that should be reported
 
@@ -25,7 +25,6 @@ This module provides some basic command-line utilities that will allow scanning 
 - Run `npx achecker`
 
 Review the [accessibility-checker/src/README](src/README.md) for more information.
-
 
 ## Boilerplates
 
@@ -56,7 +55,11 @@ Review the examples of validating automated accessibility testing results agains
 - [mocha-zombie baselines](mocha-zombie/baselines)
 - and others
 
-## Running Locally
+## Building and running locally
+
+### Requirements
+
+- [Node Version 16](https://nodejs.org/en/download/)
 
 ### Install
 
@@ -78,10 +81,6 @@ $ npm run package:zip  or  npm run package:npm
 $ npm test
 ```
 
-## Reporting bugs and feedback
-
-If you think you've found a bug, have questions, or suggestions, open a [GitHub Issues](https://github.com/IBMa/equal-access/issues).
-
 ## Known issues and workarounds
 
 1. If you see `TypeError: ace.Checker is not a constructor`: 
@@ -92,6 +91,12 @@ If you think you've found a bug, have questions, or suggestions, open a [GitHub 
     > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
 
     If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 

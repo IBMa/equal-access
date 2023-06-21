@@ -2,9 +2,8 @@
 
 This README covers topics for developers who want to better understand the rules and build the engine component.
 
-For information on creating and modifying the rules, see [README-RULES](README-RULES.md).
-
-For information on installing the engine in a Node environment, see [README-NPM](README-NPM.md).
+- For information on creating and modifying the rules, see [README-RULES](README-RULES.md).
+- For information on installing the engine in a Node environment, see [README-NPM](README-NPM.md).
 
 ## Overview
 
@@ -226,9 +225,11 @@ You can use the [karma-accessibility-checker](../karma-accessibility-checker) to
 
 You can use the [cypress-accessibility-checker](../cypress-accessibility-checker) to integrate automated accessibility testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress) a next generation front end testing tool built for the modern web. For more information and instructions, view [cypress-accessibility-checker](../cypress-accessibility-checker).
 
-## Reporting bugs
+## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Aengine), tagged with `engine`.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## Copyright and license
 

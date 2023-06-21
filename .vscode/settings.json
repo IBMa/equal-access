@@ -7,5 +7,22 @@
         "latex",
         "plaintext",
         "shellscript"
+    ],
+    "cSpell.words": [
+        "boilerplates",
+        "Boilerplates",
+        "cygwin",
+        "iframes",
+        "jsdelivr",
+        "potentialrecommendation",
+        "potentialviolation",
+        "Preprocess",
+        "preprocessors",
+        "Preprocessors",
+        "Tarket",
+        "testcase",
+        "testcases",
+        "testrunner",
+        "tmpdir"
     ]
 }

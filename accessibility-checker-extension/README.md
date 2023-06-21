@@ -1,6 +1,6 @@
 # accessibility-checker-extension
 
-Browser extensions integrated with the web developer tools that add automated accessibility checking, visualization, and reporting capabilities
+Browser extensions integrated with the web developer tools that add automated accessibility checking, automated keyboard checking visualizations, and reporting capabilities
 
 ## Usage
 
@@ -28,7 +28,7 @@ There are several different modes that you can run with. These will build the ex
 #### Run local extension with local rule server
 
 1. Under the `rule-server` directory, `npm start`
-2. Open https://localhost:9445 in your browser and accept any self-signed certs. In chrome you may need to type 'thisisunsafe', which will accept the cert (you will not actually see anywhere to type it). You should get "Cannot GET /".
+2. Open [https://localhost:9445](https://localhost:9445) in your browser and accept any self-signed certs. In chrome you may need to type 'thisisunsafe', which will accept the cert (you will not actually see anywhere to type it). You should get "Cannot GET /".
 3. On a new command line window, under the `accessibility-checker-extension` directory, `npm run build:watch:local`
 
 #### Run local extension with production rule server
@@ -72,7 +72,9 @@ The commands generate a `package/accessibility-checker-extension.zip` file. The 
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Aextension-checker), tagged with `extension-checker`.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 

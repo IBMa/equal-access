@@ -2,15 +2,18 @@
 
 ## Overview
 
-`karma-accessibility-checker` is a Karma plugin that allows you to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI.
+`karma-accessibility-checker` is a Karma plugin that allows you to perform the following:
 
-`karma-accessibility-checker` plugin allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string. Aside from just performing accessibility scanning, `karma-accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan.
+- integrate accessibility testing within a continuous integration pipeline such as Travis CI.
+- scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string
+- aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
 ### Table of Contents
 
 - [karma-accessibility-checker](#karma-accessibility-checker)
   - [Overview](#overview)
     - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
   - [Quick start](#quick-start)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -21,7 +24,7 @@
       - [Configuring `plugins`](#configuring-plugins)
       - [Configuring `framework` and `reporters`](#configuring-framework-and-reporters)
       - [Configuring `preprocessor`](#configuring-preprocessor)
-    - [Configuring the `karma-accessibility-checker` plugin](#configuring-the-karma-accessibility-checker-plugin)
+    - [Configuring the plugin](#configuring-the-plugin)
   - [API-based usage](#api-based-usage)
   - [API](#api)
     - [aChecker.getCompliance(`content`, `label`, `callback`)](#acheckergetcompliancecontent-label-callback)
@@ -44,6 +47,12 @@
   - [Feedback and Reporting bugs](#feedback-and-reporting-bugs)
   - [License](#license)
 
+## Usage
+
+The tools that have been deployed to NPM so it can be easily downloaded and installed:
+
+- [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
+
 ## Quick start
 
 Grab a [boilerplate](https://github.com/IBMa/equal-access/tree/master/karma-accessibility-checker/boilerplates)
@@ -51,7 +60,7 @@ Grab a [boilerplate](https://github.com/IBMa/equal-access/tree/master/karma-acce
 ## Getting started
 
 1. Setup and initialize - Follow the instructions in the [Prerequisites](#prerequisites) and [Install](#install) sections.
-2. Configure Karma and the karma-accessibility-checker plugin - Follow the [Configuration](#Configuration) instructions.
+2. Configure Karma and the karma-accessibility-checker plugin - Follow the [Configuration](#configuration) instructions.
 3. Learn how to use the `karma-accessibility-checker` APIs to perform accessibility scans - Refer to the [Usage](#usage) and [API](#api) documentation.
 
 ### Prerequisites
@@ -141,7 +150,7 @@ module.exports = function (config) {
 };
 ```
 
-### Configuring the `karma-accessibility-checker` plugin
+### Configuring the plugin
 
 Configuring the `karma-accessibility-checker` plugin involves constructing a `.achecker.yml` file in the project root. This file, will contain all of the configuration
 options for `karma-accessibility-checker`. This is the structure of the `.achecker.yml` file:
@@ -213,9 +222,9 @@ cacheFolder: /tmp/accessibility-checker
 
 ## API-based usage
 
-`karma-accessibility-checker` is solely an API-based Karma plugin, therefore API should be used within testcases on a browser launched by Karma.
+`karma-accessibility-checker` is solely an API-based Karma plugin, therefore APIs should be used within test cases on a browser launched by Karma.
 
-To perform an accessibility scan within your testcases and verify the scan results:
+To perform an accessibility scan within your test cases and verify the scan results:
 
 ```javascript
 // Perform the accessibility scan using the aChecker.getCompliance API
@@ -555,9 +564,11 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## Feedback and Reporting bugs
 
-If you think you've found a bug or have feedback, report them in the [Git issues](https://github.com/IBMa/equal-access/issues).
+If you think you've found a bug or have feedback, report them in the [Git issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Akarma-accessibility-checker), tagged with `karma-accessibility-checker`.
 
 To help us fix the bug, please try to provide a log. You can enable Karma debugging in the Karma configuration file by changing the logLevel to `config.LOG_DEBUG`. Pipe (`karma start > debug.log`) console output to a file and attach the file to the bug report that you open.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 
