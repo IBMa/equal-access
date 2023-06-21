@@ -113,6 +113,8 @@ jobs:
       - run: npm install
         working-directory: report-react
       - run: npm install
+        working-directory: common/module
+      - run: npm install
         working-directory: cypress-accessibility-checker
       - run: npm run build:common
         working-directory: cypress-accessibility-checker
