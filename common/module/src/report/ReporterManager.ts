@@ -171,6 +171,8 @@ export class ReporterManager {
     }
 
     public static async generateSummaries(endReport?: number) {
+        // If no scans, don't generate summaries
+        if (ReporterManager.reports.length === 0) return;
         for (const reporter of ReporterManager.reporters) {
             let summaryInfo = await reporter.generateSummary(ReporterManager.config, ReporterManager.rulesets, endReport || new Date().getTime(), ReporterManager.reports);
             if (summaryInfo) {
