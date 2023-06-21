@@ -20,26 +20,6 @@ describe("Check objects/function added by ACHelper.js are defined", function () 
         expect(typeof aChecker.DEBUG).not.toBe("undefined");
     });
 
-    it("aChecker.baselineIssueList Should be defined", function() {
-        expect(typeof aChecker.baselineIssueList).not.toBe("undefined");
-    });
-
-    it("aChecker.initializeSummary Should be defined", function() {
-        expect(typeof aChecker.initializeSummary).not.toBe("undefined");
-    });
-
-    it("aChecker.scanSummary Should be defined", function() {
-        expect(typeof aChecker.scanSummary).not.toBe("undefined");
-    });
-
-    it("aChecker.diffResults Should be defined", function() {
-        expect(typeof aChecker.diffResults).not.toBe("undefined");
-    });
-
-    it("aChecker.scanResults Should be defined", function() {
-        expect(typeof aChecker.scanResults).not.toBe("undefined");
-    });
-
     it("aChecker.getCompliance Should be defined", function() {
         expect(typeof aChecker.getCompliance).not.toBe("undefined");
     });
@@ -48,32 +28,8 @@ describe("Check objects/function added by ACHelper.js are defined", function () 
         expect(typeof aChecker.isLabelUnique).not.toBe("undefined");
     });
 
-    it("aChecker.sendResultsToReporter Should be defined", function() {
-        expect(typeof aChecker.sendResultsToReporter).not.toBe("undefined");
-    });
-
-    it("aChecker.buildReport Should be defined", function() {
-        expect(typeof aChecker.buildReport).not.toBe("undefined");
-    });
-
-    it("aChecker.addResultsToGlobal Should be defined", function() {
-        expect(typeof aChecker.addResultsToGlobal).not.toBe("undefined");
-    });
-
     it("aChecker.buildIframeAndGetDoc Should be defined", function() {
         expect(typeof aChecker.buildIframeAndGetDoc).not.toBe("undefined");
-    });
-
-    it("aChecker.filterViolations Should be defined", function() {
-        expect(typeof aChecker.filterViolations).not.toBe("undefined");
-    });
-
-    it("aChecker.updateViolationCount Should be defined", function() {
-        expect(typeof aChecker.updateViolationCount).not.toBe("undefined");
-    });
-
-    it("aChecker.addToSummaryCount Should be defined", function() {
-        expect(typeof aChecker.addToSummaryCount).not.toBe("undefined");
     });
 
     it("aChecker.assertCompliance Should be defined", function() {
@@ -82,10 +38,6 @@ describe("Check objects/function added by ACHelper.js are defined", function () 
 
     it("aChecker.compareBasedOnFailLevels Should be defined", function() {
         expect(typeof aChecker.compareBasedOnFailLevels).not.toBe("undefined");
-    });
-
-    it("aChecker.diffResultsWithExpected Should be defined", function() {
-        expect(typeof aChecker.diffResultsWithExpected).not.toBe("undefined");
     });
 
     it("aChecker.cleanComplianceObjectBeforeCompare Should be defined", function() {

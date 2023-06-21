@@ -23,13 +23,9 @@
 // Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
-//var Promise = require('promise');
-var YAML = require('js-yaml');
-var constants = require(pathLib.join(__dirname, 'ACConstants'));
 const request = require('request');
-
-// Load ACCommon module which contains all the common code for server side code
-var ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
+const { ACConfigManager } = require('./common/config/ACConfigManager');
+const ACCommon = require("./ACCommon");
 
 /**
  * This function is responsible for downloading the accessibility-checker scan engine from a remote URL.
@@ -62,60 +58,22 @@ async function ACEngineLoaderAndConfig(logger, config) {
     ACCommon.log.debug(files);
 
     // Process the Karma Configuration options that are needed for this module
-    await ACCommon.processKarmaConfiguration(config);
+    let ACConfig = await ACConfigManager.getConfig();
+    config.client.ACConfig = ACConfig;
 
     // Store the aChecker scan engine under ACEngine folder
-    var ACEngineRootFolder = config.client.ACConfig.cacheFolder;
+    var ACEngineRootFolder = ACConfig.cacheFolder;
     var ACPackageRootFolder = __dirname;
 
     // Extract the rule server and engine file names
-    var rulePackServer = config.client.ACConfig.rulePack;
-    var engineFileName = config.client.ACConfig.engineFileName;
+    var rulePackServer = ACConfig.rulePack;
+    var engineFileName = "ace.js";
 
     ACCommon.log.debug("Using Rule Server: " + rulePackServer);
     ACCommon.log.debug("Using engine file: " + engineFileName);
 
-    // Only check if scanned is allowed or not rule server is https://aat
-    if (rulePackServer && rulePackServer.indexOf("https://aat") === 0) {
-        // Run regex which will extract the URL and account ID token from rulePack
-        var m = rulePackServer.match(/(https?:\/\/[^/]*)\/token\/([a-f0-9-]{36})/);
-
-        // Based on the accountID and tokenID build the check_scan_allowed API fill path
-        // Format: https://<hostname>:<port>/api/pub/meter/check_scan_allowed?accountId=<accoundId>
-        var checkAllowedURL = m[1]+"/api/pub/meter/check_scan_allowed?accountId="+m[2];
-
-        ACCommon.log.debug("Check Scan Allowed API: " + checkAllowedURL);
-
-        // Perform a get on https://<hostname>:<port>/api/token/<accountId>/<token>/meter/check_scan_allowed
-        // to check if the scan should be performed or not.
-        /* istanbul ignore next */
-        request.get(checkAllowedURL, function (error, response, body) {
-            // In the case that there is no error check the response body to make sure that the scan is allowed or not
-            /* istanbul ignore next */
-            if (!error && response.statusCode == 200) {
-                // Parse the repsonse body as JSON
-                var checkScanAllowedResponse = JSON.parse(body);
-
-                // In the case that the scan is allowed response will be "allowed: true" and "message: ALLOWED_SCAN", otherwise do not allow the scan at all.
-                if (checkScanAllowedResponse && checkScanAllowedResponse.allowed && checkScanAllowedResponse.message === "ALLOWED_SCAN") {
-                    ACCommon.log.debug("Scan is allowed. Continue.");
-                } else if (checkScanAllowedResponse && checkScanAllowedResponse.message === "UNABLE_TO_CHECK_ALLOWED_SCAN") {
-                    ACCommon.log.error("[ERROR] AuthTokenIncorrect: Make sure correct authentication token is provided in the configuration file. Authentication token can be retrieved from Accessibility Tools Dashboard.");
-                    process.exit(-1);
-                } else {
-                    ACCommon.log.error("[ERROR] UnableToPerformScan: Unable to perform scan because scan limit has been reached. Refer to https://ibm.biz/a11ySupport for more details.");
-                    process.exit(-1);
-                }
-            } else {
-                ACCommon.log.error("[ERROR] AuthTokenIncorrect: Make sure correct authentication token is provided in the configuration file. Authentication token can be retrieved from Accessibility Tools Dashboard.");
-                process.exit(-1);
-            }
-        });
-    }
-
     // Build the engine download URL
     var engineDownloadURL = rulePackServer + "/" + engineFileName;
-
 
     // Build the full location of the ACEngine
     var ACEngineFullpath = pathLib.join(ACEngineRootFolder, engineFileName);
@@ -201,6 +159,8 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     // Load in the ACWrapper into the Karma browsers, this Helper script is a script that will configure
     // the accessibility-checker Scan Engine before using/scanning any thing.
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "BaselineManager.js")));
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ReporterManager.js")));
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ACHelper.js")));
 
     // Load a deep-diff util from a node module into the browser, so we can use a well defined diff tool
