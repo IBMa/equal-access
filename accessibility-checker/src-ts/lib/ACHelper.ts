@@ -39,7 +39,9 @@ class MyFS implements IAbstractAPI {
     info(...output) { Config && Config.DEBUG && console.info(...output) }
     error(...output) { Config && Config.DEBUG && console.error(...output) }
     loadBaseline(label) {
-        return require(join(join(process.cwd(), Config.baselineFolder), label));
+        let baselineFile = join(join(process.cwd(), Config.baselineFolder), label);
+        if (!existsSync(baselineFile)) return null;
+        return require(baselineFile);
     }
 }
 

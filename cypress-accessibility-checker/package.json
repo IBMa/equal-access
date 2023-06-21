@@ -4,11 +4,11 @@
     "description": "Accessibility Checker for Cypress",
     "scripts": {
         "lint": "eslint .",
-        "test": "npm run build:report && start-server-and-test test:start-http http://localhost:8080 'cd test && cypress run'",
-        "test:open": "npm run build:report && cd test && cypress open",
+        "test": "npm run build:common && start-server-and-test test:start-http http://localhost:8080 'cd test && cypress run'",
+        "test:open": "npm run build:common && cd test && cypress open",
         "test:start-http": "http-server -c-1 --silent",
-        "build:report": "(cd ../report-react && npm run build && cd ../cypress-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
-        "package:common": "npm run build:report && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
+        "build:common": "cd ../common/module && npm run build && cd ../../cypress-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
+        "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
         "package:zip": "npm run package:common && cd package && npm pack",
         "package:npm": "npm run package:common"
     },

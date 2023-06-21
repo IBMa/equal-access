@@ -38,6 +38,7 @@ class FakeFS implements IAbstractAPI {
         if (existsSync(filename)) {
             return JSON.parse(readFileSync(filename).toString());
         }
+        return null;
     }
 }
 

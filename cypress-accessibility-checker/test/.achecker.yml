@@ -37,6 +37,7 @@ reportLevels:
 # Valid values: json, csv, html, xlsx, disable
 # Default: json
 outputFormat:
+    - disable
     - json
     - html
     - csv

@@ -22,7 +22,7 @@ export class ACReporterCSV implements IReporter {
     private static toCSV = function(str) {
         if (str === null) {
             return '"null"';
-        } else if (str.length == 0) {
+        } else if (!str || str.length == 0) {
             return '""';
         } else {
             str = str.replace(/"/g, '""');

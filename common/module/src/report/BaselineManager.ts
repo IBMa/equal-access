@@ -46,7 +46,7 @@ export class BaselineManager {
         BaselineManager.refactorMap = refactorMap;
     }
 
-    public static getBaseline(label: string) {
+    public static getBaseline(label: string) : IBaselineReport | null {
         try {
             let retVal = BaselineManager.absAPI.loadBaseline(label);
             if (retVal && retVal.results) {
@@ -87,7 +87,7 @@ export class BaselineManager {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
-        if ((actualResults as any).details instanceof Error) {
+        if ((actualResults as any).details && (actualResults as any).details instanceof Error) {
             return eAssertResult.ERROR;
         }
 
@@ -244,7 +244,7 @@ export class BaselineManager {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
-        if (report.details instanceof Error) {
+        if (report.details && report.details instanceof Error) {
             return -1;
         }
 

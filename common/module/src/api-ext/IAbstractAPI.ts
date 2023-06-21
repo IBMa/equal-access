@@ -27,7 +27,7 @@ export interface IAbstractAPI {
      */
     writeFileSync(filePath: string, data: string | Buffer)
 
-    loadBaseline(label: string): IBaselineReport | undefined;
+    loadBaseline(label: string): IBaselineReport | null;
 
     info(...args: any[])
 
