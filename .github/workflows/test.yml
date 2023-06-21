@@ -369,7 +369,7 @@ jobs:
         working-directory: report-react
       - run: npm install
         working-directory: cypress-accessibility-checker
-      - run: npm run build:report
+      - run: npm run build:common
         working-directory: cypress-accessibility-checker
       - run: npm run test:start-http &
         working-directory: cypress-accessibility-checker
