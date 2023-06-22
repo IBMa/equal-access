@@ -18,7 +18,7 @@
             button {
                 height: 2rem;
                 width: 2rem;
-                background-color: #393939; // color of initial menu button
+                background-color: #393939; // color of initial menu button and menu items
                 // border: 1px solid gray;
                 min-height: 2rem;
                 .cds--overflow-menu__icon {
@@ -31,12 +31,12 @@
             }
         }
         .cds--overflow-menu.cds--overflow-menu--open:hover {
-            background-color: 393939; // color of button on hover
+            background-color: #595959; // color of button on hover
         }
         .cds--overflow-menu.cds--overflow-menu--open {
             height: 2rem;
             min-height: 2rem;
-            background-color: #393939; // color of secondary button and menu items
+            background-color: #393939; // color of secondary button
             .cds--overflow-menu__icon {
                 fill: white;
             }
@@ -50,7 +50,7 @@
             button { height: 2rem;
                 width: 2rem;
                 min-height: 2rem;
-                background-color: #e0e0e0; // color of initial menu button
+                background-color: #e0e0e0; // color of initial menu button and menu items
                 .cds--overflow-menu__icon {
                     fill: black;
                 }
@@ -66,7 +66,7 @@
         .cds--overflow-menu.cds--overflow-menu--open {
             height: 2rem;
             min-height: 2rem;
-            background-color: #e0e0e0; // color of secondary button and menu items
+            background-color: #e0e0e0; // color of secondary button 
             .cds--overflow-menu__icon {
                 fill: black;
             }
