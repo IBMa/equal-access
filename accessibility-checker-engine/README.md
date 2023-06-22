@@ -3,7 +3,7 @@
 This README covers topics for developers who want to better understand the rules and build the engine component.
 
 - For information on creating and modifying the rules, see [README-RULES](README-RULES.md).
-- For information on installing the engine in a Node environment, see [README-NPM](README-NPM.md).
+- For information on installing the engine in a Node or browser environment, see [README-NPM](README-NPM.md).
 
 ## Overview
 

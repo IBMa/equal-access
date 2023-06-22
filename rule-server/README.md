@@ -3,7 +3,7 @@
 This README covers topics related to build and deploy the rules and rule server.
 
 - For information on creating and modifying the rules, see [README-RULES](../accessibility-checker-engine/README-RULES.md).
-- For information on installing the engine in a Node environment, see [README-NPM](../accessibility-checker-engine/README-NPM.md).
+- For information on installing the engine in a Node or browser environment, see [README-NPM](../accessibility-checker-engine/README-NPM.md).
 
 ## Branches and rule archives
 

@@ -10,7 +10,7 @@ The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview informat
 
 ## Usage
 
-The tools that have been deployed to the various stores and NPM so they can be easily downloaded and installed:
+The tools have been deployed to the various stores and NPM so they can be easily downloaded and installed:
 
 * [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
 * [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
@@ -20,7 +20,7 @@ The tools that have been deployed to the various stores and NPM so they can be e
 
 ## Requirements
 
-* [Node Version 16](https://nodejs.org/en/download/).
+* [Node Version 18](https://nodejs.org/en/download/).
 
 ### Clone Repository
 

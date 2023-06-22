@@ -1,4 +1,4 @@
-# accessibility-checker-engine NPM
+# accessibility-checker-engine
 
 ## Overview
 
@@ -6,7 +6,7 @@
 
 ## Get the engine
 
-Install accessibility-checker-engine in a Node environment:
+Install accessibility-checker-engine in a Node environment to inject into a browser environment:
 ```
 $ npm install --save-dev accessibility-checker-engine
 ```
