@@ -94,10 +94,10 @@ export class ReporterManager {
         }
         let retVal: CompressedReport = [
             report.startScan, // 0
-            report.url, // 1
-            report.pageTitle, // 2
-            report.label, // 3
-            report.scanProfile, // 4
+            report.url || "", // 1
+            report.pageTitle || "", // 2
+            report.label || "", // 3
+            report.scanProfile || "", // 4
             report.engineReport.numExecuted, // 5
             report.engineReport.summary.scanTime,  // 6
             report.engineReport.summary.ruleArchive, // 7
