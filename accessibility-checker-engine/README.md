@@ -171,7 +171,7 @@ You can use the wrapper method `checkDemo` in `ace` object, which is specificall
 * Type in the command prompt: `ace.checkDemo()`, then `Enter`
 
 You can view the accessibility report for the page:  
-![use AWE in the Chrome developer tool](img/use-awe-in-developer-tool.png "Use AWE in the Chrome developer tool to test accessibility of a web page")
+![use ACE in the Chrome developer tool](img/use-awe-in-developer-tool.png "Use ACE in the Chrome developer tool to test accessibility of a web page")
 
 ### Programmatic
 

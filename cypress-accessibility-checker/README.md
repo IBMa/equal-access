@@ -28,7 +28,7 @@ There are two setup steps you must complete in order for the Cypress tests to be
 
 In the `cypress/plugins/index.js` file located in your project, require the plugin and then register it with Cypress.
 
-```bash
+```js
 const aCheckerTasks = require('cypress-accessibility-checker/plugin');
 module.exports = (on, config) => {
   on('task', {
@@ -41,7 +41,7 @@ module.exports = (on, config) => {
 
 In the `cypress/support/index.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
 
-```bash
+```js
 import 'cypress-accessibility-checker';
 ```
 

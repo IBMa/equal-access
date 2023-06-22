@@ -1,4 +1,4 @@
-# accessibility-checker/src
+# accessibility-checker
 
 ## Overview
 

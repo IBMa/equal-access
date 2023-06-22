@@ -40,7 +40,7 @@ checker.check(doc, ["IBM_Accessibility"])
 * `doc` - can be one of: 
   * a Document Object Model (`DOM`) object representing an HTML document which is usually available in a browser environment as `document`
   * a `DOM` element representing a fragment HTML which can be retrieved from a `DOM` by matching against one or more selectors.
-* `["IBM_Accessibility"]` - apply IBM accessibility rules only, IBM design rules only.
+* `["IBM_Accessibility"]` - apply IBM accessibility ruleset.
 * `report` - accessibility results contains identified accessibility issues and their descriptions from the given `doc`, and a summary of the issues. The report is in JSON format (see [details](#report)).
 
 ## Checklist and Rulesets
