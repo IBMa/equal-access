@@ -12,16 +12,20 @@ export class ACEngineManager {
     static engineContent = null;
     static async loadEngine(content) {
         let config = await ACConfigManager.getConfigUnsupported();
+        let ENGINE_LOAD_MODE = config.engineMode;
+        if (ENGINE_LOAD_MODE === "DEFAULT") {
+            // ENGINE_LOAD_MODE = "REMOTE";
+            ENGINE_LOAD_MODE = "INJECT";
+        }
+        if (ENGINE_LOAD_MODE === "INJECT" && !ACEngineManager.engineContent) {
+            const response = await axios.get(`${config.rulePack}/ace.js`);
+            ACEngineManager.engineContent = await response.data;
+        }
         if (ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
-            if (!ACEngineManager.engineContent) {
-                const response = await axios.get(`${config.rulePack}/ace.js`);
-                ACEngineManager.engineContent = await response.data;
-            }
 
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
-            let MODE: string = "INJECT";
-            if (MODE === "REMOTE") {
+            if (ENGINE_LOAD_MODE === "REMOTE") {
                 await page.evaluate((scriptUrl) => {
                     try {
                         var ace_backup_in_ibma;
@@ -56,7 +60,7 @@ export class ACEngineManager {
                         return Promise.reject(e);
                     }
                 }, `${config.rulePack}/ace.js`);
-            } else if (MODE === "INJECT") {
+            } else if (ENGINE_LOAD_MODE === "INJECT") {
                 await page.evaluate((engineContent) => {
                     try {
                         var ace_backup_in_ibma;
@@ -85,38 +89,68 @@ export class ACEngineManager {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
             try {
                 let browser = content;
-                // Selenium
-                let scriptStr =
-                    `let cb = arguments[arguments.length - 1];
-try {
-    var ace_backup_in_ibma;
+                let scriptStr;
+                if (ENGINE_LOAD_MODE === "REMOTE") {
+                    scriptStr =
+                        `let cb = arguments[arguments.length - 1];
+    try {
+        var ace_backup_in_ibma;
+            if ('undefined' !== typeof(ace)) {
+                if (!ace || !ace.Checker) 
+                    ace_backup_in_ibma = ace;
+                ace = null; 
+            } 
+            if ('undefined' === typeof (ace) || ace === null) {
+            let script = document.createElement('script');
+            script.setAttribute('type', 'text/javascript');
+            script.setAttribute('aChecker', 'ACE');
+            script.setAttribute('src', '${config.rulePack}/ace.js');
+            script.addEventListener('load', function() {
+                globalThis.ace_ibma = ace;
+                if ('undefined' !== typeof(ace)) {
+                    ace = ace_backup_in_ibma;
+                } 
+                cb();
+            });
+            let heads = document.getElementsByTagName('head');
+            if (heads.length > 0) { heads[0].appendChild(script); }
+            else { document.body.appendChild(script); }
+        } else {
+            cb();
+        }
+    } catch (e) {
+        cb(e);
+    }
+    `
+                } else if (ENGINE_LOAD_MODE === "INJECT") {
+
+                    // Selenium
+                    scriptStr =
+                        `let cb = arguments[arguments.length - 1];
+    try {
+        var ace_backup_in_ibma;
         if ('undefined' !== typeof(ace)) {
             if (!ace || !ace.Checker) 
                 ace_backup_in_ibma = ace;
             ace = null; 
         } 
         if ('undefined' === typeof (ace) || ace === null) {
-        let script = document.createElement('script');
-        script.setAttribute('type', 'text/javascript');
-        script.setAttribute('aChecker', 'ACE');
-        script.setAttribute('src', '${config.rulePack}/ace.js');
-        script.addEventListener('load', function() {
+            eval(${JSON.stringify(ACEngineManager.engineContent)})
             globalThis.ace_ibma = ace;
             if ('undefined' !== typeof(ace)) {
                 ace = ace_backup_in_ibma;
             } 
             cb();
-        });
-        let heads = document.getElementsByTagName('head');
-        if (heads.length > 0) { heads[0].appendChild(script); }
-        else { document.body.appendChild(script); }
-    } else {
-        cb();
+            
+        } else {
+            cb();
+        }
+    } catch (e) {
+        cb(e);
     }
-} catch (e) {
-    cb(e);
-}
-`
+    `                
+                }
+
                 let manage = browser.manage();
                 if (manage.timeouts) {
                     manage.timeouts().setScriptTimeout(60000);
