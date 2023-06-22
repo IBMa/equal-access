@@ -46,7 +46,7 @@ class MyFS {
     }
     prepFileSync(filePath) {
         if (Config) {
-            let outDir = path.join(process.cwd(), Config.outputFolder);
+            let outDir = path.resolve(Config.outputFolder);
             let outFile = path.join(outDir, filePath);
             if (!fs.existsSync(path.dirname(outFile))) {
                 fs.mkdirSync(path.dirname(outFile), { recursive: true });

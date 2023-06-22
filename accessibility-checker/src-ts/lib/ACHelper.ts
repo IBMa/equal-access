@@ -7,7 +7,7 @@ import { ReporterManager } from "./common/report/ReporterManager";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
 import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
-import { dirname, join } from "path";
+import { dirname, join, resolve as pathResolve } from "path";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
 
 declare var after;
@@ -33,7 +33,7 @@ class MyFS implements IAbstractAPI {
         writeFileSync(outFile, data);
     }
     prepFileSync(filePath: string) : string {
-        let outDir = join(process.cwd(), Config.outputFolder);
+        let outDir = pathResolve(Config.outputFolder);
         let outFile = join(outDir, filePath);
         if (!existsSync(dirname(outFile))) {
             mkdirSync(dirname(outFile), { recursive: true });

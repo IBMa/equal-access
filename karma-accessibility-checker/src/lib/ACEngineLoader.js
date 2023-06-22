@@ -62,7 +62,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
     config.client.ACConfig = ACConfig;
 
     // Store the aChecker scan engine under ACEngine folder
-    var ACEngineRootFolder = ACConfig.cacheFolder;
+    var ACEngineRootFolder = pathLib.resolve(ACConfig.cacheFolder);
     var ACPackageRootFolder = __dirname;
 
     // Extract the rule server and engine file names

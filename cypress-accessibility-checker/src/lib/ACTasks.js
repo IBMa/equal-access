@@ -27,7 +27,7 @@ class MyFS {
         fs.writeFileSync(outFile, data);
     }
     prepFileSync(filePath) {
-        let outDir = path.join(process.cwd(), ACTasks.Config.outputFolder);
+        let outDir = path.resolve(ACTasks.Config.outputFolder);
         let outFile = path.join(outDir, filePath);
         if (!fs.existsSync(path.dirname(outFile))) {
             fs.mkdirSync(path.dirname(outFile), { recursive: true });

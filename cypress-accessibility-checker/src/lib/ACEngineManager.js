@@ -53,7 +53,7 @@ class ACEngineManager {
                     console.log("Cannot read: " + ACTasks.Config.rulePack + "/ace-node.js");
                 }
                 data = data.body;
-                let engineDir = path.join(config.cacheFolder, "engine");
+                let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
