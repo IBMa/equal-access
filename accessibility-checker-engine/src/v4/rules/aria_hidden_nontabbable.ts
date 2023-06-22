@@ -33,7 +33,7 @@ export let aria_hidden_nontabbable: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
+            "group": "A hidden element should not contain any tabbable elements", 
             "Pass_0": "Rule Passed",
             "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
         }

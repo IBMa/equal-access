@@ -7,5 +7,9 @@
         "latex",
         "plaintext",
         "shellscript"
+    ],
+    "cSpell.words": [
+        "nontabbable",
+        "testcase"
     ]
 }
