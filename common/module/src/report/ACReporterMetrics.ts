@@ -16,8 +16,8 @@
 
 import { fetch_get } from "../api-ext/Fetch";
 import { IConfigInternal } from "../config/IConfig";
-import { IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReporterManager";
+import { CompressedReport, IRuleset } from "../engine/IReport";
+import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager";
 
 /*******************************************************************************
  * NAME: ACMetricsLogger.js
@@ -38,6 +38,9 @@ import { IReporter, IReporterStored } from "./ReporterManager";
  * @memberOf this
  */
 export class ACReporterMetrics implements IReporter {
+    public name(): string {
+        return "metrics";
+    }
     policies: string;
     metricsURLV2: string = "https://able.ibm.com/tools";
     toolName: string;
@@ -90,7 +93,7 @@ export class ACReporterMetrics implements IReporter {
      *
      * @memberOf this
      */
-    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void> {
+    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
         try {
             // Variable Decleration
             let numProfiles = 0;

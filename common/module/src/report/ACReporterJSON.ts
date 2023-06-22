@@ -15,10 +15,13 @@
   *****************************************************************************/
 
 import { IConfigInternal } from "../config/IConfig";
-import { IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReporterManager";
+import { CompressedReport, IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport";
+import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
 
 export class ACReporterJSON implements IReporter {
+    public name(): string {
+        return "json";
+    }
     public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
         let outReport : IBaselineReport= JSON.parse(JSON.stringify(storedReport.engineReport));
         outReport.summary = ACReporterJSON.generateReportSummary(config, rulesets, storedReport);
@@ -33,8 +36,9 @@ export class ACReporterJSON implements IReporter {
         };
     }
 
-    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void> {
-        if (summaryData && summaryData.length > 0) {
+    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
+        if (compressedReports && compressedReports.length > 0) {
+            let storedScan = ReporterManager.uncompressReport(compressedReports[0]);
             let retVal = {
                 counts: {
                     ignored: 0,
@@ -48,7 +52,7 @@ export class ACReporterJSON implements IReporter {
                     elementsViolation: 0,
                     elementsViolationReview: 0
                 },
-                startReport: summaryData[0].startScan,
+                startReport: storedScan.engineReport.summary.startScan,
                 endReport: endReport,
                 toolID: config.toolID,
                 policies: config.policies,
@@ -58,17 +62,18 @@ export class ACReporterJSON implements IReporter {
                 scanID: config.scanID,
                 pageScanSummary: []
             }
-            for (const scan of summaryData) {
-                let counts = scan.engineReport.summary.counts;
+            for (const compressedReport of compressedReports) {
+                let storedScan = ReporterManager.uncompressReport(compressedReport);
+                let counts = storedScan.engineReport.summary.counts;
                 retVal.pageScanSummary.push({
-                    label: scan.label,
+                    label: storedScan.label,
                     counts
                 })
                 for (const key in counts) {
                     retVal.counts[key] += counts[key];
                 }
             }
-            let startScan = new Date(summaryData[0].startScan);
+            let startScan = new Date(storedScan.engineReport.summary.startScan);
             return {
                 summaryPath: `summary_${startScan.toISOString()}.json`,
                 summary: JSON.stringify(retVal, null, 4)

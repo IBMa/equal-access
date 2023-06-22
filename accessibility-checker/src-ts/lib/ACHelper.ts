@@ -29,12 +29,16 @@ let checkPolicy = false;
 
 class MyFS implements IAbstractAPI {
     writeFileSync(filePath: string, data: string | Buffer) {
+        let outFile = this.prepFileSync(filePath);
+        writeFileSync(outFile, data);
+    }
+    prepFileSync(filePath: string) : string {
         let outDir = join(process.cwd(), Config.outputFolder);
         let outFile = join(outDir, filePath);
         if (!existsSync(dirname(outFile))) {
             mkdirSync(dirname(outFile), { recursive: true });
         }
-        writeFileSync(outFile, data);
+        return outFile;
     }
     log(...output) { Config && Config.DEBUG && console.debug(...output) }
     info(...output) { Config && Config.DEBUG && console.info(...output) }
@@ -81,6 +85,9 @@ try {
     if (typeof (after) !== "undefined") {
         after(function (done) {
             if (Config) {
+                if (this.timeout) {
+                    this.timeout(300000);
+                }
                 // const rulePack = `${Config.rulePack}/ace`;
                 initialize()
                     .then(() => ReporterManager.generateSummaries())

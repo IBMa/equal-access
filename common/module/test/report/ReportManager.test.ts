@@ -24,6 +24,9 @@ class FakeFS implements IAbstractAPI {
         written[filePath] = true;
         expect(data).toEqual(expected[filePath]);
     }
+    prepFileSync(filePath: string) : string {
+        return join("test", "report", filePath);
+    }
     log(...args: any[]) {
         console.log(...args)
     }

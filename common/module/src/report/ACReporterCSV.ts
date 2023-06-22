@@ -15,10 +15,13 @@
   *****************************************************************************/
 
 import { IConfigInternal } from "../config/IConfig";
-import { IRuleset } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReporterManager";
+import { CompressedReport, IRuleset } from "../engine/IReport";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
 
 export class ACReporterCSV implements IReporter {
+    public name(): string {
+        return "csv";
+    }
     private static toCSV = function(str) {
         if (str === null) {
             return '"null"';
@@ -32,19 +35,23 @@ export class ACReporterCSV implements IReporter {
     
     public generateReport(_reportData) : { reportPath: string, report: string } | void {
     }
-    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void> {
+    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
         let toCSV = ACReporterCSV.toCSV;
         let resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`;
-
-        for (const reportStored of summaryData) {
+        let startScan = 0;
+        for (const compressedReport of compressedReports) {
+            let reportStored = ReporterManager.uncompressReport(compressedReport);
+            if (startScan === 0) {
+                startScan = reportStored.engineReport.summary.startScan;
+            }
             let report = reportStored.engineReport;
             for (const result of report.results) {
                 resultStr += `${toCSV(reportStored.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(result.help)}\n`
             }
         }
-        let startScan = new Date(summaryData[0].startScan);
+        let startScanD = new Date(startScan);
         return {
-            summaryPath: `results_${startScan.toISOString()}.csv`,
+            summaryPath: `results_${startScanD.toISOString()}.csv`,
             summary: resultStr
         }
     }

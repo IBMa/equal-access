@@ -26,7 +26,8 @@ export interface IAbstractAPI {
      * @param data 
      */
     writeFileSync(filePath: string, data: string | Buffer)
-
+    prepFileSync(filePath: string) : string;
+    
     loadBaseline(label: string): IBaselineReport | null;
 
     // Get the checker engine

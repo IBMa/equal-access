@@ -40,12 +40,20 @@ let checker;
 class MyFS {
     writeFileSync(filePath, data) {
         if (Config) {
+            let outFile = this.prepFileSync(filePath);
+            fs.writeFileSync(outFile, data);
+        }
+    }
+    prepFileSync(filePath) {
+        if (Config) {
             let outDir = path.join(process.cwd(), Config.outputFolder);
             let outFile = path.join(outDir, filePath);
             if (!fs.existsSync(path.dirname(outFile))) {
                 fs.mkdirSync(path.dirname(outFile), { recursive: true });
             }
-            fs.writeFileSync(outFile, data);
+            return outFile;
+        } else {
+            return filePath;
         }
     }
     log(...output) { console.debug(...output) }

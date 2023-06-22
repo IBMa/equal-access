@@ -16,7 +16,7 @@
 
 import { IAbstractAPI } from "../api-ext/IAbstractAPI";
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence } from "../engine/IReport";
+import { CompressedIssue, CompressedReport, IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence, eRulePolicy } from "../engine/IReport";
 import { ACReporterMetrics } from "./ACReporterMetrics";
 import { ACReporterCSV } from "./ACReporterCSV";
 import { ACReporterHTML } from "./ACReporterHTML";
@@ -32,9 +32,14 @@ export interface IReporterStored {
     engineReport: IBaselineReport
 }
 
+export type GenSummReturn = { 
+    summaryPath: string, 
+    summary: string | Buffer | ((filename?: string) => Promise<void>)
+} | void
 export interface IReporter {
+    name(): string
     generateReport(config: IConfigInternal, rulesets: IRuleset[], reportData: IReporterStored): { reportPath: string, report: string } | void;
-    generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void>;
+    generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn>;
 };
 
 /**
@@ -46,9 +51,136 @@ export class ReporterManager {
     private static rulesets: IRuleset[];
     private static absAPI: IAbstractAPI;
     private static reporters: IReporter[] = [];
-    private static reports: IReporterStored[] = []
+    private static reports: CompressedReport[] = []
+    private static nlsData: {
+        [ruleId: string]: {
+            [reasonId: string]: string
+        }
+    } = {}
     private static usedLabels = {};
     private static returnReporter = new ACReporterJSON();
+    private static scanID: string;
+    private static toolID: string;
+    private static compressReport(report: IReporterStored) : CompressedReport {
+        ReporterManager.scanID = report.engineReport.scanID;
+        ReporterManager.toolID = report.engineReport.toolID;
+        for (const ruleId in report.engineReport.nls) {
+            ReporterManager.nlsData[ruleId] = ReporterManager.nlsData[ruleId] || {}
+            for (const reasonId in report.engineReport.nls[ruleId]) {
+                ReporterManager.nlsData[ruleId][reasonId] = report.engineReport.nls[ruleId][reasonId];
+            }
+        }
+        let compressedResults : CompressedIssue[] = []
+        for (const result of report.engineReport.results) {
+            let issue: CompressedIssue = [
+                result.category, // 0
+                result.ruleId, // 1
+                result.value, // 2
+                result.reasonId, // 3
+                result.messageArgs, // 4
+                result.path, // 5
+                result.ruleTime, // 6
+                result.snippet, // 7
+                result.help, // 8
+                result.ignored, // 9,
+                result.message // 10
+            ]
+            for (let idx=0; idx<issue.length; ++idx) {
+                if (typeof issue[idx] === "string" && (issue[idx] as string).length > 32000) {
+                    issue[idx] = (issue[idx] as string).substring(0, 32000 - 3) + "...";
+                }
+            }
+            compressedResults.push(issue);
+        }
+        let retVal: CompressedReport = [
+            report.startScan, // 0
+            report.url, // 1
+            report.pageTitle, // 2
+            report.label, // 3
+            report.scanProfile, // 4
+            report.engineReport.numExecuted, // 5
+            report.engineReport.summary.scanTime,  // 6
+            report.engineReport.summary.ruleArchive, // 7
+            report.engineReport.summary.policies, // 8
+            report.engineReport.summary.reportLevels, // 9
+            compressedResults // 10
+        ]
+        for (let idx=0; idx<retVal.length; ++idx) {
+            if (typeof retVal[idx] === "string" && (retVal[idx] as string).length > 32000) {
+                retVal[idx] = (retVal[idx] as string).substring(0, 32000 - 3) + "...";
+            }
+        }
+        if (retVal[1].startsWith("data:") && retVal[1].length > 300) {
+            retVal[1] = retVal[1].substring(0, 300 - 3) + "...";
+        }
+        return retVal;
+    }
+
+    public static uncompressReport(report:CompressedReport): IReporterStored {
+        let results: IBaselineResult[] = [];
+        let nls: {
+            [ruleId: string]: {
+                [reasonId: string]: string
+            }
+        } = {}
+        for (const issue of report[10]) {
+            let result : IBaselineResult = {
+                category: issue[0],
+                ruleId: issue[1],
+                value: issue[2],
+                reasonId: issue[3],
+                messageArgs: issue[4],
+                apiArgs: [],
+                path: issue[5],
+                ruleTime: issue[6],
+                message: issue[10],
+                snippet: issue[7],
+                help: issue[8],
+                ignored: issue[9],
+                level: ReporterManager.valueToLevel(issue[2])
+            }
+            results.push(result);
+            nls[result.ruleId] = nls[result.ruleId] || {};
+            nls[result.ruleId][result.reasonId] = ReporterManager.nlsData[result.ruleId][result.reasonId];            
+        }
+        let engineReport: IBaselineReport = {
+            results,
+            numExecuted: report[5],
+            nls,
+            summary: {
+                counts: {
+                    violation: 0,
+                    potentialviolation: 0,
+                    recommendation: 0,
+                    potentialrecommendation: 0,
+                    manual: 0,
+                    pass: 0,
+                    ignored: 0,
+                    elements: 0,
+                    elementsViolation: 0,
+                    elementsViolationReview: 0
+                },
+                scanTime: report[6],
+                ruleArchive: report[7],
+                policies: report[8],
+                reportLevels: report[9],
+                startScan: report[0],
+                URL: report[1]
+            },
+            scanID: ReporterManager.scanID,
+            toolID: ReporterManager.toolID,
+            label: report[3]
+        }
+        engineReport.summary.counts = ReporterManager.getCounts(engineReport);
+        return {
+            startScan: report[0],
+            url: report[1],
+            pageTitle: report[2] || "",
+            label: report[3],
+            scanProfile: report[4],
+            engineReport
+        }
+    }
 
     public static initialize(config: IConfigInternal, absAPI: IAbstractAPI, rulesets: IRuleset[]) {
         ReporterManager.config = config;
@@ -155,38 +287,27 @@ export class ReporterManager {
                 issue.help = ReporterManager.getHelpUrl(issue);
             }
         }
-        if (ReporterManager.reporters.length > 0) {
-            ReporterManager.reports.push({
-                startScan,
-                url,
-                pageTitle,
-                scanProfile,
-                label,
-                engineReport: filteredReport
-            });
-            for (const reporter of ReporterManager.reporters) {
-                let reportInfo = reporter.generateReport(ReporterManager.config, ReporterManager.rulesets, {
-                    startScan,
-                    url,
-                    pageTitle,
-                    label,
-                    scanProfile,
-                    engineReport: filteredReport
-                });
-                if (reportInfo) {
-                    let { reportPath, report } = reportInfo;
-                    ReporterManager.absAPI.writeFileSync(reportPath, report);
-                }
-            }
-        }
-        let retVal = ReporterManager.returnReporter.generateReport(ReporterManager.config, ReporterManager.rulesets, {
+        let storedReport = {
             startScan,
             url,
             pageTitle,
             label,
             scanProfile,
             engineReport: filteredReport
-        });
+        };
+        
+        let compressedReport = this.compressReport(storedReport);
+        if (ReporterManager.reporters.length > 0) {
+            ReporterManager.reports.push(compressedReport);
+            for (const reporter of ReporterManager.reporters) {
+                let reportInfo = reporter.generateReport(ReporterManager.config, ReporterManager.rulesets, storedReport);
+                if (reportInfo) {
+                    let { reportPath, report } = reportInfo;
+                    ReporterManager.absAPI.writeFileSync(reportPath, report);
+                }
+            }
+        }
+        let retVal = ReporterManager.returnReporter.generateReport(ReporterManager.config, ReporterManager.rulesets, storedReport);
         if (retVal) return JSON.parse(retVal.report);
     }
 
@@ -194,14 +315,47 @@ export class ReporterManager {
         // If no scans, don't generate summaries
         if (ReporterManager.reports.length === 0) return;
         for (const reporter of ReporterManager.reporters) {
-            let summaryInfo = await reporter.generateSummary(ReporterManager.config, ReporterManager.rulesets, endReport || new Date().getTime(), ReporterManager.reports);
-            if (summaryInfo) {
-                let { summaryPath, summary } = summaryInfo;
-                if (summaryPath && summary) {
-                    ReporterManager.absAPI.writeFileSync(summaryPath, summary);
+            try {
+                let summaryInfo = await reporter.generateSummary(ReporterManager.config, ReporterManager.rulesets, endReport || new Date().getTime(), ReporterManager.reports);
+                if (summaryInfo) {
+                    let { summaryPath, summary } = summaryInfo;
+                    if (summaryPath && summary) {
+                        if (typeof summary === "function") {
+                            // Reporter needs to write it itself
+                            let outFile = ReporterManager.absAPI.prepFileSync(summaryPath);
+                            await summary(outFile);
+                        } else {
+                            ReporterManager.absAPI.writeFileSync(summaryPath, summary);
+                        }
+                    }
                 }
+            } catch (err) {
+                console.error(err);
             }
         }
+        ReporterManager.reports = [];
+    }
+
+    private static valueToLevel(reportValue: [eRulePolicy, eRuleConfidence]): eRuleLevel {
+        let reportLevel: eRuleLevel;
+        if (reportValue[1] === "PASS") {
+            reportLevel = eRuleLevel.pass;
+        } else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
+            reportLevel = eRuleLevel.manual;
+        } else if (reportValue[0] === "VIOLATION") {
+            if (reportValue[1] === "FAIL") {
+                reportLevel = eRuleLevel.violation;
+            } else if (reportValue[1] === "POTENTIAL") {
+                reportLevel = eRuleLevel.potentialviolation;
+            }
+        } else if (reportValue[0] === "RECOMMENDATION") {
+            if (reportValue[1] === "FAIL") {
+                reportLevel = eRuleLevel.recommendation;
+            } else if (reportValue[1] === "POTENTIAL") {
+                reportLevel = eRuleLevel.potentialrecommendation;
+            }
+        }
+        return reportLevel;
     }
 
     private static filterReport(engineResult: IEngineReport, scanLabel: string): IBaselineReport {
@@ -220,25 +374,7 @@ export class ReporterManager {
         let keepNlsKeys = {}
         retVal.results = retVal.results.map(pageResult => {
             // Fetch the level from the results
-            let reportValue = pageResult.value;
-            let reportLevel: eRuleLevel;
-            if (reportValue[1] === "PASS") {
-                reportLevel = eRuleLevel.pass;
-            } else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
-                reportLevel = eRuleLevel.manual;
-            } else if (reportValue[0] === "VIOLATION") {
-                if (reportValue[1] === "FAIL") {
-                    reportLevel = eRuleLevel.violation;
-                } else if (reportValue[1] === "POTENTIAL") {
-                    reportLevel = eRuleLevel.potentialviolation;
-                }
-            } else if (reportValue[0] === "RECOMMENDATION") {
-                if (reportValue[1] === "FAIL") {
-                    reportLevel = eRuleLevel.recommendation;
-                } else if (reportValue[1] === "POTENTIAL") {
-                    reportLevel = eRuleLevel.potentialrecommendation;
-                }
-            }
+            let reportLevel = ReporterManager.valueToLevel(pageResult.value);
             let ignored = false;
             if (pageResult.value[1] !== eRuleConfidence.PASS && pageResult.path.dom in ignoreLookup && pageResult.ruleId in ignoreLookup[pageResult.path.dom] && ignoreLookup[pageResult.path.dom][pageResult.ruleId][pageResult.reasonId]) {
                 ignored = true;

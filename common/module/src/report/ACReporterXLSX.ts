@@ -15,8 +15,8 @@
   *****************************************************************************/
 
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { IBaselineResult, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport";
-import { IReporter, IReporterStored } from "./ReporterManager";
+import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
 import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {
@@ -36,10 +36,15 @@ function dropDupes<T>(arr: T[]): T[] {
     })
 }
 export class ACReporterXLSX implements IReporter {
+    public name(): string {
+        return "xlsx";
+    }
+
     public generateReport(_reportData): { reportPath: string, report: string } | void {
     }
 
-    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: IReporterStored[]): Promise<{ summaryPath: string, summary: string | Buffer } | void> {
+    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
+        let storedReport = ReporterManager.uncompressReport(summaryData[0])
         let cfgRulesets = rulesets.filter(rs => config.policies.includes(rs.id));
         let policyInfo: {
             [ruleId: string]: PolicyInfo
@@ -67,33 +72,39 @@ export class ACReporterXLSX implements IReporter {
             policyInfo[ruleId].wcagLevels.sort();
         }
 
-        // @ts-ignore
-        const workbook = new ExcelJS.Workbook({ useStyles: true });
-        ACReporterXLSX.createOverviewSheet(config, summaryData, workbook);
-        ACReporterXLSX.createScanSummarySheet(config, summaryData, workbook);
-        ACReporterXLSX.createIssueSummarySheet(config, policyInfo, summaryData, workbook);
-        ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData, workbook);
-        ACReporterXLSX.createDefinitionsSheet(workbook);
-        const buffer: any = await workbook.xlsx.writeBuffer();
-        let startScan = new Date(summaryData[0].startScan);
+        // const buffer: any = await workbook.xlsx.writeBuffer();
+        let startScan = new Date(storedReport.engineReport.summary.startScan);
         return {
             summaryPath: `results_${startScan.toISOString()}.xlsx`,
-            summary: buffer
+            summary: async (filename?: string) => {
+                // @ts-ignore
+                const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ filename, useStyles: true });
+//                const workbook = new ExcelJS.Workbook({ useStyles: true });
+                ACReporterXLSX.createOverviewSheet(config, summaryData, workbook);
+                ACReporterXLSX.createScanSummarySheet(config, summaryData, workbook);
+                ACReporterXLSX.createIssueSummarySheet(config, policyInfo, summaryData, workbook);
+                ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData, workbook);
+                ACReporterXLSX.createDefinitionsSheet(workbook);
+                workbook.commit();
+            }
         }
     }
 
-    private static createOverviewSheet(config: IConfigInternal, storedScans: IReporterStored[], workbook: ExcelJS.Workbook) {
+    private static createOverviewSheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
         let archived = 0;
         let totalIssues = 0;
 
+        let startScan = 0;
         // BIG QUESTION: is report 
         //               1. for current scan (from menu)
         //               2. all stored scans (from menu)
         //               3. selected stored scans (from scan manager)
-        for (const storedScan of storedScans) {
+        for (const compressedScan of compressedScans) {
+            let storedScan = ReporterManager.uncompressReport(compressedScan)
+            if (startScan === 0) startScan = storedScan.engineReport.summary.startScan;
             const counts = storedScan.engineReport.summary.counts;
             violations += counts.violation;
             needsReviews += counts.potentialviolation + counts.manual;
@@ -139,8 +150,8 @@ export class ACReporterXLSX implements IReporter {
             // {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
             { key1: 'Rule set:', key2: config.ruleArchiveLabel },
             { key1: 'Guidelines:', key2: config.policies.join(", ") },
-            { key1: 'Report date:', key2: new Date(storedScans[0].startScan).toLocaleString() }, // do we need to get actual date?
-            { key1: 'Scans:', key2: "" + storedScans.length }, // *** NEED TO FIX FOR selected
+            { key1: 'Report date:', key2: new Date(startScan).toLocaleString() }, // do we need to get actual date?
+            { key1: 'Scans:', key2: "" + compressedScans.length }, // *** NEED TO FIX FOR selected
             // { key1: 'Pages:', key2: "" }
         ];
 
@@ -231,7 +242,7 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static createScanSummarySheet(config: IConfigInternal, storedScans: IReporterStored[], workbook: ExcelJS.Workbook) {
+    private static createScanSummarySheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
 
         const worksheet = workbook.addWorksheet("Scan summary");
 
@@ -305,11 +316,12 @@ export class ACReporterXLSX implements IReporter {
         cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
         cellI1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
 
-        for (const storedScan of storedScans) {
+        for (const compressedScan of compressedScans) {
+            let storedScan = ReporterManager.uncompressReport(compressedScan);
             let counts = storedScan.engineReport.summary.counts;
             let row = worksheet.addRow([
                 storedScan.pageTitle,
-                storedScan.url,
+                storedScan.engineReport.summary.URL,
                 storedScan.label,
                 counts.violation,
                 counts.potentialviolation + counts.manual,
@@ -334,7 +346,9 @@ export class ACReporterXLSX implements IReporter {
                     right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
                 }
             }
+            row.commit();
         }
+        worksheet.commit();
     }
 
     private static buildIssueSummaryLevel(worksheet: ExcelJS.Worksheet, fillColor: string, title: string, levelCount: number, levelrowValues) {
@@ -382,9 +396,8 @@ export class ACReporterXLSX implements IReporter {
 
         // add array of rows
 
-        let rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
+        for (const rowInfo of rowArray) {
+            const row = worksheet.addRow(rowInfo);
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
@@ -403,7 +416,8 @@ export class ACReporterXLSX implements IReporter {
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
             };
-        });
+            row.commit();
+        }
     }
 
     private static buildIssueSummaryTKLevel(worksheet: ExcelJS.Worksheet, title: string, levelCounts: number[], levelVrowValues, levelNRrowValues, levelRrowValues, levelArowValues) {
@@ -434,15 +448,16 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, storedScans: IReporterStored[], workbook: ExcelJS.Workbook) {
+    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
 
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
         let archive = 0;
         let totalIssues = 0;
-        for (let i = 0; i < storedScans.length; i++) {
-            let counts = storedScans[i].engineReport.summary.counts;
+        for (let i = 0; i < compressedScans.length; i++) {
+            let storedScan = ReporterManager.uncompressReport(compressedScans[i]);
+            let counts = storedScan.engineReport.summary.counts;
             violations += counts.violation;
             needsReviews += counts.potentialviolation + counts.manual;
             recommendations += counts.recommendation + counts.potentialrecommendation;
@@ -459,7 +474,8 @@ export class ACReporterXLSX implements IReporter {
         let level1NR: any = []; let level2NR: any = []; let level3NR: any = []; let level4NR: any = [];
         let level1R: any = []; let level2R: any = []; let level3R: any = []; let level4R: any = [];
         let level1A: any = []; let level2A: any = []; let level3A: any = []; let level4A: any = []
-        for (const scan of storedScans) {
+        for (const compressedScan of compressedScans) {
+            let scan = ReporterManager.uncompressReport(compressedScan);
             for (const issue of scan.engineReport.results) {
                 if (!(issue.ruleId in policyInfo)) {
                     policyInfo[issue.ruleId] = {
@@ -645,9 +661,10 @@ export class ACReporterXLSX implements IReporter {
         ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 2 - the next most important issues", level2Counts, level2VrowValues, level2NRrowValues, level2RrowValues, level2ArowValues);
         ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 3 - necessary to meet requirements", level3Counts, level3VrowValues, level3NRrowValues, level3RrowValues, level3ArowValues);
         ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 4 - further recommended improvements to accessibility", level4Counts, level4VrowValues, level4NRrowValues, level4RrowValues, level4ArowValues);
+        worksheet.commit();
     }
 
-    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, storedScans: IReporterStored[], workbook: ExcelJS.Workbook) {
+    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
         const valueMap: { [key: string]: { [key2: string]: string } } = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",
@@ -673,7 +690,8 @@ export class ACReporterXLSX implements IReporter {
 
         // build rows
         let rowArray: any = [];
-        for (const storedScan of storedScans) {
+        for (const compressedScan of compressedScans) {
+            let storedScan = ReporterManager.uncompressReport(compressedScan);
             for (const item of storedScan.engineReport.results) {
                 if (!(item.ruleId in policyInfo)) {
                     policyInfo[item.ruleId] = {
@@ -684,7 +702,7 @@ export class ACReporterXLSX implements IReporter {
                 }
                 let row = [
                     storedScan.pageTitle,
-                    storedScan.url,
+                    storedScan.engineReport.summary.URL,
                     storedScan.label,
                     this.stringHash(item.ruleId + item.path.dom),
                     `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,
@@ -739,13 +757,32 @@ export class ACReporterXLSX implements IReporter {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
             worksheet.getColumn(colWidthData[i].col).alignment = colWidthData[i].alignment;
         }
+        
+        // add table to a sheet
+        let headRow = worksheet.addRow([ 
+            "Page title",
+            "Page URL",
+            "Scan label",
+            "Issue ID",
+            "Issue type",
+            "Toolkit level",
+            "Checkpoint",
+            "WCAG level",
+            "Rule",
+            "Issue",
+            "Element",
+            "Code",
+            "Xpath",
+            "Help",
+            ""
+        ]);
 
         // set font and alignment for the header cells
         for (let i = 1; i < 15; i++) {
-            worksheet.getRow(1).getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            worksheet.getRow(1).getCell(i).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            worksheet.getRow(1).getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-            worksheet.getRow(1).getCell(i).border = {
+            headRow.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+            headRow.getCell(i).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+            headRow.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+            headRow.getCell(i).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -754,49 +791,69 @@ export class ACReporterXLSX implements IReporter {
         }
 
         // height for header row
-        worksheet.getRow(1).height = 24;
-
-        // add table to a sheet
-        worksheet.addTable({
-            name: 'MyTable',
-            ref: 'A1',
-            headerRow: true,
-            // totalsRow: true,
-            style: {
-                theme: 'TableStyleMedium2',
-                showRowStripes: true,
-            },
-            columns: [
-                { name: 'Page title', filterButton: true },
-                { name: 'Page URL', filterButton: true },
-                { name: 'Scan label', filterButton: true },
-                { name: 'Issue ID', filterButton: true },
-                { name: 'Issue type', filterButton: true },
-                { name: 'Toolkit level', filterButton: true },
-                { name: 'Checkpoint', filterButton: true },
-                { name: 'WCAG level', filterButton: true },
-                { name: 'Rule', filterButton: true },
-                { name: 'Issue', filterButton: true },
-                { name: 'Element', filterButton: true },
-                { name: 'Code', filterButton: true },
-                { name: 'Xpath', filterButton: true },
-                { name: 'Help', filterButton: true },
-
-            ],
-            rows: rowArray
-        });
-
-        for (let i = 2; i <= rowArray.length + 1; i++) {
-            worksheet.getRow(i).height = 14;
+        headRow.height = 24;
+        
+        headRow.commit();
+        for (const rowInfo of rowArray) {
+            const row = worksheet.addRow(rowInfo);
+            row.height = 14;
             for (let j = 1; j <= 14; j++) {
-                worksheet.getRow(i).getCell(j).border = {
+                row.getCell(j).border = {
                     top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                     left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                     bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                     right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
                 }
             }
+            row.commit();
         }
+        for (const key in worksheet) {
+            if (typeof worksheet[key] === "function") {
+                console.log(key);
+            }
+        }
+        // worksheet.addTable({
+        //     name: 'MyTable',
+        //     ref: 'A1',
+        //     headerRow: true,
+        //     // totalsRow: true,
+        //     style: {
+        //         theme: 'TableStyleMedium2',
+        //         showRowStripes: true,
+        //     },
+        //     columns: [
+        //         { name: 'Page title', filterButton: true },
+        //         { name: 'Page URL', filterButton: true },
+        //         { name: 'Scan label', filterButton: true },
+        //         { name: 'Issue ID', filterButton: true },
+        //         { name: 'Issue type', filterButton: true },
+        //         { name: 'Toolkit level', filterButton: true },
+        //         { name: 'Checkpoint', filterButton: true },
+        //         { name: 'WCAG level', filterButton: true },
+        //         { name: 'Rule', filterButton: true },
+        //         { name: 'Issue', filterButton: true },
+        //         { name: 'Element', filterButton: true },
+        //         { name: 'Code', filterButton: true },
+        //         { name: 'Xpath', filterButton: true },
+        //         { name: 'Help', filterButton: true },
+
+        //     ],
+        //     rows: rowArray
+        // });
+
+        // for (let i = 2; i <= rowArray.length + 1; i++) {
+        //     worksheet.getRow(i).height = 14;
+        //     for (let j = 1; j <= 14; j++) {
+        //         worksheet.getRow(i).getCell(j).border = {
+        //             top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+        //             left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+        //             bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+        //             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        //         }
+        //     }
+        //     worksheet.getRow(i).commit();
+        // }
+        worksheet.commit();
     }
 
     private static createDefinitionsSheet(workbook: any) {
@@ -942,7 +999,7 @@ export class ACReporterXLSX implements IReporter {
         for (let i = 16; i < 29; i++) {
             worksheet.getRow(i).getCell(1).value = rowData[i - 16].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 16].key2;
         }
-
+        worksheet.commit();
     }
 
     private static countDuplicatesInArray(array: []) {

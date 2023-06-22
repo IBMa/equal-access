@@ -23,12 +23,16 @@ let logger = {
 
 class MyFS {
     writeFileSync(filePath, data) {
+        let outFile = this.prepFileSync(filePath);
+        fs.writeFileSync(outFile, data);
+    }
+    prepFileSync(filePath) {
         let outDir = path.join(process.cwd(), ACTasks.Config.outputFolder);
-        let outFile = path.join(outDir, filePath);
+        let outFile = join(outDir, filePath);
         if (!fs.existsSync(path.dirname(outFile))) {
             fs.mkdirSync(path.dirname(outFile), { recursive: true });
         }
-        fs.writeFileSync(outFile, data);
+        return outFile;
     }
     log(...output) { console.debug(...output) }
     info(...output) { console.info(...output) }

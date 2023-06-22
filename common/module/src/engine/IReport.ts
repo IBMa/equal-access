@@ -141,3 +141,31 @@ export interface IBaselineReport {
     toolID: string
     label: string
 }
+
+export type CompressedReport = [
+    number, // startScan
+    string, // url
+    string, // pagetitle
+    string, // label
+    string, // scanProfile
+    number, // numExecuted
+    number, // scanTime
+    string, // ruleArchive
+    string[], // policies
+    string[], // reportLevels
+    CompressedIssue[]
+]
+
+export type CompressedIssue = [ // results
+    eRuleCategory | undefined, //category?
+    string, // ruleId
+    [eRulePolicy, eRuleConfidence], // value
+    number | string | undefined, // reasonId
+    string[], // messageArgs
+    { [ns: string] : string }, // path
+    number, // ruleTime
+    string, // snippet
+    string, // help
+    boolean, // ignored
+    string // message
+]
