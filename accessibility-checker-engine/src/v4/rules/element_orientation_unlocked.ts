@@ -56,7 +56,7 @@ export let element_orientation_unlocked: Rule = {
 
         const nodeName = ruleContext.nodeName.toLowerCase();    
         
-        // cache the orientation ressult for all the elements in the page
+        // cache the orientation result for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
         let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
@@ -73,7 +73,7 @@ export let element_orientation_unlocked: Rule = {
             });
         });
 
-        // no match, the elemenet is not in media orientation transform
+        // no match, the element is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
         let ret = [];
