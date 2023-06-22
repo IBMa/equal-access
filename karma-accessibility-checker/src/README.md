@@ -2,14 +2,18 @@
 
 ## Overview
 
-`karma-accessibility-checker` is a Karma plugin that allows you to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI.
+`karma-accessibility-checker` is a Karma plugin that allows you to perform the following:
 
-`karma-accessibility-checker` plugin allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string. Aside from just performing accessibility scanning, `karma-accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan.
+- integrate accessibility testing within a continuous integration pipeline such as Travis CI.
+- scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string
+- aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
-**Table of Contents**
+### Table of Contents
 
 - [karma-accessibility-checker](#karma-accessibility-checker)
   - [Overview](#overview)
+    - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
   - [Quick start](#quick-start)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -20,8 +24,8 @@
       - [Configuring `plugins`](#configuring-plugins)
       - [Configuring `framework` and `reporters`](#configuring-framework-and-reporters)
       - [Configuring `preprocessor`](#configuring-preprocessor)
-    - [Configuring the `karma-accessibility-checker` plugin](#configuring-the-karma-accessibility-checker-plugin)
-  - [Usage](#usage)
+    - [Configuring the plugin](#configuring-the-plugin)
+  - [API-based usage](#api-based-usage)
   - [API](#api)
     - [aChecker.getCompliance(`content`, `label`, `callback`)](#acheckergetcompliancecontent-label-callback)
     - [aChecker.assertCompliance(`actualResults`)](#acheckerassertcomplianceactualresults)
@@ -40,7 +44,14 @@
     - [Error: ValidPoliciesMissing](#error-validpoliciesmissing)
   - [FAQ](#faq)
   - [Known Issues](#known-issues)
-    - [Feedback and Reporting bugs](#feedback-and-reporting-bugs)
+  - [Feedback and Reporting bugs](#feedback-and-reporting-bugs)
+  - [License](#license)
+
+## Usage
+
+The tools that have been deployed to NPM so it can be easily downloaded and installed:
+
+- [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
 
 ## Quick start
 
@@ -49,7 +60,7 @@ Grab a [boilerplate](https://github.com/IBMa/equal-access/tree/master/karma-acce
 ## Getting started
 
 1. Setup and initialize - Follow the instructions in the [Prerequisites](#prerequisites) and [Install](#install) sections.
-2. Configure Karma and the karma-accessibility-checker plugin - Follow the [Configuration](#Configuration) instructions.
+2. Configure Karma and the karma-accessibility-checker plugin - Follow the [Configuration](#configuration) instructions.
 3. Learn how to use the `karma-accessibility-checker` APIs to perform accessibility scans - Refer to the [Usage](#usage) and [API](#api) documentation.
 
 ### Prerequisites
@@ -139,7 +150,7 @@ module.exports = function (config) {
 };
 ```
 
-### Configuring the `karma-accessibility-checker` plugin
+### Configuring the plugin
 
 Configuring the `karma-accessibility-checker` plugin involves constructing a `.achecker.yml` file in the project root. This file, will contain all of the configuration
 options for `karma-accessibility-checker`. This is the structure of the `.achecker.yml` file:
@@ -209,11 +220,11 @@ outputFolder: results
 cacheFolder: /tmp/accessibility-checker
 ```
 
-## Usage
+## API-based usage
 
-`karma-accessibility-checker` is solely an API-based Karma plugin, therefore API should be used within testcases on a browser launched by Karma.
+`karma-accessibility-checker` is solely an API-based Karma plugin, therefore APIs should be used within test cases on a browser launched by Karma.
 
-To perform an accessibility scan within your testcases and verify the scan results:
+To perform an accessibility scan within your test cases and verify the scan results:
 
 ```javascript
 // Perform the accessibility scan using the aChecker.getCompliance API
@@ -241,17 +252,17 @@ Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/karma-acces
 
 Execute accessibility scan on provided content. The content can be in these forms:
 
--   HTML (String)
--   Single node/widget (HTMLElement)
--   Local file path (String)
--   URL (String)
--   Document node (HTMLDocument)
+- HTML (String)
+- Single node/widget (HTMLElement)
+- Local file path (String)
+- URL (String)
+- Document node (HTMLDocument)
 
 Use a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
--   `content` - (String | HTMLElement | HTMLDocument) content to be scanned for accessibility violations.
--   `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
--   `callback` - (Function) callback that is invoked (indicating success). The callback will be invoked with the `results`
+- `content` - (String | HTMLElement | HTMLDocument) content to be scanned for accessibility violations.
+- `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
+- `callback` - (Function) callback that is invoked (indicating success). The callback will be invoked with the `results`
     as a parameter to the callback function provided. This is the outline of the results object which will be passed to the callback function:
 
 ```javascript
@@ -351,59 +362,56 @@ Assertion will be perform one of the following ways based on the condition that 
 
 1. If a baseline file of scan results is available in memory, it will be compared to the `actualResults`. If the `actualResults` matches the baseline, it will return 0. If not, it will return 1. In this case, assertion is only run on the `XPath` and `ruleId`.
 
-2. If there is no baseline file, assertion will be made based on the provided `failLevels`. In this case, 2 is returned if there are failures based on `failLevels`.
+2. If there is _no baseline_ file, assertion will be made based on the provided `failLevels`. In this case, 2 is returned if there are failures based on `failLevels`.
 
--   `actualResults` - (Object) results for which assertion needs to be run. Properties include:
-    -   **scanID**, (String) auto generated UUID used to associate a session.
-    -   **toolID**, (String) tool ID for the tool that generated these results.
-    -   **label**, (String) label provided to identify unique scan results. (provided through the aChecker.getCompliance API).
-    -   **URL**, (String) contains the URL that was scanned using aChecker.getCompliance API. (provided through aChecker.getCompliance API).
-    -   **issueMessages**, (Object) violation messages based on language.
-        -   **messages**, (Object) violation messages indexed by message ID.
-        -   **lang**, (String) locale of the violation messages.
-    -   **summary**, (Object) summary of the scan that these results are for. Properties include:
-        -   **counts**, (Object) number of violations based on the violation level. Properties include:
-            -   **violation**, (Int) total number of violations.
-            -   **potentialviolation**, (Int) total number of potential violations.
-            -   **recommendation**, (Int) total number of recommendations.
-            -   **potentialrecommendation**, (Int) total number of potential recommendations.
-            -   **manual**, (Int) total number of manual checks.
-        -   **scanTime**, (Int) total number of milliseconds it took to perform the scan.
-        -   **ruleArchive**, (String) rule archive used for this particular scan result.
-        -   **policies**, (Array) policies used for the scan result.
-        -   **reportLevels**, (Array) list of violation levels to include in the report. (save to file).
-        -   **startScan**, (Int) start time of the scan in milliseconds since epoch, GMT.
-    -   **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not support yet) Each array element is an object with these properties:
-        -   **frameIdx**, (Int) frame index in the page represented as an integer value.
-        -   **frameTitle**, (String) title of the frame on the page that was scanned.
-        -   **issues**, (Array) detailed list of violations. Each array element is an objects with these properties:
-            -   **severityCode**, (String) severity code of the violation.
-            -   **messageCode**, (String) message code of the violation. Used to map the localized message string.
-            -   **ruleId**, (String) rule ID of the violation.
-            -   **help**, (String) help file name of the violation.
-            -   **msgArgs**, (Array) list of tokens to help provide a detailed error description of the issue.
-            -   **bounds**, (Object) provides the pixel position of the element that triggered the violation. Properties include:
-                -   **left**, (Int) left pixel position of the element.
-                -   **top**, (Int) top pixel position of the element.
-                -   **height**, (Int) height pixel position of the element.
-                -   **width**, (Int) width pixel position of the element.
-            -   **level**, (String) level of the violation.
-            -   **xpath**, (String) XPath of the element that triggered the violation.
-            -   **snippet**, (String) snippet for the element that triggered the violation.
+- `actualResults` - (Object) results for which assertion needs to be run. Properties include:
+    - **scanID**, (String) auto generated UUID used to associate a session.
+    - **toolID**, (String) tool ID for the tool that generated these results.
+    - **label**, (String) label provided to identify unique scan results. (provided through the aChecker.getCompliance API).
+    - **URL**, (String) contains the URL that was scanned using aChecker.getCompliance API. (provided through aChecker.getCompliance API).
+    - **issueMessages**, (Object) violation messages based on language.
+        - **messages**, (Object) violation messages indexed by message ID.
+        - **lang**, (String) locale of the violation messages.
+    - **summary**, (Object) summary of the scan that these results are for. Properties include:
+        - **counts**, (Object) number of violations based on the violation level. Properties include:
+            - **violation**, (Int) total number of violations.
+            - **potentialviolation**, (Int) total number of potential violations.
+            - **recommendation**, (Int) total number of recommendations.
+            - **potentialrecommendation**, (Int) total number of potential recommendations.
+            - **manual**, (Int) total number of manual checks.
+        - **scanTime**, (Int) total number of milliseconds it took to perform the scan.
+        - **ruleArchive**, (String) rule archive used for this particular scan result.
+        - **policies**, (Array) policies used for the scan result.
+        - **reportLevels**, (Array) list of violation levels to include in the report. (save to file).
+        - **startScan**, (Int) start time of the scan in milliseconds since epoch, GMT.
+    - **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not support yet) Each array element is an object with these properties:
+        - **frameIdx**, (Int) frame index in the page represented as an integer value.
+        - **frameTitle**, (String) title of the frame on the page that was scanned.
+        - **issues**, (Array) detailed list of violations. Each array element is an objects with these properties:
+            - **severityCode**, (String) severity code of the violation.
+            - **messageCode**, (String) message code of the violation. Used to map the localized message string.
+            - **ruleId**, (String) rule ID of the violation.
+            - **help**, (String) help file name of the violation.
+            - **msgArgs**, (Array) list of tokens to help provide a detailed error description of the issue.
+            - **bounds**, (Object) provides the pixel position of the element that triggered the violation. Properties include:
+                - **left**, (Int) left pixel position of the element.
+                - **top**, (Int) top pixel position of the element.
+                - **height**, (Int) height pixel position of the element.
+                - **width**, (Int) width pixel position of the element.
+            - **level**, (String) level of the violation.
+            - **xpath**, (String) XPath of the element that triggered the violation.
+            - **snippet**, (String) snippet for the element that triggered the violation.
 
-Returns `0` if `actualResults` matches baseline or if no violations match the `failLevels`.
-
-Returns `1` if `actualResults` do not match the baseline.
-
-Returns `2` if there is a failure based on `failLevels`.
-
-Returns `-1` if an exception has occured during scanning and the results reflected that.
+- Returns `0` if `actualResults` matches baseline or if no violations match the `failLevels`
+- Returns `1` if `actualResults` _do not_ match the baseline
+- Returns `2` if there is a failure based on `failLevels`
+- Returns `-1` if an exception has occurred during scanning and the results reflected that
 
 ### aChecker.getDiffResults(`label`)
 
 Retrieve the diff results for a specified scan (denoted by its label) when API `aChecker.assertCompliance(...)` returns 1 (when the `actualResults` do not match the baseline).
 
--   `label` - (String) label to use when getting the diff results. The label should match the one provided for aChecker.getCompliance(...).
+- `label` - (String) label to use when getting the diff results. The label should match the one provided for aChecker.getCompliance(...).
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
 Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
@@ -414,7 +422,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the baseline result object based on the label provided.
 
--   `label` - (String) label for which to get the baseline. The label should match the one provided for aChecker.getCompliance(...).
+- `label` - (String) label for which to get the baseline. The label should match the one provided for aChecker.getCompliance(...).
 
 Returns `object` that follows the same structure as the results object outlined in the aChecker.getCompliance
 and aChecker.assertCompliance API.
@@ -425,9 +433,9 @@ Returns `undefined` if a baseline is not found for the label provided.
 
 Compare provided `actual` and `expected` objects and get the differences between them.
 
--   `actual` - (Object) actual results that you want to compare. Refer to aChecker.assertCompliance for details about available properties to include.
--   `expected` - (Object) expected results to compare to. Refer to aChecker.assertCompliance for details about available properties to include.
--   `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance compare of only `xpath` and `ruleID`.
+- `actual` - (Object) actual results that you want to compare. Refer to aChecker.assertCompliance for details about available properties to include.
+- `expected` - (Object) expected results to compare to. Refer to aChecker.assertCompliance for details about available properties to include.
+- `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance compare of only `xpath` and `ruleID`.
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
 Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
@@ -438,7 +446,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the readable stringified representation of the scan results.
 
--   `results` - (Object) results which need to be stringified. Refer to aChecker.assertCompliance for details about available properties to include.
+- `results` - (Object) results which need to be stringified. Refer to aChecker.assertCompliance for details about available properties to include.
 
 Returns a `String` representation of the scan results which can be logged to a console.
 
@@ -504,7 +512,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## FAQ
 
--   How do I get a list of the available `ruleArchive, policies` and their ID's?
+- How do I get a list of the available `ruleArchive, policies` and their ID's?
     1. run `npx achecker_policies`
 
 ## Known Issues
@@ -554,8 +562,14 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 }
 ````
 
-### Feedback and Reporting bugs
+## Feedback and Reporting bugs
 
-If you think you've found a bug, please report the bug in the [issues](https://github.com/IBMa/equal-access/issues).
+If you think you've found a bug or have feedback, report them in the [Git issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Akarma-accessibility-checker), tagged with `karma-accessibility-checker`.
 
-To help us fix the bug, please try to provide a log. You can enable karma debugging in the karma configuration file by changing the logLevel to `config.LOG_DEBUG`You will have to pipe (`karma start > debug.log`) the console output to a file and attach the file to the bug report that you open.
+To help us fix the bug, please try to provide a log. You can enable Karma debugging in the Karma configuration file by changing the logLevel to `config.LOG_DEBUG`. Pipe (`karma start > debug.log`) console output to a file and attach the file to the bug report that you open.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

@@ -1,10 +1,8 @@
 # cypress-accessibility-checker
 
-Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). The plugin works by injecting the accessibility-checker engine into the Cypress browser and scanning the page in context. Please see the `Usage` section in this README for more details.
+Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). 
 
-## Bugs and Issues
-
-All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
+The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next generation front end testing tool built for the modern web and scanning the page in context. Please see the `Usage` section in this README for more details.
 
 ## Requirements
 
@@ -75,13 +73,13 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
 
-You can chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
+Chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
 ### Using Baselines
 
 Baselines are a helpful feature of `accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for things like false positives or issues you plan on not fixing.
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker documentation](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](src/README.md) for details.
 
 ## Development
 
@@ -90,7 +88,7 @@ The baseline feature is documented and implemented as part of `accessibility-che
 There is a suite of tests located in the `test/` directory which execute each of the added Cypress commands. You can run this test suite by doing one of the following:
 
 * `npm test`: Executes the tests in a headless environment
-* `npm run test:open`: Opens the Cypress interactive mode. You must run `npm run test:start-http` in order for the tests to work.
+* `npm run test:open`: Opens the Cypress interactive mode. Run `npm run test:start-http` in order for the tests to work.
 
 ### Building
 
@@ -100,3 +98,13 @@ The plugin does not really need to be built to be used. However there is a packa
 npm install
 npm run package:npm  or  npm run package:zip
 ```
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`. 
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

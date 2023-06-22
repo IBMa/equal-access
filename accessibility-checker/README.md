@@ -1,23 +1,34 @@
-# accessibility-checker
+# accessibility-checker NODE
 
 Automated accessibility testing for Node-based test environments.
 
-To get started, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM: automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, Jest and Zombie; the ability to validate results against baseline files, and scan local files.
-
-[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
+To get started using the deployed packages, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
 
 ## Features
 
 - Scan single or multiple files, directories, or URLs
-- Output scan report results in JSON, CSV, HTML or XLSX formats
+- Output scan results in JSON, CSV, HTML or XLSX formats
+- Automate accessibility testing within a continuous integration pipeline such as Travis CI
+- Integrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
+- Validate test results against baselines
 - Set a target rule archive
-- Configure policies to scan
+- Configure policies (rule sets) to scan
 - Set violation levels that trigger test failures
 - Set violation levels that should be reported
 
+## Command-line and multi-scan
+
+This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
+
+- Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Run `npx achecker`
+
+Review the [accessibility-checker/src/README](src/README.md) for more information.
+
 ## Boilerplates
 
-Review the [boilerplates/README](boilerplates/README.md) and see examples for the following:
+Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) and see examples for the following:
 
 - [batch-scan](batch-scan): scan a batch of local files
 - [cucumber-selenium](cucumber-selenium): Using [Cucumber](https://www.npmjs.com/package/cucumber) with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
@@ -30,9 +41,13 @@ Review the [boilerplates/README](boilerplates/README.md) and see examples for th
 
 ## Baselines
 
-Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues determined as false positives, issues scheduled to be fixed later, and capturing new regression issues.
+Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues that have been determined to be the following:
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+- false positives
+- issues scheduled to be fixed later
+- capturing new regression issues
+
+See the [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
 Review the examples of validating automated accessibility testing results against baseline files:
 
 - [jest baselines](jest/baselines)
@@ -40,7 +55,11 @@ Review the examples of validating automated accessibility testing results agains
 - [mocha-zombie baselines](mocha-zombie/baselines)
 - and others
 
-## Running Locally
+## Building and running locally
+
+### Requirements
+
+- [Node Version 16](https://nodejs.org/en/download/)
 
 ### Install
 
@@ -62,19 +81,23 @@ $ npm run package:zip  or  npm run package:npm
 $ npm test
 ```
 
-### Reporting bugs
-
-If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
-
 ## Known issues and workarounds
 
-1. If you see `TypeError: ace.Checker is not a constructor`:
-    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework.
-  
-2. If your site has a Content Security Policy, the engine script may be prevented from loading. In the browser console, you'll see something like:
+1. If you see `TypeError: ace.Checker is not a constructor`: 
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
 
-```bash
-VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
-```
+2. If your site has a `Content Security Policy`, the engine script may be
+    prevented from loading. In the browser console, you'll see something like:
+    > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
 
-If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+    If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

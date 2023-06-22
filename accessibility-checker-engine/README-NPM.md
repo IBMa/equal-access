@@ -1,4 +1,4 @@
-# accessibility-checker-engine
+# accessibility-checker-engine NPM
 
 ## Overview
 
