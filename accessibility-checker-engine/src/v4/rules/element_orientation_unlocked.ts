@@ -40,7 +40,7 @@ export let element_orientation_unlocked: Rule = {
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["1.3.4"],
         "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_THREE
+        "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
     act: ['b33eff'],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
