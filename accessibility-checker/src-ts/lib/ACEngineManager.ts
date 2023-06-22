@@ -9,45 +9,77 @@ let checker;
 
 export class ACEngineManager {
     static customRulesets = []
+    static engineContent = null;
     static async loadEngine(content) {
         let config = await ACConfigManager.getConfigUnsupported();
         if (ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
+            if (!ACEngineManager.engineContent) {
+                const response = await axios.get(`${config.rulePack}/ace.js`);
+                ACEngineManager.engineContent = await response.data;
+            }
+
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
-            await page.evaluate((scriptUrl) => {
-                try {
-                    var ace_backup_in_ibma;
-                    if ('undefined' !== typeof(ace)) {
-                        if (!ace || !ace.Checker)
-                            ace_backup_in_ibma = ace;
-                        ace = null;
+            let MODE: string = "INJECT";
+            if (MODE === "REMOTE") {
+                await page.evaluate((scriptUrl) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            return new Promise<void>((resolve, reject) => {
+                                let script = document.createElement('script');
+                                script.setAttribute('type', 'text/javascript');
+                                script.setAttribute('aChecker', 'ACE');
+                                script.setAttribute('src', scriptUrl);
+                                script.addEventListener('load', function () {
+                                    globalThis.ace_ibma = ace;
+                                    if ('undefined' !== typeof(ace)) {
+                                        ace = ace_backup_in_ibma;
+                                    }
+                                    resolve();
+                                });
+                                script.addEventListener('error', function (evt) {
+                                    reject(new Error(`Unable to load engine into ${document.location.href}. This can happen if the page server sets a Content-Security-Policy that prevents ${scriptUrl} from loading.`))
+                                });
+                                let heads = document.getElementsByTagName('head');
+                                if (heads.length > 0) { heads[0].appendChild(script); }
+                                else if (document.body) { document.body.appendChild(script); }
+                                else { Promise.reject("Invalid document"); }
+                            })
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
                     }
-                    if ('undefined' === typeof (ace) || ace === null) {
-                        return new Promise<void>((resolve, reject) => {
-                            let script = document.createElement('script');
-                            script.setAttribute('type', 'text/javascript');
-                            script.setAttribute('aChecker', 'ACE');
-                            script.setAttribute('src', scriptUrl);
-                            script.addEventListener('load', function () {
+                }, `${config.rulePack}/ace.js`);
+            } else if (MODE === "INJECT") {
+                await page.evaluate((engineContent) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            return new Promise<void>((resolve, reject) => {
+                                eval(engineContent);
                                 globalThis.ace_ibma = ace;
                                 if ('undefined' !== typeof(ace)) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
-                            });
-                            script.addEventListener('error', function (evt) {
-                                reject(new Error(`Unable to load engine into ${document.location.href}. This can happen if the page server sets a Content-Security-Policy that prevents ${scriptUrl} from loading.`))
-                            });
-                            let heads = document.getElementsByTagName('head');
-                            if (heads.length > 0) { heads[0].appendChild(script); }
-                            else if (document.body) { document.body.appendChild(script); }
-                            else { Promise.reject("Invalid document"); }
-                        })
+                            })
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
                     }
-                } catch (e) {
-                    return Promise.reject(e);
-                }
-            }, `${config.rulePack}/ace.js`);
+                }, ACEngineManager.engineContent);
+            }
             return ACEngineManager.loadEngineLocal();
         } else if (ACEngineManager.isSelenium(content)) {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
