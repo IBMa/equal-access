@@ -44,7 +44,7 @@ export class ACReporterHTML implements IReporter {
         }
 
         return {
-            reportPath: `${storedReport.label}.html`,
+            reportPath: `${storedReport.label.replace(/[:?&=]/g,"_")}.html`,
             report: genReport(outReport)
         };
     }

@@ -31,7 +31,7 @@ export class ACReporterJSON implements IReporter {
         outReport.label = storedReport.label;
 
         return {
-            reportPath: `${storedReport.label}.json`,
+            reportPath: `${storedReport.label.replace(/[:?&=]/g,"_")}.json`,
             report: JSON.stringify(outReport, null, 4)
         };
     }
