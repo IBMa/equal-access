@@ -182,7 +182,7 @@ var ACCommon = {
             process.exit(-1);
         } else {
             if (!slackTarget.match(slackTargetVerificationRegex)) {
-                ACCommon.log.error("[ERROR] slackNotificationTarketIsNotValid: The following provided slack target: " + slackTarget + " does not meet standards: <account>:<token>#<channel> or webhook URL.");
+                ACCommon.log.error("[ERROR] slackNotificationTargetIsNotValid: The following provided slack target: " + slackTarget + " does not meet standards: <account>:<token>#<channel> or webhook URL.");
                 process.exit(-1);
             }
         }
