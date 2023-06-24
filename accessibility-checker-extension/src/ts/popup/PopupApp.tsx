@@ -19,7 +19,9 @@
     import { Column, Link, Grid } from "@carbon/react";
     import "./popup.scss";
     
-    const purple_bee = "/assets/Mask group2";
+    import beeLogoDark from "../../assets/BE_for_DarkMode.svg";
+    import beeLogoLight from "../../assets/BE_for_LightMode.svg";
+
     const checker_chrome = "/assets/img/Chrome_Checker.png";
     const checker_firefox = "/assets/img/Firefox_Checker.png";
     const assessment_chrome = "/assets/img/Chrome_Assessment.png";
@@ -58,7 +60,7 @@
                     </Column>
                     <Column sm={1} style={{ textAlign: "right" }}>
                         <img
-                            src={purple_bee}
+                            src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight}
                             style={{ width: "2.25rem", height: "2.25rem" }}
                             alt="purple bee icon"
                         />

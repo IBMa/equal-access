@@ -17,7 +17,9 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import beeLogoUrl from "../../assets/Mask group2.svg";
+import beeLogoDark from "../../assets/BE_for_DarkMode.svg";
+import beeLogoLight from "../../assets/BE_for_LightMode.svg";
+import { BrowserDetection } from '../util/browserDetection';
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
@@ -528,7 +530,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         In the browser tool bar, select the IBM Equal Access
                         Accessibility Checker icon as shown {" "}
                         <img
-                            src={beeLogoUrl}
+                            src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight}
                             width="16px"
                             height="16px"
                             alt="Accessibility checker application icon"

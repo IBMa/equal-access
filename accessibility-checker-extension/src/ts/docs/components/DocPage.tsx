@@ -24,7 +24,8 @@ import {
 } from "@carbon/react";
 
 // import OptionUtil  from '../util/optionUtil';
-import beeLogoUrl from "../../../assets/Mask group2.svg";
+import beeLogoDark from "../../../assets/BE_for_DarkMode.svg";
+import beeLogoLight from "../../../assets/BE_for_LightMode.svg";
 import "./DocPage.scss";
 import { BrowserDetection } from "../../util/browserDetection";
 
@@ -60,7 +61,7 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
             <Grid className={BrowserDetection.isDarkMode()?"cds--g90":"g10"}>
                 <Column sm={4} md={8} lg={4} className={`leftCol ${BrowserDetection.isDarkMode()?"cds--g100":"cds--g10"}`}>
                     <div role="banner">
-                        <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
+                        <img src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight} alt="purple bee icon" className="icon" />
                         <div style={{marginTop:"2rem"}} />
                         <div className="division">
                             IBM <strong>Accessibility</strong>

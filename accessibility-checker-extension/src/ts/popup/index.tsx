@@ -16,9 +16,6 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-// import {  Theme } from "@carbon/react";
-// import { BrowserDetection } from "../util/browserDetection";
-    
 import "../styles/index.scss";
 import PopupApp from './PopupApp';
 
