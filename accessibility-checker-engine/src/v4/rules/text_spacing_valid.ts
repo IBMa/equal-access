@@ -38,13 +38,12 @@ export let text_spacing_valid: Rule = {
             "fail_line_height_style": "CSS !important should not be used in inline ‘line-height’ style"
         }
     },
-    rulesets: [], // Remove from rulesets temporary - performance issue
-    // rulesets: [{
-    //     "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-    //     "num": ["1.4.12"],
-    //     "level": eRulePolicy.VIOLATION,
-    //     "toolkitLevel": eToolkitLevel.LEVEL_THREE
-    // }],
+    rulesets: [{
+         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+         "num": ["1.4.12"],
+         "level": eRulePolicy.VIOLATION,
+         "toolkitLevel": eToolkitLevel.LEVEL_THREE
+    }],
     act:['9e45ec', '24afc2', '78fd32'],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
