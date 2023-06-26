@@ -1360,6 +1360,9 @@ export class RPTUtil {
      public static getAncestorWithStyles(elem, styleProps, excludedValues =[]) {
         let walkNode = elem;
         while (walkNode !== null) {
+            const node = getCache(elem, "RPTUtil_AncestorWithStyles", null);
+            if (node !== null) return node;
+
             const styles = getDefinedStyles(walkNode);
             for (const style in styleProps) {
                 let value = styles[style];
@@ -1367,14 +1370,18 @@ export class RPTUtil {
                     value = value.split(" ")[0]; //get rid of !important
                     if (!excludedValues.includes(value)) {
                         if (styleProps[style].includes('*')) {
+                            setCache(elem, "RPTUtil_AncestorWithStyles", walkNode);
                             return walkNode;
-                        } else if (styleProps[style].includes(value))
+                        } else if (styleProps[style].includes(value)) {
+                            setCache(elem, "RPTUtil_AncestorWithStyles", walkNode);
                             return walkNode;
+                        }    
                     }    
                 }  
             }
             walkNode = DOMWalker.parentElement(walkNode);
         }
+        setCache(elem, "RPTUtil_AncestorWithStyles", undefined);
         return null;
     }
 
