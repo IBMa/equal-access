@@ -6,6 +6,7 @@ var chrome = require('selenium-webdriver/chrome');
 var path = require("path");
 const aChecker = require("accessibility-checker");
 var expect = require("chai").expect;
+const { loadSeleniumTestFile } = require("../../util/Util");
 
 var browser;
 before(function(done) {
@@ -46,7 +47,7 @@ describe("Hello World Basics", function () {
     it("HomePage", function (done) {
         this.timeout(0);
         var sample = path.join(__dirname, "..", "sample", "Hello.html");
-        browser.get("file://"+sample).then(function() {
+        loadSeleniumTestFile(browser, sample).then(function() {
             // Perform the accessibility scan using the IBMaScan Wrapper
             aChecker.getCompliance(browser, "HOME", function (data, doc) {
                 try {
