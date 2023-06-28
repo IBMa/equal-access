@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div>
+      <label id="tag_label" for="tag_combo">Tag</label>
+      <input type="text" id="tag_combo"
+          role="combobox" aria-autocomplete="list"
+          aria-haspopup="listbox" aria-expanded="true"
+          aria-controls="popup_listbox" aria-activedescendant="selected_option" />
+      <ul role="listbox" id="popup_listbox" aria-labelledby="tag_label">
+        <li role="option">Zebra</li>
+        <li role="option" id="selected_option">Zoom</li>
+      </ul>
+    </div>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_child_tabbable"],
+        results: [
+        
+        ]
+      };
+    </script>
+  </body>
+</html>
