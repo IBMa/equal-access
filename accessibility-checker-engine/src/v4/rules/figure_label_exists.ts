@@ -50,22 +50,13 @@ export let figure_label_exists: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
-        let passed = false;
-        let figures = ruleContext.getElementsByTagName("figcaption");
-
-        // Loop over all the figcaption elements to make sure there is at least one that is not empty and not hidden.
-        for (let i = 0; !passed && i < figures.length; ++i) {
-
-            // Mark this rule as passed if any one of the figurecaption element has content and is visible
-            if (figures[i].innerHTML.trim().length > 0 && VisUtil.isNodeVisible(figures[i])) {
-                passed = true;
-            }
+        // ignore if an explicit role is specified. this case will be covered in the aria_accessiblename_exists rules
+        let role = ruleContext.getAttribute("role");
+        if (role) {
+            return null;
         }
 
-        if (!passed) {
-            // we only check if the "aria-labelledby" is there. There is a different rule to check if the id is valid.
-            passed = ruleContext.hasAttribute("aria-labelledby") && ruleContext.getAttribute("aria-labelledby").trim().length > 0 && !RPTUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"));
-        }
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
 
         //return new ValidationResult(passed, [ruleContext], '', '', []);
         if (!passed) {

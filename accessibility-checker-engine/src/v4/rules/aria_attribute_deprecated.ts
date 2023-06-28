@@ -13,9 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { getCache } from "../util/CacheUtil";
+import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes } from "../util/CommonUtil";
 
 export let aria_attribute_deprecated: Rule = {
     id: "aria_attribute_deprecated",
@@ -48,46 +46,24 @@ export let aria_attribute_deprecated: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
-        let domAttributes = ruleContext.attributes;
-        let ariaAttrs = [];
-        if (domAttributes) {
-            for (let i = 0; i < domAttributes.length; i++) {
-                let attrName = domAttributes[i].name; 
-                if (attrName.substring(0, 5) === 'aria-') 
-                    ariaAttrs.push(attrName);
-            }
+        let ret = [];
+        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        if (deprecatedRoles && deprecatedRoles.length > 0) {
+            for (let i = 0; i < deprecatedRoles.length; i++)
+                ret.push(RuleFail('fail_aria_role', [deprecatedRoles[i]]));     
         }
 
-        const roles = RPTUtil.getRoles(ruleContext, false);
-        let ret = [];
-        if (roles && roles.length > 0) {
-            const globalDeprecatedRoles = ARIADefinitions.globalDeprecatedRoles;
-            const globalDeprecatedAttributes = ARIADefinitions.globalDeprecatedProperties;
-            for (let i = 0; i < roles.length; i++) {
-                let passed = true;
-                if (globalDeprecatedRoles.includes(roles[i])) {
-                    ret.push(RuleFail('fail_aria_role', [roles[i]]));
-                    passed = false;    
-                }    
-                const roleWithDeprecatedAttributes = ARIADefinitions.designPatterns[roles[i]];
-                if (roleWithDeprecatedAttributes) {
-                    const deprecatedAttriNames = roleWithDeprecatedAttributes['deprecatedProps'];
-                    if (deprecatedAttriNames && deprecatedAttriNames.length > 0) {
-                        for (let i = 0; i < ariaAttrs.length; i++) {
-                            if (globalDeprecatedAttributes.includes(ariaAttrs[i])) {
-                                ret.push(RuleFail('fail_aria_attr', [ariaAttrs[i]]));
-                                passed = false; 
-                            } else if (deprecatedAttriNames.includes(ariaAttrs[i])) {
-                                ret.push(RuleFail('fail_role_attr', [ariaAttrs[i], roles[i]]));
-                                passed = false; 
-                            }    
-                        }    
-                    }
-                }
-                if (passed)
-                    ret.push(RulePass("pass"));  
-            }
+        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        if (deprecatedAttributes && deprecatedAttributes.length > 0) {
+            for (let i = 0; i < deprecatedAttributes.length; i++) {
+                // "role":"any", "attribute":ariaAttrs[i]}
+                if (deprecatedAttributes[i].role === 'any')
+                    ret.push(RuleFail('fail_aria_attr', [deprecatedAttributes[i].attribute]));
+                else
+                    ret.push(RuleFail('fail_role_attr', [deprecatedAttributes[i].attribute, deprecatedAttributes[i].role]));
+            }       
         }
+        
         if (ret.length > 0)
             return ret;
         return null;

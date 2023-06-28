@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <div role="radiogroup" aria-label="radio items">
+    <div role="radio" aria-checked="false" tabindex="0">First Radio</div>
+    <div role="radio" aria-checked="false" tabindex="-1">Second Radio</div>
+    <div role="radio" aria-checked="false" tabindex="-1">Third Radio</div>
+  </div>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists","aria_accessiblename_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]",
+              "aria": "/document[1]/radiogroup[1]/radio[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[2]",
+              "aria": "/document[1]/radiogroup[1]/radio[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[3]",
+              "aria": "/document[1]/radiogroup[1]/radio[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

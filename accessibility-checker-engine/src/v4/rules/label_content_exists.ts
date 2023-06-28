@@ -57,6 +57,7 @@ export let label_content_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (RPTUtil.hasInnerContentHidden(ruleContext)) {
             return RulePass("Pass_Regular");
+
         } else if ((ruleContext.getAttribute("aria-label") || "").trim().length > 0) {
             return RulePass("Pass_AriaLabel");
         } else if (ruleContext.hasAttribute("aria-labelledby")) {
