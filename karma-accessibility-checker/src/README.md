@@ -32,7 +32,7 @@
   - [Errors](#errors)
     - [Error: labelNotProvided](#error-labelnotprovided)
     - [Error: labelNotUnique](#error-labelnotunique)
-    - [Error: slackNotificationTarketIsNotValid](#error-slacknotificationtarketisnotvalid)
+    - [Error: slackNotificationTargetIsNotValid](#error-slackNotificationTargetIsNotValid)
     - [Error: SlackAPIError](#error-slackapierror)
     - [Error: SlackWebHookError](#error-slackwebhookerror)
     - [Error: LoadingConfigError](#error-loadingconfigerror)
@@ -459,11 +459,11 @@ This is a subtype of `Error` defined by the `karma-accessibility-checker` plugin
 function call for the scan that is to be performed. Note: Across all accessibility scans, the label provided
 must always be unique.
 
-### Error: slackNotificationTarketIsNotValid
+### Error: slackNotificationTargetIsNotValid
 
 This is a subtype of `Error` defined by the `karma-accessibility-checker` plugin. It is considered a programming error.
 
-`slackNotificationTarketIsNotValid` is thrown from `[framework.aChecker]` during Slack configuration verification.
+`slackNotificationTargetIsNotValid` is thrown from `[framework.aChecker]` during Slack configuration verification.
 The error occurs when the provided Slack configuration does not follow one of these formats: `<account>:<token>#<channel>` or webhook URL.
 
 ### Error: SlackAPIError
