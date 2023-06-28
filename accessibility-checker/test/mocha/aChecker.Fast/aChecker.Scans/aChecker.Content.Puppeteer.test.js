@@ -24,6 +24,7 @@ const ace = require("../../../../../accessibility-checker-engine/dist/ace-node")
 var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 var gdirs = fs.readdirSync(testRootDir);
 var expect = require("chai").expect;
+const { loadPuppeteerTestFile } = require("../../util/Util");
 
 const mapRuleToG = aChecker.ruleIdToLegacyId;
 
@@ -165,7 +166,7 @@ describe("Rule Unit Tests As File URL", function () {
                     var actualMap = {};
                     let report = null;
                     let puppeteer = null;
-                    await page.goto("file://"+unitTestFile);
+                    await loadPuppeteerTestFile(page, unitTestFile);
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     return aChecker.getCompliance(page, "Puppeteer_" + unitTestFile)
