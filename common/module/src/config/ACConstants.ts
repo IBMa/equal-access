@@ -82,5 +82,6 @@ export const ACConstants : IConfigInternal = {
 
     ignoreHTTPSErrors: false,
 
-    perfMetrics: true
+    perfMetrics: true,
+    engineMode: "DEFAULT"
 };

@@ -23,6 +23,7 @@ var webdriver = require('selenium-webdriver'),
 
 var fs = require("fs");
 var path = require("path");
+const { loadSeleniumTestFile } = require("../../util/Util");
 
 var unitTestcaseHTML = {};
 var aChecker = require("../../../../src");
@@ -129,7 +130,7 @@ describe("JSON Structure Verification Selenium", function () {
 
                     var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
 
-                    browser.get("file://" + unitTestFile).then(function () {
+                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         // Decleare the actualMap which will store all the actual xpath results
                         var actualMap = {};
                         // Perform the accessibility scan using the IBMaScan Wrapper

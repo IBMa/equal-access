@@ -171,4 +171,7 @@ export type IConfigInternal = IConfig & {
     ignoreHTTPSErrors: boolean
 
     perfMetrics: boolean
+
+    engineMode: "DEFAULT" | "REMOTE" | "INJECT"
+
 }
