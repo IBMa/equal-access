@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvalidRoles } from "../util/CommonUtil";
+import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvalidRoles, getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria } from "../util/CommonUtil";
 
 export let aria_role_valid: Rule = {
     id: "aria_role_valid",
@@ -57,6 +57,15 @@ export let aria_role_valid: Rule = {
         if (ruleContext.nodeType !== Node.ELEMENT_NODE)
             return null;
 
+        //skip the rule
+        // the invalid role case: handled by aria_role_allowed. Ignore to avoid duplicated report
+        const undefinedRoles = getRolesUndefinedByAria(ruleContext);
+        if (undefinedRoles && undefinedRoles.length > 0) return null;
+        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        if (deprecatedRoles && deprecatedRoles.length > 0) return null;
+        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
+
         // dependency check: if it's already failed, then skip
         if (["td", "th", "tr"].includes(tagName)) {
             let parentRole = isTableDescendant(contextHierarchies);
@@ -71,11 +80,6 @@ export let aria_role_valid: Rule = {
         // check the 'generic' role first
         if (domRoles.includes('generic'))
             return RuleFail("Fail_1", ["generic", tagName]);
-        
-        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        let role_defined = areRolesDefined(domRoles);
-        if (!role_defined)
-            return null;
         
         let invalidRoles = getInvalidRoles(ruleContext);
         if (invalidRoles === null || invalidRoles.length ===0)
