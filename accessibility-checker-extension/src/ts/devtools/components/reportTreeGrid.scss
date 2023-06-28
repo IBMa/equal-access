@@ -23,8 +23,8 @@
         @include type-style('label-01');
         > div { // column
             > div { // cell
-                border-top: solid var(--cds-background) var(--border-width);
-                border-bottom: solid $gray-30 var(--border-width);
+                border-top: solid $gray-40 var(--border-width);
+                border-bottom: solid $gray-40 var(--border-width);
                 margin: 0rem -1rem;
                 padding: 0.5rem 0rem .5rem 1rem;
                 height: 100%;
