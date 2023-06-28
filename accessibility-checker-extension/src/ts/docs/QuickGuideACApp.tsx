@@ -24,7 +24,11 @@ import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
 import { DocPage } from "./components/DocPage";
-import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
+import { Link, 
+    ListItem, 
+    OrderedList, 
+    UnorderedList, 
+} from "@carbon/react";
 import "./quickGuide.scss";
 
 interface quickGuideACAppState { }
@@ -33,7 +37,10 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
     state: quickGuideACAppState = {};
 
     render() {
+        // BrowserDetection.setDarkLight();
+        
         let aside = (<>
+            
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList style={{ marginLeft: "1.5rem" }}>
                 <ListItem><Link href="#checker">Accessibility Checker</Link></ListItem>
@@ -51,13 +58,16 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     inline={true}
                     size="lg">user guide</Link>
             </p>
+            
         </>)
         return (
             <DocPage aside={aside} sm={4} md={8} lg={8}>
+                
                 <main
                     role="main"
                     aria-label="Quick guide details"
                 >
+                    
                     <h1>IBM Accessibility Checker quick guide</h1>
                     <p>
                         The IBM Accessibility Checker is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements with explanations and suggested fixes.
@@ -236,7 +246,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Reopen the browser DevTools</ListItem>
                         <ListItem>Click the 'Scan' button</ListItem>
                     </UnorderedList>
+                    
                 </main>
+               
             </DocPage>
         );
     }
