@@ -84,7 +84,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         let nrText = "";
         let recommendationText = "";
 
-        violationText = types[0] <= 2 ? types[0]+" Violation<br>" : types[0]+" Violations<br>";
+        violationText = types[0] < 2 ? types[0]+" Violation<br>" : types[0]+" Violations<br>";
         let violationImage = `<svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
             <title>Violation</title>
@@ -99,7 +99,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             </svg>`
         let violationImageText = violationImage + "&nbsp;&nbsp;";
 
-        nrText = types[1] <= 2 ? types[1]+" Needs review<br>" : types[1]+" Needs review<br>";
+        nrText = types[1] < 2 ? types[1]+" Needs review<br>" : types[1]+" Needs review<br>";
         let nrImage = `<svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="16px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
             <style type="text/css">
@@ -126,7 +126,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             `
         let nrImageText = nrImage + "&nbsp;";
 
-        recommendationText = types[2] <= 2 ? types[2]+" Recommendation" : types[1]+" Recommendations";
+        recommendationText = types[2] < 2 ? types[2]+" Recommendation" : types[1]+" Recommendations";
         let recommendationImage = `<svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="16px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
             <style type="text/css">
@@ -149,9 +149,9 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         if (await devtoolsController.getActivePanel() === "main") {
             overlays.info.innerHTML = (
             `
-                <div style="color:white;">Issue info here</div>
-                <div style="margin-top: 8px" />
-                <div><a role="link" title="Inspect"><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><path d="M21.4479,20A10.856,10.856,0,0,0,24,13,11,11,0,1,0,13,24a10.856,10.856,0,0,0,7-2.5521L27.5859,29,29,27.5859ZM13,22a9,9,0,1,1,9-9A9.01,9.01,0,0,1,13,22Z"></path><path d="M10 12H8V10a2.0023 2.0023 0 012-2h2v2H10zM18 12H16V10H14V8h2a2.0023 2.0023 0 012 2zM12 18H10a2.0023 2.0023 0 01-2-2V14h2v2h2zM16 18H14V16h2V14h2v2A2.0023 2.0023 0 0116 18z"></path><title>Inspect</title></svg></a></div>
+                <div style="color:white;">
+                    ${typesText}
+                </div>
             `);
         } else {
             overlays.info.innerHTML = (
