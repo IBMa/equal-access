@@ -1360,7 +1360,7 @@ export class RPTUtil {
      public static getAncestorWithStyles(elem, styleProps, excludedValues =[]) {
         let walkNode = elem;
         while (walkNode !== null) {
-            const node = getCache(elem, "RPTUtil_AncestorWithStyles", null);
+            const node = getCache(walkNode, "RPTUtil_AncestorWithStyles", null);
             if (node !== null) return node;
 
             const styles = getDefinedStyles(walkNode);
@@ -1370,10 +1370,10 @@ export class RPTUtil {
                     value = value.split(" ")[0]; //get rid of !important
                     if (!excludedValues.includes(value)) {
                         if (styleProps[style].includes('*')) {
-                            setCache(elem, "RPTUtil_AncestorWithStyles", walkNode);
+                            setCache(walkNode, "RPTUtil_AncestorWithStyles", walkNode);
                             return walkNode;
                         } else if (styleProps[style].includes(value)) {
-                            setCache(elem, "RPTUtil_AncestorWithStyles", walkNode);
+                            setCache(walkNode, "RPTUtil_AncestorWithStyles", walkNode);
                             return walkNode;
                         }    
                     }    

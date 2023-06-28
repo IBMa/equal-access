@@ -102,49 +102,55 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         }
     } 
 
-    // Iterate through all of the stylesheets and rules
-    for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
-        const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
-        try {
-            if (sheet && sheet.cssRules) {
-                // console.log("Got sheet");
-                for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
-                    // console.log("Got rule: ", sheet.cssRules[rIndex]);
-                    const rule = sheet.cssRules[rIndex] as CSSStyleRule;
-                    const fullRuleSelector = rule.selectorText;
-                    if (fullRuleSelector) {
-                        const pseudoMatch = fullRuleSelector.match(/^(.*)(:[a-zA-Z-]*)$/);
-                        const hasPseudoClass = !!pseudoMatch;
-                        let selMain = hasPseudoClass ? pseudoMatch[1] : fullRuleSelector;
-                        const selPseudo = hasPseudoClass ? pseudoMatch[2] : "";
-                        const samePseudoClass = selPseudo === pseudoClass;
-                        if (pseudoClass && pseudoClass === ":focus") {
-                            // If this element has focus, remove focus-within from parents
-                            selMain = selMain.replace(/([ >][^+~ >]+):focus-within/g, "$1");
-                        }
+    let storedStyles = getCache(elem, "RPTUtil_DefinedStyles", null);
+    if (!pseudoClass && storedStyles !== null)  {
+        definedStyles = storedStyles["definedStyles"];
+        definedStylePseudo = storedStyles["definedStylePseudo"];
+    } else {  
+        // Iterate through all of the stylesheets and rules
+        for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
+            const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
+            try {
+                if (sheet && sheet.cssRules) {
+                    // console.log("Got sheet");
+                    for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                        // console.log("Got rule: ", sheet.cssRules[rIndex]);
+                        const rule = sheet.cssRules[rIndex] as CSSStyleRule;
+                        const fullRuleSelector = rule.selectorText;
+                        if (fullRuleSelector) {
+                            const pseudoMatch = fullRuleSelector.match(/^(.*)(:[a-zA-Z-]*)$/);
+                            const hasPseudoClass = !!pseudoMatch;
+                            let selMain = hasPseudoClass ? pseudoMatch[1] : fullRuleSelector;
+                            const selPseudo = hasPseudoClass ? pseudoMatch[2] : "";
+                            const samePseudoClass = selPseudo === pseudoClass;
+                            if (pseudoClass && pseudoClass === ":focus") {
+                                // If this element has focus, remove focus-within from parents
+                                selMain = selMain.replace(/([ >][^+~ >]+):focus-within/g, "$1");
+                            }
 
-                        // Get styles of non-pseudo selectors
-                        if (!hasPseudoClass && selectorMatchesElem(elem, selMain)) {
-                            fillStyle([definedStyles, definedStylePseudo], rule.style);
-                        }
+                            // Get styles of non-pseudo selectors
+                            if (!hasPseudoClass && selectorMatchesElem(elem, selMain)) {
+                                fillStyle([definedStyles, definedStylePseudo], rule.style);
+                            }
 
-                        if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
-                            fillStyle([definedStylePseudo], rule.style);
-                        }
-                    } 
+                            if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
+                                fillStyle([definedStylePseudo], rule.style);
+                            }
+                        } 
+                    }
+                }
+            } catch (err) {
+                if (!err.toString().includes("Cannot access rules") && !err.toString().includes("SecurityError:")) {
+                    throw err;
                 }
             }
-        } catch (err) {
-            if (!err.toString().includes("Cannot access rules") && !err.toString().includes("SecurityError:")) {
-                throw err;
-            }
         }
-    }
-    //
+        //
 
-    // Handled the stylesheets, now handle the element defined styles
-    fillStyle([definedStyles, definedStylePseudo], elem.style);
-        
+        // Handled the stylesheets, now handle the element defined styles
+        fillStyle([definedStyles, definedStylePseudo], elem.style);
+        setCache(elem, "RPTUtil_DefinedStyles", {definedStyles, definedStylePseudo});
+    }    
     /**
      * 'initial' sets the style back to default
     for (const key in definedStyles) {
