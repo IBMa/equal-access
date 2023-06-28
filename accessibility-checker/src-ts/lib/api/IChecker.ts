@@ -122,6 +122,8 @@ export type IConfigUnsupported = IConfig & {
     scanID?: string
 
     ignoreHTTPSErrors: boolean
+
+    engineMode: "DEFAULT" | "REMOTE" | "INJECT"
 }
 
 export interface ILogger {
