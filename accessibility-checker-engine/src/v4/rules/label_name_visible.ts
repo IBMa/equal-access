@@ -18,6 +18,7 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { isMaterialIconFont } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let label_name_visible: Rule = {
     id: "label_name_visible",
@@ -76,11 +77,11 @@ export let label_name_visible: Rule = {
         }
 
         let theLabelBy = RPTUtil.getAriaAttribute(ruleContext, "aria-labelledby");
-        if (theLabelBy && !isInputButton) {
+        if (theLabelBy && !RPTUtil.isIdReferToSelf(ruleContext, theLabelBy) && !isInputButton) {
             // skip the checks if it has an aria-labelledby since it takes precedence.
         } else {
             let theLabel = null;
-            if (theLabelBy) {
+            if (theLabelBy && !RPTUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
                 let labelValues = theLabelBy.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
                     let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);

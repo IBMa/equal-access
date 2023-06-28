@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
@@ -105,7 +106,7 @@ export let input_label_exists: Rule = {
                     hasLabelElemContent = true;
                 } else if (labelElem.hasAttribute("aria-labelledby")) {
                     let labelledByElem = FragmentUtil.getById(labelElem, labelElem.getAttribute('aria-labelledby'));
-                    if (labelledByElem && RPTUtil.hasInnerContent(labelledByElem)) {
+                    if (labelledByElem && !DOMUtil.sameNode(labelledByElem, labelElem) && RPTUtil.hasInnerContent(labelledByElem)) {
                         hasLabelElemContent = true;
                     }
                 }
