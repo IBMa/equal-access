@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <label for="siteSearch">Site search</label>
+    <div
+      role="searchbox"
+      id="siteSearch"
+    />
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists","aria_accessiblename_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/searchbox[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Form control with \"searchbox\" role has no associated label",
+            "messageArgs": [
+              "searchbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>
