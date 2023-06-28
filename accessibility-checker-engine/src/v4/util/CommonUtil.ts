@@ -71,6 +71,26 @@ export function getInvalidRoles(ruleContext: Element) {
 }
 
 /* 
+ * check if any explicit role specified for the element is not defined in ARIA
+ * return: list of specified roles not defined in ARIA
+*/
+export function getRolesUndefinedByAria(element: Element) {
+    if (!element) return null;
+
+    const roles = RPTUtil.getRoles(element, false);
+    let undefinedRoles = [];
+    if (roles && roles.length > 0) {
+        let designPatterns = ARIADefinitions.designPatterns;
+        for (let i = 0; i < roles.length; i++) {
+            if (!(roles[i] in designPatterns)) {
+                undefinedRoles.push(roles[i]);
+            }
+        }
+    }    
+    return undefinedRoles;        
+}
+
+/* 
  * this method first checks explicit roles, if no explicit role, it will check the implicit role
  * return: null if any explicit role is invalid, 
  *         a list of invalid attributes
@@ -136,4 +156,66 @@ export function isTableDescendant(contextHierarchies?: RuleContextHierarchy) {
     if (!contextHierarchies) return null;
     
     return contextHierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
+}
+
+/* 
+ * get deprecated Aria roles
+ * return: a list of deprecated Aria roles
+*/
+export function getDeprecatedAriaRoles(element: Element) {
+    if (!element) return null;
+
+    const roles = RPTUtil.getRoles(element, false);
+    let ret = [];
+    if (roles && roles.length > 0) {
+        const globalDeprecatedRoles = ARIADefinitions.globalDeprecatedRoles;
+        for (let i = 0; i < roles.length; i++) {
+            if (globalDeprecatedRoles.includes(roles[i]))
+                ret.push(roles[i]);
+        }
+    }
+    return ret;
+}
+
+/* 
+ * get deprecated Aria role-attributes
+ * return: a list of deprecated Aria role-attributes paris
+ *         for global the role is marked as 'any'
+*/
+export function getDeprecatedAriaAttributes(element: Element) {
+    if (!element) return null;
+
+    let domAttributes = element.attributes;
+    let ariaAttrs = [];
+    if (domAttributes) {
+        for (let i = 0; i < domAttributes.length; i++) {
+            let attrName = domAttributes[i].name; 
+            if (attrName.substring(0, 5) === 'aria-') 
+                ariaAttrs.push(attrName);
+        }
+    }
+    if (ariaAttrs.length ===0) return [];
+
+    let ret = [];
+    const globalDeprecatedAttributes = ARIADefinitions.globalDeprecatedProperties;
+    for (let i = 0; i < ariaAttrs.length; i++) {
+        if (globalDeprecatedAttributes.includes(ariaAttrs[i]))
+            ret.push({"role":"any", "attribute":ariaAttrs[i]});
+    }
+    const roles = RPTUtil.getRoles(element, false);
+    if (roles && roles.length > 0) {
+        for (let i = 0; i < roles.length; i++) {
+            const roleWithDeprecatedAttributes = ARIADefinitions.designPatterns[roles[i]];
+            if (roleWithDeprecatedAttributes) {
+                const deprecatedAttriNames = roleWithDeprecatedAttributes['deprecatedProps'];
+                if (deprecatedAttriNames && deprecatedAttriNames.length > 0) {
+                    for (let j = 0; j < ariaAttrs.length; j++) {
+                        if (deprecatedAttriNames.includes(ariaAttrs[j]))
+                            ret.push({ "role":roles[i],  "attribute": ariaAttrs[j]} );
+                    }    
+                }
+            }
+        }
+    }
+    return ret; 
 }
