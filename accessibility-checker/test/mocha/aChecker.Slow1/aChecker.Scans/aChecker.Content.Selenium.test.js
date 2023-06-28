@@ -1,20 +1,20 @@
-   /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+/******************************************************************************
+  Copyright:: 2020- IBM, Inc
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-  *****************************************************************************/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*****************************************************************************/
 
- 'use strict';
+'use strict';
 var userBrowser = process.env.USER_BROWSER || "CHROME";
 
 var webdriver = require('selenium-webdriver'),
@@ -26,7 +26,8 @@ var path = require("path");
 var unitTestcaseHTML = {};
 var aChecker = require("../../../../src");
 const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
-var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
+const { loadSeleniumTestFile } = require("../../util/Util");
+var testRootDir = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules");
 var gdirs = fs.readdirSync(testRootDir);
 
 // gdirs = [
@@ -94,7 +95,7 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
             var service = new chrome.ServiceBuilder(spath).build();
             try {
                 chrome.setDefaultService(service);
-            } catch (e) {}
+            } catch (e) { }
             const options = new chrome.Options();
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--headless");
@@ -104,8 +105,8 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 .withCapabilities(webdriver.Capabilities.chrome())
                 .setChromeOptions(options)
                 .build();
-                
-            browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
+
+            browser.manage().window().setRect({ x: 0, y: 0, width: 13666, height: 784 });
             expect(typeof browser).to.not.equal("undefined");
             done();
         } catch (e) {
@@ -145,8 +146,8 @@ var skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // CSS test issues
-    path.join(testRoot, "style_color_misuse_ruleunit","D543.html"),
-    path.join(testRoot, "style_before_after_review_ruleunit","D100.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
 
     // Misc
     path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html")
@@ -195,8 +196,7 @@ describe("Rule Unit Tests from Selenium", function () {
                     this.timeout(0);
 
                     var regex = "test.*html?$";
-
-                    browser.get("file://" + unitTestFile).then(function () {
+                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         let report = null;
                         // Perform the accessibility scan using the IBMaScan Wrapper
                         aChecker.getCompliance(browser, "Selenium_" + unitTestFile)
@@ -209,9 +209,9 @@ describe("Rule Unit Tests from Selenium", function () {
                             .then(async () => {
                                 return browser.executeScript(
                                     `return {
-                                        legacyExpectedInfo: (typeof (window.OpenAjax) !== 'undefined' && window.OpenAjax && window.OpenAjax.a11y && window.OpenAjax.a11y.ruleCoverage),
-                                        expectedInfo: (typeof (window.UnitTest) !== 'undefined' && window.UnitTest)
-                                    }`);
+                                            legacyExpectedInfo: (typeof (window.OpenAjax) !== 'undefined' && window.OpenAjax && window.OpenAjax.a11y && window.OpenAjax.a11y.ruleCoverage),
+                                            expectedInfo: (typeof (window.UnitTest) !== 'undefined' && window.UnitTest)
+                                        }`);
                             })
                             .then((unitTestInfo) => {
                                 // Extract the ruleCoverage object from the unit testcases that is loaded on to the iframe.
