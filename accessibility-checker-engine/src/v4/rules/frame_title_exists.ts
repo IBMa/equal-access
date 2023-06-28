@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let frame_title_exists: Rule = {
     id: "frame_title_exists",
@@ -48,13 +48,16 @@ export let frame_title_exists: Rule = {
     act: "cae760",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // JCH - NO OUT OF SCOPE hidden in context
-        /*removed only the check for role=none. Although role=presentation is not allowed in the
-         https://www.w3.org/TR/html-aria/#docconformance  table, the check has been kept due to the
-         decisions taken in DAP "Check iframes with role="presentation" should consider role="none" also (96395)*/
-        if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none") || !RPTUtil.isTabbable(ruleContext)) {
+        //skip the rule
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
+        // ignore if an explicit role is specified. this case will be covered in the aria_accessiblename_exists rules
+        let role = ruleContext.getAttribute("role");
+        if (role) {
             return null;
-        } else if (ARIAMapper.computeName(ruleContext).trim().length > 0) {
+        }
+
+        if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");
