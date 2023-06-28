@@ -288,7 +288,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         onClick={() => {
                             let appController = getDevtoolsAppController();
                             getDevtoolsAppController().setSecondaryView("summary");
-                            appController.openSecondary("tappController.setSecondaryViewotalIssuesCount");
+                            appController.openSecondary("totalIssuesCount");
                     }}>{totalCount} issues found</Link>
                 </Column>
             </Grid>
