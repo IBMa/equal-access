@@ -43,7 +43,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             ovInfoStyle.backgroundColor = "#161616";
             ovInfoStyle.position = "absolute";
             ovInfoStyle.padding = "8px";
-            ovInfoStyle.marginTop = "5px";
+            ovInfoStyle.marginTop = "3px";
             ovInfoStyle.zIndex = "2147483647";
             ovInfoStyle.fontFamily = "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif";
         }
