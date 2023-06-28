@@ -49,6 +49,10 @@ class HTMLBaseElement extends HTMLElement {
     }
 }
 
+function isDarkMode() {
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+
 customElements.define(
     "mark-down",
     class extends HTMLBaseElement {
@@ -86,7 +90,6 @@ customElements.define(
             const shadowRoot = this;
             let snip = document.createElement("bx-code-snippet");
             snip.setAttribute("type", "multi");
-            snip.setAttribute("color-scheme", "light");
             snip.innerHTML = oldCode.replace(/</g, "&lt;")
             shadowRoot.appendChild(snip);
         }
@@ -111,7 +114,7 @@ const valueMap = {
 function updateWithRuleInfo(ruleInfo) {
     if (ruleInfo) {
         if (ruleInfo.message) {
-            let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => msgArgs[matchedNum]);
+            let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => ruleInfo.msgArgs[matchedNum]);
             document.querySelector("#ruleMessage").innerHTML = ruleMessage.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         }
         setTimeout(() => {
@@ -134,29 +137,36 @@ function updateWithRuleInfo(ruleInfo) {
             if (val === "Violation") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
 <style type="text/css">
-.st0{fill:none;}
-.st1{fill:#A2191F;}
-.st2{fill:#FFFFFF;fill-opacity:0;}
+	.st0{fill:none;}
+	.st1{fill:#da1e28;}
+	.st2{fill:#FFFFFF;fill-opacity:1;}
 </style>
-<rect class="st0" width="16" height="16"/>
+<rect id="_Transparent_Rectangle_" class="st0" width="16" height="16"/>
 <path class="st1" d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
-<path class="st2" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
+<path id="inner-path" class="st2" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
 </svg>`;
             if (val === "Needs review") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
 <style type="text/css">
-.st0{fill:none;}
-.st1{fill:#F1C21B;}
+	.st0{fill:none;}
+	.st1{fill:#F1C21B;}
 </style>
-<rect class="st0" width="16" height="16"/>
+<rect id="_Transparent_Rectangle_" class="st0" width="16" height="16"/>
 <path class="st1" d="M14.9,13.3l-6.5-12C8.3,1,8,0.9,7.8,1.1c-0.1,0-0.2,0.1-0.2,0.2l-6.5,12c-0.1,0.1-0.1,0.3,0,0.5
-C1.2,13.9,1.3,14,1.5,14h13c0.2,0,0.3-0.1,0.4-0.2C15,13.6,15,13.4,14.9,13.3z M7.4,4h1.1v5H7.4V4z M8,11.8c-0.4,0-0.8-0.4-0.8-0.8
-s0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,11.8,8,11.8z"/>
-<g><g><g>
-<rect x="7.45" y="4" width="1.1" height="5"/>
-</g></g><g><g>
-<circle cx="8" cy="11" r="0.8"/>
-</g></g></g>
+	C1.2,13.9,1.3,14,1.5,14h13c0.2,0,0.3-0.1,0.4-0.2C15,13.6,15,13.4,14.9,13.3z M7.4,4h1.1v5H7.4V4z M8,11.8c-0.4,0-0.8-0.4-0.8-0.8
+	s0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,11.8,8,11.8z"/>
+<g>
+	<g>
+		<g>
+			<rect x="7.45" y="4" width="1.1" height="5"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<circle cx="8" cy="11" r="0.8"/>
+		</g>
+	</g>
+</g>
 </svg>`;
             if (val === "Recommendation") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
@@ -171,7 +181,11 @@ width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 
 <path class="st1" d="M14,15H2c-0.6,0-1-0.4-1-1V2c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v12C15,14.6,14.6,15,14,15z"/>
 <text transform="matrix(1 0 0 1 5.9528 12.5044)" class="st2 st3 st4">i</text>
 </svg>`;
-            document.querySelector("#locLevel").innerHTML = `<div class="issueLevel">${icon}&nbsp;${val}</div>`;
+            let level = document.querySelector("#locLevel");
+            let parent = level.parentElement;
+            level = parent.removeChild(level);
+            parent.insertBefore(level, parent.firstElementChild);
+            document.querySelector("#locLevel").innerHTML = `<div class="issueLevel">${val}</div>`;
         }
         if (RULE_ID) {
             document.querySelector("#ruleInfo").innerHTML = `<p>Rule ID: ${RULE_ID}${ruleInfo.reasonId ? `<br />Reason ID: ${ruleInfo.reasonId}</p>` : ""}`;
@@ -198,5 +212,12 @@ window.addEventListener("DOMContentLoaded", (evt) => {
         ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
     }
     updateWithRuleInfo(ruleInfo);
+
+    if (isDarkMode()) {
+        document.body.setAttribute("class", "dds-theme-zone-g90");
+    } else {
+        document.body.setAttribute("class", "dds-theme-zone-g10");
+    }
+
 })
 

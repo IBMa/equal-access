@@ -14,6 +14,7 @@
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { getRolesUndefinedByAria } from "../util/CommonUtil";
 
 export let aria_role_allowed: Rule = {
     id: "aria_role_allowed",
@@ -59,22 +60,17 @@ export let aria_role_allowed: Rule = {
             return null;
         }
 
-        let designPatterns = ARIADefinitions.designPatterns;
-        let roles = roleStr.split(/\s+/);
-        // now we have all role attributes
-        let invalidRoles = [];
-        for (const role of roles) {
-            if (!(role.toLowerCase() in designPatterns)) {
-                invalidRoles.push(role);
-            }
-        }
-        //return new ValidationResult(passed, [ruleContext], 'role', '', [roles[i]]);
-        if (invalidRoles.length === roles.length) {
-            return RuleFail("Fail_2", [invalidRoles.join(",")]);
-        } else if (invalidRoles.length > 0) {
-            return RulePotential("Potential_1", [invalidRoles.join(",")]);
-        } else {
+        let invalidRoles = getRolesUndefinedByAria(ruleContext);
+
+        if (!invalidRoles || invalidRoles.length === 0)
             return RulePass("Pass_0");
+        else {
+            let roles = roleStr.split(/\s+/);
+            if (invalidRoles.length === roles.length) {
+                return RuleFail("Fail_2", [invalidRoles.join(",")]);
+            } else if (invalidRoles.length > 0) {
+                return RulePotential("Potential_1", [invalidRoles.join(",")]);
+            }
         }
     }
 }
