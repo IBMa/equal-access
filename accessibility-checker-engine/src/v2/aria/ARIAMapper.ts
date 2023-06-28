@@ -91,7 +91,8 @@ export class ARIAMapper extends CommonMapper {
                 const ownIds = owner.getAttribute("aria-owns").split(/ +/g);
                 for (let iId=0; iId < ownIds.length; ++iId) {
                     const owned = doc.getElementById(ownIds[iId]);
-                    if (owned) {
+                    //ignore if the aria-owns point to the element itself
+                    if (owned && !DOMUtil.sameNode(owner, owned)) {
                         setCache(owned, "aria-owned", owner);
                     }
                 }
@@ -427,7 +428,7 @@ export class ARIAMapper extends CommonMapper {
             let validElems = [];
             for (const ref of labelledby) {
                 const refElem = FragmentUtil.getById(cur, ref);
-                if (refElem) {
+                if (refElem && !DOMUtil.sameNode(elem, refElem)) {
                     validElems.push(refElem);
                 }
             }
@@ -476,7 +477,7 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    if (label.hasAttribute("aria-label") || label.hasAttribute("aria-labelledby")) {
+                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
                         return this.computeNameHelp(walkId, label, false, false);
                     } else {
                         return label.textContent;
@@ -524,7 +525,7 @@ export class ARIAMapper extends CommonMapper {
             if (role === "combobox") {
                 if (elem.hasAttribute("aria-activedescendant")) {
                     let selected = FragmentUtil.getById(elem, "aria-activedescendant");
-                    if (selected) {
+                    if (selected && !DOMUtil.sameNode(elem, selected)) {
                         return ARIAMapper.computeNameHelp(walkId, selected, false, false);
                     }
                 }
