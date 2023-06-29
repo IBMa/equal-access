@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title> Test Suite</title>
+</head>
+
+<body>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Accessible Name Tests</h3>
+
+
+
+<div role="form" aria-label="">
+    <p>Form section</p>
+    <div id="b1" role="radiogroup"></div>
+    <div id="b2" role="link"></div>
+    <div id="b2" role="listbox"></div>
+    <button></button>
+</div>
+<div role='table'></div>
+<div role='alertdialog'></div> 
+<div role='columnheader'></div>
+<div role='heading'></div>
+<div role='menuitem'></div>
+<div role='option'></div>
+<div role='rowheader'></div>
+<div role='tab'>
+  <div role='tabpanel'></div>
+</div>
+<div role='treegrid'></div>
+<div role='treeitem'></div>
+    
+<script type="text/javascript">
+  UnitTest = {
+      ruleIds: ["input_label_exists", "aria_widget_labelled", "aria_accessiblename_exists"],
+      results: [
+      {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h3[1]",
+              "aria": "/document[1]/heading[1]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/form[1]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"form\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "form"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]",
+              "aria": "/document[1]/form[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'radiogroup' does not have a programmatically associated name",
+            "messageArgs": [
+              "radiogroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[2]",
+              "aria": "/document[1]/form[1]/link[1]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"link\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[3]",
+              "aria": "/document[1]/form[1]/listbox[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Form control with \"listbox\" role has no associated label",
+            "messageArgs": [
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[1]",
+              "aria": "/document[1]/form[1]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Form control element <button> has no associated label",
+            "messageArgs": [
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]/table[1]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"table\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "table"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/alertdialog[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'alertdialog' does not have a programmatically associated name",
+            "messageArgs": [
+              "alertdialog"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/columnheader[1]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"columnheader\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "columnheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]",
+              "aria": "/document[1]/heading[2]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"heading\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[6]",
+              "aria": "/document[1]/menuitem[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'menuitem' does not have a programmatically associated name",
+            "messageArgs": [
+              "menuitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[7]",
+              "aria": "/document[1]/option[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'option' does not have a programmatically associated name",
+            "messageArgs": [
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[8]",
+              "aria": "/document[1]/rowheader[1]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <div> with \"rowheader\" role has no accessible name",
+            "messageArgs": [
+              "div",
+              "rowheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[9]",
+              "aria": "/document[1]/tab[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'tab' does not have a programmatically associated name",
+            "messageArgs": [
+              "tab"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[9]/div[1]",
+              "aria": "/document[1]/tab[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'tabpanel' does not have a programmatically associated name",
+            "messageArgs": [
+              "tabpanel"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[10]",
+              "aria": "/document[1]/treegrid[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'treegrid' does not have a programmatically associated name",
+            "messageArgs": [
+              "treegrid"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_widget_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[11]",
+              "aria": "/document[1]/treeitem[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Interactive component with ARIA role 'treeitem' does not have a programmatically associated name",
+            "messageArgs": [
+              "treeitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  }
+</script>
+</body>
+
+</html>

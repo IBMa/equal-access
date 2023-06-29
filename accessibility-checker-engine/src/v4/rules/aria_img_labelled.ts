@@ -77,9 +77,7 @@ export let aria_img_labelled: Rule = {
          *    1. Missing aria-label or aria-labelledby
          *    2. Missing title attr with value
          */
-        // Skip an image with a structural role - img must be in the role list at least
-        if (ruleContext.getAttribute("aria-hidden") === "true") return null;
-
+        
         // If role === img, you must use an aria label
         //check attributes aria-label and aria-labelledby for other tags (e.g. <div>, <span>, etc)
         let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;

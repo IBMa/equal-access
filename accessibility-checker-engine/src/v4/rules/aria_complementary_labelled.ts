@@ -14,10 +14,11 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_complementary_labelled: Rule = {
     id: "aria_complementary_labelled",
-    context: "dom:*[role], dom:aside",
+    context: "aria:complementary",
     refactor: {
         "Rpt_Aria_ComplementaryRequiredLabel_Implicit": {
             "Pass_0": "Pass_0",
@@ -33,8 +34,8 @@ export let aria_complementary_labelled: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "The element with \"complementary\" role does not have a label",
-            "group": "An element with \"complementary\" role must have a label"
+            "Fail_1": "The element with \"complementary\" role does not have an accessible name",
+            "group": "An element with \"complementary\" role must have an accessible name"
         }
     },
     rulesets: [{
@@ -46,11 +47,9 @@ export let aria_complementary_labelled: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.hasRoleInSemantics(ruleContext, "complementary")) {
-            return null;
-        }
-
-        let passed = RPTUtil.hasAriaLabel(ruleContext);
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
         //return new ValidationResult(passed, [ruleContext], 'role', '', []);
         if (passed) {
             return RulePass("Pass_0");

@@ -5,7 +5,8 @@
 .storedScreen {
     margin: 0rem;
     padding: 1rem 0rem;
-
+    min-height: 100%;
+    
     h2 {
         @include type-style("heading-03");
     }

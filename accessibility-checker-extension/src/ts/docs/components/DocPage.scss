@@ -9,7 +9,6 @@ body {
 #pageapp-root {
     min-height: 100%;
     height: 100%;
-    color: $gray-90;
     
     > .cds--css-grid {
         margin-left: 0rem;
@@ -21,7 +20,6 @@ body {
         }
     }
     .leftCol {
-        background-color: $gray-10;
         padding-right: var(--cds-grid-gutter-end);
         padding-left: var(--cds-grid-gutter-start);
         margin-left: 0rem;
@@ -51,7 +49,6 @@ body {
         }
         .op_version {
             @include type-style("label-01");
-            color: $gray-70;
             margin-top: .5rem;
         }
         p {
