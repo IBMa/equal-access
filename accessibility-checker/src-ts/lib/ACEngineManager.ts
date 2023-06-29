@@ -1,7 +1,7 @@
-import { ACConfigManager } from "./ACConfigManager";
 import * as path from "path";
 import * as fs from "fs";
 import axios from "axios";
+import { ACConfigManager } from "./common/config/ACConfigManager";
 
 let ace;
 
@@ -232,32 +232,6 @@ export class ACEngineManager {
         }
         return false;
     }
-
-
-    /**
-     * This function is responsible for building the full help file URL using rule server.
-     *
-     * @param {String} helpFileName - Provide the help file name
-     *
-     * @return {String} helpFileName - The full help file URL
-     *
-     * PRIVATE METHOD
-     *
-     * @memberOf this
-     */
-    static getHelpURL(issue) {
-        let config = ACConfigManager.getConfigNow();
-        let helpUrl = checker.engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
-        let minIssue = {
-            message: issue.message,
-            snippet: issue.snippet,
-            value: issue.value,
-            reasonId: issue.reasonId,
-            ruleId: issue.ruleId,
-            msgArgs: issue.msgArgs
-        };
-        return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
-    };
 
     static addRuleset = (ruleset) => {
         ACEngineManager.customRulesets.push(ruleset);

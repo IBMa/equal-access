@@ -40,7 +40,7 @@ export let element_orientation_unlocked: Rule = {
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["1.3.4"],
         "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_THREE
+        "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
     act: ['b33eff'],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
@@ -56,7 +56,7 @@ export let element_orientation_unlocked: Rule = {
 
         const nodeName = ruleContext.nodeName.toLowerCase();    
         
-        // cache the orientation ressult for all the elements in the page
+        // cache the orientation result for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
         let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
@@ -73,7 +73,7 @@ export let element_orientation_unlocked: Rule = {
             });
         });
 
-        // no match, the elemenet is not in media orientation transform
+        // no match, the element is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
         let ret = [];

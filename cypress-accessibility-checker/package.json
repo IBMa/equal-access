@@ -4,11 +4,11 @@
     "description": "Accessibility Checker for Cypress",
     "scripts": {
         "lint": "eslint .",
-        "test": "npm run build:report && start-server-and-test 'npm run test:start-http' 8080 'cd test && cypress run'",
-        "test:open": "npm run build:report && cd test && cypress open",
+        "test": "npm run build:common && start-server-and-test test:start-http http://localhost:8080 'cd test && cypress run'",
+        "test:open": "npm run build:common && cd test && cypress open",
         "test:start-http": "http-server -c-1 --silent",
-        "build:report": "(cd ../report-react && npm run build && cd ../cypress-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
-        "package:common": "npm run build:report && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
+        "build:common": "cd ../common/module && npm run build && cd ../../cypress-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
+        "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
         "package:zip": "npm run package:common && cd package && npm pack",
         "package:npm": "npm run package:common"
     },
@@ -30,20 +30,21 @@
     ],
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
-        "cypress": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"
+        "cypress": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9 || ^12"
     },
     "devDependencies": {
-        "cypress": "^9.5.4",
+        "cypress": "9.5.4",
         "eslint": "^8.4.1",
         "eslint-plugin-cypress": "^2.12.1",
-        "http-server": "^14.0.0",
+        "http-server": "^14.1.1",
         "prettier": "^2.5.1",
         "shx": "^0.3.3",
-        "start-server-and-test": "^1.14.0"
+        "start-server-and-test": "^2.0.0"
     },
     "dependencies": {
         "@cypress/request": "^2.88.11",
         "deep-diff": "^1.0.2",
+        "js-yaml": "^4.1.0",
         "uuid": "^9.0.0",
         "exceljs": "^4.3.0",
         "string-hash": "^1.1.3"
