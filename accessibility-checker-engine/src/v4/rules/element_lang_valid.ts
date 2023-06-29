@@ -18,7 +18,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
-const validateLang = (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+const validateLang = (context: RuleContext): number => {
     const ruleContext = context["dom"].node as Element;
     let nodeName = ruleContext.nodeName.toLowerCase();
     if (ruleContext.hasAttribute("lang")) {
@@ -27,10 +27,10 @@ const validateLang = (context: RuleContext, options?: {}, contextHierarchies?: R
         } else {
             let langStr = ruleContext.getAttribute("lang");
             if (!LangUtil.validPrimaryLang(langStr)) {
-                return RuleFail("Fail_1");
+                return 1;
             }
             if (!LangUtil.isBcp47(langStr)) {
-                return RuleFail("Fail_2");
+                return 2;
             }
         }
     }
@@ -40,14 +40,14 @@ const validateLang = (context: RuleContext, options?: {}, contextHierarchies?: R
         } else {
             let langStr = ruleContext.getAttribute("xml:lang");
             if (!LangUtil.validPrimaryLang(langStr)) {
-                return RuleFail("Fail_3");
+                return 3;
             }
             if (!LangUtil.isBcp47(langStr)) {
-                return RuleFail("Fail_4");
+                return 4;
             }
         }
     }
-    return RulePass("Pass_0");
+    return 0;
 }
 
 export let html_lang_valid: Rule = {
@@ -103,7 +103,18 @@ export let html_lang_valid: Rule = {
         //     "Fail_4": "inapplicable"
         // }
     }],
-    run: validateLang
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        let reasonCode = validateLang(context);
+        // This is done here instead of in validateLang so that the genHelp code will pick it up
+        let retArr = [
+            RulePass("Pass_0"),
+            RuleFail("Fail_1"),
+            RuleFail("Fail_2"),
+            RuleFail("Fail_3"),
+            RuleFail("Fail_4")
+        ]
+        return retArr[reasonCode];
+    }
 }
 
 export let element_lang_valid: Rule = {
@@ -164,7 +175,16 @@ export let element_lang_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
         if (nodeName === "html") return null;
-        let retVal = validateLang(context, options, contextHierarchies) as RuleResult;
+        let reasonCode = validateLang(context);
+        // This is done here instead of in validateLang so that the genHelp code will pick it up
+        let retArr = [
+            RulePass("Pass_0"),
+            RuleFail("Fail_1"),
+            RuleFail("Fail_2"),
+            RuleFail("Fail_3"),
+            RuleFail("Fail_4")
+        ]
+        let retVal = retArr[reasonCode];
         if (retVal.value[1] !== eRuleConfidence.PASS) {
             // Ensure that there's actually content of this element - skip subtrees that have other lang attributes
             let hasContent = false;
