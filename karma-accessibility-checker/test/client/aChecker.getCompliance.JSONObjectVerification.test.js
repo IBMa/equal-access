@@ -57,7 +57,7 @@ describe("JSONObjectVerification.test aChecker.getCompliance", function () {
 
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
-                it('aChecker.getCompliance.JSONObjectVerification.test.js: a11y scan should match expected value', async function (done) {
+                it('aChecker.getCompliance.JSONObjectVerification.test.js: a11y scan should match expected value', async function () {
 
                     window.__karma__.config.ACConfig.policies = ["IBM_Accessibility"];
 
@@ -75,6 +75,7 @@ describe("JSONObjectVerification.test aChecker.getCompliance", function () {
 
                     // Update all the items in the results which dynamically change over scans to the values
                     // already defined in the baseline file.
+                    report.ruleTime = expected.ruleTime = 999;
                     report.summary.scanTime = expected.summary.scanTime = 999;
                     report.summary.startScan = expected.summary.startScan = 99999999999;
                     report.scanID = expected.scanID = "uuid";
@@ -110,8 +111,6 @@ describe("JSONObjectVerification.test aChecker.getCompliance", function () {
                         differences = aChecker.diffResultsWithExpected(report, expected, true);
                     }
                     expect(typeof differences).toEqual("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
-                    // Mark the testcase as done.
-                    done();
                 });
 
                 // Function to run after every testcase (it --> is a testcase)
