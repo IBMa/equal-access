@@ -23,7 +23,6 @@ import { ReportSection } from './components/reportSection';
 import { ScanSection } from './components/scanSection';
 import { BrowserDetection } from '../util/browserDetection';
 import {
-    Button,
     Column,
     ComposedModal,
     Grid,
@@ -34,7 +33,6 @@ import {
 
 import "../styles/index.scss";
 import "./devToolsApp.scss";
-import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
 import HelpScreen from "./components/helpScreen";
 import StoredScreen from './components/storedScreen';
@@ -122,22 +120,8 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             size="lg"
                             selectorPrimaryFocus=".secondaryDialog button"
                         >
-                            { Config.SECONDARY_MODAL && <ModalHeader /> }
-                            { !Config.SECONDARY_MODAL && <>
-                                <div 
-                                    className={`${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}
-                                    style={{
-                                        padding: "1rem"
-                                    }}>
-                                    <Button 
-                                        id="backToListViewButton"
-                                        size="sm"
-                                        onClick={() => {
-                                            this.devtoolsAppController.closeSecondary();
-                                        }}
-                                    >Back to list view</Button>
-                                </div>
-                            </>}
+
+                            <ModalHeader style={{marginBottom: "2rem"}}/>
                             <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
                                     {secondaryPanelModal}
                             </ModalBody>

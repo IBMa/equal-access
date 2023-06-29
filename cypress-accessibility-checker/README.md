@@ -6,7 +6,8 @@ The plugin works by injecting the automated accessibility-checker testing into [
 
 ## Requirements
 
-* [Node Version 16](https://nodejs.org/en/download/)
+* [Node Version 18](https://nodejs.org/en/download/)
+* Cypress 12
 
 ## Installation
 

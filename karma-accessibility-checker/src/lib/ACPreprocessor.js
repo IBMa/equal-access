@@ -74,7 +74,7 @@ var indexACbaselinePreprocessor = function (logger) {
         // Extract the label from the baseline, this will be the index in the global hash
         var label = JSONContent.label;
 
-        log.debug("Extracted label: \"" + label + "\" from: " + file.path);
+        // log.debug("Extracted label: \"" + label + "\" from: " + file.path);
 
         // Add .js to the file extension so that it would load into the browser.
         file.path = file.path + '.js';

@@ -13,9 +13,10 @@
     "test:server:mocha": "mocha test/server/**/*.spec.js --compilers js:babel/register",
     "test:server:ava": "ava --verbose",
     "startLocalRuleServer": "forever start RuleServerLocal.js",
-    "build:report": "(cd ../report-react && npm run build && cd ../karma-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
+    "build:report": "(cd ../report-react && npm run build && cd ../karma-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/common/report/genReport.js && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
+    "build:common": "cd ../common/module && npm run build && cd ../../karma-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common && npm run build:report",
     "build:doc": "gulp --gulpfile gulp/gulpfile.js build-doc",
-    "build": "npm run build:report && gulp --gulpfile gulp/gulpfile.js build",
+    "build": "npm run build:common && gulp --gulpfile gulp/gulpfile.js build",
     "deploy": "gulp --gulpfile gulp/gulpfile.js --user $GSA_USER --pw $GSA_PASS upload",
     "uploadCoverage": "gulp --gulpfile gulp/gulpfile.js --user $GSA_USER --pw $GSA_PASS uploadCoverage",
     "localDevInstall": "cd src && npm link && npm link karma-ibma",
@@ -47,6 +48,7 @@
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "dependencies": {
     "deep-diff": "1.0.2",
+    "exceljs": "^4.3.0",
     "fs": "0.0.2",
     "fs-extra": "10.0.0",
     "js-yaml": "4.1.0",
@@ -57,7 +59,7 @@
     "shelljs": "0.8.4",
     "slack": "11.0.2",
     "slack-node": "0.1.8",
-    "uuid": "8.3.2"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "adm-zip": "^0.5.9",
@@ -104,7 +106,7 @@
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "serve-index": "^1.9.1",
-    "shx": "^0.3.3",
+    "shx": "^0.3.4",
     "sinon": "^12.0.1",
     "tap-diff": "^0.1.1",
     "tap-difflet": "^0.7.2",

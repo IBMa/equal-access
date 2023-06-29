@@ -1,9 +1,0 @@
-{
-  "baseUrl": "http://localhost:8080/test/sample-html",
-  "outputFormat": [
-    "xlsx",
-    "json",
-    "csv",
-    "html"
-  ]
-}

@@ -35,10 +35,6 @@ describe("ACConfig property", function () {
         expect(typeof window.__karma__.config.ACConfig.checkHiddenContent).not.toBe("undefined");
     });
 
-    it("engineFileName Should be defined in global space", function() {
-        expect(typeof window.__karma__.config.ACConfig.engineFileName).not.toBe("undefined");
-    });
-
     it("extensions Should be defined in global space", function() {
         expect(typeof window.__karma__.config.ACConfig.extensions).not.toBe("undefined");
     });
