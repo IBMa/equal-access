@@ -15,11 +15,15 @@
   *****************************************************************************/
 
 import { ACBrowserManager } from "./lib/ACBrowserManager";
-import { ACConfigManager } from "./lib/ACConfigManager";
 import { ACEngineManager } from "./lib/ACEngineManager";
 import { getComplianceHelper } from "./lib/ACHelper";
-import { ACReportManager } from "./lib/ACReportManager";
-import { eAssertResult, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker";
+import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker";
+import { ACConfigManager } from "./lib/common/config/ACConfigManager";
+import { IConfig, IConfigInternal } from "./lib/common/config/IConfig";
+import { IBaselineReport } from "./lib/common/engine/IReport";
+import { BaselineManager } from "./lib/common/report/BaselineManager";
+import { ReporterManager } from "./lib/common/report/ReporterManager";
+
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
  * the supported context type:
@@ -65,8 +69,8 @@ export function getCompliance(content: any,
  *                 return 2 in the case that there is a failure based on failLevels (this means no baseline found).
  *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
  */
-export function assertCompliance(report: ReportResult) : eAssertResult {
-    return ACReportManager.assertCompliance(report)
+export function assertCompliance(report: IBaselineReport) : eAssertResult {
+    return BaselineManager.assertCompliance(report)
 }
 
  /**
@@ -81,14 +85,14 @@ export function assertCompliance(report: ReportResult) : eAssertResult {
   * @memberOf this
   */
 export function stringifyResults(report: ICheckerReport) : string {
-    return ACReportManager.stringifyResults(report)
+    return ReporterManager.stringifyResults(report)
 }
 
 export function getConfig() : Promise<IConfig> {
     return ACConfigManager.getConfig();
 }
 
-export function getConfigUnsupported() : Promise<IConfigUnsupported> {
+export function getConfigUnsupported() : Promise<IConfigInternal> {
     return ACConfigManager.getConfigUnsupported();
 }
 
@@ -105,7 +109,7 @@ export function close() {
  *                    in the same format as outlined in the return of aChecker.diffResultsWithExpected function.
  */
 export function getDiffResults(label: string) {
-    return ACReportManager.getDiffResults(label);
+    return BaselineManager.getDiffResults(label);
 }
 
 /**
@@ -117,7 +121,7 @@ export function getDiffResults(label: string) {
  *                    in the same format as outlined in the return of aChecker.buildReport function.
  */
 export function getBaseline(label: string) {
-    return ACReportManager.getBaseline(label);
+    return BaselineManager.getBaseline(label);
 }
 
 /**
@@ -154,7 +158,7 @@ export function getBaseline(label: string) {
  * ]
  */
 export function diffResultsWithExpected(actual, expected, clean) {
-    return ACReportManager.diffResultsWithExpected(actual, expected, clean);
+    return BaselineManager.diffResultsWithExpected(actual, expected, clean);
 }
 
 /**
@@ -197,7 +201,7 @@ export function diffResultsWithExpected(actual, expected, clean) {
  * }
  */
 export function cleanComplianceObjectBeforeCompare(objectToClean) {
-    return ACReportManager.cleanComplianceObjectBeforeCompare(objectToClean);
+    return BaselineManager.cleanComplianceObjectBeforeCompare(objectToClean);
 }
 
 export function addRuleset(ruleset) {

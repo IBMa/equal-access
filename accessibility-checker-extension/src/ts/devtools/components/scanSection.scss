@@ -1,6 +1,8 @@
 @use '@carbon/styles/scss/type'as *;
 @use '@carbon/styles/scss/theme'as *;
 
+
+
 .cds--overflow-menu-options[aria-label='stored scans'] {
     min-width: 12rem;
     .cds--overflow-menu-options__btn {
@@ -8,11 +10,71 @@
     }
 }
 
-.scanSection {
-    .cds--overflow-menu--sm {
-        min-height: 2rem;
+
+
+.cds--g100 {
+    .scanSection {
+        .cds--overflow-menu__wrapper {
+            button {
+                height: 2rem;
+                width: 2rem;
+                background-color: #393939; // color of initial menu button and menu items
+                // border: 1px solid gray;
+                min-height: 2rem;
+                .cds--overflow-menu__icon {
+                    fill: white;
+                }
+                .cds--btn--md.cds--btn--icon-only {
+                    padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                }
+            }
+        }
+        .cds--overflow-menu.cds--overflow-menu--open:hover {
+            background-color: #595959; // color of button on hover
+        }
+        .cds--overflow-menu.cds--overflow-menu--open {
+            height: 2rem;
+            min-height: 2rem;
+            background-color: #393939; // color of secondary button
+            .cds--overflow-menu__icon {
+                fill: white;
+            }
+        }
     }
-    
+}
+
+.cds--white {
+    .scanSection {
+        .cds--overflow-menu__wrapper {
+            button { height: 2rem;
+                width: 2rem;
+                min-height: 2rem;
+                background-color: #e0e0e0; // color of initial menu button and menu items
+                .cds--overflow-menu__icon {
+                    fill: black;
+                }
+                .cds--btn--md.cds--btn--icon-only {
+                    padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                }
+            }
+        }
+        .cds--overflow-menu.cds--overflow-menu--open:hover {
+            background-color: #e0e0e0; // color of button on hover
+        }
+        .cds--overflow-menu.cds--overflow-menu--open {
+            height: 2rem;
+            min-height: 2rem;
+            background-color: #e0e0e0; // color of secondary button 
+            .cds--overflow-menu__icon {
+                fill: black;
+            }
+        }
+    }
+}
+
+.scanSection {
     .storedCount {
         margin-top:.5rem;
         @include type-style("label-01");
@@ -21,4 +83,7 @@
     .inlineLoading {
         background-color: $layer;
     }
+    
 }
+
+
