@@ -1,4 +1,4 @@
-# accessibility-checker-engine rules
+# accessibility-checker-engine RULES
 
 This README is oriented toward rule creation or modification. Users who want to modify an existing rule or create a new rule should read this document. Any rule addition or change should be fully reviewed and tested before being approved for public release.
 
@@ -6,14 +6,18 @@ This README is oriented toward rule creation or modification. Users who want to 
 
 Multiple objects are needed for a rule to fire and show up in the tool results:
 
-* Rule object
-* Ruleset mapping
-* Messages
-* Help file
+* [Rule object](#rule-object)
+* [Messages](#messages)
+* [Help](#help)
+* [Test cases](#test-cases)
   
 ### Rule object
 
-The basic rule format is defined by the Rule type in [src/v4/api/IRule.ts](src/v4/api/IRule.ts). Rule implementation is located in [src/v4/rules](src/v4/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
+The basic rule format is defined by the Rule type in [src/v4/api/IRule.ts](src/v4/api/IRule.ts). Rule implementation is located in [src/v4/rules](src/v4/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). 
+
+#### Messages
+
+The rule results can be one of:
 * RulePass("pass_reason")
 * RuleFail("fail_reason")
 * RulePotential("potential_reason")
@@ -59,7 +63,23 @@ An example rule might look like:
 }
 ```
 
-Help files are found in [help-v4](help-v4).
+## Help
+
+Help source files are found in [help-v4](help-v4). 
+Help integrates the following:
+
+* Failure message
+  * Rule type
+  * Rule ID
+  * Reason ID
+* Why is it important?
+  * Element location
+* What to do
+  * Examples
+* About the requirement
+* Who does this affects?
+
+Mappings of the latest rules to the standards, the individual failure messages, and `links to the Help files` are listed in the published  [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
 
 ## Test cases
 
@@ -128,3 +148,11 @@ Note: Rule changes are not automatically rebuilt. You will have to kill the rule
 * Create the rule implementation in [src/v4/rules](src/v4/rules). The rule implementation includes the rule context, message, help, ruleset mappings, logic and outcome.
 * Create test cases for the rule in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules).
 * Test the rules with the test cases. You may run the test cases locally, or run with the local rule server. 
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

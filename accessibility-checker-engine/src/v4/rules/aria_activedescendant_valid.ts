@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let aria_activedescendant_valid: Rule = {
     id: "aria_activedescendant_valid",
@@ -69,7 +70,7 @@ export let aria_activedescendant_valid: Rule = {
         }
 
         let descendant = FragmentUtil.getById(ruleContext, descendant_id.trim());
-        if (!descendant) {
+        if (!descendant || DOMUtil.sameNode(descendant_id, ruleContext)) {
             // The referenced element doesn't exist. We let 1077 to trigger the error
             return null;
         }
@@ -92,7 +93,7 @@ export let aria_activedescendant_valid: Rule = {
             let owned_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-owns").trim()).split(" ");
             for (let i = 0; i < owned_ids.length; i++) {
                 let owned_ele = FragmentUtil.getById(ruleContext, owned_ids[i]);
-                if (owned_ele.contains(descendant)) {
+                if (owned_ele && !DOMUtil.sameNode(owned_ele, ruleContext) && owned_ele.contains(descendant)) {
                     return RulePass("Pass_0");
                 }
             }
@@ -108,14 +109,14 @@ export let aria_activedescendant_valid: Rule = {
             let controlled_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-controls").trim()).split(" ");
             for (let i = 0; i < controlled_ids.length; i++) {
                 let controlled_ele = FragmentUtil.getById(ruleContext, controlled_ids[i]);
-                if (controlled_ele.contains(descendant)) {
+                if (controlled_ele && !DOMUtil.sameNode(controlled_ele, ruleContext) && controlled_ele.contains(descendant)) {
                     return RulePass("Pass_0");
                 }
                 if (controlled_ele.hasAttribute("aria-owns")) {
                     let owns_ids = RPTUtil.normalizeSpacing(controlled_ele.getAttribute("aria-owns").trim()).split(" ");
                     for (let j = 0; j < owns_ids.length; j++) {
                         let owned_ele = FragmentUtil.getById(ruleContext, owns_ids[j]);
-                        if (owned_ele.contains(descendant)) {
+                        if (owned_ele && !DOMUtil.sameNode(owned_ele, ruleContext) && owned_ele.contains(descendant)) {
                             return RulePass("Pass_0");
                         }
                     }

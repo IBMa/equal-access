@@ -1,22 +1,26 @@
-[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
-
 # equal-access
 
-This Git repository hosts tools that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit) and supporting components.
+This Git repository hosts tools and supporting components that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 
 ## Overview
 
-This README covers topics for developers. For non-developer usage, see the following instruction for individual tools:
-* [accessibility-checker-extension for Chrome](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extensions that adds automated accessibility checking capabilities to Chrome and other browser that support the Chromium web-extension API
-* [accessibility-checker-extension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extensions that adds automated accessibility checking capabilities to Firefox
-* [accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing for Node-based test environments
+This README covers topics for users who want to find the deployed tools as well as topics for developers who want to better understand the various components and build the tools.
+
+The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
+
+## Usage
+
+The tools have been deployed to the various stores and NPM so they can be easily downloaded and installed:
+
+* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
+* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
 * [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of accessibility-checker in the Cypress environment
+* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
 
+## Requirements
 
-## Getting started
-
-* [Node Version 16](https://nodejs.org/en/download/).
+* [Node Version 18](https://nodejs.org/en/download/).
 
 ### Clone Repository
 
@@ -24,6 +28,7 @@ This README covers topics for developers. For non-developer usage, see the follo
 $ git clone --branch=master https://github.com/IBMa/equal-access.git
 $ cd equal-access
 ```
+
 or with SSH
 
 ```bash
@@ -35,41 +40,42 @@ $ cd equal-access
 
 Under the equal-access directory
 
-```
+```bash
 npm install
 ```
-Now you can select the tool you want to use and follow the README.MD instructions
 
+Now you can select the tool you want to build and follow the tool's README instructions located in its sub-directory.
 
 ### What's in this repository?
 
-Please review the README.md of each tool/components for more information
+Please review the README of the selected tool for more information specific to that tool
 
-Tools (description above):
-* [accessibility-checker-extension](accessibility-checker-extension/README.md): A web browser extensions that adds automated accessibility checking capabilities
-* [accessibility-checker](accessibility-checker/README.md): Automated accessibility testing for Node-based test environments
-* [karma-accessibility-checker](karma-accessibility-checker/README.md): Automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker](cypress-accessibility-checker/README.md): Wrapper of accessibility-checker for the Cypress environment
+#### Tools
 
-Components:
-* [accessibility-checker-engine](accessibility-checker-engine/README.md): accessibility rules and evaluation engine used by
-* [rule-server](https://github.com/IBMa/equal-access/tree/master/rule-server): deploys the rules and engine for usage by the tools
+* [accessibility-checker-extension/README](accessibility-checker-extension/README.md): A web developer tools browser extension that adds automated accessibility checking capabilities
+* [accessibility-checker/README](accessibility-checker/README.md): Automated accessibility testing for Node-based test environments, the ability to validate results against baseline files, and scan local files
+* [karma-accessibility-checker/README](karma-accessibility-checker/README.md): Automated accessibility testing for the Karma environment
+* [cypress-accessibility-checker/README](cypress-accessibility-checker/README.md): Wrapper of accessibility-checker for the Cypress environment
 
+#### Components
 
-## Usage
+* [accessibility-checker-engine/README](accessibility-checker-engine/README.md): accessibility rules and evaluation engine used by
+* [rule-server/README](rule-server/README.md): deploys the rules and engine for usage by the tools
 
-You can build all the tools from the root directory or build each individual tool separately.
+## Build
+
+Build all the tools and components from the root directory or build each individual tool separately.
 
 ### Build all the tools from root directory
 
-cd to equal-access if you are not already in the directory, then run:
+cd to equal-access if you are not already in the root directory, then run:
 
 ```bash
 $ npm install
 $ npm run build
 ```
 
-#### The following libraries or tools are built by running the above commands
+#### All the following libraries or tools are built by running the above commands
 
 * In the equal-access/accessibility-checker-engine/dist directory
   * ace-debug.js: uncompressed javascript to be used in a browser environment for development
@@ -83,9 +89,18 @@ $ npm run build
 
 ### Build each individual tool separately
 
-Please check README for each individual tool for its build instruction:
+Please check the README for each individual tool for its build instructions:
 
-* [accessibility-checker-engine](accessibility-checker-engine/README.md)
-* [accessibility-checker-extension](accessibility-checker-extension/README.md)
-* [accessibility-checker](accessibility-checker/README.md)
-* [karma-accessibility-checker](karma-accessibility-checker/README.md)
+* [accessibility-checker-engine/README](accessibility-checker-engine/README.md)
+* [accessibility-checker-extension/README](accessibility-checker-extension/README.md)
+* [accessibility-checker/README](accessibility-checker/README.md)
+* [cypress-accessibility-checker/README](accessibility-checker/README.md)
+* [karma-accessibility-checker/README](karma-accessibility-checker/README.md)
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

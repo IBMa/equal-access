@@ -1,10 +1,8 @@
 # cypress-accessibility-checker
 
-Cypress plugin for Accessibility Testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). The plugin works by injecting the accessibility-checker engine into the Cypress browser and scanning the page in context. Please see the `Usage` section in this README for more details.
+Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). 
 
-## Bugs and Issues
-
-All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`.
+The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next generation front end testing tool built for the modern web and scanning the page in context. Please see the `Usage` section in this README for more details.
 
 ## Requirements
 
@@ -14,7 +12,7 @@ All bugs or issues related to the cypress-accessibility-checker code can be crea
 
 Install the package as a devDependency.
 
-```
+```bash
 npm install cypress-accessibility-checker --save-dev
 ```
 
@@ -29,7 +27,8 @@ There are two setup steps you must complete in order for the Cypress tests to be
 ### 1. Add plugin
 
 In the `cypress/plugins/index.js` file located in your project, require the plugin and then register it with Cypress.
-```
+
+```js
 const aCheckerTasks = require('cypress-accessibility-checker/plugin');
 module.exports = (on, config) => {
   on('task', {
@@ -39,18 +38,20 @@ module.exports = (on, config) => {
 ```
 
 ### 2. Import commands
+
 In the `cypress/support/index.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
 
-```
+```js
 import 'cypress-accessibility-checker';
 ```
 
 ## Usage
-The usage of the commands maps directly to the description of the API located [in this readme](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
-The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration you have defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
+The commands maps directly to the description of the APIs located [in the accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
-```
+The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration that is defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
+
+```bash
 // Retrieves the compliance of the document then checks the results against the defined settings.
 // If there are issues when compared to the defined settings, it will fail the Cypress test.
 cy.getCompliance('my scan').assertCompliance()
@@ -72,12 +73,13 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
 
-You can chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
+Chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
 ### Using Baselines
+
 Baselines are a helpful feature of `accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for things like false positives or issues you plan on not fixing.
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker documentation](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](src/README.md) for details.
 
 ## Development
 
@@ -86,14 +88,23 @@ The baseline feature is documented and implemented as part of `accessibility-che
 There is a suite of tests located in the `test/` directory which execute each of the added Cypress commands. You can run this test suite by doing one of the following:
 
 * `npm test`: Executes the tests in a headless environment
-* `npm run test:open`: Opens the Cypress interactive mode. You must run `npm run test:start-http` in order for the tests to work.
-
+* `npm run test:open`: Opens the Cypress interactive mode. Run `npm run test:start-http` in order for the tests to work.
 
 ### Building
 
 The plugin does not really need to be built to be used. However there is a package script to group things for NPM.
 
-```
+```bash
 npm install
 npm run package:npm  or  npm run package:zip
 ```
+
+## Feedback and reporting bugs
+
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Acypress-accessibility-checker), tagged with `cypress-accessibility-checker`. 
+
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+
+## License
+
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
