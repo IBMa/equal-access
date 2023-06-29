@@ -1,11 +1,11 @@
 import * as puppeteer from "puppeteer";
-import { IConfigUnsupported } from "./api/IChecker";
-import { ACConfigManager } from "./ACConfigManager";
+import { ACConfigManager } from "./common/config/ACConfigManager";
+import { IConfigInternal } from "./common/config/IConfig";
 
 
 export class ACBrowserManager {
     static browserP;
-    static config: IConfigUnsupported;
+    static config: IConfigInternal;
     static numInits: 0;
     static pages: any[] = [];
 

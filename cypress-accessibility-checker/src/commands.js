@@ -17,14 +17,6 @@
 /// <reference types="Cypress" />
 
 const ACCommands = require("./lib/ACCommands");
-before(() => {
-    // To write to disk, we have to be outside of the browser, so that's a task
-    cy.task('accessibilityChecker', {
-        task: 'loadBaselines'
-    }).then((baselines) => {
-        return ACCommands.setBaselines(baselines);
-    });
-})
 
 after(() => {
     // To write to disk, we have to be outside of the browser, so that's a task
@@ -32,6 +24,19 @@ after(() => {
         task: 'onRunComplete'
     });
 })
+
+function init() {
+    let fileConfig;
+    return cy.task('accessibilityChecker', {
+        task: 'getConfig'
+    }, { log: false }).then((config) => {
+        fileConfig = config;
+        return cy.window({ log: false });
+    }).then(win => {
+        return ACCommands.initialize(win, fileConfig);
+    })
+}
+
 // Note: Command run within the browser. Tasks execute outside of the browser
 
 /**
@@ -44,43 +49,46 @@ after(() => {
 Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
     let scanObj = cyObj;
     let label = scanLabel;
-    let fileConfig;
-    cy.task('accessibilityChecker', {
-        task: 'getConfig'
-    }, { log: false }).then((config) => {
-        fileConfig = config;
-        return cy.window({log: false});
-    }).then(win => {
-        return ACCommands.initialize(win, fileConfig);
-    }).then(() => {
+    let startScan = new Date().getTime();
+    let url;
+    let title;
+    let report;
+    return init().then(() => {
         if (typeof cyObj === "string") {
             return cy.document({ log: false })
                 .then(doc => {
                     scanObj = doc;
                     label = cyObj;
                 })
-        }    
+        }
     }).then(() => {
-        return cy.wrap(ACCommands.getCompliance(scanObj, label), { log: false });        
-    }).then(result => {
-        let vCount = result.report.results.filter(issue => issue.level === "violation").length;
-        Cypress.log({
-            name: 'getCompliance',
-            // shorter name for the Command Log
-            displayName: 'getCompliance',
-            message: `${vCount} violations`,
-            consoleProps: () => {
-              // return an object which will
-              // print to dev tools console on click
-              return result
-            },
-          })
+        return cy.wrap(ACCommands.getCompliance(scanObj, label), { log: false });
+    }).then(engineReport => {
+        report = engineReport;
         // To write to disk, we have to be outside of the browser, so that's a task
+        return cy.title({ log: false });
+    }).then(pageTitle => {
+        title = pageTitle;
+        return cy.url({ log: false });
+    }).then(pageUrl => {
+        url = pageUrl;
         return cy.task('accessibilityChecker', {
             task: 'sendResultsToReporter',
-            data: { result, profile: `${Cypress.browser.displayName} ${Cypress.browser.version}` }
-        }, { log: false }).then(() => {
-            return result.report;
+            data: { profile: `${Cypress.browser.displayName} ${Cypress.browser.version}`, startScan, url, title, label, report }
+        }, { log: false }).then((updReport) => {
+            let vCount = updReport.results.filter(issue => issue.level === "violation").length;
+            Cypress.log({
+                name: 'getCompliance',
+                // shorter name for the Command Log
+                displayName: 'getCompliance',
+                message: ` ${vCount} violations`,
+                consoleProps: () => {
+                    // return an object which will
+                    // print to dev tools console on click
+                    return updReport
+                },
+            })
+            return cy.wrap(updReport, { log: false });
         });
     });
 });
@@ -90,84 +98,84 @@ Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
  * is logged then the test will have an assertion fail.
  */
 Cypress.Commands.add(
-  'assertCompliance',
-  { prevSubject: true },
-  (priorResults, failOnError = true) => {
-    return cy.wrap(ACCommands.assertCompliance(priorResults), { log: false });
-  }
+    'assertCompliance',
+    { prevSubject: true },
+    (priorResults, failOnError = true) => {
+        return init().then(() => {
+            return cy.task('accessibilityChecker', {
+                task: 'assertCompliance',
+                data: { report: priorResults }
+            }, { log: false });
+        });
+    }
 );
 
 /**
  * Retrieves the diff of the results for the given label against the baseline.
  */
 Cypress.Commands.add('getDiffResults', (label) => {
-    let fileConfig;
-    cy.task('accessibilityChecker', {
-        task: 'getConfig'
-    }, { log: false }).then((config) => {
-        fileConfig = config;
-        return cy.window({log: false});
-    }).then(win => {
-        return ACCommands.initialize(win, fileConfig);
-    }).then(() => {
-        return cy.wrap(ACCommands.getDiffResults(label), { log: false });
-    })
+    return init().then(() => {
+        return cy.task('accessibilityChecker', {
+            task: 'getDiffResults',
+            data: { label }
+        }, { log: false });
+    });
 });
 
 /**
  * Retrieves the baseline associated with the label.
  */
 Cypress.Commands.add('getBaseline', (label) => {
-  cy.task('accessibilityChecker', {
-    task: 'getBaseline',
-    data: { label }
-  }).then((baseline) => {
-    // return cy.wrap(baseline, { log: false });
-  });
+    return init().then(() => {
+        return cy.task('accessibilityChecker', {
+            task: 'getBaseline',
+            data: { label }
+        });
+    });
 });
 
 /**
  * Compare provided actual and expected objects and get the differences if there are any.
  */
 Cypress.Commands.add(
-  'diffResultsWithExpected',
-  (actual, expected, clean) => {
-    cy.task('accessibilityChecker', {
-      task: 'diffResultsWithExpected',
-      data: { actual, expected, clean }
-    }).then((diff) => {
-    //   return cy.wrap(diff, { log: false });
-    });
-  }
+    'diffResultsWithExpected',
+    (actual, expected, clean) => {
+        return init().then(() => {
+            return cy.task('accessibilityChecker', {
+                task: 'diffResultsWithExpected',
+                data: { actual, expected, clean }
+            });
+        });
+    }
 );
 
 /**
  * Retrieve the readable stringified representation of the scan results.
  */
 Cypress.Commands.add(
-  'stringifyResults',
-  { prevSubject: true },
-  (report) => {
-    // Send proper report property
-    const dataToSend = report.report ? report.report : report;
+    'stringifyResults',
+    { prevSubject: true },
+    (report) => {
+        return init().then(() => {
+            // Send proper report property
+            const dataToSend = report.report ? report.report : report;
 
-    cy.task('accessibilityChecker', {
-      task: 'stringifyResults',
-      data: { report: dataToSend }
-    }).then((result) => {
-    //   return cy.wrap(result, { log: false });
-    });
-  }
+            return cy.task('accessibilityChecker', {
+                task: 'stringifyResults',
+                data: { report: dataToSend }
+            });
+        });
+    }
 );
 
 /**
  * Retrieve the configuration object used by accessibility-checker.
  */
 Cypress.Commands.add('getACheckerConfig', () => {
-  cy.task('accessibilityChecker', {
-    task: 'getConfig',
-    data: {}
-  }).then((result) => {
-    // return cy.wrap(result, { log: false });
-  });
+    return init().then(() => {
+        return cy.task('accessibilityChecker', {
+            task: 'getConfig',
+            data: {}
+        });
+    });
 });

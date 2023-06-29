@@ -23,11 +23,52 @@
 
 // Load common/JSON Reporter variables/functions
 var ACReporterCommon = require('./ACReporterCommon');
-var ACReporterHTML = require('./ACReporterHTML');
-var ACReporterJSON = require('./ACReporterJSON');
-var ACReporterSlack = require('./ACReporterSlack');
-var ACMetricsLogger = require('../log/ACMetricsLogger');
-
+// var ACReporterHTML = require('./ACReporterHTML');
+// var ACReporterJSON = require('./ACReporterJSON');
+// var ACReporterSlack = require('./ACReporterSlack');
+// var ACMetricsLogger = require('../log/ACMetricsLogger');
+const { ReporterManager } = require('../common/report/ReporterManager');
+const { BaselineManager } = require('../common/report/BaselineManager');
+const { ACConfigManager } = require('../common/config/ACConfigManager');
+const path = require("path");
+const fs = require("fs");
+let Config;
+(async () => {
+    Config = await ACConfigManager.getConfig();
+})();
+let checker;
+class MyFS {
+    writeFileSync(filePath, data) {
+        if (Config) {
+            let outFile = this.prepFileSync(filePath);
+            fs.writeFileSync(outFile, data);
+        }
+    }
+    prepFileSync(filePath) {
+        if (Config) {
+            let outDir = path.resolve(Config.outputFolder);
+            let outFile = path.join(outDir, filePath);
+            if (!fs.existsSync(path.dirname(outFile))) {
+                fs.mkdirSync(path.dirname(outFile), { recursive: true });
+            }
+            return outFile;
+        } else {
+            return filePath;
+        }
+    }
+    log(...output) { console.debug(...output) }
+    info(...output) { console.info(...output) }
+    error(...output) { console.error(...output) }
+    loadBaseline(label) {
+        let baselineFile = path.join(path.join(process.cwd(), Config.baselineFolder), label+".json");
+        if (fs.existsSync(baselineFile)) {
+            return require(baselineFile);
+        }
+        return null;
+    }
+    getChecker() {}
+}
+let initialized = false;
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
  * the scan results, such as writing the page results and the summary to a JSON file. This reporter function
@@ -67,17 +108,17 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
      */
     this.onRunStart = function () {
         ACReporterCommon.log.debug("START 'onRunStart' function");
-        // Build a comma seperated list of all the policies selected
-        var policies = config.client.ACConfig.policies;
-        if (policies && policies !== null && policies !== undefined && typeof policies !== "undefined") {
-            policies = config.client.ACConfig.policies.join(",");
-        }
+        // // Build a comma seperated list of all the policies selected
+        // var policies = config.client.ACConfig.policies;
+        // if (policies && policies !== null && policies !== undefined && typeof policies !== "undefined") {
+        //     policies = config.client.ACConfig.policies.join(",");
+        // }
 
-        // Init the Metrics logger
-        metricsLogger = new ACMetricsLogger("karma-accessibility-checker", ACReporterCommon.log, policies);
+        // // Init the Metrics logger
+        // metricsLogger = new ACMetricsLogger("karma-accessibility-checker", ACReporterCommon.log, policies);
 
-        // Initialize the scan Summary object with details on the scan which performed.
-        ACReporterCommon.scanSummary = ACReporterCommon.initializeSummary(config);
+        // // Initialize the scan Summary object with details on the scan which performed.
+        // ACReporterCommon.scanSummary = ACReporterCommon.initializeSummary(config);
 
         ACReporterCommon.log.debug("END 'onRunStart' function");
     };
@@ -125,12 +166,6 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
     this.onSpecComplete = function (browser, result) {
         ACReporterCommon.log.debug("START 'onSpecComplete' function");
 
-        // Only perform the profiling if profiling was not disabled on purpose
-        if (config.ACProfile === null || typeof config.ACProfile === "undefined" || config.ACProfile) {
-            // Perform a profiling of the test run which will be pushed to the metrics server
-            //metricsLogger.profileV1(result.time);
-            metricsLogger.profileV2(result.time, browser.name);
-        }
 
         ACReporterCommon.log.debug("END 'onSpecComplete' function");
     };
@@ -161,37 +196,22 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
      */
     emitter.on('browser_info', function (browser, results) {
         try {
-            // Extract the scan results for the page
-            const scanResults = results.pageResults;
-            if (!scanResults) return;
+            let { startScan, url, pageTitle, label, engineReport, rulesets } = results;
+            // If no engineReport, if probably didn't come from "runScan"
+            if (!engineReport) return;
+            if (!initialized) {
+                let absApi = new MyFS();
+                ReporterManager.initialize(Config, absApi, rulesets);
+                BaselineManager.initialize(Config, absApi, {});
+                initialized = true;
+            }
+
             ACReporterCommon.log.debug("START 'browser_info' emitter function");
 
-            if (!scanResults) {
+            if (!engineReport.results) {
                 console.error("ERROR in browser_info. scanResults:", results);
             }
-            if (config && config.client && config.client.ACConfig && config.client.ACConfig.outputFormat) {
-                let formats = config.client.ACConfig.outputFormat;
-                if (!formats.includes("disable")) {
-                    if (formats.includes("html")) {
-                        ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
-                    }
-                    if (formats.includes("json")) {
-                        ACReporterJSON.savePageResults(config, scanResults);
-                    }
-                }
-            } else {
-                // Save the results of a single scan to a JSON file based on the label provided
-                ACReporterJSON.savePageResults(config, scanResults);
-                ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
-            }
-
-            // Update the overall summary object count object to include the new scan that was performed
-            ACReporterCommon.addToSummaryCount(scanResults.summary.counts);
-
-            // Save the summary of this scan into global space of this reporter, to be logged
-            // once the whole scan is done.
-            ACReporterCommon.addResultsToGlobal(scanResults);
-
+            ReporterManager.addEngineReport("karma-accessibility-checker", startScan, url, pageTitle, label, engineReport);
             ACReporterCommon.log.debug("END 'browser_info' emitter function");
         } catch (err) {
             console.error(err);
@@ -210,23 +230,6 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
     this.onRunComplete = function (browser, result) {
         ACReporterCommon.log.debug("START 'onRunComplete' functions");
 
-
-        // Add End time when the whole karma run is done
-        // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        ACReporterCommon.scanSummary.endReport = Date.now();
-
-        // Save the result object into ACReporterCommon for later access.
-        ACReporterCommon.result = result;
-        // In case theres error detected on the result do not print summary
-        if (result.error) {
-            ACReporterCommon.log.error("ERROR : unexpected error detected.");
-            var timeStart = ACReporterCommon.scanSummary.startReport;
-            ACReporterCommon.scanSummary = {};
-            ACReporterCommon.scanSummary.startReport = timeStart;
-            ACReporterCommon.scanSummary.error = "ERROR : unexpected error detected. For more details, go to console";
-        }
-        // Save summary object to a JSON file.
-        ACReporterJSON.saveSummary(config, ACReporterCommon.scanSummary);
 
         ACReporterCommon.log.debug("END 'onRunComplete' function");
     };
@@ -257,13 +260,17 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
         if (config.client.ACConfig.notifications && config.client.ACConfig.notifications.slack && !errorOccured && (isTravis || (!isTravis && enableSlackNotificationForLocal))) {
             // Create a done wrapper function as we need to upload the metrics logs as well after the slack notification has been dispatched.
             var doneWrapper = function () {
-                metricsLogger.sendLogsV2(done, config.client.ACConfig.rulePack);
+                ReporterManager.generateSummaries().then(() => {
+                    done();
+                })
             };
 
             ACReporterSlack.sendSlackNotificationWithSummary(ACReporterCommon.scanSummary, config.client.ACConfig.notifications.slack, config, ACReporterCommon.result, doneWrapper);
         } else {
             // Make sure to call done(), in the case that no slack notification is needed
-            metricsLogger.sendLogsV2(done, config.client.ACConfig.rulePack);
+            ReporterManager.generateSummaries().then(() => {
+                done();
+            })
         }
 
         ACReporterCommon.log.debug("END 'exit' emitter function");
