@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let table_summary_redundant: Rule = {
     id: "table_summary_redundant",
@@ -61,7 +62,7 @@ export let table_summary_redundant: Rule = {
                 let summaryNodeId = summaryNodeIds[i];
                 if (summaryNodeId) {
                     let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
-                    if (summaryNode) {
+                    if (summaryNode && !DOMUtil.sameNode(summaryNode,ruleContext)) {
                         summaryNodeConcat += " " + RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
                     }
                 }

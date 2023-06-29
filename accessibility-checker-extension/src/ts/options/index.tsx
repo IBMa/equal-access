@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-    
+import { BrowserDetection } from "../util/browserDetection";
 import "../styles/index.scss";
 import { OptionsApp } from './OptionsApp';
 
@@ -26,6 +26,9 @@ class PageApp extends React.Component<{}, {}> {
     }
 }
 
+let element = document.getElementById('pageapp-root');
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"white")
+
 ReactDOM.render(<PageApp />
-    , document.getElementById('pageapp-root'));
+    , element);
     

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <div role="doc-backlink" aria-label="radio items"></div>
+  <div role="doc-backlink"></div>
+  <div role="doc-biblioentry">First text</div>
+  <div role="doc-bibliography">Second text</div>
+  <div role="doc-biblioref"></div>
+  <div role="doc-biblioref">Third text</div>
+
+  <div role="doc-glossref " aria-label="radio items"></div>
+  <div role="doc-glossref ">Forth text</div>
+  <div role="doc-glossref "></div>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists","aria_accessiblename_exists"],
+      results: [
+      
+      ]
+    };
+  </script>
+</body>
+</html>

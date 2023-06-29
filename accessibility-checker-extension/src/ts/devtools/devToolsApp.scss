@@ -12,8 +12,15 @@ body {
     .primaryColumn {
         background-color: var(--cds-background);
     }
+
+    // .primaryPanelColumn {
+        
+    //     border-right: solid $gray-40 2px;
+       
+    // }
+
     .secondaryColumn {
-        background-color: $gray-10;
+        // background-color: $gray-10;
         .cds--subgrid {
             >.cds--css-grid-column:first-of-type {
                 margin-left: 2rem;
@@ -40,5 +47,4 @@ body {
             }
         }
     }
-
 }
