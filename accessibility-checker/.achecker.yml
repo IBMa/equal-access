@@ -1,6 +1,6 @@
 # Custom Internal settings for testing purposes only
 
-# optional - Specify one rule archive which consist diffrent type of policies.
+# optional - Specify one rule archive which consist different type of policies.
 # Default: latest
 ruleServer: https://localhost:9445/rules
 ruleArchive: preview
@@ -16,7 +16,7 @@ policies:
 
 # optional - Specify one or many violation levels on which to fail the test
 #            i.e. If specified violation then the testcase will only fail if
-#                 a violation is found uring the scan.
+#                 a violation is found during the scan.
 # i.e. failLevels: violation
 # i.e. failLevels: violation,potential violation or refer to below as a list
 # Default: violation, potentialviolation
