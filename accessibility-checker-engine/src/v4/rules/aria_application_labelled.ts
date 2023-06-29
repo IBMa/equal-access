@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_application_labelled: Rule = {
     id: "aria_application_labelled",
@@ -33,8 +34,8 @@ export let aria_application_labelled: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Element with \"application\" role does not have a label",
-            "group": "An element with \"application\" role must have a label that describes its purpose"
+            "Fail_1": "Element with \"application\" role does not have an accessible name",
+            "group": "An element with \"application\" role must have an accessible name that describes its purpose"
         }
     },
     rulesets: [{
@@ -46,7 +47,8 @@ export let aria_application_labelled: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = RPTUtil.hasAriaLabel(ruleContext);
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
         // return new ValidationResult(passed, [ruleContext], 'role', '', []);
         if (!passed) {
             return RuleFail("Fail_1");
