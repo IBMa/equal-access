@@ -94,6 +94,7 @@ describe("JSON Structure Verification Zombie", function () {
 
                     // Update all the items in the results which dynamically change over scans to the values
                     // already defined in the baseline file.
+                    report.ruleTime = expected.ruleTime = 999;
                     report.summary.scanTime = expected.summary.scanTime = 999;
                     report.summary.startScan = expected.summary.startScan = 99999999999;
                     report.scanID = expected.scanID = "uuid";

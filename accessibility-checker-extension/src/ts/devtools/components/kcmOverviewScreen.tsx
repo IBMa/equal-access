@@ -19,6 +19,7 @@ import React from "react";
 import { Column, Grid, Checkbox, Theme } from '@carbon/react';
 import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
+import { BrowserDetection } from '../../util/browserDetection';
 
 import "./kcmOverviewScreen.scss";
 
@@ -49,6 +50,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
     }
 
     render() {
+        BrowserDetection.setDarkLight();
         let showAgainChecked: boolean = this.state.settings ? !this.state.settings?.tabStopAlerts : false;
         return <aside className="kcmOverview">
             {/* KCM Overview Title */}
@@ -130,7 +132,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     </div>
                     <div style={{clear: "both", marginTop: "1rem"}} />
                     <div className="iconText">
-                        <Theme theme="g90" className="iconBox">
+                        <Theme theme="g100" className="iconBox">
                             <KeyboardOff size={16} />
                         </Theme>
                         Click on the keyboard icon to return to the regular view.
@@ -157,6 +159,6 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     </div>
                 </Column>
             </Grid>
-        </aside>;
+        </aside>
     }
 }
