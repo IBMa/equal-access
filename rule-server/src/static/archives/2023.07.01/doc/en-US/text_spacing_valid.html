@@ -1,0 +1,102 @@
+<html lang="en-US">
+<head>
+    <title>text_spacing_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"CSS !important is not used in inline style to control letter or word spacing or line height","group":"CSS !important should not be used in inline style to control letter or word spacing or line height","fail_letter_spacing_style":"CSS !important should not be used in inline ‘letter-spacing’ style","fail_word_spacing_style":"CSS !important should not be used in inline ‘word-spacing’ style","fail_line_height_style":"CSS !important should not be used in inline ‘line-height’ style"}};
+        RULE_ID = "text_spacing_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+End users need to be able to adjust text, word, and line spacing to make it easier to read.
+And when users make adjustments the content needs to still be fully usable and understandable (e.g. no truncation).
+Assistive technologies cannot adjust spacing when authors use the CSS `!important` attribute.
+
+Authors must ensure the content can be transformed (such as through user style sheets) to attain all of the following specific requirements without loss of content or functionality:
+* Line height (line spacing) to at least 1.5 times the font size
+* Spacing following paragraphs to at least 2 times the font size
+* Letter spacing (tracking) to at least 0.12 times the font size
+* Word spacing to at least 0.16 times the font size
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Use CSS to control spacing within a word, between words, and between lines
+* Avoid using the CSS `!important` style attribute that prevents users from adjusting the spacing
+* **Or**, provide a custom mechanism on the page to allow users to adjust the spacing
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.4.12 Text Spacing](https://www.ibm.com/able/requirements/requirements/#1_4_12)
+* [WCAG technique C35](https://www.w3.org/WAI/WCAG21/Techniques/css/C35)
+* [WCAG technique C36](https://www.w3.org/WAI/WCAG21/Techniques/css/C36)
+* [Design - Responsive reflow](https://www.ibm.com/able/toolkit/design/visual/#responsive-reflow)
+* [Verify - Resize and re-space text](https://www.ibm.com/able/toolkit/verify/manual/#resizetext)
+* [Verify - Reflow text](https://www.ibm.com/able/toolkit/verify/manual/#reflow)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People with reading disabilities
+ * People who view interfaces using an adapted layout
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
