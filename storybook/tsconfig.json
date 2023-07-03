@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "jsx": "react",
+    "lib": ["es2020", "dom"],
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "target": "ES2020"
+  },
+  "include": ["src/**/*"]
+}
