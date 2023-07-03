@@ -1,0 +1,195 @@
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+@import url("https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css");
+@import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
+@import url("https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/themes.css");
+
+bx-list-item>code, p>code, td>code {
+    background-color: var(--cds-layer);
+    border-radius: 4px;
+    bottom: 0.0625em;
+    color: var(--cds-text-primary);
+    display: inline;
+    font-size: .75rem;
+    font-size: .875em;
+    font-weight: 400;
+    letter-spacing: .32px;
+    line-height: 1.33333;
+    padding: 0 0.5em;
+    position: relative;
+}
+
+.toolhelp a {
+    color: var(--cds-link-primary)
+}
+
+.toolHelp .toolMain p ~ p {
+    margin-top: .5rem;
+}
+
+.toolHelp .toolHead h3 {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.toolHelp .toolHead .issueLevel {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.toolHelp .toolHead #ruleMessage {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.toolHelp .toolHead #groupLabel {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+/* productive-heading-03 */
+.toolHelp .toolMain h3 {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.toolHelp .toolSide .bx--list__item {
+    color: black;
+    font-size: 0.875rem;
+    line-height: 18px;
+}
+
+/* productive-heading-03 */
+.toolHelp .toolSide h3 {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@media (min-width: 42rem) {
+    html, body, .toolHelp .bx--row:nth-child(2) {
+       height: 100%;
+    }
+}
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--cds-text-primary);
+    background-color: var(--cds-ui-background);
+}
+
+.toolHelp {
+    padding: 0px;
+    margin: 0px;
+    max-width: 100%;
+    background-color: #e8daff;
+}
+
+.toolHelp p {
+    font-family: 'IBM Plex Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+
+letter-spacing: 0.16px;
+}
+
+.dds-theme-zone-g90 .toolHelp {
+    background-color: #31135E;
+}
+
+.toolHelp .bx--row {
+    margin: 0px;
+}
+
+.toolHelp .toolHead {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+.toolHelp .toolMain {
+    background-color: var(--cds-ui-background);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: solid var(--cds-text-primary) 1px;
+}
+.toolHelp .toolMain h2 {
+    margin-top: 32px;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolMain h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolMain p {
+    margin-top: 0px;
+}
+
+.toolHelp .toolSide {
+    padding: 16px 16px 16px 32px;
+    background-color: var(--cds-ui-background);;
+    color: var(--cds-text-primary);
+    border-top: solid var(--cds-text-primary) 1px;
+}
+@media (min-width: 42rem) {
+    .toolHelp .toolSide {
+        border-left: solid var(--cds-text-primary) 1px;
+    }
+}
+
+.toolHelp .toolSide h2 {
+    margin-top: 32px;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolSide h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolSide p {
+    margin-top: 0px;
+}
+@media (min-width: 66rem) {
+    .toolHelp .toolMain p, bx-list-item {
+        max-width: 66.66%;
+    }
+}
+bx-code-snippet[type="multi"]::after {
+    height: 0px;
+}
+
+#ruleInfo {
+    margin-top: 1rem;
+}
+
+#ruleInfo p {
+    font-size: 14px;
+}
