@@ -1,2 +1,3 @@
 src/lib/engine
 src/lib/reporters/genReport.js
+src/lib/common
