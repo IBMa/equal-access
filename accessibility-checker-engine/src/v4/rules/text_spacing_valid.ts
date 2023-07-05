@@ -110,7 +110,7 @@ export let text_spacing_valid: Rule = {
                         let parsed = word_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            if (pixels != null && pixels/font_size < 0.16)
+                            if (pixels !== null && pixels/font_size < 0.16)
                                 ret.push(RuleFail("fail_word_spacing_style"));
                             else
                                 ret.push(RulePass("pass")); 
@@ -145,7 +145,7 @@ export let text_spacing_valid: Rule = {
                         let parsed = letter_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            if (pixels != null && pixels/font_size < 0.12)
+                            if (pixels !== null && pixels/font_size < 0.12)
                                 ret.push(RuleFail("fail_letter_spacing_style"));
                             else
                                 ret.push(RulePass("pass"));
@@ -187,7 +187,7 @@ export let text_spacing_valid: Rule = {
                                 ret.push(RulePass("pass"));
                         } else {
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            if (pixels != null && pixels/font_size < 1.5)
+                            if (pixels !== null && pixels/font_size < 1.5)
                                 ret.push(RuleFail("fail_line_height_style"));
                             else
                                 ret.push(RulePass("pass"));
