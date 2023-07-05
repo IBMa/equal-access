@@ -48,6 +48,9 @@ export class ARIADefinitions {
         , 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'
     ];
 
+    //properties contains id(s) that refer to other element(s)
+    static referenceProperties : string[] = ["aria-owns", "aria-controls", "aria-describedby", "aria-labelledby", "aria-flowto", "aria-activedescendant"];
+
     // deprecated roles
     static globalDeprecatedRoles : string[] = [
         'directory', 'doc-biblioentry', 'doc-endnote'
@@ -436,6 +439,18 @@ export class ARIADefinitions {
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
+        "comment": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameRequired: false,
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
+        },
+
         "contentinfo": {
             container: null,
             props: null,
@@ -454,7 +469,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"],
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -991,7 +1007,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             nameRequired: false,
-            nameFrom: ["contents", "author"]
+            nameFrom: ["author"]
         },
         
         "graphics-symbol": {
@@ -1143,6 +1159,18 @@ export class ARIADefinitions {
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
+        "mark": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "mark",
+            roleType: "structure",
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
+        },
+
         "marquee": {
             container: null,
             props: null,
@@ -1260,6 +1288,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            nameFrom: ["prohibited"],
             prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -1307,6 +1336,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            nameFrom: ["prohibited"],
             prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -1484,6 +1514,7 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -1495,6 +1526,19 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
+        },
+
+        "suggestion": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -1506,6 +1550,7 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -1529,6 +1574,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
+            nameRequired: true,
             nameFrom: ["author", "contents"],
             presentationalChildren: true,
             deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
@@ -1577,7 +1623,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "dfn",
             roleType: "structure",
-            nameFrom: ["author"],
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -1599,7 +1646,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"],
+            nameFrom: ["prohibited"],
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 

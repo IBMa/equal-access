@@ -17,7 +17,9 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
+import beeLogoDark from "../../assets/BE_for_DarkMode.svg";
+import beeLogoLight from "../../assets/BE_for_LightMode.svg";
+import { BrowserDetection } from '../util/browserDetection';
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
@@ -33,12 +35,7 @@ import tab from "../../assets/tab.svg";
 import upDown from "../../assets/up_down.svg";
 import { DocPage } from "./components/DocPage";
 import "./usingAC.scss";
-import {
-    Link,
-    ListItem,
-    OrderedList,
-    UnorderedList
-} from "@carbon/react";
+import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
 
 interface UsingACAppState { }
 
@@ -46,7 +43,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     state: UsingACAppState = {};
 
     render() {
-        let aside = <>
+        let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
             <OrderedList>
                 <ListItem><Link href="#install">How to install</Link></ListItem>
@@ -68,10 +65,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
             </OrderedList>
             <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">quick guide</Link>
-            </p></>
+            </p>
+            {/* </Theme> */}
+            </>)
 
-        return (<DocPage aside={aside} sm={4} md={8} lg={8}>
-
+        return (
+            
+            <DocPage aside={aside} sm={4} md={8} lg={8}>
             <main
                 aria-label="User guide details"
             >
@@ -530,7 +530,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         In the browser tool bar, select the IBM Equal Access
                         Accessibility Checker icon as shown {" "}
                         <img
-                            src={beeLogoUrl}
+                            src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight}
                             width="16px"
                             height="16px"
                             alt="Accessibility checker application icon"
@@ -814,8 +814,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="keyboard tab stop indicators stacked on amazon's carousel banner"
                     />
                 </p>
+                
             </main>
+            {/* </Theme> */}
         </DocPage>
+        
         );
     }
 }

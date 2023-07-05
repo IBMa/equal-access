@@ -14,10 +14,11 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_region_labelled: Rule = {
     id: "aria_region_labelled",
-    context: "dom:*[role], dom:section",
+    context: "aria:region",
     refactor: {
         "Rpt_Aria_RegionLabel_Implicit": {
             "Pass_0": "Pass_0",
@@ -35,9 +36,9 @@ export let aria_region_labelled: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Section element with an implicit \"region\" role is not labeled with an 'aria-label' or 'aria-labelledby'",
+            "Fail_1": "Element with a \"region\" role does not have an accessible name",
             "Fail_2": "The element with \"region\" role is not labeled with an 'aria-label' or 'aria-labelledby'",
-            "group": "Each element with \"region\" role must have a label that describes its purpose"
+            "group": "Each element with \"region\" role must have an accessible name that describes its purpose"
         }
     },
     rulesets: [{
@@ -49,26 +50,13 @@ export let aria_region_labelled: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let tagName = ruleContext.tagName.toLowerCase();
-
-        if (
-            tagName === "section" &&
-            !RPTUtil.hasRole(ruleContext, "region", false)
-        ) {
-            return null;
-        }
-        if (
-            tagName !== "section" &&
-            !RPTUtil.hasRoleInSemantics(ruleContext, "region")
-        ) {
-            return null;
-        }
-
-        let passed = RPTUtil.hasAriaLabel(ruleContext);
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
         if (passed) {
             return RulePass("Pass_0");
         } else {
-            return tagName === "section" ? RuleFail("Fail_1") : RuleFail("Fail_2");
+            return RuleFail("Fail_1");
         }
     }
 }
