@@ -7,9 +7,10 @@
   "scripts": {
     "lint": "eslint src",
     "test": "mocha -R dot test/mocha/**/*.test.js test/a11y-rule-test-able/*.test.js",
-    "build": "npm run build:report && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
+    "build": "npm run build:common && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
     "build:ts": "npx tsc -p tsconfig.json && npx tsc -p tsconfig-cjs.json",
-    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/reporters/genReport.ts)",
+    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/common/report/genReport.ts)",
+    "build:common": "shx rm -rf ./src-ts/lib/common && shx cp -R ../common/module/src ./src-ts/lib/common && npm run build:report",
     "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/bin/*.js && cd package && npm pack",
     "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/bin/*.js"
   },
@@ -26,8 +27,7 @@
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
     "puppeteer": "^20.2.1",
-    "string-hash": "^1.1.3",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.21.1",
@@ -60,9 +60,9 @@
     "rimraf": "^3.0.2",
     "selenium-webdriver": "4.9.2",
     "serve-index": "^1.9.1",
-    "shx": "^0.3.3",
+    "shx": "^0.3.4",
     "tmp": "0.2.1",
-    "typescript": "^4.5.4",
+    "typescript": "^5.1.3",
     "url-exists": "^1.0.3",
     "ws": "^8.3.0",
     "xml2js": "^0.4.23",

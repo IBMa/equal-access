@@ -1,9 +1,14 @@
-import { ICheckerReport, ICheckerResult, IConfigUnsupported } from "./api/IChecker.js";
-import { ACBrowserManager } from "./ACBrowserManager.js";
-import { ACConfigManager } from "./ACConfigManager.js";
-import { ACEngineManager } from "./ACEngineManager.js";
-import { ACReportManager } from "./ACReportManager.js";
-import { Report } from "./api/IEngine.js";
+import { ICheckerReport, ICheckerResult } from "./api/IChecker";
+import { ACBrowserManager } from "./ACBrowserManager";
+import { ACEngineManager } from "./ACEngineManager";
+import { ACConfigManager } from "./common/config/ACConfigManager";
+import { IConfigInternal } from "./common/config/IConfig";
+import { ReporterManager } from "./common/report/ReporterManager";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
+import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { dirname, join, resolve as pathResolve } from "path";
+import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
 
 declare var after;
 
@@ -19,32 +24,79 @@ let logger = {
     create: loggerCreate
 };
 
-let Config : IConfigUnsupported;
+let Config : IConfigInternal;
 let checkPolicy = false;
+
+class MyFS implements IAbstractAPI {
+    writeFileSync(filePath: string, data: string | Buffer) {
+        let outFile = this.prepFileSync(filePath);
+        writeFileSync(outFile, data);
+    }
+    prepFileSync(filePath: string) : string {
+        let outDir = pathResolve(Config.outputFolder);
+        let outFile = join(outDir, filePath);
+        if (!existsSync(dirname(outFile))) {
+            mkdirSync(dirname(outFile), { recursive: true });
+        }
+        return outFile;
+    }
+    log(...output) { Config && Config.DEBUG && console.debug(...output) }
+    info(...output) { Config && Config.DEBUG && console.info(...output) }
+    error(...output) { Config && Config.DEBUG && console.error(...output) }
+    loadBaseline(label) {
+        let baselineFile = join(join(process.cwd(), Config.baselineFolder), label+".json");
+        if (!existsSync(baselineFile)) return null;
+        return require(baselineFile);
+    }
+    getChecker() {
+        return ACEngineManager.getChecker();
+    }
+}
 
 async function initialize() {
     if (Config) return;
     Config = await ACConfigManager.getConfigUnsupported();
-    await ACReportManager.initialize(logger);
-    return ACEngineManager.loadEngineLocal();
+    await ACEngineManager.loadEngineLocal();
+    let absAPI = new MyFS();
+    let refactorMap : RefactorMap = {}
+    let rules = ACEngineManager.getRulesSync();
+    for (const rule of rules) {
+        if (rule.refactor) {
+            for (const key in rule.refactor) {
+                refactorMap[key] = rule;
+            }
+        }
+    }
+    ReporterManager.initialize(Config, absAPI, await ACEngineManager.getRulesets());
+    BaselineManager.initialize(Config, absAPI, refactorMap);
 }
 
 (async () => {
     try {
         // If cucumber is the platform...
         let module = (await import("cucumber"!));
+        let {AfterAll} = require('cucumber');
         if (module.default.AfterAll) {
             module.default.AfterAll(function (done) {
-                const rulePack = `${Config.rulePack}`;
-                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
-            });        
+                // const rulePack = `${Config.rulePack}`;
+                initialize()
+                    .then(() => ReporterManager.generateSummaries())
+                    .then(() => ACBrowserManager.close())
+                    .then(done);
+            });
         }
     } catch (e) {
         if (typeof (after) !== "undefined") {
             after(function (done) {
                 if (Config) {
-                    const rulePack = `${Config.rulePack}/ace`;
-                    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+                    if (this.timeout) {
+                        this.timeout(300000);
+                    }
+                    // const rulePack = `${Config.rulePack}/ace`;
+                    initialize()
+                        .then(() => ReporterManager.generateSummaries())
+                        .then(() => ACBrowserManager.close())
+                        .then(done);
                 } else {
                     done();
                 }
@@ -52,8 +104,8 @@ async function initialize() {
         } else {
             process.on('beforeExit', async function () {
                 if (Config) {
-                    const rulePack = `${Config.rulePack}/ace`;
-                    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
+                    initialize()
+                        .then(() => ReporterManager.generateSummaries())
                     ACBrowserManager.close();
                 }
             });
@@ -152,57 +204,6 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
         throw new Error("Invalid content: " + content);
     }
     await ACEngineManager.loadEngine(parsed);
-    // In the case that the label is null or undefined, throw an error using the karma API
-    // console.error with the message of the error.
-    if (label === null || typeof label === "undefined" || label === undefined) {
-
-        // Variable Decleration
-        let testcaseWhichIsMissingRequiredLabel = null;
-        let generalErrorMessageLabelNotUnique = "\n[Error] labelNotProvided: Label must be provided when calling aChecker.getCompliance.";
-
-        // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
-        // This way we can make it the error more descriptive and would help the user identify where the issues is.
-        // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
-        // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
-        // testcase which called this function.
-        try {
-            // Throw Error() object
-            throw new Error();
-        } catch (exception) {
-            // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
-            testcaseWhichIsMissingRequiredLabel = exception.stack.split("\n")[1];
-
-            // Call the Karma error API, to send message to the Karma server that there was an error on the client side
-            console.error("Label was not provided at: " + testcaseWhichIsMissingRequiredLabel + generalErrorMessageLabelNotUnique);
-        }
-    }
-
-    // Check to make sure that the label that is provided is unique with all the other ones
-    // that we have gone through.
-    let labelUnique = ACReportManager.isLabelUnique(label);
-
-    // In the case that the label is not unique
-    if (!labelUnique) {
-        // Variable Decleration dependencies/tools-rules-html/v2/a11y/test/g471/Table-DataNoSummaryARIA.html
-        let testcaseDoesNotUseUniqueLabel = null;
-        let generalErrorMessageLabelNotUnique = "\n[Error] labelNotUnique: Label provided to aChecker.getCompliance should be unique across all testcases in a single accessibility-checker session.";
-
-        // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
-        // This way we can make it the error more descriptive and would help the user identify where the issues is.
-        // We have to build and throw an Error() object and then using the try/catch to catch this error and then extract the
-        // stack and parse it to get the 2nd element in the stack which will be the caller of this function which will be the
-        // testcase which called this function.
-        try {
-            // Throw Error() object
-            throw new Error();
-        } catch (exception) {
-            // Extract the stack trace from the error object and parse it to get the single one caller up which will be the 2nd index
-            testcaseDoesNotUseUniqueLabel = exception.stack.split("\n")[1];
-
-            // Call the Karma error API, to send message to the Karma server that there was an error on the client side
-            console.error("Label \"" + label + "\" provided at: " + testcaseDoesNotUseUniqueLabel + " is not unique." + generalErrorMessageLabelNotUnique);
-        }
-    }
 
     // Get the Data when the scan is started
     // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
@@ -260,12 +261,7 @@ cb(e);
             })
         }
 
-        let report : Report = await browser.executeAsyncScript(scriptStr);
-        if (!report.results || typeof report.results.length === "undefined") {
-            console.error("Failed to get the report: " + JSON.stringify(report));
-            throw new Error("Failed to get the report: " + JSON.stringify(report));
-        }
-        report = ACReportManager.setLevels(report);
+        let report : IEngineReport = await browser.executeAsyncScript(scriptStr);
         const getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
         if (curPol != null && !checkPolicy) {
             checkPolicy = true;
@@ -274,43 +270,17 @@ cb(e);
         }
 
         // If there is something to report...
-        let finalReport : ICheckerReport;
-        
-        // Add URL to the result object
-        const url = await browser.getCurrentUrl();
-        let origReport = JSON.parse(JSON.stringify(report));
-        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
-
-        // Filter the violations based on the reportLevels
-        report = ACReportManager.filterViolations(report);
-
-        // Add the count object, to data a recount after the filtering of violations is done.
-        let counts = ACReportManager.getCounts(report);
-
-        // Add the violation count to global summary object
-        ACReportManager.addToSummaryCount(counts);
-
-        // Build the report object for this scan, to follow a specific format. Refer to the
-        // function prolog for more information on the object creation.
-        finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
-
-        // Add the scan results to global karma result object which can be accessed when users testcase
-        // finishes, user can also access it to alter it for any reason.
-        ACReportManager.addResultsToGlobal(finalReport);
-
-        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-        // saved to a file by the server side reporter.
-        ACReportManager.sendResultsToReporter(origReport, finalReport, "Selenium");
-
-        if (Config.captureScreenshots && browser.takeScreenshot) {
-            const image = await browser.takeScreenshot();
-            let screenshotResult = {
-                image: image,
-                label: label,
-                scanID: finalReport.scanID
-            };
-
-            ACReportManager.sendScreenShotToReporter(screenshotResult);
+        let finalReport : IBaselineReport;
+        if (report.results) {
+            // Add URL to the result object
+            const url = await browser.getCurrentUrl();
+            const title = await browser.getTitle();
+            let origReport : IEngineReport = JSON.parse(JSON.stringify(report));
+            if (Config.captureScreenshots && browser.takeScreenshot) {
+                const image = await browser.takeScreenshot();
+                origReport.screenshot = image;
+            }
+            finalReport = ReporterManager.addEngineReport("Selenium", startScan, url, title, label, origReport);
         }
         
         return {
@@ -328,7 +298,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let report : Report = await page.evaluate(({ policies, customRulesets }) => {
+        let report : IEngineReport = await page.evaluate(({ policies, customRulesets }) => {
             
             let checker = new (window as any).ace_ibma.Checker();
             customRulesets.forEach((rs) => checker.addRuleset(rs));
@@ -343,61 +313,28 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                 }, 0)
             })
         }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
-
-        if (!report.results || typeof report.results.length === "undefined") {
-            console.error("Failed to get the report: " + JSON.stringify(report));
-            throw new Error("Failed to get the report: " + JSON.stringify(report));
-        }
-
-        report = ACReportManager.setLevels(report);
         if (curPol != null && !checkPolicy) {
             const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.evaluate("new window.ace_ibma.Checker().rulesetIds"));
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }
 
-        let finalReport: ICheckerReport;
+        let finalReport: IBaselineReport;
 
         // If there is something to report...
-        
-        let url = await page.evaluate("document.location.href");
+        if (report.results) {
+            let url = await page.evaluate("document.location.href");
+            let title = await page.evaluate("document.location.title");
+            let origReport = JSON.parse(JSON.stringify(report));
 
-        let origReport = JSON.parse(JSON.stringify(report));
-        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
-
-        // Filter the violations based on the reporLevels
-        report = ACReportManager.filterViolations(report);
-
-        // Add the count object, to data a recount after the filtering of violations is done.
-        let counts = ACReportManager.getCounts(report);
-
-        // Add the violation count to global summary object
-        ACReportManager.addToSummaryCount(counts);
-
-        // Build the report object for this scan, to follow a specific format. Refer to the
-        // function prolog for more information on the object creation.
-        finalReport = ACReportManager.buildReport(report, counts, url, label, startScan);
-
-        // Add the scan results to global karma result object which can be accessed when users testcase
-        // finishes, user can also access it to alter it for any reason.
-        ACReportManager.addResultsToGlobal(finalReport);
-
-        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-        // saved to a file by the server side reporter.
-        ACReportManager.sendResultsToReporter(origReport, finalReport, "Puppeteer");
-
-        if (Config.captureScreenshots) {
-            let image = await page.screenshot({
-                fullPage: true,
-                encoding: "base64"
-            });
-            let screenshotResult = {
-                image: image,
-                label: label,
-                scanID: Config.scanID
-            };
-
-            ACReportManager.sendScreenShotToReporter(screenshotResult);
+            if (Config.captureScreenshots) {
+                let image = await page.screenshot({
+                    fullPage: true,
+                    encoding: "base64"
+                });
+                origReport.screenshot = image;
+            }
+            finalReport = ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
         }
         
         page.aceBusy = false;
@@ -417,7 +354,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
         ACEngineManager.customRulesets.forEach((rs) => checker.addRuleset(rs));
-        let report : Report = await checker.check(parsed, Config.policies)
+        let report : IEngineReport = await checker.check(parsed, Config.policies)
             .then(function (report) {
                 for (const result of report.results) {
                     delete result.node;
@@ -425,47 +362,22 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
                 return report;
             })
 
-        if (!report.results || typeof report.results.length === "undefined") {
-            console.error("Failed to get the report: " + JSON.stringify(report));
-            throw new Error("Failed to get the report: " + JSON.stringify(report));
-        }
-
-        report = ACReportManager.setLevels(report);
-
         if (curPol != null && !checkPolicy) {
             let valPolicies = checker.rulesetIds;
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }
 
-        // If there is something to report...
         let finalReport: ICheckerReport;
-        let url = parsed.location && parsed.location.href;
 
-        let origReport = JSON.parse(JSON.stringify(report));
-        origReport = ACReportManager.buildReport(origReport, {}, url, label, startScan);
+        // If there is something to report...
+        if (report.results) {
+            let url = parsed.location && parsed.location.href;
 
-        // Filter the violations based on the reporLevels
-        report = ACReportManager.filterViolations(report);
+            let origReport = JSON.parse(JSON.stringify(report));
+            finalReport = ReporterManager.addEngineReport("Native", startScan, url, parsed.title, label, origReport);
+        }
 
-        // Add the count object, to data a recount after the filtering of violations is done.
-        let counts = ACReportManager.getCounts(report);
-
-        // Add the violation count to global summary object
-        ACReportManager.addToSummaryCount(counts);
-
-        // Build the report object for this scan, to follow a specific format. Refer to the
-        // function prolog for more information on the object creation.
-        finalReport = ACReportManager.buildReport(report, counts, URL, label, startScan);
-
-        // Add the scan results to global karma result object which can be accessed when users testcase
-        // finishes, user can also access it to alter it for any reason.
-        ACReportManager.addResultsToGlobal(finalReport);
-
-        // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-        // saved to a file by the server side reporter.
-        ACReportManager.sendResultsToReporter(origReport, finalReport, "Native");
-        
         return {
             "report": finalReport
         };

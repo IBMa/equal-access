@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let input_label_visible: Rule = {
     id: "input_label_visible",
@@ -125,7 +126,7 @@ export let input_label_visible: Rule = {
             let labelValues = theLabel.split(/\s+/);
             for (let j = 0; j < labelValues.length; ++j) {
                 let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
-                if (elementById && VisUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
+                if (elementById && !DOMUtil.sameNode(elementById, ruleContext) && VisUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
                     passed = true;
                     break;
                 }

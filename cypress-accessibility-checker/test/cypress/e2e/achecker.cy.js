@@ -22,20 +22,20 @@ context('Accessibility checker tests', () => {
         cy.visit('no-violations.html')
             .getCompliance('getComplianceOfDocument no violations')
             .then((report) => {
-                console.warn(report);
+                // console.warn(report);
                 expect(report.results).to.have.lengthOf(0);
             });
 
         cy.visit('violations.html')
             .getCompliance('getComplianceOfDocument with violations')
             .then((report) => {
-                console.warn(report);
+                // console.warn(report);
                 expect(report.results).to.have.length.greaterThan(0);
             });
         cy.visit('potentialviolations.html')
             .getCompliance('getComplianceOfDocument with potential violations')
             .then((report) => {
-                console.warn(report);
+                // console.warn(report);
                 expect(report.results).to.have.length.greaterThan(0);
             });
     });

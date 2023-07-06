@@ -19,12 +19,15 @@ limitations under the License.
 import React from "react";
 import {
     Column,
-    Grid
+    Grid,
+    //Theme
 } from "@carbon/react";
 
 // import OptionUtil  from '../util/optionUtil';
-import beeLogoUrl from "../../../assets/BE_for_Accessibility_darker.svg";
+import beeLogoDark from "../../../assets/BE_for_DarkMode.svg";
+import beeLogoLight from "../../../assets/BE_for_LightMode.svg";
 import "./DocPage.scss";
+import { BrowserDetection } from "../../util/browserDetection";
 
 type ColDef = number | {
     span: number
@@ -55,10 +58,10 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
         }
 
         return (<>
-            <Grid>
-                <Column sm={4} md={8} lg={4} className="leftCol">
+            <Grid className={BrowserDetection.isDarkMode()?"cds--g90":"g10"}>
+                <Column sm={4} md={8} lg={4} className={`leftCol ${BrowserDetection.isDarkMode()?"cds--g100":"cds--g10"}`}>
                     <div role="banner">
-                        <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
+                        <img src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight} alt="purple bee icon" className="icon" />
                         <div style={{marginTop:"2rem"}} />
                         <div className="division">
                             IBM <strong>Accessibility</strong>
@@ -77,7 +80,7 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
                 </Column>
                 <Column sm={0} md={0} lg={1}>
                 </Column>
-                <Column sm={this.props.sm} md={this.props.md} lg={this.props.lg} className="rightCol">
+                <Column sm={this.props.sm} md={this.props.md} lg={this.props.lg} className={`rightCol ${BrowserDetection.isDarkMode()?"cds--g90":"white"}`}>
                     {this.props.children}
                 </Column>
             </Grid>

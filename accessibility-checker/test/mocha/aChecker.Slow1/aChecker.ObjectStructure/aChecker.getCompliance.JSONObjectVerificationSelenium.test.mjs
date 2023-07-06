@@ -21,10 +21,14 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
 import {fileURLToPath} from 'url';
+import { loadSeleniumTestFile } from "../../util/Util.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let userBrowser = process.env.USER_BROWSER || "CHROME";
+
 let unitTestcaseHTML = {};
+let aChecker = require("../../../../src");
+let expect = require("chai").expect;
 
 let browser;
 if (userBrowser.toUpperCase() === "FIREFOX") {
@@ -132,7 +136,7 @@ describe("JSON Structure Verification Selenium", function () {
 
                     let labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
 
-                    browser.get("file://" + unitTestFile).then(function () {
+                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         // Decleare the actualMap which will store all the actual xpath results
                         let actualMap = {};
                         // Perform the accessibility scan using the IBMaScan Wrapper
@@ -147,6 +151,7 @@ describe("JSON Structure Verification Selenium", function () {
 
                                 // Update all the items in the results which dynamically change over scans to the values
                                 // already defined in the baseline file.
+                                report.ruleTime = expected.ruleTime = 999;
                                 report.summary.scanTime = expected.summary.scanTime = 999;
                                 report.summary.startScan = expected.summary.startScan = 99999999999;
                                 report.scanID = expected.scanID = "uuid";

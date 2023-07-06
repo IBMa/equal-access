@@ -5,6 +5,7 @@ const chrome = require('selenium-webdriver/chrome');
 const By = webdriver.By;
 
 const path = require("path");
+const { loadSeleniumTestFile } = require("../../util/Util");
 
 let browser;
 beforeAll(function() {
@@ -42,7 +43,7 @@ afterAll(function(done) {
 describe("Hello World Basics", () => {
     test("HomePage", async() => {
         const sample = path.join(__dirname, "..", "sample", "Hello.html");
-        await browser.get("file://"+sample);
+        await loadSeleniumTestFile(browser, sample);
         // Perform the accessibility scan using the IBMaScan Wrapper
         await expect(browser).toBeAccessible("HOME");
     });

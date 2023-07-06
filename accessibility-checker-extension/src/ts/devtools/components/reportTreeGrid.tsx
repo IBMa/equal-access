@@ -569,7 +569,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         let selectedDescendant: boolean = !!this.props.selectedPath 
                             && thisIssue.path.dom.startsWith(this.props.selectedPath);
                         let focused: boolean = this.state.tabRowId === rowId
-                        bodyContent.push(<Grid 
+                        bodyContent.push(
+                        <Grid 
                             id={rowId}
                             role="row" 
                             aria-level="2" 
@@ -586,6 +587,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 this.onRow(group, thisIssue);
                             }}
                         >
+                            
                             <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                 <div className="gridDataCell">
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
@@ -605,7 +607,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                     >Learn more</a>
                                 </div>
                             </Column>
-                        </Grid>);
+                        </Grid>
+                        );
                     }
                 }
             }

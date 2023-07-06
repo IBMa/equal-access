@@ -15,6 +15,8 @@
   *****************************************************************************/
 
 const ACTasks = require("./lib/ACTasks");
+const { BaselineManager } = require("./lib/common/report/BaselineManager");
+const { ReporterManager } = require("./lib/common/report/ReporterManager");
 
 // /**
 //  * Object format:
@@ -32,10 +34,6 @@ const ACTasks = require("./lib/ACTasks");
 //     });
 // }
 
-function loadBaselines() {
-    return ACTasks.loadBaselines();
-}
-
 function onRunComplete() {
     return ACTasks.onRunComplete();
 }
@@ -46,16 +44,7 @@ function onRunComplete() {
  * report: Report data from `getCompliance()` call
  */
 function assertCompliance({ report }) {
-    return ACTasks.assertCompliance(report);
-}
-
-/**
- * Object format:
- *
- * label: Label of the report to diff against.
- */
-function getDiffResults({ label }) {
-    return ACTasks.getDiffResults(label);
+    return BaselineManager.assertCompliance(report);
 }
 
 /**
@@ -64,7 +53,7 @@ function getDiffResults({ label }) {
  * label: Label of the baseline results to return.
  */
 function getBaseline({ label }) {
-    return ACTasks.getBaseline(label);
+    return BaselineManager.getBaseline(label);
 }
 
 /**
@@ -75,7 +64,7 @@ function getBaseline({ label }) {
  * clean: Whether or not to clean the results by converting the objects to match basic compliance of only xpath and ruleid.
  */
 function diffResultsWithExpected({ actual, expected, clean }) {
-    return ACTasks.diffResultsWithExpected(actual, expected, clean);
+    return BaselineManager.diffResultsWithExpected(actual, expected, clean);
 }
 
 /**
@@ -84,7 +73,7 @@ function diffResultsWithExpected({ actual, expected, clean }) {
  * report: Report to be stringified.
  */
 function stringifyResults({ report }) {
-    return ACTasks.stringifyResults(report);
+    return ReporterManager.stringifyResults(report);
 }
 
 /**
@@ -101,6 +90,13 @@ function getConfig() {
     });
 }
 
+function sendResultsToReporter(profile, startScan, url, title, label, report) {
+    return ACTasks.sendResultsToReporter(profile, startScan, url, title, label, report);
+}
+
+function getDiffResults({ label }) {
+    return BaselineManager.getDiffResults(label);
+}
 /**
  * Config format:
  *
@@ -110,7 +106,7 @@ function getConfig() {
 module.exports = ({ task, data }) => {
     switch (task) {
         case 'sendResultsToReporter':
-            return ACTasks.sendResultsToReporter(data.result.origReport, data.result.report, data.profile);
+            return sendResultsToReporter(data.profile, data.startScan, data.url, data.title, data.label, data.report)
         case 'assertCompliance':
             return assertCompliance(data);
         case 'getBaseline':
@@ -121,10 +117,10 @@ module.exports = ({ task, data }) => {
             return stringifyResults(data);
         case 'getConfig':
             return getConfig(data);
-        case 'loadBaselines':
-            return loadBaselines();
         case 'onRunComplete':
             return onRunComplete();
+        case 'getDiffResults':
+            return getDiffResults(data);
         default:
             throw new Error(
                 'accessibility-checker: Invalid task ID sent.  Accessibility checker tasks should only be called by the accessibility-checker commands.'

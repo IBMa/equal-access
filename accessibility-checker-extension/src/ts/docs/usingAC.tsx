@@ -16,7 +16,8 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-    
+// import {  Theme } from "@carbon/react";
+import { BrowserDetection } from "../util/browserDetection";
 import "../styles/index.scss";
 import UsingACApp from './UsingACApp';
 
@@ -26,6 +27,9 @@ class PageApp extends React.Component<{}, {}> {
     }
 }
 
+let element = document.getElementById('pageapp-root');
+element?.setAttribute("class", BrowserDetection.isDarkMode()?"cds--g90":"white")
+
 ReactDOM.render(<PageApp />
-    , document.getElementById('pageapp-root'));
+    , element);
     

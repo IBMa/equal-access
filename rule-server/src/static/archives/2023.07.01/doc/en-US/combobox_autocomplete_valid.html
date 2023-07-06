@@ -1,0 +1,135 @@
+<html lang="en-US">
+<head>
+    <title>combobox_autocomplete_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass":"The combobox does not use 'aria-autocomplete' value '\"inline\"' nor does it have 'aria-autocomplete' defined within the popup","Fail_1":"The combobox has the 'aria-autocomplete' attribute incorrectly set on an element within the popup referenced by \"{0}\"","Fail_inline":"The combobox does not support an 'aria-autocomplete' attribute value set to '\"inline\"' ","group":"A combobox that supports autocompletion behavior must have the 'aria-autocomplete' attribute only on its text input element with a valid value; a value of '\"inline\"' is not supported"}};
+        RULE_ID = "combobox_autocomplete_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Assistive technologies can present different types of comboboxes to their users according to their intended behavior. 
+A combobox is usually an interactive component that combines an input and another element, 
+such as a `listbox` that can dynamically pop up to help the user select a value (allowed or suggested) from a collection of possible values. 
+Some comboboxes allow users to type and edit text and others do not.
+
+Only the text input element can have the `aria-autocomplete` attribute, otherwise, assistive technologies may be unable to understand and present the component's autocomplete functionality effectively.
+
+The inline model (`aria-autocomplete="inline"`) is used to present a value completion prediction string inside the text input,
+appearing inline after the user's input cursor. 
+However, `"inline"` _should not_ be used alone on a combobox because the assistive technologies and users are expecting a popup. 
+A combobox can and often supports both inline forms of autocomplete in combination with having a popup element. 
+Authors can use `aria-autocomplete="both"`. 
+The inline completion string is visually highlighted and has a selected state.
+
+The `aria-autocomplete` property is _not intended to indicate_ the presence of a completion suggestion, 
+and authors _should not_ dynamically change its value in order to communicate the presence of a suggestion. 
+When a text entry element has `aria-autocomplete` set to `"list"` or `"both"`, 
+authors should use the `aria-expanded` state to communicate whether the element that presents the suggestion collection is displayed.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove the `aria-autocomplete` attribute from any popup elements of the combobox
+* **And**, if autocomplete behavior is desired, verify that only the text input element of the combobox has the `aria-autocomplete` attribute 
+and that it is set to a value that corresponds to the intended behavior
+
+Combobox behaviors:
+* If the combobox does _not_ have autocomplete behavior, remove the `aria-autocomplete` attribute (the default value is `aria-autocomplete="none"`)
+* **Or**, if the combobox has autocomplete behavior with no text input, use `aria-autocomplete="list"` (see example)
+* **Or**, if the combobox has autocomplete behavior with no popup, use `aria-autocomplete="inline"` and change the role to `"searchbox"` or `"textbox"`
+* **Or**, if the combobox has autocomplete behavior that includes _both_ inline text appearing after the user's cursor and a popup element, 
+use `aria-autocomplete="both"` 
+
+Combobox with autocomplete list example:
+
+```
+<label for="comboInput">State</label>
+<div class="combobox">
+    <div class="cbPrimary">
+    <input type="text" id="comboInput" class="cbEdit"
+        role="combobox" aria-autocomplete="list"
+        aria-haspopup="listbox" aria-expanded="true"
+        aria-controls="popup_listbox" aria-activedescendant="cb-ak" />
+    <button id="cbButton" tabindex="-1" aria-label="Open">▼</button>
+    </div>
+    <ul id="popup_listbox" role="listbox" aria-label="States">
+    <li id="cb-al" role="option">Alabama</li>
+    <li id="cb-ak" role="option" aria-selected="true">Alaska</li>
+    </ul>
+</div>
+```
+
+Note 1: The guidance for `combobox` changed significantly in [ARIA specificaation 1.2](https://www.w3.org/TR/wai-aria-1.2/) due to problems with implementation of the previous patterns.
+
+Note 2: Example code includes material copied from or derived from [ARIA practices](https://w3c.github.io/aria-practices/examples/combobox/combobox-autocomplete-list.html). Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang).
+    
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2) 
+* [ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox)
+* [ARIA specification - aria-autocomplete property](https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+    
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

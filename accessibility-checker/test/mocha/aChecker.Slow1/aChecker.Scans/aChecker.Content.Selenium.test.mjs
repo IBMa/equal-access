@@ -1,18 +1,18 @@
-   /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+/******************************************************************************
+  Copyright:: 2020- IBM, Inc
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-  *****************************************************************************/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*****************************************************************************/
 
 'use strict';
 import * as fs from "fs";
@@ -21,9 +21,9 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
+import { loadSeleniumTestFile } from "../../util/Util";
 
 let userBrowser = process.env.USER_BROWSER || "CHROME";
-
 let unitTestcaseHTML = {};
 let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 let gdirs = fs.readdirSync(testRootDir);
@@ -148,8 +148,8 @@ let skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // CSS test issues
-    path.join(testRoot, "style_color_misuse_ruleunit","D543.html"),
-    path.join(testRoot, "style_before_after_review_ruleunit","D100.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
 
     // Misc
     path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html")
@@ -198,8 +198,7 @@ describe("Rule Unit Tests from Selenium", function () {
                     this.timeout(0);
 
                     let regex = "test.*html?$";
-
-                    browser.get("file://" + unitTestFile).then(function () {
+                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         let report = null;
                         // Perform the accessibility scan using the IBMaScan Wrapper
                         aChecker.getCompliance(browser, "Selenium_" + unitTestFile)
@@ -212,9 +211,9 @@ describe("Rule Unit Tests from Selenium", function () {
                             .then(async () => {
                                 return browser.executeScript(
                                     `return {
-                                        legacyExpectedInfo: (typeof (window.OpenAjax) !== 'undefined' && window.OpenAjax && window.OpenAjax.a11y && window.OpenAjax.a11y.ruleCoverage),
-                                        expectedInfo: (typeof (window.UnitTest) !== 'undefined' && window.UnitTest)
-                                    }`);
+                                            legacyExpectedInfo: (typeof (window.OpenAjax) !== 'undefined' && window.OpenAjax && window.OpenAjax.a11y && window.OpenAjax.a11y.ruleCoverage),
+                                            expectedInfo: (typeof (window.UnitTest) !== 'undefined' && window.UnitTest)
+                                        }`);
                             })
                             .then((unitTestInfo) => {
                                 // Extract the ruleCoverage object from the unit testcases that is loaded on to the iframe.
