@@ -151,7 +151,7 @@ export type IConfigInternal = IConfig & {
     /**
      * (optional) If the tool allows, should we run headless
      */
-    headless?: boolean
+    headless?: "new" | boolean
 
     /**
      * (optional) If the tool allows, set the maximum number of tabs to open
@@ -173,5 +173,4 @@ export type IConfigInternal = IConfig & {
     perfMetrics: boolean
 
     engineMode: "DEFAULT" | "REMOTE" | "INJECT"
-
 }
