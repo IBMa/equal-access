@@ -215,7 +215,7 @@ function initializeDefaults(config: IConfigInternal) {
  *
  * @memberOf this
  */
-function loadConfigFromYAMLorJSONFile() {
+async function loadConfigFromYAMLorJSONFile() {
     ACConstants.DEBUG && console.log("START 'loadConfigFromYAMLorJSONFile' function");
 
     // Variable Decleration
@@ -283,7 +283,15 @@ function loadConfigFromYAMLorJSONFile() {
                     ACConstants.DEBUG && console.log("Loading: " + jsOrJSONFile)
 
                     // Load in as json or js and return this object
-                    return JSON.parse(fs.readFileSync(fileToCheck).toString());
+                    try {
+                        return require(fileToCheck);
+                    } catch (err) {
+                        try {
+                            return await import(fileToCheck);
+                        } catch (err) {
+                            return JSON.parse(fs.readFileSync(jsOrJSONFile).toString());
+                        }
+                    }
                 }
             } catch (e) {
                 ACConstants.DEBUG && console.log("JSON or JS file does not exists, will load default config.")
@@ -320,7 +328,7 @@ async function processConfiguration(config?) : Promise<IConfigInternal> {
     let configFromFile = null;
 
     // Read in the .yaml (.yml) or .json file to load in the configuration
-    configFromFile = loadConfigFromYAMLorJSONFile();
+    configFromFile = await loadConfigFromYAMLorJSONFile();
 
     ACConstants.DEBUG && console.log("Loaded config from file: ");
     ACConstants.DEBUG && console.log(configFromFile);
