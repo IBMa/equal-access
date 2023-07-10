@@ -51,14 +51,14 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         return (window as any).aceOverlays;
     }
     
-    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds, noVisibleElement: Boolean) : Promise<Overlays> {
+    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds, noVisibleElement: Boolean, elemOffScreen: Boolean) : Promise<Overlays> {
         let overlays = getOverlays();
 
         overlays.elem.style.top = `${bounds.top}px`; // values are strings of form "10px"
         overlays.elem.style.left = `${bounds.left}px`;
         overlays.elem.style.width = `${bounds.width}px`;
         overlays.elem.style.height = `${bounds.height}px`;
-        if (noVisibleElement === true) {
+        if (noVisibleElement === true || elemOffScreen === true) {
             overlays.elem.style.backgroundColor = "#f6f2ff";
         } else {
             overlays.elem.style.backgroundColor = "";
@@ -152,12 +152,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                       + (types[2] == 0 ? "" : "<span>" + recommendationImageText + recommendationText + "</span>");
         //--------------------------------------------
         if (await devtoolsController.getActivePanel() === "main") {
-            overlays.info.innerHTML = (
-            `
-                <div style="color:white;">
-                    ${typesText}
-                </div>
-            `);
+            // JCH Need this
         } else {
             if (noVisibleElement === true) {
                 overlays.elem.innerHTML = (
@@ -166,15 +161,45 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                         <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Element selected <br>NOT visible</span>
                     </div>
                 `);
+                overlays.info.innerHTML = (
+                    `
+                        <div style="color:white;">
+                            ${typesText}
+                        </div>
+                    `);
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else if (elemOffScreen === true) {
+                overlays.elem.innerHTML = (
+                    `
+                    <div style="color:black;">
+                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected element <br>off screen</span>
+                    </div>
+                `);
+                overlays.info.innerHTML = (
+                    `
+                        <div style="color:white;">
+                            ${typesText}
+                        </div>
+                    `);
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });    
             } else {
                 overlays.elem.innerHTML = "";
+                overlays.info.innerHTML = (
+                    `
+                        <div style="color:white;">
+                            ${typesText}
+                        </div>
+                    `);
             }
-            overlays.info.innerHTML = (
-            `
-                <div style="color:white;">
-                    ${typesText}
-                </div>
-            `);
+            
         }
         overlays.info.querySelector("a")?.addEventListener("click", async () => {
             await devtoolsController.inspectPath(issue.path.dom);
@@ -187,6 +212,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         let elem = DomPathUtils.domPathToElem(issue.path.dom);
         let bounds = ElementUtils.getBounds(elem, false);
         let noVisibleElement = false;
+        let elemOffScreen = false;
         if (elem) {
             if (bounds) {
                 // handle bounds for non-visible elements, i.e., no width or height
@@ -197,7 +223,14 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                     bounds.height = 50;
                     noVisibleElement = true;
                 }
-                let overlay = await updateOverlay(issue, elem, bounds, noVisibleElement);
+                if (bounds.left < 0 || bounds.top < 0) {
+                    bounds.left = 2;
+                    bounds.top = 3;
+                    bounds.width = 150;
+                    bounds.height = 50;
+                    elemOffScreen = true;
+                }
+                let overlay = await updateOverlay(issue, elem, bounds, noVisibleElement, elemOffScreen);
                 if (!overlay.elem.parentNode) {
                     document.body.appendChild(overlay.elem);
                 }
@@ -224,6 +257,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 }
             }  
         }
+        
     }
 
     devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
