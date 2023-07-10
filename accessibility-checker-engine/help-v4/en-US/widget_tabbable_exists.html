@@ -44,18 +44,19 @@
 
 ### Why is this important?
 
+Many assistive technology users rely on being able to use the keyboard to navigate to and operate interactive components.
+Users expect that certain elements are not removed from the tab sequence by authors.
+
 Unlike native HTML form elements and controls, browsers do not provide keyboard support for custom ARIA widgets, such as menus and grids, as well as interactive ARIA components, such as toolbars and dialogs.
 Authors have to provide keyboard support in their code to manage the movement of keyboard focus between components, e.g., how the focus moves when the `Tab` and `Shift+Tab` keys are pressed.
-Many assistive technology users rely on being able to use the keyboard to navigate to operate custom components.     
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-After deciding that the component should, in fact, be keyboard interactive, use the `tabindex` attribute to include the component in the tab sequence.
-Otherwise, change the role to a non-widget or non-interactive type component so there is no expectation from this rule or from users that the component should be interactable with the keyboard.   
-Refer to the [ARIA practices - Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/) for more information on how to manage keyboard focus.
+* After deciding that the component should, in fact, be keyboard-interactive, use the `tabindex` attribute to include the component in the tab sequence.
+* Otherwise, change the role to a non-widget or non-interactive type component so there is no expectation that the component should be interactable with the keyboard.   
 
 </script></mark-down>
 <!-- End main panel -->
