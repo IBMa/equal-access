@@ -27,7 +27,6 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
     let devtoolsController = getDevtoolsController(true, "remote", myTabId);
 
     function getOverlays() : Overlays {
-        console.log("JOHO: func getOverlays");
         if (!(window as any).aceOverlays) {
             let overlays = (window as any).aceOverlays = {
                 elem: document.createElement("div"),
@@ -38,6 +37,8 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             ovElemStyle.outline = "solid #8A3FFC 3px";
             ovElemStyle.position = "absolute";
             ovElemStyle.zIndex = "2147483647";
+
+
             let ovInfoStyle = overlays.info.style;
             ovInfoStyle.display = "none";
             ovInfoStyle.backgroundColor = "#161616";
@@ -50,32 +51,36 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         return (window as any).aceOverlays;
     }
     
-    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds) : Promise<Overlays> {
+    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds, noVisibleElement: Boolean) : Promise<Overlays> {
         let overlays = getOverlays();
-        overlays.elem.style.top = `${bounds.top}px`;
+
+        overlays.elem.style.top = `${bounds.top}px`; // values are strings of form "10px"
         overlays.elem.style.left = `${bounds.left}px`;
         overlays.elem.style.width = `${bounds.width}px`;
         overlays.elem.style.height = `${bounds.height}px`;
+        if (noVisibleElement === true) {
+            overlays.elem.style.backgroundColor = "#f6f2ff";
+        } else {
+            overlays.elem.style.backgroundColor = "";
+        }
+        
+        
         overlays.info.style.top = `${bounds.top+bounds.height}px`;
-        overlays.info.style.left = `${bounds.left}px`;
+        overlays.info.style.left = `${bounds.left-3}px`;
         // Get Issue info data
         let report = await devtoolsController.getReport();
         let types = [0,0,0];
-        console.log("report: ",report);
         // Find Issues that match issue.path.dom
         report?.results.map((result: IIssue) => {
             if (issue.path.dom === result.path.dom) {
                 if (result.value[0] === "VIOLATION" && result.value[1] === "FAIL") {
                     types[0] += 1;
-                    console.log("Violation");
                 }
                 if (result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL")) {
                     types[1] += 1;
-                    console.log("NR");
                 }
                 if (result.value[0] === "RECOMMENDATION") {
                     types[2] += 1;
-                    console.log("Recommendation");
                 }
             }
         });
@@ -154,6 +159,16 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 </div>
             `);
         } else {
+            if (noVisibleElement === true) {
+                overlays.elem.innerHTML = (
+                    `
+                    <div style="color:black;">
+                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Element selected <br>NOT visible</span>
+                    </div>
+                `);
+            } else {
+                overlays.elem.innerHTML = "";
+            }
             overlays.info.innerHTML = (
             `
                 <div style="color:white;">
@@ -170,12 +185,19 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
     
     async function showOverlay(issue: IIssue) {
         let elem = DomPathUtils.domPathToElem(issue.path.dom);
-        console.log("element = ",elem);
-        console.log("issue =",issue);
+        let bounds = ElementUtils.getBounds(elem, false);
+        let noVisibleElement = false;
         if (elem) {
-            let bounds = ElementUtils.getBounds(elem, false);
             if (bounds) {
-                let overlay = await updateOverlay(issue, elem, bounds);
+                // handle bounds for non-visible elements, i.e., no width or height
+                if (bounds.width == 0 && bounds.height == 0) {
+                    bounds.left = 2;
+                    bounds.top = 3;
+                    bounds.width = 150;
+                    bounds.height = 50;
+                    noVisibleElement = true;
+                }
+                let overlay = await updateOverlay(issue, elem, bounds, noVisibleElement);
                 if (!overlay.elem.parentNode) {
                     document.body.appendChild(overlay.elem);
                 }
@@ -200,13 +222,12 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                         });    
                     }, 0);
                 }
-            }    
+            }  
         }
     }
 
     devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
         if (true && issue) {
-            console.log("issue: ",issue);
             showOverlay(issue);
         }
     });
