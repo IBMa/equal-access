@@ -44,15 +44,19 @@
 
 ### Why is this important?
 
-Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with ARIA - authors must incorporate the code for keyboard access.
+Many assistive technology users rely on being able to use the keyboard to navigate to and operate interactive components.
+Users expect that certain elements are not removed from the tab sequence by authors.
+
+Unlike native HTML form elements and controls, browsers do not provide keyboard support for custom ARIA widgets, such as menus and grids, as well as interactive ARIA components, such as toolbars and dialogs.
+Authors have to provide keyboard support in their code to manage the movement of keyboard focus between components, e.g., how the focus moves when the `Tab` and `Shift+Tab` keys are pressed.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Use the HTML tabindex attribute to include the component in the tab sequence.
-(Refer to the [ARIA practices - Developing a Keyboard Interface](https://w3c.github.io/aria-practices/#keyboard) for more information on how to manage keyboard focus.)
+* After deciding that the component should, in fact, be keyboard-interactive, use the `tabindex` attribute to include the component in the tab sequence.
+* Otherwise, change the role to a non-widget or non-interactive type component so there is no expectation that the component should be interactable with the keyboard.   
 
 </script></mark-down>
 <!-- End main panel -->
@@ -66,13 +70,15 @@ Use the HTML tabindex attribute to include the component in the tab sequence.
 ### About this requirement
 
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
-* [ARIA practices - Developing a Keyboard Interface](https://w3c.github.io/aria-practices/#keyboard)
+* [ARIA practices - Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [ARIA specification - Widget Roles](https://www.w3.org/TR/2023/REC-wai-aria-1.2-20230606/#widget_roles)    
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People who physically cannot use a pointing device
-* People with tremor or other movement disorders
+* People with tremor or other movement disorders using a keyboard-like switch device
+* People using a keyboard and alternate keyboards or input devices that act as keyboard emulators like speech input software and on-screen keyboards    
 
 </script></mark-down>
 <!-- End side panel -->
