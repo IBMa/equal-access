@@ -41,8 +41,8 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
 
             let ovInfoStyle = overlays.info.style;
             ovInfoStyle.display = "none";
-            ovInfoStyle.outline = "dashed #8A3FFC 2px";
-            ovInfoStyle.backgroundColor = "#F6F2FF";
+            ovInfoStyle.outline = "solid #8A3FFC 2px";
+            ovInfoStyle.backgroundColor = "#161616";
             ovInfoStyle.position = "absolute";
             ovInfoStyle.padding = "8px";
             ovInfoStyle.zIndex = "2147483647";
@@ -65,8 +65,8 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         }
         
         
-        overlays.info.style.top = `${bounds.top+bounds.height}px`;
-        overlays.info.style.left = `${bounds.left-3}px`;
+        overlays.info.style.top = `${bounds.top+bounds.height+4}px`;
+        overlays.info.style.left = `${bounds.left}px`;
         // Get Issue info data
         let report = await devtoolsController.getReport();
         let types = [0,0,0];
@@ -158,12 +158,12 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 overlays.elem.innerHTML = (
                     `
                     <div style="color:black;">
-                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Element selected <br>NOT visible</span>
+                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue<br>not visible</span>
                     </div>
                 `);
                 overlays.info.innerHTML = (
                     `
-                        <div style="color:black;">
+                        <div style="color:white;">
                             ${typesText}
                         </div>
                     `);
@@ -176,12 +176,12 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 overlays.elem.innerHTML = (
                     `
                     <div style="color:black;">
-                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected element <br>off screen</span>
+                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue <br>off screen</span>
                     </div>
                 `);
                 overlays.info.innerHTML = (
                     `
-                        <div style="color:black;">
+                        <div style="color:white;">
                             ${typesText}
                         </div>
                     `);
@@ -194,7 +194,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 overlays.elem.innerHTML = "";
                 overlays.info.innerHTML = (
                     `
-                        <div style="color:black;">
+                        <div style="color:white;">
                             ${typesText}
                         </div>
                     `);
