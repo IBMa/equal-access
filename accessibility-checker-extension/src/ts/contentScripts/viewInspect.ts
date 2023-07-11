@@ -41,10 +41,10 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
 
             let ovInfoStyle = overlays.info.style;
             ovInfoStyle.display = "none";
-            ovInfoStyle.backgroundColor = "#161616";
+            ovInfoStyle.outline = "dashed #8A3FFC 2px";
+            ovInfoStyle.backgroundColor = "#F6F2FF";
             ovInfoStyle.position = "absolute";
             ovInfoStyle.padding = "8px";
-            ovInfoStyle.marginTop = "3px";
             ovInfoStyle.zIndex = "2147483647";
             ovInfoStyle.fontFamily = "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif";
         }

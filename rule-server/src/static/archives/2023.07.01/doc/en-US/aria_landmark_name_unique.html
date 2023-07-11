@@ -1,0 +1,108 @@
+<html lang="en-US">
+<head>
+    <title>aria_landmark_name_unique - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Multiple \"{0}\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'","Fail_0":"Multiple \"{0}\" landmarks with the same parent region are not distinguished from one another because they have the same \"{1}\" label","group":"Multiple landmarks should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent regions"}};
+        RULE_ID = "aria_landmark_name_unique"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Regions (sections) on a page may contain headings, content, white space, and even nested regions for users to better consume the content. 
+Landmarks for the regions help assistive technology (AT) users orient themselves to the page and help them easily navigate to various regions of a page. 
+When multiple regions with the same role exist on the same page, people using screen readers, voice control, 
+and other ATs will have difficulty identifying or distinguishing between them 
+(e.g., where there are two or more `"navigation"` regions).
+
+Landmarks are inserted into the page using the `role` attribute on an element that marks the region. 
+The `role` values listed below are the names of the landmark types:
+  
+* `"banner"`: A region that contains the prime heading or title of a page.
+* `"complementary"`: Any section of the page that supports the main content, yet is separate and meaningful on its own.
+* `"contentinfo"`: A region that contains information about the parent page such as copyrights and links to privacy statements.
+* `"form"`: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
+* `"main"`: Main content in a document. In almost all cases a page will have only one `role="main"`.
+* `"navigation"`: A collection of links suitable for use when navigating the page or related pages.
+* `"region"`: A section sufficiently important that users will likely want to be able to navigate to the section easily. Use of `role="region"` should be limited to sections containing content with a purpose that is not accurately described by one of the other landmark roles. Each `role="region"` **must**  have a brief label that describes the purpose of the content in the region.
+* `"search"`: A region for searching content.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+  
+* Use unique `aria-labelledby` values to distinguish landmarks with the same `role`
+* **Or**, use unique `aria-label` values to distinguish landmarks with the same `role`
+* **Or**, nest landmarks in different parent regions to distinguish those with the same `role`
+
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
+* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People using text only browser with Braille display
+* People with dexterity impairment using voice control
+ 
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
