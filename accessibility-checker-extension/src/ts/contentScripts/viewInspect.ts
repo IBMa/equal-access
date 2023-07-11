@@ -163,7 +163,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 `);
                 overlays.info.innerHTML = (
                     `
-                        <div style="color:white;">
+                        <div style="color:black;">
                             ${typesText}
                         </div>
                     `);
