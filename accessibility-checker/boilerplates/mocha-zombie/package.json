@@ -10,9 +10,9 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.1",
-    "chai": "^3.5.0",
-    "mocha": "^3.0.2",
-    "zombie": "^4.2.1"
+    "accessibility-checker": "^3.1.57",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "zombie": "^6.1.4"
   }
 }

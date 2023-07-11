@@ -62,7 +62,7 @@ export let style_viewport_resizable: Rule = {
                         if (styleRules) {
                             for (let styleRuleIndex = 0; passed && styleRuleIndex < styleRules.length; styleRuleIndex++) {
                                 let rule = styleRules[styleRuleIndex];
-                                if (rule.type && rule.type === CSSRule.STYLE_RULE) {
+                                if (rule.type && rule.type === 1 /* CSSRule.STYLE_RULE */) {
                                     let styleRule = rule as CSSStyleRule;
                                     if (styleRule.style['fontSize']) {
                                         let fontSize = styleRule.style['fontSize'].trim();
@@ -73,13 +73,13 @@ export let style_viewport_resizable: Rule = {
                                     }
                                 }
                                 // check import rules
-                                else if (rule.type && rule.type === CSSRule.IMPORT_RULE && (rule as CSSImportRule).styleSheet) {
+                                else if (rule.type && rule.type === 3 /* CSSRule.IMPORT_RULE */ && (rule as CSSImportRule).styleSheet) {
                                     let importRule = rule as CSSImportRule;
                                     let rules = importRule.styleSheet.cssRules ? importRule.styleSheet.cssRules : importRule.styleSheet.rules;
                                     if (rules) {
                                         for (let rIndex = 0; passed && rIndex < rules.length; rIndex++) {
                                             let importedRule = rules[rIndex] as any
-                                            if (importedRule.type && importedRule.type === CSSRule.STYLE_RULE) {
+                                            if (importedRule.type && importedRule.type === 1 /* CSSRule.STYLE_RULE */) {
                                                 if (importedRule.style['fontSize']) {
                                                     let fontSize = importedRule.style['fontSize'].trim();
                                                     let found = fontSize.match(thePattern);
@@ -108,7 +108,7 @@ export let style_viewport_resizable: Rule = {
                             for (let rIndex = 0; passed && rIndex < rules.length; rIndex++) {
                                 let ruleFromLink = rules[rIndex] as any;
                                 // check rules 
-                                if (ruleFromLink.type && ruleFromLink.type === CSSRule.STYLE_RULE) {
+                                if (ruleFromLink.type && ruleFromLink.type === 1 /* CSSRule.STYLE_RULE */) {
                                     if (ruleFromLink.style['fontSize']) {
                                         let fontSize = ruleFromLink.style['fontSize'].trim();
                                         let found = fontSize.match(thePattern);

@@ -54,7 +54,7 @@ export let aria_role_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         let tagName = ruleContext.tagName.toLowerCase();
         // only chek element (1) and fragment nodes (11)
-        if (ruleContext.nodeType !== Node.ELEMENT_NODE)
+        if (ruleContext.nodeType !== 1 /* Node.ELEMENT_NODE */)
             return null;
 
         //skip the rule
@@ -139,7 +139,7 @@ export let aria_attribute_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // only chek element (1)
-        if (ruleContext.nodeType !== Node.ELEMENT_NODE)
+        if (ruleContext.nodeType !== 1 /* Node.ELEMENT_NODE */)
             return null;
 
         // ignore if no aria attribute

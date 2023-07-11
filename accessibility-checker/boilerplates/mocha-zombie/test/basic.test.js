@@ -1,10 +1,10 @@
 'use strict';
 
-var path = require("path");
-var zombie = require("zombie");
+const path = require("path");
+const Browser = require('zombie');
 const aChecker = require("accessibility-checker");
-var expect = require("chai").expect;
-var browser = new zombie();
+const expect = require("chai").expect;
+const browser = new Browser();
 
 /** Temporary solution for output until reporting is completed */
 aChecker.stringifyConsole = function(data) {
@@ -22,26 +22,19 @@ aChecker.stringifyConsole = function(data) {
 }
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Hello World Basics", function () {
-    it("HomePage", function (done) {
+    it("HomePage", async function () {
         this.timeout(0);
         var sample = path.join(__dirname, "..", "sample", "Hello.html");
-        browser.visit("file://"+sample, function() {
-            // Perform the accessibility scan using the IBMaScan Wrapper
-            aChecker.getCompliance(browser.document, "HOME", function (data, doc) {
-                expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyConsole(data));
-                done();
-            });
-        });
+        await browser.visit("file://"+sample);
+        // Perform the accessibility scan using the IBMaScan Wrapper
+        const { report } = await aChecker.getCompliance(browser.document, "HOME");
+        expect(aChecker.assertCompliance(report)).to.equal(0, aChecker.stringifyConsole(report));
     });
 
-    it("Hompage, Show Card", function (done) {
-        browser.clickLink("#clickMe", function() {
-            // Perform the accessibility scan using the IBMaScan Wrapper
-            aChecker.getCompliance(browser.document, "HOME_CARD", function (data, doc) {
-                expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyConsole(data));
-                done();
-            });
-        });
-
+    it("Hompage, Show Card", async function () {
+        await browser.clickLink("#clickMe");
+        // Perform the accessibility scan using the IBMaScan Wrapper
+        const { report } = await aChecker.getCompliance(browser.document, "HOME_CARD");
+        expect(aChecker.assertCompliance(report)).to.equal(0, aChecker.stringifyConsole(report));
     });
 });
