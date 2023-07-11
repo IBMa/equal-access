@@ -261,7 +261,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
     }
 
     devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
-        if (true && issue) {
+        if (issue) {
             showOverlay(issue);
         }
     });
