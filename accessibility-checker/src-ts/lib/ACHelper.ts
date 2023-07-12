@@ -94,7 +94,7 @@ try {
                     .then(() => ACBrowserManager.close())
                     .then(done);
             } else {
-                done();
+                done && done();
             }
         });
     } else {
