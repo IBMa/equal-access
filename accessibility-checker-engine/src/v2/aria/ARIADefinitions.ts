@@ -1584,7 +1584,7 @@ export class ARIADefinitions {
             container: null,
             props: ["aria-colcount", "aria-rowcount"],
             reqProps: null,
-            reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
+            reqChildren: ["row", "rowgroup", "caption"], // rowgroup and caption are not required, but it is allowed
             htmlEquiv: "table",
             roleType: "structure",
             nameRequired: true,
