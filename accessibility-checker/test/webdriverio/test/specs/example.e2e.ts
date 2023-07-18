@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "fs"; // file system
 import * as path from "path";
 import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/index";
 import * as ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
