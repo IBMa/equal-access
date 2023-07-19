@@ -6,8 +6,10 @@ const By = webdriver.By;
 
 const path = require("path");
 const aChecker = require("accessibility-checker");
-const expect = require("chai").expect;
-const { loadSeleniumTestFile } = require("../util/Util");
+//const expect = require("chai").expect;
+//const { loadSeleniumTestFile } = require("../util/Util");
+var expect = require("chai").expect;
+const { loadSeleniumTestFile } = require("../../util/Util.js");
 
 let browser;
 before(function(done) {

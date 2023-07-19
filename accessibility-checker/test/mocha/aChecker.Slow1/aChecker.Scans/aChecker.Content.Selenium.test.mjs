@@ -22,6 +22,7 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
+import { loadSeleniumTestFile } from "../../util/Util.js";
 
 let userBrowser = process.env.USER_BROWSER || "CHROME";
 
