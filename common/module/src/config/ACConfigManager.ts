@@ -258,12 +258,14 @@ function initializeDefaults(config: IConfigInternal) {
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
     //const packageObject = JSON.parse(fs.readFileSync('./package.json').toString());
-    let packageDir;
-    if (typeof __dirname !== "undefined") {
+    //let packageDir;
+    //if (typeof __dirname !== "undefined") {
+    let packageDir = "";
+    try {
         packageDir = __dirname;
-    } else {
-        // @ts-ignore
-        const __filename = fileURLToPath(import.meta.url);
+    } catch (err) {
+        // This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
+        // const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
         packageDir = __dirname;
     }

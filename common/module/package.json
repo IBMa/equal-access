@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:htmlreport": "(cd ../../report-react && npm run build && cd ../common/module && shx cp ../../report-react/build/genReport.tsx ./src//report/genReport.ts)",
-    "build": "rm -rf dist && npm run build:htmlreport && npx tsc -p tsconfig-mjs.json && npx tsc -p tsconfig-cjs.json",
+    "build": "rm -rf dist && npm run build:htmlreport && npx tsc -p tsconfig-cjs.json && sed -i'.old' 's/\\/\\/ const __filename/const __filename/g' ./src/config/ACConfigManager.ts && npx tsc -p tsconfig-mjs.json && sed -i'.old' 's/const __filename/\\/\\/ const __filename/g' ./src/config/ACConfigManager.ts && rm ./src/config/ACConfigManager.ts.old",
     "test": "npm run build && jest"
   },
   "author": "IBM",
