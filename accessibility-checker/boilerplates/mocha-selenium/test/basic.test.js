@@ -6,7 +6,7 @@ var chrome = require('selenium-webdriver/chrome');
 var path = require("path");
 const aChecker = require("accessibility-checker");
 var expect = require("chai").expect;
-const { loadSeleniumTestFile } = require("../../util/Util");
+const { loadSeleniumTestFile } = require("../../util/Util.js");
 
 var browser;
 before(function(done) {
