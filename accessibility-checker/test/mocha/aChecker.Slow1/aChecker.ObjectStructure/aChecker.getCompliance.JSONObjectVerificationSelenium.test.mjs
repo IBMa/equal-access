@@ -27,8 +27,6 @@ const __dirname = path.dirname(__filename);
 let userBrowser = process.env.USER_BROWSER || "CHROME";
 
 let unitTestcaseHTML = {};
-let aChecker = require("../../../../src");
-let expect = require("chai").expect;
 
 let browser;
 if (userBrowser.toUpperCase() === "FIREFOX") {

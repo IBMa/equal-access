@@ -22,6 +22,7 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
 import * as Util from "../../util/Util.js";
+import * as puppeteer from "puppeteer";
 let unitTestcaseHTML = {};
 let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 let gdirs = fs.readdirSync(testRootDir);
