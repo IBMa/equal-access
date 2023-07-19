@@ -24,6 +24,7 @@ import { expect } from "chai";
 //import puppeteer from 'puppeteer';
 //import { loadPuppeteerTestFile } from "../../util/Util.js";
 import * as Util from "../../util/Util.js";
+import * as puppeteer from "puppeteer";
 let unitTestcaseHTML = {};
 let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 let gdirs = fs.readdirSync(testRootDir);
