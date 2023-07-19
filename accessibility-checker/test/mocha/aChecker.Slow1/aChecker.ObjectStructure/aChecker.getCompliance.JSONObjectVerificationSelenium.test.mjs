@@ -21,6 +21,7 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
 import {fileURLToPath} from 'url';
+import * as Util from "../../util/Util.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let userBrowser = process.env.USER_BROWSER || "CHROME";
@@ -158,7 +159,7 @@ describe("JSON Structure Verification Selenium", function () {
 
                     let labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
 
-                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
+                    Util.default.loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         // Decleare the actualMap which will store all the actual xpath results
                         let actualMap = {};
                         // Perform the accessibility scan using the IBMaScan Wrapper
