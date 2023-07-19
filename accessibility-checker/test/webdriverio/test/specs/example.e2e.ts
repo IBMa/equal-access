@@ -79,7 +79,7 @@ var skipList = [
     path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
     path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
     path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
-    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html")
 ]
 
 var skipMap = {}
