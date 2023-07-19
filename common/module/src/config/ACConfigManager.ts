@@ -19,9 +19,11 @@ import * as fs from "fs";
 import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants.js";
 import { v4 as uuidv4 } from 'uuid';
-import { IConfig, IConfigInternal } from "./IConfig";
-import { fetch_get } from "../api-ext/Fetch";
-import { ReporterManager } from "../report/ReporterManager";
+import { IConfig, IConfigInternal } from "./IConfig.js";
+import { fetch_get } from "../api-ext/Fetch.js";
+import { ReporterManager } from "../report/ReporterManager.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -181,7 +183,15 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    let packageDir = __dirname;
+    let packageDir;
+    if (typeof __dirname !== "undefined") {
+        packageDir = __dirname;
+    } else {
+        // @ts-ignore
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        packageDir = __dirname;
+    }
     while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
         packageDir = pathLib.join(packageDir, "..");
     }

@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eRuleLevel } from "../config/IConfig"
+import { eRuleLevel } from "../config/IConfig.js"
 
 
 export enum eRuleConfidence {

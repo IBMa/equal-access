@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
-import { ACConfigManager } from "./common/config/ACConfigManager";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
 
 let ace;
 

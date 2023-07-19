@@ -14,10 +14,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { fetch_get } from "../api-ext/Fetch";
-import { IConfigInternal } from "../config/IConfig";
-import { CompressedReport, IRuleset } from "../engine/IReport";
-import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager";
+import { fetch_get } from "../api-ext/Fetch.js";
+import { IConfigInternal } from "../config/IConfig.js";
+import { CompressedReport, IRuleset } from "../engine/IReport.js";
+import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager.js";
 
 /*******************************************************************************
  * NAME: ACMetricsLogger.js

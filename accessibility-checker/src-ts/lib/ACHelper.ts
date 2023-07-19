@@ -1,14 +1,14 @@
-import { ICheckerReport, ICheckerResult } from "./api/IChecker";
-import { ACBrowserManager } from "./ACBrowserManager";
-import { ACEngineManager } from "./ACEngineManager";
-import { ACConfigManager } from "./common/config/ACConfigManager";
-import { IConfigInternal } from "./common/config/IConfig";
-import { ReporterManager } from "./common/report/ReporterManager";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
-import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
 import { dirname, join, resolve as pathResolve } from "path";
-import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
+import { ICheckerReport, ICheckerResult } from "./api/IChecker.js";
+import { ACBrowserManager } from "./ACBrowserManager.js";
+import { ACEngineManager } from "./ACEngineManager.js";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
+import { IConfigInternal } from "./common/config/IConfig.js";
+import { ReporterManager } from "./common/report/ReporterManager.js";
+import { IAbstractAPI } from "./common/api-ext/IAbstractAPI.js";
+import { IBaselineReport, IEngineReport } from "./common/engine/IReport.js";
+import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
 
 declare var after;
 
@@ -46,7 +46,11 @@ class MyFS implements IAbstractAPI {
     loadBaseline(label) {
         let baselineFile = join(join(process.cwd(), Config.baselineFolder), label+".json");
         if (!existsSync(baselineFile)) return null;
-        return require(baselineFile);
+        if (typeof require !== "undefined") {
+            return require(baselineFile);
+        } else {
+            return JSON.parse(readFileSync(baselineFile).toString());
+        }
     }
     getChecker() {
         return ACEngineManager.getChecker();

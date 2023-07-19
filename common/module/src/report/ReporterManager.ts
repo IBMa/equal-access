@@ -14,14 +14,14 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IAbstractAPI } from "../api-ext/IAbstractAPI";
-import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { CompressedIssue, CompressedReport, IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence, eRulePolicy } from "../engine/IReport";
-import { ACReporterMetrics } from "./ACReporterMetrics";
-import { ACReporterCSV } from "./ACReporterCSV";
-import { ACReporterHTML } from "./ACReporterHTML";
-import { ACReporterJSON } from "./ACReporterJSON";
-import { ACReporterXLSX } from "./ACReporterXLSX";
+import { IAbstractAPI } from "../api-ext/IAbstractAPI.js";
+import { IConfigInternal, eRuleLevel } from "../config/IConfig.js";
+import { CompressedIssue, CompressedReport, IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence, eRulePolicy } from "../engine/IReport.js";
+import { ACReporterMetrics } from "./ACReporterMetrics.js";
+import { ACReporterCSV } from "./ACReporterCSV.js";
+import { ACReporterHTML } from "./ACReporterHTML.js";
+import { ACReporterJSON } from "./ACReporterJSON.js";
+import { ACReporterXLSX } from "./ACReporterXLSX.js";
 
 export interface IReporterStored {
     startScan: number,
