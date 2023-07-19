@@ -21,7 +21,7 @@ import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
 import { Builder, Capabilities } from "selenium-webdriver";
-import { loadSeleniumTestFile } from "../../util/Util.js";
+import * as Util from "../../util/Util.js";
 
 let userBrowser = process.env.USER_BROWSER || "CHROME";
 let unitTestcaseHTML = {};
@@ -198,7 +198,7 @@ describe("Rule Unit Tests from Selenium", function () {
                     this.timeout(0);
 
                     let regex = "test.*html?$";
-                    loadSeleniumTestFile(browser, unitTestFile).then(function () {
+                    Util.default.loadSeleniumTestFile(browser, unitTestFile).then(function () {
                         let report = null;
                         // Perform the accessibility scan using the IBMaScan Wrapper
                         aChecker.getCompliance(browser, "Selenium_" + unitTestFile)
