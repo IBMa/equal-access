@@ -1,6 +1,8 @@
 import * as puppeteer from "puppeteer";
-import { IConfigUnsupported } from "./api/IChecker.js";
-import { ACConfigManager } from "./ACConfigManager.js";
+//import { IConfigUnsupported } from "./api/IChecker.js";
+//import { ACConfigManager } from "./ACConfigManager.js";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
+import { IConfigInternal } from "./common/config/IConfig.js";
 
 
 export class ACBrowserManager {

@@ -3,10 +3,11 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
-*/
 import { ACConfigManager } from "./ACConfigManager.js";
 import * as path from "path";
 import * as fs from "fs";
+*/
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
 
 let ace;
 

@@ -17,13 +17,21 @@
 import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
-import * as crypto from 'crypto';
+/** import * as crypto from 'crypto';
 import { fetch_get } from "../api-ext/Fetch";
 import { ReporterManager } from "../report/ReporterManager";
 import { IArchive } from "./IArchive";
 import { ACConstants } from "./ACConstants.js";
 import { v4 as uuidv4 } from 'uuid';
 import { IConfig, IConfigUnsupported } from "./api/IChecker.js";
+*/
+import { ACConstants } from "./ACConstants.js";
+import { v4 as uuidv4 } from 'uuid';
+import { IConfig, IConfigInternal } from "./IConfig.js";
+import { fetch_get } from "../api-ext/Fetch.js";
+import { ReporterManager } from "../report/ReporterManager.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -249,7 +257,20 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    const packageObject = JSON.parse(fs.readFileSync('./package.json').toString());
+    //const packageObject = JSON.parse(fs.readFileSync('./package.json').toString());
+    let packageDir;
+    if (typeof __dirname !== "undefined") {
+        packageDir = __dirname;
+    } else {
+        // @ts-ignore
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        packageDir = __dirname;
+    }
+    while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
+        packageDir = pathLib.join(packageDir, "..");
+    }
+    const packageObject = JSON.parse(fs.readFileSync(pathLib.join(packageDir, 'package.json')).toString());
 
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;

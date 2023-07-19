@@ -14,7 +14,8 @@
     limitations under the License.
 *****************************************************************************/
 
-import { Guideline } from "./IGuideline"
+//import { Guideline } from "./IGuideline"
+import { eRuleCategory, eRulePolicy, eRulesetType, eToolkitLevel } from "./IReport.js"
 
 /**
  * @deprecated

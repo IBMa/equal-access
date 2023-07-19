@@ -14,10 +14,14 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal } from "../config/IConfig";
+/**import { IConfigInternal } from "../config/IConfig";
 import { Guideline } from "../engine/IGuideline";
 import { CompressedReport } from "../engine/IReport";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
+*/
+import { IConfigInternal } from "../config/IConfig.js";
+import { CompressedReport, IRuleset } from "../engine/IReport.js";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
 
 export class ACReporterCSV implements IReporter {
     public name(): string {

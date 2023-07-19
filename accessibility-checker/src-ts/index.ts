@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import { ACBrowserManager } from "./lib/ACBrowserManager.js";
-import { ACConfigManager } from "./lib/ACConfigManager.js";
+/** import { ACConfigManager } from "./lib/ACConfigManager.js";
 import { ACEngineManager } from "./lib/ACEngineManager.js";
 import { getComplianceHelper } from "./lib/ACHelper.js";
 import { ACReportManager } from "./lib/ACReportManager.js";
@@ -23,6 +23,16 @@ import { eAssertResult, ICheckerReport, ICheckerResult, IConfig, IConfigUnsuppor
 import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
 import { IBaselineReport } from "./lib/common/engine/IReport.js";
 import { BaselineManager } from "./lib/common/report/BaselineManager.js";
+*/
+import { ACEngineManager } from "./lib/ACEngineManager.js";
+import { getComplianceHelper } from "./lib/ACHelper.js";
+import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker.js";
+import { ACConfigManager } from "./lib/common/config/ACConfigManager.js";
+import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
+import { IBaselineReport } from "./lib/common/engine/IReport.js";
+import { BaselineManager } from "./lib/common/report/BaselineManager.js";
+import { ReporterManager } from "./lib/common/report/ReporterManager.js";
+
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
  * the supported context type:

@@ -14,11 +14,15 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal, eRuleLevel } from "../config/IConfig";
+/**import { IConfigInternal, eRuleLevel } from "../config/IConfig";
 import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline";
 import { CompressedReport } from "../engine/IReport";
 import { eRuleConfidence } from "../engine/IRule";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
+*/
+import { IConfigInternal, eRuleLevel } from "../config/IConfig.js";
+import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport.js";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
 import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {

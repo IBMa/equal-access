@@ -22,8 +22,9 @@
 // Load all the modules that are needed
 import { tmpdir } from "os";
 import * as pathLib from "path";
-import { IConfigUnsupported } from "./api/IChecker.js";
-import { eRuleLevel } from "./api/IEngine.js";
+//import { IConfigUnsupported } from "./api/IChecker.js";
+//import { eRuleLevel } from "./api/IEngine.js";
+import { IConfigInternal, eRuleLevel } from "./IConfig.js";
 
 // Used to specify all the constant
 export const ACConstants : IConfigInternal = {

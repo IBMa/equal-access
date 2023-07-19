@@ -14,10 +14,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eRuleLevel } from "../config/IConfig"
+/** import { eRuleLevel } from "../config/IConfig"
 import { Guideline, eGuidelineCategory } from "./IGuideline";
 import { Issue, eRulePolicy as eRulePolicyNew, eRuleConfidence as eRuleConfidenceNew } from "./IRule"
 import { Bounds as BoundsNew } from "./IBounds";
+*/
+import { eRuleLevel } from "../config/IConfig.js"
 
 /**
  * @deprecated See ./IRule
