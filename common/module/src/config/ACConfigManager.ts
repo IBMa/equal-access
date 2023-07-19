@@ -141,10 +141,12 @@ async function processACConfig(ACConfig) {
     }
 
     // Build the new rulePack based of the baseA11yServerURL
-    if (ruleServer.includes("jsdelivr.net")) {
-        ACConfig.rulePack = `${ruleServer}@${ACConfig.ruleArchiveVersion}`;
-    } else {
-        ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    if (!ACConfig.rulePack) {
+        if (ruleServer.includes("jsdelivr.net")) {
+            ACConfig.rulePack = `${ruleServer}@${ACConfig.ruleArchiveVersion}`;
+        } else {
+            ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+        }
     }
     ACConfig.ruleServer = ruleServer;
 
