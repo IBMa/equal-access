@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head>
+<title>word spacing</title>
+</head>
+<body role="main" id="ko2ru00253">
+    <p style="letter-spacing: 0.1em">
+      <span style="letter-spacing: unset !important;">
+        The toy brought back fond memories of being lost in the rain forest.
+      </span>
+    </p>
+    <script type="text/javascript">
+      UnitTest = {
+          ruleIds: ["text_spacing_valid"],
+          results: [
+          {
+            "ruleId": "text_spacing_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]/span[1]",
+              "aria": "/document[1]/main[1]/paragraph[1]"
+            },
+            "reasonId": "pass",
+            "message": "CSS !important is not used in inline style to control letter or word spacing or line height",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+      }
+  </script>
+</body>
+</html>
