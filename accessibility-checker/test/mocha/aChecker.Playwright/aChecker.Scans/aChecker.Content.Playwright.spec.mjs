@@ -22,7 +22,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
-import { loadPuppeteerTestFile } from '../../util/Util.js';
+import * as Util from '../../util/Util.js';
 let unitTestcaseHTML = {};
 let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 let gdirs = fs.readdirSync(testRootDir);
@@ -147,7 +147,7 @@ test.describe("Rule Unit Tests from Playwright", function () {
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
                 test('a11y scan should match expected value', async () => {
-                    await loadPuppeteerTestFile(page, unitTestFile);
+                    await Util.default.loadPuppeteerTestFile(page, unitTestFile);
                     
                     let report = null;
                     // Perform the accessibility scan using the IBMaScan Wrapper

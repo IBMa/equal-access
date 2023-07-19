@@ -21,7 +21,7 @@ import * as path from "path";
 import * as aChecker from "../../../../src/mjs/index.js";
 import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 import { expect } from "chai";
-import { loadPuppeteerTestFile } from "../../util/Util.js";
+import * as Util from "../../util/Util.js";
 let unitTestcaseHTML = {};
 let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
 let gdirs = fs.readdirSync(testRootDir);
@@ -165,7 +165,7 @@ describe("Rule Unit Tests As File URL", function () {
                     let actualMap = {};
                     let report = null;
                     let puppeteer = null;
-                    await loadPuppeteerTestFile(page, unitTestFile);
+                    await Util.default.loadPuppeteerTestFile(page, unitTestFile);
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     return aChecker.getCompliance(page, "Puppeteer_" + unitTestFile)
