@@ -58,24 +58,24 @@ gdirs.forEach(function (gdir) {
     }
 });
 
-let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules");
+
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 var skipList = [
     //not in karma conf file
-    path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
-    path.join(testRoot, "a_text_purpose_ruleunit", "A-nonTabable.html"),
+    path.join(testRootDir, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
+    path.join(testRootDir, "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     // Meta refresh
-    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
-    path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
+    path.join(testRootDir, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(testRootDir, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
+    path.join(testRootDir, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // CSS test issues
-    path.join(testRoot, "style_color_misuse_ruleunit","D543.html"),
-    path.join(testRoot, "style_before_after_review_ruleunit","D100.html"),
+    path.join(testRootDir, "style_color_misuse_ruleunit","D543.html"),
+    path.join(testRootDir, "style_before_after_review_ruleunit","D100.html"),
 
     // Misc
-    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 ]
 
 var skipMap = {}
