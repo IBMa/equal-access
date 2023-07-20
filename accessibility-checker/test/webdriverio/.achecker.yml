@@ -71,7 +71,7 @@ outputFolder: results
 
 # optional - Where the baseline results should be loaded
 # Default: baselines
-baselineFolder: test/baselines
+baselineFolder: baselines
 
 # optional - Should Hidden content be scanned
 # true --> Yes scan hidden content

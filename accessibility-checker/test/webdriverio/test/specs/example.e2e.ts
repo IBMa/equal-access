@@ -63,7 +63,7 @@ gdirs.forEach(function (gdir) {
 var skipList = [
     //not in karma conf file
     path.join(testRootDir, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
-    path.join(testRootDir, "a_text_purpose_ruleunit", "A-nonTabable.html"),
+    // path.join(testRootDir, "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     // Meta refresh
     path.join(testRootDir, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
@@ -75,7 +75,7 @@ var skipList = [
     path.join(testRootDir, "style_before_after_review_ruleunit","D100.html"),
 
     // Misc
-    path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 ]
 
 var skipMap = {}
