@@ -63,7 +63,12 @@ export const config: Options.Testrunner = {
     //
     capabilities: [{
         // capabilities for local browser web tests
-        browserName: 'chrome' // or "firefox", "microsoftedge", "safari"
+        browserName: 'chrome', // or "firefox", "microsoftedge", "safari"
+        'goog:chromeOptions': {
+            // to run chrome headless the following flags are required
+            // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
+            args: ['--headless', '--disable-gpu'],
+        }
     }],
     //
     // ===================
