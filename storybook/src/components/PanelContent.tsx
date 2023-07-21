@@ -49,7 +49,7 @@ export const PanelContent: React.FC<PanelContentProps> = ({
             onClick={fetchData}
             style={{ marginRight: 16 }}
           >
-            Request data
+            Scan
           </RequestDataButton>
 
           <RequestDataButton outline small onClick={clearData}>
