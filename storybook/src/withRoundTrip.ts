@@ -9,10 +9,11 @@ import { EVENTS } from "./constants";
 async function loadEngine() {
     if (!(window as any).ace) {
         await new Promise<void>((resolve, reject) => {
+            let scriptUrl = "https://unpkg.com/accessibility-checker-engine@latest/ace.js";
             let script = document.createElement('script');
             script.setAttribute('type', 'text/javascript');
             script.setAttribute('aChecker', 'ACE');
-            script.setAttribute('src', "https://unpkg.com/accessibility-checker-engine@latest/ace.js");
+            script.setAttribute('src', scriptUrl);
             script.addEventListener('load', function () {
                 resolve();
             });
