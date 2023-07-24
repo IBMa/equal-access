@@ -48,6 +48,12 @@ export let aria_accessiblename_exists: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
+        // when table element with a caption as first child
+        if (ruleContext.nodeName.toLocaleLowerCase() === 'table' 
+            && ruleContext.firstElementChild && ruleContext.firstElementChild.nodeName.toLowerCase() === 'caption'
+            && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
+            return RulePass("pass");
+
         const invalidRoles = getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
         const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
