@@ -61,7 +61,7 @@ export let style_color_misuse: Rule = {
                         for (let styleRuleIndex = 0; styleRuleIndex < styleRules.length; styleRuleIndex++) {
                             let styleRule = styleRules[styleRuleIndex];
                             let styleImportRule: CSSImportRule;
-                            if (styleRule.type && styleRule.type === CSSRule.IMPORT_RULE && (styleImportRule = styleRule as CSSImportRule).styleSheet) {
+                            if (styleRule.type && styleRule.type === 3 /* CSSRule.IMPORT_RULE */ && (styleImportRule = styleRule as CSSImportRule).styleSheet) {
                                 let importRules = styleImportRule.styleSheet.cssRules ? styleImportRule.styleSheet.cssRules : styleImportRule.styleSheet.rules;
                                 for (let rIndex = 0; rIndex < importRules.length; rIndex++) {
                                     let iRule = importRules[rIndex];

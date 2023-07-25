@@ -83,7 +83,7 @@ export let style_before_after_review: Rule = {
                                     // The check 'if (styleRule instanceof CSSMediaRule)' doesn't work when run in Karma(but works in DAP) 
                                     // so let's access the type directly as a workaround
                                     let styleImportRule: CSSImportRule;
-                                    if (styleRule.type && styleRule.type === CSSRule.MEDIA_RULE) {
+                                    if (styleRule.type && styleRule.type === 4 /* CSSRule.MEDIA_RULE */) {
                                         let styleMediaRule = styleRule as CSSMediaRule;
                                         let mediaRules = styleMediaRule.cssRules;
                                         if (mediaRules) {
@@ -109,7 +109,7 @@ export let style_before_after_review: Rule = {
                                     }
 
                                     // check import rules
-                                    else if (styleRule.type && styleRule.type === CSSRule.IMPORT_RULE && (styleImportRule = styleRule as CSSImportRule).styleSheet) {
+                                    else if (styleRule.type && styleRule.type === 3 /* CSSRule.IMPORT_RULE */ && (styleImportRule = styleRule as CSSImportRule).styleSheet) {
                                         let rules = styleImportRule.styleSheet.cssRules ?
                                             styleImportRule.styleSheet.cssRules :
                                             styleImportRule.styleSheet.rules;
@@ -117,7 +117,7 @@ export let style_before_after_review: Rule = {
                                             for (let rIndex = 0; passed && rIndex < rules.length; rIndex++) {
                                                 let importedRule = rules[rIndex];
                                                 // check @media rules 
-                                                if (importedRule.type && importedRule.type === CSSRule.MEDIA_RULE) {
+                                                if (importedRule.type && importedRule.type === 4 /* CSSRule.MEDIA_RULE */) {
                                                     let mediaRules = (importedRule as CSSMediaRule).cssRules;
                                                     if (mediaRules) {
                                                         for (let mIndex = 0; mIndex < mediaRules.length; mIndex++) {
@@ -183,7 +183,7 @@ export let style_before_after_review: Rule = {
                             for (let rIndex = 0; passed && rIndex < rules.length; rIndex++) {
                                 let ruleFromLink = rules[rIndex];
                                 // check @media rules 
-                                if (ruleFromLink.type && ruleFromLink.type === CSSRule.MEDIA_RULE) {
+                                if (ruleFromLink.type && ruleFromLink.type === 4 /* CSSRule.MEDIA_RULE */) {
                                     let mediaRules = (ruleFromLink as CSSMediaRule).cssRules;
                                     if (mediaRules) {
                                         for (let mIndex = 0; passed && mIndex < mediaRules.length; mIndex++) {

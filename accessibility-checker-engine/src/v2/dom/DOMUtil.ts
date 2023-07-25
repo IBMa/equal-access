@@ -71,7 +71,7 @@ export class DOMUtil {
     
     static shadowRootNode(node: Node) : Node | null {
         let nd = node;
-        while (nd != null && nd.nodeType !== Node.DOCUMENT_FRAGMENT_NODE)
+        while (nd != null && nd.nodeType !== 11 /* Node.DOCUMENT_FRAGMENT_NODE */) 
             nd = nd.parentNode;
         return nd;
     }
@@ -110,7 +110,7 @@ export class DOMUtil {
     public static getAncestorWithAttribute(element, attrName, attrValue) {
         let walkNode = DOMWalker.parentNode(element);
         while (walkNode !== null) {
-            if (walkNode.nodeType === Node.ELEMENT_NODE && (<Element>walkNode).getAttribute(attrName) === attrValue) 
+            if (walkNode.nodeType === 1 /* Node.ELEMENT_NODE */ && (<Element>walkNode).getAttribute(attrName) === attrValue) 
                 return walkNode;
             walkNode = DOMWalker.parentNode(walkNode);
         }
