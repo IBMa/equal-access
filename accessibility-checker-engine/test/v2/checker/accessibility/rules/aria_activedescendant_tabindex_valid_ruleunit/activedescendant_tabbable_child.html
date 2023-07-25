@@ -89,9 +89,24 @@
     </div>
     <script type="text/javascript">
       UnitTest = {
-          ruleIds: ["aria_activedescendant_tabindex"],
+          ruleIds: ["aria_activedescendant_tabindex_valid"],
           results: [
-          
+          {
+            "ruleId": "aria_activedescendant_tabindex_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/ul[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
           ]
       }
   </script>
