@@ -1,0 +1,81 @@
+# Custom Internal settings for testing purposes only
+
+# optional - Specify one rule archive which consist different type of policies.
+# Default: latest
+ruleServer: https://localhost:9445/rules
+ruleArchive: preview
+ignoreHTTPSErrors: true
+
+# optional - Specify one or many policies to scan.
+# i.e. For one policy use policies: IBM_Accessibility_2017_02
+# i.e. Multiple policies: IBM_Accessibility,WCAG_2_1 or refer to below as a list
+# Default: null
+# We are setting no policies because we want the unit test to run for all policies
+policies:
+    - IBM_Accessibility
+
+# optional - Specify one or many violation levels on which to fail the test
+#            i.e. If specified violation then the testcase will only fail if
+#                 a violation is found during the scan.
+# i.e. failLevels: violation
+# i.e. failLevels: violation,potential violation or refer to below as a list
+# Default: violation, potentialviolation
+failLevels:
+    - violation
+    - potentialviolation
+
+
+# optional - Specify one or many violation levels which should be reported
+#            i.e. If specified violation then in the report it would only contain
+#                 results which are level of violation.
+# i.e. reportLevels: violation
+# i.e. reportLevels: violation,potentialviolation or refer to below as a list
+# Default: violation, potentialviolation, recommendation, potentialrecommendation, manual
+reportLevels:
+    - violation
+    - potentialviolation
+    - recommendation
+    - potentialrecommendation
+    - manual
+    - pass
+
+# Optional - Specify if screenshoot should be captured of the current page that is being scanned
+# If the browser in use provides screen capture capability
+# Default: true
+captureScreenshots: false
+
+# Optional - Which type should the results be outputted to
+#   outputFormat: json, csv, xlsx, disable
+# Default: json
+outputFormat:
+    - json
+
+# Optional - Specify labels that you would like associated to your scan
+#
+# i.e.
+#   label: Firefox,master,V12,Linux
+#   label:
+#       - Firefox
+#       - master
+#       - V12
+#       - Linux
+# Default: N/A
+label:
+    - Chrome
+    - master
+    - IBMa-Node-TeSt
+
+# optional - Where the scan results should be saved
+# Default: results
+outputFolder: results
+
+# optional - Where the baseline results should be loaded
+# Default: baselines
+baselineFolder: baselines
+
+# optional - Should Hidden content be scanned
+# true --> Yes scan hidden content
+# false --> Don't scan hidden content
+# Default: true
+checkHiddenContent: false
+
