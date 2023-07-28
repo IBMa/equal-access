@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
@@ -54,7 +54,7 @@ export let fieldset_legend_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         // In the case a legend is hidden, we should still trigger a violations for this
         let legends = RPTUtil.getChildByTagHidden(ruleContext, "legend", true, false);
-        if (legends.length === 0) {
+        /**if (legends.length === 0) {
             // Fieldset has NO Legend
             return RuleFail("Fail_1");
         } else if (legends.length > 1) {
@@ -63,8 +63,14 @@ export let fieldset_legend_valid: Rule = {
         } else if (RPTUtil.getInnerText(legends[0]).trim().length === 0) {
             // Fieldset has legend but legend is empty
             return RuleFail("Fail_3");
+        } */
+        
+        if (legends.length > 1) {
+            // Fieldset has more than one legend
+            return RuleFail("Fail_2");
         } else {
             return RulePass("Pass_0");
         }
+
     }
 }

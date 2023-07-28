@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { getCache, setCache } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let fieldset_label_valid: Rule = {
     id: "fieldset_label_valid",
@@ -51,6 +52,13 @@ export let fieldset_label_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        //only consider a fieldset with an implict role, ignore a <fieldset> with any othe roles
+        const roles = RPTUtil.getRoles(ruleContext, false);
+        const implicitRoles = RPTUtil.getImplicitRole(ruleContext);
+        if (roles && (roles.length > 1 || (implicitRoles && roles.some(r=> implicitRoles.includes(r)))))
+            return;
+
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
         let formCache = getCache(
             ruleContext.ownerDocument,
@@ -65,7 +73,7 @@ export let fieldset_label_valid: Rule = {
             };
             let allGroupsTemp = ownerDocument.querySelectorAll(
                 'fieldset,[role="group"]'
-            );
+            ); console.log("node=" + ruleContext.nodeName +", allGroupsTemp=" + allGroupsTemp.length);
             let allGroups = Array.from(allGroupsTemp);
             let groupsWithInputs = [];
             for (let i = 0; i < allGroups.length; i++) {
