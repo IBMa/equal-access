@@ -88,6 +88,12 @@ export interface IConfig {
     outputFolder?: string
 
     /**
+     * (optional) Should the timestamp be included in the filename of the reports?
+     * Default: true
+     */
+    outputFilenameTimestamp?: boolean
+
+    /**
      * (optional) Where the baseline results should be loaded from
      * Default: "baselines"
      */

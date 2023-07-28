@@ -51,6 +51,8 @@ export const ACConstants : IConfigInternal = {
     // Specify default value if screenshoot should be captured of the current page that is being scanned.
     captureScreenshots: false,
 
+    outputFilenameTimestamp: true,
+
     // Specify default value for which type should the results be outputted to
     outputFormat: [ "json" ],
 
