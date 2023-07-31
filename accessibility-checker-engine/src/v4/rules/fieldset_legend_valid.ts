@@ -45,8 +45,8 @@ export let fieldset_legend_valid: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["1.3.1"],
-        "level": eRulePolicy.VIOLATION,
+        "num": ["1.3.1"],  //https://www.w3.org/WAI/WCAG22/Techniques/html/H71
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
@@ -54,7 +54,7 @@ export let fieldset_legend_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         // In the case a legend is hidden, we should still trigger a violations for this
         let legends = RPTUtil.getChildByTagHidden(ruleContext, "legend", true, false);
-        /**if (legends.length === 0) {
+        if (legends.length === 0) {
             // Fieldset has NO Legend
             return RuleFail("Fail_1");
         } else if (legends.length > 1) {
@@ -63,14 +63,7 @@ export let fieldset_legend_valid: Rule = {
         } else if (RPTUtil.getInnerText(legends[0]).trim().length === 0) {
             // Fieldset has legend but legend is empty
             return RuleFail("Fail_3");
-        } */
-        
-        if (legends.length > 1) {
-            // Fieldset has more than one legend
-            return RuleFail("Fail_2");
-        } else {
-            return RulePass("Pass_0");
         }
-
+        return RulePass("Pass_0");
     }
 }

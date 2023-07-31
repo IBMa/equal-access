@@ -29,7 +29,7 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: FieldSet-hasEmptyLegend.html</h2>
+<h2>Test case: FieldSet-hasarialabel.html</h2>
 
 
 
@@ -38,13 +38,26 @@
 
 <h3>Input type Tests</h3>
 
+<ul>
+  <li>Test - best practice</li>
+</ul>
+<form action="..." method="post">
+  <fieldset aria-labelledby="mylegend">
+    <legend id="mylegend">Please enter your company information.</legend>
+
+    <label for="cpname">Company Name</label>
+    <input type="text" name="cpname" id="cpname" value="enter company name">
+
+  </fieldset>
+
+</form>
 
 <ul>
-	<li>Test - no legend for fieldset</li>
+	<li>Test - no legend for fieldset but with label</li>
 </ul>
 
 <form action="..." method="post">
-	<fieldset aria-label="my iput group">
+	<fieldset aria-label="this is a potentially very long description of the fieldset and more description is possible">
 		<label for="fn1">First Name</label>
 		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
 
@@ -53,13 +66,13 @@
 
 		<button type="submit">Submit</button>
 	</fieldset>
-
+</form>
   <ul>
-    <li>Test - best practice</li>
+    <li>Test - with a legend for fieldset but without label</li>
   </ul>
   <form action="..." method="post">
-    <fieldset aria-labelledby="mylegend">
-      <legend id="mylegend">Fieldset text: Please enter your personal information.</legend>
+    <fieldset>
+      <legend id="mylegend">this is a potentially very long description of the fieldset and more description is possible</legend>
 
       <label for="name">Name</label>
       <input type="text" name="name" id="name" value="enter name" title="enter name">
@@ -67,6 +80,18 @@
       <button type="submit">Submit</button>
 	</fieldset>
 
+</form>
+
+<form action="..." method="post">
+	<fieldset aria-label="this is a potentially very long description of the fieldset and more description is possible">
+		<label for="fn1">First Name</label>
+		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
+
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name">
+
+		<button type="submit">Submit</button>
+	</fieldset>
 </form>
 
 <a name="navskip"></a>
