@@ -8,8 +8,9 @@ export const RequestDataButton = styled(Button)({
 });
 
 type Results = {
-  danger: any[];
-  warning: any[];
+  passes: any [];
+  violations: any[];
+  needsReview: any[];
 };
 
 interface PanelContentProps {
@@ -59,18 +60,25 @@ export const PanelContent: React.FC<PanelContentProps> = ({
       </Placeholder>
     </div>
     <div
-      id="danger"
-      title={`${results.danger.length} Danger`}
+      id="passes"
+      title={`${results.passes.length} Passes`}
       color={convert(themes.normal).color.negative}
     >
-      <List items={results.danger} />
+      <List items={results.passes} />
     </div>
     <div
-      id="warning"
-      title={`${results.warning.length} Warning`}
+      id="violations"
+      title={`${results.violations.length} Violations`}
+      color={convert(themes.normal).color.negative}
+    >
+      <List items={results.violations} />
+    </div>
+    <div
+      id="needsReview"
+      title={`${results.needsReview.length} Needs Review`}
       color={convert(themes.normal).color.warning}
     >
-      <List items={results.warning} />
+      <List items={results.needsReview} />
     </div>
   </TabsState>
 );

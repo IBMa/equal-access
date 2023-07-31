@@ -55,7 +55,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         // JCH find unique elements that have violations and needs review issues
         let violations = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-        }) || []
+        }) || [];
 
         let potentials = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");

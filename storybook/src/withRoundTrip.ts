@@ -37,8 +37,25 @@ export const withRoundTrip = (storyFn: StoryFunction<Renderer>) => {
             let report = await checker.check(root, ["IBM_Accessibility"]);
             // TODO: Run Accessibility Checker here
             console.log(report);
+            
+            let violations = report && report.results.filter((result: any) => {
+                return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
+            }) || [];
+            console.log("violations: ", violations);
+            console.log("violations.length = ", violations.length);
+            var messages:any = [];
+
+            for (let i = 0; i < violations.length; i++) {
+                console.log("[",i,"] = ", violations[i].message);
+                // let temp = { title: violations[i].message, description: "Test description" };
+
+                messages.add({ title: violations[i].message, description: "Test description" });
+            }
+            // violations = output;
+            // looking for passes: [ {title:violations[i],  } ]
+            console.log("messages: ", messages);
             emit(EVENTS.RESULT, {
-                danger: [
+                passes: [
                     {
                         title: "Hello world! Panels are the most common type of addon in the ecosystem",
                         description:
@@ -51,7 +68,20 @@ export const withRoundTrip = (storyFn: StoryFunction<Renderer>) => {
                             "@storybook/components offers components to help you addons with the look and feel of Storybook itself",
                     },
                 ],
-                warning: [
+                violations: [
+                    {
+                        title: "Hello world! Panels are the most common type of addon in the ecosystem",
+                        description:
+                            "For example the official @storybook/actions and @storybook/a11y use this pattern",
+                    },
+                    {
+                        title:
+                            "You can specify a custom title for your addon panel and have full control over what content it renders",
+                        description:
+                            "@storybook/components offers components to help you addons with the look and feel of Storybook itself",
+                    },
+                ],
+                needsReview: [
                     {
                         title:
                             'This tabbed UI pattern is a popular option to display "test" reports.',
@@ -63,14 +93,16 @@ export const withRoundTrip = (storyFn: StoryFunction<Renderer>) => {
         },
         [STORY_CHANGED]: () => {
             emit(EVENTS.RESULT, {
-                danger: [],
-                warning: [],
+                passes: [],
+                violations: [],
+                needsReview: [],
             });
         },
         [EVENTS.CLEAR]: () => {
             emit(EVENTS.RESULT, {
-                danger: [],
-                warning: [],
+                passes: [],
+                violations: [],
+                needsReview: [],
             });
         },
     });
