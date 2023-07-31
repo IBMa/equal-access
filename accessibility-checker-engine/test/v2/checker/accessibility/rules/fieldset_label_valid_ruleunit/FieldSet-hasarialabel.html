@@ -112,9 +112,9 @@
               "aria": "/document[1]/form[1]/group[1]"
             },
             "reasonId": "Pass_1",
-            "message": "Group/Fieldset \"my iput group\" with an input has a unique name",
+            "message": "Group/Fieldset \"Please enter your company information.\" with an input has a unique name",
             "messageArgs": [
-              "my iput group"
+              "Please enter your company information."
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -123,16 +123,52 @@
             "ruleId": "fieldset_label_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/form[1]/fieldset[2]",
-              "aria": "/document[1]/form[1]/group[2]"
+              "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
+              "aria": "/document[1]/form[2]/group[1]"
             },
-            "reasonId": "Pass_1",
-            "message": "Group/Fieldset \"Fieldset text: Please enter your personal information.\" with an input has a unique name",
+            "reasonId": "Fail_2",
+            "message": "Group/Fieldset \"this is a potentially very long description of the fieldset and more description is possible\" has a duplicate name to another group",
             "messageArgs": [
-              "Fieldset text: Please enter your personal information."
+              "this is a potentially very long description of the fieldset and more description is possible"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "fieldset_label_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/fieldset[1]",
+              "aria": "/document[1]/form[3]/group[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Group/Fieldset \"this is a potentially very long description of the fieldset and more description is possible\" has a duplicate name to another group",
+            "messageArgs": [
+              "this is a potentially very long description of the fieldset and more description is possible"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "fieldset_label_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[4]/fieldset[1]",
+              "aria": "/document[1]/form[4]/group[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Group/Fieldset \"this is a potentially very long description of the fieldset and more description is possible\" has a duplicate name to another group",
+            "messageArgs": [
+              "this is a potentially very long description of the fieldset and more description is possible"
             ],
             "apiArgs": [],
             "category": "Accessibility"

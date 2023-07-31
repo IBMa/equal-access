@@ -58,14 +58,6 @@ export let fieldset_label_valid: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
 
-        //only consider a fieldset with an implict role, ignore a <fieldset> with any othe roles (such as radiogroup)
-        if (ruleContext.nodeName.toLocaleLowerCase() === 'fieldset') {
-            const roles = RPTUtil.getRoles(ruleContext, false);
-            const implicitRoles = RPTUtil.getImplicitRole(ruleContext);
-            if (roles && (roles.length > 1 || (implicitRoles && roles.some(r=> implicitRoles.includes(r)))))
-                return;
-        }
-
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
         let formCache = getCache(
             ruleContext.ownerDocument,
