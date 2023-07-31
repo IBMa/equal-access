@@ -40,7 +40,7 @@ export let fieldset_legend_valid: Rule = {
             "Fail_1": "<fieldset> element does not have a <legend>",
             "Fail_2": "<fieldset> element has more than one <legend>",
             "Fail_3": "<fieldset> element <legend> is empty",
-            "group": " <fieldset> elements must have a single, non-empty <legend> as a label"
+            "group": " <fieldset> elements should have a single, non-empty <legend> as a label"
         }
     },
     rulesets: [{
