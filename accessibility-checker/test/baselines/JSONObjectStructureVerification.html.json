@@ -18,8 +18,9 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/page_title_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22page_title_valid%22%2C%22msgArgs%22%3A%5B%22Helo%20World%22%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -39,8 +40,9 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -60,8 +62,9 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -81,8 +84,9 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -102,8 +106,9 @@
 		},
 		"snippet": "<title>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -123,8 +128,9 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -144,8 +150,9 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -165,8 +172,9 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -186,8 +194,9 @@
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -207,8 +216,9 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -228,8 +238,9 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -249,8 +260,9 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -270,8 +282,9 @@
 		},
 		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -291,8 +304,9 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -312,8 +326,9 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -333,8 +348,9 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -354,8 +370,9 @@
 		},
 		"snippet": "<head>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -375,8 +392,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -396,8 +414,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -417,8 +436,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_contrast_sufficient",
 		"value": ["VIOLATION", "PASS"],
@@ -438,8 +458,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -459,8 +480,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -480,8 +502,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "heading_markup_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -501,8 +524,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/heading_markup_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22heading_markup_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "heading_content_exists",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -522,8 +546,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/heading_content_exists.html#%7B%22message%22%3A%22Heading%20element%20has%20descriptive%20text%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22heading_content_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -543,8 +568,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -564,8 +590,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_accessiblename_exists",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -585,8 +612,9 @@
 		},
 		"snippet": "<h1>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_accessiblename_exists.html#%7B%22message%22%3A%22An%20accessible%20name%20is%20provided%20for%20the%20element%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_accessiblename_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -606,8 +634,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -627,8 +656,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -648,8 +678,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_block_heading",
 		"value": ["VIOLATION", "PASS"],
@@ -669,8 +700,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -690,8 +722,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -711,8 +744,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -732,8 +766,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "element_id_unique",
 		"value": ["VIOLATION", "FAIL"],
@@ -754,7 +789,8 @@
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
 		"ignored": true,
-		"level": "violation"
+		"level": "violation",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22The%20%3Cdiv%3E%20element%20has%20the%20id%20%5C%22firstDiv%5C%22%20that%20is%20already%20in%20use%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_2%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%22div%22%2C%22firstDiv%22%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -774,8 +810,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -795,8 +832,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -816,8 +854,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -837,8 +876,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_block_heading",
 		"value": ["VIOLATION", "PASS"],
@@ -858,8 +898,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -879,8 +920,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -900,8 +942,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -921,8 +964,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "element_id_unique",
 		"value": ["VIOLATION", "PASS"],
@@ -942,8 +986,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -963,8 +1008,9 @@
 		},
 		"snippet": "<div id=\"firstDiv\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -984,8 +1030,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -1005,8 +1052,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -1026,8 +1074,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -1047,8 +1096,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1068,8 +1118,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1089,8 +1140,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -1110,8 +1162,9 @@
 		},
 		"snippet": "<a name=\"navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1131,8 +1184,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -1152,8 +1206,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -1173,8 +1228,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_block_heading",
 		"value": ["VIOLATION", "PASS"],
@@ -1194,8 +1250,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -1215,8 +1272,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1236,8 +1294,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1257,8 +1316,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_role_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1278,8 +1338,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_role_valid%22%2C%22msgArgs%22%3A%5B%22main%22%2C%22div%22%5D%7D"
 	}, {
 		"ruleId": "aria_role_redundant",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1299,8 +1360,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_redundant.html#%7B%22message%22%3A%22An%20explicitly-assigned%20ARIA%20role%20is%20not%20redundant%20with%20the%20implicit%20role%20of%20the%20element%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_role_redundant%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_role_allowed",
 		"value": ["VIOLATION", "PASS"],
@@ -1320,8 +1382,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_allowed.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_role_allowed%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_keyboard_handler_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1341,8 +1404,9 @@
 		},
 		"snippet": "<div role=\"main\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_keyboard_handler_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_keyboard_handler_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "widget_tabbable_single",
 		"value": ["VIOLATION", "PASS"],
@@ -1362,8 +1426,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/widget_tabbable_single.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22widget_tabbable_single%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "widget_tabbable_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1383,8 +1448,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/widget_tabbable_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22widget_tabbable_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1404,8 +1470,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -1425,8 +1492,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -1446,8 +1514,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_contrast_sufficient",
 		"value": ["VIOLATION", "PASS"],
@@ -1467,8 +1536,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%229.40%22%2C16%2C400%2C%22%230000ee%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -1488,8 +1558,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1509,8 +1580,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1530,8 +1602,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "element_tabbable_visible",
 		"value": ["VIOLATION", "PASS"],
@@ -1551,8 +1624,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_tabbable_visible.html#%7B%22message%22%3A%22The%20tabbable%20element%20is%20visible%20on%20the%20screen%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22element_tabbable_visible%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_content_in_landmark",
 		"value": ["VIOLATION", "PASS"],
@@ -1572,8 +1646,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "a_text_purpose",
 		"value": ["VIOLATION", "PASS"],
@@ -1593,8 +1668,9 @@
 		},
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/a_text_purpose.html#%7B%22message%22%3A%22Hyperlink%20has%20a%20description%20of%20its%20purpose%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22a_text_purpose%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1614,8 +1690,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -1635,8 +1712,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -1656,8 +1734,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_block_heading",
 		"value": ["VIOLATION", "PASS"],
@@ -1677,8 +1756,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -1698,8 +1778,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1719,8 +1800,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1740,8 +1822,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_role_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1761,8 +1844,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_role_valid%22%2C%22msgArgs%22%3A%5B%22navigation%22%2C%22div%22%5D%7D"
 	}, {
 		"ruleId": "aria_role_redundant",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1782,8 +1866,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_redundant.html#%7B%22message%22%3A%22An%20explicitly-assigned%20ARIA%20role%20is%20not%20redundant%20with%20the%20implicit%20role%20of%20the%20element%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_role_redundant%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_role_allowed",
 		"value": ["VIOLATION", "PASS"],
@@ -1803,8 +1888,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_role_allowed.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_role_allowed%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "aria_keyboard_handler_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1824,8 +1910,9 @@
 		},
 		"snippet": "<div role=\"navigation\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_keyboard_handler_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_keyboard_handler_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -1845,8 +1932,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_sensory_misuse",
 		"value": ["VIOLATION", "PASS"],
@@ -1866,8 +1954,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
@@ -1887,8 +1976,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "skip_main_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1908,8 +1998,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/skip_main_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "skip_main_described",
 		"value": ["VIOLATION", "PASS"],
@@ -1929,8 +2020,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/skip_main_described.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22skip_main_described%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -1950,8 +2042,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -1971,8 +2064,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -1992,8 +2086,9 @@
 		},
 		"snippet": "<body>",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "page_title_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -2013,8 +2108,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/page_title_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22page_title_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "list_markup_review",
 		"value": ["VIOLATION", "PASS"],
@@ -2034,8 +2130,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "img_alt_background",
 		"value": ["RECOMMENDATION", "PASS"],
@@ -2055,8 +2152,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "html_skipnav_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -2076,8 +2174,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_skipnav_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22html_skipnav_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "html_lang_valid",
 		"value": ["VIOLATION", "PASS"],
@@ -2097,8 +2196,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_lang_valid.html#%7B%22message%22%3A%22Lang%20has%20a%20valid%20primary%20lang%20and%20conforms%20to%20BCP%2047%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22html_lang_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}, {
 		"ruleId": "html_lang_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -2118,8 +2218,9 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20language%20detected%20as%20%5C%22en%5C%22%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%22en%22%5D%7D"
 	}, {
 		"ruleId": "emoticons_alt_exists",
 		"value": ["VIOLATION", "PASS"],
@@ -2139,10 +2240,12 @@
 		},
 		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
-		"ignored": true,
-		"level": "pass"
+		"ignored": false,
+		"level": "pass",
+		"help": "https://able.ibm.com/rules/archives/preview/doc/en-US/emoticons_alt_exists.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22emoticons_alt_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
 	}],
 	"numExecuted": 102,
+	"ruleTime": 999,
 	"nls": {
 		"html_lang_valid": {
 			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
@@ -2265,8 +2368,11 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 0,
-			"ignored": 102
+			"pass": 101,
+			"ignored": 1,
+			"elements": 13,
+			"elementsViolation": 0,
+			"elementsViolationReview": 0
 		},
 		"scanTime": 999,
 		"ruleArchive": "Preview Rules (preview)",
@@ -2277,6 +2383,5 @@
 	},
 	"scanID": "uuid",
 	"toolID": "accessibility-checker-v3.0.0",
-	"label": "JSONObjectStructureVerification.html",
-	"ruleTime": 999
+	"label": "JSONObjectStructureVerification.html"
 }
