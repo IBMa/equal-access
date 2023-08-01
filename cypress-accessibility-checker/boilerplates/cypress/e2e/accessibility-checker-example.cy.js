@@ -20,7 +20,7 @@ import "cypress-accessibility-checker";
 context('Accessibility checker example', () => {
     it('Scan website that contains failures', () => {
         // Replace URL with application URL
-        cy.visit('http://localhost:8080/example-html-file.html')
+        cy.visit('http://localhost:8080/sample-html/example-html-file.html')
             .getCompliance('example') // Label should be unique per call to the function
             .assertCompliance();
     });
