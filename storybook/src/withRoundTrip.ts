@@ -37,58 +37,54 @@ export const withRoundTrip = (storyFn: StoryFunction<Renderer>) => {
             let report = await checker.check(root, ["IBM_Accessibility"]);
             // TODO: Run Accessibility Checker here
             console.log(report);
-            
+
+            // PASSES
+            let passes = report && report.results.filter((result: any) => {
+                return result.message === "Rule Passed";
+            }) || [];
+            var passesData = {
+                "passesMsgs": [] as any
+            };
+            var passesMsgs = [] as any;
+            for (let i = 0; i < passes.length; i++) {
+                // console.log("[",i,"] = ", passes[i].message);
+                passesMsgs.push({ title: passes[i].message, description: "Test description" });
+            }
+            let myPasses = {"passes": passesMsgs};
+
+            // VIOLATIONS
             let violations = report && report.results.filter((result: any) => {
                 return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
             }) || [];
-            console.log("violations: ", violations);
-            console.log("violations.length = ", violations.length);
-            var messages:any = [];
-
+            var violationsData = {
+                "violationMsgs": [] as any
+            };
+            var violationMsgs = [] as any;
             for (let i = 0; i < violations.length; i++) {
-                console.log("[",i,"] = ", violations[i].message);
-                // let temp = { title: violations[i].message, description: "Test description" };
-
-                messages.add({ title: violations[i].message, description: "Test description" });
+                // console.log("[",i,"] = ", violations[i].message);
+                violationMsgs.push({ title: violations[i].message, description: "Test description" });
             }
-            // violations = output;
-            // looking for passes: [ {title:violations[i],  } ]
-            console.log("messages: ", messages);
+            let myViolations = {"violations": violationMsgs};
+
+            // NEEDS REVIEW
+            let needsReview = report && report.results.filter((result: any) => {
+                return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
+            }) || [];
+            var needsReviewData = {
+                "needsReviewMsgs": [] as any
+            };
+            var needsReviewMsgs = [] as any;
+            console.log("needsReview.length = ", needsReview.length);
+            for (let i = 0; i < needsReview.length; i++) {
+                // console.log("[",i,"] = ", needsReview[i].message);
+                needsReviewMsgs.push({ title: needsReview[i].message, description: "Test description" });
+            }
+            let myNeedsreview = {"needsReview": needsReviewMsgs};
+            
             emit(EVENTS.RESULT, {
-                passes: [
-                    {
-                        title: "Hello world! Panels are the most common type of addon in the ecosystem",
-                        description:
-                            "For example the official @storybook/actions and @storybook/a11y use this pattern",
-                    },
-                    {
-                        title:
-                            "You can specify a custom title for your addon panel and have full control over what content it renders",
-                        description:
-                            "@storybook/components offers components to help you addons with the look and feel of Storybook itself",
-                    },
-                ],
-                violations: [
-                    {
-                        title: "Hello world! Panels are the most common type of addon in the ecosystem",
-                        description:
-                            "For example the official @storybook/actions and @storybook/a11y use this pattern",
-                    },
-                    {
-                        title:
-                            "You can specify a custom title for your addon panel and have full control over what content it renders",
-                        description:
-                            "@storybook/components offers components to help you addons with the look and feel of Storybook itself",
-                    },
-                ],
-                needsReview: [
-                    {
-                        title:
-                            'This tabbed UI pattern is a popular option to display "test" reports.',
-                        description:
-                            "It's used by @storybook/addon-jest and @storybook/addon-a11y. @storybook/components offers this and other components to help you quickly build an addon",
-                    },
-                ],
+                passes: myPasses.passes,
+                violations: myViolations.violations,
+                needsReview: myNeedsreview.needsReview,
             });
         },
         [STORY_CHANGED]: () => {
