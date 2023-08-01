@@ -35,70 +35,16 @@ export const withRoundTrip = (storyFn: StoryFunction<Renderer>) => {
             let checker = await loadEngine()
             let root = document.getElementById("storybook-root");
             let report = await checker.check(root, ["IBM_Accessibility"]);
-            // TODO: Run Accessibility Checker here
-            console.log(report);
-
-            // PASSES
-            let passes = report && report.results.filter((result: any) => {
-                return result.message === "Rule Passed";
-            }) || [];
-            var passesData = {
-                "passesMsgs": [] as any
-            };
-            var passesMsgs = [] as any;
-            for (let i = 0; i < passes.length; i++) {
-                // console.log("[",i,"] = ", passes[i].message);
-                passesMsgs.push({ title: passes[i].message, description: "Test description" });
-            }
-            let myPasses = {"passes": passesMsgs};
-
-            // VIOLATIONS
-            let violations = report && report.results.filter((result: any) => {
-                return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-            }) || [];
-            var violationsData = {
-                "violationMsgs": [] as any
-            };
-            var violationMsgs = [] as any;
-            for (let i = 0; i < violations.length; i++) {
-                // console.log("[",i,"] = ", violations[i].message);
-                violationMsgs.push({ title: violations[i].message, description: "Test description" });
-            }
-            let myViolations = {"violations": violationMsgs};
-
-            // NEEDS REVIEW
-            let needsReview = report && report.results.filter((result: any) => {
-                return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
-            }) || [];
-            var needsReviewData = {
-                "needsReviewMsgs": [] as any
-            };
-            var needsReviewMsgs = [] as any;
-            console.log("needsReview.length = ", needsReview.length);
-            for (let i = 0; i < needsReview.length; i++) {
-                // console.log("[",i,"] = ", needsReview[i].message);
-                needsReviewMsgs.push({ title: needsReview[i].message, description: "Test description" });
-            }
-            let myNeedsreview = {"needsReview": needsReviewMsgs};
-            
-            emit(EVENTS.RESULT, {
-                passes: myPasses.passes,
-                violations: myViolations.violations,
-                needsReview: myNeedsreview.needsReview,
-            });
+            emit(EVENTS.RESULT, { report });
         },
         [STORY_CHANGED]: () => {
             emit(EVENTS.RESULT, {
-                passes: [],
-                violations: [],
-                needsReview: [],
+                report: null
             });
         },
         [EVENTS.CLEAR]: () => {
             emit(EVENTS.RESULT, {
-                passes: [],
-                violations: [],
-                needsReview: [],
+                report: null
             });
         },
     });

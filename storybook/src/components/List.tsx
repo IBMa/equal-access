@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { styled, themes, convert } from "@storybook/theming";
 import { Icons, IconsProps } from "@storybook/components";
+import { RuleDetails } from "src/api/IEngine";
 
 const ListWrapper = styled.ul({
   listStyle: "none",
@@ -51,13 +52,15 @@ const Description = styled.div({
   fontStyle: "italic",
 });
 
+
 type Item = {
-  title: string;
-  description: string;
+    ruleId: string
+    groupMessage: string
+    issues: RuleDetails[]
 };
 
 interface ListItemProps {
-  item: Item;
+    item: Item;
 }
 
 export const ListItem: React.FC<ListItemProps> = ({ item }) => {
@@ -74,10 +77,10 @@ export const ListItem: React.FC<ListItemProps> = ({ item }) => {
               transform: `rotate(${open ? 0 : -90}deg)`,
             }}
           />
-          {item.title}
+          {item.groupMessage}
         </HeaderBar>
       </Wrapper>
-      {open ? <Description>{item.description}</Description> : null}
+      {open ? (<ul>{item.issues.map(issue => <li>{issue.message}</li>)}</ul>) : null}
     </Fragment>
   );
 };
