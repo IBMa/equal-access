@@ -1,13 +1,10 @@
 const ACConfigManager = require("./common/config/ACConfigManager").ACConfigManager;
 const request = require("@cypress/request");
 
-class ACEngineManager {
-    static engineLoaded = false;
-    static checker;
-    static loadOnce = null;
-    static ace;
-    static customRulesets = []
-    static myWindow;
+const ACEngineManager = {
+    engineLoaded: false
+    , loadOnce: null
+    , customRulesets: []
     
     /**
      * This function loads the compliance engine.
@@ -15,7 +12,7 @@ class ACEngineManager {
      *
      * @return N/A - This function will not return any thing, as it is full async
      */
-    static loadEngine(win, config) {
+    , loadEngine: (win, config) => {
         // We're running from a command
         if (ACEngineManager.myWindow || win) {
             ACEngineManager.myWindow = win.parent;
@@ -43,7 +40,7 @@ class ACEngineManager {
         }
     }
 
-    static loadLocalEngine(config) {
+    , loadLocalEngine: (config) => {
         return new Promise((resolve, reject) => {
             request.get(config.rulePack + "/ace-node.js", function (err, data) {
                 const path = require("path");
@@ -87,7 +84,7 @@ class ACEngineManager {
             });
         });
     }
-    static loadCypressEngine(config) {
+    , loadCypressEngine: (config) => {
         if (ACEngineManager.ace) {
             return;
         }
@@ -103,29 +100,29 @@ class ACEngineManager {
             })
     }
 
-    static addRuleset = (ruleset) => {
+    , addRuleset: (ruleset) => {
         ACEngineManager.customRulesets.push(ruleset);
     }
 
-    static getRuleset = async (rsId) => {
+    , getRuleset: async (rsId) => {
         if (!ACEngineManager.checker) {
             await ACEngineManager.loadEngine();
         }
         return ACEngineManager.customRulesets.concat(ACEngineManager.checker.rulesets).filter((function (rs) { return rs.id === rsId }))[0];
-    };
+    }
 
-    static getRulesets = async function () {
+    , getRulesets: async () => {
         if (!ACEngineManager.checker) {
             await ACEngineManager.loadEngine();
         }
         return ACEngineManager.customRulesets.concat(ACEngineManager.checker.rulesets);
-    };
+    }
 
-    static getChecker() {
+    , getChecker: () => {
         return ACEngineManager.checker;
     }
 
-    static getRules = async function() {
+    , getRules: async () => {
         if (!ACEngineManager.checker) {
             await ACEngineManager.loadEngine();
         }
@@ -136,7 +133,7 @@ class ACEngineManager {
         return retVal;
     }
 
-    static getRulesSync = function() {
+    , getRulesSync: () => {
         if (!ACEngineManager.checker) return null;
         let retVal = [];
         for (const ruleId in ACEngineManager.checker.engine.ruleMap) {
