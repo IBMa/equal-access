@@ -195,7 +195,7 @@ export function getMediaOrientationTransform(doc: Document) {
             if (sheet && sheet.cssRules) {
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
                     const sheetRule = sheet.cssRules[rIndex];
-                    if (CSSRule.MEDIA_RULE === sheetRule.MEDIA_RULE) { 
+                    if (4 /* CSSRule.MEDIA_RULE */ === sheetRule.MEDIA_RULE) { 
                         const rule = sheetRule as CSSMediaRule;
                         if (rule && rule.media) {
                             const mediaList = rule.media;
@@ -204,7 +204,7 @@ export function getMediaOrientationTransform(doc: Document) {
                                 if (!elem_transforms) elem_transforms = {};
                                 let styleRules = rule.cssRules;
                                 for (let i = 0; i < styleRules.length; ++i) {
-                                    if (CSSRule.STYLE_RULE === styleRules[i].STYLE_RULE) { 
+                                    if (1 /* CSSRule.STYLE_RULE */ === styleRules[i].STYLE_RULE) { 
                                         const styleRule = styleRules[i] as CSSStyleRule;
                                         const selector = styleRule.selectorText;
                                         if (selector) {

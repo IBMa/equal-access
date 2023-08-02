@@ -169,6 +169,71 @@ export class ACEngineManager {
                 console.log(e);
                 return Promise.reject(e);
             }
+        } else if (ACEngineManager.isWebDriverIO(content)) {
+
+            config.DEBUG && console.log("[INFO] aChecker.loadEngine detected WebDriverIO");
+            let page = content;
+            // ENGINE_LOAD_MODE = "REMOTE";
+            if (ENGINE_LOAD_MODE === "REMOTE") {
+                await page.executeAsync((scriptUrl, done) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            new Promise<void>((resolve, reject) => {
+                                let script = document.createElement('script');
+                                script.setAttribute('type', 'text/javascript');
+                                script.setAttribute('aChecker', 'ACE');
+                                script.setAttribute('src', scriptUrl);
+                                script.addEventListener('load', function () {
+                                    globalThis.ace_ibma = ace;
+                                    if ('undefined' !== typeof(ace)) {
+                                        ace = ace_backup_in_ibma;
+                                    }
+                                    resolve();
+                                });
+                                script.addEventListener('error', function (evt) {
+                                    reject(new Error(`Unable to load engine into ${document.location.href}. This can happen if the page server sets a Content-Security-Policy that prevents ${scriptUrl} from loading.`))
+                                });
+                                let heads = document.getElementsByTagName('head');
+                                if (heads.length > 0) { heads[0].appendChild(script); }
+                                else if (document.body) { document.body.appendChild(script); }
+                                else { Promise.reject("Invalid document"); }
+                            }).then(done)
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
+                    }
+                }, `${config.rulePack}/ace.js`);
+            } else if (ENGINE_LOAD_MODE === "INJECT") {
+                await page.executeAsync((engineContent, done) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            return new Promise<void>((resolve, reject) => {
+                                eval(engineContent);
+                                globalThis.ace_ibma = ace;
+                                if ('undefined' !== typeof(ace)) {
+                                    ace = ace_backup_in_ibma;
+                                }
+                                resolve();
+                            }).then(done);
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
+                    }
+                }, ACEngineManager.engineContent);
+            }
+            return ACEngineManager.loadEngineLocal();
         } else {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected local");
             if (globalThis.ace_ibma) {
@@ -238,6 +303,13 @@ export class ACEngineManager {
             return content.constructor.toString().indexOf("Driver") !== -1 ||
                 // check required for selenium >= 3.0.1
                 (content.constructor.name && content.constructor.name.indexOf("Driver") !== -1);
+        }
+        return false;
+    }
+
+    static isWebDriverIO(content) {
+        if (content && content.constructor) {
+            return content.constructor.toString().indexOf("Browser") !== -1;
         }
         return false;
     }

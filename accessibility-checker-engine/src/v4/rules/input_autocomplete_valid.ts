@@ -65,7 +65,7 @@ export let input_autocomplete_valid: Rule = {
             "tokensOnOff": ["on", "off"],
             "tokenOptionalSection": "section-",
             "tokensOptionalPurpose": ["shipping", "billing"],
-            "tokensMandatoryGroup1_password": ["new-password", "current-password"],
+            "tokensMandatoryGroup1_password": ["new-password", "current-password", "one-time-code"],
             "tokensMandatoryGroup1_multiline": ["street-address"],
             "tokensMandatoryGroup1_month": ["cc-exp"],
             "tokensMandatoryGroup1_numeric": ["cc-exp-month",
