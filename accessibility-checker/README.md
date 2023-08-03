@@ -37,6 +37,7 @@ Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) a
 - [mocha-selenium](mocha-selenium): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
 - [mocha-zombie](mocha-zombie): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Zombie](https://www.npmjs.com/package/zombie) browser simulator
 - [protractor](protractor): Using a [Protractor](https://www.npmjs.com/package/protractor) test environment
+- [webdriverio](webdriverio): Using a [Webdriverio](https://www.npmjs.com/package/webdriverio) test environment
 - and others
 
 ## Baselines
