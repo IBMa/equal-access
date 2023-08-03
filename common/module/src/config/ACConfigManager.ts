@@ -198,7 +198,7 @@ function initializeDefaults(config: IConfigInternal) {
     config.scanID = uuidv4();
 
     for (const key in ACConstants) {
-        config[key] = config[key] || ACConstants[key];
+        config[key] = typeof config[key] !== "undefined" ? config[key] : ACConstants[key];
     }
 
     ACConstants.DEBUG && console.log("Config after initialization: ");

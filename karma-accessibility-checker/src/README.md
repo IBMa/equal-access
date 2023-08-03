@@ -198,6 +198,10 @@ reportLevels:
 outputFormat:
     - json
 
+# Optional - Should the timestamp be included in the filename of the reports?
+# Default: true
+outputFilenameTimestamp: true
+
 # Optional - Specify labels that you would like associated to your scan
 #
 # i.e.
