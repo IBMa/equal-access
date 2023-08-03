@@ -20,8 +20,20 @@ import "cypress-accessibility-checker";
 context('Accessibility checker example', () => {
     it('Scan website that contains failures', () => {
         // Replace URL with application URL
-        cy.visit('http://localhost:8080/example-html-file.html')
-            .getCompliance('example') // Label should be unique per call to the function
-            .assertCompliance();
+        cy.visit('http://localhost:8080/sample-html/example-html-file.html')
+            .getCompliance('example-nobaseline') // Label should be unique per call to the function
+            .assertCompliance()
+            .then(result => {
+                // This is 2 because there are errors and no baseline
+                expect(result).to.equal(2)
+            })
+
+        cy.visit('http://localhost:8080/sample-html/example-html-file.html')
+            .getCompliance('example-baseline') // Label should be unique per call to the function
+            .assertCompliance()
+            .then(result => {
+                // This is 0 because a matching baseline exists to ignore the reported issues
+                expect(result).to.equal(0)
+            })
     });
 });

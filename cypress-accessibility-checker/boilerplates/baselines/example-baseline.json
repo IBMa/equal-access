@@ -1,0 +1,160 @@
+{
+    "results": [
+        {
+            "ruleId": "html_lang_exists",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_3",
+            "message": "Page detected as HTML, but does not have a 'lang' attribute",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 1320,
+                "width": 2000
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2023.07.26/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20detected%20as%20HTML%2C%20but%20does%20not%20have%20a%20'lang'%20attribute%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_3%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "ruleId": "skip_main_exists",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 16,
+                "top": 16,
+                "height": 1288,
+                "width": 1968
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2023.07.26/doc/en-US/skip_main_exists.html#%7B%22message%22%3A%22The%20page%20does%20not%20provide%20a%20way%20to%20quickly%20navigate%20to%20the%20main%20content%20(ARIA%20%5C%22main%5C%22%20landmark%20or%20a%20skip%20link)%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "ruleId": "aria_content_in_landmark",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/h1[1]",
+                "aria": "/document[1]/heading[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "Content is not within a landmark element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 16,
+                "top": 16,
+                "height": 74,
+                "width": 1968
+            },
+            "snippet": "<h1>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2023.07.26/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Content%20is%20not%20within%20a%20landmark%20element%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "ruleId": "img_alt_valid",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "fail_no_alt",
+            "message": "The image has neither an alt atttribute nor an ARIA label or title",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 16,
+                "top": 133,
+                "height": 32,
+                "width": 32
+            },
+            "snippet": "<img src=\"missing-alt.jpg\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2023.07.26/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20alt%20atttribute%20nor%20an%20ARIA%20label%20or%20title%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        }
+    ],
+    "numExecuted": 47,
+    "ruleTime": 0,
+    "nls": {
+        "html_lang_exists": {
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute"
+        },
+        "aria_content_in_landmark": {
+            "0": "All content must reside within an element with a landmark role",
+            "Fail_1": "Content is not within a landmark element"
+        },
+        "skip_main_exists": {
+            "0": "Pages must provide a way to skip directly to the main content",
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
+        },
+        "img_alt_valid": {
+            "0": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
+            "fail_no_alt": "The image has neither an alt atttribute nor an ARIA label or title"
+        }
+    },
+    "summary": {
+        "counts": {
+            "violation": 4,
+            "potentialviolation": 0,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 0,
+            "pass": 43,
+            "ignored": 0,
+            "elements": 7,
+            "elementsViolation": 4,
+            "elementsViolationReview": 4
+        },
+        "scanTime": 5,
+        "ruleArchive": "Latest Deployment (latest)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation"
+        ],
+        "startScan": 1690928260279,
+        "URL": "http://localhost:8080/sample-html/example-html-file.html"
+    },
+    "scanID": "d9387c86-cf3b-4d8b-9823-ef925842ed6d",
+    "toolID": "cypress-accessibility-checker-v3.1.58",
+    "label": "example-baseline"
+}
