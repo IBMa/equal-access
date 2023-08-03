@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
@@ -40,13 +40,13 @@ export let fieldset_legend_valid: Rule = {
             "Fail_1": "<fieldset> element does not have a <legend>",
             "Fail_2": "<fieldset> element has more than one <legend>",
             "Fail_3": "<fieldset> element <legend> is empty",
-            "group": " <fieldset> elements must have a single, non-empty <legend> as a label"
+            "group": " <fieldset> elements should have a single, non-empty <legend> as a label"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["1.3.1"],
-        "level": eRulePolicy.VIOLATION,
+        "num": ["1.3.1"],  //https://www.w3.org/WAI/WCAG22/Techniques/html/H71
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
@@ -63,8 +63,7 @@ export let fieldset_legend_valid: Rule = {
         } else if (RPTUtil.getInnerText(legends[0]).trim().length === 0) {
             // Fieldset has legend but legend is empty
             return RuleFail("Fail_3");
-        } else {
-            return RulePass("Pass_0");
         }
+        return RulePass("Pass_0");
     }
 }
