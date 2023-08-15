@@ -46,6 +46,12 @@ export interface ISettings {
     tabStopFirstTime: boolean
 }
 
+export interface ISessionState {
+    tabStoredCount: {
+        [tabId: number]: number
+    }
+}
+
 export type MsgDestType = {
     type: "contentScript"
     tabId: number

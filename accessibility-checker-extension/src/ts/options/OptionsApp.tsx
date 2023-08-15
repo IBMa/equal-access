@@ -43,6 +43,7 @@ import {
 } from "@carbon/react/icons";
 
 import "./option.scss";
+import { getDevtoolsController } from "../devtools/devtoolsController";
 
 interface OptionsAppState {
     lastSettings?: ISettings
@@ -141,6 +142,26 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             }
             this.setState(newState);
         });
+    }
+
+    async existStoredScans() {
+        let tabStoredScans = (await getBGController().getSessionState()).tabStoredCount;
+        let existScans = false;
+        for (const tabId in tabStoredScans) {
+            if (tabStoredScans[tabId] > 0) {
+                existScans = true;
+            }
+        }
+        return existScans;
+    }
+
+    async clearStoredScans() {
+        let tabStoredScans = (await getBGController().getSessionState()).tabStoredCount;
+        for (const tabId in tabStoredScans) {
+            if (tabStoredScans[tabId] > 0) {
+                getDevtoolsController(false, "remote", parseInt(tabId)).clearStoredReports();
+            }
+        }
     }
 
     /**
