@@ -1110,9 +1110,10 @@ export class RPTUtil {
 
         let passed = false;
         let rows = ruleContext.rows;
-        // Check if the first row is all TH's
+        
         if (rows != null && rows.length > 0) {
             let firstRow = rows[0];
+            // Check if the cells with data in the first row are all TH's
             passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0;
             // If the first row isn't a header row, try the first column
             if (!passed) {
