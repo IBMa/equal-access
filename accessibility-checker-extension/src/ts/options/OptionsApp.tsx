@@ -20,8 +20,8 @@ import React from "react";
 
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
+// import { getDevtoolsController } from "../devtools/devtoolsController";
 import { DocPage } from "../docs/components/DocPage";
-// import { BrowserDetection } from "../util/browserDetection";
 
 import {
     Button,
@@ -81,6 +81,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
     async componentDidMount() {
         let self = this;
         let settings = await bgController.getSettings();
+        // let numStoredReports:number = (await getDevtoolsController().getStoredReportsMeta()).length;
+        // console.log("numStoredReports = ", numStoredReports);
         // console.log("***", settings);
         let archives = await bgController.getArchives();
         let selected_archive: IArchiveDefinition | null = null;
@@ -351,6 +353,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         </div>
 
                         {!this.state.selected_archive && <DropdownSkeleton />}
+                        {/* JCH - Need to check if there are scans, storedReportsCount > 0 */}
+                        {/* {console.log("scanCount = ", scanCount)} */}
                         {this.state.selected_archive && <>
                             <Dropdown
                                 ariaLabel="Select a rule set deployment date"
