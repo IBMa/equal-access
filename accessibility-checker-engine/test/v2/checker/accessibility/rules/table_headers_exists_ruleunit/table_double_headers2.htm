@@ -20,38 +20,34 @@
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Data table is missing one row header</title>
-<style type="text/css">
-  #vertical-1 thead,#vertical-1 tbody, th, td, tfoot {
-      border: 1px solid black;
-  }
-</style>
 </head>
 <body>
-  <table id="vertical-1">
-    <caption>Column Headers in first cells</caption>
-    <tr>
-        <th>Header 1</th>
-        <td>data</td><td>data</td><td>data</td>
-    </tr>
-    <tr>
-        <th>Header 2</th>
-        <td>data</td><td>data</td><td>data</td>
-    </tr>
-    <tr>
-        <th>Header 2</th>
-        <td>data</td><td>data</td><td>data</td>
-    </tr>
-    <tfoot>
+  <table>
+    <caption>
+      Council budget (in £) 2018
+    </caption>
+    <thead>
       <tr>
-          <td colspan="3">Footer</td>
+        <th scope="col">Items</th>
+        <th scope="col">Expenditure</th>
       </tr>
-  </tfoot>
-</table>
-<script>
-  UnitTest = {
-      ruleIds: ["table_headers_exists"],
-      results: [
-      {
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Donuts</th>
+        <td>3,000</td>
+      </tr>
+      <tr>
+        <th scope="row">Stationery</th>
+        <td>18,000</td>
+      </tr>
+    </tbody>
+  </table>
+    <script>
+        UnitTest = {
+            ruleIds: ["table_headers_exists"],
+            results: [
+            {
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
@@ -67,9 +63,8 @@
             "apiArgs": [],
             "category": "Accessibility"
           }
-      ]
-  };
-</script> 
-
+            ]
+        };
+      </script> 
 </body>
 </html>

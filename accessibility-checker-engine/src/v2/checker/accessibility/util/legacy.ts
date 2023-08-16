@@ -1108,24 +1108,36 @@ export class RPTUtil {
     // Return true if a table's header is in the first row or column
     public static isTableHeaderInFirstRowOrColumn(ruleContext) {
 
-        let passed = false;
+        let passed = true;
         let rows = ruleContext.rows;
         
         if (rows != null && rows.length > 0) {
             let firstRow = rows[0];
             // Check if the cells with data in the first row are all TH's
-            passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0;
+            //passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0;
+            if (!firstRow.cells)
+                passed = false;
+            else  {   
+                for (let c=0; passed && c < firstRow.cells.length; c++) {
+                    let cell = firstRow.cells[c];
+                    passed = !VisUtil.isNodeVisible(cell) || (cell.innerHTML.trim().length > 0 && cell.nodeName.toLowerCase() === 'th');          
+                }
+            }    
+            
             // If the first row isn't a header row, try the first column
             if (!passed) {
-                // Assume that the first column has all TH's unless we find a TD in the first column.
+                // Assume that the first column has all TH's or a TD without data in the first column.
                 passed = true;
                 for (let i = 0; passed && i < rows.length; ++i) {
-                    // If no cells in this row, that's okay too.
+                    // ignore the rows from tfoot
+                    if (rows[i].parentNode && rows[i].parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+                    // If no cells in this row, or no data at all, that's okay too.
                     passed = !rows[i].cells ||
                         rows[i].cells.length === 0 ||
+                        rows[i].cells[0].innerHTML.trim().length === 0 ||
                         rows[i].cells[0].nodeName.toLowerCase() != "td";
                 }
-            }
+            } 
             if (!passed) {
                 // Special case - both first row and first column are headers, but they did not use
                 // a th for the upper-left cell
