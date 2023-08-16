@@ -58,6 +58,10 @@ interface OptionsAppState {
     tabStopOutlines: boolean;
     tabStopAlerts: boolean;
     tabStopFirstTime: boolean;
+    // Change Ruleset while there are stored scans
+    storedScansExist: boolean;
+    modalDeploymentWithScans: boolean;
+    modalGuidelinesWithScans: boolean;
     savePending: number;
 }
 
@@ -76,15 +80,16 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopOutlines: false,
         tabStopAlerts: true,
         tabStopFirstTime: true,
+        // Change Ruleset while there are stored scans
+        storedScansExist: false,
+        modalDeploymentWithScans: false,
+        modalGuidelinesWithScans: false,
         savePending: 0
     };
 
     async componentDidMount() {
         let self = this;
         let settings = await bgController.getSettings();
-        // let numStoredReports:number = (await getDevtoolsController().getStoredReportsMeta()).length;
-        // console.log("numStoredReports = ", numStoredReports);
-        // console.log("***", settings);
         let archives = await bgController.getArchives();
         let selected_archive: IArchiveDefinition | null = null;
         let rulesets: IPolicyDefinition[] | null = null;
@@ -95,6 +100,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         let tabStopAlerts: boolean = true;
         let tabStopFirstTime: boolean = true;
 
+        let storedScansExist =  await this.existStoredScans();
 
         selected_archive = settings.selected_archive;
         rulesets = selected_archive.rulesets.default;
@@ -129,7 +135,11 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
             tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+            storedScansExist: storedScansExist,
         });
+
+        
+
         bgController.addSettingsListener(async (newSettings) => {
             let newState : any = {
                 lastSettings: newSettings
@@ -142,6 +152,14 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             }
             this.setState(newState);
         });
+    }
+
+    setModalDeploymentWithScans() {
+        this.setState({modalDeploymentWithScans: true});
+    }
+
+    setModalGuidelinesWithScans() {
+        this.setState({modalGuidelinesWithScans: true});
     }
 
     async existStoredScans() {
@@ -162,6 +180,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                 getDevtoolsController(false, "remote", parseInt(tabId)).clearStoredReports();
             }
         }
+        this.setState({storedScansExist: false});
     }
 
     /**
@@ -373,9 +392,13 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             </Button>
                         </div>
 
+                        {/* JCH - Need to check if there are scans, storedReportsCount > 0 
+                            but we need to make a state and set it in componentDidMount
+                        */}
+                        {console.log("storedScansExist = ", this.state.storedScansExist)}
+
                         {!this.state.selected_archive && <DropdownSkeleton />}
-                        {/* JCH - Need to check if there are scans, storedReportsCount > 0 */}
-                        {/* {console.log("scanCount = ", scanCount)} */}
+                        
                         {this.state.selected_archive && <>
                             <Dropdown
                                 ariaLabel="Select a rule set deployment date"
@@ -389,7 +412,12 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 titleText=""
                                 type="default"
                                 selectedItem={selected_archive}
-                                onChange={this.onSelectArchive.bind(this)}
+                                onChange={async (evt: any) => {
+                                    await this.onSelectArchive(evt);
+                                    if (this.state.storedScansExist) {
+                                        this.setModalDeploymentWithScans();
+                                    }
+                                }}
                             />
                         </>}
 
@@ -409,6 +437,24 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                             <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
                         </Modal>
+
+                        <Modal
+                            modalHeading="Stored scans"
+                            primaryButtonText="Change deployment dates" 
+                            secondaryButtonText="Cancel"
+                            open={this.state.modalDeploymentWithScans}
+                            onRequestClose={(() => {
+                                this.setState({ modalDeploymentWithScans: false });
+                            }).bind(this)}
+                            onRequestSubmit={(() => {
+                                this.clearStoredScans();
+                                this.setState({ modalDeploymentWithScans: false });
+                                }).bind(this)
+                            }
+                        >
+                            <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
+                        </Modal>
+
                     </div>
                     {/**** Select ruleset / policy  */}
                     <div>
@@ -442,7 +488,12 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 titleText=""
                                 type="default"
                                 selectedItem={selected_ruleset}
-                                onChange={this.onSelectGuideline.bind(this)}
+                                onChange={async (evt: any) => {
+                                    await this.onSelectGuideline(evt);
+                                    if (this.state.storedScansExist) {
+                                        this.setModalGuidelinesWithScans();
+                                    }
+                                }}
                             />
                         </>}
 
@@ -460,6 +511,23 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
                         </Modal>
                     </div>
+
+                    <Modal
+                        modalHeading="Stored scans"
+                        primaryButtonText="Change Guidelines" 
+                        secondaryButtonText="Cancel"
+                        open={this.state.modalGuidelinesWithScans}
+                        onRequestClose={(() => {
+                            this.setState({ modalGuidelinesWithScans: false });
+                        }).bind(this)}
+                        onRequestSubmit={(() => {
+                            this.clearStoredScans();
+                            this.setState({ modalGuidelinesWithScans: false });
+                            }).bind(this)
+                        }
+                    >
+                        <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
+                    </Modal>
 
 
                     <h2>Keyboard checker mode</h2>
