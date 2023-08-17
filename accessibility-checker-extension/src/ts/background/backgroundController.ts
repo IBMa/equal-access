@@ -181,7 +181,6 @@ class BackgroundController extends Controller {
      */
     public async setStoredScanCount(info: { tabId: number, count: number }) : Promise<ISessionState> {
         return this.hook("setStoredScanCount", info, async () => {
-            console.log("Setting stored count", info);
             let { tabId, count }: {tabId: number, count: number } = info;
             let sessionState = await this.getSessionState();
             if (count === 0) {
@@ -271,7 +270,6 @@ class BackgroundController extends Controller {
             (async () => {
                 let settings = await this.getSettings();
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
-                console.info(`[INFO]: Scanning using archive ${settings.selected_archive.id} and guideline ${settings.selected_ruleset.id}`);
                 let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
                     let checker = new (<any>window).aceIBMa.Checker();
                     if (Object.keys(checker.engine.nlsMap).length === 0) {

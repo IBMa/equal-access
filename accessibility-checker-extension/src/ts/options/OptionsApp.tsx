@@ -395,10 +395,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         {/* JCH - Need to check if there are scans, storedReportsCount > 0 
                             but we need to make a state and set it in componentDidMount
                         */}
-                        {console.log("storedScansExist = ", this.state.storedScansExist)}
 
                         {!this.state.selected_archive && <DropdownSkeleton />}
-                        
                         {this.state.selected_archive && <>
                             <Dropdown
                                 ariaLabel="Select a rule set deployment date"
@@ -541,7 +539,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 checked={this.state.tabStopLines}
                                 //@ts-ignore
                                 onChange={(value: any, id: any) => {
-                                    // console.log("lines checkbox id.checked = ",id.checked);
                                     this.setState({ tabStopLines: id.checked });
                                 }} 
 
@@ -552,7 +549,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 checked={this.state.tabStopOutlines}
                                 //@ts-ignore
                                 onChange={(value: any, id: any) => {
-                                    // console.log("lines checkbox id.checked = ",id.checked);
                                     this.setState({ tabStopOutlines: id.checked });
                                 }} 
                             />
