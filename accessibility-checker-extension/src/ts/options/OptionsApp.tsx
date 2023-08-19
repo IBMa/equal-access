@@ -20,7 +20,6 @@ import React from "react";
 
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
-// import { getDevtoolsController } from "../devtools/devtoolsController";
 import { DocPage } from "../docs/components/DocPage";
 
 import {
