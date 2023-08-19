@@ -19,10 +19,9 @@
 
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
+<title>Data table is missing one row header</title>
     <style type="text/css">
-        thead, tbody, th, td{
-            display:inline-block;
+        #vertical-2 thead,#vertical-2 tbody, th, td{
             border: 1px solid black;
     }
   </style>
@@ -31,34 +30,29 @@
 
 
 <table id="vertical-2">
-  <caption>Left headers in thead</caption>
-  <thead>
-      <tr>
-          <th colspan="3">Header 1</th>
-      </tr>
-      <tr>
-          <th colspan="3">Header 2</th>
-      </tr>
-      <tr>
-          <th colspan="3">Header 3</th>
-      </tr>
-  </thead>
+  <caption>Bottom headers</caption>
+  
   <tbody>
       <tr>
-          <td>row 1</td>
-          <td>row 1</td>
-          <td>row 1</td>
+          <td headers="header1">row 1</td>
+          <td headers="header2">row 1</td>
+          <td headers="header3">row 1</td>
       </tr>
       <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
+          <td headers="header1">data</td>
+          <td headers="header2">data</td>
+          <td headers="header3">data</td>
       </tr>
       <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
+          <td headers="header1">data</td>
+          <td headers="header2">data</td>
+          <td headers="header3">data</td>
       </tr>
+        <tr>
+            <th scope="col" id='header1'>Header 1</th>
+            <th scope="col" id='header2'>Header 2</th>
+            <th scope="col" id='header3'>Header 3</th>
+        </tr>
   </tbody>
   <tfoot>
       <tr>
@@ -67,27 +61,27 @@
   </tfoot>
 </table>
 <script>
-    UnitTest = {
-        ruleIds: ["table_headers_exists"],
-        results: [
-        {
+  UnitTest = {
+      ruleIds: ["table_headers_exists"],
+      results: [
+      {
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Fail_1",
+            "message": "Table has no headers identified",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
-        ]
-    };
-  </script>  
+      ]
+  };
+</script>  
 </body>
 </html>

@@ -19,58 +19,36 @@
 
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
-    <style type="text/css">
-        thead, tbody, th, td{
-            display:inline-block;
-            border: 1px solid black;
-    }
-  </style>
+<title>Data table</title>
 </head>
 <body>
-
-
-<table id="vertical-2">
-  <caption>Left headers in thead</caption>
-  <thead>
+  <table>
+    <caption>
+      Council budget 2018
+    </caption>
+    <tbody>
       <tr>
-          <th colspan="3">Header 1</th>
+        <td>Donuts</th>
+        <td>3,000</td>
+        <td>2,000</td>
       </tr>
       <tr>
-          <th colspan="3">Header 2</th>
+        <td>Stationery</th>
+        <td>18,000</td>
+        <td>8,000</td>
       </tr>
       <tr>
-          <th colspan="3">Header 3</th>
+        <th >Items</th>
+        <th >Expenditure</th>
+        <th >Other</th>
       </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>row 1</td>
-          <td>row 1</td>
-          <td>row 1</td>
-      </tr>
-      <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-      </tr>
-      <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-      </tr>
-  </tbody>
-  <tfoot>
-      <tr>
-          <td colspan="4">Footer</td>
-      </tr>
-  </tfoot>
-</table>
-<script>
-    UnitTest = {
-        ruleIds: ["table_headers_exists"],
-        results: [
-        {
+    </tbody>
+  </table>
+    <script>
+        UnitTest = {
+            ruleIds: ["table_headers_exists"],
+            results: [
+            {
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
@@ -86,8 +64,8 @@
             "apiArgs": [],
             "category": "Accessibility"
           }
-        ]
-    };
-  </script>  
+            ]
+        };
+      </script> 
 </body>
 </html>
