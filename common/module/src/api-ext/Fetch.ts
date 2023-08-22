@@ -29,3 +29,17 @@ export async function fetch_get(url: string) {
         return data;
     }
 }
+
+export async function fetch_get_text(url: string) {
+    if (typeof fetch === "function") {
+        const resp = await fetch(url);
+        return await resp.text();
+    } else {
+        if (!axios) {
+            axios = await import("axios");
+        }
+        const response = await axios.get(url);
+        const data = await response.data;
+        return data;
+    }
+}
