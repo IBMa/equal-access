@@ -1166,7 +1166,7 @@ export class RPTUtil {
             lastRow = rows[r];
             passed = RPTUtil.isTableRowEmpty(lastRow);          
         }
-        
+        console.log("passed=" +passed +", lastRow=" + lastRow.innerHTML);
         if (passed) //shouldn't happen!
             return true;
         
