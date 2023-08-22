@@ -1134,12 +1134,18 @@ export class RPTUtil {
         if (!rows || rows.length === 0)
             return null;
 
+        // note that table.rows return all all the rows in the table, 
+        // including the rows contained within <thead>, <tfoot>, and <tbody> elements.    
+        
         //case 1: header is in the very first row with data    
-        //get the first row with data
+        //get the first row with data, ignoring the rows with no data
         let passed = true;
         let firstRow = rows[0];
         for (let r=0; passed && r < rows.length; r++) {
             firstRow = rows[r];
+            // ignore the rows from tfoot
+            if (firstRow.parentNode && firstRow.parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+            
             passed = RPTUtil.isTableRowEmpty(firstRow);          
         }
         
@@ -1150,9 +1156,9 @@ export class RPTUtil {
         // Check if the cells with data in the first data row are all TH's
         //passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0; 
         passed = true;
-        for (let c=0; passed && c < firstRow.cells.length; c++) {
-            let cell = firstRow.cells[c];
-            passed = !RPTUtil.isTableCellEmpty(cell) && cell.nodeName.toLowerCase() === 'th';          
+        for (let r=0; passed && r < firstRow.cells.length; r++) {
+            let cell = firstRow.cells[r]; 
+            passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
         }
         
         if (passed)
@@ -1162,31 +1168,34 @@ export class RPTUtil {
         //get the last row with data
         passed = true;
         let lastRow = rows[rows.length-1];
-        for (let r=rows.length; passed && r >= 0; r++) {
+        for (let r=rows.length-1; passed && r >= 0; r--) {
             lastRow = rows[r];
+            // ignore the rows from tfoot
+            if (lastRow.parentNode && lastRow.parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+
             passed = RPTUtil.isTableRowEmpty(lastRow);          
         }
-        console.log("passed=" +passed +", lastRow=" + lastRow.innerHTML);
+       
         if (passed) //shouldn't happen!
             return true;
         
-        // Check if the cells with data in the first data row are all TH's
-        //passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0; 
+        // Check if the cells with data in the last data row are all TH's
         passed = true;
-        for (let c=0; passed && c < lastRow.cells.length; c++) {
-            let cell = lastRow.cells[c];
-            passed = !RPTUtil.isTableCellEmpty(cell) && cell.nodeName.toLowerCase() === 'th';          
+        for (let r=0; passed && r < lastRow.cells.length; r++) {
+            let cell = lastRow.cells[r];
+            passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
         }
         
         if (passed)
             return true;
 
-        // Case 3: header is in the first data columns
+        // Case 3: header is in the first columns with data
         // Assume that the first column has all TH's or a TD without data in the first column.
         passed = true;
         for (let i = 0; passed && i < rows.length; ++i) {
             // ignore the rows from tfoot
             if (rows[i].parentNode && rows[i].parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+
             // If no cells in this row, or no data at all, that's okay too.
             passed = !rows[i].cells ||
                 rows[i].cells.length === 0 ||
@@ -1194,21 +1203,22 @@ export class RPTUtil {
                 rows[i].cells[0].nodeName.toLowerCase() != "td";
         }
         
-
-        if (!passed) {
-            // Special case - both first row and first column are headers, but they did not use
-            // a th for the upper-left cell
-            passed = true;
-            for (let i = 1; passed && i < firstRow.cells.length; ++i) {
-                passed = firstRow.cells[i].nodeName.toLowerCase() != "td";
-            }
-            for (let i = 1; passed && i < rows.length; ++i) {
-                // If no cells in this row, that's okay too.
-                passed = !rows[i].cells ||
-                    rows[i].cells.length === 0 ||
-                    rows[i].cells[0].nodeName.toLowerCase() != "td";
-            }
+        if (passed)
+            return true;
+        
+        // Special case - both first row and first column are headers, but they did not use
+        // a th for the upper-left cell
+        passed = true;
+        for (let i = 1; passed && i < firstRow.cells.length; ++i) {
+            passed = firstRow.cells[i].nodeName.toLowerCase() != "td";
         }
+        for (let i = 1; passed && i < rows.length; ++i) {
+            // If no cells in this row, that's okay too.
+            passed = !rows[i].cells ||
+                rows[i].cells.length === 0 ||
+                rows[i].cells[0].nodeName.toLowerCase() != "td";
+        }
+        
         return passed;
     }
 
