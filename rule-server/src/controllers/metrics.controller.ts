@@ -16,7 +16,7 @@
 
 import { Query, Controller, Get, Route, Response } from 'tsoa';
 import { ApiError } from './apiError';
-import { v4 } from "uuid";
+import * as crypto from 'crypto';
 import { DB, eDB } from '../util/db';
 
 
@@ -39,7 +39,7 @@ export class MeterController extends Controller {
                 let policies = policyStr.split(",");
                 let times = scanTimes.split(",");
                 let data = {
-                    "_id": v4(),
+                    "_id": crypto.randomUUID(),
                     "ibmaClass": "METER",
                     "timestamp": new Date().getTime(),
                     "version": "2.0",
@@ -76,7 +76,7 @@ export class MeterController extends Controller {
                 var res = resultStr.split(",");
                 var times = scanTimes.split(",");
                 var data = {
-                    "_id": v4(),
+                    "_id": crypto.randomUUID(),
                     "ibmaClass": "METER",
                     "timestamp": new Date().getTime(),
                     "version": "1.0",
