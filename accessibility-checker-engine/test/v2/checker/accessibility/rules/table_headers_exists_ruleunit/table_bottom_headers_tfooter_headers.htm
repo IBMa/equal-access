@@ -48,34 +48,36 @@
           <td>data</td>
           <td>data</td>
       </tr>
-        <tr>
-            <th>Header 1</th>
-            <th >Header 2</th>
-        <th>Header 3</th>
-        </tr>
+        
   </tbody>
-  <tfoot>
+  <tfoot>  
+     <tr></tr>  
       <tr>
           <td colspan="4">Footer</td>
       </tr>
+      <tr>
+        <th>Header 1</th>
+        <th >Header 2</th>
+        <th>Header 3</th>
+     </tr>
   </tfoot>
 </table>
 <script>
   UnitTest = {
       ruleIds: ["table_headers_exists"],
       results: [
-      {
+         {
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "Table has no headers identified",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

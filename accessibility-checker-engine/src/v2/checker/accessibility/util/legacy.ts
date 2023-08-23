@@ -1137,7 +1137,7 @@ export class RPTUtil {
         // note that table.rows return all all the rows in the table, 
         // including the rows contained within <thead>, <tfoot>, and <tbody> elements.    
         
-        //case 1: header is in the very first row with data    
+        //case 1: headers are in the very first row with data in tbody or thead   
         //get the first row with data, ignoring the rows with no data
         let passed = true;
         let firstRow = rows[0];
@@ -1164,7 +1164,7 @@ export class RPTUtil {
         if (passed)
             return true;
 
-        //case 2: header is in the very last/bottom row with data    
+        //case 2: headers are in the very last/bottom row with data in tbody or thead 
         //get the last row with data
         passed = true;
         let lastRow = rows[rows.length-1];
@@ -1188,8 +1188,32 @@ export class RPTUtil {
         
         if (passed)
             return true;
-
-        // Case 3: header is in the first columns with data
+        
+        //case 3: headers are in a row with data in tfoot 
+        let footer = ruleContext.getElementsByTagName("tfoot");
+        if (footer && footer.length > 0) {
+            let frows = footer[0].getElementsByTagName("tr");
+            if (frows && frows.length > 0) {
+                let frow = frows[0];
+                for (let r=0; r < frows.length; r++) {
+                    frow = frows[r];
+                    passed = RPTUtil.isTableRowEmpty(frow);   
+                    if (passed) continue;       
+                    // Check if the cells with data in the last data row are all TH's
+                    passed = true;
+                    for (let r=0; passed && r < frow.cells.length; r++) {
+                        let cell = frow.cells[r];
+                        passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
+                    }
+                    
+                    if (passed)
+                        return true; 
+                    
+                }    
+            }   
+        }
+        
+        // Case 4: headers are in the first columns with data
         // Assume that the first column has all TH's or a TD without data in the first column.
         passed = true;
         for (let i = 0; passed && i < rows.length; ++i) {
@@ -1206,7 +1230,7 @@ export class RPTUtil {
         if (passed)
             return true;
         
-        // Special case - both first row and first column are headers, but they did not use
+        // Case 5: Special case - both first row and first column are headers, but they did not use
         // a th for the upper-left cell
         passed = true;
         for (let i = 1; passed && i < firstRow.cells.length; ++i) {
