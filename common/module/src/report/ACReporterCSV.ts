@@ -50,8 +50,12 @@ export class ACReporterCSV implements IReporter {
             }
         }
         let startScanD = new Date(startScan);
+        let reportFilename = `results_${startScanD.toISOString()}.csv`;
+        if (config.outputFilenameTimestamp === false) {
+            reportFilename = `results.csv`;
+        }
         return {
-            summaryPath: `results_${startScanD.toISOString()}.csv`,
+            summaryPath: reportFilename,
             summary: resultStr
         }
     }

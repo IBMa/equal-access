@@ -74,8 +74,12 @@ export class ACReporterXLSX implements IReporter {
 
         // const buffer: any = await workbook.xlsx.writeBuffer();
         let startScan = new Date(storedReport.engineReport.summary.startScan);
+        let reportFilename = `results_${startScan.toISOString()}.xlsx`;
+        if (config.outputFilenameTimestamp === false) {
+            reportFilename = `results.xlsx`;
+        }
         return {
-            summaryPath: `results_${startScan.toISOString()}.xlsx`,
+            summaryPath: reportFilename,
             summary: async (filename?: string) => {
                 // @ts-ignore
                 const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ filename, useStyles: true });

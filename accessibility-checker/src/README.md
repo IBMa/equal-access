@@ -152,6 +152,10 @@ label:
 # Default: results
 outputFolder: results
 
+# Optional - Should the timestamp be included in the filename of the reports?
+# Default: true
+outputFilenameTimestamp: true
+
 # optional - Where the baseline results should be loaded from
 # Default: baselines
 baselineFolder: test/baselines
@@ -177,6 +181,7 @@ module.exports = {
         "pass",
     ],
     outputFormat: ["json"],
+    outputFilenameTimestamp: true,
     label: [process.env.TRAVIS_BRANCH],
     outputFolder: "results",
     baselineFolder: "test/baselines",
