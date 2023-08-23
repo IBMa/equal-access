@@ -17,7 +17,7 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-
+import ReactDOM from 'react-dom';
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import { DocPage } from "../docs/components/DocPage";
@@ -418,7 +418,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             />
                         </>}
 
-                        <Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             aria-label="Version information"
                             modalHeading="Selecting a rule set deployment date"
                             passiveModal={true}
@@ -433,10 +433,11 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
 
                             <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
-                        </Modal>
+                        </Modal>, document.body)}
 
-                        <Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             modalHeading="Stored scans"
+                            size='sm'
                             primaryButtonText="Change deployment dates" 
                             secondaryButtonText="Cancel"
                             open={this.state.modalDeploymentWithScans}
@@ -450,7 +451,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             }
                         >
                             <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
-                        </Modal>
+                        </Modal>, document.body)}
 
                     </div>
                     {/**** Select ruleset / policy  */}
@@ -494,7 +495,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             />
                         </>}
 
-                        <Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             aria-label="Guidelines information"
                             modalHeading="Selecting accessibility guidelines"
                             passiveModal={true}
@@ -506,10 +507,10 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
-                        </Modal>
+                        </Modal>, document.body)}
                     </div>
 
-                    <Modal
+                    {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                         modalHeading="Stored scans"
                         primaryButtonText="Change Guidelines" 
                         secondaryButtonText="Cancel"
@@ -524,7 +525,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         }
                     >
                         <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
-                    </Modal>
+                    </Modal>, document.body)}
 
 
                     <h2>Keyboard checker mode</h2>
