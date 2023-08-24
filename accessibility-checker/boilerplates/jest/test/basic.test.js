@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 'use strict';
 
 var path = require("path");

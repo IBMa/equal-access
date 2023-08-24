@@ -58,8 +58,7 @@
     "request": "2.72.0",
     "shelljs": "0.8.4",
     "slack": "11.0.2",
-    "slack-node": "0.1.8",
-    "uuid": "^9.0.0"
+    "slack-node": "0.1.8"
   },
   "devDependencies": {
     "adm-zip": "^0.5.9",

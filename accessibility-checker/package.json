@@ -27,8 +27,7 @@
     "deep-diff": "^1.0.2",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
-    "puppeteer": "^13.0.0",
-    "uuid": "^9.0.0"
+    "puppeteer": "^13.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.21.1",
