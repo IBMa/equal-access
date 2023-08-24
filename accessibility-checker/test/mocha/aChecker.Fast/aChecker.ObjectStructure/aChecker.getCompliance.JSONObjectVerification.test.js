@@ -69,7 +69,7 @@ describe("JSON Structure Verification Zombie", function () {
 
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
-                it('JSON structure should match baseline for zombie', async function () {
+                it('JSON structure should match baseline', async function () {
                     this.timeout(0);
                     let config = await aChecker.getConfig();
 
