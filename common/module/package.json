@@ -25,7 +25,6 @@
   "dependencies": {
     "axios": "^1.4.0",
     "deep-diff": "^1.0.2",
-    "exceljs": "^4.3.0",
-    "uuid": "^9.0.0"
+    "exceljs": "^4.3.0"
   }
 }

@@ -17,13 +17,12 @@
 import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
-import { ACConstants } from "./ACConstants.js";
-import { v4 as uuidv4 } from 'uuid';
-import { IConfig, IConfigInternal } from "./IConfig.js";
-import { fetch_get } from "../api-ext/Fetch.js";
-import { ReporterManager } from "../report/ReporterManager.js";
+import { ACConstants } from "./ACConstants";
+import * as crypto from 'crypto';
+import { IConfig, IConfigInternal } from "./IConfig";
+import { fetch_get } from "../api-ext/Fetch";
+import { ReporterManager } from "../report/ReporterManager";
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -205,7 +204,7 @@ function initializeDefaults(config: IConfigInternal) {
 
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
-    config.scanID = uuidv4();
+    config.scanID = crypto.randomUUID();
 
     for (const key in ACConstants) {
         config[key] = typeof config[key] !== "undefined" ? config[key] : ACConstants[key];

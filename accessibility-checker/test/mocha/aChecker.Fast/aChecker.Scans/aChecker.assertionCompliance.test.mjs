@@ -42,7 +42,7 @@ gdirs.forEach(function (gdir) {
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules")
 let skipList = [
-    // Testcase has a script reference to a file, which traps zombie when loaded as a string
+    // Testcase has a script reference to a file, which traps when loaded as a string
     // Not in Karma conf skip list
     path.join(testRoot, "Hidden", "unitTestisNodeVisible.html"),
     path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),

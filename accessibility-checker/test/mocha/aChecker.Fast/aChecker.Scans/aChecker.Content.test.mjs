@@ -72,7 +72,7 @@ let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "t
 let skipList = [
 
     // Not in Karma Conf Skip list
-    // Testcase has a script reference to a file, which traps zombie when loaded as a string
+    // Testcase has a script reference to a file, which traps when loaded as a string
     path.join(testRoot, "Hidden_ruleunit", "unitTestisNodeVisible.html"),
     path.join(testRoot, "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
     path.join(testRoot, "blink_css_review_ruleunit", "TextDecoration-Blink.html"),

@@ -6,12 +6,6 @@
   "scripts": {
     "test": "node_modules/jest/bin/jest.js test/*.test.js"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./setupAfterEnv.js"
-    ],
-    "transformIgnorePatterns": ["ace-node\\.js"]
-  },
   "devDependencies": {
     "accessibility-checker": "^3.1.45",
     "chromedriver": "*",
