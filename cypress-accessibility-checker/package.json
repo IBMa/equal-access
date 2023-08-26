@@ -42,7 +42,7 @@
         "start-server-and-test": "^2.0.0"
     },
     "dependencies": {
-        "@cypress/request": "^2.88.11",
+        "@cypress/request": "^3.0.0",
         "deep-diff": "^1.0.2",
         "js-yaml": "^4.1.0",
         "exceljs": "^4.3.0",
