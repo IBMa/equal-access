@@ -443,6 +443,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             open={this.state.modalDeploymentWithScans}
                             onRequestClose={(() => {
                                 this.setState({ modalDeploymentWithScans: false });
+                                this.setState({ selected_archive: this.state.lastSettings?.selected_archive! });
                             }).bind(this)}
                             onRequestSubmit={(() => {
                                 this.clearStoredScans();
@@ -517,6 +518,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         open={this.state.modalGuidelinesWithScans}
                         onRequestClose={(() => {
                             this.setState({ modalGuidelinesWithScans: false });
+                            this.setState({ selected_ruleset: this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!) });
                         }).bind(this)}
                         onRequestSubmit={(() => {
                             this.clearStoredScans();
