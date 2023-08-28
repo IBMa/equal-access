@@ -21,6 +21,7 @@ import { Controller, eControllerType, ListenerType } from "../messaging/controll
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
 import { UtilIssue } from "../util/UtilIssue";
+import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 export type TabChangeType = {
     tabId: number
@@ -47,6 +48,7 @@ class BackgroundController extends Controller {
     }
     
     private sync = Promise.resolve();
+    private metrics = new ACMetricsLogger("ac-extension");
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -275,6 +277,9 @@ class BackgroundController extends Controller {
                     });
                 }, [settings]);
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
+                let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                this.metrics.profileV2(report.totalTime, browser, settings.selected_ruleset.id);
+                this.metrics.sendLogsV2();
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
                 if (report) {
                     for (const result of report.results) {
