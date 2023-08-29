@@ -1137,7 +1137,7 @@ export class RPTUtil {
         // note that table.rows return all all the rows in the table, 
         // including the rows contained within <thead>, <tfoot>, and <tbody> elements.    
         
-        //case 1: headers are in the very first row with data in tbody or thead   
+        //case 1: headers are in the very first row with data in tbody or thead, but not in tfoot   
         //get the first row with data, ignoring the rows with no data
         let passed = true;
         let firstRow = rows[0];
@@ -1154,7 +1154,6 @@ export class RPTUtil {
             return null;
         
         // Check if the cells with data in the first data row are all TH's
-        //passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0; 
         passed = true;
         for (let r=0; passed && r < firstRow.cells.length; r++) {
             let cell = firstRow.cells[r]; 
@@ -1164,56 +1163,7 @@ export class RPTUtil {
         if (passed)
             return true;
 
-        //case 2: headers are in the very last/bottom row with data in tbody or thead 
-        //get the last row with data
-        passed = true;
-        let lastRow = rows[rows.length-1];
-        for (let r=rows.length-1; passed && r >= 0; r--) {
-            lastRow = rows[r];
-            // ignore the rows from tfoot
-            if (lastRow.parentNode && lastRow.parentNode.nodeName.toLowerCase() === 'tfoot') continue;
-
-            passed = RPTUtil.isTableRowEmpty(lastRow);          
-        }
-       
-        if (passed) //shouldn't happen!
-            return true;
-        
-        // Check if the cells with data in the last data row are all TH's
-        passed = true;
-        for (let r=0; passed && r < lastRow.cells.length; r++) {
-            let cell = lastRow.cells[r];
-            passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
-        }
-        
-        if (passed)
-            return true;
-        
-        //case 3: headers are in a row with data in tfoot 
-        let footer = ruleContext.getElementsByTagName("tfoot");
-        if (footer && footer.length > 0) {
-            let frows = footer[0].getElementsByTagName("tr");
-            if (frows && frows.length > 0) {
-                let frow = frows[0];
-                for (let r=0; r < frows.length; r++) {
-                    frow = frows[r];
-                    passed = RPTUtil.isTableRowEmpty(frow);   
-                    if (passed) continue;       
-                    // Check if the cells with data in the last data row are all TH's
-                    passed = true;
-                    for (let r=0; passed && r < frow.cells.length; r++) {
-                        let cell = frow.cells[r];
-                        passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
-                    }
-                    
-                    if (passed)
-                        return true; 
-                    
-                }    
-            }   
-        }
-        
-        // Case 4: headers are in the first columns with data
+        // Case 2: headers are in the first column with data
         // Assume that the first column has all TH's or a TD without data in the first column.
         passed = true;
         for (let i = 0; passed && i < rows.length; ++i) {
@@ -1229,21 +1179,34 @@ export class RPTUtil {
         
         if (passed)
             return true;
-        
-        // Case 5: Special case - both first row and first column are headers, but they did not use
-        // a th for the upper-left cell
+            
+        //case 3: all td data cells have headers attributes that point to the id of a th element in the same table. 
+        // https://html.spec.whatwg.org/multipage/tables.html#attributes-common-to-td-and-th-elements
         passed = true;
-        for (let i = 1; passed && i < firstRow.cells.length; ++i) {
-            passed = firstRow.cells[i].nodeName.toLowerCase() != "td";
+        let thIds = [];
+        let tdHeaders = [];
+        for (let r=0; passed && r < rows.length; r++) {
+            let row = rows[r];
+            // Check if the cells with data in the last data row are all TH's
+            for (let c=0; c < row.cells.length; c++) {
+                let cell = row.cells[c];
+                if (RPTUtil.isTableCellEmpty(cell)) continue;
+                if (cell.nodeName.toLowerCase() === 'td') {
+                    if (!cell.getAttribute('headers') || cell.getAttribute('headers').trim().length === 0)
+                        passed = false;
+                    else
+                        RPTUtil.concatUniqueArrayItemList(cell.getAttribute('headers').trim().split(" "), tdHeaders);
+                } else if (cell.nodeName.toLowerCase() === 'th' && cell.getAttribute('id') && cell.getAttribute('id').trim().length > 0)
+                        RPTUtil.concatUniqueArrayItem(cell.getAttribute('id').trim(), thIds);    
+            }      
         }
-        for (let i = 1; passed && i < rows.length; ++i) {
-            // If no cells in this row, that's okay too.
-            passed = !rows[i].cells ||
-                rows[i].cells.length === 0 ||
-                rows[i].cells[0].nodeName.toLowerCase() != "td";
+       
+        if (passed) { // all td elements have headers, to exam if the headers point to a th id
+            if (thIds.length > 0 && tdHeaders.some(header => thIds.includes(header)))
+                return true;
         }
-        
-        return passed;
+
+        return false;
     }
 
     public static isNodeInGrid(node) {
