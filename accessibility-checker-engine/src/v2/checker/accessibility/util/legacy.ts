@@ -1107,7 +1107,7 @@ export class RPTUtil {
 
     // Return true if a table cell is hidden or contain no data: <td></td>
     public static isTableCellEmpty(cell) {
-        if (!cell || !VisUtil.isNodeVisible(cell) || cell.innerHTML.trim().length === 0)
+        if (!cell || !VisUtil.isNodeVisible(cell) || cell.innerHTML.replace(/&nbsp;/g,' ').trim().length === 0)
             return true;
            
         return false;
@@ -1156,7 +1156,7 @@ export class RPTUtil {
         // Check if the cells with data in the first data row are all TH's
         passed = true;
         for (let r=0; passed && r < firstRow.cells.length; r++) {
-            let cell = firstRow.cells[r]; 
+            let cell = firstRow.cells[r];
             passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
         }
         
@@ -1182,15 +1182,15 @@ export class RPTUtil {
             
         //case 3: all td data cells have headers attributes that point to the id of a th element in the same table. 
         // https://html.spec.whatwg.org/multipage/tables.html#attributes-common-to-td-and-th-elements
-        passed = true;
+        passed = true; 
         let thIds = [];
         let tdHeaders = [];
         for (let r=0; passed && r < rows.length; r++) {
-            let row = rows[r];
+            let row = rows[r]; 
             // Check if the cells with data in the last data row are all TH's
             for (let c=0; c < row.cells.length; c++) {
                 let cell = row.cells[c];
-                if (RPTUtil.isTableCellEmpty(cell)) continue;
+                if (RPTUtil.isTableCellEmpty(cell)) continue; 
                 if (cell.nodeName.toLowerCase() === 'td') {
                     if (!cell.getAttribute('headers') || cell.getAttribute('headers').trim().length === 0)
                         passed = false;
@@ -1200,12 +1200,12 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItem(cell.getAttribute('id').trim(), thIds);    
             }      
         }
-       
+        
         if (passed) { // all td elements have headers, to exam if the headers point to a th id
-            if (thIds.length > 0 && tdHeaders.some(header => thIds.includes(header)))
-                return true;
+            if (thIds.length > 0 && tdHeaders.every(header => thIds.includes(header)))
+                return true; 
         }
-
+        
         return false;
     }
 

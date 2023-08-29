@@ -19,48 +19,34 @@
 
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Data table is missing one row header</title>
-    <style type="text/css">
-        #vertical-2 thead,#vertical-2 tbody, th, td{
-            border: 1px solid black;
-    }
-  </style>
+
+<style type="text/css">
+  #vertical-1 thead,#vertical-1 tbody, th, td, tfoot {
+      border: 1px solid black;
+  }
+</style>
 </head>
 <body>
-
-
-<table id="vertical-2">
-  <caption>Bottom headers</caption>
-  
-  <tbody>
-      <tr>
-          <td>row 1</td>
-          <td>row 1</td>
-          <td>row 1</td>
-      </tr>
-      <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-      </tr>
-      <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-      </tr>
-        
-  </tbody>
-  <tfoot>  
-     <tr></tr>  
-      <tr>
-          <td colspan="4">Footer</td>
-      </tr>
-      <tr>
-        <th>Header 1</th>
-        <th >Header 2</th>
-        <th>Header 3</th>
-     </tr>
-  </tfoot>
+  <table id="vertical-1">
+    <caption>Column Headers in first cells</caption>
+    <tr>
+        <td headers="row1">data</td>
+        <td headers="row1">data</td>
+        <th id="row1">Header 1</th>
+        <td headers="row1">data</td>
+    </tr>
+    <tr>
+        <td headers="row2">data</td>
+        <td headers="row2">data</td>
+        <th id="row2">Header 2</th>
+        <td headers="row2">data</td>
+    </tr>
+    <tr>
+        <td headers="row3">data</td>
+        <td headers="row3">data</td>
+        <th id="row3">Header 2</th>
+        <td headers="row3">data</td>
+    </tr>
 </table>
 <script>
   UnitTest = {
@@ -70,20 +56,21 @@
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "Table has no headers identified",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
       ]
   };
-</script>  
+</script> 
+
 </body>
 </html>

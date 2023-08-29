@@ -30,30 +30,25 @@
   <table id="vertical-1">
     <caption>Column Headers in first cells</caption>
     <tr> 
-        <td>data</td>
-        <th>row Header 1</th>
-        <td>data</td>
-        <td>data</td>
-    </tr>
-    <tr>
-        
-        <td>data</td>
-        <th>row Header 2</th>
+        <td headers="">data</td>
+        <th id="1">row Header 1</th>
         <td>data</td>
         <td>data</td>
     </tr>
     <tr>
         
         <td>data</td>
-        <th>row Header 3</th>
+        <th id="2">row Header 2</th>
         <td>data</td>
         <td>data</td>
     </tr>
-    <tfoot>
-      <tr>
-          <td colspan="3">Footer</td>
-      </tr>
-  </tfoot>
+    <tr>
+        
+        <td>data</td>
+        <th id="3">row Header 3</th>
+        <td>data</td>
+        <td>data</td>
+    </tr>
 </table>
 <script>
   UnitTest = {
@@ -63,14 +58,14 @@
             "ruleId": "table_headers_exists",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Fail_1",
+            "message": "Table has no headers identified",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
