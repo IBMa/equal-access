@@ -72,7 +72,7 @@ gdirs.forEach(function (gdir) {
 var skipList = [
 
     // Not in Karma Conf Skip list
-    // Testcase has a script reference to a file, which traps zombie when loaded as a string
+    // Testcase has a script reference to a file, which traps when loaded as a string
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Hidden_ruleunit", "unitTestisNodeVisible.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "blink_css_review_ruleunit", "TextDecoration-Blink.html"),

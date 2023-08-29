@@ -15,12 +15,13 @@
 *****************************************************************************/
 
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { IArchiveDefinition, IMessage, IReport, IRuleset, ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, IMessage, IReport, IRuleset, ISessionState, ISettings } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
 import { UtilIssue } from "../util/UtilIssue";
+import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 export type TabChangeType = {
     tabId: number
@@ -47,6 +48,7 @@ class BackgroundController extends Controller {
     }
     
     private sync = Promise.resolve();
+    private metrics = new ACMetricsLogger("ac-extension");
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -141,6 +143,56 @@ class BackgroundController extends Controller {
     }
 
     ///// Settings related functions /////////////////////////////////////////
+    /**
+     * Global state for the extension
+     */
+    public async getSessionState() : Promise<ISessionState> {
+        let retVal = (await this.hook("getSessionState", null, async () => {
+            let retVal = await new Promise<ISessionState>((resolve, _reject) => {
+                (chrome.storage as any).session.get("SESSION_STATE", async function (result: { SESSION_STATE?: ISessionState}) {
+                    result.SESSION_STATE = result.SESSION_STATE || {
+                        tabStoredCount: {}
+                    }
+                    result.SESSION_STATE.tabStoredCount = result.SESSION_STATE.tabStoredCount || {};
+                    resolve(result.SESSION_STATE as ISessionState);
+                });
+            })
+            return retVal;
+        }))!;
+        return retVal;
+    }
+
+    /**
+     * Set settings for the extension
+     */
+    public async setSessionState(sessionState: ISessionState) : Promise<ISessionState> {
+        return this.hook("setSessionState", sessionState, async () => {
+            await new Promise<ISessionState>((resolve, _reject) => {
+                (chrome.storage as any).session.set({ "SESSION_STATE": sessionState }, async function () {
+                    resolve(sessionState!);
+                });
+            });
+            this.notifyEventListeners("BG_onSessionState", -1, sessionState);
+            return sessionState;
+        });
+    }
+    
+
+    /**
+     * Set stored scan count
+     */
+    public async setStoredScanCount(info: { tabId: number, count: number }) : Promise<ISessionState> {
+        return this.hook("setStoredScanCount", info, async () => {
+            let { tabId, count }: {tabId: number, count: number } = info;
+            let sessionState = await this.getSessionState();
+            if (count === 0) {
+                delete sessionState.tabStoredCount[tabId];
+            } else {
+                sessionState.tabStoredCount[tabId] = count;
+            }
+            return await this.setSessionState(sessionState);
+        });
+    }
     
     /**
      * Get settings for the extension
@@ -178,6 +230,9 @@ class BackgroundController extends Controller {
         this.addEventListener(listener, `BG_onSettings`);
     }
 
+    public async addSessionStateListener(listener: ListenerType<ISessionState>) {
+        this.addEventListener(listener, `BG_onSessionState`);
+    }
     /**
      * Get the archive definitions
      */
@@ -217,7 +272,6 @@ class BackgroundController extends Controller {
             (async () => {
                 let settings = await this.getSettings();
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
-                console.info(`[INFO]: Scanning using archive ${settings.selected_archive.id} and guideline ${settings.selected_ruleset.id}`);
                 let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
                     let checker = new (<any>window).aceIBMa.Checker();
                     if (Object.keys(checker.engine.nlsMap).length === 0) {
@@ -275,6 +329,9 @@ class BackgroundController extends Controller {
                     });
                 }, [settings]);
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
+                let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                this.metrics.profileV2(report.totalTime, browser, settings.selected_ruleset.id);
+                this.metrics.sendLogsV2();
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
                 if (report) {
                     for (const result of report.results) {
@@ -337,6 +394,13 @@ class BackgroundController extends Controller {
             const listenMsgs : { 
                 [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
             }= {
+                "BG_getSessionState": async () => self.getSessionState(),
+                "BG_setSessionState": async (msgBody) => {
+                    return self.setSessionState(msgBody.content);
+                },
+                "BG_setStoredScanCount": async (msgBody) => {
+                    return self.setStoredScanCount(msgBody.content);
+                },
                 "BG_getSettings": async () => self.getSettings(),
                 "BG_getArchives": async () => self.getArchives(),
                 "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),

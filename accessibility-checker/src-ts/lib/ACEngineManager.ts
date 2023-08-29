@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
-import axios from "axios";
 import { ACConfigManager } from "./common/config/ACConfigManager";
+import { fetch_get_text } from "./common/api-ext/Fetch";
 
 let ace;
 
@@ -18,8 +18,7 @@ export class ACEngineManager {
             ENGINE_LOAD_MODE = "INJECT";
         }
         if (ENGINE_LOAD_MODE === "INJECT" && !ACEngineManager.engineContent) {
-            const response = await axios.get(`${config.rulePack}/ace.js`);
-            ACEngineManager.engineContent = await response.data;
+            ACEngineManager.engineContent = await fetch_get_text(`${config.rulePack}/ace.js`);
         }
         if (ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
 
@@ -251,8 +250,7 @@ export class ACEngineManager {
         if (!ACEngineManager.localLoadPromise) {
             ACEngineManager.localLoadPromise = new Promise<void>(async (resolve, reject) => {
                 let config = await ACConfigManager.getConfigUnsupported();
-                const response = await axios.get(`${config.rulePack}/ace-node.js`);
-                const data = await response.data;
+                const data = await fetch_get_text(`${config.rulePack}/ace-node.js`);
                 let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
