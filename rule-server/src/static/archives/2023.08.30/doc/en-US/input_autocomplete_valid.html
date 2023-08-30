@@ -1,0 +1,117 @@
+<html lang="en-US">
+<head>
+    <title>input_autocomplete_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"The 'autocomplete' attribute's token(s) must be appropriate for the input form field","Pass_0":"Rule Passed","Fail_1":"The 'autocomplete' attribute's token(s) are not appropriate for the input form field","Fail_2":"The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type","Fail_attribute_incorrect":"The 'autocomplete' attribute has an incorrect value"}};
+        RULE_ID = "input_autocomplete_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Using an appropriate autocomplete token for a form field that collects user information makes the input’s purpose programmatically determinable. This helps user agents and assistive technologies to present the programmatically determined purpose of the inputs to users in different modalities. The `autocomplete` attribute can also assist with pre-populating form fields with values the user has previously input.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If the `autocomplete` attribute is appropriate for this input element, correct the `autocomplete`’s token(s) to use the well-defined fixed values, in the correct order for the correct input purpose as described in the [HTML 5.2 specification section - Autofilling form controls: the autocomplete attribute](https://www.w3.org/TR/html52/sec-forms.html#autofilling-form-controls-the-autocomplete-attribute);
+ * **Or**, if the `autocomplete` attribute is used to describe a "custom" taxonomy rather than the tokens described in the HTML 5.2 specification, manually validate the custom taxonomy.
+
+Correct example:
+
+```
+<form method="post" action="step2">
+ <div>
+   <label for="fname">First Name:</label>
+  <input id="fname" type="text" autocomplete="given-name" ... />
+ </div>
+ <div>
+    <label for="lname">Last Name:</label>
+  <input id="lname" type="text" autocomplete="family-name" ... />
+ </div>
+ <div>
+    <label for="cc-num">Credit card number:</label>
+    <input type="text" id="cc-num" autocomplete="cc-number"/>
+ </div>
+ <div>
+    <label for="exp-date">Expiry Date:</label>
+    <input type="month" id="exp-date" autocomplete="cc-exp"/>
+ </div>
+ <div>
+    <input type="submit" value="Continue...">
+ </div>
+</form>
+```
+
+Example code includes material copied from or derived from [Using HTML5 Autocomplete attributes, technique H98](https://www.w3.org/WAI/WCAG21/Techniques/html/H98). Copyright © 2017-2018 W3C® (MIT, ERCIM, Keio, Beihang)
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.3.5 Identify Input Purpose](https://www.ibm.com/able/requirements/requirements/#1_3_5)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People with tremor or other movement disorders
+ * People with memory limitations
+ * People with cognitive limitations
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
