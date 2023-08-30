@@ -1,0 +1,89 @@
+<html lang="en-US">
+<head>
+    <title>html_lang_exists - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Page must identify the default language of the document with a 'lang' attribute","Pass_0":"Page language detected as \"{0}\"","Fail_1":"Page detected as XHTML 1.0, but has neither 'lang' nor 'xml:lang' attributes","Fail_2":"Page detected as XHTML, but does not have an 'xml:lang' attribute","Fail_3":"Page detected as HTML, but does not have a 'lang' attribute","Fail_4":"Page detected with 'lang' and 'xml:lang' attributes and primary languages do not match: \"{0}\", \"{1}\"","Fail_5":"Page detected with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"","Potential_5":"Page detected as XHTML 1.0 with only a 'lang' attribute. Confirm that page is only delivered via text/html mime type","Potential_6":"Page detected as XHTML 1.0 with only an 'xml:lang' attribute. Confirm that page is only delivered via xml mime type"}};
+        RULE_ID = "html_lang_exists"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Speech synthesizers that support multiple languages can adapt to the pronunciation and syntax that are specific to the language, speaking the text in the correct language with proper pronunciation. Some screen readers can be configured to automatically switch languages based on the `lang` attribute.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Identify the default language of the HTML document by providing the `lang` attribute on the HTML element (e.g. `<html lang="en">`);
+* **Or**, if serving an XML document only (ie. using a MIME type such as application/xhtml+xml), identify the default language by providing the `xml:lang` attribute alone. The `lang` attribute is not needed (`<html xml:lang="fr" xmlns="https://www.w3.org/1999/xhtml">`)
+* **Or**, if serving XHTML 1.x or polyglot pages as text/html, use both the `lang` attribute and the `xml:lang` attribute and ensure the values for both attributes are identical (`<html lang="fr" xml:lang="fr" xmlns="https://www.w3.org/1999/xhtml">`)
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 3.1.1 Language of Page](https://www.ibm.com/able/requirements/requirements/#3_1_1)
+* [WCAG technique H57](https://www.w3.org/WAI/WCAG21/Techniques/html/H57)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dyslexia
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
