@@ -57,6 +57,8 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         secondaryOpen: false
     }
 
+    
+
     componentDidMount(): void {
         this.devtoolsAppController.addSecondaryOpenListener((open: boolean) => {
             this.setState({secondaryOpen: open});
@@ -66,6 +68,18 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         })
         if (this.props.panel === "elements") {
             this.devtoolsAppController.hookSelectionChange();
+        }
+        console.log("displayVersion = ",this.displayVersion());
+    }
+
+    
+    displayVersion() {
+        let manifest = chrome.runtime.getManifest();
+        let extVersion = manifest.version;
+        if (extVersion.endsWith(".9999")) {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+        } else {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
         }
     }
 
@@ -130,7 +144,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     document.body
                 )
             }
-        </Theme>   
+        </Theme>  
     }
     
     
