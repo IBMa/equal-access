@@ -43,7 +43,7 @@ export interface ISettings {
     tabStopLines: boolean
     tabStopOutlines: boolean
     tabStopAlerts: boolean
-    tabStopFirstTime: boolean
+    checkerViewAwareFirstTime: boolean
 }
 
 export type MsgDestType = {

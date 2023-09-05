@@ -39,6 +39,7 @@ import StoredScreen from './components/storedScreen';
 import SummaryScreen from './components/summaryScreen';
 import KCMOverviewScreen from './components/kcmOverviewScreen';
 import { ePanel } from './devtoolsController';
+import CheckerViewAware from './components/checkerViewAware';
 
 interface DevToolsAppProps {
     panel: ePanel;
@@ -53,7 +54,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     devtoolsAppController = getDevtoolsAppController();
 
     state : DevToolsAppState = {
-        secondaryView: "splash",
+        secondaryView: "checkerViewAware",
         secondaryOpen: false
     }
 
@@ -92,6 +93,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         </div>
 
         let secondaryPanel = <>
+            {this.state.secondaryView === "checkerViewAware" && <CheckerViewAware />}
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
@@ -99,6 +101,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
         let secondaryPanelModal = <>
+            {this.state.secondaryView === "checkerViewAware" && <CheckerViewAware />}
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
