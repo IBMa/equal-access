@@ -18,12 +18,11 @@ body:
       multiple: true
       options: 
         - 'able site'
-        - 'a11y checker engine'
-        - 'a11y checker extension'
-        - 'a11y checker'
-        - 'cypress accessibility checker'
-        - 'karma accessibility checker'
-        - 'rule-server'
+        - 'accessibility-checker-engine'
+        - 'extension-checker'
+        - 'accessibility-checker for Node'
+        - 'cypress-accessibility-checker'
+        - 'karma-accessibility-checker'
         - 'other'
     validations:
       required: true
