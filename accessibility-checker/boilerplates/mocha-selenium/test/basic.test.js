@@ -25,8 +25,10 @@ before(function(done) {
         options.addArguments("--headless");
         options.addArguments('--ignore-certificate-errors')
 
-        const service = new chrome.ServiceBuilder(spath).build();
-        chrome.setDefaultService(service);
+        // setDefaultService function is removed since web-driver v4.3.1+
+        //chrome.setDefaultService(service);
+        chrome.Driver.createSession(options, service);
+
         browser = new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
         .setChromeOptions(options)

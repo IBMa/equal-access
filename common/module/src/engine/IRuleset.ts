@@ -14,7 +14,7 @@
     limitations under the License.
 *****************************************************************************/
 
-import { eRuleCategory, eRulePolicy, eRulesetType, eToolkitLevel } from "./IReport"
+import { eRuleCategory, eRulePolicy, eRulesetType, eToolkitLevel } from "./IReport.js"
 
 export interface IRuleset {
     id: string,

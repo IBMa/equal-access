@@ -14,11 +14,11 @@
     limitations under the License.
   *****************************************************************************/
 
-var expect = require('chai').expect;
-var aChecker = require("../../../../src");
+import * as aChecker from "../../../../src/mjs/index.js";
+import { expect } from "chai";
 
 before(async () => {
-    aChecker.Config = await aChecker.getConfig();
+    await aChecker.getConfig();
 });
 
 // This Test Suite is to make sure all the objects/function added by ACHelper.js is added

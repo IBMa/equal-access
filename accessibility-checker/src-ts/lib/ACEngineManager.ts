@@ -72,7 +72,7 @@ export class ACEngineManager {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof(ace)) {
+                                if ('undefined' !== typeof ace) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
@@ -136,7 +136,7 @@ export class ACEngineManager {
         if ('undefined' === typeof (ace) || ace === null) {
             eval(${JSON.stringify(ACEngineManager.engineContent)})
             globalThis.ace_ibma = ace;
-            if ('undefined' !== typeof(ace)) {
+            if ('undefined' !== typeof ace) {
                 ace = ace_backup_in_ibma;
             } 
             cb();
@@ -163,9 +163,11 @@ export class ACEngineManager {
                     return ACEngineManager.loadEngineLocal();
                 }).catch(function (err) {
                     console.log(err);
+                    return Promise.reject(err);
                 });
             } catch (e) {
                 console.log(e);
+                return Promise.reject(e);
             }
         } else if (ACEngineManager.isWebDriverIO(content)) {
 
@@ -255,11 +257,19 @@ export class ACEngineManager {
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
-                let nodePath = path.join(engineDir, "ace-node")
-                fs.writeFile(nodePath + ".js", data, function (err) {
+                let nodePath = path.join(engineDir, "ace-node") + ".js";
+                fs.writeFile(nodePath, data, async (err) => {
                     try {
                         err && console.log(err);
-                        var ace_ibma = require(nodePath);
+                        let ace_ibma : any;
+                        if (typeof require !== "undefined") {
+                            ace_ibma = require(path.resolve(nodePath));
+                        } else {
+                            ace_ibma = await import(`file://${path.resolve(nodePath)}`);
+                            if (ace_ibma.default) {
+                                ace_ibma = ace_ibma.default;
+                            }
+                        }
                         checker = new ace_ibma.Checker();
                     } catch (e) {
                         console.log(e);

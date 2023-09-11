@@ -14,9 +14,9 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal } from "../config/IConfig";
-import { CompressedReport, IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport";
-import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
+import { IConfigInternal } from "../config/IConfig.js";
+import { CompressedReport, IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport.js";
+import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager.js";
 
 export class ACReporterJSON implements IReporter {
     public name(): string {

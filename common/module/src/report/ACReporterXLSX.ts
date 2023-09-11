@@ -14,9 +14,9 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport";
-import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
+import { IConfigInternal, eRuleLevel } from "../config/IConfig.js";
+import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport.js";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
 import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {
