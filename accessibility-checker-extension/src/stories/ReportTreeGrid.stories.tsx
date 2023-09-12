@@ -17,7 +17,8 @@ const meta = {
             <div style={{ marginTop: "1rem" }} />
             <ReportTreeGrid {...args} />
             <div style={{ marginTop: "1rem" }} />
-            <a href="#">Link after</a></main>
+            <a href="#">Link after</a>
+        </main>
     )
 } satisfies Meta<typeof ReportTreeGrid>;
 
