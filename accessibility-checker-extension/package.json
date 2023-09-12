@@ -15,7 +15,7 @@
     "test": "start-server-and-test storybook http://localhost:6006 'cd test && npm run test'",
     "test:coverage": "jest --collect-coverage",
     "package:browser": "npm run build:prod && shx mkdir -p package && cd dist && zip -Zd -r ../package/accessibility-checker-extension.zip .",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "npm run build:report && storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "license": "Apache-2.0",

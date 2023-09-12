@@ -87,31 +87,34 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     treeGridRef = React.createRef<HTMLDivElement>();
 
     async componentDidMount(): Promise<void> {
-        ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
-            for (const group of this.props.rowData!) {
-                for (const groupIssue of group.children) {
-                    if (groupIssue.path.dom === issue.path.dom
-                        && groupIssue.reasonId === issue.reasonId
-                        && groupIssue.ruleId === issue.ruleId
-                    ) {
-                        this.setState({ tabRowId: ReportTreeGrid.getRowId(group, groupIssue) });                        
+        // When running in storybook, none of these messages work
+        try {
+            ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
+                for (const group of this.props.rowData!) {
+                    for (const groupIssue of group.children) {
+                        if (groupIssue.path.dom === issue.path.dom
+                            && groupIssue.reasonId === issue.reasonId
+                            && groupIssue.ruleId === issue.ruleId
+                        ) {
+                            this.setState({ tabRowId: ReportTreeGrid.getRowId(group, groupIssue) });                        
+                        }
                     }
                 }
-            }
-        });
-        let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
-        this.setIssue(issue!);
+            });
+            let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
+            this.setIssue(issue!);
+
+            ReportTreeGrid.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
+                this.setState({ viewState });
+            })
+            this.setState({
+                viewState: (await ReportTreeGrid.devtoolsController.getViewState())!
+            })    
+        } catch (err) {}
 
         if (this.props.rowData && this.props.rowData.length > 0) {
             this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData[0].id });
         }
-        ReportTreeGrid.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
-            this.setState({ viewState });
-        })
-        this.setState({
-            viewState: (await ReportTreeGrid.devtoolsController.getViewState())!
-        })
-
     }
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {

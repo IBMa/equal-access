@@ -19,19 +19,33 @@ afterAll(async() => {
 });
 
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
-describe('Extension header', () => {
+describe('Accessibility of default stories', () => {
     let page: Page;
     beforeAll(async () => {
         page = await browser.newPage();
-        await page.goto('http://localhost:6006/iframe.html?id=extension-headersection--default&viewMode=story');
     });
 
     afterAll(async () => {
         return page.close();
     });
 
-    test ('should be accessible', async() => {
+    test ('Report header', async() => {
+        await page.goto('http://localhost:6006/iframe.html?id=extension-headersection--default&viewMode=story');
+        await (expect(page) as any).toBeAccessible();
+    })
+
+    test ('Report with no scan', async() => {
+        await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--no-scan&viewMode=story');
+        await (expect(page) as any).toBeAccessible();
+    })
+
+    test ('Report with an empty scan', async() => {
+        await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--empty-scan&viewMode=story');
+        await (expect(page) as any).toBeAccessible();
+    })
+
+    test ('Report tree grid with content', async() => {
+        await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--example-scan&viewMode=story');
         await (expect(page) as any).toBeAccessible();
     })
 });
-
