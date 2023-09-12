@@ -40,6 +40,8 @@ import SummaryScreen from './components/summaryScreen';
 import KCMOverviewScreen from './components/kcmOverviewScreen';
 import { ePanel } from './devtoolsController';
 import CheckerViewAware from './components/checkerViewAware';
+import { getBGController } from "../background/backgroundController";
+
 
 interface DevToolsAppProps {
     panel: ePanel;
@@ -51,11 +53,18 @@ interface DevToolsAppState {
 }
 
 export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppState> {
+    bgController = getBGController();
     devtoolsAppController = getDevtoolsAppController();
 
+    constructor(props:any) {
+        super(props)
+
+    }
+    
+    // How do I get checkerViewAwareFirstTime which is in ISettings
     state : DevToolsAppState = {
         secondaryView: "checkerViewAware",
-        secondaryOpen: false
+        secondaryOpen: true
     }
 
     
@@ -130,7 +139,13 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                         <ComposedModal 
                             open={this.state.secondaryOpen} 
                             onClose={() => {
-                                this.devtoolsAppController.closeSecondary();
+                                let devtoolsAppController = getDevtoolsAppController();
+                                if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
+                                    devtoolsAppController.setSecondaryView("splash");
+                                    devtoolsAppController.closeSecondary();
+                                } else {
+                                    this.devtoolsAppController.closeSecondary();
+                                }
                             }}
                             style={{height: "100%"}}
                             isFullWidth={true}

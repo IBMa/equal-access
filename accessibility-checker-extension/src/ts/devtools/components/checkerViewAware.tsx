@@ -16,11 +16,11 @@
 
 import React from "react";
 
-import { Grid, Column } from '@carbon/react';
+import { Grid, Column, Button } from '@carbon/react';
 import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
+import { getDevtoolsAppController } from '../devtoolsAppController';
 import { BrowserDetection } from '../../util/browserDetection';
-
 import "./checkerViewAware.scss";
 
 interface CheckerViewAwareState {
@@ -34,6 +34,7 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
     private bgController = getBGController();
     state: CheckerViewAwareState = {
     }
+    
     myCount = count++;
     async componentDidMount(): Promise<void> {
         this.bgController.addSettingsListener(async (settings) => {
@@ -43,6 +44,8 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
             settings: await this.bgController.getSettings()
         });
     }
+
+    
 
     render() {
         BrowserDetection.setDarkLight();
@@ -61,6 +64,25 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                         <div style={{marginBottom:"1rem"}}>
                             You are in the <b>Accessibility Assessment</b> panel of the Checker.
                         </div>
+                    </div>
+                    <div>
+                    <Button
+                            id="checkerViewAwareButton"
+                            kind="primary"
+                            iconDescription="Dismiss one time info" tooltipPosition="left" 
+                            onClick={async () => {
+                                let devtoolsAppController = getDevtoolsAppController();
+                                if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
+                                    devtoolsAppController.setSecondaryView("splash");
+                                    devtoolsAppController.closeSecondary();
+                                }
+                                <div>
+                                    
+                                </div>
+                                console.log("Pressed Dismiss Button");
+                            }}
+                            size="sm"
+                        >Dismiss</Button>
                     </div>
                 </Column>
             </Grid>
