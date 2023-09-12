@@ -17,14 +17,13 @@
 import React from "react";
 
 import { Grid, Column, Button } from '@carbon/react';
-import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { BrowserDetection } from '../../util/browserDetection';
 import "./checkerViewAware.scss";
 
+
 interface CheckerViewAwareState {
-    settings?: ISettings
 }
 
 interface CheckerViewAwareProps {
@@ -39,10 +38,11 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
     async componentDidMount(): Promise<void> {
         this.bgController.addSettingsListener(async (settings) => {
             this.setState({ settings });
-        })
-        this.setState({
-            settings: await this.bgController.getSettings()
         });
+        let settings = await this.bgController.getSettings(); 
+        this.setState({ settings });
+        settings.checkerViewAwareFirstTime = false;
+        await this.bgController.setSettings(settings);
     }
 
     
@@ -63,6 +63,9 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                     <div className="modalContent">
                         <div style={{marginBottom:"1rem"}}>
                             You are in the <b>Accessibility Assessment</b> panel of the Checker.
+                        </div>
+                        <div>
+
                         </div>
                     </div>
                     <div>

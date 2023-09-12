@@ -41,6 +41,7 @@ import KCMOverviewScreen from './components/kcmOverviewScreen';
 import { ePanel } from './devtoolsController';
 import CheckerViewAware from './components/checkerViewAware';
 import { getBGController } from "../background/backgroundController";
+import { ISettings } from '../interfaces/interfaces';
 
 
 interface DevToolsAppProps {
@@ -56,9 +57,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     bgController = getBGController();
     devtoolsAppController = getDevtoolsAppController();
     
-    // How do I get checkerViewAwareFirstTime which is in ISettings
-    // so I can have secondaryView: checkerViewAwareFirstTime ? "checkerViewAware" : "splash"
-    // then set checkerViewAwareFirstTime in CheckerViewAware component when renders
     state : DevToolsAppState = {
         secondaryView: "checkerViewAware",
         secondaryOpen: true
@@ -67,6 +65,13 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     
 
     componentDidMount(): void {
+        this.bgController.getSettings().then((settings: ISettings) => {
+            if (settings.checkerViewAwareFirstTime) {
+                this.setState({ secondaryView: "checkerViewAware" })
+            } else {
+                this.setState({ secondaryView: "splash" })
+            }
+        });
         this.devtoolsAppController.addSecondaryOpenListener((open: boolean) => {
             this.setState({secondaryOpen: open});
         })
