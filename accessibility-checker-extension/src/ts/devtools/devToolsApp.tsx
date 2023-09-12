@@ -55,13 +55,10 @@ interface DevToolsAppState {
 export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppState> {
     bgController = getBGController();
     devtoolsAppController = getDevtoolsAppController();
-
-    constructor(props:any) {
-        super(props)
-
-    }
     
     // How do I get checkerViewAwareFirstTime which is in ISettings
+    // so I can have secondaryView: checkerViewAwareFirstTime ? "checkerViewAware" : "splash"
+    // then set checkerViewAwareFirstTime in CheckerViewAware component when renders
     state : DevToolsAppState = {
         secondaryView: "checkerViewAware",
         secondaryOpen: true
