@@ -31,21 +31,25 @@ describe('Accessibility of default stories', () => {
 
     test ('Report header', async() => {
         await page.goto('http://localhost:6006/iframe.html?id=extension-headersection--default&viewMode=story');
+        await page.waitForSelector("#storyMain");
         await (expect(page) as any).toBeAccessible();
     })
 
     test ('Report with no scan', async() => {
         await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--no-scan&viewMode=story');
+        await page.waitForSelector("#storyMain");
         await (expect(page) as any).toBeAccessible();
     })
 
     test ('Report with an empty scan', async() => {
         await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--empty-scan&viewMode=story');
+        await page.waitForSelector("#storyMain");
         await (expect(page) as any).toBeAccessible();
     })
 
     test ('Report tree grid with content', async() => {
         await page.goto('http://localhost:6006/iframe.html?args=&id=extension-reporttreegrid--example-scan&viewMode=story');
+        await page.waitForSelector("#storyMain");
         await (expect(page) as any).toBeAccessible();
     })
 });

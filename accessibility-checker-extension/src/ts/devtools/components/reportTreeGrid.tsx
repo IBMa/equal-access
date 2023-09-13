@@ -618,6 +618,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
             content = <>
                 <div role="treegrid" 
+                    aria-label="Detected issues"
                     ref={this.treeGridRef}
                     tabIndex={0} 
                     aria-activedescendant={this.state.tabRowId} 

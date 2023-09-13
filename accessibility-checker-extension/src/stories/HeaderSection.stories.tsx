@@ -12,7 +12,7 @@ const meta = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   render: ({ ...args }) => (
-        <main><HeaderSection {...args} /></main>
+        <main id="storyMain"><HeaderSection {...args} /></main>
   )
 } satisfies Meta<typeof HeaderSection>;
 

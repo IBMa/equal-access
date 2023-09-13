@@ -23,11 +23,7 @@ module.exports = {
   // Valid values: violation, potentialviolation, recommendation, potentialrecommendation, manual
   // Default: ["violation","potential violation"]
   reportLevels: [
-      "violation",
-      "potentialviolation",
-      "recommendation",
-      "potentialrecommendation",
-      "manual"
+      "violation"
   ],
 
   // Optional - Which type should the results be outputted to
