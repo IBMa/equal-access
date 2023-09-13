@@ -137,8 +137,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
             tabStopAlerts: tabStopAlerts, checkerViewAwareFirstTime: checkerViewAwareFirstTime,
             storedScansExist: storedScansExist,
-            tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
-            storedScansExist: storedScansExist,
         });
 
         
