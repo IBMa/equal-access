@@ -67,9 +67,10 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     componentDidMount(): void {
         this.bgController.getSettings().then((settings: ISettings) => {
             if (settings.checkerViewAwareFirstTime) {
-                this.setState({ secondaryView: "checkerViewAware" })
+                this.setState({ secondaryView: "checkerViewAware" });
             } else {
-                this.setState({ secondaryView: "splash" })
+                this.setState({ secondaryView: "splash" });
+                this.setState({ secondaryOpen: false});
             }
         });
         this.devtoolsAppController.addSecondaryOpenListener((open: boolean) => {
@@ -81,7 +82,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         if (this.props.panel === "elements") {
             this.devtoolsAppController.hookSelectionChange();
         }
-        console.log("displayVersion = ",this.displayVersion());
     }
 
     

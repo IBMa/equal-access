@@ -55,13 +55,10 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
         let usrAgent = navigator.userAgent;
         let elementTabImg: string | undefined;
         if (usrAgent.indexOf("Chrome") > -1) {
-            console.log("Browser is ", "Chrome");
             elementTabImg = chromeImg;
         } else if (usrAgent.indexOf("Firefox") > -1) {
-            console.log("Browser is ", "Firefox");
             elementTabImg = firefoxImg;
         } else if (usrAgent.indexOf("Edge") > -1) {
-            console.log("Browser is ", "Edge");
             elementTabImg = edgeImg;
         }
         return <aside className="checkerViewAware">
@@ -98,10 +95,6 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                                     devtoolsAppController.setSecondaryView("splash");
                                     devtoolsAppController.closeSecondary();
                                 }
-                                <div>
-                                    
-                                </div>
-                                console.log("Pressed Dismiss Button");
                             }}
                             size="sm"
                         >Dismiss</Button>
