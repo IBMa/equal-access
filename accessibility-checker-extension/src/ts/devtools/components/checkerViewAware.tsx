@@ -81,7 +81,7 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                             panel can be nested within the dev tools navigation bar.
                         </div>
                         <div style={{marginBottom:"1rem"}}>
-                            <img src ={elementTabImg} alt="Checker view on Elements Tab"></img>
+                            <img src={elementTabImg} alt="Checker view on Elements Tab"></img>
                         </div>
                     </div>
                     <div>
