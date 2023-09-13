@@ -54,7 +54,7 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
         BrowserDetection.setDarkLight();
         let usrAgent = navigator.userAgent;
         let elementTabImg: string | undefined;
-        if (usrAgent.include("Edg/") {
+        if (usrAgent.includes("Edg/")) {
             elementTabImg = edgeImg;
         } else if (usrAgent.includes("Firefox/")) {
             elementTabImg = firefoxImg;
