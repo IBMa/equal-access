@@ -21,6 +21,9 @@ import { getBGController } from "../../background/backgroundController";
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { BrowserDetection } from '../../util/browserDetection';
 import "./checkerViewAware.scss";
+import chromeImg from "../../../assets/img/Chrome.svg";
+import firefoxImg from "../../../assets/img/Firefox.svg";
+import edgeImg from "../../../assets/img/Edge.svg";
 
 
 interface CheckerViewAwareState {
@@ -49,7 +52,18 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
 
     render() {
         BrowserDetection.setDarkLight();
-        // let showCheckerViewAwareModal: boolean = this.state.settings ? !this.state.settings.checkerViewAwareFirstTime : false;
+        let usrAgent = navigator.userAgent;
+        let elementTabImg: string | undefined;
+        if (usrAgent.indexOf("Chrome") > -1) {
+            console.log("Browser is ", "Chrome");
+            elementTabImg = chromeImg;
+        } else if (usrAgent.indexOf("Firefox") > -1) {
+            console.log("Browser is ", "Firefox");
+            elementTabImg = firefoxImg;
+        } else if (usrAgent.indexOf("Edge") > -1) {
+            console.log("Browser is ", "Edge");
+            elementTabImg = edgeImg;
+        }
         return <aside className="checkerViewAware">
             {/* CheckerViewAware Title */}
             <Grid style={{marginTop: "1rem", marginBottom: "1rem"}}>
@@ -64,8 +78,13 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                         <div style={{marginBottom:"1rem"}}>
                             You are in the <b>Accessibility Assessment</b> panel of the Checker.
                         </div>
-                        <div>
-
+                        <div style={{marginBottom:"1rem"}}>
+                            For code scanning functionality, navigate to the Accessibility Checker 
+                            panel within the Elements panel in the Dev Tools. Be aware that this 
+                            +panel can be nested within the dev tools navigation bar.
+                        </div>
+                        <div style={{marginBottom:"1rem"}}>
+                            <img src ={elementTabImg} alt="Checker view on Elements Tab"></img>
                         </div>
                     </div>
                     <div>
