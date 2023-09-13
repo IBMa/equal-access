@@ -32,14 +32,14 @@ describe("Hello World Basics", function () {
         await page.goto(`file://${sample}`);
 
         const result = await getCompliance(page, "HOME");
-        const report = result!.report;
+        const report : ICheckerReport = result!.report as ICheckerReport;
         expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
     }).timeout(10000);
 
     it("Homepage, Show Card", async() => {
         await page.click("#clickMe");
         const result = await getCompliance(page, "HOME_CARD");
-        const report = result!.report;
+        const report : ICheckerReport = result!.report as ICheckerReport;
         expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
     }).timeout(10000);
 });
