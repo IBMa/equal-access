@@ -56,6 +56,11 @@ interface OptionsAppState {
     tabStopLines: boolean;
     tabStopOutlines: boolean;
     tabStopAlerts: boolean;
+    tabStopFirstTime: boolean;
+    // Change Ruleset while there are stored scans
+    storedScansExist: boolean;
+    modalDeploymentWithScans: boolean;
+    modalGuidelinesWithScans: boolean;
     checkerViewAwareFirstTime: boolean;
     savePending: number;
 }
@@ -74,6 +79,11 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopLines: true,
         tabStopOutlines: false,
         tabStopAlerts: true,
+        tabStopFirstTime: true,
+        // Change Ruleset while there are stored scans
+        storedScansExist: false,
+        modalDeploymentWithScans: false,
+        modalGuidelinesWithScans: false,
         checkerViewAwareFirstTime: true,
         savePending: 0
     };
