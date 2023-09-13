@@ -66,7 +66,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
 
     componentDidMount(): void {
         this.bgController.getSettings().then((settings: ISettings) => {
-            if (settings.checkerViewAwareFirstTime) {
+            if (this.props.panel === "main" && settings.checkerViewAwareFirstTime) {
                 this.setState({ secondaryView: "checkerViewAware" });
             } else {
                 this.setState({ secondaryView: "splash" });
