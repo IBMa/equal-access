@@ -78,7 +78,7 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                         <div style={{marginBottom:"1rem"}}>
                             For code scanning functionality, navigate to the Accessibility Checker 
                             panel within the Elements panel in the Dev Tools. Be aware that this 
-                            +panel can be nested within the dev tools navigation bar.
+                            panel can be nested within the dev tools navigation bar.
                         </div>
                         <div style={{marginBottom:"1rem"}}>
                             <img src ={elementTabImg} alt="Checker view on Elements Tab"></img>
