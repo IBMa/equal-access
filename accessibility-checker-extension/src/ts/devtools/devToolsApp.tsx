@@ -69,8 +69,8 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             if (this.props.panel === "main" && settings.checkerViewAwareFirstTime) {
                 this.setState({ secondaryView: "checkerViewAware" });
             } else {
-                this.setState({ secondaryView: "splash" });
                 this.setState({ secondaryOpen: false});
+                this.setState({ secondaryView: "splash" });
             }
         });
         this.devtoolsAppController.addSecondaryOpenListener((open: boolean) => {
@@ -143,8 +143,10 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             onClose={() => {
                                 let devtoolsAppController = getDevtoolsAppController();
                                 if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
-                                    devtoolsAppController.setSecondaryView("splash");
                                     devtoolsAppController.closeSecondary();
+                                    setTimeout(() => {
+                                        devtoolsAppController.setSecondaryView("splash");
+                                    }, 1500);
                                 } else {
                                     this.devtoolsAppController.closeSecondary();
                                 }

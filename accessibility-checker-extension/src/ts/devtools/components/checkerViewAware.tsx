@@ -92,8 +92,10 @@ export default class CheckerViewAware extends React.Component<CheckerViewAwarePr
                             onClick={async () => {
                                 let devtoolsAppController = getDevtoolsAppController();
                                 if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
-                                    devtoolsAppController.setSecondaryView("splash");
                                     devtoolsAppController.closeSecondary();
+                                    setTimeout(() => {
+                                        devtoolsAppController.setSecondaryView("splash");
+                                    }, 1500);
                                 }
                             }}
                             size="sm"
