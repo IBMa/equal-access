@@ -109,7 +109,7 @@ export let a11yRulesets: Ruleset[] = [
         description: "Rules for WCAG 2.1 AA plus additional IBM checklist supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
-            .filter(sc => (sc.level === "A" || sc.level === "AA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1"))
+            .filter(sc => (sc.level === "A" || sc.level === "AA" || sc.level === "NA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "NA"))
             .map(sc => ({
                 num: sc.num,
                 scId: sc.scId,

@@ -934,5 +934,29 @@
       "handle": "Status Messages",
       "level": "AA",
       "wcagType": "2.1"
+    },
+    "HTML": {
+      "num": "HTML",
+      "url": "https://html.spec.whatwg.org/multipage/",
+      "scId": [],
+      "scAltId": [],
+      "test": "",
+      "howToMeetUrl": "https://html.spec.whatwg.org/multipage/",
+      "understandingUrl": "https://html.spec.whatwg.org/multipage/",
+      "handle": "HTML Messages",
+      "level": "NA",
+      "wcagType": "NA"
+    },
+    "ARIA": {
+      "num": "ARIA",
+      "url": "https://w3c.github.io/aria/",
+      "scId": [],
+      "scAltId": [],
+      "test": "",
+      "howToMeetUrl": "https://w3c.github.io/aria/",
+      "understandingUrl": "https://w3c.github.io/aria/",
+      "handle": "ARIA Messages",
+      "level": "NA",
+      "wcagType": "NA"
     }
   }
