@@ -61,6 +61,7 @@ interface OptionsAppState {
     storedScansExist: boolean;
     modalDeploymentWithScans: boolean;
     modalGuidelinesWithScans: boolean;
+    checkerViewAwareFirstTime: boolean;
     savePending: number;
 }
 
@@ -83,6 +84,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         storedScansExist: false,
         modalDeploymentWithScans: false,
         modalGuidelinesWithScans: false,
+        checkerViewAwareFirstTime: true,
         savePending: 0
     };
 
@@ -97,7 +99,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         let tabStopLines: boolean = true;
         let tabStopOutlines: boolean = false;
         let tabStopAlerts: boolean = true;
-        let tabStopFirstTime: boolean = true;
+        let checkerViewAwareFirstTime: boolean = true;
 
         let storedScansExist =  await this.existStoredScans();
 
@@ -107,7 +109,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopLines = settings.tabStopLines;
         tabStopOutlines = settings.tabStopOutlines;
         tabStopAlerts = settings.tabStopAlerts;
-        tabStopFirstTime = settings.tabStopFirstTime;
+        checkerViewAwareFirstTime = settings.checkerViewAwareFirstTime;
         if (selected_archive) {
             if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id && archive.name === selected_archive.name))) {
                 // do nothing
@@ -133,7 +135,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             rulesets: rulesets,
             selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
-            tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+            tabStopAlerts: tabStopAlerts, checkerViewAwareFirstTime: checkerViewAwareFirstTime,
             storedScansExist: storedScansExist,
         });
 
@@ -246,7 +248,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         //            keep stored scans and don't update rulset (ali says don't give this choice)
 
         this.setState({ 
-            tabStopFirstTime: false,
+            checkerViewAwareFirstTime: false,
          })
          let newSettings: ISettings = this.settingsFromState()
          this.setState({ savePending: 1 });
@@ -272,7 +274,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         retVal.selected_ruleset = this.state.selected_ruleset!;
         retVal.tabStopLines = this.state.tabStopLines;
         retVal.tabStopAlerts = this.state.tabStopAlerts;
-        retVal.tabStopFirstTime = this.state.tabStopFirstTime;
+        retVal.checkerViewAwareFirstTime = this.state.checkerViewAwareFirstTime;
         retVal.tabStopOutlines = this.state.tabStopOutlines;
         return retVal;
     }
@@ -314,7 +316,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
-            tabStopFirstTime: false
+            checkerViewAwareFirstTime: false
         });
     };
 
