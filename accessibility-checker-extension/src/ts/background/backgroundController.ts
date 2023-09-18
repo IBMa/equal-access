@@ -456,6 +456,7 @@ class BackgroundController extends Controller {
         if (!("tabStopOutlines" in settings)) { (settings as ISettings).tabStopOutlines = false; }
         if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopAlerts = true; }
         if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopFirstTime = true; }
+        if (!("checkerViewAwareFirstTime" in settings)) { (settings as ISettings).checkerViewAwareFirstTime = true; }
 
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";
