@@ -1,0 +1,109 @@
+<html lang="en-US">
+<head>
+    <title>aria_form_label_unique - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Rule Passed","Fail_1":"Multiple elements with \"form\" role do not have unique labels","group":"Each element with \"form\" role must have a unique label that describes its purpose"}};
+        RULE_ID = "aria_form_label_unique"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+An HTML `<form>` element with a label or title, or any element with a `"form"` role is a type of ARIA landmark region. When there are multiple `"form"` regions, they must have unique labels, so people who use assistive technologies can quickly identify and navigate to each form region.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* For each element with a `"form"` role, either set the value of the `aria-labelledby` attribute of each form to the `id` value of any visible text that appropriately and uniquely describes that form's purpose;
+* **Or**, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"form"` role.
+
+For example:
+
+```
+<h2 id="na1"> New Account</h2>
+<form  aria-labelledby="na1">
+  <fieldset>
+    <legend>Personal information:</legend>
+    <label for="fname">First name:</label>
+    <input type="text" id="fname" name="fname" value="Ashley">
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lname" value="Levy"><br><br>
+    <input type="submit" value="Submit">
+  </fieldset>
+</form>
+    
+    
+<div role="form" aria-label="Ship-to Address=">
+	...
+</div>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+* [WCAG technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
