@@ -22,6 +22,7 @@ import * as crypto from 'crypto';
 import { IConfig, IConfigInternal } from "./IConfig";
 import { fetch_get } from "../api-ext/Fetch";
 import { ReporterManager } from "../report/ReporterManager";
+import { IArchive } from "./IArchive";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -63,6 +64,60 @@ function convertPolicies(policies: string | string[]) : string[] {
 }
 
 /**
+ * negative if versionA is less than versionB, positive if versionA is greater than versionB, and zero if they are equal. NaN is treated as 0.
+ * @param versionA 
+ * @param versionB 
+ */
+function compareVersions(versionA: string, versionB: string) : number {
+    const versionRE = /[0-9.]+(-rc\.[0-9]+)?/;
+    versionA = versionA.trim();
+    versionB = versionB.trim();
+    if (!versionRE.test(versionA)) throw new Error("Invalid version");
+    if (!versionRE.test(versionB)) throw new Error("Invalid version");
+    if (versionA === versionB) return 0;
+    // Get x.y.z-rc.a into [x.y.z, a]
+    // Get x.y.z into [x.y.z]
+    let split1A = versionA.split("-rc.");
+    let split1B = versionB.split("-rc.");
+    // Get x.y.z into [x,y,z]
+    let split2A = split1A[0].split(".");
+    let split2B = split1B[0].split(".");
+    // For the components of the shortest version - can only compare numbers we have
+    let minLength = Math.min(split2A.length, split2B.length);
+    for (let idx=0; idx<minLength; ++idx) {
+        if (split2A[idx] !== split2B[idx]) {
+            return parseInt(split2A[idx])-parseInt(split2B[idx]);
+        }
+    }
+    // Handle 4.0 vs 4.0.1 (longer string is later)
+    if (split2A.length !== split2B.length) {
+        return split2A.length-split2B.length;
+    }
+    // Handle 4.0.0 vs 4.0.0-rc.x (shorter string is later)
+    if (split1A.length !== split1B.length) {
+        return split1B.length-split1A.length;
+    }
+    return parseInt(split1A[1])-parseInt(split1B[1]);
+}
+/**
+ * 
+ * @param archives 
+ * @param toolVersion 
+ */
+function findLatestArchiveId(archives: IArchive[], toolVersion: string) {
+    const validArchiveKeywords = ["latest", "preview", "versioned"];
+    for (const archive of archives) {
+        if (validArchiveKeywords.includes(archive.id)) continue;
+        // If the toolVersion is greater than or equal to the archive version we've found it
+        if (compareVersions(toolVersion, archive.version) >= 0) {
+            return archive.id;
+        }
+    }
+    // Something wrong, go with the latest
+    return "latest";
+}
+
+/**
  * This function is responsible processing the achecker config which was initialized to make sure it contains,
  * information which matches what the engine reads.
  *
@@ -78,8 +133,9 @@ function convertPolicies(policies: string | string[]) : string[] {
  *
  * @memberOf this
  */
-async function processACConfig(ACConfig) {
+async function processACConfig(ACConfig: IConfigInternal) {
     ACConstants.DEBUG && console.log("START 'processACConfig' function");
+    const validArchiveKeywords = ["latest", "preview", "versioned"];
 
     // Convert the reportLevels and failLevels to match with what the engine provides
     // Don't need to convert the levels from the input as we are going to compare with out the level.
@@ -111,6 +167,14 @@ async function processACConfig(ACConfig) {
         ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
         ACConfig.ruleArchiveSet = ruleArchiveParse;
         let ruleArchive = ACConfig.ruleArchive;
+        // If the user asked us to sync the rule version with the tool version, we need to figure out what the last rule version was
+        if (ruleArchive === "versioned") {
+            if (!ACConfig.toolVersion) {
+                ruleArchive = "latest";
+            } else {
+                ruleArchive = findLatestArchiveId(ACConfig.ruleArchiveSet, ACConfig.toolVersion);
+            }
+        }
         ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
             if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
@@ -126,7 +190,7 @@ async function processACConfig(ACConfig) {
             throw new Error(errStr);
         }
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-            if (ACConfig.ruleArchiveVersion === ACConfig.ruleArchiveSet[i].version && ACConfig.ruleArchiveSet[i].id !== "latest" && ACConfig.ruleArchiveSet[i].id !== "preview") {
+            if (ACConfig.ruleArchiveVersion === ACConfig.ruleArchiveSet[i].version && !validArchiveKeywords.includes(ACConfig.ruleArchiveSet[i].id)) {
                 ACConfig.ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
                 break;
             }
@@ -192,6 +256,7 @@ function initializeDefaults(config: IConfigInternal) {
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;
     config.toolName = packageObject.name;
+    config.toolVersion = packageObject.version;
 
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
