@@ -96,7 +96,10 @@ options for `accessibility-checker`. Following is the structure of the `.achecke
 ```yml
 # optional - Specify the rule archive
 # Default: latest
-# Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
+# Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids.
+# If "latest", will use the latest rule release
+# If "versioned" (supported in 3.1.61+), will use latest rule release at
+# the time this version of the tool was released 
 ruleArchive: latest
 
 # optional - Specify one or many policies to scan.

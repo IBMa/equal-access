@@ -70,7 +70,8 @@ const myConfig : IConfigInternal = {
         "Chrome",
         "master",
         "IBMa-Node-TeSt"
-    ]
+    ],
+    engineMode: "DEFAULT"
 }
 
 const rulesets = [
