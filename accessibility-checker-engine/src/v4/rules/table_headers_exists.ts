@@ -48,11 +48,13 @@ export let table_headers_exists: Rule = {
         const ruleContext = context["dom"].node as HTMLTableElement;
         // If this is a layout table or there are no rows, the rule does not apply.
         let rows = ruleContext.rows;
-        if (!RPTUtil.isDataTable(ruleContext) || rows == null || rows.length == 0)
+        if (!RPTUtil.isDataTable(ruleContext) || rows === null || rows.length === 0)
             return null;
 
-        let passed = RPTUtil.isTableHeaderInFirstRowOrColumn(ruleContext);
-
+        let passed = RPTUtil.tableHeaderExists(ruleContext);
+        if (passed === null)
+            return;
+            
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

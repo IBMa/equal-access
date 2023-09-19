@@ -44,6 +44,7 @@ export interface ISettings {
     tabStopOutlines: boolean
     tabStopAlerts: boolean
     tabStopFirstTime: boolean
+    checkerViewAwareFirstTime: boolean
 }
 
 export interface ISessionState {
