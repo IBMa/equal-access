@@ -68,7 +68,7 @@ function convertPolicies(policies: string | string[]) : string[] {
  * @param versionA 
  * @param versionB 
  */
-function compareVersions(versionA: string, versionB: string) : number {
+export function compareVersions(versionA: string, versionB: string) : number {
     const versionRE = /[0-9.]+(-rc\.[0-9]+)?/;
     versionA = versionA.trim();
     versionB = versionB.trim();
