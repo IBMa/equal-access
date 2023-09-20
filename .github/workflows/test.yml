@@ -326,6 +326,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
+    - name: Latest Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: latest
+    id: setup-chrome
     - run: npm install
       working-directory: rule-server
     - run: npm run build
