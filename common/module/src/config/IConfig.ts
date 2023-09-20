@@ -41,7 +41,7 @@ export interface IConfig {
      * Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
      * Default: "latest"
      */
-    ruleArchive?: "latest" | "preview" | string
+    ruleArchive?: "latest" | "preview" | "versioned" | string
 
     /**
      * (optional) Specify one or many policies to scan.
@@ -171,6 +171,7 @@ export type IConfigInternal = IConfig & {
 
     toolID?: string
     toolName?: string
+    toolVersion?: string
 
     scanID?: string
 
