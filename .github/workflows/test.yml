@@ -330,7 +330,7 @@ jobs:
       uses: browser-actions/setup-chrome@v1
       with:
         chrome-version: latest
-    id: setup-chrome
+      id: setup-chrome
     - run: npm install
       working-directory: rule-server
     - run: npm run build
