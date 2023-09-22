@@ -56,7 +56,7 @@ function _initialize() {
         }
         // Convert RS
         for (const rsSection of v4Rule.rulesets) {
-            for (const rs of a11yRulesets as Ruleset[]) {
+            for (const rs of a11yRulesets as Guideline[]) {
                 let checkRsIds : string[] = typeof rsSection.id === "string" ? [rsSection.id] : rsSection.id;
                 if (checkRsIds.includes(rs.id)) {
                     for (const cp of rs.checkpoints) {
