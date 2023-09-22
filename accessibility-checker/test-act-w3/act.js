@@ -80,6 +80,14 @@ async function getTestcases() {
     });
 }
 
+function asArray(val) {
+    if (typeof val === "") {
+        return [val];
+    } else {
+        return val;
+    }
+}
+
 async function getAssertion(ruleId, aceRules, result) {
     const ruleset = await rulesetP;
     let ruleTitle = "";
@@ -88,13 +96,39 @@ async function getAssertion(ruleId, aceRules, result) {
             ruleTitle = `${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`;
         }
     }
+
+    // rulesets: Array<{
+    //     id: string | string[]
+    //     num: string | string[]
+    //     level: eRulePolicy,
+    //     toolkitLevel: eToolkitLevelNew,
+    //     // (optional) Reason codes that this ruleset mapping applies to, 
+    //     // or all if not specified
+    //     reasonCodes?: string[]
+    // }>
+    let scNums = new Set();
+    for (let aceRule of aceRules) {
+        if (aceRule.ruleId === ruleId) {
+            // For the ruleset mappings in the rule
+            for (const rs of aceRule.rulesets) {
+                let rsIds = asArray(rs.id);
+                if (rsIds.filter(rsId => rsId === "IBM_Accessibility").length > 0) {
+                    // If this ruleset mapping applies to the aceRule.reasonIds
+                    if (!rs.reasonCodes || rs.reasonCodes.filter(code => aceRule.reasonIds.includes(code)).length > 0) {
+                        // Add the sc numbers to the set
+                        asArray(rs.num).forEach(num => scNums.add(num));
+                    }
+                }
+            }
+        }
+    }    
     return {
         "@type": "Assertion",
         "test": { 
             "title": ruleTitle,
             "isPartOf": ruleset.checkpoints
                 // Get checkpoints that have this rule
-                .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
+                .filter(cp => scNums.has(cp.num))
                 // Replace with the scId
                 .map(cp => cp.scId)
         },
@@ -120,7 +154,7 @@ async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
             issuesAll: []    
         }
     }
-    let results = [];
+    let results = null;
     if (!bSkip) {
         results = await aChecker.getCompliance(page, `${actRuleId}_${testcaseId}`);
     }

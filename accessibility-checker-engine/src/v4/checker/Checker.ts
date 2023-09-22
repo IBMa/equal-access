@@ -20,9 +20,10 @@ import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { StyleMapper } from "../../v2/style/StyleMapper";
 import { a11yRulesets } from "../rulesets";
 import * as checkRulesV4 from "../rules";
-import { Guideline, eGuidelineCategory } from "../api/IGuideline";
+import { Checkpoint, Guideline, eGuidelineCategory } from "../api/IGuideline";
 import { IEngine } from "../api/IEngine";
 import { Report } from "../api/IReport";
+import { IChecker } from "../api/IChecker";
 
 let checkRules = [];
 let checkNls = {};
@@ -82,7 +83,7 @@ _initialize();
  */
 export type Ruleset = Guideline;
 
-export class Checker {
+export class Checker implements IChecker {
     engine: IEngine;
     rulesets: Guideline[] = [];
     rulesetIds: string[] = [];
@@ -126,28 +127,8 @@ export class Checker {
         return this.rulesets;
     }
 
-    /**
-     * Get checkpoint information for an issue
-     * @param issue Issue to get info about
-     * @param guidelineIds (optional) List of guidelines to fetch information from
-     */
-    getCheckpointsForIssue(issue: Issue, guidelineIds?: string[]) {
-        let retVal = [];
-        for (const guideline of this.getGuidelines()) {
-            // If this isn't a guideline we care about, skip
-            if (guidelineIds && !guidelineIds.includes(guideline.id)) continue;
-            for (const checkpoint of guideline.checkpoints) {
-                if (checkpoint.rules && checkpoint.rules.filter(ruleInfo => (
-                    ruleInfo.id === issue.ruleId 
-                    && (!ruleInfo.reasonCodes || ruleInfo.reasonCodes.includes(issue.reasonId as string)))
-                )) {
-                    retVal.push({ 
-                        guidelineId: guideline.id,
-                        checkpoint: checkpoint
-                    })    
-                }
-            }
-        }
+    getGuidelineIds() {
+        return this.rulesetIds;
     }
 
     /**
@@ -202,7 +183,7 @@ export class Checker {
             });
     }
 
-    getLevel(rsIds: string[], ruleId: string) : eRulePolicy {
+   private getLevel(rsIds: string[], ruleId: string) : eRulePolicy {
         if (!rsIds) return eRulePolicy.INFORMATION;
         let rsInfo = this.ruleLevels[ruleId];
         let retVal = null;
@@ -228,7 +209,7 @@ export class Checker {
         return retVal;
     }
 
-    getCategory(rsIds: string[], ruleId: string) : eGuidelineCategory {
+    private getCategory(rsIds: string[], ruleId?: string) : eGuidelineCategory {
         let rsInfo = this.ruleCategory[ruleId];
         let retVal = "";
 
