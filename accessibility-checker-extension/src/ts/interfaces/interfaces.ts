@@ -204,7 +204,12 @@ export interface IRuleset {
         name: string,
         wcagLevel: string,
         summary: string,
-        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
+        rules?: Array<{ 
+            id: string, 
+            level: eRulePolicy, 
+            toolkitLevel: eToolkitLevel,
+            reasonCodes?: string[]
+        }>
     }>
 }
 
