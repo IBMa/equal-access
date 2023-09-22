@@ -15,7 +15,9 @@
   *****************************************************************************/
 
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport";
+import { Guideline, eToolkitLevel } from "../engine/IGuideline";
+import { CompressedReport } from "../engine/IReport";
+import { eRuleConfidence } from "../engine/IRule";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
 import * as ExcelJS from "exceljs";
 
@@ -43,7 +45,7 @@ export class ACReporterXLSX implements IReporter {
     public generateReport(_reportData): { reportPath: string, report: string } | void {
     }
 
-    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(config: IConfigInternal, rulesets: Guideline[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
         let storedReport = ReporterManager.uncompressReport(summaryData[0])
         let cfgRulesets = rulesets.filter(rs => config.policies.includes(rs.id));
         let policyInfo: {

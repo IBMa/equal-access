@@ -14,27 +14,9 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Bounds as BoundsNew } from "./IBounds";
-
-/**
- * @deprecated See ./IBounds
- */
-export type Bounds = BoundsNew;
-
-export type IMapResult = {
-    node: Node,
-    namespace: string,
-    role: string,
-    rolePath: string,
-    attributes: {
-        [key: string]: string
-    },
-    bounds?: BoundsNew
-}
-
-export interface IMapper {
-    reset(node: Node): void;
-    openScope(node: Node) : IMapResult[];
-    closeScope(node: Node) : IMapResult[];
-    getNamespace() : string;
+export type Bounds = {
+    left: number,
+    top: number,
+    width: number,
+    height: number
 }

@@ -15,7 +15,8 @@
   *****************************************************************************/
 
 import { IConfigInternal } from "../config/IConfig";
-import { CompressedReport, IBaselineReport, IRuleset } from "../engine/IReport";
+import { Guideline } from "../engine/IGuideline";
+import { CompressedReport, IBaselineReport } from "../engine/IReport";
 import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
 import { genReport } from "./genReport";
 
@@ -24,7 +25,7 @@ export class ACReporterHTML implements IReporter {
         return "html";
     }
 
-    public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
+    public generateReport(config: IConfigInternal, rulesets: Guideline[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
         let cloneReport : IBaselineReport= JSON.parse(JSON.stringify(storedReport.engineReport));
 
         let outReport = {
@@ -48,6 +49,6 @@ export class ACReporterHTML implements IReporter {
             report: genReport(outReport)
         };
     }
-    public async generateSummary(_config: IConfigInternal, rulesets: IRuleset[], _endReport: number, _summaryData: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(_config: IConfigInternal, rulesets: Guideline[], _endReport: number, _summaryData: CompressedReport[]): Promise<GenSummReturn> {
     }
 }

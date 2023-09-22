@@ -40,48 +40,27 @@ import {
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export enum eRuleConfidence {
-    PASS = "PASS",
-    FAIL = "FAIL",
-    POTENTIAL = "POTENTIAL",
-    MANUAL = "MANUAL"
-}
+export { eRuleConfidence } from "../../v4/api/IRule";
 
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export enum eRulePolicy {
-    VIOLATION = "VIOLATION",
-    RECOMMENDATION = "RECOMMENDATION",
-    INFORMATION = "INFORMATION"
-}
+export { eRulePolicy } from "../../v4/api/IRule";
 
 /**
  * @deprecated See ../../v4/api/IGuideline
  */
-export enum eToolkitLevel {
-    LEVEL_ONE = "1",
-    LEVEL_TWO = "2",
-    LEVEL_THREE = "3",
-    LEVEL_FOUR = "4"
-}
+export { eToolkitLevel } from "../../v4/api/IGuideline";
 
 /**
  * @deprecated See ../../v4/api/IGuideline::eGuidelineCategory
  */
-export enum eRuleCategory {
-    ACCESSIBILITY = "Accessibility",
-    DESIGN = "Design",
-    OTHER = "Other"
-}
+export { eGuidelineCategory as eRuleCategory } from "../../v4/api/IGuideline";
 
 /**
  * @deprecated See ../../v4/api/IGuideline::eGuidelineType
  */
-export enum eRulesetType {
-    DEFAULT = "default",
-    EXTENSION = "extension"
-}
+export { eGuidelineType as eRulesetType } from "../../v4/api/IGuideline";
 
 /**
  * @deprecated See ../../v4/api/IRule
