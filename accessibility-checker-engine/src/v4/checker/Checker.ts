@@ -14,13 +14,15 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IEngine, eRulePolicy, Report, eRuleCategory, eToolkitLevel, eRulesetType, Rule as RuleV2 } from "../../v2/api/IEngine";
-import { Rule as RuleV4 } from "../api/IRule";
+import { Issue, Rule as RuleV4, eRulePolicy } from "../api/IRule";
 import { Engine } from "../../v2/common/Engine";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { StyleMapper } from "../../v2/style/StyleMapper";
 import { a11yRulesets } from "../rulesets";
 import * as checkRulesV4 from "../rules";
+import { Guideline, eGuidelineCategory } from "../api/IGuideline";
+import { IEngine } from "../api/IEngine";
+import { Report } from "../api/IReport";
 
 let checkRules = [];
 let checkNls = {};
@@ -62,6 +64,7 @@ function _initialize() {
                             cp.rules = cp.rules || []
                             cp.rules.push({
                                 id: v4Rule.id,
+                                reasonCodes: rsSection.reasonCodes,
                                 level: rsSection.level,
                                 toolkitLevel: rsSection.toolkitLevel
                             })
@@ -74,31 +77,18 @@ function _initialize() {
 }
 _initialize();
 
-export type Ruleset = {
-    id: string,
-    name: string,
-    category: eRuleCategory,
-    description: string,
-    type?: eRulesetType,
-    checkpoints: Array<{
-        num: string,
-        // See https://github.com/act-rules/act-tools/blob/main/src/data/sc-urls.json
-        scId?: string,
-        // JCH: add name of checkpoint and summary description
-        name: string,
-        wcagLevel: string,
-        summary: string,
-        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
-    }>
-}
+/**
+ * @deprecated See ../api/IGuideline
+ */
+export type Ruleset = Guideline;
 
 export class Checker {
     engine: IEngine;
-    rulesets: Ruleset[] = [];
+    rulesets: Guideline[] = [];
     rulesetIds: string[] = [];
     rulesetRules: { [rsId: string]: string[] } = {};
     ruleLevels : { [ruleId: string]: { [rsId: string] : eRulePolicy }} = {};
-    ruleCategory : { [ruleId: string]: { [rsId: string] : eRuleCategory }} = {};
+    ruleCategory : { [ruleId: string]: { [rsId: string] : eGuidelineCategory }} = {};
 
     constructor() {
         let engine = this.engine = new Engine();
@@ -115,21 +105,57 @@ export class Checker {
         }
     }
 
-    addRuleset(rs: Ruleset) {
-        this.rulesets.push(rs);
-        this.rulesetIds.push(rs.id);
+    addGuideline(guideline: Guideline) {
+        this.rulesets.push(guideline);
+        this.rulesetIds.push(guideline.id);
         const ruleIds = [];
-        for (const cp of rs.checkpoints) {
+        for (const cp of guideline.checkpoints) {
             cp.rules = cp.rules || [];
             for (const rule of cp.rules) {
                 ruleIds.push(rule.id);
                 this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
-                this.ruleLevels[rule.id][rs.id] = rule.level;
+                this.ruleLevels[rule.id][guideline.id] = rule.level;
                 this.ruleCategory[rule.id] = this.ruleCategory[rule.id] || {};
-                this.ruleCategory[rule.id][rs.id] = rs.category;
+                this.ruleCategory[rule.id][guideline.id] = guideline.category;
             }
         }
-        this.rulesetRules[rs.id] = ruleIds;
+        this.rulesetRules[guideline.id] = ruleIds;
+    }
+
+    getGuidelines() {
+        return this.rulesets;
+    }
+
+    /**
+     * Get checkpoint information for an issue
+     * @param issue Issue to get info about
+     * @param guidelineIds (optional) List of guidelines to fetch information from
+     */
+    getCheckpointsForIssue(issue: Issue, guidelineIds?: string[]) {
+        let retVal = [];
+        for (const guideline of this.getGuidelines()) {
+            // If this isn't a guideline we care about, skip
+            if (guidelineIds && !guidelineIds.includes(guideline.id)) continue;
+            for (const checkpoint of guideline.checkpoints) {
+                if (checkpoint.rules && checkpoint.rules.filter(ruleInfo => (
+                    ruleInfo.id === issue.ruleId 
+                    && (!ruleInfo.reasonCodes || ruleInfo.reasonCodes.includes(issue.reasonId as string)))
+                )) {
+                    retVal.push({ 
+                        guidelineId: guideline.id,
+                        checkpoint: checkpoint
+                    })    
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     * @deprecated See addGuideline
+     */
+    addRuleset(rs: Ruleset) {
+        this.addGuideline(rs);
     }
 
     check(node: Node | Document, rsIds?: string | string[]) : Promise<Report> {
@@ -202,12 +228,12 @@ export class Checker {
         return retVal;
     }
 
-    getCategory(rsIds: string[], ruleId: string) : eRuleCategory {
+    getCategory(rsIds: string[], ruleId: string) : eGuidelineCategory {
         let rsInfo = this.ruleCategory[ruleId];
         let retVal = "";
 
         if (!(ruleId in this.ruleCategory)) {
-            return eRuleCategory.OTHER;
+            return eGuidelineCategory.OTHER;
         }
         if (!rsIds) {
             rsIds = this.rulesetIds;
@@ -217,6 +243,6 @@ export class Checker {
                 return rsInfo[rsId];
             }
         }
-        return eRuleCategory.OTHER;
+        return eGuidelineCategory.OTHER;
     }
 }

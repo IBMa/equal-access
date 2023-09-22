@@ -14,27 +14,17 @@
     limitations under the License.
  *****************************************************************************/
 
-export type Bounds = {
-    left: number,
-    top: number,
-    width: number,
-    height: number
-}
+import { Issue } from "./IRule"
 
-export type IMapResult = {
-    node: Node,
-    namespace: string,
-    role: string,
-    rolePath: string,
-    attributes: {
-        [key: string]: string
-    },
-    bounds?: Bounds
-}
-
-export interface IMapper {
-    reset(node: Node): void;
-    openScope(node: Node) : IMapResult[];
-    closeScope(node: Node) : IMapResult[];
-    getNamespace() : string;
+export type Report = {
+    results: Issue[],
+    numExecuted: number,
+    ruleTime: number,
+    // This may be undefined for a filtered report
+    totalTime?: number,
+    nls?: {
+        [ruleId: string]: {
+            [reasonId: string]: string
+        }
+    }
 }
