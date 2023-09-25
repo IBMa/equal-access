@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { Guideline, eToolkitLevel } from "../engine/IGuideline";
+import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline";
 import { CompressedReport } from "../engine/IReport";
 import { eRuleConfidence } from "../engine/IRule";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
@@ -23,8 +23,7 @@ import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {
     tkLevels: eToolkitLevel[]
-    wcagLevels: string[]
-    cps: string[]
+    cps: Checkpoint[]
 };
 
 function dropDupes<T>(arr: T[]): T[] {
@@ -56,22 +55,18 @@ export class ACReporterXLSX implements IReporter {
                 for (const rule of cp.rules) {
                     policyInfo[rule.id] = policyInfo[rule.id] || {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                     policyInfo[rule.id].tkLevels.push(rule.toolkitLevel);
-                    policyInfo[rule.id].wcagLevels.push(cp.wcagLevel);
-                    policyInfo[rule.id].cps.push(`${cp.num}`);
+                    policyInfo[rule.id].cps.push(cp);
                 }
             }
         }
         for (const ruleId in policyInfo) {
             policyInfo[ruleId].tkLevels = dropDupes(policyInfo[ruleId].tkLevels);
             policyInfo[ruleId].cps = dropDupes(policyInfo[ruleId].cps);
-            policyInfo[ruleId].wcagLevels = dropDupes(policyInfo[ruleId].wcagLevels);
             policyInfo[ruleId].tkLevels.sort();
             policyInfo[ruleId].cps.sort();
-            policyInfo[ruleId].wcagLevels.sort();
         }
 
         // const buffer: any = await workbook.xlsx.writeBuffer();
@@ -486,7 +481,6 @@ export class ACReporterXLSX implements IReporter {
                 if (!(issue.ruleId in policyInfo)) {
                     policyInfo[issue.ruleId] = {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                 }
@@ -702,19 +696,25 @@ export class ACReporterXLSX implements IReporter {
                 if (!(item.ruleId in policyInfo)) {
                     policyInfo[item.ruleId] = {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                 }
+                let polInfo = policyInfo[item.ruleId];
+                let cps = polInfo.cps.filter(cp => {
+                    let ruleInfo = cp.rules.find(ruleInfo => ruleInfo.id === item.ruleId && (!ruleInfo.reasonCodes || ruleInfo.reasonCodes.includes(""+item.reasonId)));
+                    return !!ruleInfo;
+                })
+                let wcagLevels = dropDupes(cps.map(cp => cp.wcagLevel));
+                wcagLevels.sort();
                 let row = [
                     storedScan.pageTitle,
                     storedScan.engineReport.summary.URL,
                     storedScan.label,
                     this.stringHash(item.ruleId + item.path.dom),
                     `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,
-                    policyInfo[item.ruleId].tkLevels.join(", "),
-                    policyInfo[item.ruleId].cps.join(", "),
-                    policyInfo[item.ruleId].wcagLevels.join(", "),
+                    polInfo.tkLevels.join(", "),
+                    cps.join(", "),
+                    wcagLevels.join(", "),
                     item.ruleId,
                     item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                     this.get_element(item.snippet),
