@@ -64,9 +64,7 @@ export class ACReporterXLSX implements IReporter {
         }
         for (const ruleId in policyInfo) {
             policyInfo[ruleId].tkLevels = dropDupes(policyInfo[ruleId].tkLevels);
-            policyInfo[ruleId].cps = dropDupes(policyInfo[ruleId].cps);
             policyInfo[ruleId].tkLevels.sort();
-            policyInfo[ruleId].cps.sort();
         }
 
         // const buffer: any = await workbook.xlsx.writeBuffer();
@@ -706,6 +704,8 @@ export class ACReporterXLSX implements IReporter {
                 })
                 let wcagLevels = dropDupes(cps.map(cp => cp.wcagLevel));
                 wcagLevels.sort();
+                let cpStrs = dropDupes(cps.map(cp => `${cp.num} ${cp.name}`));
+                cpStrs.sort();
                 let row = [
                     storedScan.pageTitle,
                     storedScan.engineReport.summary.URL,
@@ -713,7 +713,7 @@ export class ACReporterXLSX implements IReporter {
                     this.stringHash(item.ruleId + item.path.dom),
                     `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,
                     polInfo.tkLevels.join(", "),
-                    cps.join(", "),
+                    cpStrs.join("; "),
                     wcagLevels.join(", "),
                     item.ruleId,
                     item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
