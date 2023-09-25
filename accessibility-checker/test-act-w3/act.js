@@ -100,10 +100,10 @@ async function getAssertion(ruleId, aceRules, result) {
                         // Checkpoint refers to a rule mapping that has the ruleid
                         rule.id === ruleId
                         // and either maps to all reasons, or one the these reasons is selected
-                        && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code))
+                        && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code)))
                     ).length > 0)
                 // Replace with the scId
-                .map(cp => cp.scId)
+                )).map(cp => cp.scId)
         },
         "result": { "outcome": result }
     }
