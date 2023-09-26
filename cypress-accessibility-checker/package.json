@@ -30,10 +30,10 @@
     ],
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
-        "cypress": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9 || ^12"
+        "cypress": "^13.2.0"
     },
     "devDependencies": {
-        "cypress": "9.5.4",
+        "cypress": "^13.2.0",
         "eslint": "^8.4.1",
         "eslint-plugin-cypress": "^2.12.1",
         "http-server": "^14.1.1",
@@ -44,8 +44,8 @@
     "dependencies": {
         "@cypress/request": "^3.0.0",
         "deep-diff": "^1.0.2",
-        "js-yaml": "^4.1.0",
         "exceljs": "^4.3.0",
+        "js-yaml": "^4.1.0",
         "string-hash": "^1.1.3"
     }
 }
