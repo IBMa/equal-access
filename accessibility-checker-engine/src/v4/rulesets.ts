@@ -14,10 +14,9 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Ruleset } from "./checker/Checker";
-import { eRuleCategory, eRulesetType } from "../v2/api/IEngine";
 // This file comes from https://raw.githubusercontent.com/act-rules/act-tools/main/src/data/sc-urls.json
 import * as SCURLs from "./sc-urls.json"
+import { Guideline, eGuidelineCategory, eGuidelineType } from "./api/IGuideline";
 const SCs = [];
 for (const key in SCURLs) {
     SCs.push(SCURLs[key]);
@@ -76,7 +75,7 @@ const summaries = {
     "4.1.3": "In content implemented using markup languages, status messages can be programmatically determined through role or properties such that they can be presented to the user by assistive technologies without receiving focus.",
 }
 
-export let a11yRulesets: Ruleset[] = [
+export let a11yRulesets: Guideline[] = [
     // {
     //     id: "DEBUG",
     //     name: "DEBUG Rules",
@@ -92,9 +91,9 @@ export let a11yRulesets: Ruleset[] = [
     {
         id: "EXTENSIONS",
         name: "Extension Rules",
-        category: eRuleCategory.ACCESSIBILITY,
+        category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for enabling the browser extensions",
-        type: eRulesetType.EXTENSION,
+        type: eGuidelineType.EXTENSION,
         checkpoints: [{
             num: "1",
             name: "Extension CP 1",
@@ -105,7 +104,7 @@ export let a11yRulesets: Ruleset[] = [
     {
         id: "IBM_Accessibility",
         name: "IBM Accessibility",
-        category: eRuleCategory.ACCESSIBILITY,
+        category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.1 AA plus additional IBM checklist supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
@@ -121,7 +120,7 @@ export let a11yRulesets: Ruleset[] = [
     {
         id: "WCAG_2_1",
         name: "WCAG 2.1 (A, AA)",
-        category: eRuleCategory.ACCESSIBILITY,
+        category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.1 AA. This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
@@ -137,7 +136,7 @@ export let a11yRulesets: Ruleset[] = [
     {
         id: "WCAG_2_0",
         name: "WCAG 2.0 (A, AA)",
-        category: eRuleCategory.ACCESSIBILITY,
+        category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.0 AA. Referenced by US Section 508, but not the latest W3C recommendation.",
         // This ruleset has all 2.0 checkpoints that are A or AA
         checkpoints: SCs

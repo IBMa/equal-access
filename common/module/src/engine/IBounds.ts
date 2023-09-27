@@ -14,15 +14,9 @@
     limitations under the License.
  *****************************************************************************/
 
-let simNls = {
-    "LinkRule": ["[link]"],
-    "TextRule": ["{0}"],
-    "ImgRule": ["{0}"],
-    "Button": ["{0}"],
-    "ButtonEnd": ["[button]"],
-    "Headings": ["[Heading level {0}]"],
-    "Textbox": ["{0} {1}[edit]"],
-    "EndBlock": ["\n"],
-    "EndLink": ["\n"]
+export type Bounds = {
+    left: number,
+    top: number,
+    width: number,
+    height: number
 }
-export { simNls }

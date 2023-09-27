@@ -71,7 +71,10 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     children: []
                 };
                 for (const result of this.props.issues) {
-                    if (checkpoint.rules?.find(rule => rule.id === result.ruleId)) {
+                    if (checkpoint.rules?.find(rule => (
+                        rule.id === result.ruleId
+                        && (!rule.reasonCodes || rule.reasonCodes.includes(result.reasonId))
+                    ))) {
                         curGroup.children.push(result);
                     }
                 }

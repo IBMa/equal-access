@@ -16,12 +16,14 @@
 
 import { IAbstractAPI } from "../api-ext/IAbstractAPI";
 import { IConfigInternal, eRuleLevel } from "../config/IConfig";
-import { CompressedIssue, CompressedReport, IBaselineReport, IBaselineResult, IEngineReport, IRuleset, eRuleConfidence, eRulePolicy } from "../engine/IReport";
+import { CompressedIssue, CompressedReport, IBaselineReport, IBaselineResult, IEngineReport } from "../engine/IReport";
 import { ACReporterMetrics } from "./ACReporterMetrics";
 import { ACReporterCSV } from "./ACReporterCSV";
 import { ACReporterHTML } from "./ACReporterHTML";
 import { ACReporterJSON } from "./ACReporterJSON";
 import { ACReporterXLSX } from "./ACReporterXLSX";
+import { Guideline } from "../engine/IGuideline";
+import { eRuleConfidence, eRulePolicy } from "../engine/IRule";
 
 export interface IReporterStored {
     startScan: number,
@@ -38,8 +40,8 @@ export type GenSummReturn = {
 } | void
 export interface IReporter {
     name(): string
-    generateReport(config: IConfigInternal, rulesets: IRuleset[], reportData: IReporterStored): { reportPath: string, report: string } | void;
-    generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn>;
+    generateReport(config: IConfigInternal, rulesets: Guideline[], reportData: IReporterStored): { reportPath: string, report: string } | void;
+    generateSummary(config: IConfigInternal, rulesets: Guideline[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn>;
 };
 
 /**
@@ -48,7 +50,7 @@ export interface IReporter {
  */
 export class ReporterManager {
     private static config: IConfigInternal;
-    private static rulesets: IRuleset[];
+    private static rulesets: Guideline[];
     private static absAPI: IAbstractAPI;
     private static reporters: IReporter[] = [];
     private static reports: CompressedReport[] = []
@@ -137,7 +139,8 @@ export class ReporterManager {
                 snippet: issue[7],
                 help: issue[8],
                 ignored: issue[9],
-                level: ReporterManager.valueToLevel(issue[2])
+                level: ReporterManager.valueToLevel(issue[2]),
+                node: null
             }
             results.push(result);
             nls[result.ruleId] = nls[result.ruleId] || {};
@@ -182,7 +185,7 @@ export class ReporterManager {
         }
     }
 
-    public static initialize(config: IConfigInternal, absAPI: IAbstractAPI, rulesets: IRuleset[]) {
+    public static initialize(config: IConfigInternal, absAPI: IAbstractAPI, rulesets: Guideline[]) {
         ReporterManager.config = config;
         ReporterManager.absAPI = absAPI;
         ReporterManager.rulesets = rulesets;

@@ -558,6 +558,7 @@ export class DevtoolsController extends Controller {
             for (const result of devtoolsState?.lastReport.results) {
                 reportObj.report.results.push({
                     ruleId: result.ruleId,
+                    reasonId: result.reasonId,
                     path: result.path,
                     value: result.value,
                     message: result.message,

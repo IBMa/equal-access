@@ -14,12 +14,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Context } from "./v2/common/Context"
+export { Context } from "./v2/common/Context"
 // import { Simulator } from "./v2/simulator"
 import { Checker } from "./v4/checker/Checker"
-import { ARIAMapper } from "./v2/aria/ARIAMapper";
-import { Config } from "./v2/config/Config";
-import { DOMWalker } from "./v2/dom/DOMWalker";
+export { Checker }
+export { ARIAMapper } from "./v2/aria/ARIAMapper";
+export { Config } from "./v2/config/Config";
+export { DOMWalker } from "./v2/dom/DOMWalker";
 
 String.prototype.startsWith = String.prototype.startsWith || function (str) {
     return this.indexOf(str) === 0;
@@ -30,23 +31,8 @@ String.prototype.includes = String.prototype.includes || function (str) {
 Array.prototype.includes = Array.prototype.includes || function (str) {
     return this.indexOf(str) !== -1;
 }
-/*
-function simDemo(timeout?: number) {
-    if (!timeout) timeout = 0;
-    setTimeout(function() {
-        let sim = new Simulator();
-        let s = sim.renderItem(document.documentElement);
-        console.group("--- Item View ---");
-        console.log(s);
-        console.groupEnd();
-        console.group("--- Link View ---");
-        s = sim.renderLink(document.documentElement);
-        console.log(s);
-        console.groupEnd();
-    }, timeout);
-}
-*/
-function checkDemo(timeout?: number) {
+
+export function checkDemo(timeout?: number) {
     if (!timeout) timeout = 0;
     let checker = new Checker();
     setTimeout(function() {
@@ -103,5 +89,3 @@ function checkDemo(timeout?: number) {
         });
     }, timeout);
 }
-
-export { Checker, Context, ARIAMapper, checkDemo, Config/*, simDemo*/, DOMWalker };
