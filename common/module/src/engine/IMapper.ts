@@ -14,12 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Bounds as BoundsNew } from "./IBounds";
-
-/**
- * @deprecated See ./IBounds
- */
-export type Bounds = BoundsNew;
+import { Bounds } from "./IBounds";
 
 export type IMapResult = {
     node: Node,
@@ -29,7 +24,7 @@ export type IMapResult = {
     attributes: {
         [key: string]: string
     },
-    bounds?: BoundsNew
+    bounds?: Bounds
 }
 
 export interface IMapper {

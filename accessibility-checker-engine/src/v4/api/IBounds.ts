@@ -14,5 +14,9 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Simulator } from "./Simulator";
-export { Simulator }
+export type Bounds = {
+    left: number,
+    top: number,
+    width: number,
+    height: number
+}

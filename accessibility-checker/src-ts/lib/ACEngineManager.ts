@@ -2,10 +2,11 @@ import * as path from "path";
 import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
+import { IChecker } from "./common/engine/IChecker";
 
 let ace;
 
-let checker;
+let checker: IChecker;
 
 export class ACEngineManager {
     static customRulesets = []
@@ -311,17 +312,24 @@ export class ACEngineManager {
         if (!checker) {
             await ACEngineManager.loadEngineLocal();
         }
-        return ACEngineManager.customRulesets.concat(checker.rulesets).filter((function (rs) { return rs.id === rsId }))[0];
+        return ACEngineManager.customRulesets.concat(checker.getGuidelines()).filter((function (rs) { return rs.id === rsId }))[0];
     };
 
     static getRulesets = async function () {
         if (!checker) {
             await ACEngineManager.loadEngineLocal();
         }
-        return ACEngineManager.customRulesets.concat(checker.rulesets);
+        return ACEngineManager.customRulesets.concat(checker.getGuidelines());
     };
 
     static getChecker() {
+        return checker;
+    }
+
+    static async loadChecker() {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
         return checker;
     }
 
@@ -330,8 +338,8 @@ export class ACEngineManager {
             await ACEngineManager.loadEngineLocal();
         }
         let retVal = [];
-        for (const ruleId in checker.engine.ruleMap) {
-            retVal.push(checker.engine.ruleMap[ruleId]);
+        for (const ruleId in (checker as any).engine.ruleMap) {
+            retVal.push((checker as any).engine.ruleMap[ruleId]);
         }
         return retVal;
     }
@@ -339,8 +347,8 @@ export class ACEngineManager {
     static getRulesSync = function() {
         if (!checker) return null;
         let retVal = [];
-        for (const ruleId in checker.engine.ruleMap) {
-            retVal.push(checker.engine.ruleMap[ruleId]);
+        for (const ruleId in (checker as any).engine.ruleMap) {
+            retVal.push((checker as any).engine.ruleMap[ruleId]);
         }
         return retVal;
     }

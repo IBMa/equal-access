@@ -20,7 +20,9 @@ import { getComplianceHelper } from "./lib/ACHelper";
 import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker";
 import { ACConfigManager } from "./lib/common/config/ACConfigManager";
 import { IConfig, IConfigInternal } from "./lib/common/config/IConfig";
+import { Checkpoint } from "./lib/common/engine/IGuideline";
 import { IBaselineReport } from "./lib/common/engine/IReport";
+import { Issue } from "./lib/common/engine/IRule";
 import { BaselineManager } from "./lib/common/report/BaselineManager";
 import { ReporterManager } from "./lib/common/report/ReporterManager";
 

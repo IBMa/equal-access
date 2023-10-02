@@ -88,7 +88,7 @@ export default class MultiScanData {
                 stringHash(item.ruleId + item.path.dom),
                 valueMap[item.value[0]][item.value[1]],
                 parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
-                this.checkpoints_string(rule_checkpoints_map, item.ruleId),
+                this.checkpoints_string(rule_checkpoints_map, item.ruleId, item.reasonId),
                 this.wcag_string(rule_checkpoints_map, item.ruleId),
                 item.ruleId,
                 item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
@@ -104,13 +104,17 @@ export default class MultiScanData {
         return ret;
     }
 
-    public static checkpoints_string(rule_checkpoints_map: any, rule_id: string) {
+    public static checkpoints_string(rule_checkpoints_map: any, rule_id: string, reasonId: string) {
 
         let checkpoint_string = '';
 
         let checkpoint_array = rule_checkpoints_map.get(rule_id);
 
         for (let checkpoint of checkpoint_array) {
+            console.log(checkpoint);
+            let ruleInfo = checkpoint.rules.find((rule: any) => rule.id === rule_id);
+            console.log(ruleInfo);
+            if (ruleInfo.reasonCodes && !ruleInfo.reasonCodes.includes(reasonId)) continue;
             if (checkpoint_string.length > 1) {
                 checkpoint_string = checkpoint_string + '; ';
             }
@@ -175,14 +179,6 @@ export default class MultiScanData {
         let checkpoint_map = new Map();
 
         for (let checkpoint of checkpoints) {
-
-            let temp_checkpoint = {
-                name: checkpoint.name,
-                num: checkpoint.num,
-                summary: checkpoint.summary,
-                wcagLevel: checkpoint.wcagLevel
-            }
-
             let rules = checkpoint.rules;
 
             if (rules && rules.length > 0) {
@@ -190,10 +186,10 @@ export default class MultiScanData {
 
                     if (!checkpoint_map.get(rule.id)) {
 
-                        checkpoint_map.set(rule.id, [temp_checkpoint]);
+                        checkpoint_map.set(rule.id, [checkpoint]);
                     } else {
                         let checkpoint_array = checkpoint_map.get(rule.id);
-                        checkpoint_array.push(temp_checkpoint);
+                        checkpoint_array.push(checkpoint);
                         checkpoint_map.set(rule.id, checkpoint_array);
                     }
                 }

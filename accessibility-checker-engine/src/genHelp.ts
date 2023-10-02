@@ -14,11 +14,12 @@
 import { exec } from "child_process";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Rule as RuleV4 } from "./v4/api/IRule";
+import { Guideline } from "./v4/api/IGuideline";
 
 //requiring path and fs modules
 const path = require('path');
 const rulesV4 = require("./v4/rules");
-const rulesets = require("./v4/rulesets");
+const { a11yRulesets } = require("./v4/rulesets");
 
 function myExec(cmd: string) : Promise<string> {
     return new Promise((resolve, reject) => {
@@ -136,7 +137,7 @@ width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 
 
 function processRules() {
     let retVal = [];
-    for (const ruleset of rulesets.a11yRulesets) {
+    for (const ruleset of a11yRulesets as Guideline[]) {
         if (ruleset.type === "extension") continue;
         let rsInfo = {
             id: ruleset.id,
@@ -153,27 +154,33 @@ function processRules() {
                 rules: []
             }
             for (const ruleId in rulesV4) {
-                let includeRule = false;
-                let rule = rulesV4[ruleId];
+                let includeRuleCodes = new Set<string>();
+                let rule: RuleV4 = rulesV4[ruleId];
                 let rsLevel = "";
                 let toolkitLevel;
                 for (const rsInfo of rule.rulesets) {
                     if ((rsInfo.id === ruleset.id || rsInfo.id.includes(ruleset.id)) && (rsInfo.num === cp.num || rsInfo.num.includes(cp.num))) {
-                        includeRule = true;
+                        if (rsInfo.reasonCodes) {
+                            rsInfo.reasonCodes.forEach(code => includeRuleCodes.add(code));
+                        } else {
+                            for (const code in rule.messages["en-US"]) {
+                                includeRuleCodes.add(code);
+                            }
+                        }
                         rsLevel = rsInfo.level;
                         toolkitLevel = rsInfo.toolkitLevel;
                         break;
                     }
                 }
-                if (includeRule) {
+                if (includeRuleCodes.size > 0) {
                     let ruleInfo = {
                         level: rsLevel,
                         toolkitLevel: toolkitLevel,
                         rule: rule,
                         reasons: []
                     }
-                    for (const msgCode in rule.messages["en-US"]) {
-                        if (msgCode === "group") continue;
+                    includeRuleCodes.forEach((msgCode) => {
+                        if (msgCode === "group") return;
                         let re = new RegExp(`\\.Rule([^()) ]+)[ ()]+["']${msgCode}["']`);
                         let reMatch = re.exec(rule.run.toString());
                         if (reMatch && reMatch[1] !== "Pass") {
@@ -184,7 +191,7 @@ function processRules() {
                                 type: reMatch[1]
                             })
                         }
-                    }
+                    })
                     ruleInfo.reasons.sort((a,b) => {
                         if (a.type === b.type) return 0;
                         if (a.level === "Fail") return -1;

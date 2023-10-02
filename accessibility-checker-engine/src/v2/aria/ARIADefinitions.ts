@@ -18,7 +18,7 @@
 // all references to WAI-ARIA specification is the WAI-ARIA 1.2
 // https://www.w3.org/TR/wai-aria-1.2/
 
-export interface IDocumentConformanceRequirement {
+export type IDocumentConformanceRequirement = {
     implicitRole: string[],
     validRoles: string[],
     globalAriaAttributesValid: boolean,

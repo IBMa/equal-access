@@ -14,10 +14,8 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eGuidelineCategory, eGuidelineType } from "./IGuideline";
+import { eGuidelineCategory } from "./IGuideline";
 import { IMapResult } from "./IMapper";
-import { NlsMap as NlsMapNew, HelpMap as HelpMapNew, IEngine as IEngineNew } from "./IEngine";
-import { Report as ReportNew } from "./IReport";
 import { eToolkitLevel as eToolkitLevelNew } from "./IGuideline"
 import { Bounds } from "./IBounds";
 
@@ -165,43 +163,3 @@ export type Rule = {
 
     enabled?: boolean
 }
-
-/**
- * @deprecated
- */
-export type RuleDetails = Issue;
-
-/**
- * @deprecated See IEngine
- */
-export type Report = ReportNew;
-
-/**
- * @deprecated See IEngine
- */
-export type NlsMap = NlsMapNew;
-
-/**
- * @deprecated See IEngine
- */
-export type HelpMap = HelpMapNew;
-
-/**
- * @deprecated See ./IEngine
- */
-export type IEngine = IEngineNew;
-
-/**
- * @deprecated See ./IGuideline
- */
-export { eToolkitLevel } from "./IGuideline";
-
-/**
- * @deprecated See ./IGuideline:eGuidelineCategory
- */
-export { eGuidelineCategory as eRuleCategory } from "./IGuideline";
-
-/**
- * @deprecated See ./IGuideline:eGuidelineType
- */
-export { eGuidelineType as eRulesetType } from "./IGuideline";

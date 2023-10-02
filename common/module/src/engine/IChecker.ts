@@ -14,27 +14,16 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Bounds as BoundsNew } from "./IBounds";
+import { Checkpoint, Guideline } from "./IGuideline";
+import { IEngineReport } from "./IReport";
+import { Issue } from "./IRule";
 
-/**
- * @deprecated See ./IBounds
- */
-export type Bounds = BoundsNew;
+export interface IChecker {
+    addGuideline(guideline: Guideline);
 
-export type IMapResult = {
-    node: Node,
-    namespace: string,
-    role: string,
-    rolePath: string,
-    attributes: {
-        [key: string]: string
-    },
-    bounds?: BoundsNew
-}
+    getGuidelines() : Guideline[]
 
-export interface IMapper {
-    reset(node: Node): void;
-    openScope(node: Node) : IMapResult[];
-    closeScope(node: Node) : IMapResult[];
-    getNamespace() : string;
+    getGuidelineIds() : string[]
+
+    check(node: Node | Document, guidelineIds?: string | string[]) : Promise<IEngineReport>;
 }

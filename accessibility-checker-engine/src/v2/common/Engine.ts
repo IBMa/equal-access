@@ -14,14 +14,16 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IEngine, Report, Rule, RuleDetails, RuleResult, eRuleConfidence, RuleContext, NlsMap, HelpMap, RuleContextHierarchy } from "../api/IEngine";
 import { DOMWalker } from "../dom/DOMWalker";
 import { Context, PartInfo, AttrInfo } from "./Context";
 import { Config } from "../config/Config";
-import { IMapResult, IMapper } from "../api/IMapper";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 import { clearCaches } from "../../v4/util/CacheUtil";
+import { Issue, Rule, RuleContext, RuleContextHierarchy, RuleResult, eRuleConfidence } from "../../v4/api/IRule";
+import { HelpMap, IEngine, NlsMap } from "../../v4/api/IEngine";
+import { IMapper } from "../../v4/api/IMapper";
+import { Report } from "../../v4/api/IReport";
 
 class WrappedRule {
     ns: string;
@@ -74,7 +76,7 @@ class WrappedRule {
         return nodeSnippet;
     }
 
-    run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : RuleDetails[] {
+    run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : Issue[] {
         const startTime = new Date().getTime();
         let results: RuleResult | RuleResult[];
         try {
@@ -90,7 +92,7 @@ class WrappedRule {
         if (!(results instanceof Array)) {
             results = [results];
         }
-        let retVal : RuleDetails[] = [];
+        let retVal : Issue[] = [];
         for (const result of results) {
             const message = engine.getMessage(this.rule.id, result.reasonId, result.messageArgs);
             const path = {};
@@ -219,7 +221,7 @@ export class Engine implements IEngine {
                         if (!depMatch[dep]) fulfillsDependencies = false;
                     }
                     if (fulfillsDependencies) {
-                        let results : RuleDetails[] = [];
+                        let results : Issue[] = [];
                         try {
                             results = matchingRule.run(this, context, options, contextHierarchies);
                         } catch (err) {
@@ -525,13 +527,13 @@ export class Engine implements IEngine {
                         }
                     }
                 }
-                if (depRule.rule.prereqs && depRule.rule.prereqs.length > 0) {
-                    for (const depId of depRule.rule.prereqs) {
-                        if (!(depId in idToRule)) {
-                            allMatch = false;
-                        }                        
-                    }
-                }
+                // if (depRule.rule.prereqs && depRule.rule.prereqs.length > 0) {
+                //     for (const depId of depRule.rule.prereqs) {
+                //         if (!(depId in idToRule)) {
+                //             allMatch = false;
+                //         }                        
+                //     }
+                // }
                 if (allMatch) {
                     change = true;
                     retVal.push(depRule);
