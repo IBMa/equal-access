@@ -9,14 +9,9 @@
   "engines": {
     "node": ">=10"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./setupAfterEnv.js"
-    ],
-    "transformIgnorePatterns": ["ace-node\\.js"]
-  },
   "devDependencies": {
     "accessibility-checker": "^3.1.45",
-    "jest": "^26.0.1"
+    "jest": "^29.6.3",
+    "jest-environment-jsdom": "^29.6.3"
   }
 }

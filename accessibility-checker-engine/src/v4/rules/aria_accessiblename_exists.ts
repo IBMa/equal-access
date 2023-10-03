@@ -20,7 +20,7 @@ import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedB
 
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:link, aria:rowheader, aria:table, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
+    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -32,13 +32,13 @@ export let aria_accessiblename_exists: Rule = {
         "en-US": {
             "pass": "An accessible name is provided for the element",
             "fail_no_accessible_name": "Element <{0}> with \"{1}\" role has no accessible name",
-            "group": "Elements with cerain roles must have accessible names per ARIA specification"
+            "group": "Elements with certain roles should have accessible names"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["4.1.2"],
-        "level": eRulePolicy.VIOLATION,
+        "num": ["1.3.1"],
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
@@ -47,6 +47,12 @@ export let aria_accessiblename_exists: Rule = {
         
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+
+        // when table element with a caption as first child
+        if (ruleContext.nodeName.toLocaleLowerCase() === 'table' 
+            && ruleContext.firstElementChild && ruleContext.firstElementChild.nodeName.toLowerCase() === 'caption'
+            && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
+            return RulePass("pass");
 
         const invalidRoles = getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;

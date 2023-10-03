@@ -18,7 +18,7 @@
 // all references to WAI-ARIA specification is the WAI-ARIA 1.2
 // https://www.w3.org/TR/wai-aria-1.2/
 
-export interface IDocumentConformanceRequirement {
+export type IDocumentConformanceRequirement = {
     implicitRole: string[],
     validRoles: string[],
     globalAriaAttributesValid: boolean,
@@ -1584,7 +1584,7 @@ export class ARIADefinitions {
             container: null,
             props: ["aria-colcount", "aria-rowcount"],
             reqProps: null,
-            reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
+            reqChildren: ["row", "rowgroup", "caption"], // rowgroup and caption are not required, but it is allowed
             htmlEquiv: "table",
             roleType: "structure",
             nameRequired: true,

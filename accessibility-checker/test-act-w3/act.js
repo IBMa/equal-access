@@ -94,9 +94,16 @@ async function getAssertion(ruleId, aceRules, result) {
             "title": ruleTitle,
             "isPartOf": ruleset.checkpoints
                 // Get checkpoints that have this rule
-                .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
+                .filter(cp => (
+                    cp.rules 
+                    && cp.rules.filter(rule => (
+                        // Checkpoint refers to a rule mapping that has the ruleid
+                        rule.id === ruleId
+                        // and either maps to all reasons, or one the these reasons is selected
+                        && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code)))
+                    ).length > 0)
                 // Replace with the scId
-                .map(cp => cp.scId)
+                )).map(cp => cp.scId)
         },
         "result": { "outcome": result }
     }

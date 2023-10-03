@@ -17,3 +17,4 @@
 package-lock.json
 
 /src/lib/reporters/genReport.js
+/src/lib/common

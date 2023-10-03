@@ -14,27 +14,23 @@
     limitations under the License.
  *****************************************************************************/
 
-export type Bounds = {
-    left: number,
-    top: number,
-    width: number,
-    height: number
-}
+import { 
+    Bounds as BoundsNew, 
+    IMapResult as IMapResultNew,
+    IMapper as IMapperNew 
+}  from "../../v4/api/IMapper";
 
-export interface IMapResult {
-    node: Node,
-    namespace: string,
-    role: string,
-    rolePath: string,
-    attributes: {
-        [key: string]: string
-    },
-    bounds?: Bounds
-}
+/**
+ * @deprecated See ../../v4/api/IMapper
+ */
+export type Bounds = BoundsNew;
 
-export interface IMapper {
-    reset(node: Node): void;
-    openScope(node: Node) : IMapResult[];
-    closeScope(node: Node) : IMapResult[];
-    getNamespace() : string;
-}
+/**
+ * @deprecated See ../../v4/api/IMapper
+ */
+export type IMapResult = IMapResultNew;
+
+/**
+ * @deprecated See ../../v4/api/IMapper
+ */
+export type IMapper = IMapperNew;

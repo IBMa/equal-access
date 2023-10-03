@@ -35,8 +35,8 @@ Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) a
 - [jest](jest): Using a [Jest](https://www.npmjs.com/package/jest) test environment
 - [jest-selenium](jest-selenium): Using a [Jest](https://www.npmjs.com/package/jest) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
 - [mocha-selenium](mocha-selenium): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
-- [mocha-zombie](mocha-zombie): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Zombie](https://www.npmjs.com/package/zombie) browser simulator
 - [protractor](protractor): Using a [Protractor](https://www.npmjs.com/package/protractor) test environment
+- [webdriverio](webdriverio): Using a [Webdriverio](https://www.npmjs.com/package/webdriverio) test environment
 - and others
 
 ## Baselines
@@ -52,7 +52,6 @@ Review the examples of validating automated accessibility testing results agains
 
 - [jest baselines](jest/baselines)
 - [jest-selenium baselines](jest-selenium/baselines)
-- [mocha-zombie baselines](mocha-zombie/baselines)
 - and others
 
 ## Building and running locally

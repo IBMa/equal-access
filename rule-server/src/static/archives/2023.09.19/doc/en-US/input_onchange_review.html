@@ -1,0 +1,91 @@
+<html lang="en-US">
+<head>
+    <title>input_onchange_review - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Rule Passed","Potential_1":"Verify that any changes of context are explained in advance to the user","group":"Verify that any changes of context are explained in advance to the user"}};
+        RULE_ID = "input_onchange_review"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Changing the value of an input does not typically result in a [change of context](https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html#dfn-changes-of-context). If it does, this can be very disorientating to users who cannot see the changes. It is important that users are told in advance that the change of context will occur. For example, if filling in the final field of a form causes the form to be submitted, this should be made clear before the user interacts with it.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify that changing the input element's value does not cause a [change of context](https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html#dfn-changes-of-context);
+ * **Or**, verify that the Web page explains what will happen when values are selected for this input component. This explanation must appear earlier in the reading order than the component itself;
+ * **Or**, add an explanation as described;
+ * **Or**, trigger the change of context on an explicit user action.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 3.2.2 On Input](https://www.ibm.com/able/requirements/requirements/#3_2_2)
+* [WCAG technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People with low vision using screen magnification
+ * People with cognitive limitations
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

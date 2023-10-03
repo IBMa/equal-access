@@ -1,11 +1,12 @@
 import * as path from "path";
 import * as fs from "fs";
-import axios from "axios";
 import { ACConfigManager } from "./common/config/ACConfigManager";
+import { fetch_get_text } from "./common/api-ext/Fetch";
+import { IChecker } from "./common/engine/IChecker";
 
 let ace;
 
-let checker;
+let checker: IChecker;
 
 export class ACEngineManager {
     static customRulesets = []
@@ -18,8 +19,7 @@ export class ACEngineManager {
             ENGINE_LOAD_MODE = "INJECT";
         }
         if (ENGINE_LOAD_MODE === "INJECT" && !ACEngineManager.engineContent) {
-            const response = await axios.get(`${config.rulePack}/ace.js`);
-            ACEngineManager.engineContent = await response.data;
+            ACEngineManager.engineContent = await fetch_get_text(`${config.rulePack}/ace.js`);
         }
         if (ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
 
@@ -168,6 +168,71 @@ export class ACEngineManager {
             } catch (e) {
                 console.log(e);
             }
+        } else if (ACEngineManager.isWebDriverIO(content)) {
+
+            config.DEBUG && console.log("[INFO] aChecker.loadEngine detected WebDriverIO");
+            let page = content;
+            // ENGINE_LOAD_MODE = "REMOTE";
+            if (ENGINE_LOAD_MODE === "REMOTE") {
+                await page.executeAsync((scriptUrl, done) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            new Promise<void>((resolve, reject) => {
+                                let script = document.createElement('script');
+                                script.setAttribute('type', 'text/javascript');
+                                script.setAttribute('aChecker', 'ACE');
+                                script.setAttribute('src', scriptUrl);
+                                script.addEventListener('load', function () {
+                                    globalThis.ace_ibma = ace;
+                                    if ('undefined' !== typeof(ace)) {
+                                        ace = ace_backup_in_ibma;
+                                    }
+                                    resolve();
+                                });
+                                script.addEventListener('error', function (evt) {
+                                    reject(new Error(`Unable to load engine into ${document.location.href}. This can happen if the page server sets a Content-Security-Policy that prevents ${scriptUrl} from loading.`))
+                                });
+                                let heads = document.getElementsByTagName('head');
+                                if (heads.length > 0) { heads[0].appendChild(script); }
+                                else if (document.body) { document.body.appendChild(script); }
+                                else { Promise.reject("Invalid document"); }
+                            }).then(done)
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
+                    }
+                }, `${config.rulePack}/ace.js`);
+            } else if (ENGINE_LOAD_MODE === "INJECT") {
+                await page.executeAsync((engineContent, done) => {
+                    try {
+                        var ace_backup_in_ibma;
+                        if ('undefined' !== typeof(ace)) {
+                            if (!ace || !ace.Checker)
+                                ace_backup_in_ibma = ace;
+                            ace = null;
+                        }
+                        if ('undefined' === typeof (ace) || ace === null) {
+                            return new Promise<void>((resolve, reject) => {
+                                eval(engineContent);
+                                globalThis.ace_ibma = ace;
+                                if ('undefined' !== typeof(ace)) {
+                                    ace = ace_backup_in_ibma;
+                                }
+                                resolve();
+                            }).then(done);
+                        }
+                    } catch (e) {
+                        return Promise.reject(e);
+                    }
+                }, ACEngineManager.engineContent);
+            }
+            return ACEngineManager.loadEngineLocal();
         } else {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected local");
             if (globalThis.ace_ibma) {
@@ -186,8 +251,7 @@ export class ACEngineManager {
         if (!ACEngineManager.localLoadPromise) {
             ACEngineManager.localLoadPromise = new Promise<void>(async (resolve, reject) => {
                 let config = await ACConfigManager.getConfigUnsupported();
-                const response = await axios.get(`${config.rulePack}/ace-node.js`);
-                const data = await response.data;
+                const data = await fetch_get_text(`${config.rulePack}/ace-node.js`);
                 let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
@@ -233,6 +297,13 @@ export class ACEngineManager {
         return false;
     }
 
+    static isWebDriverIO(content) {
+        if (content && content.constructor) {
+            return content.constructor.toString().indexOf("Browser") !== -1;
+        }
+        return false;
+    }
+
     static addRuleset = (ruleset) => {
         ACEngineManager.customRulesets.push(ruleset);
     }
@@ -241,17 +312,24 @@ export class ACEngineManager {
         if (!checker) {
             await ACEngineManager.loadEngineLocal();
         }
-        return ACEngineManager.customRulesets.concat(checker.rulesets).filter((function (rs) { return rs.id === rsId }))[0];
+        return ACEngineManager.customRulesets.concat(checker.getGuidelines()).filter((function (rs) { return rs.id === rsId }))[0];
     };
 
     static getRulesets = async function () {
         if (!checker) {
             await ACEngineManager.loadEngineLocal();
         }
-        return ACEngineManager.customRulesets.concat(checker.rulesets);
+        return ACEngineManager.customRulesets.concat(checker.getGuidelines());
     };
 
     static getChecker() {
+        return checker;
+    }
+
+    static async loadChecker() {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
         return checker;
     }
 
@@ -260,8 +338,8 @@ export class ACEngineManager {
             await ACEngineManager.loadEngineLocal();
         }
         let retVal = [];
-        for (const ruleId in checker.engine.ruleMap) {
-            retVal.push(checker.engine.ruleMap[ruleId]);
+        for (const ruleId in (checker as any).engine.ruleMap) {
+            retVal.push((checker as any).engine.ruleMap[ruleId]);
         }
         return retVal;
     }
@@ -269,8 +347,8 @@ export class ACEngineManager {
     static getRulesSync = function() {
         if (!checker) return null;
         let retVal = [];
-        for (const ruleId in checker.engine.ruleMap) {
-            retVal.push(checker.engine.ruleMap[ruleId]);
+        for (const ruleId in (checker as any).engine.ruleMap) {
+            retVal.push((checker as any).engine.ruleMap[ruleId]);
         }
         return retVal;
     }

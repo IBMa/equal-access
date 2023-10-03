@@ -94,7 +94,7 @@ try {
                     .then(() => ACBrowserManager.close())
                     .then(done);
             } else {
-                done();
+                done && done();
             }
         });
     } else {
@@ -165,7 +165,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
             // Since this is a string, we consider this as either URL or local file
             // so build an iframe based on this and get the frame doc and then scan this.
             return ACBrowserManager.buildIframeAndGetDoc(content);
-        } else if (ACEngineManager.isSelenium(content) || ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
+        } else if (ACEngineManager.isSelenium(content) || ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content) || ACEngineManager.isWebDriverIO(content)) {
 
         }
         // Handle Array of nodes
@@ -211,6 +211,9 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     } else if (ACEngineManager.isPlaywright(parsed)) {
         Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
         return await getComplianceHelperPuppeteer(label, parsed, curPol);
+    } else if (ACEngineManager.isWebDriverIO(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
+        return await getComplianceHelperWebDriverIO(label, parsed, curPol);
     } else {
         Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Local");
         return await getComplianceHelperLocal(label, parsed, curPol);
@@ -282,6 +285,63 @@ cb(e);
     };
 }
 
+
+async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<ICheckerResult> {
+    try { 
+        const startScan = Date.now();
+        // NOTE: Engine should already be loaded
+        const page = parsed;
+        let report : IEngineReport = await page.executeAsync(({ policies, customRulesets }, done) => {
+            
+            let checker = new (window as any).ace_ibma.Checker();
+            customRulesets.forEach((rs) => checker.addRuleset(rs));
+            return new Promise<Report>((resolve, reject) => {
+                setTimeout(function () {
+                    checker.check(document, policies).then(function (report) {
+                        for (const result of report.results) {
+                            delete result.node;
+                        }
+                        resolve(report);
+                        done(report);
+                    })
+                }, 0)
+            })
+        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
+        if (curPol != null && !checkPolicy) {
+            const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.execute(() => (new (window as any).ace_ibma.Checker().rulesetIds)));
+            checkPolicy = true;
+            areValidPolicy(valPolicies, curPol);
+        }
+
+        let finalReport: IBaselineReport;
+
+        // If there is something to report...
+        if (report.results) {
+            let url = await page.execute(() => document.location.href);
+            let title = await page.execute(() => (document.location as any).title);
+            let origReport = JSON.parse(JSON.stringify(report));
+
+            if (Config.captureScreenshots) {
+                let image = await page.screenshot({
+                    fullPage: true,
+                    encoding: "base64"
+                });
+                origReport.screenshot = image;
+            }
+            finalReport = ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
+        }
+        page.aceBusy = false;
+
+        return {
+            "report": finalReport,
+            "puppeteer": parsed
+        };
+    } catch (err) {
+        console.error(err);
+        return Promise.reject(err);
+    };
+}
+
 async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICheckerResult> {
     try { 
         const startScan = Date.now();
@@ -341,7 +401,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
     try {
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
-        ACEngineManager.customRulesets.forEach((rs) => checker.addRuleset(rs));
+        ACEngineManager.customRulesets.forEach((rs) => checker.addGuideline(rs));
         let report : IEngineReport = await checker.check(parsed, Config.policies)
             .then(function (report) {
                 for (const result of report.results) {
@@ -351,7 +411,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             })
 
         if (curPol != null && !checkPolicy) {
-            let valPolicies = checker.rulesetIds;
+            let valPolicies = checker.getGuidelineIds();
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }

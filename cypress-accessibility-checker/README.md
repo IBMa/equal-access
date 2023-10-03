@@ -7,7 +7,7 @@ The plugin works by injecting the automated accessibility-checker testing into [
 ## Requirements
 
 * [Node Version 18](https://nodejs.org/en/download/)
-* Cypress 12
+* Cypress 13
 
 ## Installation
 
@@ -27,24 +27,31 @@ There are two setup steps you must complete in order for the Cypress tests to be
 
 ### 1. Add plugin
 
-In the `cypress/plugins/index.js` file located in your project, require the plugin and then register it with Cypress.
+In the Cypress config for your project, require the plugin and then register it with Cypress.
 
 ```js
-const aCheckerTasks = require('cypress-accessibility-checker/plugin');
-module.exports = (on, config) => {
-  on('task', {
-    accessibilityChecker: aCheckerTasks
-  });
-};
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+        on('task', {
+            accessibilityChecker: require('cypress-accessibility-checker/plugin')
+        });
+    }
+  }
+})
 ```
 
 ### 2. Import commands
 
-In the `cypress/support/index.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
+In the `cypress/support/e2e.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
 
 ```js
 import 'cypress-accessibility-checker';
 ```
+
+If you do not want to include `cypress-accessibility-checker` globally, you may instead add this import statement to every test file in which it is used.
 
 ## Usage
 

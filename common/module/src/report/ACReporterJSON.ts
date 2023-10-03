@@ -15,14 +15,15 @@
   *****************************************************************************/
 
 import { IConfigInternal } from "../config/IConfig";
-import { CompressedReport, IBaselineReport, IEngineReport, IRuleset } from "../engine/IReport";
+import { Guideline } from "../engine/IGuideline";
+import { CompressedReport, IBaselineReport, IEngineReport } from "../engine/IReport";
 import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
 
 export class ACReporterJSON implements IReporter {
     public name(): string {
         return "json";
     }
-    public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
+    public generateReport(config: IConfigInternal, rulesets: Guideline[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
         let outReport : IBaselineReport= JSON.parse(JSON.stringify(storedReport.engineReport));
         outReport.summary = ACReporterJSON.generateReportSummary(config, rulesets, storedReport);
         delete (outReport as any).totalTime;
@@ -36,7 +37,7 @@ export class ACReporterJSON implements IReporter {
         };
     }
 
-    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(config: IConfigInternal, _rulesets: Guideline[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
         if (compressedReports && compressedReports.length > 0) {
             let storedScan = ReporterManager.uncompressReport(compressedReports[0]);
             let retVal = {
@@ -74,14 +75,18 @@ export class ACReporterJSON implements IReporter {
                 }
             }
             let startScan = new Date(storedScan.engineReport.summary.startScan);
+            let reportFilename = `summary_${startScan.toISOString()}.json`;
+            if (config.outputFilenameTimestamp === false) {
+                reportFilename = `summary.json`;
+            }
             return {
-                summaryPath: `summary_${startScan.toISOString()}.json`,
+                summaryPath: reportFilename,
                 summary: JSON.stringify(retVal, null, 4)
             };
         }
     }
 
-    public static generateReportSummary(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored) {
+    public static generateReportSummary(config: IConfigInternal, rulesets: Guideline[], storedReport: IReporterStored) {
         let { engineReport, startScan, url } = storedReport;
         
         return {

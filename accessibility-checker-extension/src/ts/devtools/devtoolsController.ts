@@ -87,6 +87,7 @@ export class DevtoolsController extends Controller {
         return await this.hook("setStoredReportsMeta", updateMetaArr, async () => {
             if (updateMetaArr.length === 0) {
                 devtoolsState!.storedReports = [];
+                getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: 0});
                 this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
             } else {
                 let misMatch = false;
@@ -113,6 +114,7 @@ export class DevtoolsController extends Controller {
                 if (!misMatch) {
                     devtoolsState!.storedReports = newReports;
                     let data = await this.getStoredReportsMeta();
+                    getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: data.length});
                     this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, data);
                 }
             }
@@ -139,6 +141,7 @@ export class DevtoolsController extends Controller {
     public async clearStoredReports() : Promise<void> {
         return this.hook("clearStoredReports", null, async () => {
             devtoolsState!.storedReports = [];
+            getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: 0});
             this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
         });
     }
@@ -213,7 +216,9 @@ export class DevtoolsController extends Controller {
             return new Promise((resolve, _reject) => {
                 setTimeout(async () => {
                     this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
-                    this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
+                    let storedReportsMeta = await this.getStoredReportsMeta();
+                    getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: storedReportsMeta.length});
+                    this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, storedReportsMeta);
                     resolve();
                 }, 0)
             });
@@ -553,6 +558,7 @@ export class DevtoolsController extends Controller {
             for (const result of devtoolsState?.lastReport.results) {
                 reportObj.report.results.push({
                     ruleId: result.ruleId,
+                    reasonId: result.reasonId,
                     path: result.path,
                     value: result.value,
                     message: result.message,

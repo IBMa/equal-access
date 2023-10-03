@@ -68,6 +68,8 @@ jobs:
         working-directory: accessibility-checker
       - run: npm install
         working-directory: report-react
+      - run: npm install
+        working-directory: common/module
       - run: npm run build
         working-directory: accessibility-checker
       - run: gitactions/publish/achecker.sh
@@ -89,6 +91,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: report-react
+      - run: npm install
+        working-directory: common/module
       - run: npm install
         working-directory: karma-accessibility-checker
       - run: npm run build

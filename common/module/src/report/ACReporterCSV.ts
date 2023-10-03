@@ -15,7 +15,8 @@
   *****************************************************************************/
 
 import { IConfigInternal } from "../config/IConfig";
-import { CompressedReport, IRuleset } from "../engine/IReport";
+import { Guideline } from "../engine/IGuideline";
+import { CompressedReport } from "../engine/IReport";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
 
 export class ACReporterCSV implements IReporter {
@@ -35,7 +36,7 @@ export class ACReporterCSV implements IReporter {
     
     public generateReport(_reportData) : { reportPath: string, report: string } | void {
     }
-    public async generateSummary(config: IConfigInternal, _rulesets: IRuleset[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(config: IConfigInternal, _rulesets: Guideline[], endReport: number, compressedReports: CompressedReport[]): Promise<GenSummReturn> {
         let toCSV = ACReporterCSV.toCSV;
         let resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`;
         let startScan = 0;
@@ -50,8 +51,12 @@ export class ACReporterCSV implements IReporter {
             }
         }
         let startScanD = new Date(startScan);
+        let reportFilename = `results_${startScanD.toISOString()}.csv`;
+        if (config.outputFilenameTimestamp === false) {
+            reportFilename = `results.csv`;
+        }
         return {
-            summaryPath: `results_${startScanD.toISOString()}.csv`,
+            summaryPath: reportFilename,
             summary: resultStr
         }
     }

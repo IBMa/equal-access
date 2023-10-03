@@ -159,6 +159,9 @@ options for `karma-accessibility-checker`. This is the structure of the `.acheck
 # optional - Specify the rule archive
 # i.e. For march rule archive use ruleArchive: 2017MayDeploy
 # Default: latest
+# If "latest", will use the latest rule release
+# If "versioned" (supported in 3.1.61+), will use latest rule release at
+# the time this version of the tool was released 
 # Refer to README.md FAQ section below to get the rule archive ID.
 ruleArchive: latest
 
@@ -197,6 +200,10 @@ reportLevels:
 # Default: json
 outputFormat:
     - json
+
+# Optional - Should the timestamp be included in the filename of the reports?
+# Default: true
+outputFilenameTimestamp: true
 
 # Optional - Specify labels that you would like associated to your scan
 #

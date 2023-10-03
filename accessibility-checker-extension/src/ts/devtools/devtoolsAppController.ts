@@ -16,7 +16,7 @@
 
 import { getDevtoolsController } from "./devtoolsController";
 
-export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview";
+export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview" | "checkerViewAware";
 
 let devtoolsController = getDevtoolsController();
 
@@ -28,7 +28,7 @@ let devtoolsController = getDevtoolsController();
  * and direct messages should be sent to the DevtoolsController
  */
 export class DevtoolsAppController {
-    secondaryView: eSecondaryView = "splash";
+    secondaryView: eSecondaryView = "checkerViewAware";
     secondaryOpen: boolean = false;
     secondaryCloseQuerySelect: string = "";
     secondaryViewListeners: Array<(view: eSecondaryView) => void> = [];

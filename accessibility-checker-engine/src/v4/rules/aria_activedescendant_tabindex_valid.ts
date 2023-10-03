@@ -62,11 +62,16 @@ export let aria_activedescendant_tabindex_valid: Rule = {
             return null;
         }
 
-        //check if the attribute 'aria-activedescendant' is valid for the role of the element
-        
+        //ignore if the attribute 'aria-activedescendant' is blank
+        if (ruleContext.getAttribute("aria-activedescendant").trim().length === 0)
+            return;
 
         // If the tabindex attribute is provided then verify that it is 0 or -1
         passed = RPTUtil.isTabbable(ruleContext);
+
+        // pass if one of the children is tabbable. in this case, the tab will stop on the first tabbable element
+        if (!passed) 
+            passed = RPTUtil.getTabbableChildren(ruleContext) > 0;
 
         // Build array for node token
         let retToken1 = new Array();

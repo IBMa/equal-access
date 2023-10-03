@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Checks that the HTML autocomplete attribute has a correct value </title>
+	</head>
+	<body>   
+
+    <input type='text' aria-label='a text' autocomplete="one-time-code">
+    <input type='password' aria-label='password' autocomplete="one-time-code">
+    <input type='tel' aria-label='password' autocomplete="one-time-code">
+
+    <script>
+      UnitTest = {
+          ruleIds: ["input_autocomplete_valid"],
+          results: [
+          {
+            "ruleId": "input_autocomplete_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_autocomplete_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_autocomplete_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[3]",
+              "aria": "/document[1]/textbox[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+      }
+    </script>
+	</body>
+	</html>

@@ -14,182 +14,120 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IMapResult } from "./IMapper";
+import { 
+    Issue, 
+    RulePass as RulePassNew,
+    RuleFail as RuleFailNew,
+    RuleRender as RuleRenderNew,
+    RulePotential as RulePotentialNew,
+    RuleManual as RuleManualNew,
+    RuleResult as RuleResultNew,
+    RuleContextHierarchy as RuleContextHierarchyNew,
+    RuleContext as RuleContextNew,
+    Rule as RuleNew
+} from "../../v4/api/IRule";
 
-export enum eRuleConfidence {
-    PASS = "PASS",
-    FAIL = "FAIL",
-    POTENTIAL = "POTENTIAL",
-    MANUAL = "MANUAL"
-}
+import { 
+    NlsMap as NlsMapNew,
+    HelpMap as HelpMapNew,
+    IEngine as IEngineNew
+} from "../../v4/api/IEngine";
 
-export enum eRulePolicy {
-    VIOLATION = "VIOLATION",
-    RECOMMENDATION = "RECOMMENDATION",
-    INFORMATION = "INFORMATION"
-}
+import {
+    Report as ReportNew
+} from "../../v4/api/IReport";
 
-export enum eToolkitLevel {
-    LEVEL_ONE = "1",
-    LEVEL_TWO = "2",
-    LEVEL_THREE = "3",
-    LEVEL_FOUR = "4"
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export { eRuleConfidence } from "../../v4/api/IRule";
 
-export enum eRuleCategory {
-    ACCESSIBILITY = "Accessibility",
-    DESIGN = "Design",
-    OTHER = "Other"
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export { eRulePolicy } from "../../v4/api/IRule";
 
-export enum eRulesetType {
-    DEFAULT = "default",
-    EXTENSION = "extension"
-}
+/**
+ * @deprecated See ../../v4/api/IGuideline
+ */
+export { eToolkitLevel } from "../../v4/api/IGuideline";
 
-export function RulePass(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
-    if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
-    return {
-        value: [eRulePolicy.INFORMATION, eRuleConfidence.PASS],
-        reasonId: reasonId,
-        messageArgs: messageArgs || [],
-        apiArgs: apiArgs || []
-    }
-}
+/**
+ * @deprecated See ../../v4/api/IGuideline::eGuidelineCategory
+ */
+export { eGuidelineCategory as eRuleCategory } from "../../v4/api/IGuideline";
 
-export function RuleRender(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
-    if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
-    return {
-        value: [eRulePolicy.INFORMATION, eRuleConfidence.PASS],
-        reasonId: 0,
-        messageArgs: messageArgs || [],
-        apiArgs: apiArgs || []
-    }
-}
-export function RuleFail(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
-    if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
-    return {
-        value: [eRulePolicy.INFORMATION, eRuleConfidence.FAIL],
-        reasonId: reasonId,
-        messageArgs: messageArgs || [],
-        apiArgs: apiArgs || []
-    }
-}
+/**
+ * @deprecated See ../../v4/api/IGuideline::eGuidelineType
+ */
+export { eGuidelineType as eRulesetType } from "../../v4/api/IGuideline";
 
-export function RulePotential(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
-    if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
-    return {
-        value: [eRulePolicy.INFORMATION, eRuleConfidence.POTENTIAL],
-        reasonId: reasonId,
-        messageArgs: messageArgs || [],
-        apiArgs: apiArgs || []
-    }
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export let RulePass = RulePassNew;
 
-export function RuleManual(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
-    if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
-    return {
-        value: [eRulePolicy.INFORMATION, eRuleConfidence.MANUAL],
-        reasonId: reasonId,
-        messageArgs: messageArgs || [],
-        apiArgs: apiArgs || []
-    }
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export let RuleRender = RuleRenderNew;
 
-export type RuleResult = {
-    value: [eRulePolicy, eRuleConfidence],
-    reasonId?: number | string,
-    messageArgs?: string[],
-    apiArgs?: any[]
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export let RuleFail = RuleFailNew;
 
-export type RuleDetails = RuleResult & {
-    ruleId: string,
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export let RulePotential = RulePotentialNew;
 
-    node: Node,
-    // namespace: string,
-    category?: eRuleCategory,
-    path: { [ns: string] : string },
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export let RuleManual = RuleManualNew;
 
-    ruleTime: number,
-    message: string,
-    bounds?: {
-        top: number,
-        left: number,
-        width: number,
-        height: number
-    },
-    snippet: string
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export type RuleResult = RuleResultNew;
 
-export type RuleContextHierarchy = { [namespace: string] : IMapResult[] };
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export type RuleDetails = Issue
 
-export type RuleContext = {
-    [namespace: string] : IMapResult
-}
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export type RuleContextHierarchy = RuleContextHierarchyNew
 
-export type Rule = {
-    // Unique string identifier for this rule (should be human understandable)
-    // NLS codes and help sources will be based off of this id
-    id: string;
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export type RuleContext = RuleContextNew
 
-    // See src/v2/common/Context.ts for valid contexts
-    context: string;
+/**
+ * @deprecated See ../../v4/api/IRule
+ */
+export type Rule = RuleNew
 
-    // Array of rules that must pass to allow this validate to run - they must have the same context property
-    dependencies?: string[]
-    prereqs?: string[]
+/**
+ * @deprecated See ../../v4/api/IEngine
+ */
+export type Report = ReportNew;
 
-    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) => RuleResult | RuleResult[]
+/**
+ * @deprecated See ../../v4/api/IEngine
+ */
+export type NlsMap = NlsMapNew
 
-    enabled?: boolean
-}
+/**
+ * @deprecated See ../../v4/api/IEngine
+ */
+export type HelpMap = HelpMapNew
 
-
-export type Report = {
-    results: RuleDetails[],
-    numExecuted: number,
-    ruleTime: number,
-    // This may be undefined for a filtered report
-    totalTime?: number,
-    nls?: {
-        [ruleId: string]: {
-            [reasonId: string]: string
-        }
-    }
-}
-
-export type NlsMap = {
-    [key: string]: string[]
-}
-
-export type HelpMap = {
-    [key: string]: string[]
-}
-
-export interface IEngine {
-    /**
-     * Perform a scan on a document or subtree
-     * @param rulesetIds Array of ruleset ids of rulesets to use for this scan
-     * @param root Document or subtree to scan
-     */
-    run(root: Document | Node, options?: {}) : Promise<Report>;
-
-    enableRules(ruleIds: string[]);
-
-    getRule(ruleId: string): Rule;
-
-    getRulesIds() : string[];
-
-    getMessage(ruleId: string, ruleIdx: number | string, msgArgs?: string[]): string;
-
-    getHelp(ruleId: string, ruleIdx: number | string): string;
-
-    addRules(rule: Rule[]);
-
-    addRule(rule: Rule);
-
-    addNlsMap(map: NlsMap);
-
-    addHelpMap(map: NlsMap);
-}
+/**
+ * @deprecated See ../../v4/api/IEngine
+ */
+export type IEngine = IEngineNew

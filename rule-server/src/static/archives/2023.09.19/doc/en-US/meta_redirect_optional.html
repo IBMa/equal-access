@@ -1,0 +1,92 @@
+<html lang="en-US">
+<head>
+    <title>meta_redirect_optional - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Page should not automatically refresh without warning or option to turn it off or adjust the time limit","pass":"Rule Passed","fail":"Check page does not automatically refresh without warning or options","fail_longrefresh":"Check page does not automatically refresh without warning or options"}};
+        RULE_ID = "meta_redirect_optional"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Unexpected automatic page refresh within a short time interval without an option to turn it off or adjust the time limit, can disorient people and prevent them from reading or finishing the task at hand.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the time limit is required or essential, no action is needed;
+* **Or**, provide an option to allow the user to turn auto-refresh off;
+* **Or**, allow the user to adjust or extend the time limit and warn them before it expires;
+* **Or**, set the time limit longer than 20 hours.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.2.1 Timing Adjustable](https://www.ibm.com/able/requirements/requirements/#2_2_1)
+* [WCAG technique F41](https://www.w3.org/WAI/WCAG21/Techniques/failures/F41)
+
+### Who does this affect?
+
+* People who are deaf or hard of hearing using sign language interpreters
+* People with cognitive limitations
+* People with dexterity impairments
+* People with low vision
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

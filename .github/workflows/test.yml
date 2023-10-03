@@ -142,7 +142,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [18.x]
+          node-version: [14.x, 18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -307,7 +307,53 @@ jobs:
 
     - run: npx playwright test test/mocha/aChecker.Playwright/aChecker.Scans/*.mjs
       working-directory: accessibility-checker
-      
+
+###############################################################################
+# Node WebdriverIO test
+####
+  accessibility-checker-test-wdio:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    - name: Latest Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: latest
+      id: setup-chrome
+    - run: npm install
+      working-directory: rule-server
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
+
+    - run: npm install
+      working-directory: accessibility-checker-engine
+    - run: npm install
+      working-directory: report-react
+    - run: npm install
+      working-directory: accessibility-checker
+    - run: npm run build
+      working-directory: accessibility-checker
+
+    - run: npm install
+      working-directory: accessibility-checker/test/webdriverio
+    - run: npm run wdio
+      working-directory: accessibility-checker/test/webdriverio
+
 ###############################################################################
 # Karma Tests
 ####

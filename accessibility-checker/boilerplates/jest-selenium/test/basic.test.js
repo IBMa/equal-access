@@ -5,7 +5,7 @@ const chrome = require('selenium-webdriver/chrome');
 const By = webdriver.By;
 
 const path = require("path");
-const { loadSeleniumTestFile } = require("../../util/Util");
+const { loadSeleniumTestFile } = require("../util/Util");
 
 let browser;
 beforeAll(function() {
