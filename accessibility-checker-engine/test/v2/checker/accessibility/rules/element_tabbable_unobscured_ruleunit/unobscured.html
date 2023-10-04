@@ -31,10 +31,6 @@
       grid-column:8 / 10;
     }
 
-    /**footer {
-      grid-column:1 / -1;
-    }*/
-
     @media (max-width:70rem) {
       main {
        grid-column:1 / -1;
@@ -51,7 +47,7 @@
       height:11rem;
       inset-block-end:0;      
       margin-block-end:1rem;
-      padding:1rem;
+      padding:2rem;
       position:relative;
       width:calc(100vw - 1rem);
     }
@@ -60,14 +56,6 @@
       .fixed-position-banner {
         margin-block-end:0;
         position:fixed; 
-      }
-
-      .banner-open {
-        margin-block-end:14rem;
-      }
-
-      .banner-open a {
-        scroll-margin-block-end:15.5rem;
       }
     }
 
@@ -83,16 +71,12 @@
   </style>
 </head>
 <body>
-  <dialog class="fixed-position-banner">
-    <h2 tabindex="-1">Fixed-Position Banner</h2>
-    <div><button aria-label="close fixed-position banner" class="close-banner" type="button">
-      Close
-    </button></div>
-  </dialog>
-  <div class="wrapper">
-    <header>
-      <h1>Header Content</h1>
-    </header>
+  <div class="fixed-position-banner">
+    <h2>Fixed-Position Banner</h2>
+    <button style='margin-top:15px;' type="button"> <span style='color:red;'>Close</span></button>
+  </div>
+
+  <div class="wrapper">   
     <main>
       <h1>Main Content</h1>
       <div ></div>
@@ -118,7 +102,7 @@
         </a>
       </h2>
 
-      <h2 style="margin-top: 10rem;">
+      <h2 style="margin-top: 20rem;">
          <a
           href="https://seirdy.one/notes/2023/07/22/polygot-xhtml5/"
           itemprop="url"
@@ -128,6 +112,17 @@
         Test link 3
         </a>
       </h2>
+      <h2 style="margin-top: 10rem;">
+        <a
+         href="https://seirdy.one/notes/2023/07/22/polygot-xhtml5/"
+         itemprop="url"
+         class="u-url url"
+         rel="bookmark"
+       >
+       Test link 4
+       </a>
+     </h2>
+
     </main>
   
   <footer class="footer">
@@ -135,25 +130,7 @@
     <p><a href="https://example.com">Here's an example link in the footer</a>.</p>
   </footer>
 </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function(e){
-      const cookieBanner = document.querySelector(".fixed-position-banner");
-      const closeBannerBtn = document.querySelector(".close-banner");
-      const pageBody = document.querySelector("body");
-
-      cookieBanner.show();
-
-      if(cookieBanner.hasAttribute("open")){
-        pageBody.classList.add("banner-open");
-      }
-
-      closeBannerBtn.addEventListener("click", function(e){
-        cookieBanner.close();
-        pageBody.classList.remove("banner-open");
-      }, false);
-    });
-  </script>	
-
+  
 <script>
   UnitTest = {
       ruleIds: ["element_tabbable_unobscured"],

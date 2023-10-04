@@ -41,7 +41,7 @@ export let application_content_accessible: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         num: "2.1.1", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
