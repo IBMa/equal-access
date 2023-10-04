@@ -1,5 +1,6 @@
 @use '@carbon/styles/scss/type'as *;
 @use '@carbon/styles/scss/theme'as *;
+@use '@carbon/styles/scss/colors' as *;
 
 
 
@@ -83,7 +84,33 @@
     .inlineLoading {
         background-color: $layer;
     }
-    
+    .totalCountDisable {
+        @include type-style("label-02");
+        margin-top: 10px;
+        pointer-events: none;
+        
+        text-align: right;
+        .darkLink {
+            color: $text-disabled;
+            &:hover {
+                color: $gray-20;
+                cursor: not-allowed;
+            }
+        }    
+    }
+    .totalCountEnable {
+        @include type-style("label-02");
+        margin-top: 10px;
+        pointer-events: auto;
+        text-align: right;
+        .darkLink {
+            color: $text-primary;
+            &:hover {
+                color: $gray-80;
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 

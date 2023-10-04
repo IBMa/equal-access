@@ -16,6 +16,9 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import { 
+    // IIssue, 
+    IReport } from '../../interfaces/interfaces';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
@@ -30,13 +33,13 @@ import {
     OverflowMenuItem,
     Switch,
     Tooltip,
+    Link,
 } from "@carbon/react";
 import {
     Keyboard,
     KeyboardOff
 } from "@carbon/react/icons";
 import { ListenerType } from '../../messaging/controller';
-import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
@@ -46,6 +49,7 @@ let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
+    report: IReport | null,
     scanningState: ScanningState | "done"
     pageStatus: string
     viewState: ViewState
@@ -61,6 +65,7 @@ interface ScanSectionState {
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
+        report: null,
         scanningState: "idle",
         pageStatus: "complete",
         viewState: {
@@ -77,21 +82,23 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
     scanRef = React.createRef<HTMLButtonElement>()
 
-    reportListener : ListenerType<IReport> = async (report) => {
+    reportListener : ListenerType<IReport> = async (newReport) => {
         let self = this;
         let hasReportContent = false;
-        if (report && report.results.length > 0) {
+        if (newReport && newReport.results.length > 0) {
+            // after the scan we have report aka newReport
             hasReportContent = true;
         }
         devtoolsController.setFocusMode(false);
         // If a scan never started, we can't be done
         self.setState( { 
             scanningState: this.state.scanningState !== "idle"? "done" : "idle",
-            reportContent: hasReportContent
+            reportContent: hasReportContent,
+            report: newReport
         });
         setTimeout(() => {
             self.setState( { scanningState: "idle" });
-            if (report) {
+            if (newReport) {
                 getDevtoolsAppController().setSecondaryView("summary");
             }
             setTimeout(() => {
@@ -153,9 +160,16 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     async scan() {
         this.setState( { scannedOnce: true });
         await bgController.requestScan(getTabId()!);
+        // The scan is done here so can calc issues found and issue type counts
     }
 
     render() {
+        let totalCount = 0;
+        if (this.state.report) {
+            totalCount = this.state.report.counts.Violation +
+                         this.state.report.counts['Needs review'] +
+                         this.state.report.counts.Recommendation;
+        }
         let selectedElementStr = this.state.selectedElemPath;
         if (selectedElementStr) {
             selectedElementStr = selectedElementStr.split("/").pop()!;
@@ -292,12 +306,24 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 </Column>
             </Grid>
             <Grid>
-                <Column sm={4} md={8} lg={8}>
+                <Column sm={2} md={4} lg={4}>
                     <div className="storedCount">
                         {this.state.storeReports && "Storing: "}
                         {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
                         {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
                     </div>
+                </Column>
+                <Column sm={2} md={4} lg={4} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+                    <Link 
+                        id="totalIssuesCount" 
+                        className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                        aria-disabled={totalCount === 0}
+                        inline={true}
+                        onClick={() => {
+                            let appController = getDevtoolsAppController();
+                            getDevtoolsAppController().setSecondaryView("summary");
+                            appController.openSecondary("totalIssuesCount");
+                    }}>{totalCount} issues found</Link>
                 </Column>
             </Grid>
             {typeof document === 'undefined'

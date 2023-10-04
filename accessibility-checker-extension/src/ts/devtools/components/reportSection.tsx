@@ -54,15 +54,15 @@ interface ReportSectionProps {
 }
 
 interface ReportSectionState {
-    report: IReport | null
+    report: IReport | null,
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
         "Recommendation": boolean
     }
-    selectedPath: string | null
+    selectedPath: string | null,
     focusMode: boolean,
-    viewState?: ViewState
+    viewState?: ViewState,
     canScan: boolean
 }
 
