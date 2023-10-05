@@ -60,11 +60,17 @@ export let element_tabbable_unobscured: Rule = {
         if (!bounds) return null;
         
         //ignore if offscreen
-        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0) 
+        if (bounds['height'] === 0 || bounds['width'] === 0 ) 
             return null;
 
-        let passed = true;
-        var elems = document.querySelectorAll('body *:not(' + nodeName +' *, ' + nodeName +')');  
+        const ancestors = RPTUtil.getAncestorNames(ruleContext);
+        let ignoreList = nodeName +' *, ' + nodeName +', script';
+        if (ancestors) {
+            ancestors.forEach(ancestor=> {
+                ignoreList += ", " + ancestor;
+            });
+        }
+        var elems = ruleContext.ownerDocument.querySelectorAll('body *:not(' + ignoreList +')');  console.log("select target=" + nodeName + ", elems="+elems.length);
         if (!elems || elems.length == 0)
             return;
 
@@ -73,15 +79,17 @@ export let element_tabbable_unobscured: Rule = {
         elems.forEach(elem => {
             // Skip hidden
             if (VisUtil.isNodeVisible(elem)) {
-                const bnds = mapper.getBounds(elem);
-                if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.top + bnds.height >= bounds.left + bounds.width)
-                    violations.push(elem);
+                const bnds = mapper.getBounds(elem); console.log("target=" + nodeName + ", current=" + elem.nodeName + ", bounds=" + JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                if (bnds.height !== 0 && bnds.width !== 0  
+                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
+                    && bnds.left + bnds.height >= bounds.left + bounds.width) {
+                    violations.push(elem); console.log("hit target=" + nodeName + ", current=" + elem.nodeName + ", bounds=" + JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    }
             }    
         });
         
         if (violations.length > 0)
-            return RulePotential("potential_visible", []);
+            return RulePotential("potential_obscured", []);
             
         return RulePass("pass");
     }
