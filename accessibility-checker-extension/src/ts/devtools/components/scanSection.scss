@@ -113,4 +113,54 @@
     }
 }
 
+.scanFilterSection {
+    margin: 0rem;
+    padding: .125rem 0rem .25rem 0rem;
+
+    .countCol {
+        @media (max-width:400px) {
+            position: absolute;
+            top: 1.5rem;
+            left: 0rem;
+        }
+        white-space: nowrap;
+    }
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
+    
+    .reportSecCounts {
+        font-weight: 600;
+    }
+    .summaryBarLabels {
+        @include type-style("label-02");
+        font-weight: 600;
+        display:none;
+        @media (min-width:780px) {
+            display:inline;
+        }
+        @media (min-width:1056px) {
+            display:none;
+        }
+        @media (min-width:1500px) {
+            display:inline;
+        }
+    }
+    .countCol {
+        @media (max-width:400px) {
+            position: absolute;
+            top: 1.5rem;
+            left: 0rem;
+        }
+        white-space: nowrap;
+    }
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
+    
+    .reportSecCounts {
+        font-weight: 600;
+    }
+}
+
 

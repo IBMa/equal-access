@@ -16,9 +16,9 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { 
-    // IIssue, 
-    IReport } from '../../interfaces/interfaces';
+import { IIssue, IReport } from '../../interfaces/interfaces';
+import { UtilIssue } from '../../util/UtilIssue';
+import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
@@ -43,13 +43,18 @@ import { ListenerType } from '../../messaging/controller';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
-// import { BrowserDetection } from '../../util/browserDetection';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
     report: IReport | null,
+    selectedPath: string | null,
+    checked: {
+        "Violation": boolean,
+        "Needs review": boolean,
+        "Recommendation": boolean
+    }
     scanningState: ScanningState | "done"
     pageStatus: string
     viewState: ViewState
@@ -63,9 +68,36 @@ interface ScanSectionState {
     canScan: boolean
 }
 
+type eLevel = "Violation" | "Needs review" | "Recommendation";
+
+type CountType = {
+    "Violation": {
+        focused: number,
+        total: number
+    },
+    "Needs review": {
+        focused: number,
+        total: number
+    },
+    "Recommendation": {
+        focused: number,
+        total: number
+    },
+    "Pass": {
+        focused: number,
+        total: number
+    }
+}
+
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
         report: null,
+        selectedPath: null,
+        checked: {
+            "Violation": true,
+            "Needs review": true,
+            "Recommendation": true
+        },
         scanningState: "idle",
         pageStatus: "complete",
         viewState: {
@@ -80,7 +112,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         confirmClearStored: false,
         canScan: true
     }
-    scanRef = React.createRef<HTMLButtonElement>()
+    scanRef = React.createRef<HTMLButtonElement>();
 
     reportListener : ListenerType<IReport> = async (newReport) => {
         let self = this;
@@ -89,7 +121,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             // after the scan we have report aka newReport
             hasReportContent = true;
         }
-        devtoolsController.setFocusMode(false);
         // If a scan never started, we can't be done
         self.setState( { 
             scanningState: this.state.scanningState !== "idle"? "done" : "idle",
@@ -126,9 +157,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 storedReportsCount: newState.length
             });
         })
-        devtoolsController.addSelectedElementPathListener(async (newPath) => {
-            this.setState( { selectedElemPath: newPath });
-        })
+        devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
+        let path = await devtoolsController.getSelectedElementPath();
+        this.setPath(path!);
         devtoolsController.addFocusModeListener(async (newValue) => {
             this.setState({ focusMode: newValue })
         })
@@ -161,15 +192,88 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         this.setState( { scannedOnce: true });
         await bgController.requestScan(getTabId()!);
         // The scan is done here so can calc issues found and issue type counts
+        // see newReport in reportListener
     }
 
+    // START for issue type numbers especially for focussed view
+    selectedElementListener: ListenerType<string> = async (path) => {
+        this.setPath(path);
+    }
+
+    setPath(path: string) {
+        this.setState({ selectedPath: path });
+    }
+
+    initCount() {
+        return {
+            "Violation": {
+                focused: 0,
+                total: 0
+            },
+            "Needs review": {
+                focused: 0,
+                total: 0
+            },
+            "Recommendation": {
+                focused: 0,
+                total: 0
+            },
+            "Pass": {
+                focused: 0,
+                total: 0
+            }
+        }
+    }
+
+    getCounts(issues: IIssue[] | null) : CountType {
+        let counts = this.initCount();
+        if (issues) {
+            for (const issue of issues) {
+                let sing = UtilIssue.valueToStringSingular(issue.value);
+                ++counts[sing as eLevel].total;
+                if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
+                    ++counts[sing as eLevel].focused;
+                }
+            }
+        }
+        return counts;
+    }
+
+    // END for issue type numbers especially for focussed view
+
     render() {
+        let reportIssues : IIssue[] | null = null;
+        let filterCounts: CountType = this.initCount();
+        let quickTotalCount = 0;
         let totalCount = 0;
         if (this.state.report) {
-            totalCount = this.state.report.counts.Violation +
+            quickTotalCount = this.state.report.counts.Violation +
                          this.state.report.counts['Needs review'] +
                          this.state.report.counts.Recommendation;
+            reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;           
         }
+        if (reportIssues) {
+            filterCounts = this.getCounts(reportIssues);
+            console.log("filterCounts after getCounts = ", filterCounts);
+            reportIssues = reportIssues.filter((issue: IIssue) => {
+                let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
+                    && (!this.state.focusMode
+                        || !this.state.selectedPath
+                        || issue.path.dom.startsWith(this.state.selectedPath)
+                    )
+                );
+                return retVal;
+            });
+        }
+
+        {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
+            totalCount += filterCounts[levelStr as eLevel].total;
+            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
+            console.log("Icon: ", UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon"));
+            console.log("countFocused = ", filterCounts[levelStr as eLevel].focused);
+            console.log("countRegular = ", filterCounts[levelStr as eLevel].total);
+        })}
+
         let selectedElementStr = this.state.selectedElemPath;
         if (selectedElementStr) {
             selectedElementStr = selectedElementStr.split("/").pop()!;
@@ -314,6 +418,31 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     </div>
                 </Column>
                 <Column sm={2} md={4} lg={4} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+                    {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
+                        totalCount += filterCounts[levelStr as eLevel].total;
+                        return <>
+                            <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
+                                <Tooltip
+                                    align="right"
+                                    label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
+                                >
+                                    <span className="countCol">
+                                            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
+                                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                                {reportIssues && <>
+                                                    {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
+                                                        filterCounts[levelStr as eLevel].total
+                                                    : <>
+                                                        {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
+                                                    </>}
+                                                </>}
+                                            </span>
+                                            <span style={{ marginRight: "18px" }}></span>
+                                        </span>
+                                </Tooltip>
+                            </span>
+                        </>
+                    })}
                     <Link 
                         id="totalIssuesCount" 
                         className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
@@ -323,7 +452,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             let appController = getDevtoolsAppController();
                             getDevtoolsAppController().setSecondaryView("summary");
                             appController.openSecondary("totalIssuesCount");
-                    }}>{totalCount} issues found</Link>
+                    }}>{quickTotalCount} issues found</Link>
                 </Column>
             </Grid>
             {typeof document === 'undefined'

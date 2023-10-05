@@ -148,6 +148,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             canScan: (await bgController.getTabInfo(getTabId()!)).canScan
         });
     }
+
     selectedElementListener: ListenerType<string> = async (path) => {
         this.setPath(path);
     }
@@ -208,7 +209,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 tabCount = tabSet.size;
                 missingTabCount = Array.from(allSet).filter(key => !tabSet.has(key)).length;
             } else {
-                // console.log("Focus Mode:",this.state.focusMode)
                 reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;
             }
         }
