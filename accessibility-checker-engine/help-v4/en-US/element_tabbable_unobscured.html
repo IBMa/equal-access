@@ -44,45 +44,22 @@
 
 ### Why is this important?
 
-Keyboard users navigate through the operable elements on the page by pressing the Tab key.
-All sighted keyboard users (and those relying on the keyboard interface, such as voice-command and switch users) need to be able to see the element that has keyboard focus,
-otherwise, they have no context about where they are or what to do.
+When users cannot see the item with focus because it is covered (hidden) by another element, they may not know how to proceed, or may even think the system has become unresponsive.
+The objective is to ensure that the element receiving focus is always partially visible to the user unless it is covered by the user’s action.
+Knowing the current element with focus is critical for sighted people who rely on a keyboard (or technology that operates through the keyboard interface, such as a switch or voice input).
+The element with focus signals the interaction point on the page.
 
-An off-screen or invisible (zero-sized or clipped) keyboard-focusable element has been found.
-In some cases, the Checker can't detect where JavaScript is repositioning or resizing elements when they have keyboard focus.
-This requires some human review to confirm that the element should receive keyboard focus, and if so, doesn't remain off-screen or impossible to see when it does get keyboard focus.
-If it should not be operable with the keyboard and is not removed from the tab order,
-people using a screen reader will "see" the element even though it's invisible, which will cause confusion. 
-
-Normally, keyboard-focusable (tabbable) elements should be visible, 
-but there are situations where it is acceptable to "hide" and then reveal the element when it receives keyboard focus,
-as in the '**Skip to main content**' example below. 
+However, content opened or controlled by the _user’s action_ may obscure the element receiving focus.
+If the _user_ can uncover (re-reveal) the focused element without advancing the keyboard focus, such as by scrolling or closing the content that the _user_ opened, then the focused element is not considered obscured (covered) due to author-created content.
+Where content can be repositioned by the _user’s action_, then only the initial positions of user-movable content are considered for testing and conformance.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-- If users _should not_ be able to interact with this element using the keyboard, set the `tabindex="-1"` attribute to remove the element from the tab order
-- **Or**, if users _should_ be able to interact with this element using the keyboard, use the Tab key to confirm it is visible on screen when it has keyboard focus
-- **And**, if the interactive element is off-screen when it receives keyboard focus, use the pseudo class `:focus` or adjust the position style (see example)
-- **And**, ensure the focus is visible as specified in [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
-
-
-Example: this "**_Skip to main content_**" tabbable element uses CSS positioning to ensure it is visible when the element has keyboard focus:
-
-```
-    <style>
-    .skip {
-        position: absolute; background-color: white; padding: 0.5rem;
-        left: -1000px;
-    }
-    .skip:focus {
-        left: 1rem;
-    }
-    </style>
-    <a class="skip" href="#main">Skip to main content</a>   
-```
+- Confirm that the element that had been originally covered by the _author_, but that now has focus, is now visible, otherwise adjust the design to allow elements with focus to be visible
+- **Or**, if the element was originally visible, but is now covered due to the _user’s action_, confirm that the _user_ can uncover (re-reveal) the element with focus without moving the focus away from the element such as by scrolling or escaping to close the content that is covering the element with focus
 
 </script></mark-down>
 <!-- End main panel -->
@@ -95,19 +72,21 @@ Example: this "**_Skip to main content_**" tabbable element uses CSS positioning
 
 ### About this requirement
 
-* [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
-* [Unit test - check tab order](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#check-tab-order)
-* [Unit test - confirm component keyboard interaction](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#confirm-component-keyboard-interaction) 
+- [WCAG 2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum)
+- [WCAG technique C43: Using CSS margin and scroll-margin to un-obscure content](https://www.w3.org/WAI/WCAG22/Techniques/css/C43) 
+- [Common failure F110: Obscured due to a sticky footer or header completely hiding focused elements](https://www.w3.org/WAI/WCAG22/Techniques/failures/F110)
 
 ### Who does this affect?
 
-* People who rely on keyboard control
-* People with dexterity impairment using voice control or a keyboard-like switch device
-* People with low vision who use screen magnification with keyboard control
-* People using a screen reader, including blind, low vision and neurodivergent people
-* Neurodivergent people who use the keyboard
-* Older adults who use the keyboard
-
+- People with low vision who use screen magnification
+- People who physically cannot use a pointing device
+- People using a keyboard and alternate keyboards or input devices that act as keyboard emulators like speech input software and on-screen keyboards
+- People with dexterity impairment using a keyboard-like switch device
+- People with dexterity impairment using voice control
+- People with tremors or other movement disorders using a keyboard-like device
+- People with memory limitations in executive processes benefit by being able to discover where the focus is located
+- Many older adults
+    
 </script></mark-down>
 <!-- End side panel -->
             </div>
