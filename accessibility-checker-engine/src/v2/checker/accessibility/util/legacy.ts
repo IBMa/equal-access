@@ -1378,7 +1378,8 @@ export class RPTUtil {
         let ancestors = [];
         let walkNode = DOMWalker.parentNode(element);
         while (walkNode !== null) {
-            ancestors.push(walkNode.nodeName.toLowerCase());
+            if (walkNode.nodeType === 1)
+                ancestors.push(walkNode.nodeName.toLowerCase());
             walkNode = DOMWalker.parentNode(walkNode);
         }
         return ancestors;

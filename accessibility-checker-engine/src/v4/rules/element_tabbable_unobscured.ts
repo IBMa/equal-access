@@ -63,14 +63,32 @@ export let element_tabbable_unobscured: Rule = {
         if (bounds['height'] === 0 || bounds['width'] === 0 ) 
             return null;
 
+        var doc = ruleContext.ownerDocument;
+        if (!doc) {
+            return null;
+        }
+        var win = doc.defaultView;
+        if (!win) {
+            return null;
+        }
+
+        var cStyle = win.getComputedStyle(ruleContext);
+        if (cStyle === null) 
+            return null;
+        
+        let zindex = cStyle.zIndex;   
+        if (!zindex || zindex === 'auto')
+            zindex = "0";
+
         const ancestors = RPTUtil.getAncestorNames(ruleContext);
         let ignoreList = nodeName +' *, ' + nodeName +', script';
         if (ancestors) {
             ancestors.forEach(ancestor=> {
-                ignoreList += ", " + ancestor;
+                if (!["html", "body"].includes(ancestor))
+                    ignoreList += ", " + ancestor;
             });
         }
-        var elems = ruleContext.ownerDocument.querySelectorAll('body *:not(' + ignoreList +')');  console.log("select target=" + nodeName + ", elems="+elems.length);
+        var elems = doc.querySelectorAll('body *:not(' + ignoreList +')');
         if (!elems || elems.length == 0)
             return;
 
@@ -79,12 +97,18 @@ export let element_tabbable_unobscured: Rule = {
         elems.forEach(elem => {
             // Skip hidden
             if (VisUtil.isNodeVisible(elem)) {
-                const bnds = mapper.getBounds(elem); console.log("target=" + nodeName + ", current=" + elem.nodeName + ", bounds=" + JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                const bnds = mapper.getBounds(elem);
+                var zStyle = win.getComputedStyle(elem);
+                let z_index = "0";
+                if (zStyle !== null) {
+                    z_index = zStyle.zIndex;   
+                    if (!z_index || z_index === 'auto')
+                        z_index = "0";
+                }
                 if (bnds.height !== 0 && bnds.width !== 0  
                     && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width) {
-                    violations.push(elem); console.log("hit target=" + nodeName + ", current=" + elem.nodeName + ", bounds=" + JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
-                    }
+                    && bnds.left + bnds.height >= bounds.left + bounds.width && parseInt(zindex) <= parseInt(z_index))
+                    violations.push(elem); 
             }    
         });
         
