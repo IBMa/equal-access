@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "declaration": true,
         "allowJs": false,
         "target": "ES5",
         "removeComments": false,
