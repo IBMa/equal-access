@@ -16,6 +16,7 @@ import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePote
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let element_tabbable_unobscured: Rule = {
     id: "element_tabbable_unobscured",
@@ -48,7 +49,7 @@ export let element_tabbable_unobscured: Rule = {
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
-            
+          
         //ignore certain elements
         if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
             || nodeName === "body" || nodeName === "html" )
@@ -71,7 +72,7 @@ export let element_tabbable_unobscured: Rule = {
         if (!win) {
             return null;
         }
-
+        
         var cStyle = win.getComputedStyle(ruleContext);
         if (cStyle === null) 
             return null;
@@ -79,34 +80,25 @@ export let element_tabbable_unobscured: Rule = {
         let zindex = cStyle.zIndex;   
         if (!zindex || zindex === 'auto')
             zindex = "0";
-
-        const ancestors = RPTUtil.getAncestorNames(ruleContext);
-        let ignoreList = nodeName +' *, ' + nodeName +', script';
-        if (ancestors) {
-            ancestors.forEach(ancestor=> {
-                if (!["html", "body"].includes(ancestor))
-                    ignoreList += ", " + ancestor;
-            });
-        }
-        var elems = doc.querySelectorAll('body *:not(' + ignoreList +')');
+        
+        var elems = doc.querySelectorAll('body *:not(script)');
         if (!elems || elems.length == 0)
             return;
-
+        console.log("node="+nodeName +", id=" + ruleContext.getAttribute("id") +", bounds=" + JSON.stringify(bounds)+", zindex="+zindex); 
         const mapper : DOMMapper = new DOMMapper();
         let violations = []; 
         elems.forEach(elem => {
-            // Skip hidden
-            if (VisUtil.isNodeVisible(elem)) {
+            if (VisUtil.isNodeVisible(elem) && !ruleContext.contains(elem) && !elem.contains(ruleContext)) {
                 const bnds = mapper.getBounds(elem);
-                var zStyle = win.getComputedStyle(elem);
+                var zStyle = win.getComputedStyle(elem); 
                 let z_index;
                 if (zStyle === null) 
                     z_index = 0;
                 else {
-                    z_index = zStyle.zIndex;   
-                    if (!z_index || !Number.isInteger(z_index))
+                    z_index = zStyle.zIndex;
+                    if (!z_index || isNaN(z_index))
                         z_index = "0";
-                }
+                } console.log("element="+elem.nodeName +", id=" + elem.getAttribute("id") +", bnds=" + JSON.stringify(bnds)+", z_index="+z_index);
                 if (bnds.height !== 0 && bnds.width !== 0  
                     && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
                     && bnds.left + bnds.height >= bounds.left + bounds.width && parseInt(zindex) <= parseInt(z_index))

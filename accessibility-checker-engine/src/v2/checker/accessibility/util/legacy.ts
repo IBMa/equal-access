@@ -1369,22 +1369,6 @@ export class RPTUtil {
         return walkNode;
     }
 
-    /**
-     * return all the ancestor element names of the given element
-     * @param element
-     */
-    public static getAncestorNames(element) {
-        if (!element) return null;
-        let ancestors = [];
-        let walkNode = DOMWalker.parentNode(element);
-        while (walkNode !== null) {
-            if (walkNode.nodeType === 1)
-                ancestors.push(walkNode.nodeName.toLowerCase());
-            walkNode = DOMWalker.parentNode(walkNode);
-        }
-        return ancestors;
-    }
-
     // return true if element1 and element2 are siblings
     public static isSibling(element1, element2) {
         if (element1 && element2) {
