@@ -107,7 +107,7 @@ export let element_tabbable_unobscured: Rule = {
                 }
                 if (bnds.height !== 0 && bnds.width !== 0  
                     && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width && parseInt(zindex) <= parseInt(z_index))
+                    && bnds.left + bnds.height >= bounds.left + bounds.width && parseInt(zindex) < parseInt(z_index))
                     violations.push(elem); 
             }    
         });
