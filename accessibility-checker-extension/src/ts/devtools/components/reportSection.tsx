@@ -23,12 +23,13 @@ import {
     Button,
     Checkbox,
     Link,
-    Tabs,
-    Tab,
-    TabList,
-    TabPanels,
-    TabPanel,
-    Tooltip
+    // Tabs,
+    // Tab,
+    // TabList,
+    // TabPanels,
+    // TabPanel,
+    Tooltip,
+    Dropdown
 } from "@carbon/react";
 
 import {
@@ -61,6 +62,7 @@ interface ReportSectionState {
         "Recommendation": boolean
     }
     selectedPath: string | null,
+    reportViewState: string | null,
     focusMode: boolean,
     viewState?: ViewState,
     canScan: boolean
@@ -98,6 +100,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             "Recommendation": true
         },
         selectedPath: null,
+        reportViewState: "Element roles",
         focusMode: false,
         canScan: true
     }
@@ -294,59 +297,77 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             </Grid>
         </>;
 
+        const items = ["Element roles", "Requirements","Rules"]
+
         return (<>
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1" }}>
                 <Column sm={4} md={8} lg={8} className="reportSectionColumn">
-                    {!this.state.viewState || !this.state.viewState!.kcm && <Tabs
-                        // ariaLabel="Report options"
-                        role="navigation"
-                        tabContentClassName="tab-content"
-                    >
-                        <TabList>
-                            <Tab>Element roles</Tab>
-                            <Tab>Requirements</Tab>
-                            <Tab>Rules</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                                { filterSection }
-                                <ReportRoles 
-                                    unfilteredCount={totalCount}
-                                    issues={reportIssues}
-                                    panel={this.props.panel} 
-                                    checked={this.state.checked} 
-                                    selectedPath={this.state.selectedPath} 
-                                    onResetFilters={this.onResetFilters.bind(this)}
-                                    canScan={this.state.canScan}
-                                />
-                            </TabPanel>
-                            <TabPanel>
-                                { filterSection }
-                                <ReportReqts 
-                                    unfilteredCount={totalCount}
-                                    issues={reportIssues} 
-                                    panel={this.props.panel} 
-                                    checked={this.state.checked} 
-                                    selectedPath={this.state.selectedPath} 
-                                    onResetFilters={this.onResetFilters.bind(this)}
-                                    canScan={this.state.canScan}
-                                />
-                            </TabPanel>
-                            <TabPanel>
-                                { filterSection }
-                                <ReportRules 
-                                    unfilteredCount={totalCount}
-                                    report={this.state.report}
-                                    issues={reportIssues} 
-                                    panel={this.props.panel} 
-                                    checked={this.state.checked} 
-                                    selectedPath={this.state.selectedPath} 
-                                    onResetFilters={this.onResetFilters.bind(this)}
-                                    canScan={this.state.canScan}
-                                />
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>}
+                    
+                    {!this.state.viewState || !this.state.viewState!.kcm && 
+                        <Dropdown
+                            ariaLabel="Select report view"
+                            disabled={totalCount === 0}
+                            id="reportView"
+                            items={items}
+                            light={false}
+                            type="default"
+                            style={{width:"170px"}}
+                            selectedItem={this.state.reportViewState}
+                            onChange={async (evt: any) => {
+                                // set state
+                                this.setState({ reportViewState: evt.selectedItem });
+                            }}
+                        />
+                    }
+                    {!this.state.viewState || !this.state.viewState!.kcm && this.state.reportViewState && <div>
+                        {console.log("this.state.reportViewState = ", this.state.reportViewState)}
+                            <div>
+                                {this.state.reportViewState === "Element roles" && <>
+                                    <div>
+                                        { filterSection }
+                                        <ReportRoles 
+                                            unfilteredCount={totalCount}
+                                            issues={reportIssues}
+                                            panel={this.props.panel} 
+                                            checked={this.state.checked} 
+                                            selectedPath={this.state.selectedPath} 
+                                            onResetFilters={this.onResetFilters.bind(this)}
+                                            canScan={this.state.canScan}
+                                        />
+                                    </div>
+                                </>}
+                                {this.state.reportViewState === "Requirements" && <>
+                                    <div>
+                                    { filterSection }
+                                    <ReportReqts 
+                                        unfilteredCount={totalCount}
+                                        issues={reportIssues} 
+                                        panel={this.props.panel} 
+                                        checked={this.state.checked} 
+                                        selectedPath={this.state.selectedPath} 
+                                        onResetFilters={this.onResetFilters.bind(this)}
+                                        canScan={this.state.canScan}
+                                    />
+                                    </div>
+                                </>}
+                                {this.state.reportViewState === "Rules" && <>
+                                    <div>
+                                    { filterSection }
+                                    <ReportRules 
+                                        unfilteredCount={totalCount}
+                                        report={this.state.report}
+                                        issues={reportIssues} 
+                                        panel={this.props.panel} 
+                                        checked={this.state.checked} 
+                                        selectedPath={this.state.selectedPath} 
+                                        onResetFilters={this.onResetFilters.bind(this)}
+                                        canScan={this.state.canScan}
+                                    />
+                                    </div>
+                                </>}
+                            </div>
+                        </div>
+                    }
                     {this.state.viewState && this.state.viewState.kcm && <div>
                         <div style={{ display: "flex" }}>
                             <div style={{flex: "1 1 auto"}} className="visHeading">
