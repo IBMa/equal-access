@@ -100,12 +100,10 @@ export let element_tabbable_unobscured: Rule = {
                 if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
                     const bnds = mapper.getBounds(elem);
                     var zStyle = win.getComputedStyle(elem); 
-                    let z_index;
-                    if (zStyle === null) 
-                        z_index = 0;
-                    else {
+                    let z_index = '0';
+                    if (zStyle) {
                         z_index = zStyle.zIndex;
-                        if (!z_index || isNaN(z_index))
+                        if (!z_index || isNaN(Number(z_index)))
                             z_index = "0";
                     }
                     if (bnds.height !== 0 && bnds.width !== 0  
