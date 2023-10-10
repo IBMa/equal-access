@@ -33,17 +33,15 @@
       text-align: left;
   }
 
-#first {
+#second {
   width: 175px;
   height: 175px;
-  z-index: 2;
   background-color: #FF5C35;
   top: 10px;
   left: 10px;
 }
 
-#second {
-  z-index: 3; 
+#first {
   background-color: #192733;
   top: 30px;
   left: 30px;
@@ -65,14 +63,14 @@
             "ruleId": "element_tabbable_unobscured",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
+            "reasonId": "potential_obscured",
+            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

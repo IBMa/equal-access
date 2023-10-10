@@ -84,26 +84,37 @@ export let element_tabbable_unobscured: Rule = {
         var elems = doc.querySelectorAll('body *:not(script)');
         if (!elems || elems.length == 0)
             return;
-        console.log("node="+nodeName +", id=" + ruleContext.getAttribute("id") +", bounds=" + JSON.stringify(bounds)+", zindex="+zindex); 
+         
         const mapper : DOMMapper = new DOMMapper();
-        let violations = []; 
+        let violations = [];
+        let before = true;
         elems.forEach(elem => {
-            if (VisUtil.isNodeVisible(elem) && !ruleContext.contains(elem) && !elem.contains(ruleContext)) {
-                const bnds = mapper.getBounds(elem);
-                var zStyle = win.getComputedStyle(elem); 
-                let z_index;
-                if (zStyle === null) 
-                    z_index = 0;
-                else {
-                    z_index = zStyle.zIndex;
-                    if (!z_index || isNaN(z_index))
-                        z_index = "0";
-                } console.log("element="+elem.nodeName +", id=" + elem.getAttribute("id") +", bnds=" + JSON.stringify(bnds)+", z_index="+z_index);
-                if (bnds.height !== 0 && bnds.width !== 0  
-                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width && parseInt(zindex) <= parseInt(z_index))
-                    violations.push(elem); 
-            }    
+            /**
+             *  the nodes returned from querySelectorAll is in document order
+             *  if z-index is not defined, then the node rendered next will overlay the node previously
+             */
+            if (ruleContext.contains(elem)) {
+                //the next node in elems will be after the target node (ruleContext). 
+                before = false;
+            } else {    
+                if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
+                    const bnds = mapper.getBounds(elem);
+                    var zStyle = win.getComputedStyle(elem); 
+                    let z_index;
+                    if (zStyle === null) 
+                        z_index = 0;
+                    else {
+                        z_index = zStyle.zIndex;
+                        if (!z_index || isNaN(z_index))
+                            z_index = "0";
+                    }
+                    if (bnds.height !== 0 && bnds.width !== 0  
+                        && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
+                        && bnds.left + bnds.height >= bounds.left + bounds.width 
+                        && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
+                        violations.push(elem); 
+                }
+            }  
         });
         
         if (violations.length > 0)
