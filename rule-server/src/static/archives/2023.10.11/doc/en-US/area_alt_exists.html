@@ -1,0 +1,100 @@
+<html lang="en-US">
+<head>
+    <title>area_alt_exists - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"<area> elements in an image map must have a text alternative","Pass_0":"Rule Passed","Fail_1":"<area> element in an image map has no text alternative"}};
+        RULE_ID = "area_alt_exists"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+An image map is an image divided into selectable regions defined by `<area>` elements. When the selectable `<area>` elements contain important information, providing a text alternative for each `<area>` element makes the same information accessible through audio or other channels.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+Use an `alt` attribute on each `<area>` element to provide a short description that serves the same purpose as the `<area>` on the image map.
+
+Example:
+
+```
+<img src="welcome.gif" usemap="#map1" alt="Areas in the library. Select an area for more information on that area." />
+<map id="map1" name="map1">
+<area shape="rect" coords="0,0,30,30" href="reference.html" alt="Reference" />
+<area shape="rect" coords="34,34,100,100" href="media.html" alt="Audio visual lab" />
+</map>
+```
+
+Note: Example code includes material copied from or derived from [WCAG technique H24](https://www.w3.org/WAI/WCAG21/Techniques/html/H24) Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [WCAG technique H24](https://www.w3.org/WAI/WCAG21/Techniques/html/H24)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People who turned off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
