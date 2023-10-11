@@ -91,7 +91,7 @@ export let element_tabbable_unobscured: Rule = {
         elems.forEach(elem => {
             /**
              *  the nodes returned from querySelectorAll is in document order
-             *  if z-index is not defined, then the node rendered next will overlay the node previously
+             *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
              */
             if (ruleContext.contains(elem)) {
                 //the next node in elems will be after the target node (ruleContext). 
