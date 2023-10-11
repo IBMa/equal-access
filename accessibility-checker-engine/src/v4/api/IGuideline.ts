@@ -48,7 +48,8 @@ export type Checkpoint = {
         // or all if not specified
         reasonCodes?: string[],
         level: eRulePolicy, 
-        toolkitLevel: eToolkitLevel 
+        toolkitLevel: eToolkitLevel,
+        enabled?: boolean
     }>
 }
 
