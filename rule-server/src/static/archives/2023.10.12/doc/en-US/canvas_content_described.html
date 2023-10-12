@@ -1,0 +1,111 @@
+<html lang="en-US">
+<head>
+    <title>canvas_content_described - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Rule Passed","Manual_1":"Verify accessibility of the <canvas> element","group":"The <canvas> element may not be accessible"}};
+        RULE_ID = "canvas_content_described"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements. However, canvas content is not exposed to assistive technologies like semantic HTML. To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element;
+ * **Or**, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
+ * **Or**, if the `<canvas>` element is more complex such as a static chart, or an interactive drawing, provide an alternative accessible rendering;
+ * **Or**, use canvas fallback content (between the `<canvas>` tags) with keyboard access.
+
+This example shows the use of the `<canvas>` element with its content exposed as an image with a ARIA `role` attribute, a label, and a description.
+
+```
+<!-- Canvas exposed as an image element. -->
+<canvas id="example" role="img" alt="Circles" aria-describedby="img1"></canvas>
+<div id="img1">
+    <p>The prose in this div describes the circles in detail</p>
+</div>
+```
+
+This example shows an interactive `<canvas>` with equivalent accessible information provided in the canvas fallback content. The keyboard equivalent would be applied to the corresponding fallback elements.
+
+```
+<!-- Canvas exposed as a button element -->
+<canvas id="roundButton" onmousedown="..." onmouseup="..." onclick="..." onkeydown="..." onkeyup="...">
+    <div tabindex="0" role="button">ok</div>
+</canvas>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-Text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [IBM 2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * People using a screen reader, including blind, low vision and neurodivergent people
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
