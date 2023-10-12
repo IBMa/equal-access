@@ -58,7 +58,8 @@ export interface ICheckpoint {
         // or all if not specified
         reasonCodes?: string[],
         level: string, 
-        toolkitLevel: string 
+        toolkitLevel: string,
+        enabled?: boolean
     }>
 }
 

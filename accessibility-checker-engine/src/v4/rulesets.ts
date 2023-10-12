@@ -56,6 +56,7 @@ const summaries = {
     "2.4.5": "More than one way is available to locate a Web page within a set of Web pages, except where the Web Page is the result of, or a step in, a process.",
     "2.4.6": "Headings and labels describe topic or purpose.",
     "2.4.7": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+    "2.4.11": "When an element receives focus, it is not entirely covered by other content.",
     "2.5.1": "All functionality that uses multipoint or path-based gestures for operation can be operated with a single pointer without a path-based gesture.",
     "2.5.2": "For functionality that can be operated using a single pointer, completion of the function is on the up-event with an ability to abort, undo or reverse the outcome.",
     "2.5.3": "For user interface components with labels that include text or images of text, the accessible name contains the text that is presented visually.",
@@ -110,6 +111,22 @@ export let a11yRulesets: Guideline[] = [
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
             .filter(sc => (sc.level === "A" || sc.level === "AA" || sc.level === "NA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "2.2" || sc.wcagType === "NA"))
+            .map(sc => ({
+                num: sc.num,
+                scId: sc.scId,
+                name: sc.handle,
+                wcagLevel: sc.level,
+                summary: summaries[sc.num]
+            }))
+    },
+    {
+        id: "WCAG_2_2",
+        name: "WCAG 2.2 (A, AA)",
+        category: eGuidelineCategory.ACCESSIBILITY,
+        description: "Rules for WCAG 2.2 AA. This is the current W3C recommendation. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1.",
+        // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
+        checkpoints: SCs
+            .filter(sc => (sc.level === "A" || sc.level === "AA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "2.2"))
             .map(sc => ({
                 num: sc.num,
                 scId: sc.scId,
