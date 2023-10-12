@@ -1,0 +1,108 @@
+<html lang="en-US">
+<head>
+    <title>input_placeholder_label_visible - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Rule Passed","Potential_1":"HTML5 placeholder is the only visible label","Potential_2":"Additional visible label referenced by 'aria-labelledby' is not valid","group":"HTML5 'placeholder' attribute must not be used as a visible label replacement"}};
+        RULE_ID = "input_placeholder_label_visible"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+The `<placeholder>` attribute when used as the only visible label, reduces the accessibility for a wide range of users for the following reasons:
+ * it is not persistent; the placeholder value disappears when the user starts typing in the input field;
+ * it can be mistaken for a pre-filled value;
+ * the text color commonly fails a minimum contrast ratio;
+ * the lack of a label reduces the hit region for setting focus to the input field.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+
+ * Use the `placeholder` attribute for a short hint (a word or short phrase) to aid the user with data entry
+
+ * **And**, use a valid label method that is both visible and programmatically determined;
+
+* **Or**, if a visible label can not be added, verify the input field label is understood within the context;
+
+For example:
+
+```
+<label>Email Address: <input type="email" name="address1" placeholder="john@example.net"></label>
+```
+
+```
+<label for="address2">Address</label>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 3.3.2 Labels and Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [W3C Placeholder Research](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Placeholder_Research)
+
+### Who does this affect?
+
+* People with low vision using screen magnification
+* People with visual impairment using color contrast enhancement
+* People with tremor or other movement disorders
+* Many older adults
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
