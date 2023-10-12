@@ -64,16 +64,16 @@ export let element_tabbable_unobscured: Rule = {
         if (bounds['height'] === 0 || bounds['width'] === 0 ) 
             return null;
 
-        var doc = ruleContext.ownerDocument;
+        const doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
         }
-        var win = doc.defaultView;
+        const win = doc.defaultView;
         if (!win) {
             return null;
         }
         
-        var cStyle = win.getComputedStyle(ruleContext);
+        const cStyle = win.getComputedStyle(ruleContext);
         if (cStyle === null) 
             return null;
         
@@ -81,7 +81,7 @@ export let element_tabbable_unobscured: Rule = {
         if (!zindex || zindex === 'auto')
             zindex = "0";
         
-        var elems = doc.querySelectorAll('body *:not(script)');
+        const elems = doc.querySelectorAll('body *:not(script)');
         if (!elems || elems.length == 0)
             return;
          
@@ -96,27 +96,28 @@ export let element_tabbable_unobscured: Rule = {
             if (ruleContext.contains(elem)) {
                 //the next node in elems will be after the target node (ruleContext). 
                 before = false;
-            } else {    
-                if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
-                    const bnds = mapper.getBounds(elem);
-                    var zStyle = win.getComputedStyle(elem); 
-                    let z_index = '0';
-                    if (zStyle) {
-                        z_index = zStyle.zIndex;
-                        if (!z_index || isNaN(Number(z_index)))
-                            z_index = "0";
-                    }
-                    if (bnds.height !== 0 && bnds.width !== 0  
-                        && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                        && bnds.left + bnds.height >= bounds.left + bounds.width 
-                        && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                        violations.push(elem); 
+            } else if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
+                const bnds = mapper.getBounds(elem);
+                const zStyle = win.getComputedStyle(elem); 
+                let z_index = '0';
+                if (zStyle) {
+                    z_index = zStyle.zIndex;
+                    if (!z_index || isNaN(Number(z_index)))
+                        z_index = "0";
+                }
+                if (bnds.height !== 0 && bnds.width !== 0  
+                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
+                    && bnds.left + bnds.height >= bounds.left + bounds.width 
+                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
+                {
+                    violations.push(elem); 
                 }
             }  
         });
         
-        if (violations.length > 0)
+        if (violations.length > 0) {
             return RulePotential("potential_obscured", []);
+        }
             
         return RulePass("pass");
     }
