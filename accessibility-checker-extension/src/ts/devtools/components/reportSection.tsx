@@ -225,7 +225,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 return retVal;
             });
         }
-        console.log("this.state.checked = ",this.state.checked);
         let totalCount = 0;
         if (this.state.report) {
             totalCount = this.state.report!.counts.total;
@@ -291,9 +290,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 let checked = JSON.parse(JSON.stringify(this.state.checked));
                                 console.log("onChanged checked = ", checked);
                                 if (evt.selectedItems[0] != undefined) {
-                                    console.log("evt.selectedItems defined!");
                                     if (evt.selectedItems.length > 0) {
-                                        console.log("At least 1 selectedItems");
                                         for (let i = 0; i < evt.selectedItems.length; i++) {
                                             if (evt.selectedItems[i].text === "Violations") {
                                                 console.log("checked['Violation'] = ", checked['Violation']);
@@ -327,7 +324,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 }
                                 // set state
                                 this.setState({ checked: checked });
-                                console.log("Multiselect onChange END");
                                 // 2. there are none selected
                                 if (evt.selectedItems.length == 0) {
                                     console.log("RESET filters");
