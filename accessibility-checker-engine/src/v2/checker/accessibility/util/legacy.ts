@@ -419,6 +419,32 @@ export class RPTUtil {
         }
     }
 
+    /**
+     * a target is en element that accept a pointer action (click or touch)
+     */
+    public static isTarget(element) {
+        if (!element) return false;
+        
+        if (element.hasAttribute("tabindex") || RPTUtil.isTabbable(element)) return true;
+        
+        const roles = RPTUtil.getRoles(element, true); 
+        if (!roles && roles.length === 0)
+            return false;
+
+        let tagProperty = RPTUtil.getElementAriaProperty(element);
+        let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
+        if (!allowedRoles && allowedRoles.length === 0)
+            return false;
+    
+        const parent = element.parentElement;
+        if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
+            const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
+                return true;
+        }
+        return false;
+    }
+
     public static tabIndexLEZero(elem) {
         if (RPTUtil.hasAttribute(elem, "tabindex")) {
             if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {

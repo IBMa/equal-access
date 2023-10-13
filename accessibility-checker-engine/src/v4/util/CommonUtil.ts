@@ -60,7 +60,7 @@ export function getInvalidRoles(ruleContext: Element) {
     
     let invalidRoles = [];
 
-    if (allowedRoles && allowedRoles.includes('any'))
+    if (allowedRoles.includes('any'))
         return [];
     
     for (let i = 0; i < domRoles.length; i++)

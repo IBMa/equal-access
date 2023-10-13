@@ -119,7 +119,7 @@
                 if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
                     && bnds.left + bnds.height >= bounds.left + bounds.width 
                     && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                    // if the target is entirely covered: handled by element_tabbable_unobscured
+                    // if the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
                     continue;
 
                 if (bnds.height !== 0 && bnds.width !== 0  
