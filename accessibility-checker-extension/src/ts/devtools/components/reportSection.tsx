@@ -198,10 +198,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     render() {
         let reportIssues : IIssue[] | null = null;
         let tabbableDetectors: IIssue[] | null = null;
-        let filterCounts: CountType = this.initCount();
         let tabCount = 0;
         let missingTabCount = 0;
-        console.log("checked = ", this.state.checked);
 
         if (this.state.report) {
             if (this.state.viewState && this.state.viewState.kcm) {
@@ -217,8 +215,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             }
         }
         if (reportIssues) {
-            filterCounts = this.getCounts(reportIssues);
-            console.log("reportIssues filterCounts = ",filterCounts);
             reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
@@ -226,7 +222,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         || issue.path.dom.startsWith(this.state.selectedPath)
                     )
                 );
-                console.log("reportIssues retVal = ",retVal);
                 return retVal;
             });
         }
@@ -291,54 +286,54 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             onChange={async (evt: any) => {
                                 console.log("Multiselect onChange START");
                                 console.log("evt = ", evt);
-                                // set state
-                                this.setState({ reportFilterState: evt.selectedItems });
+                                // ok we have one of two cases 
+                                // 1. there are selected 
                                 let checked = JSON.parse(JSON.stringify(this.state.checked));
+                                console.log("onChanged checked = ", checked);
                                 if (evt.selectedItems[0] != undefined) {
-                                    if (evt.selectedItems[0].text === "Violations") {
-                                        console.log("checked['Violation'] = ", checked['Violation']);
-                                        checked["Violation"] = !checked["Violation"];
+                                    console.log("evt.selectedItems defined!");
+                                    if (evt.selectedItems.length > 0) {
+                                        console.log("At least 1 selectedItems");
+                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                            if (evt.selectedItems[i].text === "Violations") {
+                                                console.log("checked['Violation'] = ", checked['Violation']);
+                                                checked["Violation"] = false;
+                                                break;
+                                            } else {
+                                                console.log("checked['Violation'] = true");
+                                                checked["Violation"] = true;
+                                            }
+                                        }
+                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                            if (evt.selectedItems[i].text === "Needs review") {
+                                                console.log("Needs review checked");
+                                                checked["Needs review"] = false;
+                                                break;
+                                            } else {
+                                                console.log("checked['Needs review'] = true");
+                                                checked["Needs review"] = true;
+                                            }
+                                        }
+                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                            if (evt.selectedItems[i].text === "Recommendations") {
+                                                console.log("Recommendations checked");
+                                                checked["Recommendation"] = false;
+                                            } else {
+                                                console.log("checked['Recommendation'] = true");
+                                                checked["Recommendation"] = true;
+                                            }
+                                        } 
                                     }
-                                    if (evt.selectedItems[0].text === "Needs review") {
-                                        console.log("Needs review checked");
-                                        checked["Needs review"] = !checked["Needs review"]
-                                    }
-                                    if (evt.selectedItems[0].text === "Recommendations") {
-                                        console.log("Recommendations checked");
-                                        checked["Recommendation"] = !checked["Recommendation"];
-                                    }
-                                } 
-                                if (evt.selectedItems[1] != undefined) {
-                                    if (evt.selectedItems[1].text === "Violations") {
-                                        console.log("Violation checked");
-                                        checked["Violation"] = false;
-                                    }
-                                    if (evt.selectedItems[1].text === "Needs review") {
-                                        console.log("Needs review checked");
-                                        checked["Needs review"] = false;
-                                    }
-                                    if (evt.selectedItems[1].text === "Recommendations") {
-                                        console.log("Recommendations checked");
-                                        checked["Recommendation"] = false;
-                                    }
-                                } 
-                                if (evt.selectedItems[2] != undefined) {
-                                    if (evt.selectedItems[0].text === "Violations") {
-                                        console.log("Violation checked");
-                                        checked["Violation"] = false;
-                                    }
-                                    if (evt.selectedItems[2].text === "Needs review") {
-                                        console.log("Needs review checked");
-                                        checked["Needs review"] = false;
-                                    }
-                                    if (evt.selectedItems[2].text === "Recommendations") {
-                                        console.log("Recommendations checked");
-                                        checked["Recommendation"] = false;
-                                    }
-                                } 
-                                
-                                this.setState({ checked });
+                                }
+                                // set state
+                                this.setState({ checked: checked });
                                 console.log("Multiselect onChange END");
+                                // 2. there are none selected
+                                if (evt.selectedItems.length == 0) {
+                                    console.log("RESET filters");
+                                    this.onResetFilters();
+                                }
+                                console.log("Final select: ", this.state.checked);
                             }}
                         />
                     }
@@ -346,11 +341,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                     <div>
                         <Button 
+                            disabled={totalCount === 0}
                             style={{ float: "right", marginRight: "16px", minHeight: "18px" }}
                             onClick={() => devtoolsController.exportXLS("last") }
                         >Export XLS</Button>
                     </div>
-                    {console.log("this.state.reportFilterState = ", this.state.reportFilterState)}
                 </Column>
              </Grid>
         </>
@@ -363,7 +358,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1" }}>
                 <Column sm={4} md={8} lg={8} className="reportSectionColumn">
                 {!this.state.viewState || !this.state.viewState!.kcm && this.state.reportViewState && <div>
-                        {console.log("this.state.reportViewState = ", this.state.reportViewState)}
                             <div>
                                 {this.state.reportViewState === "Element roles" && <>
                                     <div>
