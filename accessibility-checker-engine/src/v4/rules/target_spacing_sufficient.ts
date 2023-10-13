@@ -50,7 +50,7 @@
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
-            if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTabbable(ruleContext) && (!ruleContext .hasAttribute("tabindex"))))
+            if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTabbable(ruleContext) && !ruleContext .hasAttribute("tabindex")))
                 return null;
             
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
@@ -93,7 +93,8 @@
             const mapper : DOMMapper = new DOMMapper();
             let violations = [];
             let before = true;
-            elems.forEach(elem => {
+            for (let i=0; i < elems.length; i++) {
+                const elem = elems[i];
                 /**
                  *  the nodes returned from querySelectorAll is in document order
                  *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
@@ -101,24 +102,32 @@
                 if (ruleContext.contains(elem)) {
                     //the next node in elems will be after the target node (ruleContext). 
                     before = false;
-                } else {    
-                    if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
-                        const bnds = mapper.getBounds(elem);
-                        var zStyle = win.getComputedStyle(elem); 
-                        let z_index = '0';
-                        if (zStyle) {
-                            z_index = zStyle.zIndex;
-                            if (!z_index || isNaN(Number(z_index)))
-                                z_index = "0";
-                        }
-                        if (bnds.height !== 0 && bnds.width !== 0  
-                            && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                            && bnds.left + bnds.height >= bounds.left + bounds.width 
-                            && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                            violations.push(elem); 
-                    }
-                }  
-            });
+                    continue;
+                }    
+                if (!VisUtil.isNodeVisible(elem) || elem.contains(ruleContext)) continue;
+
+                const bnds = mapper.getBounds(elem);
+                if (bnds.height === 0 || bnds.width === 0) continue;
+
+                var zStyle = win.getComputedStyle(elem); 
+                let z_index = '0';
+                if (zStyle) {
+                    z_index = zStyle.zIndex;
+                    if (!z_index || isNaN(Number(z_index)))
+                        z_index = "0";
+                }
+                if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
+                    && bnds.left + bnds.height >= bounds.left + bounds.width 
+                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
+                    // if the target is entirely covered: handled by element_tabbable_unobscured
+                    continue;
+
+                if (bnds.height !== 0 && bnds.width !== 0  
+                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
+                    && bnds.left + bnds.height >= bounds.left + bounds.width 
+                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
+                    violations.push(elem);   
+            }
             
             if (violations.length > 0)
                 return RulePotential("potential_obscured", []);
