@@ -45,7 +45,7 @@ export let element_tabbable_unobscured: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTabbable(ruleContext) && (!ruleContext .hasAttribute("tabindex")|| parseInt(ruleContext.getAttribute("tabindex")) < 0)))
+        if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
