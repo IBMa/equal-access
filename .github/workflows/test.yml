@@ -445,7 +445,7 @@ jobs:
         working-directory: cypress-accessibility-checker/test
 
 ###############################################################################
-# Extension Build verification
+# Extension Build verification and test
 ####
   extension-test:
     runs-on: ubuntu-22.04
@@ -492,6 +492,9 @@ jobs:
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
+    - name: Jest tests
+      run: npm test
+      working-directory: accessibility-checker-extension
 
   rule-deploy:
     runs-on: ubuntu-22.04
