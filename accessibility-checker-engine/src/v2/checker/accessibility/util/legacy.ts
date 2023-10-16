@@ -436,7 +436,45 @@ export class RPTUtil {
         if (!allowedRoles && allowedRoles.length === 0)
             return false;
     
-        const parent = element.parentElement;
+        let parent = element.parentElement;
+        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
+        while (parent && roles.some(role => role === 'group'))
+            parent = parent.parentElement;
+         
+        if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
+            const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
+     * some element has default inline property, such as <span>, <a>, <img>
+     * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
+     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied. 
+     */
+    public static isInline(element) {
+        if (!element) return false;
+        
+        const inline_elements = ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+        if (element.hasAttribute("tabindex") || RPTUtil.isTabbable(element)) return true;
+        
+        const roles = RPTUtil.getRoles(element, true); 
+        if (!roles && roles.length === 0)
+            return false;
+
+        let tagProperty = RPTUtil.getElementAriaProperty(element);
+        let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
+        if (!allowedRoles && allowedRoles.length === 0)
+            return false;
+    
+        let parent = element.parentElement;
+        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
+        while (parent && roles.some(role => role === 'group'))
+            parent = parent.parentElement;
+         
         if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
             const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
             if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))

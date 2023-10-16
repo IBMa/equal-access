@@ -50,7 +50,7 @@
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
-            if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTabbable(ruleContext) && !ruleContext .hasAttribute("tabindex")))
+            if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTarget(ruleContext)))
                 return null;
             
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
