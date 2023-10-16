@@ -351,6 +351,8 @@ jobs:
 
     - run: npm install
       working-directory: accessibility-checker/test/webdriverio
+    - run: npm install chromedriver --detect_chromedriver_version
+      working-directory: accessibility-checker/test/webdriverio
     - run: npm run wdio
       working-directory: accessibility-checker/test/webdriverio
 
