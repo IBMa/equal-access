@@ -1,0 +1,113 @@
+<html lang="en-US">
+<head>
+    <title>style_hover_persistent - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"the hover: pseudo-class is not used to display content","Pass_1":"content displayed via the :hover pseudo-class is a direct child of the trigger element","Pass_2":"content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element","Potential_1":"Confirm the pointer can be positioned over the displayed element, not just the trigger","Potential_2":"Confirm the pointer can be positioned over all the information displayed on hover","Potential_3":"Confirm the margin style attribute has not prevented the pointer from hovering over the displayed element, not just the trigger","group":"The pointer should be able to move over content displayed on hover"}};
+        RULE_ID = "style_hover_persistent"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+When content displays on hover, the pointer should be able to move from the trigger to the new content. If the new content disappears when the pointer leaves the trigger element, users who significantly magnify their screen will never be able to bring the new content into view to read.
+
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+
+### What to do
+
+* If using the css `hover` pseudo-class on one element in order to set a `display` style on another element, the displayed element must be a child of the trigger element;
+* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with its own `hover` set to `display`, and with no `margin` property set (since the margin separates the two elements and prevents the hover display from persisting).
+
+Note: Use of the `~` selector with the `display` style attribute can allow many siblings of the trigger element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the trigger towards the displayed content. 
+
+
+The recommended code example is:
+
+```
+<html lang="en-US">
+  <head>
+    <style>
+      .toggledText { background-color: yellow; padding: 20px; display: none; }
+      .hoverTarget:hover .toggledText { display: block; } 
+    </style>
+  </head>
+  <body>
+    <div class="hoverTarget">Hover over me2!
+      <div class="toggledText">I will show on hover</div>
+    </div>
+  </body>
+</html>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+  
+* [IBM 1.4.13 Content on Hover or Focus](https://www.ibm.com/able/requirements/requirements/#1_4_13)
+* [WCAG technique SCR39](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR39)
+* [WCAG technique F95](https://www.w3.org/WAI/WCAG21/Techniques/failures/F95)
+
+### Who does this affect?
+
+* People with low vision who use screen magnification
+* People with attention deficit disorders
+* People with tremor or other movement disorders
+   
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

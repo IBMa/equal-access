@@ -1,0 +1,114 @@
+<html lang="en-US">
+<head>
+    <title>element_scrollable_tabbable - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Scrollable elements should be tabbable or contain tabbable content","pass_tabbable":"The scrollable element is tabbable","pass_interactive":"The scrollable element has tabbable content","fail_scrollable":"The scrollable element <{0}> with non-interactive content is not tabbable"}};
+        RULE_ID = "element_scrollable_tabbable"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Many users need to be able to use the keyboard and keyboard-like emulators to navigate to and operate scrollable elements – such as scrolling up-down and left-right with arrow keys – to reveal all the visible content. 
+Only some browsers (e.g. Firefox) will automatically include _**any**_ scrollable element in the tab-order (tabbable sequence) to ensure keyboard accessibility. 
+Browsers will automatically make scrollable elements tabbable when they _**contain**_ tabbable elements (e.g. buttons) without requiring an explicit `tabindex`attribute on the container element. 
+However, setting the `tabindex` attribute on a scrollable container itself to a negative value excludes it and its tabbable content from the tab-order, 
+effectively making it keyboard inaccessible and blocking many users.
+
+Note: this rule is not applicable to purely decorative content and whitespace. 
+Although occasionally this rule may fail scrollable elements with alternate scroll controls such as through a button or customer scrollbar, 
+it’s strongly recommended that developers still include the standard arrow key behavior that users expect. 
+
+<!-- the "detected element" and the "unallowed semantics" will be displayed in the rule message above, so the “Why important” paragraph assumes the reader will understand it in context -->
+
+<!-- This is where the code snippet that triggered the rule is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Ensure scrollable elements that contain visible non-tabbable elements are not excluded from the tab-order by adding a `tabindex` attribute value greater than or equal to `”0”` to the container element
+* **Or**, if the scrollable element contains tabbable content, ensure that container element does not have a negative `tabindex` that effectively removes the scrollable element from the tab-order
+
+Example of a keyboard scrollable element:
+```
+<div style="height: 50px; width: 300px; overflow: scroll;" tabindex="0">
+	<h2>Important but lengthy content</h2>
+        <p>This is important content that the designer decided to make scrollable and not always display **all* the content at the same time when the area is restricted in a relatively small space. 
+        When scrollbars appear, the developer needs to ensure the element will be scrollable via the arrow keys.</p>
+	<p>Lorem ipsum… but no buttons, links, or other tabbable content are included in this example, so a `tabindex` is required.</p>
+</div>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [WCAG technique G202: Ensuring keyboard control for all functionality](https://www.w3.org/WAI/WCAG21/Techniques/general/G202)
+* [ARIA practices - Developing a keyboard interface]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [ARIA practices - The tab sequence]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#keyboardnavigationbetweencomponents(thetabsequence))
+* [HTML - The tabindex attribute]( https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
+* [Verify phase – Test with a keyboard](https://www.ibm.com/able/toolkit/verify/manual/#test-with-a-keyboard)
+
+
+### Who does this affect?
+
+* People who physically cannot use a pointing device
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software and on-screen keyboards
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

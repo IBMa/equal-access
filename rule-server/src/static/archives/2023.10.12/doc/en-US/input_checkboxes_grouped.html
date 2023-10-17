@@ -1,0 +1,89 @@
+<html lang="en-US">
+<head>
+    <title>input_checkboxes_grouped - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"Related sets of radio buttons or checkboxes should be programmatically grouped","Pass_LoneNogroup":"{0} grouping not required for a control of this type","Pass_Grouped":"{0} input is grouped with other related controls with the same name","Pass_RadioNoName":"Radio input is not grouped, but passes because it has no name to group with other radio inputs","Fail_ControlNameMismatch":"{0} input found that has the same name, \"{2}\" as a {1} input","Fail_NotGroupedOtherGrouped":"{0} input is not in the group with another {0} with the name \"{1}\"","Fail_NotGroupedOtherNotGrouped":"{0} input and others with the name \"{1}\" are not grouped together","Fail_NotSameGroup":"{0} input is in a different group than another {0} with the name \"{1}\"","Potential_LoneCheckbox":"Verify that this ungrouped checkbox input is not related to other checkboxes","Potential_UnnamedCheckbox":"Verify that this un-named, ungrouped checkbox input is not related to other checkboxes"}};
+        RULE_ID = "input_checkboxes_grouped"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Grouping related radio buttons and checkboxes enables assistive technology to convey the group relationship to users (e.g. "group of 5 radio buttons").
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Group related controls of the same type by enclosing them within a `<fieldset>` element;
+ * **Or**, group related radio buttons by using `role="radiogroup"`;
+ * **Or**, group related checkboxes by using `role="group"`;
+ * **Or**, disassociate unrelated controls or controls of different types by using different `name` attribute values;
+ * **Or**, if the controls already have unique `name` attribute values and are in a data table, make sure the table is marked up using `<table>` or has a role of `"grid"` or `"table"`.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
