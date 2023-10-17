@@ -27,18 +27,27 @@
       display: inline; /* the default for a */
       width: 100px;
       height: 100px;
-      line-height: 100px;
-      padding: 5px;
+      /**line-height: 100px;
+      padding: 5px;*/
     }
 
-    button.btn {
+    button.btn, img#image1, span.span1 {
       display: inline;
       /**width: 100px;
       height: 100px;
       padding: 5px;*/
     }
 
-    button.btn2 {
+    button.btn2, img#image2, a.link1 {
+      display: inline;
+      width: 100px;
+      height: 100px;
+      padding: 5px;
+      border: 1px solid blue;    
+      background-color: yellow; 
+    }
+
+    button.btn3 {
       display: inline-block;
       width: 100px;
       height: 100px;
@@ -47,14 +56,6 @@
       background-color: yellow; 
     }
 
-    p {
-      display: block;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-      border: 1px solid blue;    
-      background-color: yellow; 
-    }
   </style>
 </head>
 
@@ -62,17 +63,56 @@
 
   <h1>The display Property</h1>
 
-<h2>display: inline</h2>
-<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. 
+<h2>inline links only -- browser default</h2>
+<div>
   <a class='link' href="google.com">Aliquam</a> 
+  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
+  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">Aliquam</a> 
+  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
+  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">Aliquam</a> 
+  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
+  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+</div>
+
+<h2>display: inline</h2>
+<div>
+  Lorem ipsum dolor sit amet,
+  <a class='link' href="google.com">Aliquam</a> 
+  Vestibulum consequat scelerisque 
+  <img id="image1" src="../support/nav_home.gif" />
+  consectetur adipiscing elit. 
+  <img id="image2" src="../support/nav_home.gif" />
+  elit sit amet consequat. 
   <button class='btn' value='venenatis'></button> 
-  gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. 
+  gravida nisl sit amet facilisis.
+  <button class='btn2' value='something'></button> 
+  consectetur adipiscing elit. 
 </div>
 
 <h2>display: inline-block</h2>
-<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. <span class="b">Aliquam</span> <span class="b">venenatis</span> gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
-
-<h2>display: block</h2>
+<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. 
+<button class='btn3' value='anotherthing'></button> 
+</div>
+<h2 style="margin-top:100px;">display: mixed</h2>
+<div>Lorem ipsum dolor sit amet,
+  <a class='link1' href="google.com">Aliquam</a> 
+  Vestibulum consequat scelerisque elit sit amet consequat. 
+  <button class='btn' value='venenatis'></button> 
+  gravida nisl sit amet facilisis.
+  <button class='btn2' value='something'></button> 
+  consectetur adipiscing elit. 
+  <button class='btn3' value='anotherthing'></button> 
+  Aliquam erat volutpat. 
+</div>
 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. <span class="c">Aliquam</span> <span class="c">venenatis</span> gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
 
   

@@ -23,19 +23,17 @@
 <head>
 	<title>RPT Test Suite</title>
   <style>
-  div {   
+  button.overlay {   
       position: absolute;
       width: 75px;
       height: 75px;
-      border-radius: 10px;
       color: white;
-      padding: 5px;
       text-align: left;
   }
 
 #first {
-  width: 175px;
-  height: 175px;
+  width: 105px;
+  height: 95px;
   background-color: #FF5C35;
   top: 10px;
   left: 10px;
@@ -43,18 +41,85 @@
 
 #second {
   background-color: #192733;
-  top: 30px;
-  left: 30px;
+  top: 20px;
+  left: 35px;
 }
+
+button.overlay1 {   
+      position: absolute;
+      width: 85px;
+      height: 75px;
+      color: white;
+      text-align: left;
+  }
+
+#first1 {
+  width: 105px;
+  height: 95px;
+  background-color: #FF5C35;
+  top: 10px;
+  left: 220px;
+}
+
+#second1 {
+  background-color: #192733;
+  top: 20px;
+  left: 230px;
+}
+
+button.standalone1 {   
+      width: 24px;
+      height: 24px;
+      background-color: blue;
+      text-align: left;
+      margin-left: 15px;
+      color:white;
+  }
+
+  button.standalone2 {   
+      width: 14px;
+      height: 14px;
+      background-color: blue;
+      
+      text-align: left;
+      margin-left: 15px;
+      color:white;
+  }
+
+  button.standalone3 {   
+      width: 14px;
+      height: 14px;
+      background-color: blue;
+      text-align: left;
+      color:white;
+  }
 
   </style>
 </head>
 
 <body>
 
-  <div id="first" tabindex="0">1</div>
-  <div id="second" tabindex="0">2</div>
+  
+  <button id="first" class="overlay">1</button>
+  <button id="second" class="overlay">2</button>
 
+  <button id="first1" class="overlay1">3</button>
+  <button id="second1" class="overlay1">4</button>
+
+  <button id="third"  class="standalone1" style='margin-top:200px'>5</button>
+  <button id="forth" class="standalone1" style='margin-left:-10px'>6</button>
+  <div>
+  <button id="fifth"  class="standalone2" style='margin-top:20px' >7</button>
+  <button id="sixth" class="standalone2" style='margin-top:10px' >8</button>
+</div>
+<div>
+  <button id="eight"  class="standalone3" style='margin-top:20px; margin-right:20px;'>9</button>
+  <button id="nieth" class="standalone3" style='margin-top:10px'>10</button>
+</div>
+<div>
+  <button id="eight"  class="standalone3" style='margin-top:20px; margin-left:20px;'>10</button>
+  <button id="nieth" class="standalone3" >11</button>
+</div>
 <script>
   UnitTest = {
     ruleIds: ["element_tabbable_unobscured"],

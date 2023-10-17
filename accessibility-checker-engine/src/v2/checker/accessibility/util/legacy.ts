@@ -451,9 +451,16 @@ export class RPTUtil {
 
     /**
      * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
-     * some element has default inline property, such as <span>, <a>, <img>
+     * some element has default inline property, such as <span>, <a>
      * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
-     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied. 
+     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <button> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
+     * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
+     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
+     * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
+     * A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+     * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
+     * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
+     * 
      */
     public static isInline(element) {
         if (!element) return false;
