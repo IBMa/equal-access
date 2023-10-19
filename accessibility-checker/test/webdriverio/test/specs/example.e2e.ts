@@ -164,7 +164,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                             if (pc !== 0) return pc;
                             return b.ruleId.localeCompare(a.ruleId);
                         })
-                        // console.log(expectedInfo.results);
+                         console.log("report=" + JSON.stringify(filtReport));
                         expect(filtReport).toEqual(expectedInfo.results);
                     } else if (legacyExpectedInfo) {
                         let expectedInfo = {}
