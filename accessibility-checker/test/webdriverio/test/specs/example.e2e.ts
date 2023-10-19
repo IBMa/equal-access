@@ -95,7 +95,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
     // Loop over all the unitTestcase html/htm files and perform a scan for them
     for (var unitTestFile in unitTestcaseHTML) { if (!unitTestFile.includes("element_overlaid_visible_zindex")) continue;
         if (unitTestFile in skipMap) continue;
-        console.log(unitTestFile);
+        console.log("unitTestFile=" + unitTestFile);
         // if (count-- < 0) continue;
         // Get the extension of the file we are about to scan
         var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
