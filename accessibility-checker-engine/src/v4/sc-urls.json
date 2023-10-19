@@ -955,7 +955,7 @@
       "test": "",
       "howToMeetUrl": "https://html.spec.whatwg.org/multipage/",
       "understandingUrl": "https://html.spec.whatwg.org/multipage/",
-      "handle": "HTML Messages",
+      "handle": "specification",
       "level": "NA",
       "wcagType": "NA"
     },
@@ -967,7 +967,7 @@
       "test": "",
       "howToMeetUrl": "https://w3c.github.io/aria/",
       "understandingUrl": "https://w3c.github.io/aria/",
-      "handle": "ARIA Messages",
+      "handle": "specification",
       "level": "NA",
       "wcagType": "NA"
     }
