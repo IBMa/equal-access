@@ -123,7 +123,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
 
                     let report = null;
                     // Perform the accessibility scan using the IBMaScan Wrapper
-                    let result = await getCompliance(browser, "WDIO_" + unitTestFile);
+                    let result = await getCompliance(browser, "WDIO_" + unitTestFile);console.log("report=" + JSON.stringify(result.report));
                     if (!result || !result.report) {
                         try { expect(false).toEqual(true); } catch (e) { 
                             console.error("\nWas unable to scan: " + unitTestFile);
@@ -164,7 +164,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                             if (pc !== 0) return pc;
                             return b.ruleId.localeCompare(a.ruleId);
                         })
-                         console.log("report=" + JSON.stringify(filtReport));
+                        // console.log(expectedInfo.results);
                         expect(filtReport).toEqual(expectedInfo.results);
                     } else if (legacyExpectedInfo) {
                         let expectedInfo = {}
