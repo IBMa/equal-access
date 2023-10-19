@@ -20,7 +20,7 @@ import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { DOMWalker } from "../../../dom/DOMWalker";
 import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
-import { getDefinedStyles } from "../../../../v4/util/CSSUtil";
+import { getDefinedStyles, getComputedStyle } from "../../../../v4/util/CSSUtil";
 import { DOMUtil } from "../../../dom/DOMUtil";
 
 export class RPTUtil {
@@ -453,7 +453,7 @@ export class RPTUtil {
      * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
      * some element has default inline property, such as <span>, <a>
      * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
-     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <button> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
+     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
      * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
      * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
      * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
@@ -465,28 +465,16 @@ export class RPTUtil {
     public static isInline(element) {
         if (!element) return false;
         
-        const inline_elements = ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
-        if (element.hasAttribute("tabindex") || RPTUtil.isTabbable(element)) return true;
-        
-        const roles = RPTUtil.getRoles(element, true); 
-        if (!roles && roles.length === 0)
-            return false;
+        var cStyle = getComputedStyle(element);
+        var uStyle =  getDefinedStyles(element);
+        if (!uStyle) 
+            return true;
 
-        let tagProperty = RPTUtil.getElementAriaProperty(element);
-        let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
-        if (!allowedRoles && allowedRoles.length === 0)
-            return false;
-    
-        let parent = element.parentElement;
-        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
-        while (parent && roles.some(role => role === 'group'))
-            parent = parent.parentElement;
-         
-        if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
-            const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
-            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
-                return true;
-        }
+        const display = cStyle.getPropertyValue("display");    
+            
+        if (display === 'inline' || (display === 'inline-block' && uStyle['width'] === 'undefined' && uStyle['height'] === 'undefined' )) 
+            return true;
+        
         return false;
     }
 

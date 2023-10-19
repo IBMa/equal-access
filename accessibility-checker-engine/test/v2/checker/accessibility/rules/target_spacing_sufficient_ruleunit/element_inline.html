@@ -31,6 +31,11 @@
       padding: 5px;*/
     }
 
+    a.link1 {
+      display: inline; /* the default for a */
+      
+    }
+
     button.btn, img#image1, span.span1 {
       display: inline;
       /**width: 100px;
@@ -38,7 +43,7 @@
       padding: 5px;*/
     }
 
-    button.btn2, img#image2, a.link1 {
+    button.btn2, img#image2, a.link2 {
       display: inline;
       width: 100px;
       height: 100px;
@@ -56,12 +61,40 @@
       background-color: yellow; 
     }
 
+    button.btn4, img.image3 {
+      display: inline;
+      width: 24px;
+      height: 10px;
+      
+    }
+
   </style>
 </head>
 
 <body>
 
   <h1>The display Property</h1>
+
+  <h2>link in small text: link size is controlled by the default text </h2>
+  <small>
+    Vestibulum consequat scelerisque 
+    <a class='link' href="google.com">aliquam</a> 
+    consectetur adipiscing elit.
+    gravida nisl sit amet facilisis 
+    gravida nisl sit amet facilisis 
+    Aliquam 
+    Vestibulum consequat scelerisque 
+    consectetur adipiscing elit. 
+    gravida nisl sit amet facilisis
+    gravida nisl sit amet facilisis 
+    gravida nisl sit amet facilisis 
+    Aliquam <input type="text" value="example text" size="10" />
+    Vestibulum consequat scelerisque
+    consectetur adipiscing elit. 
+    gravida nisl sit amet facilisis 
+    gravida nisl sit amet facilisis 
+  </small>
+  
 
 <h2>inline links only -- browser default</h2>
 <div>
@@ -83,34 +116,53 @@
   <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
 </div>
 
-<h2>display: inline</h2>
+
+<h2>display: inline with large size</h2>
 <div>
   Lorem ipsum dolor sit amet,
   <a class='link' href="google.com">Aliquam</a> 
   Vestibulum consequat scelerisque 
-  <img id="image1" src="../support/nav_home.gif" />
+  <a class='link1' href="google.com">Aliquam</a> 
+  Vestibulum consequat scelerisque 
+  <img tabindex='0' id="image1" src="../support/nav_home.gif" />
   consectetur adipiscing elit. 
-  <img id="image2" src="../support/nav_home.gif" />
+  <img tabindex='0' id="image2" src="../support/nav_home.gif" />
   elit sit amet consequat. 
-  <button class='btn' value='venenatis'></button> 
+  <button class='btn' >venenatis</button> 
   gravida nisl sit amet facilisis.
-  <button class='btn2' value='something'></button> 
+  <button class='btn2'>something</button> 
   consectetur adipiscing elit. 
 </div>
 
+<h2>display: inline with small text</h2>
+<div>
+  Lorem ipsum dolor sit amet,
+  Vestibulum consequat scelerisque 
+  Vestibulum consequat scelerisque 
+  <img tabindex='0' class="image3" src="../support/nav_home.gif" />
+  consectetur adipiscing elit. 
+  <img tabindex='0' class="image3" src="../support/nav_home.gif" />
+  elit sit amet consequat. 
+  <button class='btn4' >ok</button> 
+  gravida nisl sit amet facilisis.
+  <button class='btn4'>no</button> 
+  consectetur adipiscing elit. 
+</div>
+
+
 <h2>display: inline-block</h2>
 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. 
-<button class='btn3' value='anotherthing'></button> 
+<button class='btn3' >anotherthing</button> 
 </div>
 <h2 style="margin-top:100px;">display: mixed</h2>
 <div>Lorem ipsum dolor sit amet,
-  <a class='link1' href="google.com">Aliquam</a> 
+  <a class='link2' href="google.com">Aliquam</a> 
   Vestibulum consequat scelerisque elit sit amet consequat. 
-  <button class='btn' value='venenatis'></button> 
+  <button class='btn' >venenatis</button> 
   gravida nisl sit amet facilisis.
-  <button class='btn2' value='something'></button> 
+  <button class='btn2' >something</button> 
   consectetur adipiscing elit. 
-  <button class='btn3' value='anotherthing'></button> 
+  <button class='btn3' >anotherthing</button> 
   Aliquam erat volutpat. 
 </div>
 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. <span class="c">Aliquam</span> <span class="c">venenatis</span> gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
@@ -119,7 +171,7 @@
 
 <script>
   UnitTest = {
-    ruleIds: ["element_tabbable_unobscured"],
+    ruleIds: ["target_spacing_sufficient"],
     results: [
     {
             "ruleId": "element_tabbable_unobscured",

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <style>
+    option.opt {
+      display: block;
+      line-height: 1px;
+      margin-top:-5px; 
+    }
+
+  </style>
+</head>
+<body>
+  <main>
+    <div class="testcase1">
+      <label for="pet">
+        Select your favorite pet:</label><br>
+        <select id='pet' name="pet" multiple>
+          <option> </option>
+          <option class="opt">first pet: Furry Cat</option>
+          <option class="opt">second pet: Cunning Dog</option>
+          <option class="opt">third pet: Guinea Pig</option>
+          <option class="opt">fourth pet: Hamster </option> 
+          <option class="opt">fifth pet: Bunny </option> 
+        </select>
+  </div>
+
+    <div class="testcase2" style="margin-top:30px;">
+        <label for="pet">
+          Select your favorite flower:</label><br>
+          <select id='pet' name="pet" multiple>
+            <option> </option>
+            <option>first flower: Carnation</option>
+            <option class="normal">second flower: Rose</option>
+            <option class="normal">third flower: Iris</option>
+            <option class="normal">fourth flower: Lily</option> 
+            <option class="normal">fifth flower: Tulip </option> 
+          </select>
+    </div>
+  </main>
+  <script>
+    UnitTest = {
+      ruleIds: ["target_spacing_sufficient"],
+      results: [
+        {
+          "ruleId": "input_label_exists",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+            "aria": "/document[1]/main[1]/combobox[1]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Rule Passed",
+          "messageArgs": [],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "widget_tabbable_exists",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+            "aria": "/document[1]/main[1]/combobox[1]"
+          },
+          "reasonId": "pass",
+          "message": "Rule Passed",
+          "messageArgs": [],
+          "apiArgs": [],
+          "category": "Accessibility"
+        }
+      ]
+    };
+  </script>
+</body>
+
+</html>

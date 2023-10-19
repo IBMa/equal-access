@@ -16,7 +16,7 @@
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
     import { VisUtil } from "../../v2/dom/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { DOMUtil } from "../../v2/dom/DOMUtil";
+    import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
     
     export let target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
@@ -50,15 +50,20 @@
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
-            if (!VisUtil.isNodeVisible(ruleContext) || (!RPTUtil.isTarget(ruleContext)))
-                return null;
-            
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
-              
             //ignore certain elements
-            if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
+            if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta", 'head']) !== null 
                 || nodeName === "body" || nodeName === "html" )
                 return null;
+            console.log("node=" + nodeName +", inline=" +RPTUtil.isInline(ruleContext));
+            if (RPTUtil.isInline(ruleContext))
+                return null;
+
+            if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
+                return null;
+            
+              
+            
             
             const bounds = context["dom"].bounds;    
             
@@ -73,12 +78,8 @@
             if (!doc) {
                 return null;
             }
-            var win = doc.defaultView;
-            if (!win) {
-                return null;
-            }
             
-            var cStyle = win.getComputedStyle(ruleContext);
+            var cStyle = getComputedStyle(ruleContext);
             if (cStyle === null) 
                 return null;
             
@@ -94,7 +95,7 @@
             let violations = [];
             let before = true;
             for (let i=0; i < elems.length; i++) {
-                const elem = elems[i];
+                const elem = elems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
                  *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
@@ -109,7 +110,7 @@
                 const bnds = mapper.getBounds(elem);
                 if (bnds.height === 0 || bnds.width === 0) continue;
 
-                var zStyle = win.getComputedStyle(elem); 
+                var zStyle = getComputedStyle(elem); 
                 let z_index = '0';
                 if (zStyle) {
                     z_index = zStyle.zIndex;
