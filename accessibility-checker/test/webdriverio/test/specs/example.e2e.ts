@@ -29,7 +29,7 @@ before(async function () {
     });
 
     let rulesets = checker.rulesets;
-    rulesets.forEach(function (rs) {
+    rulesets.forEach(function (rs) { console.log("rulesets=" +JSON.stringify(rulesets));
         if (rs.id in policyMap) {
             for (const cp of rs.checkpoints) {
                 for (const rule of cp.rules) {
