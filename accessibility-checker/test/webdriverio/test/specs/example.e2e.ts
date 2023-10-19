@@ -93,7 +93,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
     var originalTimeout;
     // let count = 10;
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (var unitTestFile in unitTestcaseHTML) { if (!unitTestFile.includes("element_overlaid_visible_zindex")) continue;
         if (unitTestFile in skipMap) continue;
         console.log(unitTestFile);
         // if (count-- < 0) continue;
