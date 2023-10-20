@@ -55,7 +55,7 @@ class MyFS implements IAbstractAPI {
 
 async function initialize() {
     if (Config) return;
-    Config = await ACConfigManager.getConfigUnsupported(); console.log("Config=" + JSON.stringify(Config));
+    Config = await ACConfigManager.getConfigUnsupported();
     await ACEngineManager.loadEngineLocal();
     let absAPI = new MyFS();
     let refactorMap : RefactorMap = {}
@@ -287,7 +287,7 @@ cb(e);
 
 
 async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<ICheckerResult> {
-    try { console.log("label="+label +", curPol=" + JSON.stringify(curPol));
+    try {
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;

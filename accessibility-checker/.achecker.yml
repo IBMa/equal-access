@@ -13,7 +13,6 @@ ignoreHTTPSErrors: true
 # We are setting no policies because we want the unit test to run for all policies
 policies:
     - IBM_Accessibility
-    - WCAG_2_2
 
 # optional - Specify one or many violation levels on which to fail the test
 #            i.e. If specified violation then the testcase will only fail if

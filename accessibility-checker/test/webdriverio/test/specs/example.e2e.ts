@@ -28,7 +28,7 @@ before(async function () {
         policyMap[policy] = true;
     });
 
-    let rulesets = checker.rulesets;  console.log("rulesets=" +JSON.stringify(rulesets));
+    let rulesets = checker.rulesets;
     rulesets.forEach(function (rs) {
         if (rs.id in policyMap) {
             for (const cp of rs.checkpoints) {
@@ -39,7 +39,7 @@ before(async function () {
         }
     });
 });
-console.log("validList=" +JSON.stringify(validList));  console.log("policyMap=" +JSON.stringify(policyMap));
+
 after(async () => {
     // await browser.close();
 })
@@ -93,9 +93,9 @@ describe("Rule Unit Tests from WebdriverIO", function () {
     var originalTimeout;
     // let count = 10;
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) { if (!unitTestFile.includes("element_overlaid_visible_zindex")) continue;
+    for (var unitTestFile in unitTestcaseHTML) {
         if (unitTestFile in skipMap) continue;
-        console.log("unitTestFile=" + unitTestFile);
+        console.log(unitTestFile);
         // if (count-- < 0) continue;
         // Get the extension of the file we are about to scan
         var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
@@ -129,7 +129,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                             console.error("\nWas unable to scan: " + unitTestFile);
                             return Promise.reject(e); }
                     }
-                    report = result.report; console.log("report=" + JSON.stringify(report));
+                    report = result.report;
                     let unitTestInfo = await browser.execute(() => ({
                         legacyExpectedInfo: (typeof ((window as any).OpenAjax) !== 'undefined' && (window as any).OpenAjax && (window as any).OpenAjax.a11y && (window as any).OpenAjax.a11y.ruleCoverage),
                         expectedInfo: (typeof ((window as any).UnitTest) !== 'undefined' && (window as any).UnitTest)
@@ -138,7 +138,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                     // Extract the ruleCoverage object from the unit testcases that is loaded on to the iframe.
                     let expectedInfo = unitTestInfo.expectedInfo;
                     let legacyExpectedInfo = unitTestInfo.legacyExpectedInfo;
-                    console.log('expectedInfo=' + JSON.stringify(expectedInfo) + ', legacyExpectedInfo=' + legacyExpectedInfo);
+                    
                     if (expectedInfo && expectedInfo.ruleIds) {
                         let filtReport = [];
                         for (const issue of report.results) {
@@ -165,7 +165,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                             if (pc !== 0) return pc;
                             return b.ruleId.localeCompare(a.ruleId);
                         })
-                        console.log("filtReport=" + JSON.stringify(filtReport));
+                        
                         expect(filtReport).toEqual(expectedInfo.results);
                     } else if (legacyExpectedInfo) {
                         let expectedInfo = {}
