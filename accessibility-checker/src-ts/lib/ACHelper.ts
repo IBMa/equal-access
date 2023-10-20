@@ -55,7 +55,7 @@ class MyFS implements IAbstractAPI {
 
 async function initialize() {
     if (Config) return;
-    Config = await ACConfigManager.getConfigUnsupported();
+    Config = await ACConfigManager.getConfigUnsupported(); console.log("Config=" + JSON.stringify(Config));
     await ACEngineManager.loadEngineLocal();
     let absAPI = new MyFS();
     let refactorMap : RefactorMap = {}
