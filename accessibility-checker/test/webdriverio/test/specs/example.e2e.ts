@@ -138,7 +138,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                     // Extract the ruleCoverage object from the unit testcases that is loaded on to the iframe.
                     let expectedInfo = unitTestInfo.expectedInfo;
                     let legacyExpectedInfo = unitTestInfo.legacyExpectedInfo;
-                    console.log('expectedInfo=' + expectedInfo + ', legacyExpectedInfo=' + legacyExpectedInfo);
+                    console.log('expectedInfo=' + JSON.stringify(expectedInfo) + ', legacyExpectedInfo=' + legacyExpectedInfo);
                     if (expectedInfo && expectedInfo.ruleIds) {
                         let filtReport = [];
                         for (const issue of report.results) {
