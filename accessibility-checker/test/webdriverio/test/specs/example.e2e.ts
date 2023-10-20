@@ -28,8 +28,8 @@ before(async function () {
         policyMap[policy] = true;
     });
 
-    let rulesets = checker.rulesets;
-    rulesets.forEach(function (rs) { console.log("rulesets=" +JSON.stringify(rulesets));
+    let rulesets = checker.rulesets;  console.log("rulesets=" +JSON.stringify(rulesets));
+    rulesets.forEach(function (rs) {
         if (rs.id in policyMap) {
             for (const cp of rs.checkpoints) {
                 for (const rule of cp.rules) {
@@ -39,7 +39,7 @@ before(async function () {
         }
     });
 });
-
+console.log("validList=" +JSON.stringify(validList));  console.log("policyMap=" +JSON.stringify(policyMap));
 after(async () => {
     // await browser.close();
 })
@@ -123,13 +123,13 @@ describe("Rule Unit Tests from WebdriverIO", function () {
 
                     let report = null;
                     // Perform the accessibility scan using the IBMaScan Wrapper
-                    let result = await getCompliance(browser, "WDIO_" + unitTestFile);console.log("report=" + JSON.stringify(result.report));
+                    let result = await getCompliance(browser, "WDIO_" + unitTestFile);
                     if (!result || !result.report) {
                         try { expect(false).toEqual(true); } catch (e) { 
                             console.error("\nWas unable to scan: " + unitTestFile);
                             return Promise.reject(e); }
                     }
-                    report = result.report;
+                    report = result.report; console.log("report=" + JSON.stringify(report));
                     let unitTestInfo = await browser.execute(() => ({
                         legacyExpectedInfo: (typeof ((window as any).OpenAjax) !== 'undefined' && (window as any).OpenAjax && (window as any).OpenAjax.a11y && (window as any).OpenAjax.a11y.ruleCoverage),
                         expectedInfo: (typeof ((window as any).UnitTest) !== 'undefined' && (window as any).UnitTest)
