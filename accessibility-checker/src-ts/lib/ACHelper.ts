@@ -287,7 +287,7 @@ cb(e);
 
 
 async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<ICheckerResult> {
-    try { 
+    try { console.log("label="+label +", curPol=" + JSON.stringify(curPol));
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
