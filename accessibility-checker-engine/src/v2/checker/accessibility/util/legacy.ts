@@ -465,16 +465,64 @@ export class RPTUtil {
     public static isInline(element) {
         if (!element) return false;
         
-        var cStyle = getComputedStyle(element);
-        var uStyle =  getDefinedStyles(element);
-        if (!uStyle) 
-            return true;
+        var uStyle =  getComputedStyle(element);
+        if (!uStyle) return false;
+        const udisplay = cStyle.getPropertyValue("display");  
+        // focus on inline element only
+        if (udisplay !== 'inline')
+            return false;
 
-        const display = cStyle.getPropertyValue("display");    
-            
-        if (display === 'inline' || (display === 'inline-block' && uStyle['width'] === 'undefined' && uStyle['height'] === 'undefined' )) 
-            return true;
-        
+        const parent = element.parentElement;
+        if (parent) {
+            var cStyle = getComputedStyle(parent);
+            var display = cStyle.getPropertyValue("display");    
+            if (display === 'block' || display === 'inline-block') {
+                let multipleInline = false;
+                let containText = false;
+                // more than one inline elements with text in the same line: <inline>text<target>, <target><inline>text, text<target><inline>
+                let walkNode = element.nextSibling;
+                while (walkNode) {
+                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        cStyle = getComputedStyle(walkNode);
+                        display = cStyle.getPropertyValue("display");    
+                        if (display !== 'inline') {
+                            multipleInline = false;
+                            break;
+                        }
+                        multipleInline = true;
+                    }
+                    walkNode = walkNode.nextSibling;    
+                } 
+
+                walkNode = element.previousSibling;
+                while (walkNode) {
+                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        cStyle = getComputedStyle(walkNode);
+                        display = cStyle.getPropertyValue("display");    
+                        if (display !== 'inline') {
+                            multipleInline = false;
+                            break;
+                        }
+                        multipleInline = true;
+                    }
+                    walkNode = walkNode.previousSibling;    
+                } 
+
+                // an inline element is the only element in the line inside a block
+                // note browsers insert Text nodes to represent whitespaces.
+                if (parent.childNodes.length === 1)
+                    return false;
+                
+                // multiple inline elements are in the same line with text
+
+
+            }
+        }
+        // all other cases    
         return false;
     }
 
