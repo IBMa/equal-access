@@ -101,6 +101,7 @@ export interface IIssue {
     snippet: string
     category: "Accessibility",
     help: string
+    ignored?: boolean
 }
 
 export interface IBasicTableRowRecord {

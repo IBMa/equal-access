@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { IArchiveDefinition, IMessage, IReport, IRuleset, ISessionState, ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, IIssue, IMessage, IReport, IRuleset, ISessionState, ISettings } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
@@ -195,7 +195,7 @@ class BackgroundController extends Controller {
     }
     
     /**
-     * Get settings for the extension
+     * Get option settings for the extension
      */
     public async getSettings() : Promise<ISettings> {
         let myThis = this;
@@ -212,7 +212,7 @@ class BackgroundController extends Controller {
     }
 
     /**
-     * Set settings for the extension
+     * Set option settings for the extension
      */
     public async setSettings(settings: ISettings) : Promise<ISettings> {
         return this.hook("setSettings", settings, async () => {
@@ -226,10 +226,20 @@ class BackgroundController extends Controller {
         });
     }
 
+    /**
+     * Listener for options settings
+     */
     public async addSettingsListener(listener: ListenerType<ISettings>) {
         this.addEventListener(listener, `BG_onSettings`);
     }
 
+    public async addIgnoreUpdateListener(listener: ListenerType<{url: string, issues: IIssue[]}>) {
+        this.addEventListener(listener, `BG_IgnoreUpdateListener`);
+    }
+
+    /**
+     * Listener for session state
+     */
     public async addSessionStateListener(listener: ListenerType<ISessionState>) {
         this.addEventListener(listener, `BG_onSessionState`);
     }
@@ -241,6 +251,52 @@ class BackgroundController extends Controller {
             return EngineCache.getArchives();
         });
     }
+
+    /**
+     * Get ignore information
+     */
+    public async getIgnore(url: string) : Promise<IIssue[]> {
+        // let myThis = this;
+        let retVal = (await this.hook("getIgnore", null, async () => {
+            let retVal = await new Promise<IIssue[]>((resolve, _reject) => {
+                chrome.storage.local.get("IGNORE_LIST", async function (result: { IGNORE_LIST?: { [url: string]: IIssue[] }}) {
+                    resolve(result.IGNORE_LIST?.[url] || []);
+                });
+            })
+            return retVal;
+        }))!;
+        return retVal;
+    }
+
+    /**
+     * Set ignore information ???
+     */
+    /**
+     * Set option settings for the extension
+     */
+    public async toggleIgnore(url: string, issue:IIssue) : Promise<void> {
+        return this.hook("toggleIgnore", {url, issue}, async () => {
+            let modifyList = await this.getIgnore(url);
+            let idx = modifyList.findIndex(baselineIssue => (
+                    baselineIssue.ruleId === issue.ruleId
+                    && baselineIssue.reasonId === issue.reasonId
+                    && baselineIssue.path.dom === issue.path.dom
+            ));
+            if (idx === -1) {
+                modifyList.push(issue);
+            } else {
+                modifyList.splice(idx, 1);
+            }
+            await new Promise<void>((resolve, _reject) => {
+                chrome.storage.local.set({ "IGNORE_LIST": modifyList }, async function () {
+                    resolve();
+                });
+            });
+            this.notifyEventListeners("BG_IgnoreUpdateListener", -1, { url, issues: modifyList });
+        });
+    }
+
+
 
     /**
      * Get the rulesets for the currently loaded engine
@@ -375,6 +431,23 @@ class BackgroundController extends Controller {
                     report.results = remainResults;
                     report.counts = counts;
                 }
+
+                // TODO: Get the url of the document being scanned
+                let tabInfo = await this.getTabInfo(senderTabId);
+                if (tabInfo.url) {
+                    const curBaseline = await this.getIgnore(tabInfo.url);
+                    if (curBaseline) {
+                        for (let issue of report.results) {
+                            if (curBaseline.find(baselineIssue => (
+                                baselineIssue.ruleId === issue.ruleId
+                                && baselineIssue.reasonId === issue.reasonId
+                                && baselineIssue.path.dom === issue.path.dom
+                            ))) {
+                                issue.ignored = true;
+                            }
+                        }
+                    }
+                }
                 getDevtoolsController(false, "remote", senderTabId).setReport(report);
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("idle");
             })();
@@ -403,6 +476,9 @@ class BackgroundController extends Controller {
                 },
                 "BG_getSettings": async () => self.getSettings(),
                 "BG_getArchives": async () => self.getArchives(),
+                "BG_getIgnore": async (msgBody) => self.getIgnore(msgBody.content),
+                "BG_toggleIgnore": async (msgBody) => self.toggleIgnore(msgBody.content.url, msgBody.content.issue),
+
                 "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),
                 "BG_getRulesets": async (msgBody) => self.getRulesets(msgBody.content),
                 "BG_requestScan": async (msgBody) => self.requestScan(msgBody.content),
