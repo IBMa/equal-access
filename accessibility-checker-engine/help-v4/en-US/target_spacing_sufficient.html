@@ -44,22 +44,26 @@
 
 ### Why is this important?
 
-When users cannot see the item with focus because it is covered (hidden) by another element, they may not know how to proceed, or may even think the system has become unresponsive.
-The objective is to ensure that the element receiving focus is always partially visible to the user unless it is covered by the user’s action.
-Knowing the current element with focus is critical for sighted people who rely on a keyboard (or technology that operates through the keyboard interface, such as a switch or voice input).
-The element with focus signals the interaction point on the page.
+Some people with physical impairments cannot touch or click small buttons that are close together, especially on mobile touch screens. 
 
-However, content opened or controlled by the _user’s action_ may obscure the element receiving focus.
-If the _user_ can uncover (re-reveal) the focused element without advancing the keyboard focus, such as by scrolling or closing the content that the _user_ opened, then the focused element is not considered obscured (covered) due to author-created content.
-Where content can be repositioned by the _user’s action_, then only the initial positions of user-movable content are considered for testing and conformance.
+The aim is to provide adequate clearance from any adjacent elements to prevent accidental activation of adjacent elements.
+And to provide a larger region of the display that will accept a touch or pointer action when elements overlap and in other situations where the target size may be smaller than that of the element.
+
+Exceptions such as “**_inline link text_**” are listed in [2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum).
+
+**Note**: When a _minimum size_ can’t be met, then a _minimum spacing_ is required.
+Therefore it is still possible to have small elements and meet the requirement, provided that the elements don't have any adjacent elements that are too close.
+It is recommended to meet the minimum size requirement regardless of spacing.
+For important links and controls, consider aiming for the stricter [2.5.5 Target Size (Enhanced AAA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced) of at least 44 by 44 CSS pixels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-- Confirm that the element that had been originally covered by the _author_, but that now has focus, is now visible, otherwise adjust the design to allow elements with focus to be visible
-- **Or**, if the element was originally visible, but is now covered due to the _user’s action_, confirm that the _user_ can uncover (re-reveal) the element with focus without moving the focus away from the element such as by scrolling or escaping to close the content that is covering the element with focus
+- Increase the size of the element's target 
+- **Or**: increase the spacing around the target
+- **Or**: ensure the function can be achieved through a different control on the same page that meets the minimum size and spacing requirement
 
 </script></mark-down>
 <!-- End main panel -->
@@ -72,20 +76,18 @@ Where content can be repositioned by the _user’s action_, then only the initia
 
 ### About this requirement
 
-- [WCAG 2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum)
-- [WCAG technique C43: Using CSS margin and scroll-margin to un-obscure content](https://www.w3.org/WAI/WCAG22/Techniques/css/C43) 
-- [Common failure F110: Obscured due to a sticky footer or header completely hiding focused elements](https://www.w3.org/WAI/WCAG22/Techniques/failures/F110)
+- [WCAG 2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum)
+- [WCAG 2.5.5 Target Size (Enhanced AAA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced)
+- [WCAG technique C42: Using min-height and min-width to ensure sufficient target spacing](https://www.w3.org/WAI/WCAG22/Techniques/css/C42)
 
 ### Who does this affect?
 
-- People with low vision who use screen magnification
-- People who physically cannot use a pointing device
-- People using a keyboard and alternate keyboards or input devices that act as keyboard emulators like speech input software and on-screen keyboards
-- People with dexterity impairment using a keyboard-like switch device
-- People with dexterity impairment using voice control
-- People with tremors or other movement disorders using a keyboard-like device
-- People with memory limitations in executive processes benefit by being able to discover where the focus is located
-- Many older adults
+- People who use a mobile device where the touch screen is the primary mode of interaction
+- People with tremors or other movement disorders using a mouse, stylus, or touch input
+- People using a device in environments where they are exposed to shaking such as public transportation
+- People with large fingers, or who are operating the device with only a part of their finger or knuckle
+- People using a device with only one hand
+- Many older adults or other users who have difficulty with fine motor movements
     
 </script></mark-down>
 <!-- End side panel -->
