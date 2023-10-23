@@ -253,7 +253,7 @@ class BackgroundController extends Controller {
     }
 
     /**
-     * Get ignore information
+     * Get ignore info
      */
     public async getIgnore(url: string) : Promise<IIssue[]> {
         // let myThis = this;
@@ -269,10 +269,7 @@ class BackgroundController extends Controller {
     }
 
     /**
-     * Set ignore information ???
-     */
-    /**
-     * Set option settings for the extension
+     * Toggle ignore
      */
     public async toggleIgnore(url: string, issue:IIssue) : Promise<void> {
         return this.hook("toggleIgnore", {url, issue}, async () => {
@@ -432,7 +429,7 @@ class BackgroundController extends Controller {
                     report.counts = counts;
                 }
 
-                // TODO: Get the url of the document being scanned
+                // Get the url of the document being scanned and check for already ignored
                 let tabInfo = await this.getTabInfo(senderTabId);
                 if (tabInfo.url) {
                     const curBaseline = await this.getIgnore(tabInfo.url);
