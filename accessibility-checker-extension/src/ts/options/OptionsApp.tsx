@@ -434,7 +434,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                             <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
 
-                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
+                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
                         </Modal>, document.body)}
 
                         {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
