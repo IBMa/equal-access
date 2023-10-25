@@ -630,7 +630,7 @@
       "scAltId": ["focus-not-obscured-minimum"],
       "test": "WCAG2:focus-not-obscured-minimum",
       "howToMeetUrl": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
-      "understandingUrl": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
       "handle": "Focus Not Obscured (Minimum)",
       "level": "AA",
       "wcagType": "2.2"
@@ -955,7 +955,7 @@
       "test": "",
       "howToMeetUrl": "https://html.spec.whatwg.org/multipage/",
       "understandingUrl": "https://html.spec.whatwg.org/multipage/",
-      "handle": "HTML Messages",
+      "handle": "specification",
       "level": "NA",
       "wcagType": "NA"
     },
@@ -967,7 +967,7 @@
       "test": "",
       "howToMeetUrl": "https://w3c.github.io/aria/",
       "understandingUrl": "https://w3c.github.io/aria/",
-      "handle": "ARIA Messages",
+      "handle": "specification",
       "level": "NA",
       "wcagType": "NA"
     }
