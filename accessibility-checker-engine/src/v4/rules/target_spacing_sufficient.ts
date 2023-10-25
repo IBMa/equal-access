@@ -40,8 +40,8 @@
                 "pass_sized": "The target’s size is more than 24 CSS pixels",
                 "pass_inline": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
                 "pass_default": "The size of the target is determined by the user agent and is not modified by the author",
-                "violation": "The center of the <0> target is less than 12 CSS pixels from the bounding box (edge) of an adjacent target <1>",
-                "potential_overlap": "Ensure the overlapped <0> element meets a minimum target size or has sufficient spacing from the overlapping element"
+                "violation": "The center of the target '{0}' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target '{1}'",
+                "potential_overlap": "Ensure the overlapped element '{0}' meets a minimum target size or has sufficient spacing from the overlapping element '{1}'"
             }
         },
         rulesets: [{
@@ -63,15 +63,22 @@
             if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
                 return null;
 
-            if (RPTUtil.isInline(ruleContext))
-                return RulePass("pass_inline");   
-            
-            console.log("node=" + nodeName +", id=" + ruleContext.getAttribute('id') +", inline=" +RPTUtil.isInline(ruleContext));
-            
             const bounds = context["dom"].bounds;    
             if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
                 return null;
-    
+            
+            if (RPTUtil.isInline(ruleContext)) {
+                // case 1: check horizontal spacing only for inline element, ignore height
+                if (bounds['width'] >= 24)
+                    return RulePass("pass_inline"); 
+                
+                if (Math.round(bounds.width/2) + minX < 12 || Math.round(bounds.height/2) + minY < 12) {
+                    if (Math.round(bounds.width/2) + minX < Math.round(bounds.height/2) + minY)
+                        return RuleFail("violation", [nodeName, adjacentX.nodeName.toLowerCase()]); 
+                    return RuleFail("violation", [nodeName, adjacentY.nodeName.toLowerCase()]);
+                }  
+            }
+            
             var doc = ruleContext.ownerDocument;
             if (!doc) {
                 return null;
@@ -94,24 +101,26 @@
             let minX = 24;
             let minY = 24;
             let adjacentX = null;
-            let adjacentY = null;
-            for (let i=0; i < elems.length; i++) {
+            let adjacentY = null; console.log("target id=" + ruleContext.getAttribute('id'));
+            let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
+            for (let i=0; i < elems.length; i++) { 
                 const elem = elems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
                  *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
-                 *  filter out the elements that’re descendant or ancestors of the target element<X>
+                 *  filter out the elements that’re descendant or ancestors of the target element, nor descendant of the target element's siblings
                  */
                 if (ruleContext.contains(elem)) {
                     //the next node in elems will be after the target node (ruleContext). 
                     before = false;
                     continue;
                 }    
-                if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext)) continue;
+                if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext) 
+                   || checked.some(item => item.contains(elem))) continue;
 
                 const bnds = mapper.getBounds(elem);
                 if (bnds.height === 0 || bnds.width === 0) continue;
-
+                
                 var zStyle = getComputedStyle(elem); 
                 let z_index = '0';
                 if (zStyle) {
@@ -119,50 +128,48 @@
                     if (!z_index || isNaN(Number(z_index)))
                         z_index = "0";
                 }
-
-                // the target is entirely overlapped with the element
+                
+                // case 2: the element covers the target entirely
                 if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width) {
-                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) { 
+                    && bnds.left + bnds.height >= bounds.left + bounds.width) { 
+                    // if the element on top    
+                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {
                         // the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
                         return null;
                     } else {
-                        if (bnds.height >= 24 && bnds.width >= 24)
+                        if (bounds.height >= 24 && bounds.width >= 24)
                             return RulePass("pass_sized");  
                         return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]);     
                     }
-                } console.log("id=" + elem.getAttribute('id') +",zindex=" +zindex +", z_index=" + z_index +", before="+before);
-                // the element overlaps with the target
+                } 
+                
+                // case 3: if the target covers the element entirely
+                if (bounds.top <= bnds.top && bounds.left <= bnds.left && bounds.top + bounds.height >= bnds.top + bnds.height 
+                    && bounds.left + bounds.height >= bnds.left + bnds.width) {
+                    // if the target on top    
+                    if (before ? parseInt(zindex) > parseInt(z_index): parseInt(zindex) >= parseInt(z_index)) {
+                        if (bnds.height >= 24 && bnds.width >= 24)
+                            return RulePass("pass_sized");  
+                        return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]); 
+                    } else
+                        continue;
+                }
+                console.log("target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                // case 4: the element overlaps partially with the target
                 if (((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top))
-                   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))) {
-                    // if the target and the element overlap entirely
-                    if (bnds.top >= bounds.top && bnds.left >= bounds.left && bnds.top + bnds.height <= bounds.top + bounds.height 
-                        && bnds.left + bnds.height <= bounds.left + bounds.width) {
-                        // if the target covers the element entirely    
-                        if (before ? parseInt(zindex) >= parseInt(z_index): parseInt(zindex) > parseInt(z_index))
-                            continue;
-                        else {
-                            // the element is smaller and covers portion of the target
-                            let gap = Math.max(bounds.left-bnds.left, bnds.left + bnds.width - (bounds.left+bounds.width), bounds.top-bnds.top, bnds.top + bnds.height- (bounds.top+bounds.height));
-                            if (gap >= 24)
-                                return RulePass("pass_sized"); 
-                            return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]); 
-                        }
+                   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))) { console.log("target id=" + ruleContext.getAttribute('id') + ", overlap elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                     // TODO: more check to turn to violation  
-                    return RulePotential("potential_overlap");
+                    return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
 
-                } else { // no overlap
-                    if (bnds.height >= 24 && bnds.width >= 24)
-                        return RulePass("pass_sized"); 
-
+                } else { // no overlap with the elem, though may overlap wither other elements
                     let disX = 24; 
                     let disY = 24;   
-                    // the element is in the horizontally same row 
-                    if ((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top))
+                    // the element is in the horizontally same row with the target
+                    if (bounds.width < 24 && ((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top)))
                         disX = Math.min( Math.abs(bounds.left - bnds.left), Math.abs(bounds.left - (bnds.left + bnds.width)),  Math.abs(bounds.left + bounds.width - (bnds.left + bnds.width)), Math.abs(bounds.left + bounds.width - bnds.left));
                     
-                    // the element is in the vertically same column     
-                    if ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))
+                    // the element is in the vertically same column with the target    
+                    if (bounds.height < 24 && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left)))
                         disY = Math.min(Math.abs(bounds.top - bnds.top), Math.abs(bounds.top - (bnds.top + bnds.height)),  Math.abs(bounds.top + bounds.height - (bnds.top + bnds.height)), Math.abs(bounds.top + bounds.height - bnds.top));
                     
                     if (disX < minX) {
@@ -174,34 +181,22 @@
                         adjacentY = elem;
                     }
                 }
+                checked.push(elem);
             }
             
+            // case 5: no verlap + sufficient target size
+            if (bounds.height >= 24 && bounds.width >= 24)
+                return RulePass("pass_sized"); 
+            
+            // case 6: no overlap + insufficient target size. check spacing    
             if (Math.round(bounds.width/2) + minX < 12 || Math.round(bounds.height/2) + minY < 12) {
                 if (Math.round(bounds.width/2) + minX < Math.round(bounds.height/2) + minY)
                     return RuleFail("violation", [nodeName, adjacentX.nodeName.toLowerCase()]); 
                 return RuleFail("violation", [nodeName, adjacentY.nodeName.toLowerCase()]);
             }
-                //if (bounds.top <= bnds.top && bounds.top + bounds.height >= bnds.top || bounds.top <= bnds.top+ bounds.height && bounds.top + bounds.height >= bnds.top + bnds.height)
-
-                
-                //minX = min(minX, min( abs(bounds.left - bnds.left), abs(bounds.left - bnds.right),  abs(bounds.right - bnds.right), abs(bounds.right - bnds.left))
-
-                //if (bounds.left <= bnds.left && bounds.left+bounds.width >= bnds.left+bnds.width || bounds.left <= bnds.left + bnds.width && bounds.left + bounds.width >= bnds.right)
-
-                //minY = min(minY, min(abs(bounds.top - bnds.top), abs(bounds.top - bnds.bottom),  abs(bounds.bottom - bnds.bottom), abs(bounds.bottom - bnds.top)))
-
-                
-
-                // if the target is on top of an overlapping elements    
-                /**
-                if (bnds.height !== 0 && bnds.width !== 0  
-                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width 
-                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                    violations.push(elem);   
-                 */    
             
-            return RulePass("pass_spacing");
+            // ignore all other cases
+            return null;
         }
     }
     
