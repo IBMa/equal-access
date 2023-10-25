@@ -58,7 +58,7 @@ export let html_lang_exists: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         num: "3.1.1", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE

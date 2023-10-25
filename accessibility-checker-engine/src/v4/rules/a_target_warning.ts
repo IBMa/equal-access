@@ -40,7 +40,7 @@ export let a_target_warning: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         num: "3.2.2", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.RECOMMENDATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE

@@ -134,10 +134,11 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                         legacyExpectedInfo: (typeof ((window as any).OpenAjax) !== 'undefined' && (window as any).OpenAjax && (window as any).OpenAjax.a11y && (window as any).OpenAjax.a11y.ruleCoverage),
                         expectedInfo: (typeof ((window as any).UnitTest) !== 'undefined' && (window as any).UnitTest)
                     }));
-            
+                    
                     // Extract the ruleCoverage object from the unit testcases that is loaded on to the iframe.
                     let expectedInfo = unitTestInfo.expectedInfo;
                     let legacyExpectedInfo = unitTestInfo.legacyExpectedInfo;
+                    
                     if (expectedInfo && expectedInfo.ruleIds) {
                         let filtReport = [];
                         for (const issue of report.results) {
@@ -164,7 +165,7 @@ describe("Rule Unit Tests from WebdriverIO", function () {
                             if (pc !== 0) return pc;
                             return b.ruleId.localeCompare(a.ruleId);
                         })
-                        // console.log(expectedInfo.results);
+                        
                         expect(filtReport).toEqual(expectedInfo.results);
                     } else if (legacyExpectedInfo) {
                         let expectedInfo = {}

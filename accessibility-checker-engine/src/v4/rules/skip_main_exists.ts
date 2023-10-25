@@ -41,7 +41,7 @@ export let skip_main_exists: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.4.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
