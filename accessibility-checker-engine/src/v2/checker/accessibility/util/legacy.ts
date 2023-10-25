@@ -486,6 +486,8 @@ export class RPTUtil {
                     if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                         containText = true;
                     } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (walkNode.nodeName.toLowerCase() === 'br') break;
                         const cStyle = getComputedStyle(walkNode);
                         const cDisplay = cStyle.getPropertyValue("display");    
                         if (cDisplay !== 'inline') break;
@@ -499,6 +501,8 @@ export class RPTUtil {
                         if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                             containText = true;
                         } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                            // special case: <br> is styled 'inline' by default, but change the line
+                            if (walkNode.nodeName.toLowerCase() === 'br') break;
                             const cStyle = getComputedStyle(walkNode);
                             const cDisplay = cStyle.getPropertyValue("display");    
                             if (cDisplay !== 'inline') break;

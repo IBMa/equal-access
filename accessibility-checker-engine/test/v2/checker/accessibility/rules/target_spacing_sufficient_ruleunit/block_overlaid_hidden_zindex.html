@@ -62,23 +62,7 @@
     ruleIds: ["target_spacing_sufficient"],
     results: [
     {
-            "ruleId": "element_tabbable_unobscured",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "potential_obscured",
-            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
               "PASS"
@@ -87,11 +71,11 @@
               "dom": "/html[1]/body[1]/div[2]",
               "aria": "/document[1]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
             "messageArgs": [],
             "apiArgs": [],
-            "category": "Accessibility"
+            "category": "Other"
           }
     ]
   }

@@ -63,9 +63,10 @@
             if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
                 return null;
 
-            console.log("node=" + nodeName +", id=" + ruleContext.getAttribute('id') +", inline=" +RPTUtil.isInline(ruleContext));
             if (RPTUtil.isInline(ruleContext))
                 return RulePass("pass_inline");   
+            
+            console.log("node=" + nodeName +", id=" + ruleContext.getAttribute('id') +", inline=" +RPTUtil.isInline(ruleContext));
             
             const bounds = context["dom"].bounds;    
             if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
@@ -119,33 +120,48 @@
                         z_index = "0";
                 }
 
-                // ignore if the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
+                // the target is entirely overlapped with the element
                 if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width) 
-                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index))
+                    && bnds.left + bnds.height >= bounds.left + bounds.width) {
+                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) { 
+                        // the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
                         return null;
-                    else {
+                    } else {
                         if (bnds.height >= 24 && bnds.width >= 24)
                             return RulePass("pass_sized");  
                         return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]);     
                     }
-                
-                // the element overlaps with target
+                } console.log("id=" + elem.getAttribute('id') +",zindex=" +zindex +", z_index=" + z_index +", before="+before);
+                // the element overlaps with the target
                 if (((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top))
-                   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left)))
-                      return null;
+                   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))) {
+                    // if the target and the element overlap entirely
+                    if (bnds.top >= bounds.top && bnds.left >= bounds.left && bnds.top + bnds.height <= bounds.top + bounds.height 
+                        && bnds.left + bnds.height <= bounds.left + bounds.width) {
+                        // if the target covers the element entirely    
+                        if (before ? parseInt(zindex) >= parseInt(z_index): parseInt(zindex) > parseInt(z_index))
+                            continue;
+                        else {
+                            // the element is smaller and covers portion of the target
+                            let gap = Math.max(bounds.left-bnds.left, bnds.left + bnds.width - (bounds.left+bounds.width), bounds.top-bnds.top, bnds.top + bnds.height- (bounds.top+bounds.height));
+                            if (gap >= 24)
+                                return RulePass("pass_sized"); 
+                            return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]); 
+                        }
+                    // TODO: more check to turn to violation  
+                    return RulePotential("potential_overlap");
 
-                else { // no overlap
+                } else { // no overlap
                     if (bnds.height >= 24 && bnds.width >= 24)
                         return RulePass("pass_sized"); 
 
-                    // the element is in the horizontally same row 
                     let disX = 24; 
                     let disY = 24;   
+                    // the element is in the horizontally same row 
                     if ((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top))
                         disX = Math.min( Math.abs(bounds.left - bnds.left), Math.abs(bounds.left - (bnds.left + bnds.width)),  Math.abs(bounds.left + bounds.width - (bnds.left + bnds.width)), Math.abs(bounds.left + bounds.width - bnds.left));
                     
-                    // the element is in the horizontally same column     
+                    // the element is in the vertically same column     
                     if ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))
                         disY = Math.min(Math.abs(bounds.top - bnds.top), Math.abs(bounds.top - (bnds.top + bnds.height)),  Math.abs(bounds.top + bounds.height - (bnds.top + bnds.height)), Math.abs(bounds.top + bounds.height - bnds.top));
                     
@@ -156,8 +172,7 @@
                     if (disY < minY) {
                         minY = disY;   
                         adjacentY = elem;
-                    }    
-
+                    }
                 }
             }
             
