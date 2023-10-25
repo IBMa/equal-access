@@ -465,61 +465,52 @@ export class RPTUtil {
     public static isInline(element) {
         if (!element) return false;
         
-        var uStyle =  getComputedStyle(element);
-        if (!uStyle) return false;
-        const udisplay = cStyle.getPropertyValue("display");  
-        // focus on inline element only
+        const style =  getComputedStyle(element);
+        if (!style) return false;
+        const udisplay = style.getPropertyValue("display");  
+        // inline element only
         if (udisplay !== 'inline')
             return false;
 
         const parent = element.parentElement;
         if (parent) {
-            var cStyle = getComputedStyle(parent);
-            var display = cStyle.getPropertyValue("display");    
+            const style = getComputedStyle(parent);
+            const display = style.getPropertyValue("display");    
+            // an inline element is inside a block. note <body> is a block element too
             if (display === 'block' || display === 'inline-block') {
-                let multipleInline = false;
                 let containText = false;
-                // more than one inline elements with text in the same line: <inline>text<target>, <target><inline>text, text<target><inline>
+                // one or more inline elements with text in the same line: text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
                 let walkNode = element.nextSibling;
-                while (walkNode) {
+                while (!containText && walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
                     if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                         containText = true;
                     } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        cStyle = getComputedStyle(walkNode);
-                        display = cStyle.getPropertyValue("display");    
-                        if (display !== 'inline') {
-                            multipleInline = false;
-                            break;
-                        }
-                        multipleInline = true;
+                        const cStyle = getComputedStyle(walkNode);
+                        const cDisplay = cStyle.getPropertyValue("display");    
+                        if (cDisplay !== 'inline') break;
                     }
                     walkNode = walkNode.nextSibling;    
                 } 
-
-                walkNode = element.previousSibling;
-                while (walkNode) {
-                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
-                        containText = true;
-                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        cStyle = getComputedStyle(walkNode);
-                        display = cStyle.getPropertyValue("display");    
-                        if (display !== 'inline') {
-                            multipleInline = false;
-                            break;
+                if (!containText) {
+                    walkNode = element.previousSibling;
+                    while (!containText && walkNode) {
+                        // note browsers insert Text nodes to represent whitespaces.
+                        if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                            containText = true;
+                        } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");    
+                            if (cDisplay !== 'inline') break;
                         }
-                        multipleInline = true;
+                        walkNode = walkNode.previousSibling;    
                     }
-                    walkNode = walkNode.previousSibling;    
                 } 
 
-                // an inline element is the only element in the line inside a block
-                // note browsers insert Text nodes to represent whitespaces.
-                if (parent.childNodes.length === 1)
-                    return false;
-                
-                // multiple inline elements are in the same line with text
-
-
+                // one or more inline elements are in the same line with text 
+                if (containText) return true;
+                // one or more inline elements are in the same inline without text
+                return false;
             }
         }
         // all other cases    
