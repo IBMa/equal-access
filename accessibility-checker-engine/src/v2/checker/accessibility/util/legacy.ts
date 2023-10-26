@@ -22,6 +22,7 @@ import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
 import { getDefinedStyles, getComputedStyle } from "../../../../v4/util/CSSUtil";
 import { DOMUtil } from "../../../dom/DOMUtil";
+import { DOMMapper } from "../../../dom/DOMMapper";
 
 export class RPTUtil {
 
@@ -519,6 +520,115 @@ export class RPTUtil {
         }
         // all other cases    
         return false;
+    }
+
+    /**
+     * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
+     * some element has default inline property, such as <span>, <a>
+     * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
+     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
+     * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
+     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
+     * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
+     * A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+     * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
+     * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
+     * 
+     * return: if it's inline element and { inline: true | false, violation: null | {node} } 
+     */
+    public static getInlineStatus(element) {
+        if (!element) return null;
+        
+        const style =  getComputedStyle(element);
+        if (!style) return null;
+
+        let status = { "inline": false, "violation": null }; 
+        const udisplay = style.getPropertyValue("display");  
+        // inline element only
+        if (udisplay !== 'inline')
+            return status;
+
+        const parent = element.parentElement;
+        if (parent) {
+            const mapper : DOMMapper = new DOMMapper();
+            const bounds = mapper.getBounds(element);
+            const style = getComputedStyle(parent);
+            const display = style.getPropertyValue("display");    
+            // an inline element is inside a block. note <body> is a block element too
+            if (display === 'block' || display === 'inline-block') {
+                let containText = false;
+                // one or more inline elements with text in the same line: text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
+                let walkNode = element.nextSibling;
+                let last = true;
+                while (!containText && walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (walkNode.nodeName.toLowerCase() === 'br') break;
+                        const cStyle = getComputedStyle(walkNode);
+                        const cDisplay = cStyle.getPropertyValue("display");   console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)); 
+                        if (cDisplay === 'inline')  { 
+                             last = false;
+                             if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                // check if the horizontal spacing is sufficient
+                                const bnds = mapper.getBounds(walkNode); console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)+", bnds=" + JSON.stringify(bnds));
+                                if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
+                                    status.violation = walkNode.nodeName.toLowerCase();
+                             }
+                        } else
+                           break;
+                    }
+                    walkNode = walkNode.nextSibling;    
+                }
+                // the element is the last inline element in the line, check against parent bounds
+                if (last && status.violation === null) {
+                    const bnds = mapper.getBounds(parent); 
+                    if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
+                            status.violation = parent.nodeName.toLowerCase();
+                }
+                if (!containText && status.violation === null) {
+                    walkNode = element.previousSibling;
+                    last = true;
+                    while (!containText && walkNode) {
+                        // note browsers insert Text nodes to represent whitespaces.
+                        if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                            containText = true;
+                        } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                            // special case: <br> is styled 'inline' by default, but change the line
+                            if (walkNode.nodeName.toLowerCase() === 'br') break;
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");    
+                            if (cDisplay === 'inline')  {
+                                last = false;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getBounds(walkNode);
+                                    if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width)  < 24) {
+                                        status.violation = (status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase());
+                                    }    
+                                }
+                           } else
+                              break;
+                        }
+                        walkNode = walkNode.previousSibling;    
+                    }
+                } 
+                // the element is the last inline element in the line, check against parent bounds
+                if (last) {
+                    const bnds = mapper.getBounds(parent); 
+                    if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width) < 24)
+                            status.violation = parent.nodeName.toLowerCase();
+                }
+
+                // one or more inline elements are in the same line with text 
+                if (containText) status.inline = true;
+                return status;
+            }
+        }
+        // all other cases    
+        return null;
     }
 
     public static tabIndexLEZero(elem) {

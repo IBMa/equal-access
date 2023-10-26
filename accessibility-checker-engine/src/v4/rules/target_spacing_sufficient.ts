@@ -29,7 +29,8 @@
                 "pass_sized": "target_spacing_sufficient.html",
                 "pass_inline": "target_spacing_sufficient.html",
                 "pass_default": "target_spacing_sufficient.html",
-                "violation": "target_spacing_sufficient.html",
+                "violation_spacing": "target_spacing_sufficient.html",
+                "violation_inline": "target_spacing_sufficient.html",
                 "potential_overlap": "target_spacing_sufficient.html"
             }
         },
@@ -40,7 +41,8 @@
                 "pass_sized": "The target’s size is more than 24 CSS pixels",
                 "pass_inline": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
                 "pass_default": "The size of the target is determined by the user agent and is not modified by the author",
-                "violation": "The center of the target '{0}' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target '{1}'",
+                "violation_spacing": "The center of the target '{0}' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target '{1}'",
+                "recommendation_inline": "Confirm the inline target '{0}' is sufficiently spaced from other inline target '{1}'",
                 "potential_overlap": "Ensure the overlapped element '{0}' meets a minimum target size or has sufficient spacing from the overlapping element '{1}'"
             }
         },
@@ -48,7 +50,15 @@
             id: ["WCAG_2_2"],
             num: ["2.5.8"],
             level: eRulePolicy.VIOLATION,
-            toolkitLevel: eToolkitLevel.LEVEL_THREE
+            toolkitLevel: eToolkitLevel.LEVEL_THREE,
+            reasonCodes: ["pass_spacing","pass_sized", "pass_inline","pass_default", "violation_spacing", "violation_overlap"]
+        },
+        {
+            id: ["WCAG_2_2"],
+            num: ["2.5.8"],
+            level: eRulePolicy.RECOMMENDATION,
+            toolkitLevel: eToolkitLevel.LEVEL_THREE,
+            reasonCodes: ["recommendation_inline"]
         }],
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
@@ -63,22 +73,16 @@
             if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
                 return null;
 
-            const bounds = context["dom"].bounds;    
-            if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
-                return null;
-            
-            if (RPTUtil.isInline(ruleContext)) {
-                // case 1: check horizontal spacing only for inline element, ignore height
-                if (bounds['width'] >= 24)
-                    return RulePass("pass_inline"); 
-                
-                if (Math.round(bounds.width/2) + minX < 12 || Math.round(bounds.height/2) + minY < 12) {
-                    if (Math.round(bounds.width/2) + minX < Math.round(bounds.height/2) + minY)
-                        return RuleFail("violation", [nodeName, adjacentX.nodeName.toLowerCase()]); 
-                    return RuleFail("violation", [nodeName, adjacentY.nodeName.toLowerCase()]);
-                }  
+            const status = RPTUtil.getInlineStatus(ruleContext); console.log("node id=" + ruleContext.getAttribute("id") +", status=" + JSON.stringify(status));
+            if (status == null) return null;
+            if (status.inline) {
+                if (status.violation == null)
+                    return RulePass("pass_inline");
+                else
+                    // case 1: inline element is too close horizontally
+                    return RulePass("recommendation_inline", [nodeName, status.violation]);
             }
-            
+
             var doc = ruleContext.ownerDocument;
             if (!doc) {
                 return null;
@@ -95,7 +99,12 @@
             var elems = doc.querySelectorAll('body *:not(script)');
             if (!elems || elems.length == 0)
                 return;
-             
+            
+            const bounds = context["dom"].bounds;    
+            if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
+                return null;
+                
+                    
             const mapper : DOMMapper = new DOMMapper();
             let before = true;
             let minX = 24;
@@ -139,7 +148,7 @@
                     } else {
                         if (bounds.height >= 24 && bounds.width >= 24)
                             return RulePass("pass_sized");  
-                        return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]);     
+                        return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]);     
                     }
                 } 
                 
@@ -150,7 +159,7 @@
                     if (before ? parseInt(zindex) > parseInt(z_index): parseInt(zindex) >= parseInt(z_index)) {
                         if (bnds.height >= 24 && bnds.width >= 24)
                             return RulePass("pass_sized");  
-                        return RuleFail("violation", [nodeName, elem.nodeName.toLowerCase()]); 
+                        return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]); 
                     } else
                         continue;
                 }
@@ -191,8 +200,8 @@
             // case 6: no overlap + insufficient target size. check spacing    
             if (Math.round(bounds.width/2) + minX < 12 || Math.round(bounds.height/2) + minY < 12) {
                 if (Math.round(bounds.width/2) + minX < Math.round(bounds.height/2) + minY)
-                    return RuleFail("violation", [nodeName, adjacentX.nodeName.toLowerCase()]); 
-                return RuleFail("violation", [nodeName, adjacentY.nodeName.toLowerCase()]);
+                    return RuleFail("violation_spacing", [nodeName, adjacentX.nodeName.toLowerCase()]); 
+                return RuleFail("violation_spacing", [nodeName, adjacentY.nodeName.toLowerCase()]);
             }
             
             // ignore all other cases
