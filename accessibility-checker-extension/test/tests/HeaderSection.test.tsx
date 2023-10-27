@@ -35,29 +35,31 @@ describe("HeaderSection", () => {
             
             button!.click();
         });
+    });
   
     // Test the setting button and check that the option page comes up. 
-    test("Second button is settings", async () => {
-        let button = document.body.querySelectorAll("button")[1];
-        let labelId = button?.getAttribute("aria-labelledby") || "";
-        let label = document.getElementById(labelId);
-        expect(label?.textContent).toEqual("Settings");
-     });
+    describe("Second button", () => {
+        test("Label is 'Settings'", async () => {
+            let button = document.body.querySelectorAll("button")[1];
+            let labelId = button?.getAttribute("aria-labelledby") || "";
+            let label = document.getElementById(labelId);
+            expect(label?.textContent).toEqual("Settings");
+        });
 
-    test("Click opens options.html", async () => {
-        let button = document.body.querySelector("button");
-        // Expect click of the help button to open quickGuideAC.html
-        window.chrome = { runtime: {
-                getURL: (url: string) => url
-        } } as any
+        test("Click opens options.html", async () => {
+            let button = document.body.querySelector("button");
+            // Expect click of the help button to open quickGuideAC.html
+            window.chrome = { runtime: {
+                    getURL: (url: string) => url
+            } } as any
 
-        (window as any).open = (url: string, target: string) => {
-            expect(url).toEqual("options.html");
-            expect(target).toEqual("_blank");
-        };
-        
-        button!.click();
-    });
+            (window as any).open = (url: string, target: string) => {
+                expect(url).toEqual("options.html");
+                expect(target).toEqual("_blank");
+            };
+            
+            button!.click();
+        });
 
     
     });
