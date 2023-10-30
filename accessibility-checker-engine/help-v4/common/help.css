@@ -38,7 +38,7 @@ bx-list-item>code, p>code, td>code {
 }
 
 .toolHelp .toolHead h3 {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -46,7 +46,7 @@ bx-list-item>code, p>code, td>code {
 }
 
 .toolHelp .toolHead .issueLevel {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -54,7 +54,7 @@ bx-list-item>code, p>code, td>code {
 }
 
 .toolHelp .toolHead #ruleMessage {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -64,7 +64,7 @@ bx-list-item>code, p>code, td>code {
 }
 
 .toolHelp .toolHead #groupLabel {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -73,7 +73,7 @@ bx-list-item>code, p>code, td>code {
 
 /* productive-heading-03 */
 .toolHelp .toolMain h3 {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -88,7 +88,7 @@ bx-list-item>code, p>code, td>code {
 
 /* productive-heading-03 */
 .toolHelp .toolSide h3 {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -101,7 +101,7 @@ bx-list-item>code, p>code, td>code {
     }
 }
 body {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
     color: var(--cds-text-primary);
     background-color: var(--cds-ui-background);
 }
@@ -114,7 +114,7 @@ body {
 }
 
 .toolHelp p {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
 font-style: normal;
 font-weight: 400;
 font-size: 14px;
@@ -156,7 +156,7 @@ letter-spacing: 0.16px;
 
 .toolHelp .toolSide {
     padding: 16px 16px 16px 32px;
-    background-color: var(--cds-ui-background);;
+    background-color: var(--cds-ui-background);
     color: var(--cds-text-primary);
     border-top: solid var(--cds-text-primary) 1px;
 }
@@ -192,4 +192,77 @@ bx-code-snippet[type="multi"]::after {
 
 #ruleInfo p {
     font-size: 14px;
+}
+
+mark-down table tbody tr:hover {
+    background: var(--cds-layer-hover);
+}
+mark-down table tbody tr:hover td, mark-down table tbody tr:hover th {
+    background: var(--cds-layer-hover);
+    -webkit-border-after: 1px solid var(--cds-layer-hover);
+    border-block-end: 1px solid var(--cds-layer-hover);
+    -webkit-border-before: 1px solid var(--cds-layer-hover);
+    border-block-start: 1px solid var(--cds-layer-hover);
+    color: var(--cds-text-primary,#161616);
+}
+
+mark-down table {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+@media (min-width: 66rem) {
+    mark-down table {
+        max-width: 66.66%;
+    }
+}
+
+mark-down table thead {
+    font-size: var(--cds-heading-compact-01-font-size,0.875rem);
+    font-weight: var(--cds-heading-compact-01-font-weight,600);
+    line-height: var(--cds-heading-compact-01-line-height,1.28572);
+    letter-spacing: var(--cds-heading-compact-01-letter-spacing,0.16px);
+    background-color: var(--cds-layer-accent);
+}
+
+mark-down table tr {
+    border: none;
+    block-size: 3rem;
+    inline-size: 100%;
+}
+
+mark-down table th {
+    background-color: var(--cds-layer-accent);
+    color: var(--cds-text-primary,#161616);
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+}
+
+mark-down table td, mark-down table th {
+    text-align: start;
+    vertical-align: middle;
+}
+
+mark-down table tbody {
+    font-size: var(--cds-body-compact-01-font-size,0.875rem);
+    font-weight: var(--cds-body-compact-01-font-weight,400);
+    line-height: var(--cds-body-compact-01-line-height,1.28572);
+    letter-spacing: var(--cds-body-compact-01-letter-spacing,0.16px);
+    background-color: var(--cds-layer);
+    inline-size: 100%;
+}
+
+mark-down table td, mark-down table tbody th {
+    background: var(--cds-layer);
+    -webkit-border-after: 1px solid var(--cds-border-subtle);
+    border-block-end: 1px solid var(--cds-border-subtle);
+    -webkit-border-before: 1px solid var(--cds-layer);
+    border-block-start: 1px solid var(--cds-layer);
+    color: var(--cds-text-secondary,#525252);
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
 }
