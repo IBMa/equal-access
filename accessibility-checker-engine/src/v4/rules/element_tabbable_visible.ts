@@ -35,7 +35,7 @@ export let element_tabbable_visible: Rule = {
         }
     },
     rulesets: [{
-        id: ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        id: ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         num: ["2.4.7"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
