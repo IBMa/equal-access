@@ -47,8 +47,8 @@ describe("HeaderSection", () => {
         });
 
         test("Click opens options.html", async () => {
-            let button = document.body.querySelector("button");
-            // Expect click of the help button to open quickGuideAC.html
+            let button = document.body.querySelectorAll("button")[1];
+            // Expect click of the help button to open options.html
             window.chrome = { runtime: {
                     getURL: (url: string) => url
             } } as any
