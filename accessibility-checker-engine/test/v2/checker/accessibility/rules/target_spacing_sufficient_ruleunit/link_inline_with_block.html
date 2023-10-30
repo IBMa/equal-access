@@ -6,7 +6,8 @@
 </head>
 <body>
   
-    <div>This is link <a id='x' href="#" style="display:inline;">x</a> in text. <br> <a id='y'  href="#" style="display:inline;">This is link y</a> <br> in text.</div>
+    <div>This is link <a id='x' href="#" style="display:inline;">x</a> in text. <br> <a id='y'  href="#" style="display:inline;">This is link y</a> <br> in text.
+    </div>
     <p>
     <p>
       
@@ -14,7 +15,8 @@
       <div style="width:110px;line-height:50px;">&nbsp;<a  id='z1' href="#" style="display:inline;">z</a><a  id='v1' href="#" style="display:inline;">v</a></div>  
       <div style="width:110px;line-height:50px;">&nbsp;&nbsp;<a id='z2' href="#" style="display:inline;">z</a><a id='v2' href="#" style="display:inline;">v</a>.</div>
       <div style="width:110px;line-height:50px;">&nbsp;<a  id='z3' href="#" style="display:inline;">z</a>&nbsp;.&nbsp;<a  id='v3'href="#" style="display:inline;">v</a></div>
-      <div style="width:110px;line-height:50px;">&nbsp;&nbsp;.&nbsp;&nbsp;<a  id='z4' href="#" style="display:inline;">z</a>&nbsp;&nbsp;<a  id='v4' href="#" style="display:inline;">v</a>
+      <div style="width:110px;line-height:50px;">&nbsp;&nbsp;.&nbsp;&nbsp;<a  id='z4' href="#" style="display:inline;">z</a><a  id='v4' href="#" style="display:inline;">v</a></div>
+      <div style="width:110px;line-height:50px;"><a  id='z5' href="#" style="display:inline;">z</a>.<a  id='v5' href="#" style="display:inline;">v</a></div>
     
   <script>
     UnitTest = {
@@ -27,7 +29,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]/a[1]",
+              "dom": "/html[1]/body[1]/div[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
             "reasonId": "pass_inline",
@@ -43,8 +45,24 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]/a[2]",
+              "dom": "/html[1]/body[1]/div[1]/a[2]",
               "aria": "/document[1]/link[2]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/a[1]",
+              "aria": "/document[1]/link[3]"
             },
             "reasonId": "pass_spacing",
             "message": "The target's spacing from other targets is more than minimum",
@@ -56,31 +74,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[1]/a[1]",
-              "aria": "/document[1]/link[3]"
-            },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Other"
-          },
-          {
-            "ruleId": "target_spacing_sufficient",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[2]/a[1]",
+              "dom": "/html[1]/body[1]/div[3]/a[1]",
               "aria": "/document[1]/link[4]"
             },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
+            "reasonId": "violation_spacing",
+            "message": "The center of the target 'a' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           },
@@ -88,15 +93,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[2]/a[2]",
+              "dom": "/html[1]/body[1]/div[3]/a[2]",
               "aria": "/document[1]/link[5]"
             },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
+            "reasonId": "violation_spacing",
+            "message": "The center of the target 'a' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           },
@@ -107,12 +115,15 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[3]/a[1]",
+              "dom": "/html[1]/body[1]/div[4]/a[1]",
               "aria": "/document[1]/link[6]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-            "messageArgs": [],
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           },
@@ -123,12 +134,15 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[3]/a[2]",
+              "dom": "/html[1]/body[1]/div[4]/a[2]",
               "aria": "/document[1]/link[7]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-            "messageArgs": [],
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           },
@@ -139,7 +153,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[4]/a[1]",
+              "dom": "/html[1]/body[1]/div[5]/a[1]",
               "aria": "/document[1]/link[8]"
             },
             "reasonId": "pass_inline",
@@ -155,7 +169,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[4]/a[2]",
+              "dom": "/html[1]/body[1]/div[5]/a[2]",
               "aria": "/document[1]/link[9]"
             },
             "reasonId": "pass_inline",
@@ -171,12 +185,15 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[5]/a[1]",
+              "dom": "/html[1]/body[1]/div[6]/a[1]",
               "aria": "/document[1]/link[10]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-            "messageArgs": [],
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           },
@@ -187,12 +204,53 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]/div[5]/a[2]",
+              "dom": "/html[1]/body[1]/div[6]/a[2]",
               "aria": "/document[1]/link[11]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-            "messageArgs": [],
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[7]/a[1]",
+              "aria": "/document[1]/link[12]"
+            },
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[7]/a[2]",
+              "aria": "/document[1]/link[13]"
+            },
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'a' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Other"
           }

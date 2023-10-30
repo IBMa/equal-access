@@ -74,11 +74,6 @@
   <button class='btn2' value='venenatis'></button> 
   gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
   <button class='btn3' value='venenatis'></button> 
-<h2>display: inline-block</h2>
-<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. <span class="b">Aliquam</span> <span class="b">venenatis</span> gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
-
-<h2>display: block</h2>
-<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. <span class="c">Aliquam</span> <span class="c">venenatis</span> gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. </div>
 
   
 
@@ -87,36 +82,68 @@
     ruleIds: ["target_spacing_sufficient"],
     results: [
     {
-            "ruleId": "element_tabbable_unobscured",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "potential_obscured",
-            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/div[1]/a[1]",
+              "aria": "/document[1]/link[1]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
             "messageArgs": [],
             "apiArgs": [],
-            "category": "Accessibility"
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
           }
     ]
   }

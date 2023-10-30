@@ -40,38 +40,213 @@
     UnitTest = {
       ruleIds: ["target_spacing_sufficient"],
       results: [
-        {
-          "ruleId": "input_label_exists",
-          "value": [
-            "INFORMATION",
-            "PASS"
-          ],
-          "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
-            "aria": "/document[1]/main[1]/combobox[1]"
+      {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
           },
-          "reasonId": "Pass_0",
-          "message": "Rule Passed",
-          "messageArgs": [],
-          "apiArgs": [],
-          "category": "Accessibility"
-        },
-        {
-          "ruleId": "widget_tabbable_exists",
-          "value": [
-            "INFORMATION",
-            "PASS"
-          ],
-          "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
-            "aria": "/document[1]/main[1]/combobox[1]"
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[1]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[1]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'option' meets a minimum target size or has sufficient spacing from the overlapping element 'option'",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
           },
-          "reasonId": "pass",
-          "message": "Rule Passed",
-          "messageArgs": [],
-          "apiArgs": [],
-          "category": "Accessibility"
-        }
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[2]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[2]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'option' meets a minimum target size or has sufficient spacing from the overlapping element 'option'",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[3]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[3]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'option' meets a minimum target size or has sufficient spacing from the overlapping element 'option'",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[4]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[4]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'option' meets a minimum target size or has sufficient spacing from the overlapping element 'option'",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[5]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'option' meets a minimum target size or has sufficient spacing from the overlapping element 'option'",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[2]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[1]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[2]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[2]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[3]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[3]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[4]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[4]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[5]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[5]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          }
       ]
     };
   </script>

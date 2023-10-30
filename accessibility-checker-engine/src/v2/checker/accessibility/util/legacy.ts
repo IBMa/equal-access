@@ -557,73 +557,81 @@ export class RPTUtil {
             // an inline element is inside a block. note <body> is a block element too
             if (display === 'block' || display === 'inline-block') {
                 let containText = false;
-                // one or more inline elements with text in the same line: text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
+                // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
                 let walkNode = element.nextSibling;
                 let last = true;
-                while (!containText && walkNode) {
+                while (walkNode) {
                     // note browsers insert Text nodes to represent whitespaces.
-                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                         containText = true;
                     } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        // special case: <br> is styled 'inline' by default, but change the line
-                        if (walkNode.nodeName.toLowerCase() === 'br') break;
-                        const cStyle = getComputedStyle(walkNode);
-                        const cDisplay = cStyle.getPropertyValue("display");   console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)); 
-                        if (cDisplay === 'inline')  { 
-                             last = false;
-                             if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
-                                // check if the horizontal spacing is sufficient
-                                const bnds = mapper.getBounds(walkNode); console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)+", bnds=" + JSON.stringify(bnds));
-                                if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
-                                    status.violation = walkNode.nodeName.toLowerCase();
-                             }
-                        } else
-                           break;
+                        if (status.violation === null) {
+                            // special case: <br> is styled 'inline' by default, but change the line
+                            if (walkNode.nodeName.toLowerCase() === 'br') break;
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");   console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)); 
+                            if (cDisplay === 'inline')  { 
+                                last = false;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getBounds(walkNode); console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)+", bnds=" + JSON.stringify(bnds));
+                                    if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
+                                        status.violation = walkNode.nodeName.toLowerCase();
+                                }
+                            } else
+                                break;
+                        }   
                     }
                     walkNode = walkNode.nextSibling;    
                 }
-                // the element is the last inline element in the line, check against parent bounds
-                if (last && status.violation === null) {
-                    const bnds = mapper.getBounds(parent); 
-                    if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
-                            status.violation = parent.nodeName.toLowerCase();
-                }
-                if (!containText && status.violation === null) {
-                    walkNode = element.previousSibling;
-                    last = true;
-                    while (!containText && walkNode) {
-                        // note browsers insert Text nodes to represent whitespaces.
-                        if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
-                            containText = true;
-                        } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                
+                walkNode = element.previousSibling;
+                let first = true;
+                let checked = false;
+                while (walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        if (!checked) {
                             // special case: <br> is styled 'inline' by default, but change the line
                             if (walkNode.nodeName.toLowerCase() === 'br') break;
                             const cStyle = getComputedStyle(walkNode);
                             const cDisplay = cStyle.getPropertyValue("display");    
                             if (cDisplay === 'inline')  {
-                                last = false;
+                                first = false;
+                                checked = true;
                                 if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
                                     // check if the horizontal spacing is sufficient
                                     const bnds = mapper.getBounds(walkNode);
                                     if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width)  < 24) {
-                                        status.violation = (status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase());
+                                        status.violation = status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase();
                                     }    
                                 }
-                           } else
-                              break;
-                        }
-                        walkNode = walkNode.previousSibling;    
+                            } else
+                                break;
+                        }    
                     }
-                } 
-                // the element is the last inline element in the line, check against parent bounds
-                if (last) {
-                    const bnds = mapper.getBounds(parent); 
-                    if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width) < 24)
-                            status.violation = parent.nodeName.toLowerCase();
+                    walkNode = walkNode.previousSibling;    
                 }
-
+                
                 // one or more inline elements are in the same line with text 
-                if (containText) status.inline = true;
+                if (containText) {
+                    status.inline = true;
+                    
+                    const bnds = mapper.getBounds(parent); 
+                    // the element is the last inline element in the line, check against parent bounds
+                    if (last) {
+                        if (Math.round(bounds.width/2) + bnds.left+bnds.width - (bounds.left + bounds.width) < 24)
+                            status.violation = status.violation === null ? parent.nodeName.toLowerCase() : status.violation + ", " + parent.nodeName.toLowerCase();
+                    
+                    } 
+                    // the element is the last inline element in the line, check against parent bounds
+                    if (first && checked) {
+                        if (Math.round(bounds.width/2) + bounds.left - bnds.left < 24)
+                            status.violation = status.violation === null ? parent.nodeName.toLowerCase() : status.violation + ", " + parent.nodeName.toLowerCase();
+                    }
+                }
                 return status;
             }
         }
