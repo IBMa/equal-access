@@ -76,10 +76,14 @@ Help integrates the following:
   * Element location
 * What to do
   * Examples
-* About the requirement
-* Who does this affects?
+* About this requirement
+* Who does this affect?
 
-Mappings of the latest rules to the standards, the individual failure messages, and `links to the Help files` are listed in the published  [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
+### Rule sets and Mappings
+
+Rule sets such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, etc., and mappings of the latest rules to the standards (Requirement and Rule IDs), the individual failure messages (by Reasons ID), and links to the Help files are listed in the published  [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
+`npm run build:help` in the `.../accessibility-checker-engine` directory creates `dist/help/rules.html` that can be reviewed. 
+Each build creates the `Rules listing` artifact in **Actions** that can be reviewed prior to deployment.
 
 ## Test cases
 
@@ -143,15 +147,15 @@ Note: Rule changes are not automatically rebuilt. You will have to kill the rule
 
 ## Summary of steps to implement/update and test a new rule
 
-* Create a rule id for a new rule. 
+* Create a rule id for a new rule, using the 3-word format with underscores: `type_property_test`. 
 * Create the help file in [help-v4](help-v4).
-* Create the rule implementation in [src/v4/rules](src/v4/rules). The rule implementation includes the rule context, message, help, ruleset mappings, logic and outcome.
+* Create the rule implementation in [src/v4/rules](src/v4/rules). The rule implementation includes the rule context, message, help, ruleset mappings, logic, and outcome.
 * Create test cases for the rule in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules).
 * Test the rules with the test cases. You may run the test cases locally, or run with the local rule server. 
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+If you think you've found a bug, or have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 
