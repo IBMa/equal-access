@@ -47,7 +47,7 @@ export let aria_content_in_landmark: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     },
     {
-        "id": ["WCAG_2_1", "WCAG_2_0"],
+        "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.4.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE

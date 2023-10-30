@@ -18,6 +18,9 @@
     const path = require("path");
     let webpackConfig = require("./webpack-debug.config");
     delete webpackConfig.output;
+    webpackConfig.module.rules[0].options = {
+        configFile: "tsconfig-nodeclare.json"
+    }
     webpackConfig.module.rules.push({
         test: /\.ts$/,
         exclude: [path.resolve(__dirname, "test")],

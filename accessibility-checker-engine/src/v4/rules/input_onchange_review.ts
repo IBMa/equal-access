@@ -38,7 +38,7 @@ export let input_onchange_review: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["3.2.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
