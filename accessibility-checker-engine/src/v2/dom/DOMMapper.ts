@@ -36,7 +36,12 @@ export class DOMMapper extends CommonMapper {
         return retVal;
     }
 
-    getBounds(node: Node) : Bounds {
+    /**
+     * get scaled bounds for screenshot etc. adjusted for devicePixelRatio and scroll
+     * @param node 
+     * @returns 
+     */
+    getAdjustedBounds(node: Node) : Bounds {
         if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             let adjustment = 1;
             if (node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.devicePixelRatio) {
@@ -53,6 +58,31 @@ export class DOMMapper extends CommonMapper {
                     "top": Math.ceil((bounds.top + scrollY) * adjustment),
                     "height": Math.ceil(bounds.height * adjustment),
                     "width": Math.ceil(bounds.width * adjustment)
+                };
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * get real CSS bounds in css pixels, adjusted for scroll only
+     * @param node 
+     * @returns 
+     */
+    getBounds(node: Node) : Bounds {
+        if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
+            const bounds = (node as Element).getBoundingClientRect();
+    
+            // adjusted for scroll if any
+            if (bounds) {
+                let scrollX = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollX || 0;
+                let scrollY = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollY || 0;
+                return {
+                    "left": Math.ceil(bounds.left + scrollX),
+                    "top": Math.ceil(bounds.top + scrollY),
+                    "height": Math.ceil(bounds.height),
+                    "width": Math.ceil(bounds.width)
                 };
             }
         }
