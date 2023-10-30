@@ -29,7 +29,7 @@ bx-list-item>code, p>code, td>code {
     position: relative;
 }
 
-.toolhelp a {
+.toolHelp a {
     color: var(--cds-link-primary)
 }
 
