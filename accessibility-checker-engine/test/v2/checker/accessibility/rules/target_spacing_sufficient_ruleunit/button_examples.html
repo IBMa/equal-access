@@ -22,62 +22,17 @@
 
 <head>
 	<title>RPT Test Suite</title>
-  <style>
-    a.link {
-      display: inline; /* the default for a */
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-    }
-
-    button.btn {
-      display: inline;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-    }
-
-    button.btn2 {
-      display: inline-block;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-      border: 1px solid blue;    
-      background-color: yellow; 
-    }
-
-    button.btn3 {
-      display: inline;
-      
-    }
-
-    p {
-      display: block;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-      border: 1px solid blue;    
-      background-color: yellow; 
-    }
-  </style>
+  
 </head>
 
 <body>
 
-  <h1>The display Property</h1>
+  <button style="font-size: 24px">Submit</button>
+  <button>+</button>
+  <button style="margin-left: 10px">Adjacent Target</button>
 
-<h2>display: inline</h2>
-<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. 
-  <a id='a' class='link' href="google.com">Aliquam</a> 
-  <button id='button1' class='btn' value='venenatis'></button> 
-  gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. 
-</div>
-<div>
-  <button id='button2' class='btn2' value='venenatis'></button> 
-  gravida nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet. 
-  <button id='button3' class='btn3' value='venenatis'></button> 
-</div>
-  
+  <button id="target">+</button>
+  <button style="margin-left: -10px">Adjacent Target</button>
 
 <script>
   UnitTest = {
@@ -90,23 +45,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/a[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Other"
-          },
-          {
-            "ruleId": "target_spacing_sufficient",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/button[1]",
+              "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
             "reasonId": "pass_sized",
@@ -122,11 +61,11 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]/button[1]",
+              "dom": "/html[1]/body[1]/button[2]",
               "aria": "/document[1]/button[2]"
             },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Other"
@@ -138,12 +77,47 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]/button[2]",
+              "dom": "/html[1]/body[1]/button[3]",
               "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[4]"
             },
             "reasonId": "pass_default",
             "message": "The size of the target is determined by the user agent and is not modified by the author",
             "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[5]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'button' meets a minimum target size or has sufficient spacing from the overlapping element 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
             "apiArgs": [],
             "category": "Other"
           }

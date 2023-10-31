@@ -422,6 +422,7 @@ export class RPTUtil {
 
     /**
      * a target is en element that accept a pointer action (click or touch)
+     * 
      */
     public static isTarget(element) {
         if (!element) return false;
@@ -451,75 +452,24 @@ export class RPTUtil {
     }
 
     /**
-     * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
-     * some element has default inline property, such as <span>, <a>
-     * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
-     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
-     * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
-     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
-     * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
-     * A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
-     * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
-     * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
-     * 
+     * a target is en element that accept a pointer action (click or touch)
+     * a target is a browser default if it's a native widget (no user defined role) without user style  
      */
-    public static isInline(element) {
+    public static isTargetBrowserDefault(element) {
         if (!element) return false;
         
-        const style =  getComputedStyle(element);
-        if (!style) return false;
-        const udisplay = style.getPropertyValue("display");  
-        // inline element only
-        if (udisplay !== 'inline')
+        // user defained widget
+        const roles = RPTUtil.getRoles(element, false); 
+        if (roles && roles.length > 0)
             return false;
 
-        const parent = element.parentElement;
-        if (parent) {
-            const style = getComputedStyle(parent);
-            const display = style.getPropertyValue("display");    
-            // an inline element is inside a block. note <body> is a block element too
-            if (display === 'block' || display === 'inline-block') {
-                let containText = false;
-                // one or more inline elements with text in the same line: text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
-                let walkNode = element.nextSibling;
-                while (!containText && walkNode) {
-                    // note browsers insert Text nodes to represent whitespaces.
-                    if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
-                        containText = true;
-                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        // special case: <br> is styled 'inline' by default, but change the line
-                        if (walkNode.nodeName.toLowerCase() === 'br') break;
-                        const cStyle = getComputedStyle(walkNode);
-                        const cDisplay = cStyle.getPropertyValue("display");    
-                        if (cDisplay !== 'inline') break;
-                    }
-                    walkNode = walkNode.nextSibling;    
-                } 
-                if (!containText) {
-                    walkNode = element.previousSibling;
-                    while (!containText && walkNode) {
-                        // note browsers insert Text nodes to represent whitespaces.
-                        if (walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
-                            containText = true;
-                        } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                            // special case: <br> is styled 'inline' by default, but change the line
-                            if (walkNode.nodeName.toLowerCase() === 'br') break;
-                            const cStyle = getComputedStyle(walkNode);
-                            const cDisplay = cStyle.getPropertyValue("display");    
-                            if (cDisplay !== 'inline') break;
-                        }
-                        walkNode = walkNode.previousSibling;    
-                    }
-                } 
-
-                // one or more inline elements are in the same line with text 
-                if (containText) return true;
-                // one or more inline elements are in the same inline without text
-                return false;
-            }
-        }
-        // all other cases    
-        return false;
+        // no user style to space control size, including use of font    
+        const styles = getDefinedStyles(element);
+        if (styles['line-height'] || styles['height'] || styles['width'] || styles['min-height'] || styles['min-width'] 
+           || styles['font-size'] || styles['margin-top'] || styles['margin-bottom'] || styles['margin-left'] || styles['margin-right']) 
+            return false;
+            
+        return true;
     }
 
     /**
@@ -534,7 +484,7 @@ export class RPTUtil {
      * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
      * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
      * 
-     * return: if it's inline element and { inline: true | false, violation: null | {node} } 
+     * return: if it's inline element and { inline: true | false, text: true | false, violation: null | {node} } 
      */
     public static getInlineStatus(element) {
         if (!element) return null;
@@ -542,12 +492,13 @@ export class RPTUtil {
         const style =  getComputedStyle(element);
         if (!style) return null;
 
-        let status = { "inline": false, "violation": null }; 
+        let status = { "inline": false, "text": false, "violation": null }; 
         const udisplay = style.getPropertyValue("display");  
         // inline element only
         if (udisplay !== 'inline')
             return status;
 
+        status.inline = true;    
         const parent = element.parentElement;
         if (parent) {
             const mapper : DOMMapper = new DOMMapper();
@@ -565,9 +516,8 @@ export class RPTUtil {
                     if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                         containText = true;
                     } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        if (status.violation === null) {
-                            // special case: <br> is styled 'inline' by default, but change the line
-                            if (walkNode.nodeName.toLowerCase() === 'br') break;
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (status.violation === null && walkNode.nodeName.toLowerCase() !== 'br') {
                             const cStyle = getComputedStyle(walkNode);
                             const cDisplay = cStyle.getPropertyValue("display");   console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)); 
                             if (cDisplay === 'inline')  { 
@@ -593,9 +543,8 @@ export class RPTUtil {
                     if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
                         containText = true;
                     } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        if (!checked) {
-                            // special case: <br> is styled 'inline' by default, but change the line
-                            if (walkNode.nodeName.toLowerCase() === 'br') break;
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (!checked && walkNode.nodeName.toLowerCase() !== 'br') {
                             const cStyle = getComputedStyle(walkNode);
                             const cDisplay = cStyle.getPropertyValue("display");    
                             if (cDisplay === 'inline')  {
@@ -617,9 +566,9 @@ export class RPTUtil {
                 
                 // one or more inline elements are in the same line with text 
                 if (containText) {
-                    status.inline = true;
+                    status.text = true;
                     
-                    const bnds = mapper.getBounds(parent); 
+                    /**const bnds = mapper.getBounds(parent); 
                     // the element is the last inline element in the line, check against parent bounds
                     if (last) {
                         if (Math.round(bounds.width/2) + bnds.left+bnds.width - (bounds.left + bounds.width) < 24)
@@ -630,13 +579,17 @@ export class RPTUtil {
                     if (first && checked) {
                         if (Math.round(bounds.width/2) + bounds.left - bnds.left < 24)
                             status.violation = status.violation === null ? parent.nodeName.toLowerCase() : status.violation + ", " + parent.nodeName.toLowerCase();
-                    }
+                    }*/
                 }
                 return status;
+            } else {
+                //parent is inline element
+                if (!RPTUtil.isInnerTextOnlyEmpty(parent))
+                    status.text = true;
             }
         }
         // all other cases    
-        return null;
+        return status;
     }
 
     public static tabIndexLEZero(elem) {

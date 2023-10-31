@@ -108,7 +108,8 @@ button.standalone1 {
 
   <button id="third"  class="standalone1" style='margin-top:200px'>5</button>
   <button id="forth" class="standalone1" style='margin-left:-10px'>6</button>
-  <div>
+  
+<div>
   <button id="fifth"  class="standalone2" style='margin-top:20px' >7</button>
   <button id="sixth" class="standalone2" style='margin-top:10px' >8</button>
 </div>
@@ -117,44 +118,222 @@ button.standalone1 {
   <button id="eighth" class="standalone3" style='margin-top:10px'>10</button>
 </div>
 <div>
-  <button id="nineth"  class="standalone3" style='margin-top:20px; margin-left:20px;'>10</button>
-  <button id="tenth" class="standalone3" >11</button>
+  <button id="nineth"  class="standalone3" style='margin-top:20px; margin-left:20px;'>11</button>
+  <button id="tenth" class="standalone3" style='margin-left:-1px;'>12</button>
 </div>
 <script>
   UnitTest = {
     ruleIds: ["target_spacing_sufficient"],
     results: [
     {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
-            "messageArgs": [],
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'button' meets a minimum target size or has sufficient spacing from the overlapping element 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
             "apiArgs": [],
-            "category": "Accessibility"
+            "category": "Other"
           },
           {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
             "messageArgs": [],
             "apiArgs": [],
-            "category": "Accessibility"
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'button' meets a minimum target size or has sufficient spacing from the overlapping element 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[5]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'button' meets a minimum target size or has sufficient spacing from the overlapping element 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[6]",
+              "aria": "/document[1]/button[6]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'button' meets a minimum target size or has sufficient spacing from the overlapping element 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[1]",
+              "aria": "/document[1]/button[7]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[2]",
+              "aria": "/document[1]/button[8]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[1]",
+              "aria": "/document[1]/button[9]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[2]",
+              "aria": "/document[1]/button[10]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is more than minimum",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/button[1]",
+              "aria": "/document[1]/button[11]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "The center of the target 'button' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/button[2]",
+              "aria": "/document[1]/button[12]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "The center of the target 'button' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target 'button'",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Other"
           }
     ]
   }

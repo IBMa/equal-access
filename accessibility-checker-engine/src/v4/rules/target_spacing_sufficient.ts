@@ -16,7 +16,7 @@
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
     import { VisUtil } from "../../v2/dom/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { getComputedStyle } from "../util/CSSUtil";
+    import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
     
     export let target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
@@ -65,7 +65,7 @@
             const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
             //ignore certain elements
-            if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta", 'head']) !== null 
+            if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
                 || nodeName === "body" || nodeName === "html" )
                 return null;
             
@@ -73,14 +73,21 @@
             if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
                 return null;
 
+            // ignore inline element: without text in the same line
             const status = RPTUtil.getInlineStatus(ruleContext); console.log("node id=" + ruleContext.getAttribute("id") +", status=" + JSON.stringify(status));
             if (status == null) return null;
             if (status.inline) {
-                if (status.violation == null)
-                    return RulePass("pass_inline");
-                else
-                    // case 1: inline element is too close horizontally
-                    return RulePass("recommendation_inline", [nodeName, status.violation]);
+                if (status.text) {
+                    if (status.violation == null)
+                        return RulePass("pass_inline");
+                    else
+                        // case 1: inline element is too close horizontally
+                        return RulePass("recommendation_inline", [nodeName, status.violation]);
+                }    
+            } else { console.log("target id=" + ruleContext.getAttribute('id') +", defalt=" + RPTUtil.isTargetBrowserDefault(ruleContext));
+                // ignore browser default
+                if (RPTUtil.isTargetBrowserDefault(ruleContext)) 
+                    return RulePass("pass_default");
             }
 
             var doc = ruleContext.ownerDocument;
@@ -100,12 +107,12 @@
             if (!elems || elems.length == 0)
                 return;
             
-            const bounds = context["dom"].bounds;    
+            const mapper : DOMMapper = new DOMMapper();
+            const bounds = mapper.getBounds(ruleContext); //context["dom"].bounds;    
             if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
                 return null;
                 
                     
-            const mapper : DOMMapper = new DOMMapper(); console.log("target node id=" + ruleContext.getAttribute("id") +", calculated bounds=" + JSON.stringify(mapper.getBounds(ruleContext)));
             let before = true;
             let minX = 24;
             let minY = 24;
@@ -157,9 +164,9 @@
                 if (bounds.top <= bnds.top && bounds.left <= bnds.left && bounds.top + bounds.height >= bnds.top + bnds.height 
                     && bounds.left + bounds.width >= bnds.left + bnds.width) { console.log("element covered by target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                     // if the element on top    
-                    if (before ? parseInt(zindex) > parseInt(z_index): parseInt(zindex) >= parseInt(z_index)) {console.log("element on top id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {console.log("element on top id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                         return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
-                    } else {
+                    } else { // the target on top
                         if (bnds.height >= 24 && bnds.width >= 24)
                             return RulePass("pass_sized");  
                         return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]); 
@@ -196,11 +203,11 @@
                     if (disY < minY) {
                         minY = disY;   
                         adjacentY = elem;
-                    }
+                    } console.log("target id=" + ruleContext.getAttribute('id') + ", not overlap elem id=" + elem.getAttribute('id') +", minX=" + minX +", minY=" + minY +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                 }
                 checked.push(elem);
             }
-            
+            console.log("target id=" + ruleContext.getAttribute('id') +", minX=" + minX +", minY=" + minY);
             // case 5: no verlap + sufficient target size
             if (bounds.height >= 24 && bounds.width >= 24) {console.log("passed_size target id=" + ruleContext.getAttribute('id'));
                 return RulePass("pass_sized"); 

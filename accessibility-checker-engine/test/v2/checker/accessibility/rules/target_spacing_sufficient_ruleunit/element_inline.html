@@ -22,53 +22,6 @@
 
 <head>
 	<title>RPT Test Suite</title>
-  <style>
-    a.link {
-      display: inline; /* the default for a */
-      width: 100px;
-      height: 100px;
-      /**line-height: 100px;
-      padding: 5px;*/
-    }
-
-    a.link1 {
-      display: inline; /* the default for a */
-      
-    }
-
-    button.btn, img#image1, span.span1 {
-      display: inline;
-      /**width: 100px;
-      height: 100px;
-      padding: 5px;*/
-    }
-
-    button.btn2, img#image2, a.link2 {
-      display: inline;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-      border: 1px solid blue;    
-      background-color: yellow; 
-    }
-
-    button.btn3 {
-      display: inline-block;
-      width: 100px;
-      height: 100px;
-      padding: 5px;
-      border: 1px solid blue;    
-      background-color: yellow; 
-    }
-
-    button.btn4, img.image3 {
-      display: inline;
-      width: 24px;
-      height: 10px;
-      
-    }
-
-  </style>
 </head>
 
 <body>
@@ -98,24 +51,9 @@
 
 <h2>inline links only -- browser default</h2>
 <div>
-  <a class='link' href="google.com">Aliquam</a> 
-  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
-  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">Aliquam</a> 
-  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
-  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">Aliquam</a> 
-  <a class='link' href="google.com">Vestibulum consequat scelerisque </a> 
-  <a class='link' href="google.com">consectetur adipiscing elit.</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
-  <a class='link' href="google.com">gravida nisl sit amet facilisis</a> 
+  <a id='ali' href="google.com">Aliquam</a> &nbsp; &nbsp;
+  <a id='vest' href="ibm.com">Vestibulum consequat scelerisque </a> 
 </div>
-
 
 <h2>display: inline with large size</h2>
 <div>
@@ -134,27 +72,11 @@
   consectetur adipiscing elit. 
 </div>
 
-<h2>display: inline with small text</h2>
-<div>
-  Lorem ipsum dolor sit amet,
-  Vestibulum consequat scelerisque 
-  Vestibulum consequat scelerisque 
-  <img tabindex='0' class="image3" src="../support/nav_home.gif" />
-  consectetur adipiscing elit. 
-  <img tabindex='0' class="image3" src="../support/nav_home.gif" />
-  elit sit amet consequat. 
-  <button class='btn4' >ok</button> 
-  gravida nisl sit amet facilisis.
-  <button class='btn4'>no</button> 
-  consectetur adipiscing elit. 
-</div>
-
-
 <h2>display: inline-block</h2>
 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat scelerisque elit sit amet consequat. Aliquam erat volutpat. 
 <button class='btn3' >anotherthing</button> 
 </div>
-<h2 style="margin-top:100px;">display: mixed</h2>
+<h2 style="margin-top:30px;">display: mixed</h2>
 <div>Lorem ipsum dolor sit amet,
   <a class='link2' href="google.com">Aliquam</a> 
   Vestibulum consequat scelerisque elit sit amet consequat. 

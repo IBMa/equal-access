@@ -81,15 +81,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[2]",
               "aria": "/document[1]"
             },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped element 'div' meets a minimum target size or has sufficient spacing from the overlapping element 'div'",
+            "messageArgs": [
+              "div",
+              "div"
+            ],
             "apiArgs": [],
             "category": "Other"
           }
