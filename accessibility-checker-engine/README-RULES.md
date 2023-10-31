@@ -81,9 +81,9 @@ Help integrates the following:
 
 ### Rule sets and Mappings
 
-Rule sets such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, etc., and mappings of the latest rules to the standards (Requirement and Rule IDs), the individual failure messages (by Reasons ID), and links to the Help files are listed in the published  [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
-`npm run build:help` in the `.../accessibility-checker-engine` directory creates `dist/help/rules.html` that can be reviewed. 
-Each build creates the `Rules listing` artifact in **Actions** that can be reviewed prior to deployment.
+* Rule sets such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, etc., and mappings of the latest rules to the standards (Requirement and Rule IDs), the individual failure messages (by Reasons ID), and links to the Help files are listed in the published  [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets)
+* `npm run build:help` in the `.../accessibility-checker-engine` directory creates `dist/help/rules.html` that can be reviewed
+* Each build creates the `Rules listing` artifact in **Actions** that can be reviewed prior to deployment.
 
 ## Test cases
 
