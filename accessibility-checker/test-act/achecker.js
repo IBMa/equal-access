@@ -1,13 +1,13 @@
 module.exports = {
     // optional - Specify the rule archive
     // Default: latest
-    // Run `npx aat archives` for a list of valid ruleArchive ids and policy ids
+    // Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
     ruleServer: "https://localhost:9445/rules",
     ignoreHTTPSErrors: true,
     ruleArchive: 'preview',
   
     // optional - Specify one or many policies to scan.
-    // Run `npx aat archives` for a list of valid ruleArchive ids and policy ids
+    // Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
     policies: ['IBM_Accessibility'],
   
     // optional - Specify one or many violation levels on which to fail the test
