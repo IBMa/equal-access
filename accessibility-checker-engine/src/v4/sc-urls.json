@@ -707,6 +707,18 @@
       "level": "AAA",
       "wcagType": "2.1"
     },
+    "2.5.8": {
+      "num": "2.5.8",
+      "url": "https://w3c.github.io/wcag/guidelines/22/#target-size-minimum",
+      "scId": "WCAG2:minimum-target-size",
+      "scAltId": [],
+      "test": "WCAG2:WCAG2:minimum-target-size",
+      "howToMeetUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
+      "understandingUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
+      "handle": "Minimum Target Size",
+      "level": "AA",
+      "wcagType": "2.2"
+    },
     "3.1.1": {
       "num": "3.1.1",
       "url": "https://www.w3.org/TR/WCAG21/#language-of-page",

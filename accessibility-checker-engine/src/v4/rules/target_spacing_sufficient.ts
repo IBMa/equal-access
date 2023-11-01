@@ -62,7 +62,7 @@
         }],
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as HTMLElement; console.log("target_spacing_sufficient invoked!!!!");
+            const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
             //ignore certain elements
             if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
