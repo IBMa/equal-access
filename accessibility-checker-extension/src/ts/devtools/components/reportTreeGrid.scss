@@ -74,6 +74,15 @@
                 background-color: $layer;
             }
         }
+
+        .cds--checkbox-wrapper {
+            display: inline;
+            margin-left: 45px;
+        }
+
+        .cds--checkbox-label {
+            display: inline;
+        }
     }
     .gridBody {
         svg {
@@ -87,6 +96,14 @@
         }
         .levelIcon {
             vertical-align: bottom;
+        }
+        .cds--checkbox-wrapper {
+            display: inline;
+            margin-left: 4px;
+            margin-right: 8px;
+        }
+        .cds--checkbox-label {
+            display: inline;
         }
         .issueCount {
             .gridGroupCell {

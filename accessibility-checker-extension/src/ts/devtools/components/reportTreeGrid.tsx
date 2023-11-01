@@ -18,7 +18,8 @@ import * as React from 'react';
 import {
     Column,
     Grid,
-    Link
+    Link,
+    Checkbox
 } from "@carbon/react";
 
 import {
@@ -37,6 +38,7 @@ export interface IRowGroup {
     id: string
     label: string | React.ReactNode
     children: IIssue[]
+    // JCH need ignored state for group
 }
 
 interface ReportTreeGridProps<RowType extends IRowGroup> {
@@ -486,10 +488,21 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             medCol = 4;
                         }
                     }
-                    return <Column sm={smallCol} md={medCol}>
-                        <div className="gridHeaderCell">
-                            {header.label}
-                        </div>
+                    return <Column sm={smallCol} md={medCol} style={{ marginTop: "8px", marginBottom: "8px" }}>
+                        {header.label === "Issues" ?
+                        <span className="gridHeaderCell">
+                            <Checkbox
+                                id="1"
+                                hideLabel
+                                checked={ false }
+                                onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
+                                    console.log("evtState = ",evtState);
+                                }} 
+                            />
+                            <span style={{ marginLeft: "10px" }}>{header.label}</span>
+                        </span>
+                        : <span className="gridHeaderCell">{header.label}</span>
+                        }
                     </Column>
                 })}
             </Grid>;
@@ -506,6 +519,15 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     counts[UtilIssue.valueToStringSingular(child.value)] = (counts[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
                 }
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
+                    {/* JCH put group checkbox here */}
+                    <Checkbox
+                        id="1"
+                        hideLabel
+                        checked={ false }
+                        onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
+                            console.log("evtState = ",evtState);
+                        }} 
+                    />
                     { counts["Violation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></span> }
                     { counts["Needs review"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></span> }
                     { counts["Recommendation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Recommendation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></span> }
@@ -590,6 +612,15 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             
                             <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                 <div className="gridDataCell">
+                                    {/* JCH put group checkbox here */}
+                                    <Checkbox
+                                        id="1"
+                                        hideLabel
+                                        checked={ false }
+                                        onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
+                                            console.log("evtState = ",evtState);
+                                        }} 
+                                    />
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
                                         className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                         role="link"

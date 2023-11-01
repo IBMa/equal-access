@@ -58,7 +58,14 @@
 }
 
 .reportFilterBorder {
-    border-top: solid $gray-40 1px;    
+    border-top: solid $gray-40 1px; 
+    
+}
+
+.viewMulti {
+    .cds--list-box {
+        max-height: 2rem;
+    }   
 }
 
 .reportFilterSection {

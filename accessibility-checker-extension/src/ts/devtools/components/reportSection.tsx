@@ -242,13 +242,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                     {!this.state.viewState || !this.state.viewState!.kcm && 
                         <Dropdown
+                            className="viewMulti"
                             ariaLabel="Select report view"
                             disabled={totalCount === 0}
                             id="reportView"
                             items={viewItems}
                             light={false}
                             type="default"
-                            style={{width:"180px"}}
+                            // style={{width:"180px"}}
                             selectedItem={this.state.reportViewState}
                             onChange={async (evt: any) => {
                                 // set state
@@ -260,6 +261,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 <Column sm={2} md={4} lg={4} style={{ marginRight: "0px" }}>
                     {!this.state.viewState || !this.state.viewState!.kcm && 
                         <MultiSelect
+                            className="viewMulti"
                             ariaLabel="Issue type filter"
                             label="Filter"
                             hideLabel={true}
@@ -280,7 +282,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             }
                             light={false}
                             type="default"
-                            style={{width:"180px"}}
+                            style={{ float: "right" }}
                             selecteditems={this.state.reportFilterState}
                             onChange={async (evt: any) => {
                                 console.log("Multiselect onChange START");
@@ -338,7 +340,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                     <div>
                         <Button 
                             disabled={totalCount === 0}
-                            style={{ float: "right", marginRight: "16px", minHeight: "18px" }}
+                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
                             onClick={() => devtoolsController.exportXLS("last") }
                         >Export XLS</Button>
                     </div>
