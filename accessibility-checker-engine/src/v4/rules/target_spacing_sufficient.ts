@@ -16,7 +16,7 @@
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
     import { VisUtil } from "../../v2/dom/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
+    import { getComputedStyle } from "../util/CSSUtil";
     
     export let target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
