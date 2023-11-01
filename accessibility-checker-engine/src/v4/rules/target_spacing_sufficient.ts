@@ -36,14 +36,14 @@
         },
         messages: {
             "en-US": {
-                "group": "The target is sufficiently spaced from other targets",
-                "pass_spacing": "The target's spacing from other targets is more than minimum",
+                "group": "The target must be sufficiently sized or spaced from other targets",
+                "pass_spacing": "The target's spacing from other targets is sufficient",
                 "pass_sized": "The target’s size is more than 24 CSS pixels",
                 "pass_inline": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
-                "pass_default": "The size of the target is determined by the user agent and is not modified by the author",
-                "violation_spacing": "The center of the target '{0}' is less than 12 CSS pixels from the bounding box (edge) of an adjacent target '{1}'",
-                "recommendation_inline": "Confirm the inline target '{0}' is sufficiently spaced from aother inline target '{1}'",
-                "potential_overlap": "Ensure the overlapped element '{0}' meets a minimum target size or has sufficient spacing from the overlapping element '{1}'"
+                "pass_default": "The target's size is determined by the user agent and is not modified by the author",
+                "violation_spacing": "Undersized target \"{0}\" does not have sufficient spacing of 12 CSS pixels from another target \"{1}\"",
+                "recommendation_inline": "Confirm the inline target \"{0}\" is sufficiently spaced from aother inline target \"{1}\"",
+                "potential_overlap": "Ensure the overlapped target \"{0}\" meets a minimum target size or has sufficient spacing from the overlapping target \"{1}\""
             }
         },
         rulesets: [{

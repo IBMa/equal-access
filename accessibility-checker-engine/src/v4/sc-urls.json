@@ -711,7 +711,7 @@
       "num": "2.5.8",
       "url": "https://w3c.github.io/wcag/guidelines/22/#target-size-minimum",
       "scId": "WCAG2:minimum-target-size",
-      "scAltId": [],
+      "scAltId": ["minimum-target-size"],
       "test": "WCAG2:WCAG2:minimum-target-size",
       "howToMeetUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
       "understandingUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
