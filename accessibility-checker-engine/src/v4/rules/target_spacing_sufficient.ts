@@ -30,7 +30,7 @@
                 "pass_inline": "target_spacing_sufficient.html",
                 "pass_default": "target_spacing_sufficient.html",
                 "violation_spacing": "target_spacing_sufficient.html",
-                "violation_inline": "target_spacing_sufficient.html",
+                "recommendation_inline": "target_spacing_sufficient.html",
                 "potential_overlap": "target_spacing_sufficient.html"
             }
         },
@@ -51,7 +51,7 @@
             num: ["2.5.8"],
             level: eRulePolicy.VIOLATION,
             toolkitLevel: eToolkitLevel.LEVEL_THREE,
-            reasonCodes: ["pass_spacing","pass_sized", "pass_inline","pass_default", "violation_spacing", "violation_overlap"]
+            reasonCodes: ["pass_spacing","pass_sized", "pass_inline","pass_default", "violation_spacing", "potential_overlap"]
         },
         {
             id: ["WCAG_2_2"],
@@ -62,7 +62,7 @@
         }],
         act: [],
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as HTMLElement;
+            const ruleContext = context["dom"].node as HTMLElement; console.log("target_spacing_sufficient invoked!!!!");
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
             //ignore certain elements
             if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
@@ -215,7 +215,7 @@
                     return RuleFail("violation_spacing", [nodeName, adjacentX.nodeName.toLowerCase()]); 
                 return RuleFail("violation_spacing", [nodeName, adjacentY.nodeName.toLowerCase()]);
             } else 
-                return RulePass("pass_spacing");   
+                return RulePass("pass_spacing");
         }
     }
     
