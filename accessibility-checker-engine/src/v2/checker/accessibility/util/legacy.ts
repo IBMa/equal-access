@@ -519,12 +519,12 @@ export class RPTUtil {
                         // special case: <br> is styled 'inline' by default, but change the line
                         if (status.violation === null && walkNode.nodeName.toLowerCase() !== 'br') {
                             const cStyle = getComputedStyle(walkNode);
-                            const cDisplay = cStyle.getPropertyValue("display");   console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)); 
+                            const cDisplay = cStyle.getPropertyValue("display");
                             if (cDisplay === 'inline')  { 
                                 last = false;
                                 if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
                                     // check if the horizontal spacing is sufficient
-                                    const bnds = mapper.getBounds(walkNode); console.log("target id=" + element.getAttribute("id") +", node id=" + walkNode.getAttribute("id")+", bounds=" + JSON.stringify(bounds)+", bnds=" + JSON.stringify(bnds));
+                                    const bnds = mapper.getBounds(walkNode);
                                     if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
                                         status.violation = walkNode.nodeName.toLowerCase();
                                 }
@@ -565,22 +565,9 @@ export class RPTUtil {
                 }
                 
                 // one or more inline elements are in the same line with text 
-                if (containText) {
+                if (containText)
                     status.text = true;
-                    
-                    /**const bnds = mapper.getBounds(parent); 
-                    // the element is the last inline element in the line, check against parent bounds
-                    if (last) {
-                        if (Math.round(bounds.width/2) + bnds.left+bnds.width - (bounds.left + bounds.width) < 24)
-                            status.violation = status.violation === null ? parent.nodeName.toLowerCase() : status.violation + ", " + parent.nodeName.toLowerCase();
-                    
-                    } 
-                    // the element is the last inline element in the line, check against parent bounds
-                    if (first && checked) {
-                        if (Math.round(bounds.width/2) + bounds.left - bnds.left < 24)
-                            status.violation = status.violation === null ? parent.nodeName.toLowerCase() : status.violation + ", " + parent.nodeName.toLowerCase();
-                    }*/
-                }
+                
                 return status;
             } else {
                 //parent is inline element

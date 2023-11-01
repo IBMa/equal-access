@@ -73,8 +73,8 @@
             if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
                 return null;
 
-            // ignore inline element: without text in the same line
-            const status = RPTUtil.getInlineStatus(ruleContext); console.log("node id=" + ruleContext.getAttribute("id") +", status=" + JSON.stringify(status));
+            // check inline element: without text in the same line
+            const status = RPTUtil.getInlineStatus(ruleContext);
             if (status == null) return null;
             if (status.inline) {
                 if (status.text) {
@@ -84,7 +84,7 @@
                         // case 1: inline element is too close horizontally
                         return RulePass("recommendation_inline", [nodeName, status.violation]);
                 }    
-            } else { console.log("target id=" + ruleContext.getAttribute('id') +", defalt=" + RPTUtil.isTargetBrowserDefault(ruleContext));
+            } else {
                 // ignore browser default
                 if (RPTUtil.isTargetBrowserDefault(ruleContext)) 
                     return RulePass("pass_default");
@@ -117,7 +117,7 @@
             let minX = 24;
             let minY = 24;
             let adjacentX = null;
-            let adjacentY = null; console.log("target id=" + ruleContext.getAttribute('id'));
+            let adjacentY = null;
             let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
             for (let i=0; i < elems.length; i++) { 
                 const elem = elems[i] as HTMLElement;
@@ -145,15 +145,16 @@
                         z_index = "0";
                 }
 
-                console.log("target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                 // case 2: the element overlaps the target entirely
+                // note when a link is inline with other target, if the link text wraps in another line in a given viewport,  
+                // the bounds of the link may cover and the entire two lines, causing the other tagets to be overlapped, see two links in the test case: element_inline.html 
                 if (bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.width >= bounds.left + bounds.width) { console.log("element covers target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    && bnds.left + bnds.width >= bounds.left + bounds.width) {
                     // if the target on top    
-                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {  console.log("ignore due to element covers target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {
                         // the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
                         return null;
-                    } else {  console.log("further check size: element covers target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    } else {
                         if (bounds.height >= 24 && bounds.width >= 24)
                             return RulePass("pass_sized");  
                         return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]);    
@@ -162,30 +163,26 @@
                 
                 // case 3: if the target overlaps the element entirely
                 if (bounds.top <= bnds.top && bounds.left <= bnds.left && bounds.top + bounds.height >= bnds.top + bnds.height 
-                    && bounds.left + bounds.width >= bnds.left + bnds.width) { console.log("element covered by target id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    && bounds.left + bounds.width >= bnds.left + bnds.width) {
                     // if the element on top    
-                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {console.log("element on top id=" + ruleContext.getAttribute('id') + ", elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {
                         return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
                     } else { // the target on top
-                        if (bnds.height >= 24 && bnds.width >= 24)
+                        if (bounds.height >= 24 && bounds.width >= 24)
                             return RulePass("pass_sized");  
                         return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]); 
                     }    
                 }
                 
                 // case 4: the element overlaps partially with the target
-                //if (((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top <= bnds.top && bounds.top + bounds.height > bnds.top))
-                //   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left <= bnds.left && bounds.left + bounds.width > bnds.left))) { console.log("target id=" + ruleContext.getAttribute('id') + ", overlap elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                 if ((((bounds.top >= bnds.top && bounds.top <= bnds.top + bnds.height) || (bounds.top + bounds.height <= bnds.top && bounds.top + bounds.height >= bnds.top +bnds.height))
                      && ((bounds.left > bnds.left && bounds.left < bnds.left + bnds.width) || (bnds.left > bounds.left && bnds.left < bounds.left + bounds.width))) 
-                   || (((bounds.top > bnds.top && bounds.top < bnds.top + bnds.height) || (bnds.top > bounds.top && bnds.top < bounds.top + bounds.height))
-                   && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left + bounds.width >= bnds.left && bounds.left + bounds.width <= bnds.left + bnds.width)))) {
-                    console.log("target id=" + ruleContext.getAttribute('id') + ", overlap elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
-                    // TODO: more check to turn to violation  
-                    return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
+                     || (((bounds.top > bnds.top && bounds.top < bnds.top + bnds.height) || (bnds.top > bounds.top && bnds.top < bounds.top + bounds.height))
+                     && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left + bounds.width >= bnds.left && bounds.left + bounds.width <= bnds.left + bnds.width)))) {
+                     // TODO: more check to turn to violation  
+                     return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
 
                 } else { // no overlap with the elem, though may overlap withe other elements
-                    console.log("target id=" + ruleContext.getAttribute('id') + ", not overlap elem id=" + elem.getAttribute('id') +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
                     let disX = 24; 
                     let disY = 24;   
                     // the element is in the horizontally same row with the target
@@ -203,13 +200,13 @@
                     if (disY < minY) {
                         minY = disY;   
                         adjacentY = elem;
-                    } console.log("target id=" + ruleContext.getAttribute('id') + ", not overlap elem id=" + elem.getAttribute('id') +", minX=" + minX +", minY=" + minY +",bounds=" +JSON.stringify(bounds) +", bnds=" + JSON.stringify(bnds));
+                    }
                 }
                 checked.push(elem);
             }
-            console.log("target id=" + ruleContext.getAttribute('id') +", minX=" + minX +", minY=" + minY);
+            
             // case 5: no verlap + sufficient target size
-            if (bounds.height >= 24 && bounds.width >= 24) {console.log("passed_size target id=" + ruleContext.getAttribute('id'));
+            if (bounds.height >= 24 && bounds.width >= 24) {
                 return RulePass("pass_sized"); 
             }
             // case 6: no overlap + insufficient target size. check spacing    
@@ -218,10 +215,7 @@
                     return RuleFail("violation_spacing", [nodeName, adjacentX.nodeName.toLowerCase()]); 
                 return RuleFail("violation_spacing", [nodeName, adjacentY.nodeName.toLowerCase()]);
             } else 
-                return RulePass("pass_spacing");
-            
-            // ignore all other cases
-            return null;
+                return RulePass("pass_spacing");   
         }
     }
     

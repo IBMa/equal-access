@@ -73,7 +73,6 @@ export class DOMMapper extends CommonMapper {
     getBounds(node: Node) : Bounds {
         if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             const bounds = (node as Element).getBoundingClientRect();
-    
             // adjusted for scroll if any
             if (bounds) {
                 let scrollX = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollX || 0;

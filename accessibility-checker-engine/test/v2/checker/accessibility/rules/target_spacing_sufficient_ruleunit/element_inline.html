@@ -50,8 +50,8 @@
   
 
 <h2>inline links only -- browser default</h2>
-<div>
-  <a id='ali' href="google.com">Aliquam</a> &nbsp; &nbsp;
+<div style="margin-top:20px;">
+  <a id='ali' href="google.com">Aliquam</a>
   <a id='vest' href="ibm.com">Vestibulum consequat scelerisque </a> 
 </div>
 
@@ -96,36 +96,279 @@
     ruleIds: ["target_spacing_sufficient"],
     results: [
     {
-            "ruleId": "element_tabbable_unobscured",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "potential_obscured",
-            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/small[1]/a[1]",
+              "aria": "/document[1]/link[1]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
             "messageArgs": [],
             "apiArgs": [],
-            "category": "Accessibility"
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/small[1]/img[1]",
+              "aria": "/document[1]/img[1]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/small[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/small[1]/span[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/small[1]/input[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/a[2]",
+              "aria": "/document[1]/link[3]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/a[1]",
+              "aria": "/document[1]/link[4]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/a[2]",
+              "aria": "/document[1]/link[5]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/img[1]",
+              "aria": "/document[1]/img[2]"
+            },
+            "reasonId": "recommendation_inline",
+            "message": "Confirm the inline target 'img' is sufficiently spaced from aother inline target 'a'",
+            "messageArgs": [
+              "img",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/img[2]",
+              "aria": "/document[1]/img[3]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[1]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[2]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/button[1]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]/a[1]",
+              "aria": "/document[1]/link[6]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]/button[1]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]/button[2]",
+              "aria": "/document[1]/button[6]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]/button[3]",
+              "aria": "/document[1]/button[7]"
+            },
+            "reasonId": "pass_default",
+            "message": "The size of the target is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Other"
           }
     ]
   }
