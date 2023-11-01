@@ -42,7 +42,7 @@
                 "pass_inline": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
                 "pass_default": "The target's size is determined by the user agent and is not modified by the author",
                 "violation_spacing": "Undersized target \"{0}\" does not have sufficient spacing of 12 CSS pixels from another target \"{1}\"",
-                "recommendation_inline": "Confirm the inline target \"{0}\" is sufficiently spaced from aother inline target \"{1}\"",
+                "recommendation_inline": "Confirm the inline target \"{0}\" is sufficiently spaced from another inline target \"{1}\"",
                 "potential_overlap": "Ensure the overlapped target \"{0}\" meets a minimum target size or has sufficient spacing from the overlapping target \"{1}\""
             }
         },
