@@ -2,7 +2,7 @@ module.exports = {
   // optional - Specify the rule archive
   // Default: latest
   // Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
-  ruleArchive: 'latest',
+  ruleArchive: '12October2023',
 
   // optional - Specify one or many policies to scan.
   // Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
@@ -23,11 +23,7 @@ module.exports = {
   // Valid values: violation, potentialviolation, recommendation, potentialrecommendation, manual
   // Default: ["violation","potential violation"]
   reportLevels: [
-      "violation",
-      "potentialviolation",
-      "recommendation",
-      "potentialrecommendation",
-      "manual"
+      "violation"
   ],
 
   // Optional - Which type should the results be outputted to
@@ -40,16 +36,13 @@ module.exports = {
   // i.e.
   //   label: ["Firefox","master","V12","Linux"]
   // Default: N/A
-  label: [
-      "Cucumber",
-      "Demo"
-  ],
+  label: [],
 
   // optional - Where the scan results should be saved.
   // Default: results
-  outputFolder: "a11y/results",
+  outputFolder: ".achecker/results",
 
   // optional - Where the baseline results should be loaded from
   // Default: baselines
-  baselineFolder: "test/baselines",
+  baselineFolder: ".achecker/baselines",
 }
