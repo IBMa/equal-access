@@ -17,15 +17,15 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export let element_tabbable_unobscured: Rule = {
-    id: "element_tabbable_unobscured",
+export let element_draggable_alternative: Rule = {
+    id: "element_draggable_alternative",
     context: "dom:*",
     dependencies: [],
     help: {
         "en-US": {
-            "group": "element_tabbable_unobscured.html",
-            "pass": "element_tabbable_unobscured.html",
-            "potential_obscured": "element_tabbable_unobscured.html"
+            "group": "element_draggable_alternative.html",
+            "pass": "element_draggable_alternative.html",
+            "potential_obscured": "element_draggable_alternative.html"
         }
     },
     messages: {
@@ -37,7 +37,7 @@ export let element_tabbable_unobscured: Rule = {
     },
     rulesets: [{
         id: ["WCAG_2_2"],
-        num: ["2.4.11"],
+        num: ["2.5.7"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
     }],
