@@ -19,7 +19,7 @@ import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export let element_draggable_alternative: Rule = {
     id: "element_draggable_alternative",
-    context: "dom:*",
+    context: "dom:*[draggable]",
     dependencies: [],
     help: {
         "en-US": {
