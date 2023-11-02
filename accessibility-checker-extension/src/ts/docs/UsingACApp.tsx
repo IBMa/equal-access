@@ -397,7 +397,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <OrderedList>
                             <ListItem>No tab stops on non-interactive or non-visible elements**</ListItem>
                             <ListItem>Tab order matches the visual flow of the page</ListItem>
-                            <ListItem>Inspect elements with found issues (select the triangle icons)</ListItem>
+                            <ListItem>Inspect elements with found issues</ListItem>
                         </OrderedList>
                     </ListItem>
                     <ListItem>Test interactive elements
