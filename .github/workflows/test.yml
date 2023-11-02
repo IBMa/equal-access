@@ -40,11 +40,11 @@ jobs:
       working-directory: accessibility-checker-engine
     - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
-    - name: Upload rule listing
-      uses: actions/upload-artifact@v1
-      with:
-        name: Rule listing
-        path: accessibility-checker-engine/dist/help/rules.html
+    #- name: Upload rule listing
+    #  uses: actions/upload-artifact@v1
+    #  with:
+    #    name: Rule listing
+    #    path: accessibility-checker-engine/dist/help/rules.html
 
 
   act-results:
