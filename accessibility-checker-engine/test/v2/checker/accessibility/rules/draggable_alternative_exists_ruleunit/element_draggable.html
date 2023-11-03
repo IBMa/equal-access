@@ -33,41 +33,53 @@
 
 <body>
 
-  <p draggable="true">This text <strong>may</strong> be dragged.</p>
+  <p>no draggable defined: This text <strong>may</strong> be dragged by selection.</p>
+
+  <p draggable="false">draggable false: This text <strong>may</strong> be selected and dragged.</p>
+
+  <p draggable="">draggable undefined:This text <strong>may</strong> be selected and dragged.</p>
+
+  <p draggable="true">draggable true: This text <strong>may</strong> be dragged.</p>
+
+  <img id="drag1" src="https://ibm.com/able/favicon-32x32.png" alt=""/>
 
 <script>
   UnitTest = {
     ruleIds: ["draggable_alternative_exists"],
     results: [
     {
-            "ruleId": "element_tabbable_unobscured",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "potential_obscured",
-            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_unobscured",
+            "ruleId": "draggable_alternative_exists",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/p[2]",
+              "aria": "/document[1]/paragraph[2]"
             },
-            "reasonId": "pass",
-            "message": "The element is not entirely covered by other content",
-            "messageArgs": [],
+            "reasonId": "pass_undraggable",
+            "message": "The element \"p\" is not draggable",
+            "messageArgs": [
+              "p"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "draggable_alternative_exists",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]",
+              "aria": "/document[1]/paragraph[4]"
+            },
+            "reasonId": "potential_alternative",
+            "message": "Ensure the draggable element \"p\" has a \"single pointer\" alternative",
+            "messageArgs": [
+              "p"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

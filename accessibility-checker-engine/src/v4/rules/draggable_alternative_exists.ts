@@ -29,9 +29,10 @@ export let draggable_alternative_exists: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "When an element receives focus, it is not entirely covered by other content",
-            "pass": "The element is not entirely covered by other content",
-            "potential_obscured": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus"
+            "group": "A draggable element must have a \"single pointer\" alternative",
+            "pass_alternative": "The draggable element \"{0}\" has a \"single pointer\" alternative",
+            "pass_undraggable": "The element \"{0}\" is not draggable",
+            "potential_alternative": "Ensure the draggable element \"{0}\" has a \"single pointer\" alternative"
         }
     },
     rulesets: [{
@@ -57,14 +58,9 @@ export let draggable_alternative_exists: Rule = {
         
         //in case the bounds not available
         if (ruleContext.getAttribute("draggable") === 'true') 
-            if (ruleContext.hasAttribute("ondragstart"))
-                return RulePotential("potential_alternative", [nodeName]);
-            else
-                return RulePotential("potential_draggable", [nodeName]);
-
+            return RulePotential("potential_alternative", [nodeName]);
         else if (ruleContext.getAttribute("draggable") === 'false') 
             return RulePass("pass_undraggable", [nodeName]);
-
         else 
             return null;
     }
