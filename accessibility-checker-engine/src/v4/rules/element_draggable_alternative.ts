@@ -15,7 +15,6 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export let element_draggable_alternative: Rule = {
     id: "element_draggable_alternative",
@@ -44,7 +43,7 @@ export let element_draggable_alternative: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
@@ -57,67 +56,16 @@ export let element_draggable_alternative: Rule = {
         const bounds = context["dom"].bounds;    
         
         //in case the bounds not available
-        if (!bounds) return null;
-        
-        //ignore if offscreen
-        if (bounds['height'] === 0 || bounds['width'] === 0 ) 
-            return null;
+        if (ruleContext.getAttribute("draggable") === 'true') 
+            if (ruleContext.hasAttribute("ondragstart"))
+                return RulePotential("potential_alternative", [nodeName]);
+            else
+                return RulePotential("potential_draggable", [nodeName]);
 
-        const doc = ruleContext.ownerDocument;
-        if (!doc) {
+        else if (ruleContext.getAttribute("draggable") === 'false') 
+            return RulePass("pass_undraggable", [nodeName]);
+
+        else 
             return null;
-        }
-        const win = doc.defaultView;
-        if (!win) {
-            return null;
-        }
-        
-        const cStyle = win.getComputedStyle(ruleContext);
-        if (cStyle === null) 
-            return null;
-        
-        let zindex = cStyle.zIndex;   
-        if (!zindex || zindex === 'auto')
-            zindex = "0";
-        
-        const elems = doc.querySelectorAll('body *:not(script)');
-        if (!elems || elems.length == 0)
-            return;
-         
-        const mapper : DOMMapper = new DOMMapper();
-        let violations = [];
-        let before = true;
-        elems.forEach(elem => {
-            /**
-             *  the nodes returned from querySelectorAll is in document order
-             *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
-             */
-            if (ruleContext.contains(elem)) {
-                //the next node in elems will be after the target node (ruleContext). 
-                before = false;
-            } else if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
-                const bnds = mapper.getBounds(elem);
-                const zStyle = win.getComputedStyle(elem); 
-                let z_index = '0';
-                if (zStyle) {
-                    z_index = zStyle.zIndex;
-                    if (!z_index || isNaN(Number(z_index)))
-                        z_index = "0";
-                }
-                if (bnds.height !== 0 && bnds.width !== 0  
-                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width 
-                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                {
-                    violations.push(elem); 
-                }
-            }  
-        });
-        
-        if (violations.length > 0) {
-            return RulePotential("potential_obscured", []);
-        }
-            
-        return RulePass("pass");
     }
 }
