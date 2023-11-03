@@ -16,15 +16,15 @@ import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePote
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
-export let element_draggable_alternative: Rule = {
-    id: "element_draggable_alternative",
+export let draggable_alternative_exists: Rule = {
+    id: "draggable_alternative_exists",
     context: "dom:*[draggable]",
     dependencies: [],
     help: {
         "en-US": {
-            "group": "element_draggable_alternative.html",
-            "pass": "element_draggable_alternative.html",
-            "potential_obscured": "element_draggable_alternative.html"
+            "group": "draggable_alternative_exists.html",
+            "pass": "draggable_alternative_exists.html",
+            "potential_obscured": "draggable_alternative_exists.html"
         }
     },
     messages: {

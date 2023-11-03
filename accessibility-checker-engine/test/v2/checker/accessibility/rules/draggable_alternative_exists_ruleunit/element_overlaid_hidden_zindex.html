@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+  <style>
+  div {   
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      border-radius: 10px;
+      color: white;
+      padding: 5px;
+      text-align: left;
+  }
+
+#second {
+  width: 175px;
+  height: 175px;
+  z-index: 3;
+  background-color: #FF5C35;
+  top: 10px;
+  left: 10px;
+}
+
+#first {
+  z-index: 2; 
+  background-color: #192733;
+  top: 30px;
+  left: 30px;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div id="first" tabindex="0">1</div>
+  <div id="second" tabindex="0">2</div>
+
+<script>
+  UnitTest = {
+    ruleIds: ["element_tabbable_unobscured"],
+    results: [
+    {
+            "ruleId": "element_tabbable_unobscured",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "potential_obscured",
+            "message": "Confirm that when the element receives focus, it is not covered or, if covered by user action, can be uncovered without moving focus",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_tabbable_unobscured",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element is not entirely covered by other content",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>
