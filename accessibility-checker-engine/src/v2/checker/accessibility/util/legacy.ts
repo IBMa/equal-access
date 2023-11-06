@@ -435,7 +435,7 @@ export class RPTUtil {
 
         let tagProperty = RPTUtil.getElementAriaProperty(element);
         let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
-        if (!allowedRoles && allowedRoles.length === 0)
+        if (!allowedRoles || allowedRoles.length === 0)
             return false;
     
         let parent = element.parentElement;
