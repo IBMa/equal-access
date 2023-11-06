@@ -502,7 +502,7 @@ export class RPTUtil {
         const parent = element.parentElement;
         if (parent) {
             const mapper : DOMMapper = new DOMMapper();
-            const bounds = mapper.getBounds(element);
+            const bounds = mapper.getUnadjustedBounds(element);
             const style = getComputedStyle(parent);
             const display = style.getPropertyValue("display");    
             // an inline element is inside a block. note <body> is a block element too
@@ -524,7 +524,7 @@ export class RPTUtil {
                                 last = false;
                                 if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
                                     // check if the horizontal spacing is sufficient
-                                    const bnds = mapper.getBounds(walkNode);
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
                                     if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
                                         status.violation = walkNode.nodeName.toLowerCase();
                                 }
@@ -552,7 +552,7 @@ export class RPTUtil {
                                 checked = true;
                                 if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
                                     // check if the horizontal spacing is sufficient
-                                    const bnds = mapper.getBounds(walkNode);
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
                                     if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width)  < 24) {
                                         status.violation = status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase();
                                     }    

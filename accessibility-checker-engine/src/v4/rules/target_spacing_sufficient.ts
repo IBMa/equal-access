@@ -108,7 +108,7 @@
                 return;
             
             const mapper : DOMMapper = new DOMMapper();
-            const bounds = mapper.getBounds(ruleContext); //context["dom"].bounds;    
+            const bounds = mapper.getUnadjustedBounds(ruleContext); //context["dom"].bounds;    
             if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
                 return null;
                 
@@ -134,7 +134,7 @@
                 if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext) 
                    || checked.some(item => item.contains(elem))) continue;
 
-                const bnds = mapper.getBounds(elem);
+                const bnds = mapper.getUnadjustedBounds(elem);
                 if (bnds.height === 0 || bnds.width === 0) continue;
                 
                 var zStyle = getComputedStyle(elem); 

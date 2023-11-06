@@ -13,8 +13,9 @@
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export let element_tabbable_visible: Rule = {
     id: "element_tabbable_visible",
@@ -47,7 +48,9 @@ export let element_tabbable_visible: Rule = {
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
-        const bounds = context["dom"].bounds;
+        const mapper : DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(ruleContext);
+        
         //in case the bounds not available
         if (!bounds) return null;
         

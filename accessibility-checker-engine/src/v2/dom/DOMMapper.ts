@@ -41,7 +41,7 @@ export class DOMMapper extends CommonMapper {
      * @param node 
      * @returns 
      */
-    getAdjustedBounds(node: Node) : Bounds {
+    getBounds(node: Node) : Bounds {
         if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             let adjustment = 1;
             if (node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.devicePixelRatio) {
@@ -70,7 +70,7 @@ export class DOMMapper extends CommonMapper {
      * @param node 
      * @returns 
      */
-    getBounds(node: Node) : Bounds {
+    getUnadjustedBounds(node: Node) : Bounds {
         if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             const bounds = (node as Element).getBoundingClientRect();
             // adjusted for scroll if any
