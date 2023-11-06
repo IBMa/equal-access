@@ -75,7 +75,7 @@
 
             // check inline element: without text in the same line
             const status = RPTUtil.getInlineStatus(ruleContext);
-            if (status == null) return null;
+            if (status === null) return null;
             if (status.inline) {
                 if (status.text) {
                     if (status.violation == null)
@@ -104,7 +104,7 @@
                 zindex = "0";
             
             var elems = doc.querySelectorAll('body *:not(script)');
-            if (!elems || elems.length == 0)
+            if (!elems || elems.length === 0)
                 return;
             
             const mapper : DOMMapper = new DOMMapper();
