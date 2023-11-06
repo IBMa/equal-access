@@ -47,7 +47,6 @@ export let element_tabbable_unobscured: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
 
         if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
-
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
