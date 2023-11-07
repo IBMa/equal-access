@@ -31,6 +31,12 @@ export type TabChangeType = {
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
 
+export function issueBaselineMatch(baselineIssue: {ruleId: string, reasonId:string, path: { dom: string}}, issue: IIssue) {
+    return baselineIssue.ruleId === issue.ruleId
+        && baselineIssue.reasonId === issue.reasonId
+        && baselineIssue.path.dom === issue.path.dom;
+}
+
 class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
@@ -111,22 +117,26 @@ class BackgroundController extends Controller {
 
     public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
         return this.hook("getTabInfo", tabId, async () => {
-            return await new Promise((resolve, _reject) => {
-                chrome.tabs.get(tabId!, async function (tab: chrome.tabs.Tab) {
-                    //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-                    let canScan : boolean = await new Promise((resolve, _reject) => {
-                        if (typeof tab.id === "undefined" || tab.id < 0) return resolve(false);
-                        myExecuteScript({
-                            target: { tabId: tab.id, frameIds: [0] },
-                            func: () => (typeof (window as any).aceIBMa)
-                        }, function (res: any) {
-                            resolve(!!res);
-                        })
-                    });
-                    let retVal = { canScan, ...tab };
-                    resolve(retVal);
-                });
+            let tab = await new Promise<chrome.tabs.Tab>(async (resolve2) => {
+                let manifest = chrome.runtime.getManifest();
+                if (manifest.manifest_version === 3) {
+                    let retVal = await chrome.tabs.get(tabId!);
+                    resolve2(retVal);
+                } else {
+                    chrome.tabs.get(tabId!, resolve2);
+                }    
             });
+            let canScan : boolean = await new Promise((resolve2, _reject) => {
+                if (typeof tab.id === "undefined" || tab.id < 0) return resolve2(false);
+                myExecuteScript({
+                    target: { tabId: tab.id, frameIds: [0] },
+                    func: () => (typeof (window as any).aceIBMa)
+                }, function (res: any) {
+                    resolve2(!!res);
+                })
+            });
+            let retVal = { canScan, ...tab };
+            return retVal;
         });
     }
 
@@ -271,22 +281,30 @@ class BackgroundController extends Controller {
     /**
      * Toggle ignore
      */
-    public async toggleIgnore(url: string, issue:IIssue) : Promise<void> {
-        return this.hook("toggleIgnore", {url, issue}, async () => {
+    public async setIgnore(url: string, issues:IIssue[], bIgnore: boolean) : Promise<void> {
+        return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
             let modifyList = await this.getIgnore(url);
-            let idx = modifyList.findIndex(baselineIssue => (
-                    baselineIssue.ruleId === issue.ruleId
-                    && baselineIssue.reasonId === issue.reasonId
-                    && baselineIssue.path.dom === issue.path.dom
-            ));
-            if (idx === -1) {
-                modifyList.push(issue);
-            } else {
-                modifyList.splice(idx, 1);
+            for (const issue of issues) {
+                let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
+                if (bIgnore && idx === -1) {
+                    // We want to set it and it's not there, so add it
+                    modifyList.push(issue);
+                } else if (!bIgnore && idx !== -1) {
+                    // We want to clear it and it is there, so remove it
+                    modifyList.splice(idx, 1);
+                } // else, it's already in the right state, so skip
             }
             await new Promise<void>((resolve, _reject) => {
-                chrome.storage.local.set({ "IGNORE_LIST": modifyList }, async function () {
-                    resolve();
+                chrome.storage.local.get("IGNORE_LIST", async function (result: { IGNORE_LIST?: { [url: string]: IIssue[] }}) {
+                    let ignoreDict = (result.IGNORE_LIST || {});
+                    if (ignoreDict.length) {
+                        // Ignore list was created wrong, it should be an object, not an array
+                        ignoreDict = {};
+                    }
+                    ignoreDict[url] = modifyList;
+                    chrome.storage.local.set({ IGNORE_LIST: ignoreDict }, async function () {
+                        resolve();
+                    });
                 });
             });
             this.notifyEventListeners("BG_IgnoreUpdateListener", -1, { url, issues: modifyList });
@@ -474,7 +492,7 @@ class BackgroundController extends Controller {
                 "BG_getSettings": async () => self.getSettings(),
                 "BG_getArchives": async () => self.getArchives(),
                 "BG_getIgnore": async (msgBody) => self.getIgnore(msgBody.content),
-                "BG_toggleIgnore": async (msgBody) => self.toggleIgnore(msgBody.content.url, msgBody.content.issue),
+                "BG_setIgnore": async (msgBody) => self.setIgnore(msgBody.content.url, msgBody.content.issues, msgBody.content.bIgnore),
 
                 "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),
                 "BG_getRulesets": async (msgBody) => self.getRulesets(msgBody.content),

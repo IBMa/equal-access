@@ -33,12 +33,14 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
+import { getTabId } from '../../util/tabId';
 
 export interface IRowGroup {
     id: string;
     label: string | React.ReactNode;
     children: IIssue[];
-    ignored: boolean;
+    ignored: "none" | "some" | "all";
 }
 
 interface ReportTreeGridProps<RowType extends IRowGroup> {
@@ -58,14 +60,13 @@ interface ReportTreeGridState {
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
-    allIgnoredIssues: boolean;
-    ignoredGroups: boolean[]; // hold 
-    ignoredIssues: boolean[];
+    ignoredIssues: IIssue[]    
 }
 
 export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<ReportTreeGridProps<RowType>, ReportTreeGridState> {
     private static devtoolsAppController = getDevtoolsAppController();
     private static devtoolsController = getDevtoolsController();
+    private static bgcontroller = getBGController();
 
     /**
      * Clean an id of spaces for use in id attribute and active-descendant
@@ -87,9 +88,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     state: ReportTreeGridState = {
         expandedGroups: [],
         selectedIssue: null,
-        tabRowId: "",
-        allIgnoredIssues: false,
-        ignoredGroups: [],
+        tabRowId: "tableGridHeader",
         ignoredIssues: [],
     }
     treeGridRef = React.createRef<HTMLDivElement>();
@@ -111,7 +110,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setIssue(issue!);
 
         if (this.props.rowData && this.props.rowData.length > 0) {
-            this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData[0].id });
+            this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: "tableGridHeader" });
         }
         ReportTreeGrid.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
             this.setState({ viewState });
@@ -119,13 +118,18 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState({
             viewState: (await ReportTreeGrid.devtoolsController.getViewState())!
         })
+        ReportTreeGrid.bgcontroller.addIgnoreUpdateListener(async ({url, issues}) => {
+            if (url === (await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues })
+            }
+        })
 
     }
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
         if (!prevProps.rowData && !!this.props.rowData) {
             // First time creating the report tree
-            this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
+            this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader"});
         } else if (prevProps.rowData && this.props.rowData && JSON.stringify(prevProps.rowData) !== JSON.stringify(this.props.rowData)) {
             // Report tree changed
             let found = false;
@@ -148,7 +152,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             }    
             if (!found) {
                 // getDevtoolsController().setFocusMode(false); // turn off focus view when scan
-                this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
+                this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader"});
             }
         } else if (prevState.tabRowId !== this.state.tabRowId && document) {
             // Report tree is the same, but the row changed
@@ -195,9 +199,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState( { expandedGroups: newExpanded });
     }
 
-    async onRow(_group: IRowGroup, issue: IIssue) {
+    async onRow(_group: IRowGroup, issue: IIssue, inspect?: boolean) {
         await ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
-        if (this.props.panel === "elements") {
+        if (this.props.panel === "elements" && inspect !== false) {
             // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
             await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
         } else {
@@ -227,12 +231,15 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     this.onGroupArrowDown(evt, focusedGroup);
                     evt.preventDefault();
                     break;
+                case "Tab":
+                    this.onGroupTab(evt, focusedGroup);
+                    break;
                 case "Enter":
                     this.onGroupEnter(evt, focusedGroup);
                     evt.preventDefault();
                     break;
                 case "Home":
-                    this.onGroupHome(evt, focusedGroup);
+                    this.onGroupHome(evt);
                     evt.preventDefault();
                     break;
                 case "End":
@@ -266,7 +273,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             this.onRowTab(evt, focusedGroup, focusedChild);
                             break;
                         case "Home":
-                            this.onGroupHome(evt, focusedGroup);
+                            this.onGroupHome(evt);
                             evt.preventDefault();
                             break;
                         case "End":
@@ -274,6 +281,16 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             evt.preventDefault();
                             break;
                     }
+                }
+            } else {
+                switch (evt.key) {
+                    case "ArrowDown":
+                        this.treeGridRef.current?.focus();
+                        this.onGroupHome(evt);
+                        break;
+                    case "Tab":
+                        this.onHeaderTab(evt);
+                        break;
                 }
             }
         }
@@ -306,7 +323,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
     onGroupArrowUp(evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
         if (evt.metaKey) {
-            this.onGroupHome(evt, focusedGroup);
+            this.onGroupHome(evt);
         } else {
             let idx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
             if (idx && idx > 0) {
@@ -318,6 +335,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 } else {
                     this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup) });
                 }
+            } else {
+                this.goHeader();
             }
         }
     }
@@ -338,7 +357,28 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }
     }
 
-    onGroupHome(_evt: React.KeyboardEvent, _focusedGroup: IRowGroup) {
+    onGroupTab(evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
+        const selectCheckbox = () => {
+            let id = ReportTreeGrid.getRowId(focusedGroup);
+            let row = document.getElementById(id);
+            if (row) {
+                let chkbox = row.querySelector(`input`) as HTMLInputElement;
+                if (chkbox) {
+                    evt.preventDefault();
+                    chkbox.focus();
+                }
+            }
+        }
+        if (document) {
+            if (!["input"].includes((evt.target as HTMLElement).nodeName.toLowerCase()) && !evt.shiftKey) {
+                selectCheckbox();
+            } else if (document.activeElement?.nodeName.toLowerCase() === "a" && evt.shiftKey) {
+                selectCheckbox();
+            }
+        }    
+    }
+
+    onGroupHome(_evt: React.KeyboardEvent) {
         if (this.props.rowData && this.props.rowData.length > 0) {
             this.setState({ tabRowId: ReportTreeGrid.getRowId(this.props.rowData[0]) });
         }
@@ -355,14 +395,38 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }
     }
 
+    goHeader() {
+        this.setState({ tabRowId: "tableGridHeader" });
+    }
+    onHeaderTab(evt: React.KeyboardEvent) {
+        const selectCheckbox = () => {
+            let row = document.getElementById("tableGridHeader");
+            if (row) {
+                let chkbox = row.querySelector(`input`) as HTMLInputElement;
+                if (chkbox) {
+                    evt.preventDefault();
+                    chkbox.focus();
+                }
+            }
+        }
+        if (document) {
+            if (!["input"].includes((evt.target as HTMLElement).nodeName.toLowerCase()) && !evt.shiftKey) {
+                selectCheckbox();
+            }
+        }    
+    }
+
     ///////////////// Row keyboard events ////////////
     onRowArrowLeft(_evt: React.KeyboardEvent, focusedGroup: IRowGroup, _focusedRow: IIssue) {
         this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup) });
     }
 
     onRowArrowUp(evt: React.KeyboardEvent, focusedGroup: IRowGroup, focusedRow: IIssue) {
+        if (["a", "input"].includes((evt.target as HTMLElement).nodeName.toLowerCase())) {
+            this.treeGridRef.current?.focus();
+        }
         if (evt.metaKey) {
-            this.onGroupHome(evt, focusedGroup);
+            this.onGroupHome(evt);
         } else {
             let focusedRowId = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
             let idx = focusedGroup.children.findIndex((value: IIssue) => ReportTreeGrid.getRowId(focusedGroup, value) === focusedRowId);
@@ -371,23 +435,14 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             } else {
                 --idx;
                 this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]) });
-                if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
-                    this.treeGridRef.current?.focus();
-                    // let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]);
-                    // let row = document.getElementById(id);
-                    // if (row) {
-                    //     let link = row.querySelector(`a`) as HTMLAnchorElement;
-                    //     if (link) {
-                    //         evt.preventDefault();
-                    //         link.focus();
-                    //     }
-                    // }
-                }
             }
         }
     }
 
     onRowArrowDown(evt: React.KeyboardEvent, focusedGroup: IRowGroup, focusedRow: IIssue) {
+        if (["a", "input"].includes((evt.target as HTMLElement).nodeName.toLowerCase())) {
+            this.treeGridRef.current?.focus();
+        }
         if (evt.metaKey) {
             this.onGroupEnd(evt, focusedGroup);
         } else {
@@ -401,18 +456,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             } else {
                 ++rowIdx;
                 this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]) });
-                if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
-                    this.treeGridRef.current?.focus();
-                    // let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]);
-                    // let row = document.getElementById(id);
-                    // if (row) {
-                    //     let link = row.querySelector(`a`) as HTMLAnchorElement;
-                    //     if (link) {
-                    //         evt.preventDefault();
-                    //         link.focus();
-                    //     }
-                    // }                
-                }
             }
         }
     }
@@ -425,18 +468,35 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     onRowTab(evt: React.KeyboardEvent, focusedGroup: IRowGroup, focusedRow: IIssue) {
-        if (evt.shiftKey) return;
-        if (document) {
-            if ((evt.target as HTMLElement).nodeName.toLowerCase() !== "a") {
-                let id = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
-                let row = document.getElementById(id);
-                if (row) {
-                    let link = row.querySelector(`a`) as HTMLAnchorElement;
-                    if (link) {
-                        evt.preventDefault();
-                        link.focus();
-                    }
+        const selectCheckbox = () => {
+            let id = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
+            let row = document.getElementById(id);
+            if (row) {
+                let chkbox = row.querySelector(`input`) as HTMLInputElement;
+                if (chkbox) {
+                    evt.preventDefault();
+                    chkbox.focus();
                 }
+            }
+        }
+        const selectHelp = () => {
+            let id = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
+            let row = document.getElementById(id);
+            if (row) {
+                let link = row.querySelector(`a`) as HTMLAnchorElement;
+                if (link) {
+                    evt.preventDefault();
+                    link.focus();
+                }
+            }
+        }
+        if (document) {
+            if (!["a", "input"].includes((evt.target as HTMLElement).nodeName.toLowerCase()) && !evt.shiftKey) {
+                selectCheckbox();
+            } else if (document.activeElement?.nodeName.toLowerCase() === "input" && !evt.shiftKey) {
+                selectHelp();
+            } else if (document.activeElement?.nodeName.toLowerCase() === "a" && evt.shiftKey) {
+                selectCheckbox();
             }
         }
     }
@@ -473,8 +533,39 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             </div>
         } else {
             let numColumns = this.props.headers.length;
+            // Get a list of all unique issues
+            let allIssues: IIssue[] = [];
+            let allIgnored: "all" | "none" | "some" = "none";
+            let allIssuesIgnored = true;
+            for (const row of this.props.rowData) {
+                let allRowIgnored = true;
+                row.ignored = "none";
+                for (const issue of row.children) {
+                    if (!allIssues.some(prevIssue => issueBaselineMatch(prevIssue, issue))) {
+                        issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
+                        allIssues.push(issue);
+                    }
+                    if (!issue.ignored) {
+                        allRowIgnored = false;
+                        allIssuesIgnored = false;
+                    } else {
+                        row.ignored = "some"
+                        allIgnored = "some";
+                    }
+                }
+                if (allRowIgnored) {
+                    row.ignored = "all";
+                }
+            }
+            if (allIssuesIgnored) {
+                allIgnored = "all";
+            }
+            
             // Generate the header
-            let headerContent = <Grid className="gridHeader">
+            let headerContent = <Grid id="tableGridHeader" className={{
+                gridHeader: true,
+                focused: "tableGridHeader" === this.state.tabRowId
+            }}>
                 {this.props.headers.map((header, idx) => {
                     let smallCol = 0;
                     let medCol = 0;
@@ -495,27 +586,34 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         }
                     }
                     return <Column sm={smallCol} md={medCol} style={{ marginTop: "8px", marginBottom: "8px" }}>
+                        <div>
                         {header.label === "Issues" ?
                         <span className="gridHeaderCell">
-                            <Checkbox
-                                id="1"
+                            {allIgnored === "some" && <Checkbox
+                                id="allchkbox"
                                 hideLabel
-                                checked={ this.state.allIgnoredIssues }
-                                onChange={(_evt: any, value: { checked: boolean, id: string }) => {
+                                indeterminate={ true}
+                                tabIndex={this.state.tabRowId === "tableGridHeader" ? 0 : -1}
+                                onChange={async (_evt: any, value: { checked: boolean, id: string }) => {
                                     // Receives three arguments: the DOM event, true/false, checkbox id
-                                    if (value.checked === true) { // change to true
-                                        this.setState({ allIgnoredIssues: true});
-                                        // JCH need function to set all issues and groups to ignored
-                                    }
-                                    if (value.checked === false) { // change to false
-                                        this.setState({ allIgnoredIssues: false});
-                                    }
+                                    ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, allIssues, value.checked);
                                 }}
-                            />
+                            />}
+                            {allIgnored !== "some" && <Checkbox
+                                id="allchkbox"
+                                hideLabel
+                                checked={ allIgnored === "all"}
+                                tabIndex={this.state.tabRowId === "tableGridHeader" ? 0 : -1}
+                                onChange={async (_evt: any, value: { checked: boolean, id: string }) => {
+                                    // Receives three arguments: the DOM event, true/false, checkbox id
+                                    ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, allIssues, value.checked);
+                                }}
+                            />}
                             <span style={{ marginLeft: "10px" }}>{header.label}</span>
                         </span>
                         : <span className="gridHeaderCell">{header.label}</span>
                         }
+                        </div>
                     </Column>
                 })}
             </Grid>;
@@ -531,19 +629,40 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 for (const child of group.children) {
                     counts[UtilIssue.valueToStringSingular(child.value)] = (counts[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
                 }
+                let focused: boolean = this.state.tabRowId === group.id;
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
                     {/* JCH put group checkbox here */}
-                    <Checkbox
-                        id={group.id.toString()}
-                        hideLabel
-                        checked={ group.ignored }
-                        onChange={(_evt: any, value: { checked: boolean, id: string }) => {
-                            // Receives three arguments: the DOM event, true/false, checkbox id
-                            console.log("value.checked = ", value.checked);
-                            console.log("this.props.ignored = ", group.ignored);
-                            group.ignored = value.checked;
+                    <div 
+                        style={{display: "inline-block", marginLeft: "1rem"}} 
+                        onClick={async (evt:any) => {
+                            ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, group.children, group.ignored !== "all");
+                            // this.onGroup(group.id);
+                            evt.preventDefault();
                         }}
-                    />
+                        onKeyDown={async (evt: React.KeyboardEvent) => {
+                            if (evt.key === "Enter" || evt.key === "Return" || evt.key === "Space") {
+                                ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, group.children, group.ignored !== "all");
+                                // this.onGroup(group.id);
+                                evt.preventDefault();
+                                evt.stopPropagation();
+                            }
+                        }}
+                    >
+                        {group.ignored === "some" && <Checkbox
+                            id={group.id.toString()}
+                            hideLabel
+                            indeterminate={ true }
+                            title={group.ignored}
+                            tabIndex={focused? 0 : -1}
+                            />}
+                        {group.ignored !== "some" && <Checkbox
+                            id={group.id.toString()}
+                            hideLabel
+                            checked={ group.ignored === "all"}
+                            title={group.ignored}
+                            tabIndex={focused? 0 : -1}
+                            />}
+                    </div>
                     { counts["Violation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></span> }
                     { counts["Needs review"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></span> }
                     { counts["Recommendation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Recommendation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></span> }
@@ -559,8 +678,11 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         gridBody: true,
                         focused: group.id === this.state.tabRowId
                     }} 
-                    onClick={() => {
-                        this.onGroup(group.id);
+                    onClick={(evt: any) => {
+                        if (evt.target.getAttribute("class") !== "cds--checkbox-label") {
+                            console.log("Click?")
+                            this.onGroup(group.id);
+                        }
                     }}
                 >
                     {this.props.headers.map((header, idx) => {
@@ -621,30 +743,43 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 selectedDescendant,
                                 focused
                             }} 
-                            onClick={() => {
-                                this.onRow(group, thisIssue);
-                            }}
+                            onClick={(evt: any) => {
+                                if (evt.target.getAttribute("class") !== "cds--checkbox-label") {
+                                    this.onRow(group, thisIssue);
+                                }
+                            }} 
                         >
                             
                             <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                 <div className="gridDataCell">
                                     {/* JCH put group checkbox here */}
-                                    <Checkbox
-                                        id={rowId.toString()}
-                                        hideLabel
-                                        checked={ false }
-                                        onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
-                                            console.log("evtState.checked = ", evtState.checked);
-                                            // console.log("thisIssue.ignored = ", thisIssue.ignored);
-                                            // Receives three arguments: the DOM event, true/false, checkbox id
-                                            // if (evtState.checked === true) { // change to true
-                                            //     thisIssue.ignored = true;
-                                            // }
-                                            // if (evtState.checked === false) { // change to false
-                                            //     thisIssue.ignored = false;
-                                            // }
-                                        }} 
-                                    />
+                                    <div 
+                                        style={{display: "inline-block"}} 
+                                        onClick={async (evt:any) => {
+                                            ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, [thisIssue], !thisIssue.ignored);
+                                            this.onRow(group, thisIssue, false);
+                                            evt.preventDefault();
+                                        }}
+                                        onKeyDown={async (evt: React.KeyboardEvent) => {
+                                            if (evt.key === "Enter" || evt.key === "Return" || evt.key === "Space") {
+                                                ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, [thisIssue], !thisIssue.ignored);
+                                                this.onRow(group, thisIssue, false);
+                                                evt.preventDefault();
+                                            }
+                                        }}
+                                    >
+                                        <Checkbox
+                                            id={rowId.toString()}
+                                            hideLabel
+                                            checked={ thisIssue.ignored }
+                                            tabIndex={-1}
+                                            // onChange={async (evt: any, evtState: { checked: boolean, id: string }) => {
+                                            //     console.log("evtState.checked = ", evtState.checked);
+                                            //     ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, [thisIssue], evtState.checked);
+                                            //     evt.preventDefault();
+                                            // }}
+                                        />
+                                    </div>
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
                                         className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                         role="link"

@@ -57,7 +57,7 @@ export class ReportTabs extends React.Component<ReportProps> {
                         label: thisLabel,
                         path: result.path.aria.replace(/\//g, " /"),
                         children: [result],
-                        ignored: false,
+                        ignored: "none"
                     }
                     rowData.push(curGroup);
                 } else {

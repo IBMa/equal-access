@@ -65,12 +65,12 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     id: string
                     label: string
                     children: IIssue[]
-                    ignored: boolean
+                    ignored: "all" | "some" | "none"
                 } = {
                     id: ReportTreeGrid.cleanId(checkpoint.num),
                     label: `${checkpoint.num} ${checkpoint.name}`,
                     children: [],
-                    ignored: false,
+                    ignored: "none"
                 };
                 for (const result of this.props.issues) {
                     if (checkpoint.rules?.find(rule => (

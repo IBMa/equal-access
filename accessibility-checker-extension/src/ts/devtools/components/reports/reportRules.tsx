@@ -50,7 +50,7 @@ export class ReportRules extends React.Component<ReportProps> {
                         id: ReportTreeGrid.cleanId(thisLabel),
                         label: thisLabel,
                         children: [result],
-                        ignored: false,
+                        ignored: "none"
                     }
                     rowData.push(curGroup);
                 } else {
