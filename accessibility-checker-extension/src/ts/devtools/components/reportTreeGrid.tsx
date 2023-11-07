@@ -58,7 +58,7 @@ interface ReportTreeGridState {
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
-    allHidden: boolean;
+    allIgnoredIssues: boolean;
     hiddenGroups: boolean[];
 }
 
@@ -87,7 +87,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         expandedGroups: [],
         selectedIssue: null,
         tabRowId: "",
-        allHidden: false,
+        allIgnoredIssues: false,
         hiddenGroups: [],
     }
     treeGridRef = React.createRef<HTMLDivElement>();
@@ -498,14 +498,15 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             <Checkbox
                                 id="1"
                                 hideLabel
-                                checked={ this.state.allHidden }
+                                checked={ this.state.allIgnoredIssues }
                                 onChange={(_evt: any, value: { checked: boolean, id: string }) => {
                                     // Receives three arguments: the DOM event, true/false, checkbox id
                                     if (value.checked === true) { // change to true
-                                        this.setState({ allHidden: true});
+                                        this.setState({ allIgnoredIssues: true});
+                                        // JCH need function to set all issues and groups to ignored
                                     }
                                     if (value.checked === false) { // change to false
-                                        this.setState({ allHidden: false});
+                                        this.setState({ allIgnoredIssues: false});
                                     }
                                 }}
                             />
@@ -540,7 +541,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             console.log("this.props.ignored = ", group.ignored);
                             group.ignored = value.checked;
                         }}
-                        // onChange={(_evt: any, value: { checked: boolean, id: string }) => setIsChecked(value.checked)}
                     />
                     { counts["Violation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></span> }
                     { counts["Needs review"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></span> }
