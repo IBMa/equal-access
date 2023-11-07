@@ -23,8 +23,9 @@ export let draggable_alternative_exists: Rule = {
     help: {
         "en-US": {
             "group": "draggable_alternative_exists.html",
-            "pass": "draggable_alternative_exists.html",
-            "potential_obscured": "draggable_alternative_exists.html"
+            "pass_alternative": "draggable_alternative_exists.html",
+            "pass_undraggable": "draggable_alternative_exists.html",
+            "potential_alternative": "draggable_alternative_exists.html"
         }
     },
     messages: {
