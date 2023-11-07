@@ -59,7 +59,8 @@ interface ReportTreeGridState {
     selectedIssue: IIssue | null;
     tabRowId: string;
     allIgnoredIssues: boolean;
-    hiddenGroups: boolean[];
+    ignoredGroups: boolean[]; // hold 
+    ignoredIssues: boolean[];
 }
 
 export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<ReportTreeGridProps<RowType>, ReportTreeGridState> {
@@ -88,7 +89,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         selectedIssue: null,
         tabRowId: "",
         allIgnoredIssues: false,
-        hiddenGroups: [],
+        ignoredGroups: [],
+        ignoredIssues: [],
     }
     treeGridRef = React.createRef<HTMLDivElement>();
 
