@@ -35,7 +35,7 @@ interface ReportProps {
     }
     selectedPath: string | null;
     canScan: boolean;
-    onResetFilters: () => void
+    onResetFilters: () => void;
 }
 
 interface ReportState {
@@ -65,10 +65,12 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     id: string
                     label: string
                     children: IIssue[]
+                    ignored: boolean
                 } = {
                     id: ReportTreeGrid.cleanId(checkpoint.num),
                     label: `${checkpoint.num} ${checkpoint.name}`,
-                    children: []
+                    children: [],
+                    ignored: false,
                 };
                 for (const result of this.props.issues) {
                     if (checkpoint.rules?.find(rule => (

@@ -33,7 +33,7 @@ interface ReportProps {
     }
     selectedPath: string | null;
     canScan: boolean;
-    onResetFilters: () => void
+    onResetFilters: () => void;
 }
 
 type RowProps = IRowGroup & {
@@ -56,7 +56,8 @@ export class ReportTabs extends React.Component<ReportProps> {
                         id: ReportTreeGrid.cleanId(id),
                         label: thisLabel,
                         path: result.path.aria.replace(/\//g, " /"),
-                        children: [result]
+                        children: [result],
+                        ignored: false,
                     }
                     rowData.push(curGroup);
                 } else {

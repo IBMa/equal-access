@@ -35,10 +35,10 @@ import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 export interface IRowGroup {
-    id: string
-    label: string | React.ReactNode
-    children: IIssue[]
-    // JCH need ignored state for group
+    id: string;
+    label: string | React.ReactNode;
+    children: IIssue[];
+    ignored: boolean;
 }
 
 interface ReportTreeGridProps<RowType extends IRowGroup> {
@@ -58,6 +58,8 @@ interface ReportTreeGridState {
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
+    allHidden: boolean;
+    hiddenGroups: boolean[];
 }
 
 export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<ReportTreeGridProps<RowType>, ReportTreeGridState> {
@@ -84,7 +86,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     state: ReportTreeGridState = {
         expandedGroups: [],
         selectedIssue: null,
-        tabRowId: ""
+        tabRowId: "",
+        allHidden: false,
+        hiddenGroups: [],
     }
     treeGridRef = React.createRef<HTMLDivElement>();
 
@@ -494,10 +498,16 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             <Checkbox
                                 id="1"
                                 hideLabel
-                                checked={ false }
-                                onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
-                                    console.log("evtState = ",evtState);
-                                }} 
+                                checked={ this.state.allHidden }
+                                onChange={(_evt: any, value: { checked: boolean, id: string }) => {
+                                    // Receives three arguments: the DOM event, true/false, checkbox id
+                                    if (value.checked === true) { // change to true
+                                        this.setState({ allHidden: true});
+                                    }
+                                    if (value.checked === false) { // change to false
+                                        this.setState({ allHidden: false});
+                                    }
+                                }}
                             />
                             <span style={{ marginLeft: "10px" }}>{header.label}</span>
                         </span>
@@ -521,12 +531,16 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
                     {/* JCH put group checkbox here */}
                     <Checkbox
-                        id="1"
+                        id={group.id.toString()}
                         hideLabel
-                        checked={ false }
-                        onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
-                            console.log("evtState = ",evtState);
-                        }} 
+                        checked={ group.ignored }
+                        onChange={(_evt: any, value: { checked: boolean, id: string }) => {
+                            // Receives three arguments: the DOM event, true/false, checkbox id
+                            console.log("value.checked = ", value.checked);
+                            console.log("this.props.ignored = ", group.ignored);
+                            group.ignored = value.checked;
+                        }}
+                        // onChange={(_evt: any, value: { checked: boolean, id: string }) => setIsChecked(value.checked)}
                     />
                     { counts["Violation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></span> }
                     { counts["Needs review"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></span> }
@@ -614,11 +628,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 <div className="gridDataCell">
                                     {/* JCH put group checkbox here */}
                                     <Checkbox
-                                        id="1"
+                                        id={rowId.toString()}
                                         hideLabel
                                         checked={ false }
                                         onChange={(_evt: any, evtState: { checked: boolean, id: string }) => {
-                                            console.log("evtState = ",evtState);
+                                            console.log("evtState.checked = ", evtState.checked);
+                                            // console.log("thisIssue.ignored = ", thisIssue.ignored);
+                                            // Receives three arguments: the DOM event, true/false, checkbox id
+                                            // if (evtState.checked === true) { // change to true
+                                            //     thisIssue.ignored = true;
+                                            // }
+                                            // if (evtState.checked === false) { // change to false
+                                            //     thisIssue.ignored = false;
+                                            // }
                                         }} 
                                     />
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 

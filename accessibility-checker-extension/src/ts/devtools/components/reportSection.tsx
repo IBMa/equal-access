@@ -49,7 +49,7 @@ import { getTabId } from '../../util/tabId';
 let devtoolsController = getDevtoolsController();
 
 interface ReportSectionProps {
-    panel: ePanel
+    panel: ePanel;
 }
 
 interface ReportSectionState {
@@ -234,6 +234,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             { id: '0', text: 'Violations' },
             { id: '1', text: 'Needs review' },
             { id: '2', text: 'Recommendations' },
+            { id: '3', text: 'Hidden' },
         ]
 
         let viewFilterSection = <>
@@ -275,7 +276,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                     } else if (item && item.id === "1") {
                                         return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
                                     } else if (item && item.id === "2") {
-                                        return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>
+                                        return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
+                                    } else if (item && item.id === "3") {
+                                        return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
                                     }
                                     return <></>
                                 }

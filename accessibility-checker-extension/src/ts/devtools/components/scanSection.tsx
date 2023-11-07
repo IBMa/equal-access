@@ -254,7 +254,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (reportIssues) {
             filterCounts = this.getCounts(reportIssues);
-            console.log("filterCounts after getCounts = ", filterCounts);
+            // console.log("filterCounts after getCounts = ", filterCounts);
             reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
@@ -269,9 +269,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
             totalCount += filterCounts[levelStr as eLevel].total;
             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
-            console.log("Icon: ", UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon"));
-            console.log("countFocused = ", filterCounts[levelStr as eLevel].focused);
-            console.log("countRegular = ", filterCounts[levelStr as eLevel].total);
+            // console.log("Icon: ", UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon"));
+            // console.log("countFocused = ", filterCounts[levelStr as eLevel].focused);
+            // console.log("countRegular = ", filterCounts[levelStr as eLevel].total);
         })}
 
         let selectedElementStr = this.state.selectedElemPath;
