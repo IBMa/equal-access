@@ -55,7 +55,7 @@ export function getInvalidRoles(ruleContext: Element) {
 
     let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
     let allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
-    if (!allowedRoles && allowedRoles.length === 0)
+    if (!allowedRoles || allowedRoles.length === 0)
         return domRoles;
     
     let invalidRoles = [];
