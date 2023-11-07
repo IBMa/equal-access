@@ -49,6 +49,9 @@ export class UtilKCM {
                 result.ruleId === "script_focus_blur_review" ||
 
                 result.ruleId === "element_tabbable_visible" ||
+
+                // 2.4.11 Focus not obscured (Minimum)
+                result.ruleId === "element_tabbable_unobscured" ||
                 
 
                 // 3.2.1 On Focus
