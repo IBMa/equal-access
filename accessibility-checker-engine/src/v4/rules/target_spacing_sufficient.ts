@@ -78,7 +78,7 @@
             if (status === null) return null;
             if (status.inline) {
                 if (status.text) {
-                    if (status.violation == null)
+                    if (status.violation === null)
                         return RulePass("pass_inline");
                     else
                         // case 1: inline element is too close horizontally
