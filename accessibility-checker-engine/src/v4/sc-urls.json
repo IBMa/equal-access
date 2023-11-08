@@ -709,12 +709,12 @@
     },
     "2.5.8": {
       "num": "2.5.8",
-      "url": "https://w3c.github.io/wcag/guidelines/22/#target-size-minimum",
+      "url": "https://www.w3.org/TR/WCAG22/#target-size-minimum",
       "scId": "WCAG2:minimum-target-size",
       "scAltId": ["minimum-target-size"],
       "test": "WCAG2:WCAG2:minimum-target-size",
-      "howToMeetUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
-      "understandingUrl": "https://w3c.github.io/wcag/understanding/target-size-minimum.html",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
       "handle": "Minimum Target Size",
       "level": "AA",
       "wcagType": "2.2"
