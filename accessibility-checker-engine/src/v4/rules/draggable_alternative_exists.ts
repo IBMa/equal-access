@@ -55,7 +55,6 @@ export let draggable_alternative_exists: Rule = {
             || nodeName === "body" || nodeName === "html" )
             return null;
         
-        //in case the bounds not available
         if (ruleContext.getAttribute("draggable") === 'true') 
             return RulePotential("potential_alternative", [nodeName]);
         else if (ruleContext.getAttribute("draggable") === 'false') 
