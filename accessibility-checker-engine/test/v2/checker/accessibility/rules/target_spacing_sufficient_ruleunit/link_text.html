@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+  
+<div>
+  <a id='ali' href="google.com">Aliquam</a> 
+  <a id='vest' href="ibm.com">Vestibulum consequat scelerisque </a> 
+</div>
+
+<div style="margin-top:20px;">
+  <a id='a' href="google.com">A</a> 
+  <a id='v' href="ibm.com">V</a> 
+</div>
+
+
+<script>
+  UnitTest = {
+    ruleIds: ["target_spacing_sufficient"],
+    results: [
+    {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/a[2]",
+              "aria": "/document[1]/link[2]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/a[1]",
+              "aria": "/document[1]/link[3]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/a[2]",
+              "aria": "/document[1]/link[4]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>

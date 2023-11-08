@@ -45,26 +45,26 @@
 
 ### Why is this important?
 
-Scripted mouse-specific event handlers can be used to trigger actions on graphical user interface (GUI) controls. Equivalent keyboard-specific handlers allow individuals who rely on a keyboard or keyboard interface to access the same functionality.
+Some people with physical impairments cannot click or touch small buttons that are close together, especially on mobile touch screens. 
+
+The intent of the requirement is to provide adequate clearance from any adjacent elements to prevent accidental activation of adjacent elements.
+The requirement also intends to provide a larger region of the display that will accept a touch or pointer action when elements overlap and in other situations where the target size may be smaller than that of the element.
+
+Even though exceptions such as “**_inline link text_**” are listed in [2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum),  it is recommended to increase the size and spacing where possible.
+
+**Note**: When a _minimum size_ cannot be met, then a _minimum spacing_ is required.
+Therefore, it is still possible to have small elements and meet the requirement, provided that the elements do not have any adjacent elements that are too close.
+It is recommended to meet the minimum size requirement regardless of spacing.
+For important links and controls, consider aiming for the stricter [2.5.5 Target Size (Enhanced AAA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced) of at least 44 by 44 CSS pixels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Using only the keyboard, make sure you can access all the functionality provided by the mouse event handlers.
-* **And**, if there is no equivalent keyboard access, follow the event handler table below to provide the corresponding keyboard event handlers:
-
-<!-- To add a table, use three or more hyphens (---) to create each column’s header, and use pipes (|) to separate each column, add a pipe on either end of the row. -->
-<!-- Cell widths can vary, the rendered output should look the same. -->
-
-| Use            | with          |
-| -------------- | ------------- |
-| onmousedown    | onkeydown     |
-| onmouseup      | onkeyup       |
-| onclick        | onkeypress    |
-| onmouseover    | onfocus       |
-| onmouseout     | onblur        |
+- Increase the size of the element's target 
+- **Or**: increase the spacing around the target
+- **Or**: ensure the function can be achieved through a different control on the same page that meets the minimum size and spacing requirement
 
 </script></mark-down>
 <!-- End main panel -->
@@ -77,16 +77,18 @@ Scripted mouse-specific event handlers can be used to trigger actions on graphic
 
 ### About this requirement
 
-* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
-* [WCAG technique SCR20: Using both keyboard and other device-specific functions](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR20)
+- [WCAG 2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum)
+- [WCAG technique C42: Using min-height and min-width to ensure sufficient target spacing](https://www.w3.org/WAI/WCAG22/Techniques/css/C42)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision, and neurodivergent people
-* People with low vision
-* People with tremor or other movement disorders
-* People who rely on keyboard control
-
+- People who use a mobile device where the touch screen is the primary mode of interaction
+- People with tremors or other movement disorders using a mouse, stylus, or touch input
+- People using a device in environments where they are exposed to shaking such as public transportation
+- People with large fingers or who are operating the device with only a part of their finger or knuckle
+- People using a device with only one hand
+- Many older adults or other users who have difficulty with fine motor movements
+    
 </script></mark-down>
 <!-- End side panel -->
             </div>

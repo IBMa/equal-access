@@ -15,6 +15,7 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export let iframe_interactive_tabbable: Rule = {
     id: "iframe_interactive_tabbable",
@@ -47,7 +48,8 @@ export let iframe_interactive_tabbable: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        const bounds = context["dom"].bounds;
+        const mapper : DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(ruleContext);
         //in case the bounds not available
         if (!bounds) return null;
         
