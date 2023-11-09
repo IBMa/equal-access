@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { getDefinedStyles, getComputedStyle, convertValue2Pixels } from "../util/CSSUtil";
+import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export let text_spacing_valid: Rule = {
     id: "text_spacing_valid",
@@ -54,7 +55,8 @@ export let text_spacing_valid: Rule = {
             return null;
 
         //skip the check if the element is off screen
-        const bounds = context["dom"].bounds;
+        const mapper : DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(ruleContext);
         //in case the bounds not available
         if (!bounds) return null;
         if (bounds['top'] < 0 || bounds['left'] < 0)
