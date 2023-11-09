@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+  <script>
+    const draggableElement = document.querySelector('p[draggable="true"]');
+    console.log("dragstart: "+ draggableElement);
+    draggableElement.addEventListener("dragstart", (event) => { console.log("dragstart");
+      event.dataTransfer.setData("text/plain", "This text may be dragged");
+    });
+  </script>
+</head>
+
+<body>
+
+  <p>no draggable defined: This text <strong>may</strong> be dragged by selection.</p>
+
+  <p draggable="false">draggable false: This text <strong>may</strong> be selected and dragged.</p>
+
+  <p draggable="">draggable undefined:This text <strong>may</strong> be selected and dragged.</p>
+
+  <p draggable="true">draggable true: This text <strong>may</strong> be dragged.</p>
+
+  <img id="drag1" src="https://ibm.com/able/favicon-32x32.png" alt=""/>
+
+<script>
+  UnitTest = {
+    ruleIds: ["draggable_alternative_exists"],
+    results: [
+    {
+            "ruleId": "draggable_alternative_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[2]",
+              "aria": "/document[1]/paragraph[2]"
+            },
+            "reasonId": "pass_undraggable",
+            "message": "The element \"p\" is not draggable",
+            "messageArgs": [
+              "p"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "draggable_alternative_exists",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]",
+              "aria": "/document[1]/paragraph[4]"
+            },
+            "reasonId": "potential_alternative",
+            "message": "Ensure the draggable element \"p\" has a \"single pointer\" alternative",
+            "messageArgs": [
+              "p"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>

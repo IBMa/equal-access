@@ -62,6 +62,7 @@ const summaries = {
     "2.5.3": "For user interface components with labels that include text or images of text, the accessible name contains the text that is presented visually.",
     "2.5.4": "Functionality that can be operated by motion can also be operated by user interface components, and the motion trigger can be disabled.",
     "2.5.8": "The size of the target for pointer inputs is at least 24 by 24 CSS pixels.",
+    "2.5.7": "All functionality that uses a dragging movement for operation can be achieved by a single pointer without dragging.",
     "3.1.1": "The default human language of Web pages, non-Web documents, or software can be programmatically determined.",
     "3.1.2": "The human language of each passage or phrase in the content can be programmatically determined.",
     "3.2.1": "When any component receives focus, it does not initiate a change of context.",
