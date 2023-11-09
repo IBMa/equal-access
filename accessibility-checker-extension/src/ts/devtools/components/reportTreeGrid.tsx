@@ -633,7 +633,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
                     {/* JCH put group checkbox here */}
                     <div 
-                        style={{display: "inline-block", marginLeft: "1rem"}} 
+                        style={{display: "inline-block", marginLeft: "12px"}} 
                         onClick={async (evt:any) => {
                             ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, group.children, group.ignored !== "all");
                             // this.onGroup(group.id);
