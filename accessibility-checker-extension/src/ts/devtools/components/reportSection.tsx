@@ -62,6 +62,7 @@ interface ReportSectionState {
     selectedPath: string | null,
     reportViewState: string | null,
     reportFilterState: [{id:string;text:string}] | null,
+    ignoreToolbar: boolean,
     focusMode: boolean,
     viewState?: ViewState,
     canScan: boolean
@@ -101,6 +102,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         selectedPath: null,
         reportViewState: "Element roles",
         reportFilterState: null,
+        ignoreToolbar: false,
         focusMode: false,
         canScan: true
     }
@@ -241,6 +243,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              <Grid className="reportViewFilterSection">
+                {this.state.ignoreToolbar === true ?
+                // Filter Toolbar
+                <>
                 <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                     {!this.state.viewState || !this.state.viewState!.kcm && 
                         <Dropdown
@@ -346,6 +351,26 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         >Export XLS</Button>
                     </div>
                 </Column>
+                </>
+                :
+                // Ignore Toolbar
+                <>
+                <Column sm={4} md={8} lg={8} style={{ marginRight: "16px",backgroundColor: "#0f62fe" }}>
+                    <div style={{ backgroundColor: "#0f62fe", minHeight: "18px", maxHeight: "32px", marginRight: "16px"}}>
+                        <span style={{ verticalAlign: "middle", marginLeft: "16px", fontSize: "14px", color:"#ffffff" }}>Hidden_num Items selected</span>
+                        <Button 
+                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
+                            onClick={() => console.log("") }
+                        >Hide</Button>
+                        {/* <span>Vertical separator line</span> */}
+                        <Button 
+                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
+                            onClick={() => console.log("") }
+                        >Cancel</Button>
+                    </div>
+                </Column>
+                </>
+                }
              </Grid>
         </>
 
