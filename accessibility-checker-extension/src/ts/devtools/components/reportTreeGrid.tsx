@@ -773,11 +773,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             hideLabel
                                             checked={ thisIssue.ignored }
                                             tabIndex={-1}
-                                            // onChange={async (evt: any, evtState: { checked: boolean, id: string }) => {
-                                            //     console.log("evtState.checked = ", evtState.checked);
-                                            //     ReportTreeGrid.bgcontroller.setIgnore((await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!, [thisIssue], evtState.checked);
-                                            //     evt.preventDefault();
-                                            // }}
+                                            // ohChange replaced by onClick and onKeyDown above
                                         />
                                     </div>
                                     {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 

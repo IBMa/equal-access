@@ -282,7 +282,9 @@ class BackgroundController extends Controller {
      * Toggle ignore
      */
     public async setIgnore(url: string, issues:IIssue[], bIgnore: boolean) : Promise<void> {
+        console.log("func: setIgnore");
         return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
+            console.log("AAAAA");
             let modifyList = await this.getIgnore(url);
             for (const issue of issues) {
                 let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
@@ -307,6 +309,7 @@ class BackgroundController extends Controller {
                     });
                 });
             });
+            console.log("modifyList = ",modifyList);
             this.notifyEventListeners("BG_IgnoreUpdateListener", -1, { url, issues: modifyList });
         });
     }
