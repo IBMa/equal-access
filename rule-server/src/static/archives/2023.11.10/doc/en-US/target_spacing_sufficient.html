@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>target_spacing_sufficient - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"The target must be sufficiently sized or spaced from other targets","pass_spacing":"The target's spacing from other targets is sufficient","pass_sized":"The target’s size is more than 24 CSS pixels","pass_inline":"The target is in a sentence or its size is otherwise constrained by the line-height of non-target text","pass_default":"The target's size is determined by the user agent and is not modified by the author","violation_spacing":"Undersized target \"{0}\" does not have sufficient spacing of 12 CSS pixels from another target \"{1}\"","recommendation_inline":"Confirm the inline target \"{0}\" is sufficiently spaced from another inline target \"{1}\"","potential_overlap":"Ensure the overlapped target \"{0}\" meets a minimum target size or has sufficient spacing from the overlapping target \"{1}\""}};
+        RULE_ID = "target_spacing_sufficient"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Some people with physical impairments cannot click or touch small buttons that are close together, especially on mobile touch screens. 
+
+The intent of the requirement is to provide adequate clearance from any adjacent elements to prevent accidental activation of adjacent elements.
+The requirement also intends to provide a larger region of the display that will accept a touch or pointer action when elements overlap and in other situations where the target size may be smaller than that of the element.
+
+Even though exceptions such as “**_inline link text_**” are listed in [2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum),  it is recommended to increase the size and spacing where possible.
+
+**Note**: When a _minimum size_ cannot be met, then a _minimum spacing_ is required.
+Therefore, it is still possible to have small elements and meet the requirement, provided that the elements do not have any adjacent elements that are too close.
+It is recommended to meet the minimum size requirement regardless of spacing.
+For important links and controls, consider aiming for the stricter [2.5.5 Target Size (Enhanced AAA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced) of at least 44 by 44 CSS pixels.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+- Increase the size of the element's target 
+- **Or**: increase the spacing around the target
+- **Or**: ensure the function can be achieved through a different control on the same page that meets the minimum size and spacing requirement
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+- [WCAG 2.5.8 Target Size (Minimum AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum)
+- [WCAG technique C42: Using min-height and min-width to ensure sufficient target spacing](https://www.w3.org/WAI/WCAG22/Techniques/css/C42)
+
+### Who does this affect?
+
+- People who use a mobile device where the touch screen is the primary mode of interaction
+- People with tremors or other movement disorders using a mouse, stylus, or touch input
+- People using a device in environments where they are exposed to shaking such as public transportation
+- People with large fingers or who are operating the device with only a part of their finger or knuckle
+- People using a device with only one hand
+- Many older adults or other users who have difficulty with fine motor movements
+    
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
