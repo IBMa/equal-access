@@ -96,7 +96,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         checked: {
             "Violation": true,
             "Needs review": true,
-            "Recommendation": true
+            "Recommendation": true,
         },
         selectedPath: null,
         reportViewState: "Element roles",
@@ -200,6 +200,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let tabbableDetectors: IIssue[] | null = null;
         let tabCount = 0;
         let missingTabCount = 0;
+        let levelSelectedItems:any = [];
 
         if (this.state.report) {
             if (this.state.viewState && this.state.viewState.kcm) {
@@ -286,55 +287,52 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             light={false}
                             type="default"
                             style={{ float: "right" }}
-                            selecteditems={this.state.reportFilterState}
+                            selecteditems={levelSelectedItems}
+                            initialSelectedItems={[filterItems[0], filterItems[1], filterItems[2]]}
                             onChange={async (evt: any) => {
-                                console.log("Multiselect onChange START");
-                                console.log("evt = ", evt);
                                 // ok we have one of two cases 
                                 // 1. there are selected 
                                 let checked = JSON.parse(JSON.stringify(this.state.checked));
-                                console.log("onChanged checked = ", checked);
                                 if (evt.selectedItems[0] != undefined) {
                                     if (evt.selectedItems.length > 0) {
+                                        checked["Violation"] = false;
                                         for (let i = 0; i < evt.selectedItems.length; i++) {
                                             if (evt.selectedItems[i].text === "Violations") {
-                                                console.log("checked['Violation'] = ", checked['Violation']);
-                                                checked["Violation"] = false;
-                                                break;
-                                            } else {
-                                                console.log("checked['Violation'] = true");
                                                 checked["Violation"] = true;
-                                            }
+                                            } 
                                         }
+                                        checked["Needs review"] = false;
                                         for (let i = 0; i < evt.selectedItems.length; i++) {
                                             if (evt.selectedItems[i].text === "Needs review") {
-                                                console.log("Needs review checked");
-                                                checked["Needs review"] = false;
-                                                break;
-                                            } else {
-                                                console.log("checked['Needs review'] = true");
                                                 checked["Needs review"] = true;
                                             }
                                         }
+                                        checked["Recommendation"] = false;
                                         for (let i = 0; i < evt.selectedItems.length; i++) {
                                             if (evt.selectedItems[i].text === "Recommendations") {
-                                                console.log("Recommendations checked");
-                                                checked["Recommendation"] = false;
-                                            } else {
-                                                console.log("checked['Recommendation'] = true");
                                                 checked["Recommendation"] = true;
                                             }
                                         } 
                                     }
                                 }
                                 // set state
+                                levelSelectedItems = [];
+                                if (checked["Violation"] === true ) {
+                                    levelSelectedItems.push(filterItems[0]);
+                                }
+                                if (checked["Needs review"] === true) {
+                                    levelSelectedItems.push(filterItems[1]);
+                                }
+                                if (checked["Recommendation"] === true) {
+                                    levelSelectedItems.push(filterItems[2]);
+                                }
                                 this.setState({ checked: checked });
+                                
+
                                 // 2. there are none selected
                                 if (evt.selectedItems.length == 0) {
-                                    console.log("RESET filters");
                                     this.onResetFilters();
                                 }
-                                console.log("Final select: ", this.state.checked);
                             }}
                         />
                     }
