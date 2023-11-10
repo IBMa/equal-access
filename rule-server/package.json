@@ -31,7 +31,7 @@
         "express-http-proxy": "^1.6.3",
         "gulp": "^4.0.2",
         "gulp-modify-file": "^1.0.1",
-        "nano": "^9.0.5",
+        "nano": "^10.1.2",
         "pem": "^1.14.7",
         "shx": "^0.3.3",
         "ts-node": "^10.4.0"
