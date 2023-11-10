@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
-import { IIssue, IReport } from '../../interfaces/interfaces';
+import { IIssue, IReport, UIIssue } from '../../interfaces/interfaces';
 import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 import {
@@ -43,7 +43,7 @@ import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ReportTabs } from './reports/reportTabs';
 import { UtilKCM } from '../../util/UtilKCM';
-import { getBGController } from '../../background/backgroundController';
+import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
 import { getTabId } from '../../util/tabId';
 
 let devtoolsController = getDevtoolsController();
@@ -57,15 +57,17 @@ interface ReportSectionState {
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
-        "Recommendation": boolean
+        "Recommendation": boolean,
+        "Hidden": boolean
     }
     selectedPath: string | null,
     reportViewState: string | null,
     reportFilterState: [{id:string;text:string}] | null,
-    ignoreToolbar: boolean,
     focusMode: boolean,
     viewState?: ViewState,
-    canScan: boolean
+    canScan: boolean,
+    filterShown: boolean,
+    ignoredIssues: UIIssue[]
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
@@ -83,6 +85,10 @@ type CountType = {
         focused: number,
         total: number
     },
+    "Hidden": {
+        focused: number,
+        total: number
+    }
     "Pass": {
         focused: number,
         total: number
@@ -98,13 +104,15 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             "Violation": true,
             "Needs review": true,
             "Recommendation": true,
+            "Hidden": false
         },
         selectedPath: null,
         reportViewState: "Element roles",
         reportFilterState: null,
-        ignoreToolbar: false,
         focusMode: false,
-        canScan: true
+        canScan: true,
+        filterShown: true,
+        ignoredIssues: []
     }
 
     async componentDidMount(): Promise<void> {
@@ -128,6 +136,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             focusMode: await devtoolsController.getFocusMode(),
             viewState: (await devtoolsController.getViewState())!
         })
+        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await bgController.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues });
+            }
+        })
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
+        this.setState({ ignoredIssues: alreadyIgnored });
     }
 
     componentWillUnmount(): void {
@@ -139,7 +155,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             checked: {
                 "Violation": true,
                 "Needs review": true,
-                "Recommendation": true
+                "Recommendation": true,
+                "Hidden": true
             }
         })
     }
@@ -176,6 +193,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 focused: 0,
                 total: 0
             },
+            "Hidden": {
+                focused: 0,
+                total: 0
+            },
             "Pass": {
                 focused: 0,
                 total: 0
@@ -183,14 +204,20 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         }
     }
 
-    getCounts(issues: IIssue[] | null) : CountType {
+    getCounts(issues: UIIssue[] | null) : CountType {
         let counts = this.initCount();
         if (issues) {
             for (const issue of issues) {
                 let sing = UtilIssue.valueToStringSingular(issue.value);
                 ++counts[sing as eLevel].total;
+                if (issue.ignored) {
+                    ++counts["Hidden"].total;
+                }
                 if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
                     ++counts[sing as eLevel].focused;
+                    if (issue.ignored) {
+                        ++counts["Hidden"].focused;
+                    }
                 }
             }
         }
@@ -202,7 +229,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let tabbableDetectors: IIssue[] | null = null;
         let tabCount = 0;
         let missingTabCount = 0;
-        let levelSelectedItems:any = [];
 
         if (this.state.report) {
             if (this.state.viewState && this.state.viewState.kcm) {
@@ -218,13 +244,17 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             }
         }
         if (reportIssues) {
-            reportIssues = reportIssues.filter((issue: IIssue) => {
+            reportIssues = reportIssues.filter((issue: UIIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
                         || !this.state.selectedPath
                         || issue.path.dom.startsWith(this.state.selectedPath)
                     )
                 );
+                issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
+                if (!this.state.checked["Hidden"] && issue.ignored) {
+                    return false;
+                }
                 return retVal;
             });
         }
@@ -239,13 +269,16 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             { id: '2', text: 'Recommendations' },
             { id: '3', text: 'Hidden' },
         ]
+        let levelSelectedItems: Array<{id: string, text: string}> = [];
+        for (const key in this.state.checked) {
+            if ((this.state.checked as any)[key]) {
+                levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === key)!)
+            }
+        }
 
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
-             <Grid className="reportViewFilterSection">
-                {this.state.ignoreToolbar === true ?
-                // Filter Toolbar
-                <>
+             {this.state.filterShown && <Grid className="reportViewFilterSection">
                 <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                     {!this.state.viewState || !this.state.viewState!.kcm && 
                         <Dropdown
@@ -317,22 +350,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             if (evt.selectedItems[i].text === "Recommendations") {
                                                 checked["Recommendation"] = true;
                                             }
-                                        } 
+                                        }
+                                        checked["Hidden"] = false;
+                                        for (const item of evt.selectedItems) {
+                                            checked["Hidden"] ||= (item.text === "Hidden");
+                                        }
                                     }
                                 }
-                                // set state
-                                levelSelectedItems = [];
-                                if (checked["Violation"] === true ) {
-                                    levelSelectedItems.push(filterItems[0]);
-                                }
-                                if (checked["Needs review"] === true) {
-                                    levelSelectedItems.push(filterItems[1]);
-                                }
-                                if (checked["Recommendation"] === true) {
-                                    levelSelectedItems.push(filterItems[2]);
-                                }
                                 this.setState({ checked: checked });
-                                
 
                                 // 2. there are none selected
                                 if (evt.selectedItems.length == 0) {
@@ -351,31 +376,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         >Export XLS</Button>
                     </div>
                 </Column>
-                </>
-                :
-                // Ignore Toolbar
-                <>
-                <Column sm={4} md={8} lg={8} style={{ marginRight: "16px",backgroundColor: "#0f62fe" }}>
-                    <div style={{ backgroundColor: "#0f62fe", minHeight: "18px", maxHeight: "32px", marginRight: "16px"}}>
-                        <span style={{ verticalAlign: "middle", marginLeft: "16px", fontSize: "14px", color:"#ffffff" }}>Hidden_num Items selected</span>
-                        <Button 
-                            style={{ paddingRight: "40px", maxWidth: "40px", float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
-                            onClick={() => console.log("") }
-                        >Hide</Button>
-                        <span></span>
-                        <Button 
-                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
-                            onClick={() => console.log("") }
-                        >Cancel</Button>
-                    </div>
-                </Column>
-                </>
-                }
-             </Grid>
-        </>
-
-
-        
+             </Grid>}
+        </>        
 
         return (<>
             {viewFilterSection}
@@ -393,6 +395,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             selectedPath={this.state.selectedPath} 
                                             onResetFilters={this.onResetFilters.bind(this)}
                                             canScan={this.state.canScan}
+                                            onFilterToolbar={(val) => this.setState({filterShown: val})}
                                         />
                                     </div>
                                 </>}
@@ -406,7 +409,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
-                                    />
+                                        onFilterToolbar={(val) => this.setState({filterShown: val})}
+                                        />
                                     </div>
                                 </>}
                                 {this.state.reportViewState === "Rules" && <>
@@ -420,6 +424,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
+                                        onFilterToolbar={(val) => this.setState({filterShown: val})}
                                     />
                                     </div>
                                 </>}
@@ -462,6 +467,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 selectedPath={this.state.selectedPath} 
                                 onResetFilters={this.onResetFilters.bind(this)}
                                 canScan={this.state.canScan}
+                                onFilterToolbar={(val) => this.setState({filterShown: val})}
                             />
                         </div>
                     </div>}

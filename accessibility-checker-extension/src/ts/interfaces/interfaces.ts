@@ -101,6 +101,10 @@ export interface IIssue {
     snippet: string
     category: "Accessibility",
     help: string
+}
+
+export interface UIIssue extends IIssue {
+    checked?: boolean,
     ignored?: boolean
 }
 

@@ -267,24 +267,22 @@ class BackgroundController extends Controller {
      */
     public async getIgnore(url: string) : Promise<IIssue[]> {
         // let myThis = this;
-        let retVal = (await this.hook("getIgnore", null, async () => {
+        let retVal = (await this.hook("getIgnore", url, async () => {
             let retVal = await new Promise<IIssue[]>((resolve, _reject) => {
                 chrome.storage.local.get("IGNORE_LIST", async function (result: { IGNORE_LIST?: { [url: string]: IIssue[] }}) {
                     resolve(result.IGNORE_LIST?.[url] || []);
                 });
             })
-            return retVal;
+            return retVal || [];
         }))!;
-        return retVal;
+        return retVal || [];
     }
 
     /**
      * Toggle ignore
      */
     public async setIgnore(url: string, issues:IIssue[], bIgnore: boolean) : Promise<void> {
-        console.log("func: setIgnore");
         return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
-            console.log("AAAAA");
             let modifyList = await this.getIgnore(url);
             for (const issue of issues) {
                 let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
@@ -309,7 +307,6 @@ class BackgroundController extends Controller {
                     });
                 });
             });
-            console.log("modifyList = ",modifyList);
             this.notifyEventListeners("BG_IgnoreUpdateListener", -1, { url, issues: modifyList });
         });
     }
@@ -450,22 +447,6 @@ class BackgroundController extends Controller {
                     report.counts = counts;
                 }
 
-                // Get the url of the document being scanned and check for already ignored
-                let tabInfo = await this.getTabInfo(senderTabId);
-                if (tabInfo.url) {
-                    const curBaseline = await this.getIgnore(tabInfo.url);
-                    if (curBaseline) {
-                        for (let issue of report.results) {
-                            if (curBaseline.find(baselineIssue => (
-                                baselineIssue.ruleId === issue.ruleId
-                                && baselineIssue.reasonId === issue.reasonId
-                                && baselineIssue.path.dom === issue.path.dom
-                            ))) {
-                                issue.ignored = true;
-                            }
-                        }
-                    }
-                }
                 getDevtoolsController(false, "remote", senderTabId).setReport(report);
                 getDevtoolsController(false, "remote", senderTabId).setScanningState("idle");
             })();

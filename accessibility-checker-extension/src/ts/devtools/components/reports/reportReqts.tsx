@@ -36,6 +36,7 @@ interface ReportProps {
     selectedPath: string | null;
     canScan: boolean;
     onResetFilters: () => void;
+    onFilterToolbar: (val : boolean) => void;
 }
 
 interface ReportState {
@@ -65,12 +66,14 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     id: string
                     label: string
                     children: IIssue[]
-                    ignored: "all" | "some" | "none"
+                    checked: "all" | "some" | "none",
+                    ignored: boolean
                 } = {
                     id: ReportTreeGrid.cleanId(checkpoint.num),
                     label: `${checkpoint.num} ${checkpoint.name}`,
                     children: [],
-                    ignored: "none"
+                    checked: "none",
+                    ignored: false
                 };
                 for (const result of this.props.issues) {
                     if (checkpoint.rules?.find(rule => (
@@ -99,6 +102,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
             rowData={rowData}
             selectedPath={this.props.selectedPath}
             onResetFilters={this.props.onResetFilters}
+            onFilterToolbar={this.props.onFilterToolbar}
         />
     }
 }

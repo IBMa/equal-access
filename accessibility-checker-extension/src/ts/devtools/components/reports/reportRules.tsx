@@ -34,6 +34,8 @@ interface ReportProps {
     selectedPath: string | null;
     canScan: boolean;
     onResetFilters: () => void;
+    onFilterToolbar: (val: boolean) => void
+
 }
 
 export class ReportRules extends React.Component<ReportProps> {
@@ -50,7 +52,7 @@ export class ReportRules extends React.Component<ReportProps> {
                         id: ReportTreeGrid.cleanId(thisLabel),
                         label: thisLabel,
                         children: [result],
-                        ignored: "none"
+                        checked: "none"
                     }
                     rowData.push(curGroup);
                 } else {
@@ -90,6 +92,7 @@ export class ReportRules extends React.Component<ReportProps> {
             rowData={rowData}
             selectedPath={this.props.selectedPath}
             onResetFilters={this.props.onResetFilters}
+            onFilterToolbar={this.props.onFilterToolbar}
         />
     }
 }
