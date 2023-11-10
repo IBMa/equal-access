@@ -359,10 +359,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                     <div style={{ backgroundColor: "#0f62fe", minHeight: "18px", maxHeight: "32px", marginRight: "16px"}}>
                         <span style={{ verticalAlign: "middle", marginLeft: "16px", fontSize: "14px", color:"#ffffff" }}>Hidden_num Items selected</span>
                         <Button 
-                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
+                            style={{ paddingRight: "40px", maxWidth: "40px", float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
                             onClick={() => console.log("") }
                         >Hide</Button>
-                        {/* <span>Vertical separator line</span> */}
+                        <span></span>
                         <Button 
                             style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
                             onClick={() => console.log("") }
