@@ -44,6 +44,7 @@ export let element_tabbable_unobscured: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
+
         if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
             return null;
         
@@ -54,7 +55,8 @@ export let element_tabbable_unobscured: Rule = {
             || nodeName === "body" || nodeName === "html" )
             return null;
         
-        const bounds = context["dom"].bounds;    
+        const mapper : DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(ruleContext);;    
         
         //in case the bounds not available
         if (!bounds) return null;
@@ -68,11 +70,13 @@ export let element_tabbable_unobscured: Rule = {
             return null;
         }
         const win = doc.defaultView;
+
         if (!win) {
             return null;
         }
         
         const cStyle = win.getComputedStyle(ruleContext);
+
         if (cStyle === null) 
             return null;
         
@@ -81,10 +85,10 @@ export let element_tabbable_unobscured: Rule = {
             zindex = "0";
         
         const elems = doc.querySelectorAll('body *:not(script)');
+
         if (!elems || elems.length == 0)
             return;
          
-        const mapper : DOMMapper = new DOMMapper();
         let violations = [];
         let before = true;
         elems.forEach(elem => {
@@ -96,7 +100,7 @@ export let element_tabbable_unobscured: Rule = {
                 //the next node in elems will be after the target node (ruleContext). 
                 before = false;
             } else if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
-                const bnds = mapper.getBounds(elem);
+                const bnds = mapper.getUnadjustedBounds(elem);
                 const zStyle = win.getComputedStyle(elem); 
                 let z_index = '0';
                 if (zStyle) {

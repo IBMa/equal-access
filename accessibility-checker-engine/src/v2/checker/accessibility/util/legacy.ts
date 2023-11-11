@@ -20,8 +20,9 @@ import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { DOMWalker } from "../../../dom/DOMWalker";
 import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
-import { getDefinedStyles } from "../../../../v4/util/CSSUtil";
+import { getDefinedStyles, getComputedStyle } from "../../../../v4/util/CSSUtil";
 import { DOMUtil } from "../../../dom/DOMUtil";
+import { DOMMapper } from "../../../dom/DOMMapper";
 
 export class RPTUtil {
 
@@ -417,6 +418,165 @@ export class RPTUtil {
         } else {
             return false;
         }
+    }
+
+    /**
+     * a target is en element that accept a pointer action (click or touch)
+     * 
+     */
+    public static isTarget(element) {
+        if (!element) return false;
+        
+        if (element.hasAttribute("tabindex") || RPTUtil.isTabbable(element)) return true;
+        
+        const roles = RPTUtil.getRoles(element, true); 
+        if (!roles && roles.length === 0)
+            return false;
+
+        let tagProperty = RPTUtil.getElementAriaProperty(element);
+        let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
+        if (!allowedRoles || allowedRoles.length === 0)
+            return false;
+    
+        let parent = element.parentElement;
+        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
+        while (parent && roles.some(role => role === 'group'))
+            parent = parent.parentElement;
+         
+        if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
+            const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * a target is en element that accept a pointer action (click or touch)
+     * a target is a browser default if it's a native widget (no user defined role) without user style  
+     */
+    public static isTargetBrowserDefault(element) {
+        if (!element) return false;
+        
+        // user defained widget
+        const roles = RPTUtil.getRoles(element, false); 
+        if (roles && roles.length > 0)
+            return false;
+
+        // no user style to space control size, including use of font    
+        const styles = getDefinedStyles(element);
+        if (styles['line-height'] || styles['height'] || styles['width'] || styles['min-height'] || styles['min-width'] 
+           || styles['font-size'] || styles['margin-top'] || styles['margin-bottom'] || styles['margin-left'] || styles['margin-right']) 
+            return false;
+            
+        return true;
+    }
+
+    /**
+     * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
+     * some element has default inline property, such as <span>, <a>
+     * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
+     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
+     * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
+     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
+     * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
+     * A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+     * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
+     * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
+     * 
+     * return: if it's inline element and { inline: true | false, text: true | false, violation: null | {node} } 
+     */
+    public static getInlineStatus(element) {
+        if (!element) return null;
+        
+        const style =  getComputedStyle(element);
+        if (!style) return null;
+
+        let status = { "inline": false, "text": false, "violation": null }; 
+        const udisplay = style.getPropertyValue("display");  
+        // inline element only
+        if (udisplay !== 'inline')
+            return status;
+
+        status.inline = true;    
+        const parent = element.parentElement;
+        if (parent) {
+            const mapper : DOMMapper = new DOMMapper();
+            const bounds = mapper.getUnadjustedBounds(element);
+            const style = getComputedStyle(parent);
+            const display = style.getPropertyValue("display");    
+            // an inline element is inside a block. note <body> is a block element too
+            if (display === 'block' || display === 'inline-block') {
+                let containText = false;
+                // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
+                let walkNode = element.nextSibling;
+                let last = true;
+                while (walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (status.violation === null && walkNode.nodeName.toLowerCase() !== 'br') {
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");
+                            if (cDisplay === 'inline')  { 
+                                last = false;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
+                                    if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
+                                        status.violation = walkNode.nodeName.toLowerCase();
+                                }
+                            } else
+                                break;
+                        }   
+                    }
+                    walkNode = walkNode.nextSibling;    
+                }
+                
+                walkNode = element.previousSibling;
+                let first = true;
+                let checked = false;
+                while (walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (!checked && walkNode.nodeName.toLowerCase() !== 'br') {
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");    
+                            if (cDisplay === 'inline')  {
+                                first = false;
+                                checked = true;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
+                                    if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width)  < 24) {
+                                        status.violation = status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase();
+                                    }    
+                                }
+                            } else
+                                break;
+                        }    
+                    }
+                    walkNode = walkNode.previousSibling;    
+                }
+                
+                // one or more inline elements are in the same line with text 
+                if (containText)
+                    status.text = true;
+                
+                return status;
+            } else {
+                //parent is inline element
+                if (!RPTUtil.isInnerTextOnlyEmpty(parent))
+                    status.text = true;
+            }
+        }
+        // all other cases    
+        return status;
     }
 
     public static tabIndexLEZero(elem) {
