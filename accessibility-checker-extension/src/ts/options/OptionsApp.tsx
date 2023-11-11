@@ -339,15 +339,18 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
                 the WCAG standards plus some additional IBM requirements. Rule sets 
-                for specific WCAG versions are also available. The rule sets are updated regularly, 
+                are available for specific WCAG versions. The rule sets are updated regularly, 
                 and each update has a date of deployment. If you need to replicate an earlier test, 
                 choose the deployment date of the original test. 
             </p>
             <p>    
                 Experiment with a preview of a possible future rule set,
-                such as the new WCAG 2.2 related rules, by selecting "Preview Rules".
+                such as the new WCAG 2.2 related rules, by selecting the "Preview Rules" rule set.
             </p>
-            <p>
+            <p>    
+                See the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/" target="_blank" style={{ color: '#002D9C' }} >IBM Accessibility requirements</Link> that need to be met for conforming with standards and regulations.</p>
+            </p>
+                <p>
                 For more in-depth guidance, see <Link 
                     size="lg"
                     inline={true}
@@ -442,8 +445,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
                                 see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: For a listing of the rules mapped to requirements in a selected accessibility guideline, 
-                                see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link></p>
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: List of the rules mapped to requirements in a selected accessibility guideline, 
+                                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link></p>
                         </Modal>, document.body)}
 
                         {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
@@ -516,12 +519,11 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 this.setState({ modalGuidelines: false });
                             }).bind(this)}
                         >
-                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility 7.2</strong>: Rules for WCAG 2.1 plus additional IBM requirements.
-                                See the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/" target="_blank" style={{ color: '#002D9C' }} >IBM Accessibility requirements</Link> that need to be met for recent releases of standards and regulations.</p>
-                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.2 (A, AA)</strong>: This is the latest W3C specification. "Preview rules" must also be selected.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility 7.2</strong>: Rules for WCAG 2.1 plus additional IBM requirements
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.2 (A, AA)</strong>: Rules for the latest W3C specification. The "Preview Rules" rule set must also be selected.</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA)</strong>: Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specifiction</p>
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: For a listing of the rules mapped to requirements in the selected accessibility guideline, 
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: List of the rules mapped to requirements in the selected accessibility guideline, 
                                 see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link></p>
                         </Modal>, document.body)}
                     </div>
