@@ -16,7 +16,6 @@ import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePote
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let element_tabbable_unobscured: Rule = {
     id: "element_tabbable_unobscured",

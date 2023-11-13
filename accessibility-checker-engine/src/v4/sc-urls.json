@@ -707,6 +707,18 @@
       "level": "AAA",
       "wcagType": "2.1"
     },
+    "2.5.7": {
+      "num": "2.5.7",
+      "url": "https://www.w3.org/TR/WCAG22/#dragging-movements",
+      "scId": "WCAG2:dragging-movement",
+      "scAltId": ["dragging-movement"],
+      "test": "WCAG2:WCAG2:dragging-movement",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+      "handle": "Dragging Movement",
+      "level": "AA",
+      "wcagType": "2.2"
+    },
     "2.5.8": {
       "num": "2.5.8",
       "url": "https://www.w3.org/TR/WCAG22/#target-size-minimum",
