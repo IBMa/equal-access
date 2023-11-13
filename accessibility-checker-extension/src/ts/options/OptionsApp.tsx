@@ -435,8 +435,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>Dated deployment</strong>: Use a rule set from a specific date
                                 for consistent testing throughout a project to replicate an earlier test</p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Preview rules</strong>: Try an experimental preview of a possible future rule set
-                                such as the new WCAG 2.2 related rules</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Preview rules</strong>: Try an experimental preview of a possible future rule set.</p>
 
                             <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
                                 see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
