@@ -518,7 +518,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.2 (A, AA)</strong>: Rules for the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to 2.1 and 2.0.</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA)</strong>: Content that conforms to WCAG 2.1 also conforms to WCAG 2.0. Referenced by EN 301 549 and other policies, but not the latest W3C specification</p>
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specifiction</p>
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: List of the rules mapped to requirements in the selected accessibility guideline, 
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
                                 see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link></p>
                         </Modal>, document.body)}
                     </div>
