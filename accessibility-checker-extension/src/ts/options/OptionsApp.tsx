@@ -344,9 +344,18 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                 choose the deployment date of the original test. 
             </p>
             <p>    
-                See the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/" target="_blank" style={{ color: '#002D9C' }} >IBM Accessibility requirements</Link> that need to be met for conforming with standards and regulations.</p>
+                See the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/" target="_blank" style={{ color: '#002D9C' }} >IBM Accessibility requirements</Link> that need to be met 
+                for conforming to standards and regulations.</p>
             </p>
-                <p>
+            <p 
+                <strong>Rule updates</strong>: For details on rule changes at each deployment, 
+                see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link>
+            </p>
+            <p>
+                <strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>
+            </p>
+            <p>
                 For more in-depth guidance, see <Link 
                     size="lg"
                     inline={true}
