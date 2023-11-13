@@ -338,8 +338,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             <aside aria-label="About Accessibility Checker Options">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
-                the WCAG standards plus some additional IBM requirements. Rule sets 
-                are available for specific WCAG versions. The rule sets are updated regularly, 
+                the WCAG standards plus some additional IBM requirements. Guidelines 
+                are available for specific WCAG versions. The guidelines are updated regularly, 
                 and each update has a date of deployment. If you need to replicate an earlier test, 
                 choose the deployment date of the original test. 
             </p>
