@@ -346,18 +346,17 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             <p>    
                 See the <Link 
                             inline={true} 
-                            size="md" 
+                            size="lg"
                             className="link" 
-                            href="https://www.ibm.com/able/requirements/" 
+                            href="https://www.ibm.com/able/requirements/requirements"
                             target="_blank" rel="noopener noreferred"
-                            >IBM Accessibility requirements</Link> 
-                that need to be met for conforming to standards and regulations.
+                            >IBM Accessibility requirements</Link> that need to be met to comply with standards and regulations.
             </p>
             <p> 
                 <strong>Rule updates</strong>: For details on rule changes at each deployment, 
                 see the <Link 
                             inline={true} 
-                            size="md" 
+                            size="lg" 
                             className="link"
                             href="https://github.com/IBMa/equal-access/releases"
                             target="_blank" rel="noopener noreferred"
@@ -369,7 +368,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                 each of which is a collection of rules mapped to the requirements in the accessibility guideline,
                 see the <Link
                             inline={true}
-                            size="md"
+                            size="lg"
                             className="link"
                             href="https://www.ibm.com/able/requirements/checker-rule-sets"
                             target="_blank" rel="noopener noreferred"
