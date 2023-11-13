@@ -440,7 +440,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
                                 see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: List of the rules mapped to requirements in a selected accessibility guideline, 
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
                                 see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link></p>
                         </Modal>, document.body)}
 
