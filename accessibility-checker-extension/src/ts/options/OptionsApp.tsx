@@ -344,10 +344,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                 choose the deployment date of the original test. 
             </p>
             <p>    
-                Experiment with a preview of a possible future rule set,
-                such as the new WCAG 2.2 related rules, by selecting the "Preview Rules" rule set.
-            </p>
-            <p>    
                 See the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/" target="_blank" style={{ color: '#002D9C' }} >IBM Accessibility requirements</Link> that need to be met for conforming with standards and regulations.</p>
             </p>
                 <p>
