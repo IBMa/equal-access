@@ -562,7 +562,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             let allIssues: IIssue[] = [];
             let allChecked: "all" | "none" | "some" = "none";
             let allIssuesChecked = true;
-            // let allIssuesIgnored = true;
             let ignoreAction: "Hide" | "Show" = "Show";
             for (const row of this.props.rowData) {
                 let allRowChecked = true;
@@ -576,7 +575,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         allIssues.push(issue);
                     }
                     if (!issue.ignored) {
-                        // allIssuesIgnored = false;
+                        // no action
                     }
                     if (!issue.checked) {
                         allRowChecked = false;
@@ -808,7 +807,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             // ohChange replaced by onClick and onKeyDown above
                                             />
                                         </div>
-                                        {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{thisIssue.message} <a
+                                        {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} <a
                                             className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                             role="link"
                                             tabIndex={focused ? 0 : -1}

@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { IIssue, IReport } from '../../interfaces/interfaces';
+import { IIssue, IReport, UIIssue } from '../../interfaces/interfaces';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
@@ -65,7 +65,8 @@ interface ScanSectionState {
     selectedElemPath: string,
     focusMode: boolean,
     confirmClearStored: boolean,
-    canScan: boolean
+    canScan: boolean,
+    ignoredIssues: UIIssue[]
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
@@ -110,7 +111,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         selectedElemPath: "html",
         focusMode: false,
         confirmClearStored: false,
-        canScan: true
+        canScan: true,
+        ignoredIssues: []
     }
     scanRef = React.createRef<HTMLButtonElement>();
 
@@ -137,6 +139,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             }, 0);
         }, 500);
     }
+
+    
 
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
@@ -173,6 +177,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 });
             }
         });
+        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await bgController.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues });
+            }
+        })
         this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 
@@ -426,23 +435,39 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     align="right"
                                     label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
                                 >
-                                    <span className="countCol">
-                                            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
-                                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
-                                                {reportIssues && <>
-                                                    {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
-                                                        filterCounts[levelStr as eLevel].total
-                                                    : <>
-                                                        {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
-                                                    </>}
-                                                </>}
-                                            </span>
-                                            <span style={{ marginRight: "18px" }}></span>
-                                        </span>
+                                <span className="countCol">
+                                    {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
+                                    <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                        {reportIssues && <>
+                                            {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
+                                                filterCounts[levelStr as eLevel].total
+                                            : <>
+                                                {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
+                                            </>}
+                                        </>}
+                                    </span>
+                                    <span style={{ marginRight: "18px" }}></span>
+                                </span>
                                 </Tooltip>
                             </span>
                         </>
                     })}
+                    <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
+                        <Tooltip
+                            align="right"
+                            label="Hidden"
+                        >
+                        <span className="countCol">
+                        {UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")}
+                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                {reportIssues && <>
+                                    {this.state.ignoredIssues.length}
+                                </>}
+                            </span>
+                            <span style={{ marginRight: "18px" }}></span>
+                        </span>
+                        </Tooltip>
+                    </span>
                     <Link 
                         id="totalIssuesCount" 
                         className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}

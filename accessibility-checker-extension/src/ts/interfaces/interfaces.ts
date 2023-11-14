@@ -104,8 +104,8 @@ export interface IIssue {
 }
 
 export interface UIIssue extends IIssue {
-    checked?: boolean,
-    ignored?: boolean
+    checked?: boolean,  // Hide checkbox checked === true
+    ignored?: boolean   // Issue marked hidden
 }
 
 export interface IBasicTableRowRecord {
