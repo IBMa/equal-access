@@ -142,7 +142,7 @@ export let a11yRulesets: Guideline[] = [
         id: "WCAG_2_1",
         name: "WCAG 2.1 (A, AA)",
         category: eGuidelineCategory.ACCESSIBILITY,
-        description: "Rules for WCAG 2.1 A & AA. This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.",
+        description: "Rules for WCAG 2.1 A & AA. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
             .filter(sc => (sc.level === "A" || sc.level === "AA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1"))
