@@ -279,103 +279,111 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
-                <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
-                    {!this.state.viewState || !this.state.viewState!.kcm && 
-                        <Dropdown
-                            className="viewMulti"
-                            ariaLabel="Select report view"
-                            disabled={totalCount === 0}
-                            id="reportView"
-                            size="sm" 
-                            items={viewItems}
-                            light={false}
-                            type="default"
-                            style={{width:"160px"}}
-                            selectedItem={this.state.reportViewState}
-                            onChange={async (evt: any) => {
-                                // set state
-                                this.setState({ reportViewState: evt.selectedItem });
-                            }}
-                        />
-                    }
-                </Column>
-                <Column sm={2} md={4} lg={4} style={{ marginRight: "0px" }}>
-                    {!this.state.viewState || !this.state.viewState!.kcm && 
-                        <MultiSelect
-                            className="viewMulti"
-                            ariaLabel="Issue type filter"
-                            label="Filter"
-                            size="sm" 
-                            hideLabel={true}
-                            disabled={totalCount === 0}
-                            id="filterSelection"
-                            items={filterItems}
-                            itemToString={(item:any) => (item ? item.text : '')}
-                            itemToElement={(item:any) => {
-                                    if (item && item.id === "0") {
-                                        return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
-                                    } else if (item && item.id === "1") {
-                                        return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
-                                    } else if (item && item.id === "2") {
-                                        return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
-                                    } else if (item && item.id === "3") {
-                                        return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
-                                    }
-                                    return <></>
-                                }
-                            }
-                            light={false}
-                            type="default"
-                            style={{ float: "right" }}
-                            selecteditems={levelSelectedItems}
-                            initialSelectedItems={[filterItems[0], filterItems[1], filterItems[2]]}
-                            onChange={async (evt: any) => {
-                                // ok we have one of two cases 
-                                // 1. there are selected 
-                                let checked = JSON.parse(JSON.stringify(this.state.checked));
-                                if (evt.selectedItems[0] != undefined) {
-                                    if (evt.selectedItems.length > 0) {
-                                        checked["Violation"] = false;
-                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                            if (evt.selectedItems[i].text === "Violations") {
-                                                checked["Violation"] = true;
-                                            } 
+                <Column sm={4} md={8} lg={8} style={{ marginRight: "0px" }}>
+                    <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", float: "right"}}>
+                            <div style={{flex: "0 1 8.75rem"}}>
+                                <div style={{display: "flex"}}>
+                                    <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem", marginRight: "8px" }}>
+                                        {!this.state.viewState || !this.state.viewState!.kcm && 
+                                            <Dropdown
+                                                className="viewMulti"
+                                                ariaLabel="Select report view"
+                                                disabled={totalCount === 0}
+                                                id="reportView"
+                                                size="sm" 
+                                                items={viewItems}
+                                                light={false}
+                                                type="default"
+                                                style={{width:"160px"}}
+                                                selectedItem={this.state.reportViewState}
+                                                onChange={async (evt: any) => {
+                                                    // set state
+                                                    this.setState({ reportViewState: evt.selectedItem });
+                                                }}
+                                            />
                                         }
-                                        checked["Needs review"] = false;
-                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                            if (evt.selectedItems[i].text === "Needs review") {
-                                                checked["Needs review"] = true;
-                                            }
-                                        }
-                                        checked["Recommendation"] = false;
-                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                            if (evt.selectedItems[i].text === "Recommendations") {
-                                                checked["Recommendation"] = true;
-                                            }
-                                        }
-                                        checked["Hidden"] = false;
-                                        for (const item of evt.selectedItems) {
-                                            checked["Hidden"] ||= (item.text === "Hidden");
-                                        }
-                                    }
-                                }
-                                this.setState({ checked: checked });
+                                    </div>
+                                    <div style={{flex: "1 1 8.75rem"}}>
+                                        {!this.state.viewState || !this.state.viewState!.kcm && 
+                                            <MultiSelect
+                                                className="viewMulti"
+                                                ariaLabel="Issue type filter"
+                                                label="Filter"
+                                                size="sm" 
+                                                hideLabel={true}
+                                                disabled={totalCount === 0}
+                                                id="filterSelection"
+                                                items={filterItems}
+                                                itemToString={(item:any) => (item ? item.text : '')}
+                                                itemToElement={(item:any) => {
+                                                        if (item && item.id === "0") {
+                                                            return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
+                                                        } else if (item && item.id === "1") {
+                                                            return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
+                                                        } else if (item && item.id === "2") {
+                                                            return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
+                                                        } else if (item && item.id === "3") {
+                                                            return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
+                                                        }
+                                                        return <></>
+                                                    }
+                                                }
+                                                light={false}
+                                                type="default"
+                                                style={{ float: "right" }}
+                                                selecteditems={levelSelectedItems}
+                                                initialSelectedItems={[filterItems[0], filterItems[1], filterItems[2]]}
+                                                onChange={async (evt: any) => {
+                                                    // ok we have one of two cases 
+                                                    // 1. there are selected 
+                                                    let checked = JSON.parse(JSON.stringify(this.state.checked));
+                                                    if (evt.selectedItems[0] != undefined) {
+                                                        if (evt.selectedItems.length > 0) {
+                                                            checked["Violation"] = false;
+                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                                if (evt.selectedItems[i].text === "Violations") {
+                                                                    checked["Violation"] = true;
+                                                                } 
+                                                            }
+                                                            checked["Needs review"] = false;
+                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                                if (evt.selectedItems[i].text === "Needs review") {
+                                                                    checked["Needs review"] = true;
+                                                                }
+                                                            }
+                                                            checked["Recommendation"] = false;
+                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                                if (evt.selectedItems[i].text === "Recommendations") {
+                                                                    checked["Recommendation"] = true;
+                                                                }
+                                                            }
+                                                            checked["Hidden"] = false;
+                                                            for (const item of evt.selectedItems) {
+                                                                checked["Hidden"] ||= (item.text === "Hidden");
+                                                            }
+                                                        }
+                                                    }
+                                                    this.setState({ checked: checked });
 
-                                // 2. there are none selected
-                                if (evt.selectedItems.length == 0) {
-                                    this.onResetFilters();
-                                }
-                            }}
-                        />
-                    }
-                </Column>
-                <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
-                    <div>
-                        <Button 
-                            disabled={totalCount === 0}
-                            style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
-                            onClick={() => devtoolsController.exportXLS("last") }
-                        >Export XLS</Button>
+                                                    // 2. there are none selected
+                                                    if (evt.selectedItems.length == 0) {
+                                                        this.onResetFilters();
+                                                    }
+                                                }}
+                                            />
+                                        }
+                                    </div>
+                                    <div style={{flex: "1 1 8.75rem"}}>
+                                        <div>
+                                            <Button 
+                                                disabled={totalCount === 0}
+                                                style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
+                                                onClick={() => devtoolsController.exportXLS("last") }
+                                            >Export XLS</Button>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </Column>
              </Grid>}
