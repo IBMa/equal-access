@@ -419,14 +419,14 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 </Column>
             </Grid>
             <Grid>
-                <Column sm={2} md={4} lg={4}>
+                <Column sm={4} md={8} lg={8}>
                     <div className="storedCount">
                         {this.state.storeReports && "Storing: "}
                         {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
                         {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
                     </div>
-                </Column>
-                <Column sm={2} md={4} lg={4} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+               
+                    <div className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
                     {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
                         totalCount += filterCounts[levelStr as eLevel].total;
                         return <>
@@ -478,6 +478,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             getDevtoolsAppController().setSecondaryView("summary");
                             appController.openSecondary("totalIssuesCount");
                     }}>{quickTotalCount} issues found</Link>
+                    </div>
                 </Column>
             </Grid>
             {typeof document === 'undefined'
