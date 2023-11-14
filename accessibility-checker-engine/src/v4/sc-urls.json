@@ -1,7 +1,7 @@
 {
     "1.1.1": {
       "num": "1.1.1",
-      "url": "https://www.w3.org/TR/WCAG21/#non-text-content",
+      "url": "https://www.w3.org/TR/WCAG22/#non-text-content",
       "scId": "WCAG2:non-text-content",
       "scAltId": ["text-equiv-all"],
       "test": "WCAG2:text-equiv-all",
@@ -13,7 +13,7 @@
     },
     "1.2.1": {
       "num": "1.2.1",
-      "url": "https://www.w3.org/TR/WCAG21/#audio-only-and-video-only-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#audio-only-and-video-only-prerecorded",
       "scId": "WCAG2:audio-only-and-video-only-prerecorded",
       "scAltId": ["media-equiv-av-only-alt"],
       "test": "WCAG2:media-equiv-av-only-alt",
@@ -25,7 +25,7 @@
     },
     "1.2.2": {
       "num": "1.2.2",
-      "url": "https://www.w3.org/TR/WCAG21/#captions-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#captions-prerecorded",
       "scId": "WCAG2:captions-prerecorded",
       "scAltId": ["media-equiv-captions"],
       "test": "WCAG2:media-equiv-captions",
@@ -37,7 +37,7 @@
     },
     "1.2.3": {
       "num": "1.2.3",
-      "url": "https://www.w3.org/TR/WCAG21/#audio-description-or-media-alternative-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#audio-description-or-media-alternative-prerecorded",
       "scId": "WCAG2:audio-description-or-media-alternative-prerecorded",
       "scAltId": ["media-equiv-audio-desc"],
       "test": "WCAG2:media-equiv-audio-desc",
@@ -49,7 +49,7 @@
     },
     "1.2.4": {
       "num": "1.2.4",
-      "url": "https://www.w3.org/TR/WCAG21/#captions-live",
+      "url": "https://www.w3.org/TR/WCAG22/#captions-live",
       "scId": "WCAG2:captions-live",
       "scAltId": ["media-equiv-real-time-captions"],
       "test": "WCAG2:media-equiv-real-time-captions",
@@ -61,7 +61,7 @@
     },
     "1.2.5": {
       "num": "1.2.5",
-      "url": "https://www.w3.org/TR/WCAG21/#audio-description-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#audio-description-prerecorded",
       "scId": "WCAG2:audio-description-prerecorded",
       "scAltId": ["media-equiv-audio-desc-only"],
       "test": "WCAG2:media-equiv-audio-desc-only",
@@ -73,7 +73,7 @@
     },
     "1.2.6": {
       "num": "1.2.6",
-      "url": "https://www.w3.org/TR/WCAG21/#sign-language-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#sign-language-prerecorded",
       "scId": "WCAG2:sign-language-prerecorded",
       "scAltId": ["media-equiv-sign"],
       "test": "WCAG2:media-equiv-sign",
@@ -85,7 +85,7 @@
     },
     "1.2.7": {
       "num": "1.2.7",
-      "url": "https://www.w3.org/TR/WCAG21/#extended-audio-description-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#extended-audio-description-prerecorded",
       "scId": "WCAG2:extended-audio-description-prerecorded",
       "scAltId": ["media-equiv-extended-ad"],
       "test": "WCAG2:media-equiv-extended-ad",
@@ -97,7 +97,7 @@
     },
     "1.2.8": {
       "num": "1.2.8",
-      "url": "https://www.w3.org/TR/WCAG21/#media-alternative-prerecorded",
+      "url": "https://www.w3.org/TR/WCAG22/#media-alternative-prerecorded",
       "scId": "WCAG2:media-alternative-prerecorded",
       "scAltId": ["media-equiv-text-doc"],
       "test": "WCAG2:media-equiv-text-doc",
@@ -109,7 +109,7 @@
     },
     "1.2.9": {
       "num": "1.2.9",
-      "url": "https://www.w3.org/TR/WCAG21/#audio-only-live",
+      "url": "https://www.w3.org/TR/WCAG22/#audio-only-live",
       "scId": "WCAG2:audio-only-live",
       "scAltId": ["media-equiv-live-audio-only"],
       "test": "WCAG2:media-equiv-live-audio-only",
@@ -121,7 +121,7 @@
     },
     "1.3.1": {
       "num": "1.3.1",
-      "url": "https://www.w3.org/TR/WCAG21/#info-and-relationships",
+      "url": "https://www.w3.org/TR/WCAG22/#info-and-relationships",
       "scId": "WCAG2:info-and-relationships",
       "scAltId": ["content-structure-separation-programmatic"],
       "test": "WCAG2:content-structure-separation-programmatic",
@@ -133,7 +133,7 @@
     },
     "1.3.2": {
       "num": "1.3.2",
-      "url": "https://www.w3.org/TR/WCAG21/#meaningful-sequence",
+      "url": "https://www.w3.org/TR/WCAG22/#meaningful-sequence",
       "scId": "WCAG2:meaningful-sequence",
       "scAltId": ["content-structure-separation-sequence"],
       "test": "WCAG2:content-structure-separation-sequence",
@@ -145,7 +145,7 @@
     },
     "1.3.3": {
       "num": "1.3.3",
-      "url": "https://www.w3.org/TR/WCAG21/#sensory-characteristics",
+      "url": "https://www.w3.org/TR/WCAG22/#sensory-characteristics",
       "scId": "WCAG2:sensory-characteristics",
       "scAltId": ["content-structure-separation-understanding"],
       "test": "WCAG2:content-structure-separation-understanding",
@@ -157,10 +157,10 @@
     },
     "1.3.4": {
       "num": "1.3.4",
-      "url": "https://www.w3.org/TR/WCAG21/#orientation",
+      "url": "https://www.w3.org/TR/WCAG22/#orientation",
       "scId": "WCAG2:orientation",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:orientation",
+      "test": "WCAG2:orientation",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#orientation",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/orientation.html",
       "handle": "Orientation",
@@ -169,10 +169,10 @@
     },
     "1.3.5": {
       "num": "1.3.5",
-      "url": "https://www.w3.org/TR/WCAG21/#identify-input-purpose",
+      "url": "https://www.w3.org/TR/WCAG22/#identify-input-purpose",
       "scId": "WCAG2:identify-input-purpose",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:identify-input-purpose",
+      "test": "WCAG2:identify-input-purpose",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#identify-input-purpose",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/identify-input-purpose.html",
       "handle": "Identify Input Purpose",
@@ -181,10 +181,10 @@
     },
     "1.3.6": {
       "num": "1.3.6",
-      "url": "https://www.w3.org/TR/WCAG21/#identify-purpose",
+      "url": "https://www.w3.org/TR/WCAG22/#identify-purpose",
       "scId": "WCAG2:identify-purpose",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:identify-purpose",
+      "test": "WCAG2:identify-purpose",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#identify-purpose",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/identify-purpose.html",
       "handle": "Identify Purpose",
@@ -193,7 +193,7 @@
     },
     "1.4.1": {
       "num": "1.4.1",
-      "url": "https://www.w3.org/TR/WCAG21/#use-of-color",
+      "url": "https://www.w3.org/TR/WCAG22/#use-of-color",
       "scId": "WCAG2:use-of-color",
       "scAltId": ["visual-audio-contrast-without-color"],
       "test": "WCAG2:visual-audio-contrast-without-color",
@@ -205,7 +205,7 @@
     },
     "1.4.2": {
       "num": "1.4.2",
-      "url": "https://www.w3.org/TR/WCAG21/#audio-control",
+      "url": "https://www.w3.org/TR/WCAG22/#audio-control",
       "scId": "WCAG2:audio-control",
       "scAltId": ["visual-audio-contrast-dis-audio"],
       "test": "WCAG2:visual-audio-contrast-dis-audio",
@@ -217,7 +217,7 @@
     },
     "1.4.3": {
       "num": "1.4.3",
-      "url": "https://www.w3.org/TR/WCAG21/#contrast-minimum",
+      "url": "https://www.w3.org/TR/WCAG22/#contrast-minimum",
       "scId": "WCAG2:contrast-minimum",
       "scAltId": ["visual-audio-contrast-contrast"],
       "test": "WCAG2:visual-audio-contrast-contrast",
@@ -229,7 +229,7 @@
     },
     "1.4.4": {
       "num": "1.4.4",
-      "url": "https://www.w3.org/TR/WCAG21/#resize-text",
+      "url": "https://www.w3.org/TR/WCAG22/#resize-text",
       "scId": "WCAG2:resize-text",
       "scAltId": ["visual-audio-contrast-scale"],
       "test": "WCAG2:visual-audio-contrast-scale",
@@ -241,7 +241,7 @@
     },
     "1.4.5": {
       "num": "1.4.5",
-      "url": "https://www.w3.org/TR/WCAG21/#images-of-text",
+      "url": "https://www.w3.org/TR/WCAG22/#images-of-text",
       "scId": "WCAG2:images-of-text",
       "scAltId": ["visual-audio-contrast-text-presentation"],
       "test": "WCAG2:visual-audio-contrast-text-presentation",
@@ -253,7 +253,7 @@
     },
     "1.4.6": {
       "num": "1.4.6",
-      "url": "https://www.w3.org/TR/WCAG21/#contrast-enhanced",
+      "url": "https://www.w3.org/TR/WCAG22/#contrast-enhanced",
       "scId": "WCAG2:contrast-enhanced",
       "scAltId": ["visual-audio-contrast7"],
       "test": "WCAG2:visual-audio-contrast7",
@@ -265,7 +265,7 @@
     },
     "1.4.7": {
       "num": "1.4.7",
-      "url": "https://www.w3.org/TR/WCAG21/#low-or-no-background-audio",
+      "url": "https://www.w3.org/TR/WCAG22/#low-or-no-background-audio",
       "scId": "WCAG2:low-or-no-background-audio",
       "scAltId": ["visual-audio-contrast-noaudio"],
       "test": "WCAG2:visual-audio-contrast-noaudio",
@@ -277,7 +277,7 @@
     },
     "1.4.8": {
       "num": "1.4.8",
-      "url": "https://www.w3.org/TR/WCAG21/#visual-presentation",
+      "url": "https://www.w3.org/TR/WCAG22/#visual-presentation",
       "scId": "WCAG2:visual-presentation",
       "scAltId": ["visual-audio-contrast-visual-presentation"],
       "test": "WCAG2:visual-audio-contrast-visual-presentation",
@@ -289,7 +289,7 @@
     },
     "1.4.9": {
       "num": "1.4.9",
-      "url": "https://www.w3.org/TR/WCAG21/#images-of-text-no-exception",
+      "url": "https://www.w3.org/TR/WCAG22/#images-of-text-no-exception",
       "scId": "WCAG2:images-of-text-no-exception",
       "scAltId": ["visual-audio-contrast-text-images"],
       "test": "WCAG2:visual-audio-contrast-text-images",
@@ -301,10 +301,10 @@
     },
     "1.4.10": {
       "num": "1.4.10",
-      "url": "https://www.w3.org/TR/WCAG21/#reflow",
+      "url": "https://www.w3.org/TR/WCAG22/#reflow",
       "scId": "WCAG2:reflow",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:reflow",
+      "test": "WCAG2:reflow",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#reflow",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
       "handle": "Reflow",
@@ -313,10 +313,10 @@
     },
     "1.4.11": {
       "num": "1.4.11",
-      "url": "https://www.w3.org/TR/WCAG21/#non-text-contrast",
+      "url": "https://www.w3.org/TR/WCAG22/#non-text-contrast",
       "scId": "WCAG2:non-text-contrast",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:non-text-contrast",
+      "test": "WCAG2:non-text-contrast",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-contrast",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html",
       "handle": "Non-text Contrast",
@@ -325,10 +325,10 @@
     },
     "1.4.12": {
       "num": "1.4.12",
-      "url": "https://www.w3.org/TR/WCAG21/#text-spacing",
+      "url": "https://www.w3.org/TR/WCAG22/#text-spacing",
       "scId": "WCAG2:text-spacing",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:text-spacing",
+      "test": "WCAG2:text-spacing",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#text-spacing",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html",
       "handle": "Text Spacing",
@@ -337,10 +337,10 @@
     },
     "1.4.13": {
       "num": "1.4.13",
-      "url": "https://www.w3.org/TR/WCAG21/#content-on-hover-or-focus",
+      "url": "https://www.w3.org/TR/WCAG22/#content-on-hover-or-focus",
       "scId": "WCAG2:content-on-hover-or-focus",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:content-on-hover-or-focus",
+      "test": "WCAG2:content-on-hover-or-focus",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#content-on-hover-or-focus",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html",
       "handle": "Content on Hover or Focus",
@@ -349,7 +349,7 @@
     },
     "2.1.1": {
       "num": "2.1.1",
-      "url": "https://www.w3.org/TR/WCAG21/#keyboard",
+      "url": "https://www.w3.org/TR/WCAG22/#keyboard",
       "scId": "WCAG2:keyboard",
       "scAltId": ["keyboard-operation-keyboard-operable"],
       "test": "WCAG2:keyboard-operation-keyboard-operable",
@@ -361,7 +361,7 @@
     },
     "2.1.2": {
       "num": "2.1.2",
-      "url": "https://www.w3.org/TR/WCAG21/#no-keyboard-trap",
+      "url": "https://www.w3.org/TR/WCAG22/#no-keyboard-trap",
       "scId": "WCAG2:no-keyboard-trap",
       "scAltId": ["keyboard-operation-trapping"],
       "test": "WCAG2:keyboard-operation-trapping",
@@ -373,7 +373,7 @@
     },
     "2.1.3": {
       "num": "2.1.3",
-      "url": "https://www.w3.org/TR/WCAG21/#keyboard-no-exception",
+      "url": "https://www.w3.org/TR/WCAG22/#keyboard-no-exception",
       "scId": "WCAG2:keyboard-no-exception",
       "scAltId": ["keyboard-operation-all-funcs"],
       "test": "WCAG2:keyboard-operation-all-funcs",
@@ -385,7 +385,7 @@
     },
     "2.1.4": {
       "num": "2.1.4",
-      "url": "https://www.w3.org/TR/WCAG21/#character-key-shortcuts",
+      "url": "https://www.w3.org/TR/WCAG22/#character-key-shortcuts",
       "scId": "WCAG2:character-key-shortcuts",
       "scAltId": [],
       "test": "WCAG2:WCAG2:character-key-shortcuts",
@@ -397,7 +397,7 @@
     },
     "2.2.1": {
       "num": "2.2.1",
-      "url": "https://www.w3.org/TR/WCAG21/#timing-adjustable",
+      "url": "https://www.w3.org/TR/WCAG22/#timing-adjustable",
       "scId": "WCAG2:timing-adjustable",
       "scAltId": ["time-limits-required-behaviors"],
       "test": "WCAG2:time-limits-required-behaviors",
@@ -409,7 +409,7 @@
     },
     "2.2.2": {
       "num": "2.2.2",
-      "url": "https://www.w3.org/TR/WCAG21/#pause-stop-hide",
+      "url": "https://www.w3.org/TR/WCAG22/#pause-stop-hide",
       "scId": "WCAG2:pause-stop-hide",
       "scAltId": ["time-limits-pause"],
       "test": "WCAG2:time-limits-pause",
@@ -421,7 +421,7 @@
     },
     "2.2.3": {
       "num": "2.2.3",
-      "url": "https://www.w3.org/TR/WCAG21/#no-timing",
+      "url": "https://www.w3.org/TR/WCAG22/#no-timing",
       "scId": "WCAG2:no-timing",
       "scAltId": ["time-limits-no-exceptions"],
       "test": "WCAG2:time-limits-no-exceptions",
@@ -433,7 +433,7 @@
     },
     "2.2.4": {
       "num": "2.2.4",
-      "url": "https://www.w3.org/TR/WCAG21/#interruptions",
+      "url": "https://www.w3.org/TR/WCAG22/#interruptions",
       "scId": "WCAG2:interruptions",
       "scAltId": ["time-limits-postponed"],
       "test": "WCAG2:time-limits-postponed",
@@ -445,7 +445,7 @@
     },
     "2.2.5": {
       "num": "2.2.5",
-      "url": "https://www.w3.org/TR/WCAG21/#re-authenticating",
+      "url": "https://www.w3.org/TR/WCAG22/#re-authenticating",
       "scId": "WCAG2:re-authenticating",
       "scAltId": ["time-limits-server-timeout"],
       "test": "WCAG2:time-limits-server-timeout",
@@ -457,7 +457,7 @@
     },
     "2.2.6": {
       "num": "2.2.6",
-      "url": "https://www.w3.org/TR/WCAG21/#timeouts",
+      "url": "https://www.w3.org/TR/WCAG22/#timeouts",
       "scId": "WCAG2:timeouts",
       "scAltId": [],
       "test": "WCAG2:WCAG2:timeouts",
@@ -469,7 +469,7 @@
     },
     "2.3.1": {
       "num": "2.3.1",
-      "url": "https://www.w3.org/TR/WCAG21/#three-flashes-or-below-threshold",
+      "url": "https://www.w3.org/TR/WCAG22/#three-flashes-or-below-threshold",
       "scId": "WCAG2:three-flashes-or-below-threshold",
       "scAltId": ["seizure-does-not-violate"],
       "test": "WCAG2:seizure-does-not-violate",
@@ -481,7 +481,7 @@
     },
     "2.3.2": {
       "num": "2.3.2",
-      "url": "https://www.w3.org/TR/WCAG21/#three-flashes",
+      "url": "https://www.w3.org/TR/WCAG22/#three-flashes",
       "scId": "WCAG2:three-flashes",
       "scAltId": ["seizure-three-times"],
       "test": "WCAG2:seizure-three-times",
@@ -493,7 +493,7 @@
     },
     "2.3.3": {
       "num": "2.3.3",
-      "url": "https://www.w3.org/TR/WCAG21/#animation-from-interactions",
+      "url": "https://www.w3.org/TR/WCAG22/#animation-from-interactions",
       "scId": "WCAG2:animation-from-interactions",
       "scAltId": [],
       "test": "WCAG2:WCAG2:animation-from-interactions",
@@ -505,7 +505,7 @@
     },
     "2.4.1": {
       "num": "2.4.1",
-      "url": "https://www.w3.org/TR/WCAG21/#bypass-blocks",
+      "url": "https://www.w3.org/TR/WCAG22/#bypass-blocks",
       "scId": "WCAG2:bypass-blocks",
       "scAltId": ["navigation-mechanisms-skip"],
       "test": "WCAG2:navigation-mechanisms-skip",
@@ -517,7 +517,7 @@
     },
     "2.4.2": {
       "num": "2.4.2",
-      "url": "https://www.w3.org/TR/WCAG21/#page-titled",
+      "url": "https://www.w3.org/TR/WCAG22/#page-titled",
       "scId": "WCAG2:page-titled",
       "scAltId": ["navigation-mechanisms-title"],
       "test": "WCAG2:navigation-mechanisms-title",
@@ -529,7 +529,7 @@
     },
     "2.4.3": {
       "num": "2.4.3",
-      "url": "https://www.w3.org/TR/WCAG21/#focus-order",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-order",
       "scId": "WCAG2:focus-order",
       "scAltId": ["navigation-mechanisms-focus-order"],
       "test": "WCAG2:navigation-mechanisms-focus-order",
@@ -541,7 +541,7 @@
     },
     "2.4.4": {
       "num": "2.4.4",
-      "url": "https://www.w3.org/TR/WCAG21/#link-purpose-in-context",
+      "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context",
       "scId": "WCAG2:link-purpose-in-context",
       "scAltId": ["navigation-mechanisms-refs"],
       "test": "WCAG2:navigation-mechanisms-refs",
@@ -553,7 +553,7 @@
     },
     "2.4.5": {
       "num": "2.4.5",
-      "url": "https://www.w3.org/TR/WCAG21/#multiple-ways",
+      "url": "https://www.w3.org/TR/WCAG22/#multiple-ways",
       "scId": "WCAG2:multiple-ways",
       "scAltId": ["navigation-mechanisms-mult-loc"],
       "test": "WCAG2:navigation-mechanisms-mult-loc",
@@ -565,7 +565,7 @@
     },
     "2.4.6": {
       "num": "2.4.6",
-      "url": "https://www.w3.org/TR/WCAG21/#headings-and-labels",
+      "url": "https://www.w3.org/TR/WCAG22/#headings-and-labels",
       "scId": "WCAG2:headings-and-labels",
       "scAltId": ["navigation-mechanisms-descriptive"],
       "test": "WCAG2:navigation-mechanisms-descriptive",
@@ -577,7 +577,7 @@
     },
     "2.4.7": {
       "num": "2.4.7",
-      "url": "https://www.w3.org/TR/WCAG21/#focus-visible",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-visible",
       "scId": "WCAG2:focus-visible",
       "scAltId": ["navigation-mechanisms-focus-visible"],
       "test": "WCAG2:navigation-mechanisms-focus-visible",
@@ -589,7 +589,7 @@
     },
     "2.4.8": {
       "num": "2.4.8",
-      "url": "https://www.w3.org/TR/WCAG21/#location",
+      "url": "https://www.w3.org/TR/WCAG22/#location",
       "scId": "WCAG2:location",
       "scAltId": ["navigation-mechanisms-location"],
       "test": "WCAG2:navigation-mechanisms-location",
@@ -601,7 +601,7 @@
     },
     "2.4.9": {
       "num": "2.4.9",
-      "url": "https://www.w3.org/TR/WCAG21/#link-purpose-link-only",
+      "url": "https://www.w3.org/TR/WCAG22/#link-purpose-link-only",
       "scId": "WCAG2:link-purpose-link-only",
       "scAltId": ["navigation-mechanisms-link"],
       "test": "WCAG2:navigation-mechanisms-link",
@@ -613,7 +613,7 @@
     },
     "2.4.10": {
       "num": "2.4.10",
-      "url": "https://www.w3.org/TR/WCAG21/#section-headings",
+      "url": "https://www.w3.org/TR/WCAG22/#section-headings",
       "scId": "WCAG2:section-headings",
       "scAltId": ["navigation-mechanisms-headings"],
       "test": "WCAG2:navigation-mechanisms-headings",
@@ -627,8 +627,8 @@
       "num": "2.4.11",
       "url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
       "scId": "WCAG2:focus-not-obscured-minimum",
-      "scAltId": ["focus-not-obscured-minimum"],
-      "test": "WCAG2:focus-not-obscured-minimum",
+      "scAltId": ["focus-not-obscured-minimum-alt"],
+      "test": "WCAG2:focus-not-obscured-minimum-test",
       "howToMeetUrl": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
       "handle": "Focus Not Obscured (Minimum)",
@@ -637,7 +637,7 @@
     },
     "2.5.1": {
       "num": "2.5.1",
-      "url": "https://www.w3.org/TR/WCAG21/#pointer-gestures",
+      "url": "https://www.w3.org/TR/WCAG22/#pointer-gestures",
       "scId": "WCAG2:pointer-gestures",
       "scAltId": [],
       "test": "WCAG2:WCAG2:pointer-gestures",
@@ -649,7 +649,7 @@
     },
     "2.5.2": {
       "num": "2.5.2",
-      "url": "https://www.w3.org/TR/WCAG21/#pointer-cancellation",
+      "url": "https://www.w3.org/TR/WCAG22/#pointer-cancellation",
       "scId": "WCAG2:pointer-cancellation",
       "scAltId": [],
       "test": "WCAG2:WCAG2:pointer-cancellation",
@@ -661,7 +661,7 @@
     },
     "2.5.3": {
       "num": "2.5.3",
-      "url": "https://www.w3.org/TR/WCAG21/#label-in-name",
+      "url": "https://www.w3.org/TR/WCAG22/#label-in-name",
       "scId": "WCAG2:label-in-name",
       "scAltId": [],
       "test": "WCAG2:WCAG2:label-in-name",
@@ -673,7 +673,7 @@
     },
     "2.5.4": {
       "num": "2.5.4",
-      "url": "https://www.w3.org/TR/WCAG21/#motion-actuation",
+      "url": "https://www.w3.org/TR/WCAG22/#motion-actuation",
       "scId": "WCAG2:motion-actuation",
       "scAltId": [],
       "test": "WCAG2:WCAG2:motion-actuation",
@@ -685,7 +685,7 @@
     },
     "2.5.5": {
       "num": "2.5.5",
-      "url": "https://www.w3.org/TR/WCAG21/#target-size",
+      "url": "https://www.w3.org/TR/WCAG22/#target-size",
       "scId": "WCAG2:target-size",
       "scAltId": [],
       "test": "WCAG2:WCAG2:target-size",
@@ -697,7 +697,7 @@
     },
     "2.5.6": {
       "num": "2.5.6",
-      "url": "https://www.w3.org/TR/WCAG21/#concurrent-input-mechanisms",
+      "url": "https://www.w3.org/TR/WCAG22/#concurrent-input-mechanisms",
       "scId": "WCAG2:concurrent-input-mechanisms",
       "scAltId": [],
       "test": "WCAG2:WCAG2:concurrent-input-mechanisms",
@@ -711,8 +711,8 @@
       "num": "2.5.7",
       "url": "https://www.w3.org/TR/WCAG22/#dragging-movements",
       "scId": "WCAG2:dragging-movement",
-      "scAltId": ["dragging-movement"],
-      "test": "WCAG2:WCAG2:dragging-movement",
+      "scAltId": ["dragging-movement-alt"],
+      "test": "WCAG2:dragging-movement-test",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
       "handle": "Dragging Movement",
@@ -723,8 +723,8 @@
       "num": "2.5.8",
       "url": "https://www.w3.org/TR/WCAG22/#target-size-minimum",
       "scId": "WCAG2:minimum-target-size",
-      "scAltId": ["minimum-target-size"],
-      "test": "WCAG2:WCAG2:minimum-target-size",
+      "scAltId": ["minimum-target-size-alt"],
+      "test": "WCAG2:minimum-target-size-test",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
       "handle": "Minimum Target Size",
@@ -733,7 +733,7 @@
     },
     "3.1.1": {
       "num": "3.1.1",
-      "url": "https://www.w3.org/TR/WCAG21/#language-of-page",
+      "url": "https://www.w3.org/TR/WCAG22/#language-of-page",
       "scId": "WCAG2:language-of-page",
       "scAltId": ["meaning-doc-lang-id"],
       "test": "WCAG2:meaning-doc-lang-id",
@@ -745,7 +745,7 @@
     },
     "3.1.2": {
       "num": "3.1.2",
-      "url": "https://www.w3.org/TR/WCAG21/#language-of-parts",
+      "url": "https://www.w3.org/TR/WCAG22/#language-of-parts",
       "scId": "WCAG2:language-of-parts",
       "scAltId": ["meaning-other-lang-id"],
       "test": "WCAG2:meaning-other-lang-id",
@@ -757,7 +757,7 @@
     },
     "3.1.3": {
       "num": "3.1.3",
-      "url": "https://www.w3.org/TR/WCAG21/#unusual-words",
+      "url": "https://www.w3.org/TR/WCAG22/#unusual-words",
       "scId": "WCAG2:unusual-words",
       "scAltId": ["meaning-idioms"],
       "test": "WCAG2:meaning-idioms",
@@ -769,7 +769,7 @@
     },
     "3.1.4": {
       "num": "3.1.4",
-      "url": "https://www.w3.org/TR/WCAG21/#abbreviations",
+      "url": "https://www.w3.org/TR/WCAG22/#abbreviations",
       "scId": "WCAG2:abbreviations",
       "scAltId": ["meaning-located"],
       "test": "WCAG2:meaning-located",
@@ -781,7 +781,7 @@
     },
     "3.1.5": {
       "num": "3.1.5",
-      "url": "https://www.w3.org/TR/WCAG21/#reading-level",
+      "url": "https://www.w3.org/TR/WCAG22/#reading-level",
       "scId": "WCAG2:reading-level",
       "scAltId": ["meaning-supplements"],
       "test": "WCAG2:meaning-supplements",
@@ -793,7 +793,7 @@
     },
     "3.1.6": {
       "num": "3.1.6",
-      "url": "https://www.w3.org/TR/WCAG21/#pronunciation",
+      "url": "https://www.w3.org/TR/WCAG22/#pronunciation",
       "scId": "WCAG2:pronunciation",
       "scAltId": ["meaning-pronunciation"],
       "test": "WCAG2:meaning-pronunciation",
@@ -805,7 +805,7 @@
     },
     "3.2.1": {
       "num": "3.2.1",
-      "url": "https://www.w3.org/TR/WCAG21/#on-focus",
+      "url": "https://www.w3.org/TR/WCAG22/#on-focus",
       "scId": "WCAG2:on-focus",
       "scAltId": ["consistent-behavior-receive-focus"],
       "test": "WCAG2:consistent-behavior-receive-focus",
@@ -817,7 +817,7 @@
     },
     "3.2.2": {
       "num": "3.2.2",
-      "url": "https://www.w3.org/TR/WCAG21/#on-input",
+      "url": "https://www.w3.org/TR/WCAG22/#on-input",
       "scId": "WCAG2:on-input",
       "scAltId": ["consistent-behavior-unpredictable-change"],
       "test": "WCAG2:consistent-behavior-unpredictable-change",
@@ -829,7 +829,7 @@
     },
     "3.2.3": {
       "num": "3.2.3",
-      "url": "https://www.w3.org/TR/WCAG21/#consistent-navigation",
+      "url": "https://www.w3.org/TR/WCAG22/#consistent-navigation",
       "scId": "WCAG2:consistent-navigation",
       "scAltId": ["consistent-behavior-consistent-locations"],
       "test": "WCAG2:consistent-behavior-consistent-locations",
@@ -841,7 +841,7 @@
     },
     "3.2.4": {
       "num": "3.2.4",
-      "url": "https://www.w3.org/TR/WCAG21/#consistent-identification",
+      "url": "https://www.w3.org/TR/WCAG22/#consistent-identification",
       "scId": "WCAG2:consistent-identification",
       "scAltId": ["consistent-behavior-consistent-functionality"],
       "test": "WCAG2:consistent-behavior-consistent-functionality",
@@ -853,7 +853,7 @@
     },
     "3.2.5": {
       "num": "3.2.5",
-      "url": "https://www.w3.org/TR/WCAG21/#change-on-request",
+      "url": "https://www.w3.org/TR/WCAG22/#change-on-request",
       "scId": "WCAG2:change-on-request",
       "scAltId": ["consistent-behavior-no-extreme-changes-context"],
       "test": "WCAG2:consistent-behavior-no-extreme-changes-context",
@@ -863,9 +863,21 @@
       "level": "AAA",
       "wcagType": "2.0"
     },
+    "3.2.6": {
+      "num": "3.2.6",
+      "url": "https://www.w3.org/TR/WCAG22/#consistent-help",
+      "scId": "WCAG2:consistent-help",
+      "scAltId": ["consistent-help-alt"],
+      "test": "WCAG2:consistent-help-test",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#consistent-help",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html",
+      "handle": "Consistent Help",
+      "level": "AA",
+      "wcagType": "2.2"
+    },
     "3.3.1": {
       "num": "3.3.1",
-      "url": "https://www.w3.org/TR/WCAG21/#error-identification",
+      "url": "https://www.w3.org/TR/WCAG22/#error-identification",
       "scId": "WCAG2:error-identification",
       "scAltId": ["minimize-error-identified"],
       "test": "WCAG2:minimize-error-identified",
@@ -877,7 +889,7 @@
     },
     "3.3.2": {
       "num": "3.3.2",
-      "url": "https://www.w3.org/TR/WCAG21/#labels-or-instructions",
+      "url": "https://www.w3.org/TR/WCAG22/#labels-or-instructions",
       "scId": "WCAG2:labels-or-instructions",
       "scAltId": ["minimize-error-cues"],
       "test": "WCAG2:minimize-error-cues",
@@ -889,7 +901,7 @@
     },
     "3.3.3": {
       "num": "3.3.3",
-      "url": "https://www.w3.org/TR/WCAG21/#error-suggestion",
+      "url": "https://www.w3.org/TR/WCAG22/#error-suggestion",
       "scId": "WCAG2:error-suggestion",
       "scAltId": ["minimize-error-suggestions"],
       "test": "WCAG2:minimize-error-suggestions",
@@ -901,7 +913,7 @@
     },
     "3.3.4": {
       "num": "3.3.4",
-      "url": "https://www.w3.org/TR/WCAG21/#error-prevention-legal-financial-data",
+      "url": "https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data",
       "scId": "WCAG2:error-prevention-legal-financial-data",
       "scAltId": ["minimize-error-reversible"],
       "test": "WCAG2:minimize-error-reversible",
@@ -913,7 +925,7 @@
     },
     "3.3.5": {
       "num": "3.3.5",
-      "url": "https://www.w3.org/TR/WCAG21/#help",
+      "url": "https://www.w3.org/TR/WCAG22/#help",
       "scId": "WCAG2:help",
       "scAltId": ["minimize-error-context-help"],
       "test": "WCAG2:minimize-error-context-help",
@@ -925,7 +937,7 @@
     },
     "3.3.6": {
       "num": "3.3.6",
-      "url": "https://www.w3.org/TR/WCAG21/#error-prevention-all",
+      "url": "https://www.w3.org/TR/WCAG22/#error-prevention-all",
       "scId": "WCAG2:error-prevention-all",
       "scAltId": ["minimize-error-reversible-all"],
       "test": "WCAG2:minimize-error-reversible-all",
@@ -939,8 +951,8 @@
       "num": "3.3.7",
       "url": "https://www.w3.org/TR/WCAG22/#redundant-entry",
       "scId": "WCAG2:redundant-entry",
-      "scAltId": ["redundant-entry"],
-      "test": "WCAG2:redundant-entry",
+      "scAltId": ["redundant-entry-alt"],
+      "test": "WCAG2:redundant-entry-test",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#redundant-entry",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html",
       "handle": "Redundant Entry",
@@ -951,8 +963,8 @@
       "num": "3.3.8",
       "url": "https://www.w3.org/TR/WCAG22/#accessible-authentication-minimum",
       "scId": "WCAG2:accessible-authentication-minimum",
-      "scAltId": ["accessible-authentication-minimum"],
-      "test": "WCAG2:accessible-authentication-minimum",
+      "scAltId": ["accessible-authentication-minimum-alt"],
+      "test": "WCAG2:accessible-authentication-minimum-test",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#accessible-authentication-minimum",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html",
       "handle": "Accessible Authentication (Minimum)",
@@ -961,7 +973,7 @@
     },
     "4.1.1": {
       "num": "4.1.1",
-      "url": "https://www.w3.org/TR/WCAG21/#parsing",
+      "url": "https://www.w3.org/TR/WCAG22/#parsing",
       "scId": "WCAG2:parsing",
       "scAltId": ["ensure-compat-parses"],
       "test": "WCAG2:ensure-compat-parses",
@@ -973,7 +985,7 @@
     },
     "4.1.2": {
       "num": "4.1.2",
-      "url": "https://www.w3.org/TR/WCAG21/#name-role-value",
+      "url": "https://www.w3.org/TR/WCAG22/#name-role-value",
       "scId": "WCAG2:name-role-value",
       "scAltId": ["ensure-compat-rsv"],
       "test": "WCAG2:ensure-compat-rsv",
@@ -985,7 +997,7 @@
     },
     "4.1.3": {
       "num": "4.1.3",
-      "url": "https://www.w3.org/TR/WCAG21/#status-messages",
+      "url": "https://www.w3.org/TR/WCAG22/#status-messages",
       "scId": "WCAG2:status-messages",
       "scAltId": [],
       "test": "WCAG2:WCAG2:status-messages",
