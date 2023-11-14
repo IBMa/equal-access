@@ -286,10 +286,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             ariaLabel="Select report view"
                             disabled={totalCount === 0}
                             id="reportView"
+                            size="sm" 
                             items={viewItems}
                             light={false}
                             type="default"
-                            // style={{width:"180px"}}
+                            style={{width:"160px"}}
                             selectedItem={this.state.reportViewState}
                             onChange={async (evt: any) => {
                                 // set state
@@ -304,6 +305,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             className="viewMulti"
                             ariaLabel="Issue type filter"
                             label="Filter"
+                            size="sm" 
                             hideLabel={true}
                             disabled={totalCount === 0}
                             id="filterSelection"
