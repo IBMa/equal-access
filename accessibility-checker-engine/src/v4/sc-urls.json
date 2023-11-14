@@ -635,12 +635,36 @@
       "level": "AA",
       "wcagType": "2.2"
     },
+    "2.4.12": {
+      "num": "2.4.12",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-enhanced",
+      "scId": "WCAG2:focus-not-obscured-enhanced",
+      "scAltId": [],
+      "test": "WCAG2:focus-not-obscured-enhanced-test",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#focus-not-obscured-enhanced",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-enhanced.html",
+      "handle": "Focus Not Obscured (Enhanced)",
+      "level": "AAA",
+      "wcagType": "2.2"
+    },
+    "2.4.13": {
+      "num": "2.4.13",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-appearance",
+      "scId": "WCAG2:focus-appearance",
+      "scAltId": [],
+      "test": "WCAG2:focus-appearance",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#focus-appearance",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html",
+      "handle": "Focus Appearance",
+      "level": "AAA",
+      "wcagType": "2.2"
+    },
     "2.5.1": {
       "num": "2.5.1",
       "url": "https://www.w3.org/TR/WCAG22/#pointer-gestures",
       "scId": "WCAG2:pointer-gestures",
       "scAltId": [],
-      "test": "WCAG2:WCAG2:pointer-gestures",
+      "test": "WCAG2:pointer-gestures-test",
       "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#pointer-gestures",
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html",
       "handle": "Pointer Gestures",
@@ -969,6 +993,18 @@
       "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html",
       "handle": "Accessible Authentication (Minimum)",
       "level": "AA",
+      "wcagType": "2.2"
+    },
+    "3.3.9": {
+      "num": "3.3.9",
+      "url": "https://www.w3.org/TR/WCAG22/#accessible-authentication-enhanced",
+      "scId": "WCAG2:accessible-authentication-enhanced",
+      "scAltId": [],
+      "test": "WCAG2:accessible-authentication-enhanced",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#accessible-authentication-enhanced",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-enhanced.html",
+      "handle": "Accessible Authentication (Enhanced)",
+      "level": "AAA",
       "wcagType": "2.2"
     },
     "4.1.1": {
