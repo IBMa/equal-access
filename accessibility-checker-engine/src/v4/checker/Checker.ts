@@ -315,7 +315,7 @@ export class Checker implements IChecker {
                         let level = null;
                         if (code === 'None')
                             level = rsInfo[rsId]["None"];
-                        else if ((code.includes("--") && code.includes(reasonCode+"--")) || code.includes(reasonCode))
+                        else if ((code.includes("--") && (code.includes(reasonCode+"--") || code.includes("--"+reasonCode))) || (!code.includes("--") && code.includes(reasonCode)))
                             level = rsInfo[rsId][code];
                         if (level === eRulePolicy.VIOLATION) {
                             retVal = eRulePolicy.VIOLATION;
