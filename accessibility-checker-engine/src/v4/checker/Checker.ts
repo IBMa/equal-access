@@ -135,7 +135,7 @@ export class Checker implements IChecker {
                     //this.ruleLevels[rule.id][guideline.id] = rule.level;
                     this.ruleReasonLevels[rule.id] = this.ruleReasonLevels[rule.id] || {};
                     this.ruleReasonLevels[rule.id][guideline.id] = this.ruleReasonLevels[rule.id][guideline.id] || {};
-                    const code = rule.reasonCodes ? rule.reasonCodes.join('-') : "None";
+                    const code = rule.reasonCodes ? rule.reasonCodes.join('--') : "None";
                     this.ruleReasonLevels[rule.id][guideline.id][code] = rule.level;
                     this.ruleCategory[rule.id] = this.ruleCategory[rule.id] || {};
                     this.ruleCategory[rule.id][guideline.id] = guideline.category;
@@ -315,7 +315,7 @@ export class Checker implements IChecker {
                         let level = null;
                         if (code === 'None')
                             level = rsInfo[rsId]["None"];
-                        else if (code.includes(reasonCode))
+                        else if ((code.includes("--") && code.includes(reasonCode+"--")) || code.includes(reasonCode))
                             level = rsInfo[rsId][code];
                         if (level === eRulePolicy.VIOLATION) {
                             retVal = eRulePolicy.VIOLATION;
