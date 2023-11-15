@@ -41,7 +41,7 @@ export let emoticons_alt_exists: Rule = {
      * Decision in planning 9/7/23 that this rule causes more reviews that we see actual problems in content, so turn these rules off
     
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO

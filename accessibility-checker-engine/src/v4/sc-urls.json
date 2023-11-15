@@ -623,6 +623,18 @@
       "level": "AAA",
       "wcagType": "2.0"
     },
+    "2.4.11": {
+      "num": "2.4.11",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
+      "scId": "WCAG2:focus-not-obscured-minimum",
+      "scAltId": ["focus-not-obscured-minimum"],
+      "test": "WCAG2:focus-not-obscured-minimum",
+      "howToMeetUrl": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+      "handle": "Focus Not Obscured (Minimum)",
+      "level": "AA",
+      "wcagType": "2.2"
+    },
     "2.5.1": {
       "num": "2.5.1",
       "url": "https://www.w3.org/TR/WCAG21/#pointer-gestures",
@@ -694,6 +706,30 @@
       "handle": "Concurrent Input Mechanisms",
       "level": "AAA",
       "wcagType": "2.1"
+    },
+    "2.5.7": {
+      "num": "2.5.7",
+      "url": "https://www.w3.org/TR/WCAG22/#dragging-movements",
+      "scId": "WCAG2:dragging-movement",
+      "scAltId": ["dragging-movement"],
+      "test": "WCAG2:WCAG2:dragging-movement",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+      "handle": "Dragging Movement",
+      "level": "AA",
+      "wcagType": "2.2"
+    },
+    "2.5.8": {
+      "num": "2.5.8",
+      "url": "https://www.w3.org/TR/WCAG22/#target-size-minimum",
+      "scId": "WCAG2:minimum-target-size",
+      "scAltId": ["minimum-target-size"],
+      "test": "WCAG2:WCAG2:minimum-target-size",
+      "howToMeetUrl": "https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum",
+      "understandingUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+      "handle": "Minimum Target Size",
+      "level": "AA",
+      "wcagType": "2.2"
     },
     "3.1.1": {
       "num": "3.1.1",
@@ -934,5 +970,29 @@
       "handle": "Status Messages",
       "level": "AA",
       "wcagType": "2.1"
+    },
+    "HTML": {
+      "num": "HTML",
+      "url": "https://html.spec.whatwg.org/multipage/",
+      "scId": [],
+      "scAltId": [],
+      "test": "",
+      "howToMeetUrl": "https://html.spec.whatwg.org/multipage/",
+      "understandingUrl": "https://html.spec.whatwg.org/multipage/",
+      "handle": "specification",
+      "level": "NA",
+      "wcagType": "NA"
+    },
+    "ARIA": {
+      "num": "ARIA",
+      "url": "https://w3c.github.io/aria/",
+      "scId": [],
+      "scAltId": [],
+      "test": "",
+      "howToMeetUrl": "https://w3c.github.io/aria/",
+      "understandingUrl": "https://w3c.github.io/aria/",
+      "handle": "specification",
+      "level": "NA",
+      "wcagType": "NA"
     }
   }

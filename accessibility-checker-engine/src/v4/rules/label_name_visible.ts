@@ -43,7 +43,7 @@ export let label_name_visible: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1"],
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_2"],
         "num": ["2.5.3"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO

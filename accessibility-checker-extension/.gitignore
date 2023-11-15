@@ -673,3 +673,5 @@ ASALocalRun/
 .localhistory/
 
 # End of https://www.gitignore.io/api/node,macos,linux,eclipse,windows,intellij,visualstudio,microsoftoffice,visualstudiocode
+
+.achecker/results

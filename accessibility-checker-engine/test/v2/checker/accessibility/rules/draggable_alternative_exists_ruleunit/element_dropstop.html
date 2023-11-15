@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+  <style>
+.div {
+  width: 55px;
+  height: 35px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  display: inline-block;
+  text-align: center;
+}
+</style>
+<script>
+  function dragover(ev) {
+    ev.preventDefault();
+  }
+  
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  }
+
+  function move(ev) {
+    ev.preventDefault();
+    document.getElementById('div1').innerHTML = '';
+
+    let div2 = document.getElementById('div2');
+    let img = document.createElement('img');
+    img.src = 'https://ibm.com/able/favicon-32x32.png';
+    img.width = 32;
+    img.height = 32;
+    div2.innerHTML = '';
+    div2.appendChild(img);
+    
+    
+  }
+
+  </script>
+</head>
+
+<body>
+
+  <p>Drag or move the image into the rectangle:</p>
+
+  <div id='div2' class="div" ondrop="drop(event)" ondragover="dragover(event)"></div>
+  <div class="div" style="border: 0px;"><button id="button1" onclick="move(event)" style="width:45px; height: 25px;">Move</button></div>
+
+  <br>
+  <div id="div1"><img id="drag1" src="https://ibm.com/able/favicon-32x32.png" draggable="true" ondragstart="drag(event)" width="32" height="32"></div>
+
+<script>
+  UnitTest = {
+    ruleIds: ["draggable_alternative_exists"],
+    results: [
+    {
+            "ruleId": "draggable_alternative_exists",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/img[1]",
+              "aria": "/document[1]/img[1]"
+            },
+            "reasonId": "potential_alternative",
+            "message": "Ensure the draggable element \"img\" has a \"single pointer\" alternative",
+            "messageArgs": [
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>

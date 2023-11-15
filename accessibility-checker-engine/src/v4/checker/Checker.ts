@@ -14,13 +14,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Issue, Rule as RuleV4, eRulePolicy } from "../api/IRule";
+import { Rule as RuleV4, eRulePolicy } from "../api/IRule";
 import { Engine } from "../../v2/common/Engine";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { StyleMapper } from "../../v2/style/StyleMapper";
 import { a11yRulesets } from "../rulesets";
 import * as checkRulesV4 from "../rules";
-import { Checkpoint, Guideline, eGuidelineCategory } from "../api/IGuideline";
+import { Guideline, eGuidelineCategory } from "../api/IGuideline";
 import { IEngine } from "../api/IEngine";
 import { Report } from "../api/IReport";
 import { IChecker } from "../api/IChecker";
@@ -84,14 +84,22 @@ _initialize();
 export type Ruleset = Guideline;
 
 export class Checker implements IChecker {
+    private guidelines: Guideline[] = [];
+
     engine: IEngine;
-    rulesets: Guideline[] = [];
+    /**
+     * @deprecated Use getGuidelines().
+     */
+    rulesets: Guideline[] = this.guidelines;
+    /**
+     * @deprecated Use getGuidelineIds().
+     */
     rulesetIds: string[] = [];
     rulesetRules: { [rsId: string]: string[] } = {};
     ruleLevels : { [ruleId: string]: { [rsId: string] : eRulePolicy }} = {};
     ruleCategory : { [ruleId: string]: { [rsId: string] : eGuidelineCategory }} = {};
 
-    constructor() {
+    public constructor() {
         let engine = this.engine = new Engine();
 
         engine.addMapper(new ARIAMapper());
@@ -106,29 +114,102 @@ export class Checker implements IChecker {
         }
     }
 
+    /**
+     * Adds a guideline to the engine. If the id already exists, the previous guideline will be replaced.
+     * @param guideline 
+     */
     addGuideline(guideline: Guideline) {
-        this.rulesets.push(guideline);
+        if (guideline.id in this.rulesetRules) {
+            this.removeGuideline(guideline.id);
+        }
+        this.guidelines.push(guideline);
         this.rulesetIds.push(guideline.id);
         const ruleIds = [];
         for (const cp of guideline.checkpoints) {
             cp.rules = cp.rules || [];
             for (const rule of cp.rules) {
-                ruleIds.push(rule.id);
-                this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
-                this.ruleLevels[rule.id][guideline.id] = rule.level;
-                this.ruleCategory[rule.id] = this.ruleCategory[rule.id] || {};
-                this.ruleCategory[rule.id][guideline.id] = guideline.category;
+                if (rule.enabled !== false) {
+                    ruleIds.push(rule.id);
+                    this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
+                    this.ruleLevels[rule.id][guideline.id] = rule.level;
+                    this.ruleCategory[rule.id] = this.ruleCategory[rule.id] || {};
+                    this.ruleCategory[rule.id][guideline.id] = guideline.category;
+                }
             }
         }
         this.rulesetRules[guideline.id] = ruleIds;
     }
 
-    getGuidelines() {
-        return this.rulesets;
+    /**
+     * Enable a rule for all guidelines
+     * @param ruleId 
+     */
+    enableRule(ruleId: string) {
+        for (const guideline of this.getGuidelines()) {
+            let updated = false;
+            for (const cp of guideline.checkpoints) {
+                for (const rule of cp.rules) {
+                    if (rule.enabled === false) {
+                        updated = true;
+                        delete rule.enabled;
+                    }
+                }
+            }
+            if (updated) {
+                this.addGuideline(guideline);
+            }
+        }
     }
 
-    getGuidelineIds() {
-        return this.rulesetIds;
+    /**
+     * Disable a rule for all guidelines
+     * @param ruleId 
+     */
+    disableRule(ruleId: string) {
+        for (const guideline of this.getGuidelines()) {
+            let updated = false;
+            for (const cp of guideline.checkpoints) {
+                for (const rule of cp.rules) {
+                    if (rule.enabled !== false) {
+                        updated = true;
+                        rule.enabled = false;
+                    }
+                }
+            }
+            if (updated) {
+                this.addGuideline(guideline);
+            }
+        }
+    }
+
+    /**
+     * Remove a guideline from the engine
+     * 
+     * Generally, there isn't a good reason to do this. Users should just not select the guideline as an option in check
+     * @param guidelineId
+     */
+    private removeGuideline(guidelineId: string) {
+        if (guidelineId in this.rulesetRules) {
+            delete this.rulesetRules[guidelineId];
+            this.rulesets = this.guidelines = this.guidelines.filter(guideline => guideline.id !== guidelineId);
+            this.rulesetIds = this.getGuidelineIds();
+        }
+    }
+
+    /**
+     * Get the guidelines available in the engine
+     * @returns 
+     */
+    getGuidelines() : Guideline[] {
+        return JSON.parse(JSON.stringify(this.guidelines));
+    }
+
+    /**
+     * Get the ids of the guidelines available in the engine
+     * @returns 
+     */
+    getGuidelineIds() : string[] {
+        return this.guidelines.map(guideline => guideline.id);
     }
 
     /**
@@ -139,19 +220,25 @@ export class Checker implements IChecker {
         this.addGuideline(rs);
     }
 
-    check(node: Node | Document, rsIds?: string | string[]) : Promise<Report> {
+    /**
+     * Perform a check of the specified node/document
+     * @param node DOMNode or Document on which to run the check
+     * @param guidelineIds Guideline ids to check with to specify which rules to run
+     * @returns 
+     */
+    check(node: Node | Document, guidelineIds?: string | string[]) : Promise<Report> {
         // Determine which rules to run
         let ruleIds : string[] = [];
 
         // Fix the input
-        if (!rsIds) {
+        if (!guidelineIds) {
             ruleIds = this.engine.getRulesIds();
         } else{
-            if (typeof rsIds === "string") {
-                rsIds = [rsIds];
+            if (typeof guidelineIds === "string") {
+                guidelineIds = [guidelineIds];
             }
 
-            for (const rsId of rsIds) {
+            for (const rsId of guidelineIds) {
                 if (rsId in this.rulesetRules) {
                     ruleIds = ruleIds.concat(this.rulesetRules[rsId]);
                 }
@@ -175,8 +262,8 @@ export class Checker implements IChecker {
                             report.nls[result.ruleId][result.reasonId] = checkNls[result.ruleId][result.reasonId];
                         }
                     }
-                    result.value[0] = myThis.getLevel(rsIds as string[], result.ruleId);
-                    result.category = myThis.getCategory(rsIds as string[], result.ruleId);
+                    result.value[0] = myThis.getLevel(guidelineIds as string[], result.ruleId);
+                    result.category = myThis.getCategory(guidelineIds as string[], result.ruleId);
                     delete result.path.css;
                 }
                 return report;
@@ -217,7 +304,7 @@ export class Checker implements IChecker {
             return eGuidelineCategory.OTHER;
         }
         if (!rsIds) {
-            rsIds = this.rulesetIds;
+            rsIds = this.getGuidelineIds();
         }
         for (const rsId of rsIds) {
             if (rsId in rsInfo) {

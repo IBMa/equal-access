@@ -35,10 +35,10 @@ export let aria_role_redundant: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["4.1.1"],
+        "id": ["IBM_Accessibility"],
+        "num": ["ARIA"],
         "level": eRulePolicy.RECOMMENDATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_FOUR
+        "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {

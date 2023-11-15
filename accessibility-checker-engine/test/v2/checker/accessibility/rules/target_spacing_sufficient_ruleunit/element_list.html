@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <style>
+    option.opt {
+      display: block;
+      line-height: 1px;
+      margin-top:-5px; 
+    }
+
+  </style>
+</head>
+<body>
+  <main>
+    <div class="testcase1">
+      <label for="pet">
+        Select your favorite pet:</label><br>
+        <select id='pet' name="pet" multiple>
+          <option id='11' class="opt">first pet: Furry Cat</option>
+          <option id='12' class="opt">second pet: Cunning Dog</option>
+          <option id='13' class="opt">third pet: Guinea Pig</option>
+          <option id='14' class="opt">fourth pet: Hamster </option> 
+          <option id='15' class="opt">fifth pet: Bunny </option> 
+        </select>
+  </div>
+
+    <div class="testcase2" style="margin-top:30px;">
+        <label for="flower">
+          Select your favorite flower:</label><br>
+          <select id='flower' name="flower" multiple>
+            <option id='21' class="normal">first flower: Carnation</option>
+            <option id='22' class="normal">second flower: Rose</option>
+            <option id='23' class="normal">third flower: Iris</option>
+            <option id='24' class="normal">fourth flower: Lily</option> 
+            <option id='25' class="normal">fifth flower: Tulip </option> 
+          </select>
+    </div>
+  </main>
+  <script>
+    UnitTest = {
+      ruleIds: ["target_spacing_sufficient"],
+      results: [
+      {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[1]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[1]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[1]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"option\" meets a minimum target size or has sufficient spacing from the overlapping target \"option\"",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[2]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[2]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"option\" meets a minimum target size or has sufficient spacing from the overlapping target \"option\"",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[3]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[3]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"option\" meets a minimum target size or has sufficient spacing from the overlapping target \"option\"",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[4]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[4]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"option\" meets a minimum target size or has sufficient spacing from the overlapping target \"option\"",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[5]",
+              "aria": "/document[1]/main[1]/listbox[1]/option[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"option\" meets a minimum target size or has sufficient spacing from the overlapping target \"option\"",
+            "messageArgs": [
+              "option",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]",
+              "aria": "/document[1]/main[1]/listbox[2]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[1]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[1]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[2]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[2]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[3]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[3]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[4]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[4]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[5]",
+              "aria": "/document[1]/main[1]/listbox[2]/option[5]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+
+</html>

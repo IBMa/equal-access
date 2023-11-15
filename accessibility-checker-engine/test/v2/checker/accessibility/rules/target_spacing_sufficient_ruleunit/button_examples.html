@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+  
+</head>
+
+<body>
+
+  <button style="font-size: 24px">Submit</button>
+  <button>+</button>
+  <button style="margin-left: 10px">Adjacent Target</button>
+
+  <button id="target">+</button>
+  <button style="margin-left: -10px">Adjacent Target</button>
+
+<script>
+  UnitTest = {
+    ruleIds: ["target_spacing_sufficient"],
+    results: [
+    {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[5]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"button\" meets a minimum target size or has sufficient spacing from the overlapping target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>

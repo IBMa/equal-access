@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "declaration": false,
+        "allowJs": false,
+        "target": "ES5",
+        "removeComments": false,
+        "noEmitOnError": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "alwaysStrict": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        // "module": "commonjs",
+        "outDir": "dist",
+        "emitDecoratorMetadata": true,
+        "lib": [
+            "dom",
+            "es7"
+         ]
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "coverage",
+        ".nyc_output"
+    ]
+}
