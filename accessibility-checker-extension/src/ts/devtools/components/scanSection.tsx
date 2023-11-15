@@ -43,6 +43,7 @@ import { ListenerType } from '../../messaging/controller';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
+import { DefinitionTooltip } from '@carbon/react';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -431,12 +432,13 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                         totalCount += filterCounts[levelStr as eLevel].total;
                         return <>
                             <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
-                                <Tooltip
+                                {/* <Tooltip
                                     align="right"
                                     label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
-                                >
+                                > */}
                                 <span className="countCol">
-                                    {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
+                                    <DefinitionTooltip openOnHover align="top-left" definition={levelStr}>
+                                    {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}</DefinitionTooltip>
                                     <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                         {reportIssues && <>
                                             {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
@@ -448,17 +450,14 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     </span>
                                     <span style={{ marginRight: "18px" }}></span>
                                 </span>
-                                </Tooltip>
+                                {/* </Tooltip> */}
                             </span>
                         </>
                     })}
                     <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
-                        <Tooltip
-                            align="right"
-                            label="Hidden"
-                        >
                         <span className="countCol">
-                        {UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")}
+                        <DefinitionTooltip openOnHover align="top-left" definition="Hidden">
+                        {UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")}</DefinitionTooltip>
                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                 {reportIssues && <>
                                     {this.state.ignoredIssues.length}
@@ -466,7 +465,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             </span>
                             <span style={{ marginRight: "18px" }}></span>
                         </span>
-                        </Tooltip>
                     </span>
                     <Link 
                         id="totalIssuesCount" 
