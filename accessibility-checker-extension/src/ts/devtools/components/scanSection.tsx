@@ -162,9 +162,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 storedReportsCount: newState.length
             });
         })
-        devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
-        let path = await devtoolsController.getSelectedElementPath();
-        this.setPath(path!);
+        devtoolsController.addSelectedElementPathListener(async (newPath) => {
+            this.setState( { selectedElemPath: newPath });
+        })
         devtoolsController.addFocusModeListener(async (newValue) => {
             this.setState({ focusMode: newValue })
         })
@@ -285,10 +285,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         })}
 
         let selectedElementStr = this.state.selectedElemPath;
+        console.log("selectedElementStr = ", selectedElementStr);
         if (selectedElementStr) {
             selectedElementStr = selectedElementStr.split("/").pop()!;
             selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
         }
+        console.log("selectedElementStr = ", selectedElementStr);
         let devtoolsAppController = getDevtoolsAppController();
         return (<div className="scanSection">
             <Grid> 
@@ -432,10 +434,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                         totalCount += filterCounts[levelStr as eLevel].total;
                         return <>
                             <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
-                                {/* <Tooltip
-                                    align="right"
-                                    label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
-                                > */}
                                 <span className="countCol">
                                     <DefinitionTooltip openOnHover align="top-left" definition={levelStr}>
                                     {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}</DefinitionTooltip>
