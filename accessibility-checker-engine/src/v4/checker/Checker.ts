@@ -313,9 +313,10 @@ export class Checker implements IChecker {
                 if (rsId in rsInfo) {
                     Object.keys(rsInfo[rsId]).forEach(code => { 
                         let level = null;
+                        const reCode = new RegExp(`(^|--)${reasonCode}($|--)`);
                         if (code === 'None')
                             level = rsInfo[rsId]["None"];
-                        else if ((code.includes("--") && (code.includes(reasonCode+"--") || code.includes("--"+reasonCode))) || (!code.includes("--") && code.includes(reasonCode)))
+                        else if (reCode.test(code))
                             level = rsInfo[rsId][code];
                         if (level === eRulePolicy.VIOLATION) {
                             retVal = eRulePolicy.VIOLATION;
