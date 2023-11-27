@@ -2521,9 +2521,9 @@ export class RPTUtil {
     public static isInnerTextOnlyEmpty(element) {
         // Get the innerText of the element
         let text = element.innerText;
-
-        if (text === undefined && element.textContent !== undefined) {
-            // In headless mode,  innerText is sometimes 'undefined'
+        
+        if ((text === undefined || !text || text.trim().length === 0) && element.textContent !== undefined) {
+            // innerText is sometimes 'undefined' in headless mode, or null if the element is invisible or not erxpanded 
             // so we try textContent as a workaround
             text = element.textContent
         }
@@ -2642,7 +2642,7 @@ export class RPTUtil {
                     node.nodeName.toLowerCase() === "svg"
                     && RPTUtil.svgHasName(node as any)
                 );
-
+                
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && VisUtil.isNodeVisible(node)) {
                     // Check if the innerText of the element is empty or not

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+  <head>
+    <title>Shadow DOM input Label</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <main id="main">
+      <div className="App">
+        <details>
+          <summary>Detail summary</summary>
+          <div>
+            <label id="1" for="input">
+              <p>Detail Label Text</p>
+            </label>
+            <input id="input" type="text" />
+          </div>
+        </details>
+        <details>
+          <summary>Direct Detail summary</summary>
+          <div>
+            <label id="2" for="input">
+               Direct Detail Label Text
+            </label>
+            <input id="input" type="text" />
+          </div>
+        </details>
+        <div>
+          <summary>Div summary</summary>
+          <div>
+            <label id="3" for="input">
+              <p>Div Label Text</p>
+            </label>
+            <input id="input" type="text" />
+          </div>
+        </div>
+        <div>
+          <summary>Direct Div summary</summary>
+          <div>
+            <label id="4" for="input">
+              <p>Direct Div Label Text</p>
+            </label>
+            <input id="input" type="text" />
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript">
+      UnitTest = {
+          ruleIds: ["label_content_exists"],
+          results: [
+          {
+            "ruleId": "label_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/details[1]/div[1]/label[1]",
+              "aria": "/document[1]/main[1]/group[1]"
+            },
+            "reasonId": "Pass_Regular",
+            "message": "<label> element has accessible name with inner content",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "label_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/details[2]/div[1]/label[1]",
+              "aria": "/document[1]/main[1]/group[2]"
+            },
+            "reasonId": "Pass_Regular",
+            "message": "<label> element has accessible name with inner content",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "label_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/label[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_Regular",
+            "message": "<label> element has accessible name with inner content",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "label_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/label[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_Regular",
+            "message": "<label> element has accessible name with inner content",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+      }
+      
+</script>
+  </body>
+</html>
