@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
@@ -58,7 +58,7 @@ export let input_label_before: Rule = {
 
         // Get only the non-hidden labels for element
         let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
-
+        
         if (labelElem == null || !RPTUtil.hasInnerContentHidden(labelElem)) {
             // Due to dependency, label must be done via title - this rule doesn't apply
             return null;
@@ -66,6 +66,13 @@ export let input_label_before: Rule = {
 
         let value = RPTUtil.compareNodeOrder(labelElem, ruleContext);
         if (value == -2) {
+            // ignore if no label or the content for the label is only from the nested input control 
+            let text = RPTUtil.getInnerText(ruleContext);
+            if (text && text.trim().length > 0 && RPTUtil.getInnerText(ruleContext).trim() === text.trim()) {
+                // Due to dependency, label must be done via title - this rule doesn't apply
+                return null;
+            }
+
             // input nested in label
             let passed = false;
             let walkNode = ruleContext.previousSibling;
