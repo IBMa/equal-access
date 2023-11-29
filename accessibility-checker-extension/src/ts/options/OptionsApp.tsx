@@ -338,15 +338,48 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             <aside aria-label="About Accessibility Checker Options">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
-                the most recent WCAG standards plus some additional IBM requirements. Rule sets 
-                for specific WCAG versions are also available. The rule sets are updated regularly, 
+                the WCAG standards plus some additional IBM requirements. Guidelines 
+                are available for specific WCAG versions. The guidelines are updated regularly, 
                 and each update has a date of deployment. If you need to replicate an earlier test, 
-                choose the deployment date of the original test.
+                choose the deployment date of the original test. 
+            </p>
+            <p>    
+                See the <Link 
+                            inline={true} 
+                            size="lg"
+                            className="link" 
+                            href="https://www.ibm.com/able/requirements/requirements"
+                            target="_blank" rel="noopener noreferred"
+                            >IBM Accessibility requirements</Link> that need to be met to comply with standards and regulations.
+            </p>
+            <p> 
+                <strong>Rule updates</strong>: For details on rule changes at each deployment, 
+                see the <Link 
+                            inline={true} 
+                            size="lg" 
+                            className="link"
+                            href="https://github.com/IBMa/equal-access/releases"
+                            target="_blank" rel="noopener noreferred"
+                            // style={{ color: '#002D9C' }}
+                            >Release notes</Link>.
+            </p>
+            <p>
+                <strong>Rule sets</strong>: A packaged set of guidelines, 
+                each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                see the <Link
+                            inline={true}
+                            size="lg"
+                            className="link"
+                            href="https://www.ibm.com/able/requirements/checker-rule-sets"
+                            target="_blank" rel="noopener noreferred"
+                            // style={{ color: '#002D9C' }}
+                            >Checker rule sets</Link>.
             </p>
             <p>
                 For more in-depth guidance, see <Link 
                     size="lg"
                     inline={true}
+                    // should className="Link" be used?
                     href={chrome.runtime.getURL("usingAC.html")}
                     target="_blank"
                     rel="noopener noreferred"
@@ -429,12 +462,16 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 this.setState({ modalRuleSet: false });
                             }).bind(this)}
                         >
-                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
-                                for consistent testing throughout a project to replicate an earlier test</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment</strong>: Use a rule set from a specific date
+                                for consistent testing throughout a project to replicate an earlier test.</p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Preview rules</strong>: Try an experimental preview of a possible future rule set.</p>
 
-                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
+                            <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
+                                see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link>.</p>
+
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
                         </Modal>, document.body)}
 
                         {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
@@ -460,7 +497,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                     {/**** Select ruleset / policy  */}
                     <div>
                         <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
-                            Select accessibility guidelines
+                            Select an accessibility guideline
                             <Button
                                 renderIcon={Information}
                                 kind="ghost"
@@ -478,7 +515,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         {!this.state.selected_archive && <DropdownSkeleton />}
                         {this.state.selected_archive && <>
                             <Dropdown
-                                ariaLabel="Select accessibility guidelines"
+                                ariaLabel="Select an accessibility guideline"
                                 disabled={false}
                                 helperText={this.state.selected_ruleset && ("Currently active: " + this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!).name)}
                                 id="rulesetSelection"
@@ -500,16 +537,24 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                         {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             aria-label="Guidelines information"
-                            modalHeading="Selecting accessibility guidelines"
+                            modalHeading="Selecting an accessibility guideline"
                             passiveModal={true}
                             open={this.state.modalGuidelines}
                             onRequestClose={(() => {
                                 this.setState({ modalGuidelines: false });
                             }).bind(this)}
                         >
-                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
-                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
-                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
+                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility 7.2</strong>: Rules for WCAG 2.1 plus additional IBM requirements.</p>
+                            
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.2 (A, AA)</strong>: Rules for the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to 2.1 and 2.0.</p>
+                            
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA)</strong>: Content that conforms to WCAG 2.1 also conforms to WCAG 2.0. Referenced by EN 301 549 and other policies, but not the latest W3C specification.</p>
+                            
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specification.</p>
+                            
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
+                                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
+                            
                         </Modal>, document.body)}
                     </div>
 
