@@ -54,7 +54,8 @@ interface ScanSectionState {
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
-        "Recommendation": boolean
+        "Recommendation": boolean,
+        "Hidden": boolean
     }
     scanningState: ScanningState | "done"
     pageStatus: string
@@ -70,7 +71,7 @@ interface ScanSectionState {
     ignoredIssues: UIIssue[]
 }
 
-type eLevel = "Violation" | "Needs review" | "Recommendation";
+type eLevel = "Violation" | "Needs review" | "Recommendation" | "Hidden";
 
 type CountType = {
     "Violation": {
@@ -85,6 +86,10 @@ type CountType = {
         focused: number,
         total: number
     },
+    "Hidden": {
+        focused: number,
+        total: number
+    }
     "Pass": {
         focused: number,
         total: number
@@ -98,7 +103,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         checked: {
             "Violation": true,
             "Needs review": true,
-            "Recommendation": true
+            "Recommendation": true,
+            "Hidden": false
         },
         scanningState: "idle",
         pageStatus: "complete",
@@ -228,6 +234,10 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 focused: 0,
                 total: 0
             },
+            "Hidden": {
+                focused: 0,
+                total: 0
+            },
             "Pass": {
                 focused: 0,
                 total: 0
@@ -235,7 +245,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
     }
 
-    getCounts(issues: IIssue[] | null) : CountType {
+
+    getCounts(issues: UIIssue[] | null) : CountType {
         let counts = this.initCount();
         if (issues) {
             for (const issue of issues) {
@@ -243,6 +254,20 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 ++counts[sing as eLevel].total;
                 if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
                     ++counts[sing as eLevel].focused;
+                }
+            }
+        }
+        if (this.state.ignoredIssues) {
+            for (const ignoredIssue of this.state.ignoredIssues) {
+                ++counts["Hidden" as eLevel].total;
+                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                    ++counts["Hidden" as eLevel].focused;
+                }
+                // remove from appropriate eLevel V, NR, R
+                let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
+                --counts[sing as eLevel].total;
+                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                    --counts[sing as eLevel].focused;
                 }
             }
         }
@@ -259,7 +284,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         if (this.state.report) {
             quickTotalCount = this.state.report.counts.Violation +
                          this.state.report.counts['Needs review'] +
-                         this.state.report.counts.Recommendation;
+                         this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
             reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;           
         }
         if (reportIssues) {
@@ -286,7 +311,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             selectedElementStr = selectedElementStr.split("/").pop()!;
             selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
         }
-        
+
         let devtoolsAppController = getDevtoolsAppController();
         return (<div className="scanSection">
             <Grid> 

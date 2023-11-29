@@ -21,11 +21,6 @@ import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 import {
     Button,
-    // Tabs,
-    // Tab,
-    // TabList,
-    // TabPanels,
-    // TabPanel,
     Dropdown,
     MultiSelect
 } from "@carbon/react";
@@ -71,29 +66,6 @@ interface ReportSectionState {
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
-
-type CountType = {
-    "Violation": {
-        focused: number,
-        total: number
-    },
-    "Needs review": {
-        focused: number,
-        total: number
-    },
-    "Recommendation": {
-        focused: number,
-        total: number
-    },
-    "Hidden": {
-        focused: number,
-        total: number
-    }
-    "Pass": {
-        focused: number,
-        total: number
-    }
-}
 
 let bgController = getBGController();
 
@@ -204,25 +176,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         }
     }
 
-    getCounts(issues: UIIssue[] | null) : CountType {
-        let counts = this.initCount();
-        if (issues) {
-            for (const issue of issues) {
-                let sing = UtilIssue.valueToStringSingular(issue.value);
-                ++counts[sing as eLevel].total;
-                if (issue.ignored) {
-                    ++counts["Hidden"].total;
-                }
-                if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
-                    ++counts[sing as eLevel].focused;
-                    if (issue.ignored) {
-                        ++counts["Hidden"].focused;
-                    }
-                }
-            }
-        }
-        return counts;
-    }
 
     render() {
         let reportIssues : IIssue[] | null = null;
