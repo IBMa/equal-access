@@ -43,7 +43,7 @@
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
-            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG AA requirements",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
@@ -87,7 +87,7 @@
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA": {
-            "0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
+            "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
             "Pass_0": "Rule Passed"
         },
         "RPT_Headers_FewWords": {

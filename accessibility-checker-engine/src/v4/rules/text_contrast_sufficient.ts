@@ -45,12 +45,12 @@ export let text_contrast_sufficient: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
+            "group": "The contrast ratio of text with its background must meet WCAG AA requirements",
             "Pass_0": "Rule Passed",
             "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
-            "Potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast",
-            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}",
-            "Potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"
+            "Potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG AA requirements for minimum contrast",
+            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
+            "Potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}"
         }
     },
     rulesets: [{
