@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head>
+<title>word spacing</title>
+</head>
+<body role="main" id="ko2ru00253">
+  <fieldset>
+    <legend accesskey=p>
+     <label>I want <input name=pizza type=number step=1 value=1 min=0>
+      pizza(s) with these toppings</label>
+    </legend>
+    <label><input name=pizza-cheese type=checkbox checked> Cheese</label>
+    <label><input name=pizza-ham type=checkbox checked> Ham</label>
+    <label><input name=pizza-pineapple type=checkbox> Pineapple</label>
+   </fieldset>
+
+    <script type="text/javascript">
+      UnitTest = {
+          ruleIds: ["element_accesskey_labelled"],
+          results: [
+          {
+            "ruleId": "element_accesskey_labelled",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]/legend[1]",
+              "aria": "/document[1]/main[1]/group[1]"
+            },
+            "reasonId": "Potential_1",
+            "message": "The HTML element with an assigned 'accesskey' attribute does not have an associated label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+      }
+  </script>
+</body>
+</html>
