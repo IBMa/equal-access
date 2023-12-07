@@ -34,7 +34,7 @@ export let blockquote_cite_exists: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Potential_1": "Verify that <blockquote> should have a 'cite' attribute or child element and not be used for indentation only",
-            "group": "Use <blockquote> only for quotations, not indentation only"
+            "group": "Use <blockquote> only for quotations, not indentation"
         }
     },
     rulesets: [{
