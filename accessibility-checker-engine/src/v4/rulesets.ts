@@ -42,7 +42,7 @@ const summaries = {
     "1.4.10": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
     "1.4.11": "The parts of graphical objects required to understand the content, and the visual information required to identify UI components and states, have a contrast ratio of at least 3:1 against adjacent colors.",
     "1.4.12": "No loss of content or functionality occurs when users change letter, word and paragraph spacing, as well as line height.",
-    "1.4.13": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissable, hoverable and persistent.",
+    "1.4.13": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissible, hoverable and persistent.",
     "2.1.1": "All functionality of the content is operable through a keyboard interface without requiring specific timings for individual keystrokes.",
     "2.1.2": "If keyboard focus can be moved to a component using a keyboard interface, then focus can be moved away from that component using only a keyboard interface, and, if it requires more than unmodified arrow or tab keys or other standard exit methods, the user is advised of the method for moving focus away.",
     "2.1.4": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
