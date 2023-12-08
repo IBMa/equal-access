@@ -637,7 +637,7 @@
           "scId": "WCAG2:character-key-shortcuts",
           "name": "Character Key Shortcuts",
           "wcagLevel": "A",
-          "summary": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
+          "summary": "If a keyboard shortcut is implemented using only letter, punctuation, number, or symbol characters, then the shortcut can be turned off, remapped, or activated only on focus.",
           "rules": []
         },
         {
@@ -1956,7 +1956,7 @@
           "scId": "WCAG2:character-key-shortcuts",
           "name": "Character Key Shortcuts",
           "wcagLevel": "A",
-          "summary": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
+          "summary": "If a keyboard shortcut is implemented using only letter, punctuation, number, or symbol characters, then the shortcut can be turned off, remapped, or activated only on focus.",
           "rules": []
         },
         {

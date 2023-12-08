@@ -45,7 +45,7 @@ const summaries = {
     "1.4.13": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissible, hoverable and persistent.",
     "2.1.1": "All functionality of the content is operable through a keyboard interface without requiring specific timings for individual keystrokes.",
     "2.1.2": "If keyboard focus can be moved to a component using a keyboard interface, then focus can be moved away from that component using only a keyboard interface, and, if it requires more than unmodified arrow or tab keys or other standard exit methods, the user is advised of the method for moving focus away.",
-    "2.1.4": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
+    "2.1.4": "If a keyboard shortcut is implemented using only letter, punctuation, number, or symbol characters, then the shortcut can be turned off, remapped, or activated only on focus.",
     "2.2.1": "For each time limit that is set by the content, the user can turn off, adjust, or extend the limit.",
     "2.2.2": "For moving, blinking, scrolling, or auto-updating information, the user can pause, stop, hide or adjust the information.",
     "2.3.1": "Content does not contain anything that flashes more than three times in any one second period, or the flash is below the general flash and red flash thresholds.",
