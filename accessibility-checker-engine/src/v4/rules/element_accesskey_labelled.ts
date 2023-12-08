@@ -59,7 +59,7 @@ export let element_accesskey_labelled: Rule = {
             passed = true;
         } else if (ruleContext.nodeName.toLowerCase() === "input"
             && DOMWalker.parentNode(ruleContext).nodeName.toLowerCase() === "label") {
-            // assume the validity of the label, e.g. empty label, is checked by a different rule
+            // assume the validity of the label, e.g., empty label, is checked by a different rule
             passed = true;
         }
 

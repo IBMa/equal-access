@@ -79,7 +79,7 @@ export let aria_img_labelled: Rule = {
          */
         
         // If role === img, you must use an aria label
-        //check attributes aria-label and aria-labelledby for other tags (e.g. <div>, <span>, etc)
+        //check attributes aria-label and aria-labelledby for other tags (e.g., <div>, <span>, etc)
         let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;
 
         if (!passed && ruleContext.nodeName.toLowerCase() === "svg") {

@@ -151,7 +151,7 @@ export let aria_landmark_name_unique: Rule = {
                             "navigation",
                             "region",
                             "search",
-                        ].includes(els[j].getAttribute("role")); // TODO we are not covering the case where a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
+                        ].includes(els[j].getAttribute("role")); // TODO we are not covering the case where a elemenent with multiple roles. e.g., role = "form banner". This is a improvment we might want to add in the future.
                     }
                     if (tagNameTrigger || roleNameTrigger) {
                         // Nearest parent-landmark found

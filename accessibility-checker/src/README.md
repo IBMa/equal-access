@@ -18,7 +18,7 @@ Note that we have seen some non-standard CSS parsing with Zombie, so be aware of
 This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
 
 - Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
-- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g., `npx achecker path/to/your/file.txt`)
 - Run `npx achecker`
 
 ### Programmatic
