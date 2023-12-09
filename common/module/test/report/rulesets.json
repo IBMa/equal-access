@@ -899,7 +899,7 @@
           "scId": "WCAG2:focus-visible",
           "name": "Focus Visible",
           "wcagLevel": "AA",
-          "summary": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+          "summary": "Any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible.",
           "rules": [
             {
               "id": "element_tabbable_visible",
@@ -2218,7 +2218,7 @@
           "scId": "WCAG2:focus-visible",
           "name": "Focus Visible",
           "wcagLevel": "AA",
-          "summary": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+          "summary": "Any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible.",
           "rules": [
             {
               "id": "element_tabbable_visible",
@@ -3457,7 +3457,7 @@
           "scId": "WCAG2:focus-visible",
           "name": "Focus Visible",
           "wcagLevel": "AA",
-          "summary": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+          "summary": "Any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible.",
           "rules": [
             {
               "id": "element_tabbable_visible",

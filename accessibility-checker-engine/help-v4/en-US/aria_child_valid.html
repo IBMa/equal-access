@@ -47,7 +47,8 @@
 
 If an ARIA `role` attribute is specified for an element, the child elements required for that role must also be present. 
 Child elements' implied (native HTML) roles may satisfy the requirement - the role does not have to be explicitly set by ARIA. 
-Any incorrect child element roles also need to be removed. For example, `role="group"` is not a valid child of `list`.
+Any incorrect child element roles also need to be removed.
+For example, `role="group"` is not a valid child of `list`.
 Without the correct required child element roles, assistive technologies may not be able to accurately represent the context or be able to interact with the element.
 
 <!-- This is where the code snippet is injected -->
@@ -98,8 +99,8 @@ Example with an implicit role:
 **Note**: this rule's level was lowered from a "Violation" to a "Recommendation" temporarily.
 In some cases, such as `listitems` only being allowed inside `lists`, 
 assistive technology works around the strict specification and correctly renders the child elements.
-An investigation of the AIRA specification is on-going to determine the strictness of the parent-child interpretation.
-In most cases this rule should be interpreted as a "Violation" and remediated as explained above. 
+An investigation of the ARIA specification is ongoing to determine the strictness of the parent-child interpretation.
+In most cases, this rule should be interpreted as a "Violation" and remediated as explained.
 
 ### Who does this affect?
 

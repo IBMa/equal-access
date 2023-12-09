@@ -54,9 +54,9 @@ export let aria_activedescendant_tabindex_valid: Rule = {
             return null;
         }
 
-        // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
+        // Handle the case where the element is hidden by a disabled HTML5 attribute or aria-disabled:
         //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
-        //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
+        //  2. In the case that this element has an ARIA disabled attribute then, we mark this rule as passed.
         // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
         if (RPTUtil.isNodeDisabled(ruleContext)) {
             return null;

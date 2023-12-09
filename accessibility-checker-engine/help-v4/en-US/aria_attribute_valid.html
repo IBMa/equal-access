@@ -45,7 +45,8 @@
 
 ### Why is this important?
 
-When elements are assigned a ARIA `role`, ARIA specifies which attributes are valid for that role. If invalid ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
+When elements are assigned an ARIA `role`, ARIA specifies which attributes are valid for that role.
+If invalid ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -54,14 +55,14 @@ When elements are assigned a ARIA `role`, ARIA specifies which attributes are va
 
 * Remove ARIA state or property attributes that are not valid for the element role;
 * **Or**, change the `role` value to a role that supports the intended behavior of the element, using the ARIA specification as a guide.
-In the following example the element references only valid ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
 
-For example:
+In the following example the element references only valid ARIA attributes for an element with the role of `"tree"`, a global `aria-labelledby` property, and an `aria-expanded` state:
 
 ```
 <ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1">
     
-<li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"><span>Fruits</span>
+<li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true">
+    <span>Fruits</span>
 ```
 
 </script></mark-down>

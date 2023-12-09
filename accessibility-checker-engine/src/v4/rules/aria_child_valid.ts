@@ -32,8 +32,8 @@ export let aria_child_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "An element with a ARIA role must own a required child",
-            "Pass": "An element with a ARIA role owns a required child",
+            "group": "An element with an ARIA role must own a required child",
+            "Pass": "An element with an ARIA role owns a required child",
             "Fail_no_child": "The element with role \"{0}\" does not own any child element with any of the following role(s): \"{1}\"",
             "Fail_invalid_child": "The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""
         }

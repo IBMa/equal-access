@@ -45,15 +45,17 @@
 
 ### Why is this important?
 
-A component with a graphics role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
+A component with a graphics role can contain important information as well as multiple image files.
+When viewed together, these elements give the impression of a single image.
+Providing a text alternative makes the same information accessible through audio or other channels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label;
-* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`;
+* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label
+* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:

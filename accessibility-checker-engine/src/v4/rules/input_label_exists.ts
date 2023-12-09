@@ -95,8 +95,8 @@ export let input_label_exists: Rule = {
         ]
         let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
         if (textTypes.indexOf(type) !== -1) { // If type is in the list
-            // Get only the non-hidden labels for element, in the case that an label is hidden then it is a violation
-            // Note: label[for] does not work for ARIA-defined inputs
+            // Get only the non-hidden labels for elements, in the case that a label is hidden then it is a violation
+            // Note: label[for] does not work for ARIA defined inputs
             let labelElem = ruleContext.hasAttribute("role") ? null : RPTUtil.getLabelForElementHidden(ruleContext, true);
             let hasLabelElemContent = false;
             if (labelElem) {

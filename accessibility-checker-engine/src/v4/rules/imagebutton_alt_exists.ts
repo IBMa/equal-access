@@ -37,7 +37,7 @@ export let imagebutton_alt_exists: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Image button provides alternative text using the 'alt' attribute",
-            "Pass_1": "Image button provides alternative text using a ARIA label",
+            "Pass_1": "Image button provides alternative text using an ARIA label",
             "Pass_2": "Image button provides alternative text using the 'title' attribute",
             "Fail": "The <input> element of type \"image\" has no text alternative",
             "group": "The <input> element of type \"image\" should have a text alternative"

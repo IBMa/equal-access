@@ -55,7 +55,7 @@ const summaries = {
     "2.4.4": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
     "2.4.5": "More than one way is available to locate a Web page within a set of Web pages, except where the Web Page is the result of, or a step in, a process.",
     "2.4.6": "Headings and labels describe topic or purpose.",
-    "2.4.7": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+    "2.4.7": "Any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible.",
     "2.4.11": "When an element receives focus, it is not entirely covered by other content.",
     "2.5.1": "All functionality that uses multipoint or path-based gestures for operation can be operated with a single pointer without a path-based gesture.",
     "2.5.2": "For functionality that can be operated using a single pointer, completion of the function is on the up-event with an ability to abort, undo or reverse the outcome.",
