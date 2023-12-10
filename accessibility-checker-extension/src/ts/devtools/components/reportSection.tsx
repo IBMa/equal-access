@@ -125,9 +125,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     onResetFilters() {
         this.setState({
             checked: {
-                "Violation": true,
-                "Needs review": true,
-                "Recommendation": true,
+                "Violation": false,
+                "Needs review": false,
+                "Recommendation": false,
                 "Hidden": true
             }
         })
@@ -289,8 +289,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                 onChange={async (evt: any) => {
                                                     // ok we have one of two cases 
                                                     // 1. there are selected 
+                                                    console.log("Filter onChange, evt = ",evt);
+                                                    console.log("evt.selectedItems: ",evt.selectedItems);
+                                                    console.log("evt.selectedItems.length = ",evt.selectedItems.length);
                                                     let checked = JSON.parse(JSON.stringify(this.state.checked));
-                                                    if (evt.selectedItems[0] != undefined) {
+                                                    if (evt.selectedItems != undefined) {
+                                                        console.log("evt.selectedItems: ", evt.selectedItems);
                                                         if (evt.selectedItems.length > 0) {
                                                             checked["Violation"] = false;
                                                             for (let i = 0; i < evt.selectedItems.length; i++) {
@@ -314,8 +318,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                             for (const item of evt.selectedItems) {
                                                                 checked["Hidden"] ||= (item.text === "Hidden");
                                                             }
-                                                        }
+                                                        } 
                                                     }
+                                                    console.log("checked: ",checked);
                                                     this.setState({ checked: checked });
 
                                                     // 2. there are none selected
