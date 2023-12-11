@@ -617,7 +617,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             medCol = 4;
                         }
                     }
-                    return <Column sm={smallCol} md={medCol} style={{ marginTop: "8px", marginBottom: "8px" }}>
+                    return <Column sm={smallCol} md={medCol} style={{ marginBottom: "8px" }}>
                         <div>
                             {header.label === "Issues" ?
                                 <span className="gridHeaderCell">
