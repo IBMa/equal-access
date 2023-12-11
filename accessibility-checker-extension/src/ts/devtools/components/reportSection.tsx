@@ -178,7 +178,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
 
 
     render() {
-        let reportIssues : IIssue[] | null = null;
+        let reportIssues : UIIssue[] | null = null;
         let tabbableDetectors: IIssue[] | null = null;
         let tabCount = 0;
         let missingTabCount = 0;
@@ -197,20 +197,23 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             }
         }
         if (reportIssues) {
+            console.log("reportIssues.length = ",reportIssues.length);
             reportIssues = reportIssues.filter((issue: UIIssue) => {
-                let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
+                issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
+                let retVal = ( ((this.state.checked["Hidden"] && issue.ignored) || this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]) 
                     && (!this.state.focusMode
                         || !this.state.selectedPath
                         || issue.path.dom.startsWith(this.state.selectedPath)
-                    )
+                    ) 
                 );
                 issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
                 if (!this.state.checked["Hidden"] && issue.ignored) {
-                    return false;
+                    return false; // JCH is this an override
                 }
                 return retVal;
             });
         }
+        console.log("reportIssues = ",reportIssues);
         let totalCount = 0;
         if (this.state.report) {
             totalCount = this.state.report!.counts.total;
@@ -287,46 +290,43 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                 selecteditems={levelSelectedItems}
                                                 initialSelectedItems={[filterItems[0], filterItems[1], filterItems[2]]}
                                                 onChange={async (evt: any) => {
-                                                    // ok we have one of two cases 
-                                                    // 1. there are selected 
-                                                    console.log("Filter onChange, evt = ",evt);
-                                                    console.log("evt.selectedItems: ",evt.selectedItems);
-                                                    console.log("evt.selectedItems.length = ",evt.selectedItems.length);
                                                     let checked = JSON.parse(JSON.stringify(this.state.checked));
                                                     if (evt.selectedItems != undefined) {
-                                                        console.log("evt.selectedItems: ", evt.selectedItems);
-                                                        if (evt.selectedItems.length > 0) {
-                                                            checked["Violation"] = false;
-                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                                if (evt.selectedItems[i].text === "Violations") {
-                                                                    checked["Violation"] = true;
-                                                                } 
+                                                        checked["Violation"] = false;
+                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                            if (evt.selectedItems[i].text === "Violations") {
+                                                                checked["Violation"] = true;
+                                                            } 
+                                                        }
+                                                        checked["Needs review"] = false;
+                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                            if (evt.selectedItems[i].text === "Needs review") {
+                                                                checked["Needs review"] = true;
                                                             }
-                                                            checked["Needs review"] = false;
-                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                                if (evt.selectedItems[i].text === "Needs review") {
-                                                                    checked["Needs review"] = true;
-                                                                }
+                                                        }
+                                                        checked["Recommendation"] = false;
+                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                            if (evt.selectedItems[i].text === "Recommendations") {
+                                                                checked["Recommendation"] = true;
                                                             }
-                                                            checked["Recommendation"] = false;
-                                                            for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                                if (evt.selectedItems[i].text === "Recommendations") {
-                                                                    checked["Recommendation"] = true;
-                                                                }
+                                                        }
+                                                        checked["Hidden"] = false;
+                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
+                                                            console.log("evt.selectedItems[i].text: ",evt.selectedItems[i].text);
+                                                            if (evt.selectedItems[i].text === "Hidden") {
+                                                                console.log("change checked['Hidden'] to true");
+                                                                checked["Hidden"] = true;
                                                             }
-                                                            checked["Hidden"] = false;
-                                                            for (const item of evt.selectedItems) {
-                                                                checked["Hidden"] ||= (item.text === "Hidden");
-                                                            }
-                                                        } 
+                                                        }
                                                     }
                                                     console.log("checked: ",checked);
                                                     this.setState({ checked: checked });
 
                                                     // 2. there are none selected
-                                                    if (evt.selectedItems.length == 0) {
-                                                        this.onResetFilters();
-                                                    }
+                                                    // if (evt.selectedItems.length == 0) {
+                                                    //     console.log("***** WE RESET FILTERS");
+                                                    //     this.onResetFilters();
+                                                    // }
                                                 }}
                                             />
                                         }

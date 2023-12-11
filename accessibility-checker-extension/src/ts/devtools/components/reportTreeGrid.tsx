@@ -568,7 +568,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 row.checked = "none";
                 for (const issue of row.children) {
                     issue.checked = this.state.checkedIssues.some(checkedIssue => issueBaselineMatch(checkedIssue, issue));
-                    if (issue.checked && !issue.ignored) {
+                    if (issue.checked && !issue.ignored) { // issue check but not ignored yet
                         ignoreAction = "Hide"
                     }
                     if (!allIssues.some(prevIssue => issueBaselineMatch(prevIssue, issue))) {
