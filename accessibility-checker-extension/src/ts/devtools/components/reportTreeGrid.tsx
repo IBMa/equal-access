@@ -127,42 +127,58 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps<RowType>>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
+        const simpData = (rowData: any) => {
+            if (!rowData) return [];
+            return rowData.map((row: any) => ({
+                id: row.id,
+                children: row.children.map((childRow: any) => ({
+                    ruleId: childRow.ruleId,
+                    reasonId: childRow.reasonId,
+                    path: childRow.path
+                }))
+            }))
+        }
+
         if (!prevProps.rowData && !!this.props.rowData) {
             // First time creating the report tree
             this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader" });
-        } else if (prevProps.rowData && this.props.rowData && JSON.stringify(prevProps.rowData) !== JSON.stringify(this.props.rowData)) {
-            // Report tree changed
-            let found = false;
-            let newCheckedIssues: IIssue[] = []
-            if (this.state.tabRowId) {
-                // Try to find the same issue in the new scan
-                for (const group of this.props.rowData) {
-                    for (const issue of group.children) {
-                        if (!found && ReportTreeGrid.getRowId(group, issue) === this.state.tabRowId) {
-                            found = true;
-                            setTimeout(async () => {
-                                await this.onRow(group, issue);
-
-                                this.scrollToRowId(this.state.tabRowId);
-                            }, 0);
-                        }
-                        if (this.state.checkedIssues.some(checkedIssue => issueBaselineMatch(issue, checkedIssue))
-                            && !newCheckedIssues.some(newCheckedIssue => issueBaselineMatch(issue, newCheckedIssue))) {
-                            newCheckedIssues.push(issue);
+        } else if (prevProps.rowData) {
+            if (this.props.rowData && (JSON.stringify(simpData(prevProps.rowData)) !== JSON.stringify(simpData(this.props.rowData)))) {
+                // Report tree changed
+                let found = false;
+                let newCheckedIssues: IIssue[] = []
+                if (this.state.tabRowId) {
+                    // Try to find the same issue in the new scan
+                    for (const group of this.props.rowData) {
+                        for (const issue of group.children) {
+                            if (!found && ReportTreeGrid.getRowId(group, issue) === this.state.tabRowId) {
+                                found = true;
+                                setTimeout(async () => {
+                                    await this.onRow(group, issue);
+                                    this.scrollToRowId(this.state.tabRowId);
+                                }, 0);
+                            }
+                            if (this.state.checkedIssues.some(checkedIssue => issueBaselineMatch(issue, checkedIssue))
+                                && !newCheckedIssues.some(newCheckedIssue => issueBaselineMatch(issue, newCheckedIssue))) {
+                                newCheckedIssues.push(issue);
+                            }
                         }
                     }
                 }
-            }
-            if (!found) {
-                // Reset the issue selection since we can't find that same issue
-                this.setState({ checkedIssues: newCheckedIssues, expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader" });
-            } else {
-                this.setState({ checkedIssues: newCheckedIssues });
-            }
-        } else if (prevState.tabRowId !== this.state.tabRowId && document) {
-            // Report tree is the same, but the row changed
-            if (this.props.rowData && this.props.rowData.length > 0) {
-                this.scrollToRowId(this.state.tabRowId);
+                if (!found) {
+                    // Reset the issue selection since we can't find that same issue
+                    this.setState({ checkedIssues: newCheckedIssues, expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader" });
+                } else {
+                    // If we didn't change the checked issues, scroll
+                    if (JSON.stringify(this.state.checkedIssues) !== JSON.stringify(newCheckedIssues)) {
+                        this.setState({ checkedIssues: newCheckedIssues });
+                    }
+                }
+            } else if (prevState.tabRowId !== this.state.tabRowId && document) {
+                // Report tree is the same, but the row changed
+                if (this.props.rowData && this.props.rowData.length > 0) {
+                    this.scrollToRowId(this.state.tabRowId);
+                }
             }
         }
     }
@@ -788,13 +804,13 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             style={{ display: "inline-block" }}
                                             onClick={async (evt: any) => {
                                                 this.setChecked([thisIssue], !thisIssue.checked);
-                                                this.onRow(group, thisIssue, false);
+                                                // this.onRow(group, thisIssue, false);
                                                 evt.preventDefault();
                                             }}
                                             onKeyDown={async (evt: React.KeyboardEvent) => {
                                                 if (evt.key === "Enter" || evt.key === "Return" || evt.key === "Space") {
                                                     this.setChecked([thisIssue], !thisIssue.checked);
-                                                    this.onRow(group, thisIssue, false);
+                                                    // this.onRow(group, thisIssue, false);
                                                     evt.preventDefault();
                                                 }
                                             }}
