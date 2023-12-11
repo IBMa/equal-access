@@ -232,7 +232,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
-                
                 <Column sm={4} md={8} lg={8} style={{ marginRight: "0px" }}>
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", float: "right"}}>
                             <div style={{flex: "0 1 8.75rem"}}>
@@ -315,6 +314,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                             }
                                                         }
                                                     }
+                                                    console.log("checked: ",checked);
                                                     this.setState({ checked: checked });
                                                 }}
                                             />
