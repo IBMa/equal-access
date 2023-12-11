@@ -123,7 +123,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     onResetFilters() {
-        console.log("CALLED onResetFilters");
         this.setState({
             checked: {
                 "Violation": true,
