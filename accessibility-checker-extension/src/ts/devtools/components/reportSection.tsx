@@ -197,7 +197,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             }
         }
         if (reportIssues) {
-            console.log("reportIssues.length = ",reportIssues.length);
             reportIssues = reportIssues.filter((issue: UIIssue) => {
                 issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
                 let retVal = ( ((this.state.checked["Hidden"] && issue.ignored) || this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]) 
@@ -206,14 +205,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         || issue.path.dom.startsWith(this.state.selectedPath)
                     ) 
                 );
-                issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
                 if (!this.state.checked["Hidden"] && issue.ignored) {
                     return false; // JCH is this an override
                 }
                 return retVal;
             });
         }
-        console.log("reportIssues = ",reportIssues);
         let totalCount = 0;
         if (this.state.report) {
             totalCount = this.state.report!.counts.total;
@@ -235,6 +232,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
+                
                 <Column sm={4} md={8} lg={8} style={{ marginRight: "0px" }}>
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", float: "right"}}>
                             <div style={{flex: "0 1 8.75rem"}}>
@@ -312,21 +310,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                         }
                                                         checked["Hidden"] = false;
                                                         for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                            console.log("evt.selectedItems[i].text: ",evt.selectedItems[i].text);
                                                             if (evt.selectedItems[i].text === "Hidden") {
-                                                                console.log("change checked['Hidden'] to true");
                                                                 checked["Hidden"] = true;
                                                             }
                                                         }
                                                     }
-                                                    console.log("checked: ",checked);
                                                     this.setState({ checked: checked });
-
-                                                    // 2. there are none selected
-                                                    // if (evt.selectedItems.length == 0) {
-                                                    //     console.log("***** WE RESET FILTERS");
-                                                    //     this.onResetFilters();
-                                                    // }
                                                 }}
                                             />
                                         }
