@@ -19,6 +19,7 @@ import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 import ViewOff16 from "../../assets/img/View--off.svg"
+import ViewOn16 from "../../assets/img/View--on.svg"
 import { UtilIssue } from './UtilIssue';
 
 export class UtilIssueReact {
@@ -36,6 +37,8 @@ export class UtilIssueReact {
             return <img src={Recommendation16} alt={sing} className={className} />
         } else if (sing === "ViewOff") {
             return <img src={ViewOff16} alt={sing} className={className} />
+        } else if (sing === "ViewOn") {
+            return <img src={ViewOn16} alt={sing} className={className} />
         } else if (sing === "Pass") {
             return <></>
         } else {

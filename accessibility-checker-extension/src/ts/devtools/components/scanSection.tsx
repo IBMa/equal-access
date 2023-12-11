@@ -44,6 +44,7 @@ import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { DefinitionTooltip } from '@carbon/react';
+import { BrowserDetection } from "../../util/browserDetection";
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -476,7 +477,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
                         <span className="countCol">
                         <DefinitionTooltip openOnHover align="top-left" definition="Hidden">
-                        {UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")}</DefinitionTooltip>
+                        {UtilIssueReact.valueSingToIcon(BrowserDetection.isDarkMode()?"ViewOn":"ViewOff", "reportSecIcon")}</DefinitionTooltip>
                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                 {reportIssues && <>
                                     {this.state.ignoredIssues.length}

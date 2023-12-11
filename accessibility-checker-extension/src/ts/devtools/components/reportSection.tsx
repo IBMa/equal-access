@@ -123,12 +123,13 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     onResetFilters() {
+        console.log("CALLED onResetFilters");
         this.setState({
             checked: {
-                "Violation": false,
-                "Needs review": false,
-                "Recommendation": false,
-                "Hidden": true
+                "Violation": true,
+                "Needs review": true,
+                "Recommendation": true,
+                "Hidden": false
             }
         })
     }
@@ -334,6 +335,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                     </div>
                 </Column>
              </Grid>}
+             <div className="reportFilterBorder" />
         </>        
 
         return (<>

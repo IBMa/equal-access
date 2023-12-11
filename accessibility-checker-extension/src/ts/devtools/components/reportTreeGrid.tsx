@@ -845,6 +845,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 ReportTreeGrid.bgcontroller.setIgnore(url, this.state.checkedIssues, ignoreAction !== "Show");
                                 this.setState({checkedIssues: []});
                                 this.props.onFilterToolbar(true);
+                                this.props.onResetFilters();
                             }}
                         >{ignoreAction}</TableBatchAction>
 
