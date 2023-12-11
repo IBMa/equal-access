@@ -65,7 +65,7 @@ export let input_label_before: Rule = {
         }
 
         let value = RPTUtil.compareNodeOrder(labelElem, ruleContext);
-        if (value == -2) {
+        if (value === -2) {
             // ignore if no label or the content for the label is only from the nested input control 
             let text = RPTUtil.getInnerText(ruleContext);
             if (text && text.trim().length > 0 && RPTUtil.getInnerText(ruleContext).trim() === text.trim()) {
