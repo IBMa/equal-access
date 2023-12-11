@@ -314,7 +314,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                             }
                                                         }
                                                     }
-                                                    console.log("checked: ",checked);
                                                     this.setState({ checked: checked });
                                                 }}
                                             />
