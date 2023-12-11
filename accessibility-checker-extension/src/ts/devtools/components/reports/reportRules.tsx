@@ -29,7 +29,8 @@ interface ReportProps {
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
-        "Recommendation": boolean
+        "Recommendation": boolean,
+        "Hidden": boolean
     }
     selectedPath: string | null;
     canScan: boolean;
@@ -81,6 +82,7 @@ export class ReportRules extends React.Component<ReportProps> {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
+        console.log("rowData = ",rowData);
         return <ReportTreeGrid 
             unfilteredCount={this.props.unfilteredCount}
             panel={this.props.panel}
