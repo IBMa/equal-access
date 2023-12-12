@@ -799,7 +799,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
                                 <Column className="gridChild" role="gridcell" aria-selected={selectedIssue} sm={4} md={8} lg={8}>
                                     <div className="gridDataCell">
-                                        {/* JCH put group checkbox here */}
                                         <div
                                             style={{ display: "inline-block" }}
                                             onClick={async (evt: any) => {
@@ -820,7 +819,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                                 hideLabel
                                                 checked={thisIssue.checked}
                                                 tabIndex={-1}
-                                            // ohChange replaced by onClick and onKeyDown above
                                             />
                                         </div>
                                         {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} <a
@@ -861,7 +859,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 ReportTreeGrid.bgcontroller.setIgnore(url, this.state.checkedIssues, ignoreAction !== "Show");
                                 this.setState({checkedIssues: []});
                                 this.props.onFilterToolbar(true);
-                                this.props.onResetFilters();
                             }}
                         >{ignoreAction}</TableBatchAction>
 

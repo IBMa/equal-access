@@ -48,7 +48,7 @@ export class UtilIssue {
     
     public static singToStringPlural(sing: string) : string {
         if (sing === "Violation") return "Violations";
-        if (sing === "Needs review") return "Need review";
+        if (sing === "Needs review") return "Needs review";
         if (sing === "Recommendation") return "Recommendations";
         return sing;
     }

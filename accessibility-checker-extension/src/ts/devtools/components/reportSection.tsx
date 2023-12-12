@@ -225,10 +225,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let levelSelectedItems: Array<{id: string, text: string}> = [];
         for (const key in this.state.checked) {
             if ((this.state.checked as any)[key]) {
-                levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === key)!)
+                levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === UtilIssue.singToStringPlural(key))!)
             }
         }
-
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
@@ -285,7 +284,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                 type="default"
                                                 style={{ float: "right" }}
                                                 selecteditems={levelSelectedItems}
-                                                initialSelectedItems={[filterItems[0], filterItems[1], filterItems[2]]}
+                                                initialSelectedItems={levelSelectedItems}
                                                 onChange={async (evt: any) => {
                                                     let checked = JSON.parse(JSON.stringify(this.state.checked));
                                                     if (evt.selectedItems != undefined) {
