@@ -97,6 +97,7 @@ export class Checker implements IChecker {
     rulesetIds: string[] = [];
     rulesetRules: { [rsId: string]: string[] } = {};
     ruleLevels : { [ruleId: string]: { [rsId: string] : eRulePolicy }} = {};
+    ruleReasonLevels : { [ruleId: string]: { [rsId: string] : {[reasonCodes: string] : eRulePolicy }}} = {};
     ruleCategory : { [ruleId: string]: { [rsId: string] : eGuidelineCategory }} = {};
 
     public constructor() {
@@ -130,8 +131,12 @@ export class Checker implements IChecker {
             for (const rule of cp.rules) {
                 if (rule.enabled !== false) {
                     ruleIds.push(rule.id);
-                    this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
-                    this.ruleLevels[rule.id][guideline.id] = rule.level;
+                    //this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
+                    //this.ruleLevels[rule.id][guideline.id] = rule.level;
+                    this.ruleReasonLevels[rule.id] = this.ruleReasonLevels[rule.id] || {};
+                    this.ruleReasonLevels[rule.id][guideline.id] = this.ruleReasonLevels[rule.id][guideline.id] || {};
+                    const code = rule.reasonCodes ? rule.reasonCodes.join('--') : "None";
+                    this.ruleReasonLevels[rule.id][guideline.id][code] = rule.level;
                     this.ruleCategory[rule.id] = this.ruleCategory[rule.id] || {};
                     this.ruleCategory[rule.id][guideline.id] = guideline.category;
                 }
@@ -243,10 +248,8 @@ export class Checker implements IChecker {
                     ruleIds = ruleIds.concat(this.rulesetRules[rsId]);
                 }
             }
-        }
-
+        }    
         this.engine.enableRules(ruleIds);
-
         // Add the report levels
         let myThis = this;
         return this.engine.run(node)
@@ -262,7 +265,9 @@ export class Checker implements IChecker {
                             report.nls[result.ruleId][result.reasonId] = checkNls[result.ruleId][result.reasonId];
                         }
                     }
-                    result.value[0] = myThis.getLevel(guidelineIds as string[], result.ruleId);
+                    //result.value[0] = myThis.getLevel(guidelineIds as string[], result.ruleId);
+                    let code = result.reasonId? result.reasonId as string : "None";
+                    result.value[0] = myThis.getReasonLevel(guidelineIds as string[], result.ruleId, code);
                     result.category = myThis.getCategory(guidelineIds as string[], result.ruleId);
                     delete result.path.css;
                 }
@@ -290,6 +295,40 @@ export class Checker implements IChecker {
                 }
             }
         }
+        if (retVal === null) {
+            throw new Error("Rule triggered for which we have no rule level information: "+ruleId);
+        }
+        return retVal;
+    }
+
+    private getReasonLevel(rsIds: string[], ruleId: string, reasonCode?: string) : eRulePolicy {
+        if (!rsIds) return eRulePolicy.INFORMATION; 
+        let rsInfo = this.ruleReasonLevels[ruleId];
+        let retVal = null;
+        if (rsIds) {
+            if (!(ruleId in this.ruleReasonLevels)) {
+                throw new Error("Rule triggered for which we have no rule level information "+ruleId);
+            }
+            for (const rsId of rsIds) {
+                if (rsId in rsInfo) {
+                    Object.keys(rsInfo[rsId]).forEach(code => { 
+                        let level = null;
+                        const reCode = new RegExp(`(^|--)${reasonCode}($|--)`);
+                        if (code === 'None')
+                            level = rsInfo[rsId]["None"];
+                        else if (reCode.test(code))
+                            level = rsInfo[rsId][code];
+                        if (level === eRulePolicy.VIOLATION) {
+                            retVal = eRulePolicy.VIOLATION;
+                        } else if (level === eRulePolicy.RECOMMENDATION && retVal === null) {
+                            retVal = eRulePolicy.RECOMMENDATION;
+                        } else if (retVal === null) {
+                            retVal = eRulePolicy.INFORMATION;
+                        }    
+                    });          
+                }
+            }
+        } 
         if (retVal === null) {
             throw new Error("Rule triggered for which we have no rule level information: "+ruleId);
         }
