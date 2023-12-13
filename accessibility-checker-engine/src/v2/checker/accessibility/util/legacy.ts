@@ -1785,7 +1785,7 @@ export class RPTUtil {
      * Note: This is a wrapper function to: RPTUtil.getDescendantWithRoleHidden
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      *
      * @return {node} - The descendant element that matches the role specified (only one)
      *
@@ -1800,7 +1800,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1847,7 +1847,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
