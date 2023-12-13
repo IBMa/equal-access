@@ -48,7 +48,7 @@
 Correct roles and descendants help ensure that assistive technologies can gather the correct information about all the user interface components. 
 When certain elements that are specified in ARIA to have presentational descendants, browsers _should not_ expose the descendants through the platform accessibility API to assistive technologies. 
 If user agents do not hide the descendant's contents and semantics from the accessibility tree, some information may be presented (spoken) twice and confuse the end user. 
-The content contained by the element, i.e., inner text, as well as contents of all its descendants remain visible to assistive technologies, 
+The content contained by the element, i.e., inner text, as well as contents of all its descendants remains visible to assistive technologies, 
 except, of course, when the text is explicitly hidden, e.g., styled with `display:none` or has `aria-hidden="true"`.
 
 This rule is triggered when one of the following elements contain more than presentational descendants: `button`, `checkbox`, `img`, `math`, `menuitemcheckbox`, `menuitemradio`, `option`, `progressbar`, `radio`, `scrollbar`, `separator`, `slider`, `switch`, and `tab`. 
