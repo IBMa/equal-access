@@ -45,22 +45,22 @@
 
 ### Why is this important?
 
-When users cannot see the item with focus because it is covered (hidden) by another element, they may not know how to proceed, or may even think the system has become unresponsive.
-The objective is to ensure that the element receiving focus is always partially visible to the user unless it is covered by the user’s action.
+When users cannot see the item with focus because it is covered (hidden) by another element, they may not know how to proceed or even think the system has become unresponsive.
+The objective is to ensure that the element receiving focus is always partially visible unless the user’s action covers it.
 Knowing the current element with focus is critical for sighted people who rely on a keyboard (or technology that operates through the keyboard interface, such as a switch or voice input).
 The element with focus signals the interaction point on the page.
 
 However, content opened or controlled by the _user’s action_ may obscure the element receiving focus.
-If the _user_ can uncover (re-reveal) the focused element without advancing the keyboard focus, such as by scrolling or closing the content that the _user_ opened, then the focused element is not considered obscured (covered) due to author-created content.
-Where content can be repositioned by the _user’s action_, then only the initial positions of user-movable content are considered for testing and conformance.
+If the _user_ can uncover (re-reveal) the focused element without advancing the keyboard focus, such as by scrolling or closing the content the _user_ opened, then the focused element is not considered obscured (covered) due to author-created content.
+Where the _user’s action_ can reposition content, only the initial positions of user-movable content are considered for testing and conformance.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-- Confirm that the element that had been originally covered by the _author_, but that now has focus, is now visible, otherwise adjust the design to allow elements with focus to be visible
-- **Or**, if the element was originally visible, but is now covered due to the _user’s action_, confirm that the _user_ can uncover (re-reveal) the element with focus without moving the focus away from the element such as by scrolling or escaping to close the content that is covering the element with focus
+- Confirm that the element that the _author_ had originally covered, but that now has focus, is now visible, otherwise adjust the design to allow elements with focus to be visible
+- **Or**, if the element was originally visible but is now covered due to the _user’s action_, confirm that the _user_ can uncover (re-reveal) the element with focus without moving the focus away from the element, such as by scrolling or escaping to close the content that is covering the element with focus
 
 </script></mark-down>
 <!-- End main panel -->
@@ -75,15 +75,15 @@ Where content can be repositioned by the _user’s action_, then only the initia
 
 - [WCAG 2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum)
 - [C43: Using CSS margin and scroll-margin to un-obscure content](https://www.w3.org/WAI/WCAG22/Techniques/css/C43) 
-- [Common failure F110: Obscured due to a sticky footer or header completely hiding focused elements](https://www.w3.org/WAI/WCAG22/Techniques/failures/F110)
+- [Failure F110: A sticky footer or header completely hiding focused elements](https://www.w3.org/WAI/WCAG22/Techniques/failures/F110)
 
 ### Who does this affect?
 
 - People with low vision who use screen magnification
 - People who physically cannot use a pointing device
-- People using a keyboard and alternate keyboards or input devices that act as keyboard emulators like speech input software and on-screen keyboards
-- People with dexterity impairment using a keyboard-like switch device
-- People with dexterity impairment using voice control
+- People using a keyboard and alternate keyboards or input devices that act as keyboard emulators, like speech input software and on-screen keyboards
+- People with dexterity impairments using a keyboard-like switch device
+- People with dexterity impairments using voice control
 - People with tremors or other movement disorders using a keyboard-like device
 - People with memory limitations in executive processes benefit by being able to discover where the focus is located
 - Many older adults

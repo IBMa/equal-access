@@ -4,8 +4,8 @@
 
 `accessibility-checker` is a NodeJS module that allows you to do the following:
 
-- perform integrated accessibility testing within a continuous integration pipeline such as Travis CI
-- works with test frameworks (parsing engines) such as Selenium, Puppeteer, Playwright, and Zombie
+- perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI
+- works with test frameworks (parsing engines), such as Selenium, Puppeteer, Playwright, and Zombie
 - allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 

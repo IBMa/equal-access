@@ -60,7 +60,7 @@ However, if the element *should not* be operable with the keyboard, then it *sho
 
 Note: IBM considers this a _violation_ of WCAG Success Criteria. 
 Others may use a strict interpretation of the criterion and may only _recommend_ this to be fixed. 
-However, there is broad agreement that putting inoperable elements in the tab order has an accessibility impact on users.  
+However, there is broad agreement that putting inoperable elements in the tab order has an accessibility impact on users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -68,13 +68,13 @@ However, there is broad agreement that putting inoperable elements in the tab or
 ### What to do
 
 - If users *should not* be able to interact with this element using the keyboard, replace the non-widget role, 
-*and/or* use the explicit `tabindex="-1"` attribute to remove the element from the keyboard focus (tab) order.
-- *Or*,if users *should* be able to interact with this element using the keyboard, use a valid widget role
+*and/or* use the explicit `tabindex="-1"` attribute to remove the element from the keyboard focus (tab) order
+- **Or**, if users *should* be able to interact with this element using the keyboard, use a valid widget role
 
 ### Examples:
 
 This first example is a simple focusable *toggle button*. 
-(JavaScript and CSS would need to be added to provide the appearance and full button functionality):
+JavaScript and CSS would need to be added to provide the appearance and full button functionality:
 
 ```
 <div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
@@ -110,7 +110,7 @@ The overflow property specifies horizontal and vertical scroll bars operable wit
 
 * [4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
 * [ARIA specification - Widget role definition](https://www.w3.org/TR/wai-aria-1.2/#widget)
-* [CSS `overflow:`](https://www.w3schools.com/css/css_overflow.asp) 
+* [CSS `overflow`](https://www.w3schools.com/css/css_overflow.asp) 
 * [Unit test - Check tab order](https://www.ibm.com/able/toolkit/develop/overview/#check-tab-order)
 * [Unit test - Confirm component keyboard interaction](https://www.ibm.com/able/toolkit/develop/overview/#confirm-keyboard-interaction) 
 

@@ -212,4 +212,4 @@ You can use the [karma-accessibility-checker](https://www.npmjs.com/package/karm
 
 If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
 
-This software includes material copied from or derived from the open ACT-Rules Community. Copyright © 2022 W3C® (MIT, ERCIM, Keio, Beihang).
+This software includes material copied from or derived from the open ACT-Rules Community. Copyright © 2022 W3C® (MIT, ERCIM, Keio, Beijing ).

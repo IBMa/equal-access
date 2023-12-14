@@ -1,6 +1,6 @@
 # equal-access
 
-This Git repository hosts tools and supporting components that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+This Git repository hosts tools and supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 
 ## Overview
 
@@ -14,7 +14,7 @@ The tools have been deployed to the various stores and NPM so they can be easily
 
 * [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
 * [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
-* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
 * [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
 * [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
 
@@ -83,7 +83,7 @@ $ npm run build
   * ace-node-debug.js: uncompressed javascript library to be used in a NodeJS environment for development
   * ace-node.js: compressed javascript library to be used in a NodeJS environment for production
 * In the equal-access/accessibility-checker/package directory
-  * java script source that can be installed or deployed as npm package that works with an HTML parsing engines such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
+  * java script source that can be installed or deployed as npm package that works with an HTML parsing engines, such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
 * In the equal-access/karma-accessibility-checker/package directory
   * javascript source that can be used as a Karma plugin, see more [details](karma-accessibility-checker/README.md).
 

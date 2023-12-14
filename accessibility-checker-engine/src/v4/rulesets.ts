@@ -31,7 +31,7 @@ const summaries = {
     "1.2.5": "Audio description is provided for all prerecorded video content in synchronized media.",
     "1.3.1": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
     "1.3.2": "When the sequence in which content is presented affects its meaning, a correct reading sequence can be programmatically determined.",
-    "1.3.3": "Instructions provided for understanding and operating content do not rely solely on sensory characteristics of components such as shape, size, visual location, orientation, or sound.",
+    "1.3.3": "Instructions provided for understanding and operating content do not rely solely on sensory characteristics of components, such as shape, size, visual location, orientation, or sound.",
     "1.3.4": "Content does not restrict its view and operation to a single display orientation, such as portrait or landscape.",
     "1.3.5": "The purpose of each input field that collects information about the user can be programmatically determined when the field serves a common purpose.",
     "1.4.1": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",

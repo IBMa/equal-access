@@ -45,7 +45,9 @@
 
 ### Why is this important?
 
-If an ARIA `role` attribute is specified for an element, the parent element that is required for that role must also be present in the accessibility tree. If the parent element's implicit role satisfies the requirement (e.g., `<ul>`), this role does not have to be explicitly set with ARIA. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
+If an ARIA `role` attribute is specified for an element, the parent element that is required for that role must also be present in the accessibility tree.
+If the parent element's implicit role satisfies the requirement (e.g., `<ul>`), this role does not have to be explicitly set with ARIA.
+Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -54,7 +56,8 @@ If an ARIA `role` attribute is specified for an element, the parent element that
 
  * Add one of the required context role(s) to the appropriate parent of this element.
 
-For example, the following `<li>` element uses an `"option"` role. The `"option"` role requires a parent element with role `"listbox"`.
+For example, the following `<li>` element uses an `"option"` role.
+The `"option"` role requires a parent element with role `"listbox"`:
 
 ```
 <ul role="listbox">

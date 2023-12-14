@@ -57,7 +57,7 @@ Without the correct required child element roles, assistive technologies may not
 ### What to do
 
  * Add the appropriate required child element(s) to this element
- * *Or*, remove any incorrect child element(s)
+ * **Or**, remove any incorrect child element(s)
 
 Example with a `"radiogroup"` that requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
 
@@ -96,7 +96,7 @@ Example with an implicit role:
 * [ARIA practices guide](https://www.w3.org/WAI/ARIA/apg/)
 * [ARIA specification - Required Owned Elements](https://www.w3.org/TR/wai-aria-1.2/#mustContain)
 
-**Note**: this rule's level was lowered from a "Violation" to a "Recommendation" temporarily.
+Note: this rule's level was lowered from a "Violation" to a "Recommendation" temporarily.
 In some cases, such as `listitems` only being allowed inside `lists`, 
 assistive technology works around the strict specification and correctly renders the child elements.
 An investigation of the ARIA specification is ongoing to determine the strictness of the parent-child interpretation.
