@@ -33,7 +33,7 @@ export let blockquote_cite_exists: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Potential_1": "Verify that <blockquote> should not be used only for quotations, not indentation",
+            "Potential_1": "Verify that <blockquote> should have a 'cite' attribute and not be used for indentation only",
             "group": "Use <blockquote> only for quotations, not indentation"
         }
     },
