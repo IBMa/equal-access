@@ -123,7 +123,7 @@ export let aria_child_valid: Rule = {
                 /**
                  * when multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
                  * the specification does not require an instance of each of the listed owned roles.
-                 * therefore, the requirement is met if it has any one of the required roles.   
+                 * therefore, the requirement is met if it has any one of the required roles.
                  */    
                 const found = childRoles.some(r=> requiredChildRoles.includes(r));
                 if (!found) 

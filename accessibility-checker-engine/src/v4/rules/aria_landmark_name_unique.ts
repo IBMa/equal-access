@@ -99,7 +99,7 @@ export let aria_landmark_name_unique: Rule = {
             let navigationNodesParents = [];
             let navigationNodesMatchFound : string[] = [];
 
-            // This block of code filters out any nav elements that are under an dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.    
+            // This block of code filters out any nav elements that are under a dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.
             let navigationNodesWithoutDialogs = [];
             for (let i = 0; i < navigationNodes.length; i++) {
                 let a = navigationNodes[i];

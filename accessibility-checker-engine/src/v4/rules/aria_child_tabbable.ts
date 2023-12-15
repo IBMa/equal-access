@@ -125,7 +125,7 @@ export let aria_child_tabbable: Rule = {
 
                             passed = RPTUtil.isTabbable(r);
                            
-                            // Required child is not focusable via tabindex.  See if there is a grandchild that is focusable by default or by tabindex.
+                            // Required child is not focusable via tabindex. See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
                                 let xp2 = "descendant::*";
                                 let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);

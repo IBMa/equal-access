@@ -31,8 +31,7 @@ The text alternative for a given element is computed as follows:
         1. Set the current node to the child node.
         2. [walk=true] Compute the text alternative of the current node beginning with step 2. Set the result to that text alternative.
         3. Append the result to the accumulated text.
-    4.    Return the accumulated text.
-1. If the current node is a Text node, return its textual contents.
-
+    4. Return the accumulated text.
+7. If the current node is a Text node, return its textual contents.
 8. [walk] Otherwise, if the current node is a descendant of an element whose Accessible Name or Accessible Description is being computed, and contains descendants, proceed to 2F.i.
 9. Otherwise, if the current node has a Tooltip attribute, return its value.
