@@ -45,30 +45,28 @@
 
 ### Why is this important?
 
-The `<placeholder>` attribute when used as the only visible label, reduces the accessibility for a wide range of users for the following reasons:
- * it is not persistent; the placeholder value disappears when the user starts typing in the input field;
- * it can be mistaken for a pre-filled value;
- * the text color commonly fails a minimum contrast ratio;
- * the lack of a label reduces the hit region for setting focus to the input field.
+The `placeholder` attribute when used as the only visible label, reduces the accessibility for a wide range of users for the following reasons:
+ * it is not persistent; the placeholder value disappears when the user starts typing in the input field
+ * it can be mistaken for a pre-filled value
+ * the text color commonly fails a minimum contrast ratio
+ * the lack of a label reduces the hit region for setting focus on the input field
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-
- * Use the `placeholder` attribute for a short hint (a word or short phrase) to aid the user with data entry
-
- * **And**, use a valid label method that is both visible and programmatically determined;
-
-* **Or**, if a visible label can not be added, verify the input field label is understood within the context;
+* Use the `placeholder` attribute for a short hint (a word or short phrase) to aid the user with data entry
+* **And**, use a valid label method that is both visible and programmatically determined
+* **Or**, if a visible label cannot be added, verify the input field label is understood within the context
 
 For example:
 
 ```
-<label>Email Address: <input type="email" name="address1" placeholder="john@example.net"></label>
+<label>Email Address: 
+    <input type="email" name="address1" placeholder="john@example.net">
+</label>
 ```
-
 ```
 <label for="address2">Address</label>
 ```

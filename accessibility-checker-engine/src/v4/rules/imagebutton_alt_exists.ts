@@ -51,7 +51,7 @@ export let imagebutton_alt_exists: Rule = {
     }],
     act: "59796f",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        // See https://www.w3.org/WAI/WCAG21/Techniques/failures/F65
+        // See https://www.w3.org/WAI/WCAG22/Techniques/failures/F65
         const ruleContext = context["dom"].node as Element;
         if (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() != "image") {
             return null;

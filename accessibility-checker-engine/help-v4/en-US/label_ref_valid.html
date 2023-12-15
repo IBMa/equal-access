@@ -45,16 +45,18 @@
 
 ### Why is this important?
 
-A `<label>` element is attached to a specific `<input>` element through the use of the `for` attribute. 
-When a `<label>` does not reference the corresponding unique `id` in a valid labelable `<input>` element, 
-assistive technologies will not be able to associate the label with the element.
+A `<label>` element is attached to a specific `<input>` element through the `for` attribute. 
+When a `<label>` does not reference the corresponding unique `id` in a valid `<input>` element, 
+assistive technologies cannot associate the label with the element.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Set the value of the `for` attribute to the `id` value of the valid `<input>` element to be labeled. Make sure the `id` value is unique. For example:
+* Set the value of the `for` attribute to the `id` value of the valid `<input>` element to be labeled. Make sure the `id` value is unique. 
+
+For example:
 
 ```
 <label id="label2" for="ln1">Last Name</label>
