@@ -45,18 +45,19 @@
 
 ### Why is this important?
 
-Associating a meaningful label with every UI control allows the browser and assistive technology to expose and announce the control to a user. Associating a visible label also provides a larger clickable area.
+Associating a meaningful label with every UI control allows the browser and assistive technology to expose and announce the control to a user.
+Associating a visible label also provides a larger clickable area.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If the control is a [labelable](https://html.spec.whatwg.org/multipage/forms.html#category-label) element, add a `for` attribute to a visible label with the `id` of this control (e.g., `<label for="controlID">`);
-* **Or**, if the  control is a labelable element, put the control inside a visible `<label>` element;
-* **Or**, add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
-* **Or**, if the design cannot have a visible label, provide a label using the `aria-label` attribute (e.g., `aria-label="Activities"`);
-* **Or**, if the design cannot have a visible label, use the `title` attribute to provide a label.
+* If the control is a [label](https://html.spec.whatwg.org/multipage/forms.html#category-label) element, add a `for` attribute to a visible label with the `id` of this control (e.g., `<label for="controlID">`)
+* **Or**, if the  control is a labe element, put the control inside a visible `<label>` element
+* **Or**, add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label
+* **Or**, if the design cannot have a visible label, provide a label using the `aria-label` attribute (e.g., `aria-label="Activities"`)
+* **Or**, if the design cannot have a visible label, use the `title` attribute to provide a label
 
 </script></mark-down>
 <!-- End main panel -->
