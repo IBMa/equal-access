@@ -45,14 +45,15 @@
 
 ### Why is this important?
 
-The content of the `<noembed>` element is provided to screen reader users or in browsers when an embedded object cannot be displayed. However, this is a deprecated element.
+The `<noembed>` element is obsolete and must no longer be used.
+It was originally used to provide content to screen reader users or in browsers when an embedded object couldn't be displayed.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * The `<noembed>` element is deprecated and should be avoided. Use the `<object>` element instead of `<embed>` and use the body of the element to provide fallback content when the object does not load.
+ * The `<noembed>` element is obsolete and must no longer be used. Use the `<object>` element instead of `<embed>` and use the body to provide fallback content when the object does not load.
 
  For example:
  
@@ -74,13 +75,13 @@ The content of the `<noembed>` element is provided to screen reader users or in 
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [H53: Using the body of the object element](https://www.w3.org/WAI/WCAG22/Techniques/html/H53)
-* [H46: Using noembed with embed](https://www.w3.org/WAI/WCAG22/Techniques/html/H46)
+* [H53: Body of the object element as fallback](https://www.w3.org/WAI/WCAG22/Techniques/html/H53)
+* [HTML - Obsolete features](https://html.spec.whatwg.org/multipage/obsolete.html#non-conforming-features)
 
 ### Who does this affect?
 
  * People using a screen reader, including blind, low vision, and neurodivergent people
- * People using text-only, monochrome, or braille displays
+ * People using text-only, monochrome, or Braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
  * People who turn off image-loading on their web browsers
 

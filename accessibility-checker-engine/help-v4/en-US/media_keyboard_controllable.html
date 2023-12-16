@@ -45,26 +45,33 @@
 
 ### Why is this important?
 
-HTML5 `<audio>` and `<video>` elements are used to embed media on the page. Keyboard-only users must have keyboard access to the media controls to play, pause, increase and decrease volume.
+HTML5 `<audio>` and `<video>` elements embed media on the page.
+Keyboard-only users must have keyboard access to the media controls to play, pause, increase and decrease volume.
+A deaf user who cannot use a pointing device would need keyboard access to turn on captions.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If using custom audio and / or video controls, ensure they are made keyboard accessible by scripting;
-* **Or**, check to ensure default playback controls provided by the browser allow easy keyboard navigation and control.
+* If using custom audio and/or video controls, ensure they are made keyboard-operable by scripting
+* **Or**, check to ensure default playback controls provided by the player allow easy keyboard navigation and control
 
 For example:
 
 ```
-<audio id="demo" src="audio.mp3"></audio>
-    <div>
-        <button onclick="document.getElementById('demo').play()">Play the Audio</button>
-        <button onclick="document.getElementById('demo').pause()">Pause the Audio</button>
-        <button onclick="document.getElementById('demo').volume+=0.1">Increase Volume</button>
-        <button onclick="document.getElementById('demo').volume-=0.1">Decrease Volume</button>
-    </div>
+<video id="demo" controls> 
+    <source src="movie.mp4" type="video/mp4">
+    <source src="movie.ogg" type="video/ogg">
+    Your browser does not support video.
+</video>
+<div>
+    <button onclick="document.getElementById('demo').play()">Play the Video</button>
+    <button onclick="document.getElementById('demo').pause()">Pause the Video</button>
+    <button onclick="document.getElementById('demo').volume+=0.1">Increase Volume</button>
+    <button onclick="document.getElementById('demo').volume-=0.1">Decrease Volume</button>
+    <button onclick="document.getElementById('demo').captions()">CC</button>
+</div>
 ```
 
 </script></mark-down>
@@ -79,6 +86,9 @@ For example:
 ### About this requirement
 
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [Planning for video](https://www.ibm.com/able/toolkit/plan/release#planning-for-video)
+* [Design UX - Media players](https://www.ibm.com/able/toolkit/design/ux/#media-players)
+* [HTML - Media](https://html.spec.whatwg.org/multipage/media.html)
 
 ### Who does this affect?
 

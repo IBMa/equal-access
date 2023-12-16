@@ -47,15 +47,18 @@
 
 The system focus indicator is an important part of accessibility for keyboard users.
 When focus is removed from a control via a script, the focus is transferred to another location, often to the browser window.
-An example failure is `<input type="submit" onFocus="this.blur();">` This action interrupts the focus cycle and prevents keyboard users from being able to reach all of the links and controls on the page. In this situation, users can only reach the content with a pointing device.
+An example failure is `<input type="submit" onFocus="this.blur();">`.
+This action interrupts the focus cycle and prevents keyboard users from being able to reach all of the links and controls on the page.
+Users can only reach the content with a pointing device in this situation.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If `blur` is being used simply to avoid the visual focus effect, this is a violation. Remove the call to `blur`;
- * **Or**, if there is a reason why keyboard focus must be removed from this element, make sure you can still reach all interactive elements on this page using only the Tab key.
+ * If `blur` is being used simply to avoid the visual focus effect, this is a violation. Remove the call to `blur`.
+ * **Or**, if there is a reason why keyboard focus must be removed from this element, make sure you can still reach all interactive elements on this page using the keyboard tab and arrow keys
+ * **And**, focus remains until the user moves it
 
 </script></mark-down>
 <!-- End main panel -->
@@ -71,7 +74,7 @@ An example failure is `<input type="submit" onFocus="this.blur();">` This action
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
 * [IBM 2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
 * [IBM 3.2.1 On Focus](https://www.ibm.com/able/requirements/requirements/#3_2_1)
-* [Failure F55: Using script to remove focus when focus is received](https://www.w3.org/WAI/WCAG22/Techniques/failures/F55)
+* [Failure F55: Script removes focus](https://www.w3.org/WAI/WCAG22/Techniques/failures/F55)
 
 ### Who does this affect?
 
