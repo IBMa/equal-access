@@ -140,6 +140,17 @@ export let input_label_exists: Rule = {
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
         }
 
+        //check if a native button is labelled
+        if (!passed && nodeName == "button") {
+             if (RPTUtil.hasImplicitLabel(ruleContext))
+                passed = true;
+             else {
+                let label = RPTUtil.getLabelForElement(ruleContext);
+                if (label && RPTUtil.hasInnerContentHidden(label))
+                    passed = true;    
+             }    
+        }
+
         // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
         if (!passed && (buttonTypes.indexOf(type) !== -1)) {
             if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMWalker.parentElement(ruleContext).hasAttribute("widgetid")) {
@@ -163,23 +174,7 @@ export let input_label_exists: Rule = {
             passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
         } 
-        /**if (!passed) {
-            // check aria role
-            //any more roles for input? 
-            const nameFromBoth = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                || RPTUtil.hasRoleInSemantics(ruleContext, "radio") || RPTUtil.hasRoleInSemantics(ruleContext, "checkbox");
-            const nameFromAuthorOnly = RPTUtil.hasRoleInSemantics(ruleContext, "listbox") || RPTUtil.hasRoleInSemantics(ruleContext, "searchbox") 
-                || RPTUtil.hasRoleInSemantics(ruleContext, "textbox") || RPTUtil.hasRoleInSemantics(ruleContext, "combobox")
-                || !RPTUtil.hasAnyRole(ruleContext, true);   
-            
-            if (nameFromBoth)
-                passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
-            
-            if (!passed) {
-                if (nameFromBoth || nameFromAuthorOnly)
-                passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
-            } 
-        }*/
+        
         if (!passed)
             passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
                 
