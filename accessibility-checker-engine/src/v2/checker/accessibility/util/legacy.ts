@@ -2188,6 +2188,7 @@ export class RPTUtil {
         // Test  a) if the parent is a label which is the implicit label
         //       b) if the form element is the first child of the label
         //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
+        //       d) form elements which may have a label: button
         // form elements that do not require implicit or explicit label element are:
         // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
 
