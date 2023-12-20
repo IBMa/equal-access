@@ -45,15 +45,16 @@
 
 ### Why is this important?
 
-The HTML `<blockquote>` element tells assistive technologies which content is part of a quotation or citation. Using the element for indention or formatting can mislead assistive technology users as to its meaning and purpose.
+The `<blockquote>` element tells assistive technologies which content is part of a quotation or citation from another source. 
+Using the element for indention or formatting only can mislead assistive technology users as to its meaning and purpose.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Verify that `<blockquote>` is being used for actual quoted text;
- * **Or**, do not use `<blockquote>` for this content.
+ * Verify that `<blockquote>` is being used for an actual quotation and correctly uses a `cite` attribute
+ * **Or**, do not use `<blockquote>` and otherwise use CSS to achieve the desired visual indentation
 
 </script></mark-down>
 <!-- End main panel -->
@@ -67,10 +68,11 @@ The HTML `<blockquote>` element tells assistive technologies which content is pa
 ### About this requirement
 
 * [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [W3C HTML5 for authors - Blockquote](https://www.w3.org/TR/html5-author/the-blockquote-element.html#the-blockquote-element)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
  * People using text only, monochrome or braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
 

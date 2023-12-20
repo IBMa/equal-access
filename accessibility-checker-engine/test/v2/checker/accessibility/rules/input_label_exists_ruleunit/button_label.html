@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <div class="cds--toggle">
+        <button
+          id="toggle-1"
+          class="cds--toggle__button"
+          role="switch"
+          type="button"
+          aria-checked="true"
+        ></button>
+        <label for="toggle-1" class="cds--toggle__label">
+          <span class="cds--toggle__label-text">Toggle element label 1</span>
+        </label>
+      </div>
+      <div>
+        <label for="toggle-2" class="cds--toggle__label">
+          <button 
+            id="toggle-2"
+            class="cds--toggle__button"
+            type="button"
+          ></button>
+          <span class="cds--toggle__label-text">Toggle element label 2</span>
+        </label>
+      </div>
+    </main>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_exists"],
+      results: [
+      {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/button[1]",
+              "aria": "/document[1]/main[1]/switch[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/label[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>

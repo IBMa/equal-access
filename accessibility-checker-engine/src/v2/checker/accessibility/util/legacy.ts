@@ -2188,6 +2188,7 @@ export class RPTUtil {
         // Test  a) if the parent is a label which is the implicit label
         //       b) if the form element is the first child of the label
         //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
+        //       d) form elements which may have a label: button
         // form elements that do not require implicit or explicit label element are:
         // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
 
@@ -2521,13 +2522,14 @@ export class RPTUtil {
     public static isInnerTextOnlyEmpty(element) {
         // Get the innerText of the element
         let text = element.innerText;
-
-        if (text === undefined && element.textContent !== undefined) {
-            // In headless mode,  innerText is sometimes 'undefined'
+        
+        if ((text === undefined || !text || text.trim().length === 0) && element.nodeName.toLowerCase() !== 'slot' && element.textContent !== undefined) {
+            //ignore slot because its text will be filled by the corresponding content in the light DOM 
+            // innerText is sometimes 'undefined' in headless mode, or null if the element is invisible or not erxpanded 
             // so we try textContent as a workaround
             text = element.textContent
         }
-
+        
         let retVal = !(text !== null && text.trim().length > 0);
         if (element.nodeType === 1 && element.nodeName.toLowerCase() === "slot") {
             //TODO: need to conside its own content, a slot may have its own content or assigned content
@@ -2642,7 +2644,7 @@ export class RPTUtil {
                     node.nodeName.toLowerCase() === "svg"
                     && RPTUtil.svgHasName(node as any)
                 );
-
+                
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && VisUtil.isNodeVisible(node)) {
                     // Check if the innerText of the element is empty or not
