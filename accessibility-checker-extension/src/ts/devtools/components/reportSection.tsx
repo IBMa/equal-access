@@ -236,7 +236,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                             <div style={{flex: "0 1 8.75rem"}}>
                                 <div style={{display: "flex"}}>
                                     <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem", marginRight: "8px" }}>
-                                        {!this.state.viewState || !this.state.viewState!.kcm && 
+                                        {!this.state.viewState || !this.state.viewState!.kcm &&
                                             <Dropdown
                                                 className="viewMulti"
                                                 ariaLabel="Select report view"
@@ -256,7 +256,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         }
                                     </div>
                                     <div style={{flex: "1 1 8.75rem"}}>
-                                        {!this.state.viewState || !this.state.viewState!.kcm && 
+                                        {
                                             <MultiSelect
                                                 className="viewMulti"
                                                 ariaLabel="Issue type filter"
