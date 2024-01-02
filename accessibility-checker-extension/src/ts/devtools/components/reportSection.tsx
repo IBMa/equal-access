@@ -16,14 +16,15 @@
 
 import * as React from 'react';
 import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
-import { IIssue, IReport, UIIssue } from '../../interfaces/interfaces';
-import { Column, Grid } from "@carbon/react";
-import { UtilIssue } from '../../util/UtilIssue';
-import {
+import { eFilterLevel, IIssue, IReport, UIIssue } from '../../interfaces/interfaces';
+import { 
     Button,
+    Column, 
     Dropdown,
+    Grid,
     MultiSelect
 } from "@carbon/react";
+import { UtilIssue } from '../../util/UtilIssue';
 
 import {
     Information
@@ -48,13 +49,7 @@ interface ReportSectionProps {
 }
 
 interface ReportSectionState {
-    report: IReport | null,
-    checked: {
-        "Violation": boolean,
-        "Needs review": boolean,
-        "Recommendation": boolean,
-        "Hidden": boolean
-    }
+    report: IReport | null
     selectedPath: string | null,
     reportViewState: string | null,
     reportFilterState: [{id:string;text:string}] | null,
@@ -65,19 +60,12 @@ interface ReportSectionState {
     ignoredIssues: UIIssue[]
 }
 
-type eLevel = "Violation" | "Needs review" | "Recommendation";
-
 let bgController = getBGController();
+let appController = getDevtoolsAppController();
 
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
     state: ReportSectionState = {
-        report: null,
-        checked: {
-            "Violation": true,
-            "Needs review": true,
-            "Recommendation": true,
-            "Hidden": false
-        },
+        report: null,        
         selectedPath: null,
         reportViewState: "Element roles",
         reportFilterState: null,
@@ -123,14 +111,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     onResetFilters() {
-        this.setState({
-            checked: {
-                "Violation": true,
-                "Needs review": true,
-                "Recommendation": true,
-                "Hidden": false
-            }
-        })
+        appController.setLevelFilters({
+            "Violation": true,
+            "Needs review": true,
+            "Recommendation": true,
+            "Hidden": false
+        });
     }
 
     reportListener: ListenerType<IReport> = async (report: IReport) => {
@@ -199,13 +185,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         if (reportIssues) {
             reportIssues = reportIssues.filter((issue: UIIssue) => {
                 issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
-                let retVal = ( ((this.state.checked["Hidden"] && issue.ignored) || this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]) 
+                const checked = appController.getLevelFilters();
+                let retVal = ( ((checked["Hidden"] && issue.ignored) || checked[UtilIssue.valueToStringSingular(issue.value) as eFilterLevel]) 
                     && (!this.state.focusMode
                         || !this.state.selectedPath
                         || issue.path.dom.startsWith(this.state.selectedPath)
                     ) 
                 );
-                if (!this.state.checked["Hidden"] && issue.ignored) {
+                if (!checked["Hidden"] && issue.ignored) {
                     return false; // JCH is this an override
                 }
                 return retVal;
@@ -223,8 +210,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             { id: '3', text: 'Hidden' },
         ]
         let levelSelectedItems: Array<{id: string, text: string}> = [];
-        for (const key in this.state.checked) {
-            if ((this.state.checked as any)[key]) {
+        for (const key of appController.getLevelFilterKeys()) {
+            if (appController.getLevelFilter(key)) {
                 levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === UtilIssue.singToStringPlural(key))!)
             }
         }
@@ -286,34 +273,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                 selecteditems={levelSelectedItems}
                                                 initialSelectedItems={levelSelectedItems}
                                                 onChange={async (evt: any) => {
-                                                    let checked = JSON.parse(JSON.stringify(this.state.checked));
+                                                    let checked = appController.getLevelFilters();
                                                     if (evt.selectedItems != undefined) {
-                                                        checked["Violation"] = false;
-                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                            if (evt.selectedItems[i].text === "Violations") {
-                                                                checked["Violation"] = true;
-                                                            } 
-                                                        }
-                                                        checked["Needs review"] = false;
-                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                            if (evt.selectedItems[i].text === "Needs review") {
-                                                                checked["Needs review"] = true;
-                                                            }
-                                                        }
-                                                        checked["Recommendation"] = false;
-                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                            if (evt.selectedItems[i].text === "Recommendations") {
-                                                                checked["Recommendation"] = true;
-                                                            }
-                                                        }
-                                                        checked["Hidden"] = false;
-                                                        for (let i = 0; i < evt.selectedItems.length; i++) {
-                                                            if (evt.selectedItems[i].text === "Hidden") {
-                                                                checked["Hidden"] = true;
-                                                            }
-                                                        }
+                                                        checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
+                                                        checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
+                                                        checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
+                                                        checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
                                                     }
-                                                    this.setState({ checked: checked });
+                                                    appController.setLevelFilters(checked);
                                                 }}
                                             />
                                         }
@@ -348,7 +315,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             unfilteredCount={totalCount}
                                             issues={reportIssues}
                                             panel={this.props.panel} 
-                                            checked={this.state.checked} 
+                                            checked={appController.getLevelFilters()} 
                                             selectedPath={this.state.selectedPath} 
                                             onResetFilters={this.onResetFilters.bind(this)}
                                             canScan={this.state.canScan}
@@ -362,7 +329,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         unfilteredCount={totalCount}
                                         issues={reportIssues} 
                                         panel={this.props.panel} 
-                                        checked={this.state.checked} 
+                                        checked={appController.getLevelFilters()} 
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
@@ -377,7 +344,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         report={this.state.report}
                                         issues={reportIssues} 
                                         panel={this.props.panel} 
-                                        checked={this.state.checked} 
+                                        checked={appController.getLevelFilters()} 
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
@@ -420,7 +387,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 issues={reportIssues}
                                 tabbable={tabbableDetectors}
                                 panel={this.props.panel} 
-                                checked={this.state.checked} 
+                                checked={appController.getLevelFilters()} 
                                 selectedPath={this.state.selectedPath} 
                                 onResetFilters={this.onResetFilters.bind(this)}
                                 canScan={this.state.canScan}

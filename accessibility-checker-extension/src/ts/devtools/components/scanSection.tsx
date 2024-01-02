@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { IIssue, IReport, UIIssue } from '../../interfaces/interfaces';
+import { IIssue, IReport, UIIssue, eFilterLevel } from '../../interfaces/interfaces';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
@@ -72,7 +72,7 @@ interface ScanSectionState {
     ignoredIssues: UIIssue[]
 }
 
-type eLevel = "Violation" | "Needs review" | "Recommendation" | "Hidden";
+type eLevel = eFilterLevel;
 
 type CountType = {
     "Violation": {
