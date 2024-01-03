@@ -34,10 +34,8 @@ interface ISummaryScreenState {
     ignoredIssues: UIIssue[]
 }
 
-
-
 interface ISummaryScreenProps {
-    //getCounts: () => CountType
+    
 }
 
 let bgController = getBGController();
@@ -63,6 +61,9 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                 this.setState({ ignoredIssues: issues });
             }
         })
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
+        this.setState({ ignoredIssues: alreadyIgnored });
         this.setState({
             report: await self.devtoolsController.getReport() || undefined,
             reportMeta: await self.devtoolsController.getReportMeta() || undefined
@@ -73,7 +74,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
     render() {
         let ignoredTotal = this.state.ignoredIssues.length;
-        console.log("ignoredTotal = ", ignoredTotal);
         // JCH find unique elements that have violations and needs review issues
         let violations = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
@@ -81,7 +81,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         let ignoredViolations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
         }) || [];
-        console.log("ignoredViolations.length = ",ignoredViolations.length);
         
 
         let potentials = this.state.report && this.state.report.results.filter((result: any) => {
@@ -90,12 +89,10 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         let ignoredNeedsReview = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
             return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
         }) || [];
-        console.log("ignoredNeedsReview.length = ",ignoredNeedsReview.length);
 
         let ignoredRecommendations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
             return result.value[0] === "RECOMMENDATION";
         }) || [];
-        console.log("ignoredRecommendations.length = ",ignoredRecommendations.length);
 
         let violationsPlusPotentials = violations.concat(potentials);
         let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
@@ -116,8 +113,6 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
         // Calculate score
         let currentStatus = (100 - ((failUniqueElements.length / testedElements) * 100)).toFixed(0);
-        // let counts = this.props.getCounts();
-        // console.log("this.props.getCounts() = ", counts);
 
         return <aside className={`reportSummary ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`} aria-labelledby="summaryTitle">
             <div style={{ margin: "1rem -1rem 0rem 0rem" }}>

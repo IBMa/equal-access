@@ -190,6 +190,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 this.setState({ ignoredIssues: issues });
             }
         })
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
+        this.setState({ ignoredIssues: alreadyIgnored });
         this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 
