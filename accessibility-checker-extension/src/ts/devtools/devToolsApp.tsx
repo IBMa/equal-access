@@ -168,6 +168,4 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             }
         </Theme>  
     }
-    
-    
 }

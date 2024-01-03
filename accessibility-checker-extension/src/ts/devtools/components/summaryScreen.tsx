@@ -20,24 +20,32 @@ import { Column, Grid, Tile, SelectableTile, } from '@carbon/react';
 import Violation16 from "../../../assets/Violation16.svg";
 import NeedsReview16 from "../../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../../assets/Recommendation16.svg";
-import { IReport, IStoredReportMeta } from "../../interfaces/interfaces";
+import { IReport, IStoredReportMeta, UIIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
+import { getBGController } from '../../background/backgroundController';
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { BrowserDetection } from '../../util/browserDetection';
+import { getTabId } from '../../util/tabId';
 import "./summaryScreen.scss";
 
 interface ISummaryScreenState {
     report?: IReport,
-    reportMeta?: IStoredReportMeta
+    reportMeta?: IStoredReportMeta,
+    ignoredIssues: UIIssue[]
 }
+
+
 
 interface ISummaryScreenProps {
+    //getCounts: () => CountType
 }
 
+let bgController = getBGController();
 let appController = getDevtoolsAppController();
 export default class SummaryScreen extends React.Component<ISummaryScreenProps, ISummaryScreenState> {
     private devtoolsController = getDevtoolsController();
     state: ISummaryScreenState = {
+        ignoredIssues: []
     }
     async componentDidMount(): Promise<void> {
         let self = this;
@@ -50,21 +58,44 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         appController.addLevelFilterListener(() => {
             this.setState({});
         })
+        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await bgController.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues });
+            }
+        })
         this.setState({
             report: await self.devtoolsController.getReport() || undefined,
             reportMeta: await self.devtoolsController.getReportMeta() || undefined
         })
     }
 
+    
+
     render() {
+        let ignoredTotal = this.state.ignoredIssues.length;
+        console.log("ignoredTotal = ", ignoredTotal);
         // JCH find unique elements that have violations and needs review issues
         let violations = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-        }) || []
+        }) || [];
+        let ignoredViolations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+            return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
+        }) || [];
+        console.log("ignoredViolations.length = ",ignoredViolations.length);
+        
 
         let potentials = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
         }) || [];
+        let ignoredNeedsReview = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+            return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
+        }) || [];
+        console.log("ignoredNeedsReview.length = ",ignoredNeedsReview.length);
+
+        let ignoredRecommendations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+            return result.value[0] === "RECOMMENDATION";
+        }) || [];
+        console.log("ignoredRecommendations.length = ",ignoredRecommendations.length);
 
         let violationsPlusPotentials = violations.concat(potentials);
         let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
@@ -85,6 +116,8 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
         // Calculate score
         let currentStatus = (100 - ((failUniqueElements.length / testedElements) * 100)).toFixed(0);
+        // let counts = this.props.getCounts();
+        // console.log("this.props.getCounts() = ", counts);
 
         return <aside className={`reportSummary ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`} aria-labelledby="summaryTitle">
             <div style={{ margin: "1rem -1rem 0rem 0rem" }}>
@@ -94,7 +127,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
                         <div className="summaryTitleDetail">{time}</div>
                         <div className="summaryTitleDetail"><span style={{ fontWeight: 600 }}>Scanned page:</span> {this.state.reportMeta && this.state.reportMeta.pageURL || ""}</div>
-                        <div className="summaryTitleDetail"><span style={{ textDecorationLine: "underline" }}>0 hidden issues</span></div>
+                        <div className="summaryTitleDetail"><span style={{ textDecorationLine: "underline" }}>{ignoredTotal} hidden issues</span></div>
                     </Column>
                 </Grid>
                 <Grid style={{margin: "0rem"}}>
@@ -121,7 +154,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Violations</h3>
                                 <span>&nbsp;<img src={Violation16} style={{ verticalAlign: "top" }} alt="Violation" /></span>
                             </div>
-                            <div className="tile-score">{this.state.report && this.state.report.counts["Violation"] || "?"}<span className="summaryTitleDetail" > 0 hidden issues</span></div>
+                            <div className="tile-score">{this.state.report && this.state.report.counts["Violation"] || "?"}<span className="summaryTitleDetail" > {ignoredViolations.length} hidden issues</span></div>
                             <div className="tile-description">Accessibility failures that need to be corrected</div>
                         </SelectableTile>
                     </Column>
@@ -140,7 +173,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Needs review</h3>
                                 <span>&nbsp;<img src={NeedsReview16} style={{ verticalAlign: "top" }} alt="Needs review" /></span>
                             </div>
-                            <div className="tile-score">{this.state.report && this.state.report.counts["Needs review"] || "?"}<span className="summaryTitleDetail" > 0 hidden issues</span></div>
+                            <div className="tile-score">{this.state.report && this.state.report.counts["Needs review"] || "?"}<span className="summaryTitleDetail" > {ignoredNeedsReview.length} hidden issues</span></div>
                             <div className="tile-description2">Issues that may not be a violation; manual review is needed</div>
                         </SelectableTile>
                     </Column>
@@ -157,7 +190,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Recommendations</h3>
                                 <span>&nbsp;<img src={Recommendation16} style={{ verticalAlign: "top" }} alt="Recommendation" /></span>
                             </div>
-                            <div className="tile-score">{this.state.report && this.state.report.counts["Recommendation"] || "?"}<span className="summaryTitleDetail" > 0 hidden issues</span></div>
+                            <div className="tile-score">{this.state.report && this.state.report.counts["Recommendation"] || "?"}<span className="summaryTitleDetail" > {ignoredRecommendations.length} hidden issues</span></div>
                             <div className="tile-description2">Opportunities to apply best practices to further improve accessibility</div>
                         </SelectableTile>
                     </Column>
