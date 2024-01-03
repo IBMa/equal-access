@@ -38,6 +38,7 @@ export class DevtoolsAppController {
     secondaryCloseQuerySelect: string = "";
     secondaryViewListeners: Array<(view: eSecondaryView) => void> = [];
     secondaryOpenListeners: Array<(open: boolean) => void> = [];
+    levelFilterListeners: Array<() => void> = [];
     checked: LevelFilters = {
         "Violation": true,
         "Needs review": true,
@@ -68,10 +69,16 @@ export class DevtoolsAppController {
 
     public setLevelFilters(val: LevelFilters) {
         this.checked = JSON.parse(JSON.stringify(val));
+        this.fireLevelFilter();
     }
 
     public setLevelFilter(key: eFilterLevel, val: boolean) {
         this.checked[key] = val;
+        this.fireLevelFilter();
+    }
+
+    public addLevelFilterListener(cb: () => void) {
+        this.levelFilterListeners.push(cb);
     }
 
     public getSecondaryView() : eSecondaryView {
@@ -201,6 +208,12 @@ export class DevtoolsAppController {
     private fireSecondaryOpen(open: boolean) {
         for (const listener of this.secondaryOpenListeners) {
             listener(open);
+        }
+    }
+
+    private fireLevelFilter() {
+        for (const listener of this.levelFilterListeners) {
+            listener();
         }
     }
 }

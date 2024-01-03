@@ -101,6 +101,9 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 this.setState({ ignoredIssues: issues });
             }
         })
+        appController.addLevelFilterListener(() => {
+            this.setState({});
+        })
         let url = (await bgController.getTabInfo(getTabId())).url!;
         let alreadyIgnored = await bgController.getIgnore(url);
         this.setState({ ignoredIssues: alreadyIgnored });
@@ -215,6 +218,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === UtilIssue.singToStringPlural(key))!)
             }
         }
+        console.log("levelSelectedItems1: ",levelSelectedItems);
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
@@ -280,6 +284,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                         checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
                                                         checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
                                                     }
+                                                    console.log("checked: ",checked);
+                                                    console.log("levelSelectedItems: ", levelSelectedItems);
                                                     appController.setLevelFilters(checked);
                                                 }}
                                             />
