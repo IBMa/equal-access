@@ -491,6 +491,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     </span>
                     <Link 
                         id="totalIssuesCount" 
+                        href="#0" // needed so will tab to link
                         className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
                         aria-disabled={totalCount === 0}
                         inline={true}
@@ -498,7 +499,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             let appController = getDevtoolsAppController();
                             getDevtoolsAppController().setSecondaryView("summary");
                             appController.openSecondary("totalIssuesCount");
-                    }}>{quickTotalCount} issues found</Link>
+                        }
+                        }>{quickTotalCount} issues found</Link>
                     </div>
                 </Column>
             </Grid>

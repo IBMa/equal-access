@@ -821,21 +821,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                                 tabIndex={-1}
                                             />
                                         </div>
-                                        {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} <a
-                                            className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
-                                            role="link"
-                                            tabIndex={focused ? 0 : -1}
-                                            onClick={() => {
-                                                this.onRow(group, thisIssue);
-                                                ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                            }}
-                                            onKeyDown={(evt: React.KeyboardEvent) => {
-                                                if (evt.key === "Enter" || evt.key === "Return") {
+                                        <div>
+                                            {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} 
+                                        </div>
+                                        <div>
+                                            <Link
+                                                className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
+                                                href="#0"
+                                                onClick={() => {
                                                     this.onRow(group, thisIssue);
                                                     ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                                }
-                                            }}
-                                        >Learn more</a>
+                                                }}
+                                            >Learn more</Link>
+                                        </div>
                                     </div>
                                 </Column>
                             </Grid>
