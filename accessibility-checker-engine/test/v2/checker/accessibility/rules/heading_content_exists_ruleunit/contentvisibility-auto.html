@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+  <head>
+    <title>RPT Test Suite</title>
+    <style type="text/css">
+      h2 {
+        content-visibility: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="#" onClick="showFirstH2();">Click me for first H2 info</a>
+    <div style="margin-top: 500rem;"></div>
+    <main>
+      <h2 id="111">
+        Test 111
+      </h2>
+
+      <h2 id="222">
+        Test 222
+      </h2>
+
+      <h2 id="333">
+        <a
+          href="https://seirdy.one/notes/2023/07/22/polygot-xhtml5/"
+          itemprop="url"
+          class="u-url url"
+          rel="bookmark"
+        >
+          Test 333
+        </a>
+      </h2>
+
+      <h2 id="444">
+        <a
+          href="https://seirdy.one/notes/2023/07/22/polygot-xhtml5/"
+          itemprop="url"
+          class="u-url url"
+          rel="bookmark"
+        >
+          Test 444
+        </a>
+      </h2>
+
+      <h2 id="555">
+        Test
+        <a
+          href="https://seirdy.one/notes/2023/07/22/polygot-xhtml5/"
+          itemprop="url"
+          class="u-url url"
+          rel="bookmark"
+        >
+          555
+        </a>
+      </h2>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["heading_content_exists"],
+        results: [
+        {
+            "ruleId": "heading_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h2[1]",
+              "aria": "/document[1]/main[1]/heading[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Heading element has descriptive text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "heading_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h2[2]",
+              "aria": "/document[1]/main[1]/heading[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Heading element has descriptive text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "heading_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h2[3]",
+              "aria": "/document[1]/main[1]/heading[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Heading element has descriptive text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "heading_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h2[4]",
+              "aria": "/document[1]/main[1]/heading[4]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Heading element has descriptive text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "heading_content_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h2[5]",
+              "aria": "/document[1]/main[1]/heading[5]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Heading element has descriptive text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
