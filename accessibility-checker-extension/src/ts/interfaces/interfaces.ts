@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 *****************************************************************************/
+export type eFilterLevel = "Violation" | "Needs review" | "Recommendation" | "Hidden";
 
 export type eMessageSrcDst = "background" | "devtools" | "main" | "elements" | "options" | "popup" | "tab";
 
@@ -101,6 +102,11 @@ export interface IIssue {
     snippet: string
     category: "Accessibility",
     help: string
+}
+
+export interface UIIssue extends IIssue {
+    checked?: boolean,  // Hide checkbox checked === true
+    ignored?: boolean   // Issue marked hidden
 }
 
 export interface IBasicTableRowRecord {

@@ -31,12 +31,14 @@ class HTMLBaseElement extends HTMLElement {
         // if not (no whitespace at all between tags and no nextElementSiblings either)
         // resort to DOMContentLoaded or load having triggered
         if ([this, ...this.parentNodes].some((el) => el.nextSibling) || document.readyState !== "loading") {
-            this.childrenAvailableCallback();
+            if (this.childrenAvailableCallback) 
+                this.childrenAvailableCallback();
             this.parsed = true;
         } else {
             this.mutationObserver = new MutationObserver(() => {
                 if ([this, ...this.parentNodes].some((el) => el.nextSibling) || document.readyState !== "loading") {
-                    this.childrenAvailableCallback();
+                    if (this.childrenAvailableCallback) 
+                        this.childrenAvailableCallback();
                     this.parsed = true;
                     this.mutationObserver.disconnect();
                 }
