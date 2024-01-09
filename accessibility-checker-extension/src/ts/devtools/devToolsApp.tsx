@@ -100,7 +100,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
-            <ReportSection panel={this.props.panel} />
+            <ReportSection panel={this.props.panel}/>
         </div>
 
         let secondaryPanel = <>
@@ -168,6 +168,4 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             }
         </Theme>  
     }
-    
-    
 }

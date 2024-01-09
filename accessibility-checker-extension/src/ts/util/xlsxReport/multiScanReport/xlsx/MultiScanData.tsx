@@ -111,9 +111,9 @@ export default class MultiScanData {
         let checkpoint_array = rule_checkpoints_map.get(rule_id);
 
         for (let checkpoint of checkpoint_array) {
-            console.log(checkpoint);
+            // console.log(checkpoint);
             let ruleInfo = checkpoint.rules.find((rule: any) => rule.id === rule_id);
-            console.log(ruleInfo);
+            // console.log(ruleInfo);
             if (ruleInfo.reasonCodes && !ruleInfo.reasonCodes.includes(reasonId)) continue;
             if (checkpoint_string.length > 1) {
                 checkpoint_string = checkpoint_string + '; ';

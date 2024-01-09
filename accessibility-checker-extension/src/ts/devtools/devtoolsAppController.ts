@@ -14,11 +14,16 @@
   limitations under the License.
 *****************************************************************************/
 
+import { eFilterLevel } from "../interfaces/interfaces";
 import { getDevtoolsController } from "./devtoolsController";
 
 export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview" | "checkerViewAware";
 
 let devtoolsController = getDevtoolsController();
+
+export type LevelFilters = {
+    [key in eFilterLevel]: boolean
+}
 
 /**
  * Controller for the DevtoolsApp. 
@@ -33,6 +38,14 @@ export class DevtoolsAppController {
     secondaryCloseQuerySelect: string = "";
     secondaryViewListeners: Array<(view: eSecondaryView) => void> = [];
     secondaryOpenListeners: Array<(open: boolean) => void> = [];
+    levelFilterListeners: Array<() => void> = [];
+    checked: LevelFilters = {
+        "Violation": true,
+        "Needs review": true,
+        "Recommendation": true,
+        "Hidden": false
+    };
+
     constructor() {
         getDevtoolsController().addSelectedIssueListener(async () => {
             this.setSecondaryView("help");
@@ -42,6 +55,32 @@ export class DevtoolsAppController {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+    public getLevelFilterKeys(): eFilterLevel[] {
+        return Object.keys(this.checked) as eFilterLevel[];
+    }
+
+    public getLevelFilters(): LevelFilters {
+        return JSON.parse(JSON.stringify(this.checked));
+    }
+
+    public getLevelFilter(key: eFilterLevel) {
+        return this.checked[key];
+    }
+
+    public setLevelFilters(val: LevelFilters) {
+        this.checked = JSON.parse(JSON.stringify(val));
+        this.fireLevelFilter();
+    }
+
+    public setLevelFilter(key: eFilterLevel, val: boolean) {
+        this.checked[key] = val;
+        this.fireLevelFilter();
+    }
+
+    public addLevelFilterListener(cb: () => void) {
+        this.levelFilterListeners.push(cb);
+    }
+
     public getSecondaryView() : eSecondaryView {
         return this.secondaryView;
     }
@@ -169,6 +208,12 @@ export class DevtoolsAppController {
     private fireSecondaryOpen(open: boolean) {
         for (const listener of this.secondaryOpenListeners) {
             listener(open);
+        }
+    }
+
+    private fireLevelFilter() {
+        for (const listener of this.levelFilterListeners) {
+            listener();
         }
     }
 }
