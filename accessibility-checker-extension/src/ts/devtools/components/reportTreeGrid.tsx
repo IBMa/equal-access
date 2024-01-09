@@ -224,7 +224,14 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         await ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
         if (this.props.panel === "elements" && inspect !== false) {
             // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
-            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
+            let focusTarget: HTMLElement | null = this.treeGridRef.current;
+            if (ReportTreeGrid.devtoolsAppController.getSecondaryOpen()) {
+                let secondaryPanel = document.querySelector(".secondaryDialog") as HTMLElement;
+                if (window.getComputedStyle(secondaryPanel).display !== "none") {
+                    focusTarget = secondaryPanel.querySelector(".cds--modal-close")
+                }
+            }
+            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, focusTarget);
         } else {
             await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
@@ -822,7 +829,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             />
                                         </div>
                                         {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} 
-                                        <Link
+                                        {" "}<Link
                                             className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                             role="link"
                                             href="#0"
