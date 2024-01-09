@@ -83,7 +83,7 @@ $ npm run build
   * ace-node-debug.js: uncompressed javascript library to be used in a NodeJS environment for development
   * ace-node.js: compressed javascript library to be used in a NodeJS environment for production
 * In the equal-access/accessibility-checker/package directory
-  * java script source that can be installed or deployed as npm package that works with an HTML parsing engines, such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
+  * JavaScript source that can be installed or deployed as npm package that works with an HTML parsing engines, such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
 * In the equal-access/karma-accessibility-checker/package directory
   * javascript source that can be used as a Karma plugin, see more [details](karma-accessibility-checker/README.md).
 
