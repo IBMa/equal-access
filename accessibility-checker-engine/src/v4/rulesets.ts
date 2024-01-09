@@ -31,7 +31,7 @@ const summaries = {
     "1.2.5": "Audio description is provided for all prerecorded video content in synchronized media.",
     "1.3.1": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
     "1.3.2": "When the sequence in which content is presented affects its meaning, a correct reading sequence can be programmatically determined.",
-    "1.3.3": "Instructions provided for understanding and operating content do not rely solely on sensory characteristics of components, such as shape, size, visual location, orientation, or sound.",
+    "1.3.3": "Instructions provided for understanding and operating content do not rely solely on sensory characteristics of components such as shape, size, visual location, orientation, or sound.",
     "1.3.4": "Content does not restrict its view and operation to a single display orientation, such as portrait or landscape.",
     "1.3.5": "The purpose of each input field that collects information about the user can be programmatically determined when the field serves a common purpose.",
     "1.4.1": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
@@ -42,10 +42,10 @@ const summaries = {
     "1.4.10": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
     "1.4.11": "The parts of graphical objects required to understand the content, and the visual information required to identify UI components and states, have a contrast ratio of at least 3:1 against adjacent colors.",
     "1.4.12": "No loss of content or functionality occurs when users change letter, word and paragraph spacing, as well as line height.",
-    "1.4.13": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissible, hoverable and persistent.",
+    "1.4.13": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissable, hoverable and persistent.",
     "2.1.1": "All functionality of the content is operable through a keyboard interface without requiring specific timings for individual keystrokes.",
     "2.1.2": "If keyboard focus can be moved to a component using a keyboard interface, then focus can be moved away from that component using only a keyboard interface, and, if it requires more than unmodified arrow or tab keys or other standard exit methods, the user is advised of the method for moving focus away.",
-    "2.1.4": "If a keyboard shortcut is implemented using only letter, punctuation, number, or symbol characters, then the shortcut can be turned off, remapped, or activated only on focus.",
+    "2.1.4": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
     "2.2.1": "For each time limit that is set by the content, the user can turn off, adjust, or extend the limit.",
     "2.2.2": "For moving, blinking, scrolling, or auto-updating information, the user can pause, stop, hide or adjust the information.",
     "2.3.1": "Content does not contain anything that flashes more than three times in any one second period, or the flash is below the general flash and red flash thresholds.",
@@ -55,7 +55,7 @@ const summaries = {
     "2.4.4": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
     "2.4.5": "More than one way is available to locate a Web page within a set of Web pages, except where the Web Page is the result of, or a step in, a process.",
     "2.4.6": "Headings and labels describe topic or purpose.",
-    "2.4.7": "Any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible.",
+    "2.4.7": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
     "2.4.11": "When an element receives focus, it is not entirely covered by other content.",
     "2.5.1": "All functionality that uses multipoint or path-based gestures for operation can be operated with a single pointer without a path-based gesture.",
     "2.5.2": "For functionality that can be operated using a single pointer, completion of the function is on the up-event with an ability to abort, undo or reverse the outcome.",
@@ -77,7 +77,7 @@ const summaries = {
     "3.3.7": "Make it easier for users to complete multi-step processes. Don't ask for the same information twice in the same session.",
     "3.3.8": "Make logins possible with less mental effort. Don't make people solve, recall, or transcribe something to log in.",
     "4.1.1": "(Obsolete and removed) This requirement was originally adopted to address problems that assistive technology (AT) had directly parsing HTML. AT no longer has any need to directly parse HTML. Consequently, these problems either no longer exist or are addressed by other requirements.", 
-    "4.1.2": "For all user interface components (including, but not limited to form elements, links, and components generated by scripts), the name and role can be programmatically determined; states, properties, and values that can be set by the user can be programmatically set; and notification of changes to these items is available to user agents, including assistive technologies.",
+    "4.1.2": "For all user interface components (including, but not limited to: form elements, links and components generated by scripts), the name and role can be programmatically determined; states, properties, and values that can be set by the user can be programmatically set; and notification of changes to these items is available to user agents, including assistive technologies.",
     "4.1.3": "In content implemented using markup languages, status messages can be programmatically determined through role or properties such that they can be presented to the user by assistive technologies without receiving focus.",
     "HTML": "The HTML specification issues that cause accessibility issues may be covered by other rules and will be reported under those accessibility requirements. However, some non-conforming HTML specification issues are still reported.",
     "ARIA": "The ARIA specification issues that cause accessibility issues may be covered by other rules and will be reported under those accessibility requirements. However, some non-conforming ARIA specification issues are still reported.",
@@ -174,4 +174,3 @@ export let a11yRulesets: Guideline[] = [
             }))
     }
 ]
-
