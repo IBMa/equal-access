@@ -39,7 +39,7 @@ export let img_alt_valid: Rule = {
         "en-US": {
             "pass": "Image has required 'alt' attribute, ARIA label, or title if they convey meaning, or 'alt=\"\" if decorative",
             "fail_blank_alt": "Image 'alt' attribute value consists only of blank space(s)",
-            "fail_no_alt": "The image has neither an 'alt' attribute, an ARIA label, or title",
+            "fail_no_alt": "The image has neither an 'alt' attribute, an ARIA label, nor a title",
             "fail_blank_title": "The image does not have an 'alt' attribute or ARIA label, and the 'title' attribute value consists only of blank space(s)",
             "group": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
         }
