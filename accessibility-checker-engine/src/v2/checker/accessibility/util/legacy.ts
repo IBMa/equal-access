@@ -2523,7 +2523,7 @@ export class RPTUtil {
         // Get the innerText of the element
         let text = element.innerText;
         
-        if ((text === undefined || !text || text.trim().length === 0) && element.nodeName.toLowerCase() !== 'slot' && element.textContent !== undefined) {
+        if ((text === undefined || text === null || text.trim().length === 0) && element.nodeName.toLowerCase() !== 'slot' && element.textContent !== undefined) {
             //ignore slot because its text will be filled by the corresponding content in the light DOM 
             // innerText is sometimes 'undefined' in headless mode, or null if the element is invisible or not erxpanded 
             // so we try textContent as a workaround
@@ -2545,7 +2545,7 @@ export class RPTUtil {
     /* Return the inner text of the given element */
     public static getInnerText(element) {
         let retVal = element.innerText;
-        if (retVal === undefined || retVal.trim() === "")
+        if (retVal === undefined || retVal === null || retVal.trim() === "")
             retVal = element.textContent;
         return retVal;
     }
