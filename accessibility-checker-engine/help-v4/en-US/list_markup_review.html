@@ -45,15 +45,15 @@
 
 ### Why is this important?
 
-When markup is used to visually format text as a list, but does not indicate the list relationship, users might have difficulty understanding and navigating the information.
+When markup is used to format text as a list visually but does not indicate the semantic list relationship, users might have difficulty understanding and navigating the information.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Verify that the content is not a list;
- * **Or**, if this is a list, use HTML list elements (e.g. `<ol>`, `<ul>`, `<li>`) to create the list and CSS to style the list as desired.
+ * Verify that the content is not a list and remove the invalid markup
+ * **Or**, if this is a list, use valid list elements (e.g., `<ol>`, `<ul>`, `<li>`) to create the list and CSS to style the list as desired
 
 </script></mark-down>
 <!-- End main panel -->
@@ -67,11 +67,12 @@ When markup is used to visually format text as a list, but does not indicate the
 ### About this requirement
 
 * [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [HTML - List item](https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People using text only, monochrome or braille displays
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People using text-only, monochrome, or Braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
  * People with cognitive differences who view interfaces using an adapted layout
 

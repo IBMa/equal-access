@@ -4,7 +4,7 @@
 
 `karma-accessibility-checker` is a Karma plugin that allows you to perform the following:
 
-- integrate accessibility testing within a continuous integration pipeline such as Travis CI.
+- integrate accessibility testing within a continuous integration pipeline, such as Travis CI.
 - scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 

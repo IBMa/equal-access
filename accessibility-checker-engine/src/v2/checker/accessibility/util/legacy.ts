@@ -397,8 +397,8 @@ export class RPTUtil {
 
     /**
      * Note that this only detects if the element itself is in the tab order.
-     * However, this element may delegate focus to another element via aria-activedescendant
-     * Also, focus varies by browser...  sticking to things that are focusable on chrome and firefox
+     * However, this element may delegate focus to another element via aria-activedescendant.
+     * Also, focus varies by browser... sticking to things that are focusable on Chrome and Firefox.
      */
     public static isTabbable(element) {
         // Using https://allyjs.io/data-tables/focusable.html
@@ -608,7 +608,7 @@ export class RPTUtil {
     }
 
     //TODO: function does not handle equivalents for roles: row, link, header, button
-    // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
+    // But it may not have to. Bug reports have been about radio buttons and checkboxes.
     public static isHtmlEquiv(node, htmlEquiv) {
         let retVal = false;
         if (node) {
@@ -1295,7 +1295,7 @@ export class RPTUtil {
             return null;
 
         // note that table.rows return all all the rows in the table, 
-        // including the rows contained within <thead>, <tfoot>, and <tbody> elements.    
+        // including the rows contained within <thead>, <tfoot>, and <tbody> elements. 
         
         //case 1: headers are in the very first row with data in tbody or thead, but not in tfoot   
         //get the first row with data, ignoring the rows with no data
@@ -1785,7 +1785,7 @@ export class RPTUtil {
      * Note: This is a wrapper function to: RPTUtil.getDescendantWithRoleHidden
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      *
      * @return {node} - The descendant element that matches the role specified (only one)
      *
@@ -1800,7 +1800,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1847,7 +1847,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *

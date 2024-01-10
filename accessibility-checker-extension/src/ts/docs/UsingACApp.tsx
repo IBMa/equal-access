@@ -334,7 +334,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <OrderedList>
                     <ListItem>Select an element in the DOM, or use the ‘Inspect element’ command on page.</ListItem>
-                    <ListItem>Select element name in focus view (e.g. &lt;html&gt;) to view related issues</ListItem>
+                    <ListItem>Select element name in focus view (e.g., &lt;html&gt;) to view related issues</ListItem>
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
                 <h3 id="keyboard_checker_mode">3.5. Keyboard checker mode</h3>
