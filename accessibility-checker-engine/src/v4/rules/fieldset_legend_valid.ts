@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let fieldset_legend_valid: Rule = {
     id: "fieldset_legend_valid",
@@ -52,6 +53,10 @@ export let fieldset_legend_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        //skip if the fieldset is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return null;
+
         // In the case a legend is hidden, we should still trigger a violations for this
         let legends = RPTUtil.getChildByTagHidden(ruleContext, "legend", true, false);
         if (legends.length === 0) {
