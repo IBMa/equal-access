@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+	<a href="#navskip">skip to main content</a>
+	
+	
+	<div>Test case: content-visibility:hidden</div>
+	
+	
+	
+	<!-- ################################################################### -->
+	
+	
+	<div>content visibility Tests</div>
+	
+	
+	<ul>
+		<li>Test - content-visibility</li>
+	</ul>
+	
+	<h4><span style="content-visibility: visible">H4 visible</span></h4>
+	<h5><span style="content-visibility: auto">H5 auto</span></h5>
+  <h6><span style="content-visibility:none">H6</span></h6>
+
+	<h6><span style="content-visibility: hidden;">H6 hidden</span></h6>
+
+  <h6><span style="content-visibility: hidden;display:block">H6 hidden display block</span></h6>
+  
+	<a name="navskip"></a>
+
+
+<script>
+    UnitTest = {
+      ruleIds: ["aria_accessiblename_exists"],
+      results: [
+      {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h4[1]",
+              "aria": "/document[1]/heading[1]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h5[1]",
+              "aria": "/document[1]/heading[2]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[1]",
+              "aria": "/document[1]/heading[3]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[2]",
+              "aria": "/document[1]/heading[4]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[3]",
+              "aria": "/document[1]/heading[5]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <h6> with \"heading\" role has no accessible name",
+            "messageArgs": [
+              "h6",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+
+</html>
