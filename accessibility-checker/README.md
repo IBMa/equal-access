@@ -2,14 +2,14 @@
 
 Automated accessibility testing for Node-based test environments.
 
-To get started using the deployed packages, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
+To get started using the deployed packages, review the [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
 
 ## Features
 
 - Scan single or multiple files, directories, or URLs
-- Output scan results in JSON, CSV, HTML or XLSX formats
-- Automate accessibility testing within a continuous integration pipeline such as Travis CI
-- Integrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
+- Output scan results in JSON, CSV, HTML, or XLSX formats
+- Automate accessibility testing within a continuous integration pipeline, such as Travis CI
+- Integrate with Node-based test environments, such as Selenium, Puppeteer, Playwright, Jest, and Zombie
 - Validate test results against baselines
 - Set a target rule archive
 - Configure policies (rule sets) to scan
@@ -21,7 +21,7 @@ To get started using the deployed packages, review [Node accessibility-checker](
 This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
 
 - Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
-- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g., `npx achecker path/to/your/file.txt`)
 - Run `npx achecker`
 
 Review the [accessibility-checker/src/README](src/README.md) for more information.

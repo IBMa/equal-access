@@ -45,25 +45,35 @@
 
 ### Why is this important?
 
-`alt` attribute values ('alt text') are intended to be a brief, inline replacement for an image when it cannot be loaded or displayed. Verbose or long alt text can have a negative impact on the user experience.
+The `alt` attribute values (alt text) are intended to be a brief, inline text _replacement_ for an image when it cannot be loaded or perceived.
+The alternative text is a _replacement for_ the image, not a _description of_ the image.
+Verbose or long alt text can harm the user experience.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Use an `alt` description less than 150 characters long;
- * **Or**, if a shorter description is not adequate, use the `aria-describedby` attribute to point to the `id` value of an element containing a longer description;
- * **Or**, use a 'D' link as shown in the example.
+ * Use an `alt` value less than 150 characters long
+ * **Or**, if the shorter replacement is not adequate, use the `aria-describedby` attribute to point to the `id` value of an element containing a longer description
+ * **Or**, use a 'D' link as shown in the example
 
  For example:
 
 ```
-<img src="boxplot.gif" alt="Box plot comparing scores across five testing conditions" aria-describedby="imgDescription">
-<div id="imgDescription">This box plot shows test scores for the expert group (mean 4.5, std. dev 1.1), intermediate group ... </div>
-    
-<img src="rpttested.gif" alt="Tested with IBM Equal Access Accessibility Checker">
-<a href="testInfo.html">D</a>
+<img src="boxplot.gif" 
+    alt="Box plot comparing scores across five testing conditions" 
+    aria-describedby="imgDescription">
+<div 
+    id="imgDescription">
+    <p>This box plot shows test scores for the expert group 
+    (mean 4.5, std. dev 1.1), intermediate group ... </p>
+</div>
+```
+```
+<img src="checker.gif" 
+    alt="Tested with IBM Equal Access Accessibility Checker">
+<a href="CheckerTestInfo.html">D</a>
 ```
 
 </script></mark-down>
@@ -78,12 +88,12 @@
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [HTML - Alternative for images](https://html.spec.whatwg.org/multipage/images.html#alt)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People using text-based browsers (e.g., Lynx) with Braille displays or audio interfaces
  * People who turn off image-loading on their web browsers
 
 </script></mark-down>

@@ -13,7 +13,7 @@ Multiple objects are needed for a rule to fire and show up in the tool results:
   
 ### Rule object
 
-The basic rule format is defined by the Rule type in [src/v4/api/IRule.ts](src/v4/api/IRule.ts). Rule implementation is located in [src/v4/rules](src/v4/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). 
+The basic rule format is defined by the Rule type in [src/v4/api/IRule.ts](src/v4/api/IRule.ts). Rule implementation is located in [src/v4/rules](src/v4/rules). The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). 
 
 #### Messages
 
@@ -81,7 +81,7 @@ Help integrates the following:
 
 ### Rule sets and Mappings
 
-* Rule sets such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, etc. and mappings of the latest rules to the standards (Requirement and Rule IDs), the individual failure messages (by Reasons ID), and links to the Help files are listed in the published [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets)
+* Rule sets, such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, etc. and mappings of the latest rules to the standards (Requirement and Rule IDs), the individual failure messages (by Reasons ID), and links to the Help files are listed in the published [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets)
 * `npm run build:help` in the `.../accessibility-checker-engine` directory creates `dist/help/rules.html` that can be reviewed
 * Each build creates the `Rules listing` artifact in **Actions** that can be reviewed prior to deployment.
 

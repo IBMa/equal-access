@@ -91,7 +91,7 @@ export let list_structure_proper: Rule = {
                 }
                 // In the case that we have found dt and dd elements under dl we pass right away.
                 // In the case that there is no dt or dd element, but bunch of presentational elements we mark this as a
-                // pass. In the case that there are other elements such as img we will still trigger a violation.
+                // pass. In the case that there are other elements, such as img we will still trigger a violation.
                 passed = (passed && first == "dt" && last == "dd") || (passed && presentationalFound);
             }
         } else if (nodeName == "li") {
@@ -130,7 +130,7 @@ export let list_structure_proper: Rule = {
                 }
                 // In the case that it has passed and also li element is found under list node, we pass right away.
                 // In the case that there is no li element, but bunch of presentational elements we mark this as a
-                // pass. In the case that there are other elements such as img we will still trigger a violation.
+                // pass. In the case that there are other elements, such as img we will still trigger a violation.
                 passed = (passed && liFound) || (passed && presentationalFound);
             }
         }

@@ -4,8 +4,8 @@
 
 `accessibility-checker` is a NodeJS module that allows you to do the following:
 
-- perform integrated accessibility testing within a continuous integration pipeline such as Travis CI
-- works with test frameworks (parsing engines) such as Selenium, Puppeteer, Playwright, and Zombie
+- perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI
+- works with test frameworks (parsing engines), such as Selenium, Puppeteer, Playwright, and Zombie
 - allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
@@ -18,7 +18,7 @@ Note that we have seen some non-standard CSS parsing with Zombie, so be aware of
 This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
 
 - Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
-- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g., `npx achecker path/to/your/file.txt`)
 - Run `npx achecker`
 
 ### Programmatic
