@@ -69,7 +69,7 @@ export class ACReporterXLSX implements IReporter {
 
         // const buffer: any = await workbook.xlsx.writeBuffer();
         let startScan = new Date(storedReport.engineReport.summary.startScan);
-        let reportFilename = `results_${startScan.toISOString()}.xlsx`;
+        let reportFilename = `results_${startScan.toISOString().replace(/:/g,"-")}.xlsx`;
         if (config.outputFilenameTimestamp === false) {
             reportFilename = `results.xlsx`;
         }

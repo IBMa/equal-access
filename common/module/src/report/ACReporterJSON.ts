@@ -75,7 +75,7 @@ export class ACReporterJSON implements IReporter {
                 }
             }
             let startScan = new Date(storedScan.engineReport.summary.startScan);
-            let reportFilename = `summary_${startScan.toISOString()}.json`;
+            let reportFilename = `summary_${startScan.toISOString().replace(/:/g,"-")}.json`;
             if (config.outputFilenameTimestamp === false) {
                 reportFilename = `summary.json`;
             }
