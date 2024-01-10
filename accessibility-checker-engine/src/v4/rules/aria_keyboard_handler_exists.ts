@@ -76,7 +76,7 @@ export let aria_keyboard_handler_exists: Rule = {
                     // See if there is a keyboard event handler on the parent element.
                     passed = (ruleContext.hasAttribute("onkeydown") || ruleContext.hasAttribute("onkeypress"));
 
-                    // No keyboard event handler found on parent.  See if keyboard event handlers are on required child elements.
+                    // No keyboard event handler found on parent. See if keyboard event handlers are on required child elements.
                     if (!passed) {
                         if (!hasAttribute(ruleContext, 'aria-activedescendant')) {
                             let reqChildren = ARIADefinitions.designPatterns[roles[j]].reqChildren;
@@ -90,7 +90,7 @@ export let aria_keyboard_handler_exists: Rule = {
                                         passed = (r.hasAttribute("onkeydown") || r.hasAttribute("onkeypress"));
                                         if (!passed) {
 
-                                            // Child did not have a key handler.  See if any of the grandchildren do.
+                                            // Child did not have a key handler. See if any of the grandchildren do.
                                             let xp2 = "descendant::*";
                                             let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                             let r2: Element = xpathResult2.iterateNext() as Element;

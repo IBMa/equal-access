@@ -45,15 +45,17 @@
 
 ### Why is this important?
 
-A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
+A component with an `"img"` role can contain important information as well as multiple image files.
+When viewed together, these elements give the impression of a single image.
+Providing a text alternative makes the same information accessible through audio or other channels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Add an `aria-labelledby` attribute to the element with a `role="img"`. It must point to visible text on the page that is meaningful as a label;
-* **Or**, add an `aria-label` attribute to the element with a `role="img"`;
+* Add an `aria-labelledby` attribute to the element with a `role="img"`. It must point to visible text on the page that is meaningful as a label
+* **Or**, add an `aria-label` attribute to the element with a `role="img"`
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:
@@ -74,12 +76,12 @@ Example:
 ### About this requirement
 
 * [IBM 1.1.1 Non-text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique ARIA6: Using aria-label to provide labels for objects](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6)
-* [WCAG technique ARIA16: Using aria-labelledby to provide a name for user interface controls](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA16)
+* [ARIA6: aria-label to label objects](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6)
+* [ARIA16: aria-labelledby to name user interface controls](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA16)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People who turn off image-loading on their web browsers
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 

@@ -36,7 +36,7 @@ export let aria_attribute_required: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "When using a ARIA role on an element, the required attributes for that role must be defined",
+            "group": "When using an ARIA role on an element, the required attributes for that role must be defined",
             "Pass_0": "Rule Passed",
             "Fail_1": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
         }
