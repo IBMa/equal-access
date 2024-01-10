@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: FieldSet-hasEmptyLegend.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input type Tests</h3>
+
+
+<ul>
+	<li>Test - fieldset is hidden or AT hidden</li>
+</ul>
+
+<form action="..." method="post" >
+	<fieldset aria-hidden="true">
+		<label for="fn1">First Name</label>
+		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
+
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name">
+	</fieldset>
+  <fieldset hidden>
+		<label for="fn11">First Name</label>
+		<input type="number" name="ssn" id="fn11" value="enter SSN" title="enter SSN">
+
+		<label for="ln11">Last Name</label>
+		<input type="number" name="phone" id="ln11" value="enter phone number" title="enter phone number">
+		
+	</fieldset>
+  <button type="submit">Submit</button>
+</form>
+
+<a name="navskip"></a>
+
+
+<script>
+  UnitTest = {
+    ruleIds: ["fieldset_legend_valid"],
+    results: [
+    
+    ]
+  };
+</script>
+</body>
+</html>
