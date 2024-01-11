@@ -48,8 +48,12 @@
   <h6><span style="content-visibility:none">H6</span></h6>
 
 	<h6><span style="content-visibility: hidden;">H6 hidden</span></h6>
+  <h6><span style="content-visibility: hidden;display:inline">H6 hidden display inline</span></h6>
 
   <h6><span style="content-visibility: hidden;display:block">H6 hidden display block</span></h6>
+  <h6><span style="content-visibility: hidden;display:inline-block">H6 hidden display inline block</span></h6>
+  <h6><span style="content-visibility: hidden;display:flex">H6 hidden display flex</span></h6>
+  <h6><span style="content-visibility: hidden;display:grid">H6 hidden display grid</span></h6>
   
 	<a name="navskip"></a>
 
@@ -126,11 +130,84 @@
             "ruleId": "aria_accessiblename_exists",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/h6[3]",
               "aria": "/document[1]/heading[5]"
+            },
+            "reasonId": "pass",
+            "message": "An accessible name is provided for the element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[4]",
+              "aria": "/document[1]/heading[6]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <h6> with \"heading\" role has no accessible name",
+            "messageArgs": [
+              "h6",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[5]",
+              "aria": "/document[1]/heading[7]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <h6> with \"heading\" role has no accessible name",
+            "messageArgs": [
+              "h6",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[6]",
+              "aria": "/document[1]/heading[8]"
+            },
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <h6> with \"heading\" role has no accessible name",
+            "messageArgs": [
+              "h6",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/h6[7]",
+              "aria": "/document[1]/heading[9]"
             },
             "reasonId": "fail_no_accessible_name",
             "message": "Element <h6> with \"heading\" role has no accessible name",
