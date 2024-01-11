@@ -45,19 +45,20 @@
 
 ### Why is this important?
 
-The ARIA specification provides a collection of accessibility roles as the main indicator 
-of the type of control. This is used to support platform accessibility APIs. Using a valid 
-ARIA role on an element, as defined in the ARIA specification, allows assistive 
-technologies to use the role semantics to present and support consistent object interaction.
+The ARIA specification provides a set of accessibility roles as the main indicator of control's type.
+These roles support platform accessibility APIs.
+By assigning a valid ARIA role on an element, as defined in the ARIA specification,
+assistive technologies leverage the role's semantics to provide consistent object interaction and presentation.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Remove any `role` definitions from table structure elements (`<tr>`, `<th>`, `<td>`) within any 
-container with a role of `"table"`, `"grid"`, or `"treegrid"`. The following example shows an element 
-with a valid `role="grid"` with appropriate table structures:
+* Remove any `role` attributes from table structure elements (`<tr>`, `<th>`, `<td>`) within any 
+container with a role of `"table"`, `"grid"`, or `"treegrid"`. 
+
+Code example of a table with a valid `role="grid"` and appropriate table structures:
 
 ```
 <div id="caption" class="caption">Table caption</div>
@@ -91,8 +92,8 @@ with a valid `role="grid"` with appropriate table structures:
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
-* People with dexterity impairment using voice control
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People with dexterity impairments using voice control
 
 </script></mark-down>
 <!-- End side panel -->
