@@ -174,4 +174,3 @@ export let a11yRulesets: Guideline[] = [
             }))
     }
 ]
-

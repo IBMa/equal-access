@@ -28,7 +28,7 @@ export let table_aria_descendants: Rule = {
     messages: {
         "en-US": {
             "group": "Table structure elements cannot specify an explicit 'role' within table containers",
-            "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within a ARIA role '{1}' per the ARIA in HTML specification"
+            "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within an ARIA role '{1}' per the ARIA in HTML specification"
         }
     },
     rulesets: [{

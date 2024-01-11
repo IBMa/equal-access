@@ -45,16 +45,18 @@
 
 ### Why is this important?
 
-Use CSS to include decorative images only. Background images in CSS do not support text alternatives. When users do not see the default page background, any important information in CSS background images is lost.
+Use CSS to include decorative images only.
+CSS background images do not support text alternatives.
+When users cannot see the background image or it has been removed by system high contrast, any important information is lost.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If the background image contains important text, use real text rather than an image of text;
-* **Or**, if the background image conveys important information, use the `<img>` element with an `"alt"` attribute instead of a background image;
-* **Or**, provide a text alternative for the information that shows if the CSS image is not displayed (e.g. for users using alternate backgrounds and users using high contrast mode).
+* If the background image contains important text, use real text rather than an image of text
+* **Or**, if the background image conveys important information, use the `<img>` element with an `"alt"` attribute instead of a background image
+* **Or**, provide an alternative for the information that shows if the CSS image is not displayed (e.g., for users using alternate backgrounds or Windows high contrast)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -68,11 +70,11 @@ Use CSS to include decorative images only. Background images in CSS do not suppo
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG failure F3: Due to using CSS to include images that convey important information](https://www.w3.org/WAI/WCAG22/Techniques/failures/F3)
+* [Failure F3: CSS images that convey important information](https://www.w3.org/WAI/WCAG22/Techniques/failures/F3)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with visual impairment using color contrast enhancement
 * People who use alternate backgrounds to increase legibility
 

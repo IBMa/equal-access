@@ -53,10 +53,10 @@ export let fieldset_legend_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-
-        //skip the check if the element is hidden or disabled
+        
+      //skip if the fieldset is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
-            return;
+            return null;
 
         // In the case a legend is hidden, we should still trigger a violations for this
         let legends = RPTUtil.getChildByTagHidden(ruleContext, "legend", true, false);

@@ -16,6 +16,9 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import { IIssue, IReport, UIIssue, eFilterLevel } from '../../interfaces/interfaces';
+import { UtilIssue } from '../../util/UtilIssue';
+import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
@@ -30,22 +33,31 @@ import {
     OverflowMenuItem,
     Switch,
     Tooltip,
+    Link,
 } from "@carbon/react";
 import {
     Keyboard,
     KeyboardOff
 } from "@carbon/react/icons";
 import { ListenerType } from '../../messaging/controller';
-import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
-// import { BrowserDetection } from '../../util/browserDetection';
+import { DefinitionTooltip } from '@carbon/react';
+import { BrowserDetection } from "../../util/browserDetection";
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
+    report: IReport | null,
+    selectedPath: string | null,
+    checked: {
+        "Violation": boolean,
+        "Needs review": boolean,
+        "Recommendation": boolean,
+        "Hidden": boolean
+    }
     scanningState: ScanningState | "done"
     pageStatus: string
     viewState: ViewState
@@ -56,11 +68,45 @@ interface ScanSectionState {
     selectedElemPath: string,
     focusMode: boolean,
     confirmClearStored: boolean,
-    canScan: boolean
+    canScan: boolean,
+    ignoredIssues: UIIssue[]
+}
+
+type eLevel = eFilterLevel;
+
+type CountType = {
+    "Violation": {
+        focused: number,
+        total: number
+    },
+    "Needs review": {
+        focused: number,
+        total: number
+    },
+    "Recommendation": {
+        focused: number,
+        total: number
+    },
+    "Hidden": {
+        focused: number,
+        total: number
+    }
+    "Pass": {
+        focused: number,
+        total: number
+    }
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
+        report: null,
+        selectedPath: null,
+        checked: {
+            "Violation": true,
+            "Needs review": true,
+            "Recommendation": true,
+            "Hidden": false
+        },
         scanningState: "idle",
         pageStatus: "complete",
         viewState: {
@@ -73,25 +119,27 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         selectedElemPath: "html",
         focusMode: false,
         confirmClearStored: false,
-        canScan: true
+        canScan: true,
+        ignoredIssues: []
     }
-    scanRef = React.createRef<HTMLButtonElement>()
+    scanRef = React.createRef<HTMLButtonElement>();
 
-    reportListener : ListenerType<IReport> = async (report) => {
+    reportListener : ListenerType<IReport> = async (newReport) => {
         let self = this;
         let hasReportContent = false;
-        if (report && report.results.length > 0) {
+        if (newReport && newReport.results.length > 0) {
+            // after the scan we have report aka newReport
             hasReportContent = true;
         }
-        devtoolsController.setFocusMode(false);
         // If a scan never started, we can't be done
         self.setState( { 
             scanningState: this.state.scanningState !== "idle"? "done" : "idle",
-            reportContent: hasReportContent
+            reportContent: hasReportContent,
+            report: newReport
         });
         setTimeout(() => {
             self.setState( { scanningState: "idle" });
-            if (report) {
+            if (newReport) {
                 getDevtoolsAppController().setSecondaryView("summary");
             }
             setTimeout(() => {
@@ -99,6 +147,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             }, 0);
         }, 500);
     }
+
+    
 
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
@@ -135,6 +185,14 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 });
             }
         });
+        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await bgController.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues });
+            }
+        })
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
+        this.setState({ ignoredIssues: alreadyIgnored });
         this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 
@@ -153,14 +211,111 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     async scan() {
         this.setState( { scannedOnce: true });
         await bgController.requestScan(getTabId()!);
+        // The scan is done here so can calc issues found and issue type counts
+        // see newReport in reportListener
     }
 
+    // START for issue type numbers especially for focussed view
+    selectedElementListener: ListenerType<string> = async (path) => {
+        this.setPath(path);
+    }
+
+    setPath(path: string) {
+        this.setState({ selectedPath: path });
+    }
+
+    initCount() {
+        return {
+            "Violation": {
+                focused: 0,
+                total: 0
+            },
+            "Needs review": {
+                focused: 0,
+                total: 0
+            },
+            "Recommendation": {
+                focused: 0,
+                total: 0
+            },
+            "Hidden": {
+                focused: 0,
+                total: 0
+            },
+            "Pass": {
+                focused: 0,
+                total: 0
+            }
+        }
+    }
+
+
+    getCounts(issues: UIIssue[] | null) : CountType {
+        let counts = this.initCount();
+        if (issues) {
+            for (const issue of issues) {
+                let sing = UtilIssue.valueToStringSingular(issue.value);
+                ++counts[sing as eLevel].total;
+                if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
+                    ++counts[sing as eLevel].focused;
+                }
+            }
+        }
+        if (this.state.ignoredIssues) {
+            for (const ignoredIssue of this.state.ignoredIssues) {
+                ++counts["Hidden" as eLevel].total;
+                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                    ++counts["Hidden" as eLevel].focused;
+                }
+                // remove from appropriate eLevel V, NR, R
+                let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
+                --counts[sing as eLevel].total;
+                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                    --counts[sing as eLevel].focused;
+                }
+            }
+        }
+        return counts;
+    }
+
+    // END for issue type numbers especially for focussed view
+
     render() {
+        let reportIssues : IIssue[] | null = null;
+        let filterCounts: CountType = this.initCount();
+        let quickTotalCount = 0;
+        let totalCount = 0;
+        if (this.state.report) {
+            quickTotalCount = this.state.report.counts.Violation +
+                         this.state.report.counts['Needs review'] +
+                         this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
+            reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;           
+        }
+        if (reportIssues) {
+            filterCounts = this.getCounts(reportIssues);
+            reportIssues = reportIssues.filter((issue: IIssue) => {
+                let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
+                    && (!this.state.focusMode
+                        || !this.state.selectedPath
+                        || issue.path.dom.startsWith(this.state.selectedPath)
+                    )
+                );
+                return retVal;
+            });
+        }
+
+        {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
+            totalCount += filterCounts[levelStr as eLevel].total;
+            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
+        })}
+
         let selectedElementStr = this.state.selectedElemPath;
+    
         if (selectedElementStr) {
             selectedElementStr = selectedElementStr.split("/").pop()!;
             selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
         }
+
         let devtoolsAppController = getDevtoolsAppController();
         return (<div className="scanSection">
             <Grid> 
@@ -297,6 +452,54 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                         {this.state.storeReports && "Storing: "}
                         {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
                         {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
+                    </div>
+               
+                    <div className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+                    {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
+                        totalCount += filterCounts[levelStr as eLevel].total;
+                        return <>
+                            <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
+                                <span className="countCol">
+                                    <DefinitionTooltip openOnHover align="top-left" definition={levelStr}>
+                                    {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}</DefinitionTooltip>
+                                    <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                        {reportIssues && <>
+                                            {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
+                                                filterCounts[levelStr as eLevel].total
+                                            : <>
+                                                {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
+                                            </>}
+                                        </>}
+                                    </span>
+                                    <span style={{ marginRight: "18px" }}></span>
+                                </span>
+                                {/* </Tooltip> */}
+                            </span>
+                        </>
+                    })}
+                    <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
+                        <span className="countCol">
+                        <DefinitionTooltip openOnHover align="top-left" definition="Hidden">
+                        {UtilIssueReact.valueSingToIcon(BrowserDetection.isDarkMode()?"ViewOn":"ViewOff", "reportSecIcon")}</DefinitionTooltip>
+                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                {reportIssues && <>
+                                    {this.state.ignoredIssues.length}
+                                </>}
+                            </span>
+                            <span style={{ marginRight: "18px" }}></span>
+                        </span>
+                    </span>
+                    <Link 
+                        id="totalIssuesCount" 
+                        href="#0"
+                        className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                        aria-disabled={totalCount === 0}
+                        inline={true}
+                        onClick={() => {
+                            let appController = getDevtoolsAppController();
+                            getDevtoolsAppController().setSecondaryView("summary");
+                            appController.openSecondary("totalIssuesCount");
+                    }}>{quickTotalCount} issues found</Link>
                     </div>
                 </Column>
             </Grid>

@@ -13,7 +13,7 @@ This README covers topics for developers who want to better understand the rules
 
 The `"IBM Accessibility"` ruleset is based on the [IBM Accessibility Requirements](https://www.ibm.com/able/requirements/requirements/), which is unified list of worldwide standards and regulations as described in the [release notes](https://www.ibm.com/able/requirements/release-notes).
 
-The rules test conformance against the standards and specifications such as the [Accessible Rich Internet Applications (ARIA) specification](https://www.w3.org/TR/wai-aria-1.2/).
+The rules test conformance against the standards and specifications, such as the [Accessible Rich Internet Applications (ARIA) specification](https://www.w3.org/TR/wai-aria-1.2/).
 The rules are harmonized with open rules published by the [W3C ACT-Rules Community](https://www.w3.org/community/act-r/) group as reported in the [IBM Equal Access Accessibility Checker ACT implementation report](https://wai-wcag-act-rules.netlify.app/standards-guidelines/act/implementations/equal-access/).
 `Rulesets` are also provided for `"WCAG 2.1 (A,AA)"` and `"WCAG 2.0 (A,AA)"`.
 

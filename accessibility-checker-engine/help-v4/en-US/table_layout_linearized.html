@@ -45,15 +45,17 @@
 
 ### Why is this important?
 
-Some users consume a linearized version of a Web page, with each element following the previous one. In linearized form, tables are read from cell to cell horizontally across each row, moving down the rows from top to bottom. If this reading order is not appropriate for the content, users will not be able to make sense of it.
+Some users consume a linearized version of a Web page, with each element following the previous one.
+In linearized form, tables are read from cell to cell horizontally across each row, moving down the rows from top to bottom.
+If this reading order is not appropriate for the content, users will not be able to make sense of it.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If a table is being used for presentation purposes, separate content from presentation by using CSS instead of a table to achieve the desired layout;
- * **Or**, if a table must be used, add `role="none"` and structure the table so that a left-to-right, top-to-bottom reading of the table gives a natural reading order for the content.
+ * If a table is being used for layout purposes, separate content from presentation by using CSS instead of a table to achieve the desired layout
+ * **Or**, if a table must be used, add `role="presentation"` and structure the table so that a left-to-right, top-to-bottom reading of the table gives a natural reading order for the content
 
 </script></mark-down>
 <!-- End main panel -->
@@ -70,8 +72,8 @@ Some users consume a linearized version of a Web page, with each element followi
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People who use a braille display
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People who use a Braille display
  * People with reading disabilities
  * People with cognitive differences who view interfaces using an adapted layout
 

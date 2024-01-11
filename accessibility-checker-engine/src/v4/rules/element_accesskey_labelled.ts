@@ -76,7 +76,6 @@ export let element_accesskey_labelled: Rule = {
         // check if accessible name exists
         if (ARIAMapper.computeName(ruleContext).trim().length > 0)
             return RulePass("Pass_0");
-
         return RulePotential("Potential_1");
 
     }

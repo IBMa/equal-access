@@ -21,6 +21,6 @@ import { getDevtoolsAppController } from './devtoolsAppController';
 
 getDevtoolsAppController();
 
-ReactDOM.render(<DevToolsApp panel="elements" />
+ReactDOM.render(<DevToolsApp panel="elements"/>
     , document.getElementById('pageapp-root'));
     

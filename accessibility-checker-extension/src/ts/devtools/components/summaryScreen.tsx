@@ -16,26 +16,34 @@
 
 import React from "react";
 
-import { Column, Grid, Tile, } from '@carbon/react';
+import { Column, Grid, Tile, SelectableTile, } from '@carbon/react';
 import Violation16 from "../../../assets/Violation16.svg";
 import NeedsReview16 from "../../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../../assets/Recommendation16.svg";
-import { IReport, IStoredReportMeta } from "../../interfaces/interfaces";
+import { IReport, IStoredReportMeta, UIIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
+import { getBGController } from '../../background/backgroundController';
+import { getDevtoolsAppController } from '../devtoolsAppController';
 import { BrowserDetection } from '../../util/browserDetection';
+import { getTabId } from '../../util/tabId';
 import "./summaryScreen.scss";
 
 interface ISummaryScreenState {
     report?: IReport,
-    reportMeta?: IStoredReportMeta
+    reportMeta?: IStoredReportMeta,
+    ignoredIssues: UIIssue[]
 }
 
 interface ISummaryScreenProps {
+    
 }
 
+let bgController = getBGController();
+let appController = getDevtoolsAppController();
 export default class SummaryScreen extends React.Component<ISummaryScreenProps, ISummaryScreenState> {
     private devtoolsController = getDevtoolsController();
     state: ISummaryScreenState = {
+        ignoredIssues: []
     }
     async componentDidMount(): Promise<void> {
         let self = this;
@@ -45,21 +53,46 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                 reportMeta: await self.devtoolsController.getReportMeta() || undefined
             });
         })
+        appController.addLevelFilterListener(() => {
+            this.setState({});
+        })
+        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await bgController.getTabInfo(getTabId())).url) {
+                this.setState({ ignoredIssues: issues });
+            }
+        })
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
+        this.setState({ ignoredIssues: alreadyIgnored });
         this.setState({
             report: await self.devtoolsController.getReport() || undefined,
             reportMeta: await self.devtoolsController.getReportMeta() || undefined
         })
     }
 
+    
+
     render() {
+        let ignoredTotal = this.state.ignoredIssues.length;
         // JCH find unique elements that have violations and needs review issues
         let violations = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-        }) || []
+        }) || [];
+        // let ignoredViolations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+        //     return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
+        // }) || [];
+        
 
         let potentials = this.state.report && this.state.report.results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
         }) || [];
+        // let ignoredNeedsReview = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+        //     return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
+        // }) || [];
+
+        // let ignoredRecommendations = this.state.ignoredIssues && this.state.ignoredIssues.filter((result: any) => {
+        //     return result.value[0] === "RECOMMENDATION";
+        // }) || [];
 
         let violationsPlusPotentials = violations.concat(potentials);
         let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
@@ -89,6 +122,7 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
 
                         <div className="summaryTitleDetail">{time}</div>
                         <div className="summaryTitleDetail"><span style={{ fontWeight: 600 }}>Scanned page:</span> {this.state.reportMeta && this.state.reportMeta.pageURL || ""}</div>
+                        <div className="summaryTitleDetail"><span style={{ textDecorationLine: "underline" }}>{ignoredTotal} hidden issues</span></div>
                     </Column>
                 </Grid>
                 <Grid style={{margin: "0rem"}}>
@@ -102,36 +136,58 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
                         </Tile>
                     </Column>
                     <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
-                        <Tile className="tile count-tile">
+                        <SelectableTile 
+                            className="tile count-tile"
+                            selected={appController.getLevelFilter("Violation")}
+                            onChange={async () => {
+                                let checked = appController.getLevelFilters();
+                                checked["Violation"] = !checked["Violation"];
+                                appController.setLevelFilters(checked);
+                            }}
+                            >
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Violations</h3>
-                                <span><img src={Violation16} style={{ verticalAlign: "top", float: "right" }} alt="Violation" /></span>
+                                <span>&nbsp;<img src={Violation16} style={{ verticalAlign: "top" }} alt="Violation" /></span>
                             </div>
                             <div className="tile-score">{this.state.report && this.state.report.counts["Violation"] || "?"}</div>
                             <div className="tile-description">Accessibility failures that need to be corrected</div>
-                        </Tile>
+                        </SelectableTile>
                     </Column>
                 </Grid>
                 <Grid style={{margin: "0rem"}}>
                     <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
-                        <Tile className="tile count-tile">
+                        <SelectableTile className="tile count-tile"
+                            selected={appController.getLevelFilter("Needs review")}
+                            onChange={async () => {
+                                let checked = appController.getLevelFilters();
+                                checked["Needs review"] = !checked["Needs review"];
+                                appController.setLevelFilters(checked);
+                            }}
+                            >
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Needs review</h3>
-                                <span><img src={NeedsReview16} style={{ verticalAlign: "top", float: "right" }} alt="Needs review" /></span>
+                                <span>&nbsp;<img src={NeedsReview16} style={{ verticalAlign: "top" }} alt="Needs review" /></span>
                             </div>
                             <div className="tile-score">{this.state.report && this.state.report.counts["Needs review"] || "?"}</div>
                             <div className="tile-description2">Issues that may not be a violation; manual review is needed</div>
-                        </Tile>
+                        </SelectableTile>
                     </Column>
                     <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
-                        <Tile className="tile count-tile">
+                        <SelectableTile className="tile count-tile"
+                            selected={appController.getLevelFilter("Recommendation")}
+                            onChange={async () => {
+                                let checked = appController.getLevelFilters();
+                                checked["Recommendation"] = !checked["Recommendation"];
+                                appController.setLevelFilters(checked);
+                            }}
+                        >
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Recommendations</h3>
-                                <span><img src={Recommendation16} style={{ verticalAlign: "top", float: "right" }} alt="Recommendation" /></span>
+                                <span>&nbsp;<img src={Recommendation16} style={{ verticalAlign: "top" }} alt="Recommendation" /></span>
                             </div>
                             <div className="tile-score">{this.state.report && this.state.report.counts["Recommendation"] || "?"}</div>
                             <div className="tile-description2">Opportunities to apply best practices to further improve accessibility</div>
-                        </Tile>
+                        </SelectableTile>
                     </Column>
                 </Grid>
             </div>

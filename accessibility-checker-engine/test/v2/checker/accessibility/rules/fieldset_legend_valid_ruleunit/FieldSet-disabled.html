@@ -29,41 +29,49 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h3>Img ARIA label Tests</h3>
+<h2>Test case: FieldSet-hasEmptyLegend.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input type Tests</h3>
 
 
 <ul>
-	<li>Test - Valid ARIA label</li>
+	<li>Test - fieldset is hidden or AT hidden</li>
 </ul>
 
-<img src="/test-assets/shared/w3c-logo.png" aria-label="W3C logo" />
+<form action="..." method="post" >
+	<fieldset aria-hidden="true">
+		<label for="fn1">First Name</label>
+		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
 
-<a name="navskip">End</a>
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name">
+	</fieldset>
+  <fieldset hidden>
+		<label for="fn11">First Name</label>
+		<input type="number" name="ssn" id="fn11" value="enter SSN" title="enter SSN">
+
+		<label for="ln11">Last Name</label>
+		<input type="number" name="phone" id="ln11" value="enter phone number" title="enter phone number">
+		
+	</fieldset>
+  <button type="submit">Submit</button>
+</form>
+
+<a name="navskip"></a>
 
 
 <script>
   UnitTest = {
-    ruleIds: ["img_alt_valid"],
+    ruleIds: ["fieldset_legend_valid"],
     results: [
-    {
-            "ruleId": "img_alt_valid",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/img[1]",
-              "aria": "/document[1]/img[1]"
-            },
-            "reasonId": "pass",
-            "message": "Image has required 'alt' attribute, ARIA label, or title if it conveys meaning, or 'alt=\"\" if decorative",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+    
     ]
   };
 </script>
 </body>
-
 </html>
