@@ -933,7 +933,7 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
             { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
             { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
-            { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details.' }
+            { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
         ];
 
         for (let i = 5; i < rowData.length + 5; i++) {
@@ -986,7 +986,7 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
             { key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. ' },
             { key1: 'Issue type', key2: 'Violation, needs review, or recommendation' },
-            { key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details' },
+            { key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details' },
             { key1: 'Checkpoint', key2: 'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.' },
             { key1: 'WCAG level', key2: 'A, AA or AAA. WCAG level for this issue.' },
             { key1: 'Rule', key2: 'Name of the accessibility test rule that detected this issue.' },
