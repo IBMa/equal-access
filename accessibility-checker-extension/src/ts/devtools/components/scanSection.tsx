@@ -491,6 +491,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     </span>
                     <Link 
                         id="totalIssuesCount" 
+                        href="#0"
                         className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
                         aria-disabled={totalCount === 0}
                         inline={true}
