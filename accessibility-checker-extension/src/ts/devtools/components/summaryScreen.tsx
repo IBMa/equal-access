@@ -127,6 +127,9 @@
                             <div className="summaryTitleDetail">{time}</div>
                             <div className="summaryTitleDetail"><span style={{ fontWeight: 600 }}>Scanned page:</span> {this.state.reportMeta && this.state.reportMeta.pageURL || ""}</div>
                             <div className="summaryTitleDetail"><span style={{ textDecorationLine: "underline" }}>{ignoredTotal} hidden issues</span></div>
+                            <br></br>
+                            <div className="summaryTitleDetail">Select or deselect checkboxes to filter issues in the Checker view</div>
+
                         </Column>
                     </Grid>
                     <Grid style={{margin: "0rem"}}>
