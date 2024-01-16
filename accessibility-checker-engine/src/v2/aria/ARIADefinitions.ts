@@ -2120,10 +2120,10 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "s": {
-            implicitRole: null,
+            implicitRole: ["deletion"],
             validRoles: ["any"],
             globalAriaAttributesValid: true,
-            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
+            otherDisallowedAriaAttributes: ["aria-label", "aria-labelledby"]
         },
         "samp": {
             implicitRole: ["generic"],
