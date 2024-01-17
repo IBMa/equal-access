@@ -104,9 +104,6 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         appController.addLevelFilterListener(() => {
             this.setState({});
         })
-        let url = (await bgController.getTabInfo(getTabId())).url!;
-        let alreadyIgnored = await bgController.getIgnore(url);
-        this.setState({ ignoredIssues: alreadyIgnored });
     }
 
     componentWillUnmount(): void {
@@ -126,7 +123,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS" || issue.ruleId === "detector_tabbable");
         }
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
         this.setState({ 
+            ignoredIssues: alreadyIgnored,
             report,
             canScan: (await bgController.getTabInfo(getTabId()!)).canScan
         });
