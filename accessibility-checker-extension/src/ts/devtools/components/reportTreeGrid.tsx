@@ -224,7 +224,14 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         await ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
         if (this.props.panel === "elements" && inspect !== false) {
             // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
-            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
+            let focusTarget: HTMLElement | null = this.treeGridRef.current;
+            if (ReportTreeGrid.devtoolsAppController.getSecondaryOpen()) {
+                let secondaryPanel = document.querySelector(".secondaryDialog") as HTMLElement;
+                if (window.getComputedStyle(secondaryPanel).display !== "none") {
+                    focusTarget = secondaryPanel.querySelector(".cds--modal-close")
+                }
+            }
+            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, focusTarget);
         } else {
             await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
@@ -821,21 +828,23 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                                 tabIndex={-1}
                                             />
                                         </div>
-                                        {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} <a
+                                        {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.ignored && <ViewOff size={16} />}{<span style={{paddingRight:"4px"}}></span>}{thisIssue.message} 
+                                        {" "}<Link
                                             className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                             role="link"
-                                            tabIndex={focused ? 0 : -1}
+                                            href="#0"
+                                            // tabIndex={focused ? 0 : -1}
                                             onClick={() => {
                                                 this.onRow(group, thisIssue);
                                                 ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
                                             }}
-                                            onKeyDown={(evt: React.KeyboardEvent) => {
-                                                if (evt.key === "Enter" || evt.key === "Return") {
-                                                    this.onRow(group, thisIssue);
-                                                    ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                                }
-                                            }}
-                                        >Learn more</a>
+                                            // onKeyDown={(evt: React.KeyboardEvent) => {
+                                            //     if (evt.key === "Enter" || evt.key === "Return") {
+                                            //         this.onRow(group, thisIssue);
+                                            //         ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
+                                            //     }
+                                            // }}
+                                        >Learn more</Link>
                                     </div>
                                 </Column>
                             </Grid>
