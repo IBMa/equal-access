@@ -18,7 +18,7 @@ import { Bounds } from "../interfaces/interfaces";
 
 export class ElementUtils {
     static getBounds(node: Node, forScreenShot: boolean) : Bounds | null {
-        if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
+        if (node && node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             let adjustment = 1;
             if (forScreenShot && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.devicePixelRatio) {
                 adjustment = node.ownerDocument.defaultView.devicePixelRatio;
