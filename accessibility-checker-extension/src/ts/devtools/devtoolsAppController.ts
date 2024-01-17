@@ -48,7 +48,9 @@ export class DevtoolsAppController {
 
     constructor() {
         getDevtoolsController().addSelectedIssueListener(async () => {
-            this.setSecondaryView("help");
+            if (!this.secondaryOpen) {
+                this.setSecondaryView("help");
+            }
         });
     }
 
