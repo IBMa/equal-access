@@ -31,21 +31,45 @@
   
 	<script>
 		UnitTest = {
-			ruleIds: ["aria_role_redundant"],
+			ruleIds: ["aria_attribute_valid"],
 			results: [
 			{
-            "ruleId": "aria_role_redundant",
+            "ruleId": "aria_attribute_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]/s[1]",
+              "aria": "/document[1]/paragraph[1]/deletion[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-label\" are not valid for the element <s> with implicit ARIA role \"deletion\"",
+            "messageArgs": [
+              "aria-label",
+              "s",
+              "deletion"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/p[2]/s[1]",
               "aria": "/document[1]/paragraph[2]/alert[1]"
             },
-            "reasonId": "pass",
-            "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
-            "messageArgs": [],
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-label\" are not valid for the element <s> with ARIA role \"alert\"",
+            "messageArgs": [
+              "aria-label",
+              "s",
+              "alert"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }
