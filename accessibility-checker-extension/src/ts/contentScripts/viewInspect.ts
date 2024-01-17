@@ -210,10 +210,10 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
     
     async function showOverlay(issue: IIssue) {
         let elem = DomPathUtils.domPathToElem(issue.path.dom);
-        let bounds = ElementUtils.getBounds(elem, false);
         let noVisibleElement = false;
         let elemOffScreen = false;
         if (elem) {
+            let bounds = ElementUtils.getBounds(elem, false);
             if (bounds) {
                 // handle bounds for non-visible elements, i.e., no width or height
                 if (bounds.width == 0 && bounds.height == 0) {
