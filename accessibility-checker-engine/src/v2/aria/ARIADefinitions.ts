@@ -1754,7 +1754,7 @@ export class ARIADefinitions {
         },
         "aside": {
             implicitRole: ["complementary"],
-            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
+            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-glossary", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
             globalAriaAttributesValid: true
         },
         "audio": {
