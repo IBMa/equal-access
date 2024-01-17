@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { eFilterLevel } from "../interfaces/interfaces";
+import { IReport, eFilterLevel } from "../interfaces/interfaces";
 import { getDevtoolsController } from "./devtoolsController";
 
 export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview" | "checkerViewAware";
@@ -52,6 +52,11 @@ export class DevtoolsAppController {
                 this.setSecondaryView("help");
             }
         });
+        getDevtoolsController().addReportListener(async (report: IReport) => {
+            if (!report) {
+                this.setSecondaryView("splash");
+            }
+        })
     }
 
     ///////////////////////////////////////////////////////////////////////////
