@@ -167,6 +167,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 }
                 if (!found) {
                     // Reset the issue selection since we can't find that same issue
+                    this.props.onFilterToolbar(newCheckedIssues.length === 0);
                     this.setState({ checkedIssues: newCheckedIssues, expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : "tableGridHeader" });
                 } else {
                     // If we didn't change the checked issues, scroll

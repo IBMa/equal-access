@@ -274,7 +274,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                                 light={false}
                                                 type="default"
                                                 style={{ float: "right" }}
-                                                selecteditems={levelSelectedItems}
+                                                selectedItems={levelSelectedItems}
                                                 initialSelectedItems={levelSelectedItems}
                                                 onChange={async (evt: any) => {
                                                     let checked = appController.getLevelFilters();
