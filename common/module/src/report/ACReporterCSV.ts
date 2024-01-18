@@ -51,7 +51,7 @@ export class ACReporterCSV implements IReporter {
             }
         }
         let startScanD = new Date(startScan);
-        let reportFilename = `results_${startScanD.toISOString()}.csv`;
+        let reportFilename = `results_${startScanD.toISOString().replace(/:/g,"-")}.csv`;
         if (config.outputFilenameTimestamp === false) {
             reportFilename = `results.csv`;
         }
