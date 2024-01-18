@@ -837,6 +837,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={() => {
                                                 this.onRow(group, thisIssue);
+                                                ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
                                                 ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
                                             }}
                                             // onKeyDown={(evt: React.KeyboardEvent) => {
