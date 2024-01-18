@@ -48,7 +48,10 @@
         async componentDidMount(): Promise<void> {
             let self = this;
             this.devtoolsController.addReportListener(async (newState) => {
+                let url = (await bgController.getTabInfo(getTabId())).url!;
+                let alreadyIgnored = await bgController.getIgnore(url);
                 self.setState({
+                    ignoredIssues: alreadyIgnored,
                     report: newState,
                     reportMeta: await self.devtoolsController.getReportMeta() || undefined
                 });
@@ -63,8 +66,8 @@
             })
             let url = (await bgController.getTabInfo(getTabId())).url!;
             let alreadyIgnored = await bgController.getIgnore(url);
-            this.setState({ ignoredIssues: alreadyIgnored });
-            this.setState({
+            this.setState({ 
+                ignoredIssues: alreadyIgnored,
                 report: await self.devtoolsController.getReport() || undefined,
                 reportMeta: await self.devtoolsController.getReportMeta() || undefined
             })
