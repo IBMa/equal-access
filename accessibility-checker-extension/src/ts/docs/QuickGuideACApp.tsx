@@ -56,7 +56,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     target="_blank"
                     rel="noopener noreferred"
                     inline={true}
-                    size="lg">user guide</Link>
+                    size="lg">User guide</Link>
             </p>
             
         </>)
@@ -68,9 +68,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     aria-label="Quick guide details"
                 >
                     
-                    <h1>IBM Accessibility Checker quick guide</h1>
+                    <h1>Quick guide - IBM Accessibility Checker</h1>
                     <p>
-                        The IBM Accessibility Checker is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements with explanations and suggested fixes.
+                        The IBM Equal Access Accessibility Checker ("the Checker") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements with explanations and suggested fixes.
                     </p>
                     <p>
                         As with any automated test tool for accessibility, these tests don't catch all issues. Complete your accessibility testing with a quick unit test for accessibility or follow the full accessibility test 
@@ -78,7 +78,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             href={chrome.runtime.getURL("usingAC.html#categories")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">
                             Accessibility Issues
-                        </Link> in the user guide.
+                        </Link> in the User guide.
                     </p>
                     <p>
                         <img
@@ -127,7 +127,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#a11y_check")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
-                        >Accessibility Checker</Link> in the user guide.</p>
+                        >Accessibility Checker</Link> in the User guide.</p>
 
                     <p>
                         <img
@@ -143,7 +143,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             href={chrome.runtime.getURL("usingAC.html#t_single_scan_report")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
                         >Create a scan report</Link> in
-                        the user guide. 
+                        the User guide. 
                     </p>
 
                     <p>
@@ -159,7 +159,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         view <Link 
                             href={chrome.runtime.getURL("usingAC.html#t_multi_scan_report")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Create a multi-scan report</Link> in 
-                        the user guide.
+                        the User guide.
                     </p>
 
                     <p>
@@ -173,7 +173,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         The focus view allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. For more in-depth guidance, 
                         view <Link href={chrome.runtime.getURL("usingAC.html#focus_view")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Focus view</Link> in 
-                        the user guide.</p>
+                        the User guide.</p>
                     <p>
                         <img
                             src="assets/img/4_Focus.png"
@@ -185,7 +185,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         This mode shows a visualization of the keyboard tab order detected on the page, and elements with detectable keyboard access issues. For more in-depth guidance, 
                         view <Link href={chrome.runtime.getURL("usingAC.html#keyboard_checker_mode")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Keyboard checker mode</Link> in 
-                        the user guide.
+                        the User guide.
                     </p>
                     <p>
                         <img

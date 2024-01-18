@@ -58,13 +58,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </OrderedList>
                 </ListItem>
                 <ListItem><Link href="#a11y_assess">Accessibility Assessment</Link></ListItem>
-                <ListItem><Link href="#t_select_settings">Options</Link></ListItem>
+                <ListItem><Link href="#t_select_settings">Settings</Link></ListItem>
                 <ListItem><Link href="#the_report">Accessibility Checker reports{" "}</Link></ListItem>
                 <ListItem><Link href="#a11y_considerations">Accessibility Considerations</Link></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
             </OrderedList>
-            <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">quick guide</Link>
+            <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</Link>
             </p>
             {/* </Theme> */}
             </>)
@@ -75,10 +75,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <main
                 aria-label="User guide details"
             >
-                <h1>IBM Accessibility Checker user guide</h1>
+                <h1>User guide - IBM Accessibility Checker</h1>
 
                 <p>
-                    The Accessibility Checker is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements. There is a <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Checker view</Link> to find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Assessment view</Link> for an executive overview of the page. For teams seeking integrated accessibility testing, IBM offers plug-ins and modules for NodeJS and Karma that perform cross-platform testing in the build and development process. These tools use the same test engine as the Accessibility Checker.
+                    The IBM Equal Access Accessibility Checker ("the Checker") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements. There is a <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Checker view</Link> to find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Assessment view</Link> for an executive overview of the page. For teams seeking integrated accessibility testing, IBM offers plug-ins and modules for NodeJS and Karma that perform cross-platform testing in the build and development process. These tools use the same test engine as the Accessibility Checker.
                 </p>
                 <p>
                     <strong>Note:</strong> On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
@@ -517,7 +517,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>View the issues by element roles, requirements, or rules and select the expand icon next to a requirement/element role/rule to see the related issues, and select an issue to see the detailed description in the right panel. </p>
                 
-                <h2 id="t_select_settings">5. Options</h2>
+                <h2 id="t_select_settings">5. Settings</h2>
                 <p>
                     By default, the IBM Accessibility Checker uses the latest deployment with a set of rules that correspond to the most recent WCAG standards, plus additional IBM requirements. Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
                 </p>
@@ -539,8 +539,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         browser window.
                     </ListItem>
                     <ListItem>
-                        In the overlay that appears, select 'Options’ and the options will open in a new browser tab.
-                        <strong> Note:</strong> In Firefox, the Options page may fail to open if the Enhanced Tracking Protection option is set to Strict. To avoid this, change the browser privacy settings to Standard.
+                        In the overlay that appears, select 'Settings’ and the settings will open in a new browser tab.
+                        <strong> Note:</strong> In Firefox, the Settings page may fail to open if the Enhanced Tracking Protection option is set to Strict. To avoid this, change the browser privacy settings to Standard.
                     </ListItem>
                 </OrderedList>
                 <p>
@@ -557,7 +557,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     Rule sets with rules that map to specific WCAG versions are available. These rule sets are updated regularly and each update has a date of deployment. For consistent testing throughout a project, choose a specific date deployment. To replicate an earlier test, choose the deployment date of the original test.
                 </p>
                 <p>
-                    Options from 'Select a rule set deployment date' dropdown:
+                    Settings from 'Select a rule set deployment date' dropdown:
                 </p>
                 <UnorderedList>
                     <ListItem>
@@ -572,7 +572,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </UnorderedList>
                 <p>
-                    Options from 'Select accessibility guidelines' dropdown:
+                    Settings from 'Select accessibility guidelines' dropdown:
                 </p>
                 <UnorderedList>
                     <ListItem>

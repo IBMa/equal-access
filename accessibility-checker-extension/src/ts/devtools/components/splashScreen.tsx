@@ -43,7 +43,7 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
                     <h2>
                         <div className="title">IBM <span style={{ fontWeight: 600 }}>Accessibility</span></div>
-                        <div className="subtitle">Equal Access Accessibility Checker</div>
+                        <div className="subtitle">Equal Access Toolkit: Accessibility Checker</div>
                         <div className="version">Version {displayVersion()}</div>
                     </h2>
                     <div className="description">

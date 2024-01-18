@@ -335,7 +335,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         // reset with "Reset to defaults"
 
         let aside = (<>
-            <aside aria-label="About Accessibility Checker Options">
+            <aside aria-label="About Accessibility Checker Settings">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
                 the WCAG standards plus some additional IBM requirements. Guidelines 
@@ -383,13 +383,13 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                     href={chrome.runtime.getURL("usingAC.html")}
                     target="_blank"
                     rel="noopener noreferred"
-                >user guide</Link>.
+                >User guide</Link>.
             </p>
         </aside>
         </>)
         return (<DocPage aside={aside} sm={4} md={6} lg={6}>
             <main aria-labelledby="options">
-                <h1 id="options">IBM Accessibility Checker options</h1>
+                <h1 id="options">Settings - IBM Accessibility Checker</h1>
                 {!archives || !rulesets && <>
                     <InlineNotification
                         kind="error"
@@ -403,7 +403,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         target="_blank" 
                         rel="noopener noreferred"
                         inline={true}
-                        size="lg">User Guide</Link> to give the browser permission to run the Option page. </p>
+                        size="lg">User guide</Link> to give the browser permission to run the Settings page. </p>
                 </>}
                 { archives && rulesets && <>
                     <h2>Rule sets</h2>
