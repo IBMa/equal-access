@@ -339,7 +339,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
                 the WCAG standards plus some additional IBM requirements. Guidelines 
-                are available for specific WCAG versions. The guidelines are updated regularly, 
+                are available for specific WCAG versions. The rules are updated regularly, 
                 and each update has a date of deployment. If you need to replicate an earlier test, 
                 choose the deployment date of the original test. 
             </p>
@@ -364,7 +364,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             >Release notes</Link>.
             </p>
             <p>
-                <strong>Rule sets</strong>: A packaged set of guidelines, 
+                <strong>Rule sets</strong>: A packaged set for a guideline, 
                 each of which is a collection of rules mapped to the requirements in the accessibility guideline,
                 see the <Link
                             inline={true}
@@ -470,7 +470,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
                                 see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link>.</p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
                                 see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
                         </Modal>, document.body)}
 
@@ -552,7 +552,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specification.</p>
                             
-                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set of guidelines, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
                                 see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
                             
                         </Modal>, document.body)}

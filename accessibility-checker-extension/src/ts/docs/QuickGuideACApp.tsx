@@ -70,7 +70,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     
                     <h1>Quick guide - IBM Accessibility Checker</h1>
                     <p>
-                        The IBM Equal Access Accessibility Checker ("the Checker") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements with explanations and suggested fixes.
+                        The IBM Equal Access Toolkit: Accessibility Checker ("the Checker") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements with explanations and suggested fixes.
                     </p>
                     <p>
                         As with any automated test tool for accessibility, these tests don't catch all issues. Complete your accessibility testing with a quick unit test for accessibility or follow the full accessibility test 
