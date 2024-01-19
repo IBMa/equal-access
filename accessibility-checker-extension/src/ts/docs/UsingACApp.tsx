@@ -130,17 +130,17 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </OrderedList>
                 <h2 id="issues">2. Accessibility issues</h2>
-                <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with a {" "}
+                <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with {" "}
                     <Link
                         target="_blank"
                         href="https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/"
                     >
-                        quick unit test for accessibility
-                    </Link>{" "}  or follow the <Link
+                        developer unit testing
+                    </Link>{" "}  and follow all the <Link
                         target="_blank"
                         href="https://www.ibm.com/able/toolkit/verify"
                     >
-                        full accessibility test process
+                        steps in the Verify phase
                     </Link>{" "}.
                 </p>
                 <p>
