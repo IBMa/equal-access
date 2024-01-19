@@ -132,7 +132,10 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             hasReportContent = true;
         }
         // If a scan never started, we can't be done
+        let url = (await bgController.getTabInfo(getTabId())).url!;
+        let alreadyIgnored = await bgController.getIgnore(url);
         self.setState( { 
+            ignoredIssues: alreadyIgnored,
             scanningState: this.state.scanningState !== "idle"? "done" : "idle",
             reportContent: hasReportContent,
             report: newReport
@@ -190,9 +193,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 this.setState({ ignoredIssues: issues });
             }
         })
-        let url = (await bgController.getTabInfo(getTabId())).url!;
-        let alreadyIgnored = await bgController.getIgnore(url);
-        this.setState({ ignoredIssues: alreadyIgnored });
         this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 

@@ -50,8 +50,8 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
                         This extension helps you identify accessibility issues and understand how to fix them. Use the <span style={{ fontWeight: 600 }}>'Accessibility Checker' tab in 
                         the {BrowserDetection.isChrome()?"Elements":"Inspector" } panel</span> to locate your issues in the code and on the page.<br /><br />
                         These automated tests don't catch all issues. Complete your accessibility assessment with
-                        a <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick unit test for accessibility</a><span> </span>
-                        or follow the <a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">full accessibility test process</a>.<br /><br />
+                        a <a className="link" href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank">quick unit test for accessibility</a><span> </span>
+                        or follow the <a className="link" href="https://www.ibm.com/able/toolkit/verify/overview"target="_blank">full accessibility test process</a>.<br /><br />
                         Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.
                     </div>
                 </Column>
