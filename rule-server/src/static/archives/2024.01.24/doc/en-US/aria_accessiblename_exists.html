@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>aria_accessiblename_exists - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"An accessible name is provided for the element","fail_no_accessible_name":"Element <{0}> with \"{1}\" role has no accessible name","group":"Elements with certain roles should have accessible names"}};
+        RULE_ID = "aria_accessiblename_exists"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+The [accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name) helps people using assistive technologies to identify the user interface element and its purpose which is critical in finding, navigating, and interacting with the content.
+Most assistive technologies expect elements with certain ARIA roles to have an accessible name per the ARIA specification.
+The browser provides the accessible name property to the assistive technologies. 
+The value of the accessible name is derived via one of the following means:
+- **author**: name comes from values provided by the author in explicit markup, such as the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest precedence
+- **contents**: name comes from the text content of the element
+- **required**: names are required for certain roles
+- **allowed**: names are supported for certain roles 
+- **prohibited**: authors **must not** use the `aria-label` or `aria-labelledby` attributes to name the element with certain roles
+
+#### Important terms:
+    
+- [Accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name)
+- [Accessible description](https://www.w3.org/TR/accname-1.2/#dfn-accessible-description)
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+    
+See the [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/#namecalculation) to determine where an accessible name is allowed, required, and prohibited for the particular role:
+- [Roles supporting name from the author](https://www.w3.org/TR/wai-aria-1.2/#namefromauthor)
+- [Roles supporting name from content](https://www.w3.org/TR/wai-aria-1.2/#namefromcontent)
+- [Roles which must not be named (Name prohibited)](https://www.w3.org/TR/wai-aria-1.2/#namefromprohibited)
+
+If the element supports a role with a required or allowed accessible name:
+- set the element's accessible name via the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest priority
+- **Or**, remove or change the invalid use of the ARIA role on the element
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/)
+* [Accessible Name and Description Computation specification](https://www.w3.org/TR/accname-1.2/)
+* [ARIA practices guide](https://www.w3.org/WAI/ARIA/apg/)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People with dexterity impairments using voice control
+* People with low vision using screen magnification
+* People using other assistive technologies that expose accessibility information
+    
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
