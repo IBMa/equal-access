@@ -53,7 +53,8 @@ export let fieldset_legend_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        //skip if the fieldset is hidden or disabled
+        
+      //skip if the fieldset is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return null;
 

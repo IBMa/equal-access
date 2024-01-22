@@ -179,6 +179,12 @@ export class VisUtil {
                 setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
             }
+
+            // check content-visibility: if the content-visibility is hiddenthen, return false as the element is not visible
+            if (VisUtil.isContentHidden(node)) {
+                setCache(node, "PT_NODE_HIDDEN", true);
+                return false;
+            }
         }
 
         // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
@@ -211,6 +217,34 @@ export class VisUtil {
         }
 
         // Return true (node is visible)
+        return true;
+    }
+
+    /**
+     * return true if the node or its ancestor is hidden by CSS content-visibility:hidden
+     * At this time, CSS content-visibility is partially supported by Chrome & Edge, but not supported by Firefox
+     * The implementation TEMPORARILY follows the Chrome test results:
+     *   if content-visibility:hidden
+     *      if the element is block-level (default or specified by the user), then the element and its children are normally hidden;
+     *      if the element is inline (default or specified by the user), then the element and its children are normally NOT hidden; 
+     * 
+     * @param node
+     */
+    public static isContentHidden(node: Element) : boolean {
+        if (!node) return false;
+
+        const style =  getComputedStyle(node);
+        if (!style) return false;
+
+        const content_visibility = style.getPropertyValue("content-visibility");
+        if (content_visibility !== 'hidden') 
+            return false;  
+         
+        const display = style.getPropertyValue("display"); 
+        // inline element only
+        if (display === 'inline')
+            return false;
+
         return true;
     }
 

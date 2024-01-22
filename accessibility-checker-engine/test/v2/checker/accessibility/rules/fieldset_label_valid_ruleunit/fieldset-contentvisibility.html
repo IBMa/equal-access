@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+	<a href="#navskip">skip to main content</a>
+	
+	
+	<div>Test case: content-visibility:hidden</div>
+	
+	
+	
+	<!-- ################################################################### -->
+	
+	
+	<div>content visibility Tests</div>
+	
+	
+	<ul>
+		<li>Test - content-visibility</li>
+	</ul>
+	
+  <fieldset>
+     <legend>this is a fieldset1</legend>
+     <label for="input1">input in fieldset</label>
+     <input id='input1' type="text" placeholder="my input">
+     <input type='submit' value="test button in fieldset" >
+  </fieldset>
+
+  <fieldset style="content-visibility: hidden;">
+    <legend>this is a fieldset2 hidden</legend>
+    <label for="input2">input in fieldset</label>
+    <input id='input2' type="text" placeholder="my input">
+    <input type='submit' value="test button in fieldset" >
+ </fieldset>
+
+	<a name="navskip"></a>
+
+
+<script>
+    UnitTest = {
+      ruleIds: ["fieldset_label_valid"],
+      results: [
+      {
+            "ruleId": "fieldset_label_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]",
+              "aria": "/document[1]/group[1]"
+            },
+            "reasonId": "Pass_1",
+            "message": "Group/Fieldset \"this is a fieldset1\" with an input has a unique name",
+            "messageArgs": [
+              "this is a fieldset1"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+
+</html>
