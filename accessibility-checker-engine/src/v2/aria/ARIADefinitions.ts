@@ -1754,7 +1754,7 @@ export class ARIADefinitions {
         },
         "aside": {
             implicitRole: ["complementary"],
-            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
+            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-glossary", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
             globalAriaAttributesValid: true
         },
         "audio": {
@@ -2120,10 +2120,10 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "s": {
-            implicitRole: null,
+            implicitRole: ["deletion"],
             validRoles: ["any"],
             globalAriaAttributesValid: true,
-            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
+            otherDisallowedAriaAttributes: ["aria-label", "aria-labelledby"]
         },
         "samp": {
             implicitRole: ["generic"],
