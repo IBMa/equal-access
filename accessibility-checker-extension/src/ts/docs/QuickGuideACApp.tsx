@@ -46,7 +46,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                 <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
                 <ListItem><Link href="#functionality">Functionality in the Checker</Link>
                     <OrderedList nested={true}>
-                    <ListItem><Link href="#checker">Scan to find issues</Link></ListItem>
+                    <ListItem><Link href="#checker">Scanning</Link></ListItem>
                     <ListItem><Link href="#scan">Create a scan report</Link></ListItem>
                     <ListItem><Link href="#multiscan">Create a multi-scan report</Link></ListItem>
                     <ListItem><Link href="#focus">Focus view</Link></ListItem>
@@ -57,6 +57,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
+                <ListItem><Link href="#resources">Resources</Link></ListItem>
             </UnorderedList>
             <p>
             See the <Link

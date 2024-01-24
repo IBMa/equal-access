@@ -50,17 +50,21 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
                 <ListItem><Link href="#view">The Checker view</Link>
                     <OrderedList nested={true}>
-                        <ListItem><Link href="#a11y_check">Accessibility Checker</Link></ListItem>
-                        <ListItem><Link href="#t_single_scan_report">Creating a scan report</Link></ListItem>
-                        <ListItem><Link href="#t_multi_scan_report">Creating a multi-scan report</Link></ListItem>
+                        <ListItem><Link href="#a11y_check">Scanning</Link></ListItem>
+                        <ListItem><Link href="#local">Scan local files</Link></ListItem>
+                        <ListItem><Link href="#sync">Synchronize views</Link></ListItem>
+                        <ListItem><Link href="#t_single_scan_report">Create a scan report</Link></ListItem>
+                        <ListItem><Link href="#t_multi_scan_report">Create a multi-scan report</Link></ListItem>
                         <ListItem><Link href="#focus_view">Focus view</Link></ListItem>
+                        <ListItem><Link href="#filter_views">Focus view</Link></ListItem>
+                        <ListItem><Link href="#hide_issues">Show/Hide issues</Link></ListItem>
                         <ListItem><Link href="#keyboard_checker_mode">Keyboard checker mode</Link></ListItem>
                     </OrderedList>
                 </ListItem>
-                <ListItem><Link href="#a11y_assess">Accessibility Assessment</Link></ListItem>
+                <ListItem><Link href="#a11y_assess">The Accessibility view</Link></ListItem>
                 <ListItem><Link href="#t_select_settings">Settings</Link></ListItem>
-                <ListItem><Link href="#the_report">Accessibility Checker reports{" "}</Link></ListItem>
-                <ListItem><Link href="#a11y_considerations">Accessibility Considerations</Link></ListItem>
+                <ListItem><Link href="#the_report">Checker reports</Link></ListItem>
+                <ListItem><Link href="#a11y_considerations">Accessibility features</Link></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
             </OrderedList>
@@ -552,17 +556,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
 
-                <h3 id="rule_deploy">Rule sets</h3>
+                <h3 id="rule_deploy">Rule set settings</h3>
                 <p>
-                    Rule sets with rules that map to specific WCAG versions are available. These rule sets are updated regularly and each update has a date of deployment. For consistent testing throughout a project, choose a specific date deployment. To replicate an earlier test, choose the deployment date of the original test.
+                    Rule sets with rules that map to a specific WCAG version are available. 
+                    The rule sets are updated regularly and each update has a date of deployment. 
+                    For consistent testing throughout a project, choose a specific date of deployment. 
+                    To replicate an earlier test, choose the deployment date of the original test.
                 </p>
                 <p>
-                    Settings from 'Select a rule set deployment date' dropdown:
+                    Options from the 'Select a rule set deployment date' dropdown:
                 </p>
                 <UnorderedList>
                     <ListItem>
-                        <strong>Latest Deployment</strong> - the latest version of the
-                        selected rule set(default option)
+                        <strong>Latest Deployment</strong> - the latest rule set of the
+                        selected accessibility guideline (default option)
                     </ListItem>
                     <ListItem>
                         <strong>&lt;date&gt; Deployment</strong> - the rule set from a specific date
@@ -572,27 +579,28 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </UnorderedList>
                 <p>
-                    Settings from 'Select accessibility guidelines' dropdown:
+                    Options from the 'Select accessibility guidelines' dropdown:
                 </p>
                 <UnorderedList>
                     <ListItem>
-                        <strong>IBM Accessibility</strong> - WCAG 2.1 (A, AA) and IBM requirements (default option)
+                        <strong>IBM Accessibility 7.2</strong> - rules for WCAG 2.1 plus additional IBM requirements (default option)
                     </ListItem>
                     <ListItem>
-                        <strong>WCAG 2.1 (A,AA)</strong> - WCAG 2.0. and EN 301 549 standards (W3C’s choice)
+                        <strong>WCAG 2.2 (A, AA)</strong> - rules for the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to 2.1 and 2.0
                     </ListItem>
                     <ListItem>
-                        <strong>WCAG 2.0 (A,AA)</strong> - referenced by US Section 508
+                        <strong>WCAG 2.1 (A, AA)</strong> - referenced by EN 301 549 and other policies, but not the latest W3C specification
                     </ListItem>
                     <ListItem>
-                        <strong>IBM Accessibility BETA</strong> - WCAG 2.1, IBM requirements, and experimental rules
+                        <strong>WCAG 2.0 (A, AA)</strong> - referenced by US Section 508
                     </ListItem>
                 </UnorderedList>
-                <p>
-                    Click the 'Save' button to keep the changes or the 'Reset' button to discard changes. Close and reopen the developer tools for the change to take effect.
-                </p>
+                <p>Click the 'Save' button to keep the changes.</p>
+                <p>Click the 'Reset to defaults' button to restore the default settings.</p>
+                <p>Close the Settings.</p>
+                <p><strong>Note</strong>: screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
 
-                <h3 id="rule_deploy">Keyboard checker mode</h3>
+                <h3 id="rule_deploy">Keyboard checker settings</h3>
                 <p>
                     By default, the keyboard visualization options has the 'Lines connecting tab stops'  checkbox selected. Select the 'Element outlines' checkbox to see bounding boxes for each interactive element in the tab order.
                 </p>
@@ -600,7 +608,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The 'Alert notifications' toggles on and off the pop-up notification that appears every time you turn on the keyboard checker mode.
                 </p>
 
-                <h2 id="the_report">6. Accessibility Checker reports</h2>
+                <h2 id="the_report">6. Checker reports</h2>
                 <p>
                     Single scan reports are provided in both HTML and MS Excel spreadsheet formats. Multi-scan reports are available only in MS Excel spreadsheet format. For how to generate reports, see 3.2 Create a scan report and 3.3 Create a multi-scan report.
                 </p>
@@ -669,7 +677,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Important note:</strong> If the same page is scanned multiple times in a multi-scan report, there may be duplicate issues, which can be identified by having the same Issue ID. If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
                 </p>
 
-                <h2 id="a11y_considerations">7. Accessibility considerations</h2>
+                <h2 id="a11y_considerations">7. Accessibility features</h2>
                 <p>
                     Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader:
                 </p>
