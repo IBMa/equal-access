@@ -106,14 +106,6 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         The Checker is also available as a package for automated testing within a continuous integration pipeline. 
                         The Checker rules include explanations and help for suggested fixes.
                     </p>
-                    <p>
-                        This quick guide contains bite-sized guidance. 
-                        For more in-depth guidance, see the 
-                        {" "}
-                        <Link 
-                            href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
-                            inline={true} size="lg">User guide</Link>.
-                    </p>
 
                     <h2 id="issues">Accessibility issues</h2>
                     <p>
@@ -223,7 +215,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/2_Scan.png"
+                            src="assets/img/2_2_ScanReport.png"
                             alt="open dropdown menu with focus on 'Download current scan'"
                         />
                     </p>
@@ -237,12 +229,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
 
                     <h2 id="multiscan">3. Create a multi-scan report</h2>
                     <p>
-                        Combine up to 50 multiple scans into a single report in both an Excel XLS spreadsheet and HTML web format.
+                        Combine up to 50 multiple scans into a single report in an Excel XLS spreadsheet.
                     </p>
                     <p>
                         <img
-                            src="assets/img/3_MultiScan.png"
-                            alt="an open dropdown menu with focus on 'start storing scans'"
+                            src="assets/img/2_3_ScanMultiple.png" // was 3_MultiScan.png
+                            alt="an open dropdown menu with focus on 'Start storing scans'"
                         />
                     </p>
                     <p>

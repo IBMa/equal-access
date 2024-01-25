@@ -89,7 +89,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <strong>Note:</strong> On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
                 </p>
-                <h2 id="install">1. How to install</h2>
+                <h2 id="install">How to install</h2>
                 <p>
                     <strong>Supported browsers:</strong>
                 </p>
@@ -200,7 +200,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.
                 </p>
 
-                <h2 id="view">3. The Checker view</h2>
+                <h2 id="view">The Checker view</h2>
                 <p>The Accessibility Checker tab in the Elements panel in Chrome or the Inspector panel in Firefox is a code scanner for developers looking to find and fix issues in code and on the page quickly.</p>
                 <p>To use the Checker view, do one of the following:</p>
                 <UnorderedList>
@@ -219,7 +219,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
                     <ListItem>Right-click web page, select ‘<strong>Inspect</strong>’ (Chrome) or ‘<strong>Inspect Element</strong>’ (Firefox)</ListItem>
                 </UnorderedList>
-                <h3 id="a11y_check">3.1 Accessibility Checker</h3>
+                <h2 id="a11y_check">3.1 Accessibility Checker</h2>
                 <p>
                     The Accessibility Checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component.
                 </p>
@@ -280,19 +280,19 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Scroll down and turn on 'Allow access to file URLs'</ListItem>
                 </OrderedList>
 
-                <h3 id="t_single_scan_report">3.2 Create a scan report</h3>
+                <h2 id="t_single_scan_report">4. Create a scan report</h2>
                 <p>
                     To generate a report for a single scan in the Checker view:
                 </p>
                 <p>
                     <img
 
-                        src="assets/img/3.2Report.png"
+                        src="assets/img/2_2_ScanReport.png" // was 3.2Report.png
                         alt="an open dropdown menu with focus on 'download current scan'."
                     />
                 </p>
                 <p>Open the ‘Reports’ dropdown menu and select ‘Download current scan.’ See <Link inline={true} size="lg" href="#the_report" title="Accessibility Checker">Accessibility Checker reports </Link> for more details.</p>
-                <h3 id="t_multi_scan_report">3.3 Create a multi-scan report</h3>
+                <h2 id="t_multi_scan_report">3.3 Create a multi-scan report</h2>
                 <p>
                     To combine up to 50 multiple scans into a single report:
                 </p>
@@ -334,7 +334,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select ‘Back to list view’ to return to main Checker view</ListItem>
                 </UnorderedList>
 
-                <h3 id="focus_view">3.4. Focus view</h3>
+                <h2 id="focus_view">6. Focus view</h2>
                 <p>
                     The focus view allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM.
                 </p>
@@ -351,7 +351,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
 
-                <h3 id="keyboard_checker_mode">3.5. Keyboard checker mode</h3>
+                <h2 id="keyboard_checker_mode">9. Keyboard checker mode</h2>
                 <p>
                     This mode shows a visualization of the keyboard tab order detected on the page, and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
                 </p>
@@ -487,7 +487,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     Additional keystrokes are defined for particular widgets within the <Link inline={true} size="lg" href="https://www.w3.org/TR/wai-aria-practices/">W3C WAI-ARIA Authoring Practices Design Patterns</Link>.
                 </p>
-                <h2 id="a11y_assess">4. The Assessment view</h2>
+                <h2 id="a11y_assess">The Assessment view</h2>
                 <p>
                     The Assessment view provides a simplified overall summary, with explanations for each issue. It has less functionality than the Checker view.
                 </p>
@@ -531,7 +531,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>View the issues by element roles, requirements, or rules and select the expand icon next to a requirement/element role/rule to see the related issues, and select an issue to see the detailed description in the right panel. </p>
                 
-                <h2 id="t_select_settings">5. Settings</h2>
+                <h2 id="t_select_settings">Settings</h2>
                 <p>
                     By default, the IBM Accessibility Checker uses the latest deployment with a set of rules that correspond to the most recent WCAG standards, plus additional IBM requirements. Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
                 </p>
@@ -618,7 +618,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The 'Alert notifications' toggles on and off the pop-up notification that appears every time you turn on the keyboard checker mode.
                 </p>
 
-                <h2 id="the_report">6. Checker reports</h2>
+                <h2 id="the_report">Checker reports</h2>
                 <p>
                     Single scan reports are provided in both HTML and MS Excel spreadsheet formats. Multi-scan reports are available only in MS Excel spreadsheet format. For how to generate reports, see 3.2 Create a scan report and 3.3 Create a multi-scan report.
                 </p>
@@ -687,13 +687,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Important note:</strong> If the same page is scanned multiple times in a multi-scan report, there may be duplicate issues, which can be identified by having the same Issue ID. If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
                 </p>
 
-                <h2 id="a11y_considerations">7. Accessibility features</h2>
+                <h2 id="a11y_considerations">Accessibility features</h2>
                 <p>
                     Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader:
                 </p>
 
                 <OrderedList>
-                    <ListItem>The Accessibility Checker is responsive to users’ preferred font size and colors.</ListItem>
+                    <ListItem>The Checker is responsive to users’ preferred font size and colors.</ListItem>
                     <ListItem>
                         The tool is fully keyboard accessible, tab order is as follows:
                         <OrderedList>
@@ -761,7 +761,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </UnorderedList>
                 </OrderedList>
 
-                <h2 id="feedback">8. Feedback</h2>
+                <h2 id="feedback">Feedback</h2>
                 <p>
                     Visit the{" "}
                     <Link inline={true} size="lg" href="https://github.com/IBMa/equal-access/issues">
@@ -778,7 +778,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         find information on any existing issues
                     </ListItem>
                 </UnorderedList>
-                <h2 id="troubleshooting">9. Troubleshooting</h2>
+
+                <h2 id="troubleshooting">Troubleshooting</h2>
                 <p>
                     If the Accessibility Checker appears unresponsive:
                 </p>
