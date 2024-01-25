@@ -103,7 +103,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         is a browser extension that tests web pages for accessibility issues 
                         with W3C Web Content Accessibility Guidelines (WCAG 2.2),
                         IBM Accessibility requirements, and other standards.
-                        The Checker is also available as a package for automated testing within a continuous integration pipeline. 
+                        The Checker is <Link href="" target="_blank" rel="noopener noreferred" inline={true}
+                        size="lg">also available as a Node package</Link> for automated testing within a continuous integration pipeline. 
                         The Checker rules include explanations and help for suggested fixes.
                     </p>
 
@@ -120,7 +121,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/1_RoleFilters.png" // was Checker.png
+                            src="assets/img/1_RoleFilters.png" // was Quick_Intro.png
                             alt="Checker highlighting types of issues"
                         />
                     </p>
@@ -150,7 +151,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>
                             <img
                                 src={ViewOff16}
-                                alt="ViewOff icon"
+                                alt="hide icon" // added via import
                             />{" "}
                             <strong> Hidden</strong> - issues to be ignored or have been resolved
                         </ListItem>
@@ -184,8 +185,14 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
-                        >User guide</Link> for more in-depth guidance on using the '<strong>Checker view</strong>' to 
-                        find and fix issues in the code, the '<strong>Assessment view</strong>' for  
+                        >User guide</Link> for more in-depth guidance on using 
+                        the '<Link 
+                            href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred"
+                            inline={true} size="lg">Checker view</Link>' to 
+                        find and fix issues in the code, 
+                        the '<Link 
+                            href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred"
+                            inline={true} size="lg">Assessment view</Link>' for  
                         an executive summary of the findings, and other functionality such as filtering, 
                         hiding issues, and the keyboard checker mode.
                     </p>
@@ -248,13 +255,13 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <h2 id="focus">4. Focus view</h2>
                     <p>
                         The focus view allows viewing all issues on the page or focusing on only the issues for a selected element or component in the code. 
-                        Selecting a complex component, such as a table or div, allows the user to focus on only those issues associated with that component and its children. 
+                        Selecting a complex component, such as a 'table' or 'div', allows the user to focus on only those issues associated with that component and its children. 
                         The default view is 'All' elements on the page.
                     </p>
                     <p>
                         <img
-                            src="assets/img/4_Focus.png"
-                            alt="content switcher with two items: html and all"
+                            src="assets/img/2_4_Focus.png" // was 4_Focus.png
+                            alt="content switcher with two items: div and All"
                         />
                     </p>
                     <OrderedList>
@@ -284,8 +291,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/4_Focus.png"
-                            alt="content switcher with two items: html and all"
+                            src="assets/img/2_5_Filter.png"
+                            alt="dropdown menu with 3 checkboxes selected"
                         />
                     </p>
                     <p>
@@ -293,20 +300,14 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     but those issues are still counted in the total issues found and Scan summary report.
                     </p>
                     <p>
-                        <img
-                            src="assets/img/4_Focus.png"
-                            alt="content switcher with two items: html and all"
-                        />
-                    </p>
-                    <p>
                         All the filters are independent. 
                         Checking or unchecking one filter does not affect the other filters. 
                         For example, if the Violations filter is checked the Violation issues will show. 
                         Unchecking the Violations filter will result in the Violations issues not showing.
                     </p>
-                    <p><strong>Note</strong>: Checks or unchecks in the Filter dropdown menu are reflected in the checkboxes of the Scan summary and vice versa. 
+                    <p><strong>Note</strong>: Checked or unchecked types in the Filter dropdown menu are reflected in the checkboxes in the tiles of the Scan summary and vice versa. 
                     Thus, the checkboxes in the Filter dropdown and the Scan summary behave the same and can be used interchangeably. 
-                    Select or deselect checkboxes in the Filter dropdown or Scan summary to filter issues in the Checker view.
+                    Select or deselect checkboxes in the Filter dropdown or Scan summary to filter issues by type.
                     </p>
                     <p>
                     'Filter views' differs from 'Focus view' because it applies only to issue types, 
@@ -321,24 +322,24 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <h2 id="hide">6. Show/Hide issues</h2>
                     <p>
                         The Hide feature allows issues to be ignored or marked as resolved. 
-                        When this feature is used issues are not only hidden from view, they are also subtracted from the respective issue counts. 
+                        When this feature is used, issues are not only hidden from view, they are also subtracted from the respective issue counts. 
                         Issues that are determined to be irrelevant or resolved can be hidden and removed from the counts towards achieving a goal of zero counts both in the issues list and in the Scan summary report.
                     </p>
                     <p>
                         <img
-                            src="assets/img/3.5Keyboard1.png"
-                            alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
+                            src="assets/img/2_6_HideRecommendations.png"
+                            alt="recommendation type issues are selected with Hide button highlighted"
                         />
                     </p>
                     <p>
                         To hide one or more issues, check the checkbox at the beginning of the row of the issue. 
                         Once issues have been checked the blue 'Hide' button appears in the toolbar. 
-                        Pressing the 'Hide' button will hide those issues that had been selected and the counts will be updated.
+                        Pressing the 'Hide' button will hide those issues that have been selected and the counts will be updated.
                     </p>
                     <p>
                         <img
-                            src="assets/img/3.5Keyboard1.png"
-                            alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
+                            src="assets/img/2_6_Show.png"
+                            alt="previously hidden issues selected so Show button available"
                         />
                     </p>
                     <p><strong>Note</strong>: a 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
@@ -346,8 +347,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         and the count of hidden issues is listed in the Scan summary. 
                         Issue counts will also be reduced for the Violations, Needs review, and Recommendations 
                         accounting for those types of issues that are now hidden.</p>
-                    <p>
-                        When the 'Hidden' filter is not selected (unchecked) in the dropdown menu then those hidden issues are filtered (not shown) from the list of issues displayed.  
+                    <p>When the 'Hidden' filter is not selected (unchecked) in the dropdown menu, then those hidden issues are filtered (not shown) from the list of issues displayed.  
                         Unlike using the Filter views feature (which only affects whether an issue is shown), 
                         Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
                     <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
@@ -355,7 +355,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
                     <h3 id="resolving">Resolving Needs review issues</h3>
-                    <p>A common scenario is to be able to resolve 'Needs review' issues. 
+                    <p>A common scenario is to resolve 'Needs review' issues. 
                         Follow these simple steps:</p>
                     <OrderedList>
                         <ListItem>Check the 'Needs review' filter only (uncheck the other filter options)</ListItem>
@@ -365,7 +365,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList>
 
                     <h3 id="showing">Show previously hidden issues</h3>
-                        <p>Another common scenario is to be able to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
+                        <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
                         <ListItem>Check the 'Hidden' filter only (uncheck the other filter options)</ListItem>
@@ -381,25 +381,20 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
 
                     <h2 id="keyboard">7. Keyboard checker mode</h2>
                     <p>
-                        This mode shows a visualization of the order of the keyboard tab stops detected on the page, and the elements with detectable keyboard access issues.
-                    </p>    
-                    <p>
-                        <img
-                            src="assets/img/3.5Keyboard1.png"
-                            alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
-                        />
+                        This mode shows a visualization of the order of the keyboard tab stops detected on the page, 
+                        and the elements with detectable keyboard access issues.
                     </p>
                     <p>
-                        Select 'Keyboard checker mode' icon to turn on/off keyboard visualization.
+                        Select 'Keyboard checker mode' icon button to turn on/off keyboard visualization.
+                    </p>
+                    <p>
+                        <img
+                            src="assets/img/2_7_KCM.png" // was 3.5Keyboard1.png
+                            alt="highlighting 'keyboard checker mode' icon button, counts, and visualization"
+                        />
                     </p>
                     <p><strong>Note</strong>: the keyboard checker mode does not track page changes. 
                     Turn the mode off and on again to update the visualization.
-                    </p>
-                    <p>
-                        <img
-                            src="assets/img/3.5Keyboard2a.png"
-                            alt="webpage with keyboard visualization overlay"
-                        />
                     </p>
                     <p>
                     In this example, the Checker found 22 existing Keyboard tab stops, 2 missing, and lists only the 8 associated keyboard issues found with those elements. 
@@ -448,19 +443,33 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/3.5Keyboard2a.png"
-                            alt="webpage with keyboard visualization overlay"
+                            src="assets/img/2_8_Settings.png" // was 3.5Keyboard2a.png"
+                            alt="settings gear icon highlighted"
                         />
                     </p>
                     <p>
-                        The rule sets are updated regularly, and each update has a date of deployment. Select one of the following:
+                        <img
+                            src="assets/img/2_8_SettingsRulesets.png"
+                            alt="Rule set options"
+                        />
+                    </p>
+                    <p>
+                        The rule sets are updated regularly, and each update has a date of deployment. 
+                        Select one of the following:
                         </p>
                         <UnorderedList>
                             <ListItem><strong>Latest deployment</strong> is the default</ListItem>
                             <ListItem>Replicate an earlier test by choosing the <strong>deployment date</strong> of the original test</ListItem>
                             <ListItem><strong>Preview Rules</strong> to experiment with a possible future rule set</ListItem>
                         </UnorderedList>
-                    <p>Rule sets for a specific accessibility guideline or version of the IBM accessibility requirements are available to check against an established policy. Select one of the following:</p>
+                    <p>
+                        <img
+                            src="assets/img/2_8_SettingsSelectGuideline.png"
+                            alt="settings gear icon highlighted"
+                        />
+                    </p>
+                    <p>Rule sets for a specific accessibility guideline or version of the IBM Accessibility requirements are available to check against an established policy. 
+                        Select one of the following:</p>
                         <UnorderedList>
                             <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
                             <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>                        

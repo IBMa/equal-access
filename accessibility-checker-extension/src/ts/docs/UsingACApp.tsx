@@ -351,21 +351,79 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
 
+                <h2 id="hide">6. Show/Hide issues</h2>
+                    <p>
+                        The Hide feature allows issues to be ignored or marked as resolved. 
+                        When this feature is used, issues are not only hidden from view, they are also subtracted from the respective issue counts. 
+                        Issues that are determined to be irrelevant or resolved can be hidden and removed from the counts 
+                        towards achieving a goal of zero counts both in the issues list and in the Scan summary report.
+                    </p>
+                    <p>
+                        <img
+                            src="assets/img/2_6_HideRecommendations.png"
+                            alt="recommendation type issues are selected with Hide button highlighted"
+                        />
+                    </p>
+                    <p>
+                        To hide one or more issues, check the checkbox at the beginning of the row of the issue. 
+                        Once issues have been checked the blue 'Hide' button appears in the toolbar. 
+                        Pressing the 'Hide' button will hide those issues that have been selected and the counts will be updated.
+                    </p>
+                    <p>
+                        <img
+                            src="assets/img/2_6_Show.png"
+                            alt="previously hidden issues selected so Show button available"
+                        />
+                    </p>
+                    <p><strong>Note</strong>: a 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
+                        the count of hidden issues is updated, 
+                        and the count of hidden issues is listed in the Scan summary. 
+                        Issue counts will also be reduced for the Violations, Needs review, and Recommendations 
+                        accounting for those types of issues that are now hidden.</p>
+                    <p>When the 'Hidden' filter is not selected (unchecked) in the dropdown menu, then those hidden issues are filtered (not shown) from the list of issues displayed.  
+                        Unlike using the Filter views feature (which only affects whether an issue is shown), 
+                        Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
+                    <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
+                        When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
+                        When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
+
+                    <h3 id="resolving">Resolving Needs review issues</h3>
+                    <p>A common scenario is to resolve 'Needs review' issues. 
+                        Follow these simple steps:</p>
+                    <OrderedList>
+                        <ListItem>Check the 'Needs review' filter only (uncheck the other filter options)</ListItem>
+                        <ListItem>Determine if those issues have been reviewed and confirm they are not violations and can be ignored (resolved) from further investigation</ListItem>
+                        <ListItem>Confirm that those 'Needs review' type issues that have not been reviewed are not checked</ListItem>
+                        <ListItem>Press the 'Hide' button to remove the checked issues</ListItem>
+                    </OrderedList>
+
+                    <h3 id="showing">Show previously hidden issues</h3>
+                        <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
+                        Follow these simple steps:</p>
+                    <OrderedList>
+                        <ListItem>Check the 'Hidden' filter only (uncheck the other filter options)</ListItem>
+                        <ListItem>Determine if those previously hidden issues now need to be worked on and be included in the reports</ListItem>
+                        <ListItem>Confirm that those ready to be worked on (unhidden)reviewed are checked</ListItem>
+                        <ListItem>Press the 'Show' button to unhide the checked issues</ListItem>
+                    </OrderedList>
+
                 <h2 id="keyboard_checker_mode">9. Keyboard checker mode</h2>
                 <p>
-                    This mode shows a visualization of the keyboard tab order detected on the page, and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
+                    This mode shows a visualization of the keyboard tab order detected on the page, 
+                    and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
+                </p>
+                <p>
+                    Select the 'Keyboard checker mode' icon to turn on/off keyboard visualization.
                 </p>
                 <p>
                     <img
 
-                        src="assets/img/3.5Keyboard1.png"
-                        alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
+                        src="assets/img/2_7_KCM.png" // was 3.5Keyboard1.png
+                        alt="Keyboard checker mode' icon button"
                     />
                 </p>
-                <p>
-                    Select 'Keyboard checker mode' icon to turn on/off keyboard visualization.
-                </p>
-                <p><strong>Important note:</strong> the keyboard checker mode does not track page changes. Turn the mode off and on again to update the visualization.
+                
+                <p><strong>Note:</strong> the keyboard checker mode does not track page changes. Turn the mode off and on again to update the visualization.
                 </p>
                 <p>
                     <img
