@@ -191,10 +191,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     There are three ways to view the same set of issues:
                 </p>
                 <p>
-                    <strong>Element roles</strong> – issues are organized by the WAI-ARIA roles of the DOM elements. This view shows both implicit and explicit roles, and not the element names. Use this view to explore issues within a specific element and its children.
+                    <strong>Element roles</strong> – issues are organized by the ARIA roles of the DOM elements. This view shows both implicit and explicit roles, and not the element names. Use this view to explore issues within a specific element and its children.
                 </p>
                 <p>
-                    <strong>Requirements</strong> – issues are mapped to the most relevant IBM requirement, which corresponds to the WCAG 2.1 standards. Use this view to classify and report issues.
+                    <strong>Requirements</strong> – issues are mapped to the most relevant IBM requirement, which corresponds to the WCAG standards. Use this view to classify and report issues.
                 </p>
                 <p>
                     <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.
@@ -350,7 +350,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select element name in focus view (e.g., &lt;html&gt;) to view related issues</ListItem>
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
-                
+
                 <h3 id="keyboard_checker_mode">3.5. Keyboard checker mode</h3>
                 <p>
                     This mode shows a visualization of the keyboard tab order detected on the page, and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
