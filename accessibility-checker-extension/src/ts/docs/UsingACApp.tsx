@@ -23,6 +23,8 @@ import { BrowserDetection } from '../util/browserDetection';
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
+import ViewOff16 from "../../assets/img/View--off.svg";
+import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
@@ -45,7 +47,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     render() {
         let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
-            <OrderedList>
+            <UnorderedList>
                 <ListItem><Link href="#install">How to install</Link></ListItem>
                 <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
                 <ListItem><Link href="#view">The Checker view</Link>
@@ -61,14 +63,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem><Link href="#keyboard_checker_mode">Keyboard checker mode</Link></ListItem>
                     </OrderedList>
                 </ListItem>
-                <ListItem><Link href="#a11y_assess">The Accessibility view</Link></ListItem>
+                <ListItem><Link href="#a11y_assess">The Assessment view</Link></ListItem>
                 <ListItem><Link href="#t_select_settings">Settings</Link></ListItem>
                 <ListItem><Link href="#the_report">Checker reports</Link></ListItem>
                 <ListItem><Link href="#a11y_considerations">Accessibility features</Link></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
-            </OrderedList>
-            <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</Link>
+            </UnorderedList>
+            <p>For bite-sized guidance, see the <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</Link>
             </p>
             {/* </Theme> */}
             </>)
@@ -133,7 +135,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         Click 'Add To Firefox' button
                     </ListItem>
                 </OrderedList>
-                <h2 id="issues">2. Accessibility issues</h2>
+                <h2 id="issues">Accessibility issues</h2>
                 <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with {" "}
                     <Link
                         target="_blank"
@@ -177,6 +179,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         />{" "}
                         <strong> Recommendation</strong> - opportunities to apply best practices
                     </ListItem>
+                    <ListItem>
+                            <img
+                                src={ViewOff16}
+                                alt="ViewOff icon"
+                            />{" "}
+                            <strong> Hidden</strong> - issues to be ignored or have been resolved
+                        </ListItem>
                 </UnorderedList>
                 <p>
                     There are three ways to view the same set of issues:
@@ -341,6 +350,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select element name in focus view (e.g., &lt;html&gt;) to view related issues</ListItem>
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
+                
                 <h3 id="keyboard_checker_mode">3.5. Keyboard checker mode</h3>
                 <p>
                     This mode shows a visualization of the keyboard tab order detected on the page, and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
@@ -804,7 +814,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </UnorderedList>
                 <UnorderedList>
                     <ListItem>
-                        The Acessibility Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
+                        The Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
                     </ListItem>
                     <ListItem>
                         In rare situations, you cannot use the mouse pointer to select underlying items on the web page when keyboard tab stops is on.
@@ -813,13 +823,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         For certain websites on Firefox the keyboard tab stops visualization may stay visible after turning it off and either partially work, or not work at all.
                     </ListItem>
                     <ListItem>
-                        For carousel elements, each item is a tab stop. While only some of the carousel items are visible, you will see stacked tab stop indicators for all carousel items.
+                        For carousel elements, each item may be a tab stop. While only some of the carousel items are visible, the visualization will show stacked tab stop indicators for all carousel items (see image below):
                     </ListItem>
                 </UnorderedList>
                 <p>
                     <img
                         src="assets/img/Carousel.png"
-                        alt="keyboard tab stop indicators stacked on amazon's carousel banner"
+                        alt="keyboard tab stop indicators stacked on Amazon's carousel banner"
                     />
                 </p>
                 

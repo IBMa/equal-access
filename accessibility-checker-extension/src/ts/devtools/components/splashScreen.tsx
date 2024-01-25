@@ -52,8 +52,8 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
                         These automated tests don't catch all issues. Complete your accessibility assessment
                         with <a className="link" href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank">developer unit testing</a><span> </span>
                         and follow all the <a className="link" href="https://www.ibm.com/able/toolkit/verify/overview"target="_blank">steps in the Verify phase</a>.<br /><br />
-                        Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.
-                        For bite-sized guidance, see <a className="link" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</a>.
+                        Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.<br /><br />
+                        For bite-sized guidance, see the <a className="link" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</a>.<br /><br />
                         For more in-depth guidance, see the <a className="link" href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User guide</a>.
                     </div>
                 </Column>
