@@ -100,7 +100,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     
                     <h1>Quick guide - IBM Accessibility Checker</h1>
                     <p>
-                        The IBM Equal Access Toolkit: Accessibility Checker ("the Checker") 
+                        The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") 
                         is a browser extension that tests web pages for accessibility issues 
                         with W3C Web Content Accessibility Guidelines (WCAG 2.2),
                         IBM Accessibility requirements, and other standards.
@@ -109,17 +109,21 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         This quick guide contains bite-sized guidance. 
-                        For more in-depth guidance, see the <Link 
+                        For more in-depth guidance, see the 
+                        {" "}
+                        <Link 
                             href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
-                            inline={true}>User guide</Link>.
+                            inline={true} size="lg">User guide</Link>.
                     </p>
 
                     <h2 id="issues">Accessibility issues</h2>
                     <p>
                         As with any automated test tool for accessibility, these tests don't catch all issues. 
                         Complete accessibility testing with 
+                        {" "}
                         <Link href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank" rel="noopener noreferred" inline={true}
                         size="lg">developer unit testing</Link> and follow all the 
+                        {" "}
                         <Link href="https://www.ibm.com/able/toolkit/verify/overview/" target="_blank" rel="noopener noreferred" inline={true}
                         size="lg">steps in the Verify phase</Link> described in the IBM Equal Access Toolkit.
                     </p>
@@ -162,12 +166,13 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList>
                     <p>There are three ways to organize and view the set of issues detected:</p>
                     <UnorderedList>
-                        <ListItem>by Element roles</ListItem>
+                        <ListItem>by Element roles (default)</ListItem>
                         <ListItem>by Requirements</ListItem>
                         <ListItem>by Rules</ListItem>
                     </UnorderedList>
                     <p>
                         For more in-depth guidance, view 
+                        {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
@@ -183,19 +188,20 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         />
                     </p>
                     <p>
-                        See the  
+                        See the 
+                        {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
-                        >User guide</Link> for more in-depth guidance on using the ‘Accessibility Checker’ view 
-                        to find and fix issues in the code, the ‘Accessibility Assessment’ view 
-                        for an executive summary of the findings, and other functionality such as filtering, 
+                        >User guide</Link> for more in-depth guidance on using the '<strong>Checker view</strong>' to 
+                        find and fix issues in the code, the '<strong>Assessment view</strong>' for  
+                        an executive summary of the findings, and other functionality such as filtering, 
                         hiding issues, and the keyboard checker mode.
                     </p>
             
                     <h2 id="checker">1. Scan to find issues</h2>
                     <p>
-                        Press the blue 'Scan' button to find and fix issues quickly with a component or page.
+                        Press the blue 'Scan' button to find issues quickly with a component or page.
                     </p>    
                     <p>
                         <img
@@ -263,7 +269,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <OrderedList>
                         <ListItem>Select an element in the code, or 'Inspect' an element on the page</ListItem>
                         <ListItem>Select the element name in the Focus view (e.g. 'div') to switch viewing only its related issues</ListItem>
-                        <ListItem>Select ‘All’ in the focus view to switch back and see all issues again</ListItem>
+                        <ListItem>Select 'All' in the focus view to switch back and see all issues again</ListItem>
                     </OrderedList>
                     <p>
                     'Focus view' differs from 'Filter views' because it only applies to the selected element and its children, 
@@ -344,17 +350,17 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
                         />
                     </p>
-                    <p><strong>Note</strong>: a ’Hidden’ icon is displayed next to ‘Type’ icon in the list of individual issues, 
+                    <p><strong>Note</strong>: a 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
                         the count of hidden issues is updated, 
                         and the count of hidden issues is listed in the Scan summary. 
                         Issue counts will also be reduced for the Violations, Needs review, and Recommendations 
-                        accounting for those types of issues that were hidden.</p>
+                        accounting for those types of issues that are now hidden.</p>
                     <p>
                         When the 'Hidden' filter is not selected (unchecked) in the dropdown menu then those hidden issues are filtered (not shown) from the list of issues displayed.  
                         Unlike using the Filter views feature (which only affects whether an issue is shown), 
                         Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
-                    <p><strong>Note</strong>: when the Hidden filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
-                        When one or more hidden issues are selected then the blue 'Show' button appears in the toolbar in the heading row. 
+                    <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
+                        When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
                     <h3 id="resolving">Resolving Needs review issues</h3>
@@ -436,6 +442,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             tab stops that are not in the tab order. Click to learn more.
                         </ListItem>
                     </UnorderedList>
+                    <p><strong>Note</strong>: only the keyboard related access issues are listed. 
+                    Turn off 'Keyboard Checker Mode' to see the full list of issues detected.
+                    </p>
                     <p>
                         For more in-depth guidance, 
                         view <Link href={chrome.runtime.getURL("usingAC.html#keyboard_checker_mode")} target="_blank" rel="noopener noreferred"
@@ -453,17 +462,17 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         />
                     </p>
                     <p>
-                        The rule sets are updated regularly, and each update has a date of deployment. 
+                        The rule sets are updated regularly, and each update has a date of deployment. Select one of the following:
                         </p>
                         <UnorderedList>
                             <ListItem><strong>Latest deployment</strong> is the default</ListItem>
                             <ListItem>Replicate an earlier test by choosing the <strong>deployment date</strong> of the original test</ListItem>
-                            <ListItem>Select <strong>Preview Rules</strong> to experiment with a possible future rule set</ListItem>
+                            <ListItem><strong>Preview Rules</strong> to experiment with a possible future rule set</ListItem>
                         </UnorderedList>
-                    <p>Rule sets for a specific accessibility guideline or version of the IBM accessibility requirements are available to check against an established policy.</p>
+                    <p>Rule sets for a specific accessibility guideline or version of the IBM accessibility requirements are available to check against an established policy. Select one of the following:</p>
                         <UnorderedList>
-                            <ListItem>Select <strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
-                            <ListItem>Select <strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>                        
+                            <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
+                            <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>                        
                         </UnorderedList>
                     <p>
                         For more in-depth guidance, 
@@ -500,8 +509,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         target="_blank"
                         rel="noopener noreferred"
                         inline={true}
-                        size="lg">User guide</Link> 
-                        for more in-depth guidance, such as:
+                        size="lg">User guide</Link> for more in-depth guidance, such as:
                     </p>
                     <UnorderedList>
                         <ListItem>Helpful hints</ListItem>
