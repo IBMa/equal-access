@@ -54,7 +54,6 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
-                <ListItem><Link href="#resources">Resources</Link></ListItem>
             </UnorderedList>
             <p>
             See the <Link
@@ -125,12 +124,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         size="lg">developer unit testing</Link> and follow all the 
                         {" "}
                         <Link href="https://www.ibm.com/able/toolkit/verify/overview/" target="_blank" rel="noopener noreferred" inline={true}
-                        size="lg">steps in the Verify phase</Link> described in the IBM Equal Access Toolkit.
+                        size="lg">steps in the Verify phase</Link>.
                     </p>
                     <p>
                         <img
-                            src="assets/img/1_Checker.png"
-                            alt="IBM checker tool highlighting the scan button"
+                            src="assets/img/1_RoleFilters.png" // was Checker.png
+                            alt="Checker highlighting types of issues"
                         />
                     </p>
                     <p>The issues detected are divided into four types:</p>
@@ -183,7 +182,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <p>Here’s a quick look at what all the key functionalities are in the Checker.</p>     
                     <p>
                         <img
-                            src="assets/img/Quick_Look.png"
+                            src="assets/img/2_Functionality.png" // was Quick_Look.png
                             alt="IBM checker tool with numbers labeling each functionality"
                         />
                     </p>
@@ -205,7 +204,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>    
                     <p>
                         <img
-                            src="assets/img/1_Checker.png"
+                            src="assets/img/2_1_Scan.png"
                             alt="Checker scan button highlighted"
                         />
                     </p>    
