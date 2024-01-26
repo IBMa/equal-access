@@ -41,10 +41,10 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
         
         let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
-            <OrderedList style={{ marginLeft: "1.5rem" }}>
-                <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
-                <ListItem><Link href="#functionality">Functionality in the Checker</Link>
-                    <OrderedList nested={true}>
+                {/* <OrderedList style={{ marginLeft: "1.5rem" }}>   */}
+                {/* <ListItem><Link href="#issues">Accessibility issues</Link></ListItem> */}
+                {/* <ListItem><Link href="#functionality">Functionality in the Checker</Link> */}
+                <OrderedList nested={true}>
                     <ListItem><Link href="#checker">Scanning</Link></ListItem>
                     <ListItem><Link href="#scan">Create a scan report</Link></ListItem>
                     <ListItem><Link href="#multiscan">Create a multi-scan report</Link></ListItem>
@@ -53,10 +53,10 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <ListItem><Link href="#hide">Show/Hide issues</Link></ListItem>
                     <ListItem><Link href="#keyboard">Keyboard Checker Mode</Link></ListItem>
                     <ListItem><Link href="#settings">Settings</Link></ListItem>
-                    </OrderedList></ListItem>
-                <ListItem><Link href="#feedback">Feedback</Link></ListItem>
-                <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
-            </OrderedList>
+                </OrderedList>
+                {/* <ListItem><Link href="#feedback">Feedback</Link></ListItem> */}
+                {/* <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem> */}
+                {/* </OrderedList> */}
             <p>
             See the <Link
                     href="https://www.ibm.com/able/requirements/requirements/"
