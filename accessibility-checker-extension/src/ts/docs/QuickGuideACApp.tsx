@@ -21,7 +21,7 @@ import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
 import ViewOff16 from "../../assets/img/View--off.svg";
-// import ViewOn16 from "../../assets/img/View--on.svg"; not using this Show icon
+import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
@@ -39,7 +39,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
         
         let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
-            <UnorderedList style={{ marginLeft: "1.5rem" }}>
+            <OrderedList style={{ marginLeft: "1.5rem" }}>
                 <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
                 <ListItem><Link href="#functionality">Functionality in the Checker</Link>
                     <OrderedList nested={true}>
@@ -54,7 +54,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList></ListItem>
                 <ListItem><Link href="#feedback">Feedback</Link></ListItem>
                 <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
-            </UnorderedList>
+            </OrderedList>
             <p>
             See the <Link
                     href="https://www.ibm.com/able/requirements/requirements/"
@@ -103,7 +103,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         is a browser extension that tests web pages for accessibility issues 
                         with W3C Web Content Accessibility Guidelines (WCAG 2.2),
                         IBM Accessibility requirements, and other standards.
-                        The Checker is <Link href="" target="_blank" rel="noopener noreferred" inline={true}
+                        The Checker is <Link href="https://www.ibm.com/able/toolkit/tools/#develop" target="_blank" rel="noopener noreferred" inline={true}
                         size="lg">also available as a Node package</Link> for automated testing within a continuous integration pipeline. 
                         The Checker rules include explanations and help for suggested fixes.
                     </p>
@@ -152,6 +152,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             <img
                                 src={ViewOff16}
                                 alt="hide icon" // added via import
+                            /><img
+                            src={ViewOn16}
+                            alt="hide icon" // added via import
                             />{" "}
                             <strong> Hidden</strong> - issues to be ignored or have been resolved
                         </ListItem>

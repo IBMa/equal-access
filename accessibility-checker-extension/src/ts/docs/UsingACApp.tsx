@@ -24,7 +24,7 @@ import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
 import ViewOff16 from "../../assets/img/View--off.svg";
-// import ViewOn16 from "../../assets/img/View--on.svg"; not using this Show icon
+import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
@@ -48,27 +48,27 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
         let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
             <UnorderedList>
-                <ListItem><Link href="#install">How to install</Link></ListItem>
-                <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
-                <ListItem><Link href="#view">The Checker view</Link>
-                    <OrderedList nested={true}>
-                        <ListItem><Link href="#a11y_check">Scanning</Link></ListItem>
-                        <ListItem><Link href="#local">Scan local files</Link></ListItem>
-                        <ListItem><Link href="#sync">Synchronize views</Link></ListItem>
-                        <ListItem><Link href="#t_single_scan_report">Create a scan report</Link></ListItem>
-                        <ListItem><Link href="#t_multi_scan_report">Create a multi-scan report</Link></ListItem>
-                        <ListItem><Link href="#focus_view">Focus view</Link></ListItem>
-                        <ListItem><Link href="#filter_views">Focus view</Link></ListItem>
-                        <ListItem><Link href="#hide_issues">Show/Hide issues</Link></ListItem>
-                        <ListItem><Link href="#keyboard_checker_mode">Keyboard checker mode</Link></ListItem>
-                    </OrderedList>
+                <ListItem><Link href="#install">1. How to install</Link></ListItem>
+                <ListItem><Link href="#issues">2. Accessibility issues</Link></ListItem>
+                <ListItem><Link href="#view">3. The Checker view</Link>
+                    <UnorderedList nested={true}>
+                        <ListItem><Link href="#a11y_check">3.1 Scanning</Link></ListItem>
+                        <ListItem><Link href="#local">3.2 Scan local files</Link></ListItem>
+                        <ListItem><Link href="#sync">3.3 Synchronize views</Link></ListItem>
+                        <ListItem><Link href="#t_single_scan_report">3.4 Create a scan report</Link></ListItem>
+                        <ListItem><Link href="#t_multi_scan_report">3.5 Create a multi-scan report</Link></ListItem>
+                        <ListItem><Link href="#focus_view">3.6 Focus view</Link></ListItem>
+                        <ListItem><Link href="#filter_views">3.7 Focus view</Link></ListItem>
+                        <ListItem><Link href="#hide_issues">3.8 Show/Hide issues</Link></ListItem>
+                        <ListItem><Link href="#keyboard_checker_mode">3.9 Keyboard checker mode</Link></ListItem>
+                    </UnorderedList>
                 </ListItem>
-                <ListItem><Link href="#a11y_assess">The Assessment view</Link></ListItem>
-                <ListItem><Link href="#t_select_settings">Settings</Link></ListItem>
-                <ListItem><Link href="#the_report">Checker reports</Link></ListItem>
-                <ListItem><Link href="#a11y_considerations">Accessibility features</Link></ListItem>
-                <ListItem><Link href="#feedback">Feedback</Link></ListItem>
-                <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
+                <ListItem><Link href="#a11y_assess">4. The Assessment view</Link></ListItem>
+                <ListItem><Link href="#t_select_settings">5. Settings</Link></ListItem>
+                <ListItem><Link href="#the_report">6. Checker reports</Link></ListItem>
+                <ListItem><Link href="#a11y_considerations">7. Accessibility features</Link></ListItem>
+                <ListItem><Link href="#feedback">8. Feedback</Link></ListItem>
+                <ListItem><Link href="#troubleshooting">9. Troubleshooting</Link></ListItem>
             </UnorderedList>
             <p>For bite-sized guidance, see the <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</Link>
             </p>
@@ -135,7 +135,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         Click 'Add To Firefox' button
                     </ListItem>
                 </OrderedList>
-                <h2 id="issues">Accessibility issues</h2>
+
+                <h2 id="issues">2. Accessibility issues</h2>
                 <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with {" "}
                     <Link
                         target="_blank"
@@ -182,8 +183,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>
                             <img
                                 src={ViewOff16}
-                                alt="ViewOff icon"
-                            />{" "}
+                                alt="hide icon light" // how to only detect mode and only show correct icon?
+                            /><img
+                                src={ViewOn16}
+                                alt="hide icon dark"
+                        />{" "}
                             <strong> Hidden</strong> - issues to be ignored or have been resolved
                         </ListItem>
                 </UnorderedList>
@@ -200,7 +204,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.
                 </p>
 
-                <h2 id="view">The Checker view</h2>
+                <h2 id="view">3. The Checker view</h2>
                 <p>The Accessibility Checker tab in the Elements panel in Chrome or the Inspector panel in Firefox is a code scanner for developers looking to find and fix issues in code and on the page quickly.</p>
                 <p>To use the Checker view, do one of the following:</p>
                 <UnorderedList>
@@ -219,6 +223,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
                     <ListItem>Right-click web page, select ‘<strong>Inspect</strong>’ (Chrome) or ‘<strong>Inspect Element</strong>’ (Firefox)</ListItem>
                 </UnorderedList>
+                
                 <h2 id="a11y_check">3.1 Accessibility Checker</h2>
                 <p>
                     The Accessibility Checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component.
@@ -280,7 +285,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Scroll down and turn on 'Allow access to file URLs'</ListItem>
                 </OrderedList>
 
-                <h2 id="t_single_scan_report">4. Create a scan report</h2>
+                <h2 id="t_single_scan_report">3.4 Create a scan report</h2>
                 <p>
                     To generate a report for a single scan in the Checker view:
                 </p>
@@ -334,7 +339,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select ‘Back to list view’ to return to main Checker view</ListItem>
                 </UnorderedList>
 
-                <h2 id="focus_view">6. Focus view</h2>
+                <h2 id="focus_view">3.6 Focus view</h2>
                 <p>
                     The focus view allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM.
                 </p>
@@ -351,7 +356,45 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
                 </OrderedList>
 
-                <h2 id="hide">6. Show/Hide issues</h2>
+                <h2 id="filter">3.7 Filter views</h2>
+                    <p>
+                        The Checker includes four (4) filters when viewing issues. 
+                        Each filter type has a checkbox in the dropdown menu. 
+                        If the checkbox is checked the issue type will show.
+                        If the checkbox is not checked the issue type will be filtered and not show.
+                        The default is for three (3) types of issues: Violations, Needs review, and Recommendations, to be checked so that they will show.
+                    </p>
+                    <p>
+                        <img
+                            src="assets/img/2_5_Filter.png"
+                            alt="dropdown menu with 3 checkboxes selected"
+                        />
+                    </p>
+                    <p>
+                    Unchecking one of the checkboxes will filter (not show) the associated issues from the list, 
+                    but those issues are still counted in the total issues found and Scan summary report.
+                    </p>
+                    <p>
+                        All the filters are independent. 
+                        Checking or unchecking one filter does not affect the other filters. 
+                        For example, if the Violations filter is checked the Violation issues will show. 
+                        Unchecking the Violations filter will result in the Violations issues not showing.
+                    </p>
+                    <p><strong>Note</strong>: Checked or unchecked types in the Filter dropdown menu are reflected in the checkboxes in the tiles of the Scan summary and vice versa. 
+                    Thus, the checkboxes in the Filter dropdown and the Scan summary behave the same and can be used interchangeably. 
+                    Select or deselect checkboxes in the Filter dropdown or Scan summary to filter issues by type.
+                    </p>
+                    <p>
+                    'Filter views' differs from 'Focus view' because it applies only to issue types, 
+                    while 'Focus view' applies only to the selected element.                    
+                    </p>
+                    <p>
+                        For more in-depth guidance, 
+                        view <Link href={chrome.runtime.getURL("usingAC.html#filter_view")} target="_blank" rel="noopener noreferred"
+                            inline={true} size="lg">Filter views</Link> in the User guide.
+                    </p>
+
+                <h2 id="hide">3.8 Show/Hide issues</h2>
                     <p>
                         The Hide feature allows issues to be ignored or marked as resolved. 
                         When this feature is used, issues are not only hidden from view, they are also subtracted from the respective issue counts. 
@@ -407,7 +450,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem>Press the 'Show' button to unhide the checked issues</ListItem>
                     </OrderedList>
 
-                <h2 id="keyboard_checker_mode">9. Keyboard checker mode</h2>
+                <h2 id="keyboard_checker_mode">3.9 Keyboard checker mode</h2>
                 <p>
                     This mode shows a visualization of the keyboard tab order detected on the page, 
                     and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
@@ -589,7 +632,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>View the issues by element roles, requirements, or rules and select the expand icon next to a requirement/element role/rule to see the related issues, and select an issue to see the detailed description in the right panel. </p>
                 
-                <h2 id="t_select_settings">Settings</h2>
+                <h2 id="t_select_settings">5. Settings</h2>
                 <p>
                     By default, the IBM Accessibility Checker uses the latest deployment with a set of rules that correspond to the most recent WCAG standards, plus additional IBM requirements. Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
                 </p>
@@ -745,7 +788,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Important note:</strong> If the same page is scanned multiple times in a multi-scan report, there may be duplicate issues, which can be identified by having the same Issue ID. If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
                 </p>
 
-                <h2 id="a11y_considerations">Accessibility features</h2>
+                <h2 id="a11y_considerations">7. Accessibility features</h2>
                 <p>
                     Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader:
                 </p>
@@ -819,7 +862,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </UnorderedList>
                 </OrderedList>
 
-                <h2 id="feedback">Feedback</h2>
+                <h2 id="feedback">8. Feedback</h2>
                 <p>
                     Visit the{" "}
                     <Link inline={true} size="lg" href="https://github.com/IBMa/equal-access/issues">
@@ -837,7 +880,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </UnorderedList>
 
-                <h2 id="troubleshooting">Troubleshooting</h2>
+                <h2 id="troubleshooting">9. Troubleshooting</h2>
                 <p>
                     If the Accessibility Checker appears unresponsive:
                 </p>
