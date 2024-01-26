@@ -20,7 +20,7 @@ import React from "react";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
-import ViewOff16 from "../../assets/img/View--off.svg";
+import ViewOff16 from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
 import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
