@@ -89,19 +89,22 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <strong>Note:</strong> On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
                 </p>
+
                 <h2 id="install">How to install</h2>
                 <p>
                     <strong>Supported browsers:</strong>
                 </p>
+                <p>Each supported browser comes with DevTools pre-installed, simplifying the installation and integration with the Checker.</p>
                 <UnorderedList>
-                    <ListItem>Google Chrome version 81.x or later</ListItem>
-                    <ListItem>Mozilla Firefox version 68.x or later</ListItem>
+                    <ListItem>Google Chrome and <Link inline={true} size="lg" href="https://developer.chrome.com/docs/devtools/" target="_blank" rel="noopener noreferred">Chrome DevTools</Link></ListItem>
+                    <ListItem>Mozilla Firefox and <Link inline={true} size="lg" href="https://firefox-source-docs.mozilla.org/devtools-user/" target="_blank" rel="noopener noreferred">Firefox DevTools</Link></ListItem>
+                    <ListItem>Microsoft Edge and <Link inline={true} size="lg" href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/landing/" target="_blank" rel="noopener noreferred">Edge DevTools</Link></ListItem>
                 </UnorderedList>
                 <p>
                     <strong>For Chrome:</strong>
                 </p>
                 <OrderedList>
-                    <ListItem>Open the Chrome browser.</ListItem>
+                    <ListItem>Open the Chrome browser</ListItem>
                     <ListItem>
                         Go to the{" "}
                         <Link
@@ -110,10 +113,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         >
                             IBM Equal Access Accessibility Checker
                         </Link>{" "}
-                        in the Chrome Web Store.
+                        in the Chrome Web Store
                     </ListItem>
                     <ListItem>
-                        Click 'Add To Chrome' button.
+                        Click 'Add To Chrome' button
                     </ListItem>
                 </OrderedList>
                 <p>
@@ -129,12 +132,54 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         >
                             IBM Equal Access Accessibility Checker
                         </Link>{" "}
-                        in Firefox Browser Add-on
+                        in Firefox Browser Add-ons
                     </ListItem>
                     <ListItem>
                         Click 'Add To Firefox' button
                     </ListItem>
                 </OrderedList>
+                <p>
+                    <strong>For Firefox:</strong>
+                </p>
+                <OrderedList>
+                    <ListItem>Open the Edge browser</ListItem>
+                    <ListItem>
+                        Go to the{" "}
+                        <Link
+                            target="_blank"
+                            href="https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka"
+                        >
+                            IBM Equal Access Accessibility Checker
+                        </Link>{" "}
+                        in Microsoft Edge Add-ons
+                    </ListItem>
+                    <ListItem>
+                        Click 'Add To Edge' button
+                    </ListItem>
+                </OrderedList>
+
+                <h3 id="layout">DevTools layout and settings</h3>
+                <p>
+                The Checker integrates with DevTools and therefore its settings affect the Checker.  
+                </p>
+                <p>'<strong>Dock side</strong>' settings will affect the layout:</p>
+                <UnorderedList>
+                    <ListItem>Dock to the right</ListItem>
+                    <ListItem>Dock to the left</ListItem>
+                    <ListItem>Dock to the bottom</ListItem>
+                </UnorderedList>
+                <p>'<strong>Appearance</strong>' settings are supported:</p>
+                <UnorderedList>
+                    <ListItem><strong>Theme</strong>: System preferences, Dark, and Light</ListItem>
+                    <ListItem><strong>Panel Layout</strong>: horizontal, vertical, and auto</ListItem>
+                </UnorderedList>
+                <p>
+                For example, the screenshots in this User guide use ’Dock to the right’, ‘Dark’ theme, and ‘horizontal’ panel layout. 
+                Experienced DevTools users will appreciate the power and functionality that the integration provides. 
+                New users should become familiar with DevTools and its features and settings by visiting the Help documentation. 
+                All users may want to experiment with the ‘Dock side’ and ‘Appearance’ settings to take advantage of their unique screen size and user preferences. 
+                </p>
+
 
                 <h2 id="issues">2. Accessibility issues</h2>
                 <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with {" "}
@@ -223,7 +268,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
                     <ListItem>Right-click web page, select ‘<strong>Inspect</strong>’ (Chrome) or ‘<strong>Inspect Element</strong>’ (Firefox)</ListItem>
                 </UnorderedList>
-                
+
                 <h2 id="a11y_check">3.1 Accessibility Checker</h2>
                 <p>
                     The Accessibility Checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component.
