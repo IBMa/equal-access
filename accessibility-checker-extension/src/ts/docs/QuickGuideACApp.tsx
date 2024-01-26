@@ -20,7 +20,9 @@ import React from "react";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
-import ViewOff16 from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
+import ViewOff16purple from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
+import ViewOff16current from "../../assets/img/View--off-currentcolor.svg"; //trying currentColor on both dark and light
+import ViewOff16 from "../../assets/img/View--off.svg"; //default
 import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
@@ -150,6 +152,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                         <ListItem>
                             <img
+                                src={ViewOff16current}
+                                alt="hide icon" // added via import
+                            /><img
+                                src={ViewOff16purple}
+                                alt="hide icon" // added via import
+                            /><img
                                 src={ViewOff16}
                                 alt="hide icon" // added via import
                             /><img
