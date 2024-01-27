@@ -29,13 +29,13 @@ import ViewOff16current from "../../assets/img/View--off-currentcolor.svg"; //tr
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
-import enter from "../../assets/enter.svg";
-import esc from "../../assets/esc.svg";
-import leftRight from "../../assets/left_right.svg";
-import shift from "../../assets/shift.svg";
-import space from "../../assets/space.svg";
-import tab from "../../assets/tab.svg";
-import upDown from "../../assets/up_down.svg";
+import enter from "../../assets/OGkeys/enterOG.svg"; // ___OG.svg images @media (prefers-color-scheme: dark) {path { fill: white; }
+import esc from "../../assets/OGkeys/escOG.svg"; // @media 
+import leftRight from "../../assets/OGkeys/left_rightOG.svg"; // @media
+import shift from "../../assets/OGkeys/shiftOG.svg"; // @media 
+import space from "../../assets/OGkeys/spaceOR.svg"; // @media
+import tab from "../../assets/OGkeys/tabOG.svg"; // @media
+import upDown from "../../assets/OGkeys/up_downOG.svg"; // @media
 import { DocPage } from "./components/DocPage";
 import "./usingAC.scss";
 import { Link, ListItem, OrderedList, UnorderedList } from "@carbon/react";
