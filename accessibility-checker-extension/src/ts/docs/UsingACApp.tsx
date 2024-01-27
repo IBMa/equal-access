@@ -23,8 +23,9 @@ import { BrowserDetection } from '../util/browserDetection';
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
-import ViewOff16 from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
-import ViewOn16 from "../../assets/img/View--on.svg";
+import ViewOff16current from "../../assets/img/View--off-currentcolor.svg"; //trying currentColor on both dark and light
+// import ViewOff16 from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
+// import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
@@ -47,10 +48,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
     render() {
         let aside = (<>
             <div style={{ marginTop: "1.5rem" }} />
-            <UnorderedList>
-                <ListItem><Link href="#install">1. How to install</Link></ListItem>
-                <ListItem><Link href="#issues">2. Accessibility issues</Link></ListItem>
-                <ListItem><Link href="#view">3. The Checker view</Link>
+            <OrderedList>
+                <ListItem><Link href="#install">How to install</Link></ListItem>
+                <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
+                <ListItem><Link href="#view">The Checker view</Link>
                     <UnorderedList nested={true}>
                         <ListItem><Link href="#a11y_check">3.1 Scanning</Link></ListItem>
                         <ListItem><Link href="#local">3.2 Scan local files</Link></ListItem>
@@ -63,13 +64,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem><Link href="#keyboard_checker_mode">3.9 Keyboard checker mode</Link></ListItem>
                     </UnorderedList>
                 </ListItem>
-                <ListItem><Link href="#a11y_assess">4. The Assessment view</Link></ListItem>
-                <ListItem><Link href="#t_select_settings">5. Settings</Link></ListItem>
-                <ListItem><Link href="#the_report">6. Checker reports</Link></ListItem>
-                <ListItem><Link href="#a11y_considerations">7. Accessibility features</Link></ListItem>
-                <ListItem><Link href="#feedback">8. Feedback</Link></ListItem>
-                <ListItem><Link href="#troubleshooting">9. Troubleshooting</Link></ListItem>
-            </UnorderedList>
+                <ListItem><Link href="#a11y_assess">The Assessment view</Link></ListItem>
+                <ListItem><Link href="#t_select_settings">Settings</Link></ListItem>
+                <ListItem><Link href="#the_report">Checker reports</Link></ListItem>
+                <ListItem><Link href="#a11y_considerations">Accessibility features</Link></ListItem>
+                <ListItem><Link href="#feedback">Feedback</Link></ListItem>
+                <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
+            </OrderedList>
             <p>For bite-sized guidance, see the <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</Link>
             </p>
             {/* </Theme> */}
@@ -90,15 +91,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <strong>Note:</strong> On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
                 </p>
 
-                <h2 id="install">How to install</h2>
+                <h2 id="install">1. How to install</h2>
                 <p>
-                    <strong>Supported browsers:</strong>
+                    Each supported browser comes with DevTools pre-installed, simplifying the installation and integration with the Checker.
+                    New users should become familiar with DevTools and its features and settings by visiting the documentation: 
                 </p>
-                <p>Each supported browser comes with DevTools pre-installed, simplifying the installation and integration with the Checker.</p>
                 <UnorderedList>
-                    <ListItem>Google Chrome and <Link inline={true} size="lg" href="https://developer.chrome.com/docs/devtools/" target="_blank" rel="noopener noreferred">Chrome DevTools</Link></ListItem>
-                    <ListItem>Mozilla Firefox and <Link inline={true} size="lg" href="https://firefox-source-docs.mozilla.org/devtools-user/" target="_blank" rel="noopener noreferred">Firefox DevTools</Link></ListItem>
-                    <ListItem>Microsoft Edge and <Link inline={true} size="lg" href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/landing/" target="_blank" rel="noopener noreferred">Edge DevTools</Link></ListItem>
+                    <ListItem>Google Chrome and <Link inline={true} href="https://developer.chrome.com/docs/devtools/" target="_blank" rel="noopener noreferred">Chrome DevTools</Link></ListItem>
+                    <ListItem>Mozilla Firefox and <Link inline={true} href="https://firefox-source-docs.mozilla.org/devtools-user/" target="_blank" rel="noopener noreferred">Firefox DevTools</Link></ListItem>
+                    <ListItem>Microsoft Edge and <Link inline={true} href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/landing/" target="_blank" rel="noopener noreferred">Edge DevTools</Link></ListItem>
                 </UnorderedList>
                 <p>
                     <strong>For Chrome:</strong>
@@ -162,25 +163,23 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                 The Checker integrates with DevTools and therefore its settings affect the Checker.  
                 </p>
-                <p>'<strong>Dock side</strong>' settings will affect the layout:</p>
+                <p><strong>Dock side</strong> settings will affect the layout:</p>
                 <UnorderedList>
                     <ListItem>Dock to the right</ListItem>
                     <ListItem>Dock to the left</ListItem>
                     <ListItem>Dock to the bottom</ListItem>
                 </UnorderedList>
-                <p>'<strong>Appearance</strong>' settings are supported:</p>
+                <p><strong>Appearance</strong> settings are supported:</p>
                 <UnorderedList>
                     <ListItem><strong>Theme</strong>: System preferences, Dark, and Light</ListItem>
                     <ListItem><strong>Panel Layout</strong>: horizontal, vertical, and auto</ListItem>
                 </UnorderedList>
                 <p>
-                For example, the screenshots in this User guide use ’Dock to the right’, ‘Dark’ theme, and ‘horizontal’ panel layout. 
-                Experienced DevTools users will appreciate the power and functionality that the integration provides. 
-                New users should become familiar with DevTools and its features and settings by visiting the Help documentation. 
-                All users may want to experiment with the ‘Dock side’ and ‘Appearance’ settings to take advantage of their unique screen size and user preferences. 
+                    For example, the screenshots in this User guide use ’Dock to the right’, ‘Dark’ theme, and ‘horizontal’ panel layout. 
+                    Experienced DevTools users will appreciate the power and functionality that the integration provides. 
+                    All users may want to experiment with the ‘Dock side’ and ‘Appearance’ settings to take advantage of their own screen size and user preferences. 
                 </p>
-
-
+        
                 <h2 id="issues">2. Accessibility issues</h2>
                 <p>As with any automated test tool for accessibility, these tests don’t catch all issues. Complete your accessibility testing with {" "}
                     <Link
@@ -226,27 +225,34 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <strong> Recommendation</strong> - opportunities to apply best practices
                     </ListItem>
                     <ListItem>
-                            <img
-                                src={ViewOff16}
-                                alt="hide icon light" // how to only detect mode and only show correct icon?
-                            /><img
-                                src={ViewOn16}
-                                alt="hide icon dark"
-                        />{" "}
-                            <strong> Hidden</strong> - issues to be ignored or have been resolved
+                        <img
+                            src={ViewOff16current}
+                            alt="hide icon" // added via import
+                        />
+                        {" "}
+                        <strong> Hidden</strong> - issues to be ignored or have been resolved
                         </ListItem>
                 </UnorderedList>
+                <p>There are three (3) ways to organize and group the set of issues detected:</p>
+                    <UnorderedList>
+                        <ListItem>by <strong>Element roles</strong> – issues are organized by the ARIA roles of the DOM elements. This view shows both implicit and explicit roles, and not the element names. Use this view to explore issues within a specific element and its children. (default)</ListItem>
+                        <ListItem>by <strong>Requirements</strong> – issues are mapped to the most relevant IBM requirement, which corresponds to the WCAG standards. Use this view to classify and report issues.</ListItem>
+                        <ListItem>by <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.</ListItem>
+                    </UnorderedList>
+                <p>There are four (4) ways to further filter one or more <strong>types</strong> of issues detected:</p>
+                    <UnorderedList>
+                        <ListItem><strong>Violations</strong> – failures that need to be corrected (default checked)</ListItem>
+                        <ListItem><strong>Needs review</strong> – needs manual review to confirm that it's not a violation (default checked)</ListItem>
+                        <ListItem><strong>RecommendationsRules</strong> - opportunities to apply best practices (default checked)</ListItem>
+                        <ListItem><strong>Hidden</strong> - issues to be ignored or have been resolved (default not-checked)</ListItem>
+                    </UnorderedList>
                 <p>
-                    There are three ways to view the same set of issues:
-                </p>
-                <p>
-                    <strong>Element roles</strong> – issues are organized by the ARIA roles of the DOM elements. This view shows both implicit and explicit roles, and not the element names. Use this view to explore issues within a specific element and its children.
-                </p>
-                <p>
-                    <strong>Requirements</strong> – issues are mapped to the most relevant IBM requirement, which corresponds to the WCAG standards. Use this view to classify and report issues.
-                </p>
-                <p>
-                    <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.
+                    For in-depth guidance, view 
+                    {" "}
+                    <Link 
+                    href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg"
+                    >Filter views</Link> in the User guide.
                 </p>
 
                 <h2 id="view">3. The Checker view</h2>
@@ -341,7 +347,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="an open dropdown menu with focus on 'download current scan'."
                     />
                 </p>
-                <p>Open the ‘Reports’ dropdown menu and select ‘Download current scan.’ See <Link inline={true} size="lg" href="#the_report" title="Accessibility Checker">Accessibility Checker reports </Link> for more details.</p>
+                <p>
+                    Open the 'Reports' dropdown menu and select 'Download current scan'. 
+                </p>
+                <p>
+                    See <Link inline={true} size="lg" href="#the_report" title="Checker reports">Checker reports </Link> for more details.
+                </p>
                 <h2 id="t_multi_scan_report">3.3 Create a multi-scan report</h2>
                 <p>
                     To combine up to 50 multiple scans into a single report:
@@ -633,7 +644,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     Additional keystrokes are defined for particular widgets within the <Link inline={true} size="lg" href="https://www.w3.org/TR/wai-aria-practices/">W3C WAI-ARIA Authoring Practices Design Patterns</Link>.
                 </p>
-                <h2 id="a11y_assess">The Assessment view</h2>
+                <h2 id="a11y_assess">4. The Assessment view</h2>
                 <p>
                     The Assessment view provides a simplified overall summary, with explanations for each issue. It has less functionality than the Checker view.
                 </p>
@@ -764,7 +775,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The 'Alert notifications' toggles on and off the pop-up notification that appears every time you turn on the keyboard checker mode.
                 </p>
 
-                <h2 id="the_report">Checker reports</h2>
+                <h2 id="the_report">6. Checker reports</h2>
                 <p>
                     Single scan reports are provided in both HTML and MS Excel spreadsheet formats. Multi-scan reports are available only in MS Excel spreadsheet format. For how to generate reports, see 3.2 Create a scan report and 3.3 Create a multi-scan report.
                 </p>
@@ -929,36 +940,32 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     If the Accessibility Checker appears unresponsive:
                 </p>
-                <UnorderedList>
+                <OrderedList>
                     <ListItem>Close the browser DevTools</ListItem>
                     <ListItem>Clear browser cookies</ListItem>
                     <ListItem>Refresh the page</ListItem>
                     <ListItem>Reopen the browser DevTools</ListItem>
                     <ListItem>Click the 'Scan' button</ListItem>
-                </UnorderedList>
+                </OrderedList>
                 <p><strong>
                     Helpful hints
                 </strong>
                 </p>
+                <p>
+                        For Chrome on MacOS, move between the keyboard tab stop visualization on the webpage and DevTools with the following keyboard shortcuts:
+                </p>    
                 <UnorderedList>
                     <ListItem>
-                        For Chrome, you can move between the keyboard tab stop visualization on the webpage, and your dev tools with the following keyboard shortcut:
+                        When in a webpage, <strong>Option+Command+Up</strong> four times to get to DevTools (More or less depending on which toolbars and panels are open)
                     </ListItem>
-                    <OrderedList>
-                        <ListItem>
-                            If you are in a webpage <strong>Option+Command+Up</strong> four times to get to dev tools DOM (more or less depending on which bars you have open)
-                        </ListItem>
-                        <ListItem>
-                            If you are in dev tools  <strong>Option_Command_Down</strong> approximately five times to get to webpage (More or less depending on how you have Chrome set up)
-                        </ListItem>
-                    </OrderedList>
+                    <ListItem>
+                        when in DevTools,  <strong>Option_Command_Down</strong> approximately five times to get to the webpage (More or less depending on how DevTools is set up)
+                    </ListItem>
                 </UnorderedList>
-                <UnorderedList>
-                    <p><strong>
-                        Known issues
-                    </strong>
-                    </p>
-                </UnorderedList>
+                <p><strong>
+                    Known issues
+                </strong>
+                </p>
                 <UnorderedList>
                     <ListItem>
                         The Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
@@ -967,7 +974,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         In rare situations, you cannot use the mouse pointer to select underlying items on the web page when keyboard tab stops is on.
                     </ListItem>
                     <ListItem>
-                        For certain websites on Firefox the keyboard tab stops visualization may stay visible after turning it off and either partially work, or not work at all.
+                        For certain websites on Firefox, the keyboard tab stops visualization may stay visible after turning it off and either partially work, or not work at all.
                     </ListItem>
                     <ListItem>
                         For carousel elements, each item may be a tab stop. While only some of the carousel items are visible, the visualization will show stacked tab stop indicators for all carousel items (see image below):

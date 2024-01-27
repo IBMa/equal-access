@@ -20,10 +20,10 @@ import React from "react";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
-import ViewOff16purple from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
+// import ViewOff16purple from "../../assets/img/View--off-purple.svg"; //trying purple on both dark and light
 import ViewOff16current from "../../assets/img/View--off-currentcolor.svg"; //trying currentColor on both dark and light
-import ViewOff16 from "../../assets/img/View--off.svg"; //default
-import ViewOn16 from "../../assets/img/View--on.svg";
+// import ViewOff16 from "../../assets/img/View--off.svg"; //default
+// import ViewOn16 from "../../assets/img/View--on.svg";
 import tabStop from "../../assets/tab_stop.svg";
 import tabStopChainError from "../../assets/tabStopChainError.svg";
 import tabStopError from "../../assets/tabStopError.svg";
@@ -127,12 +127,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             alt="Checker highlighting types of issues"
                         />
                     </p>
-                    <p>The issues detected are divided into four types:</p>
+                    <p>The issues detected are divided into four <strong>types</strong>:</p>
                     <OrderedList>
                         <ListItem>
                             <img
                                 src={violation}
-                                alt="violation icon"
+                                alt="violation icon" //two spaces needed to separate icon from text
                             />{" "}
                             <strong> Violation</strong> - failures that need to be corrected
                         </ListItem>
@@ -154,27 +154,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             <img
                                 src={ViewOff16current}
                                 alt="hide icon" // added via import
-                            /><img
-                                src={ViewOff16purple}
-                                alt="hide icon" // added via import
-                            /><img
-                                src={ViewOff16}
-                                alt="hide icon" // added via import
-                            /><img
-                            src={ViewOn16}
-                            alt="hide icon" // added via import
                             />{" "}
                             <strong> Hidden</strong> - issues to be ignored or have been resolved
                         </ListItem>
                     </OrderedList>
-                    <p>There are three ways to organize and view the set of issues detected:</p>
-                    <UnorderedList>
-                        <ListItem>by Element roles (default)</ListItem>
-                        <ListItem>by Requirements</ListItem>
-                        <ListItem>by Rules</ListItem>
-                    </UnorderedList>
                     <p>
-                        For more in-depth guidance, view 
+                        For in-depth guidance on organizing (grouping) and/or filtering the list of issues, view 
                         {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
