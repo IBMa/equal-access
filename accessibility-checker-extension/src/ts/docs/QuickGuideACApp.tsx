@@ -159,7 +159,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                     </OrderedList>
                     <p>
-                        For in-depth guidance on organizing (grouping) and/or filtering the list of issues, view 
+                        For more in-depth guidance on organizing and/or filtering the list, view 
                         {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
@@ -182,13 +182,13 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg"
                         >User guide</Link> for more in-depth guidance on using 
-                        the '<Link 
+                        the <Link 
                             href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred"
-                            inline={true} size="lg">Checker view</Link>' to 
+                            inline={true} size="lg">Checker view</Link> to 
                         find and fix issues in the code, 
-                        the '<Link 
+                        the <Link 
                             href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred"
-                            inline={true} size="lg">Assessment view</Link>' for  
+                            inline={true} size="lg">Assessment view</Link> for  
                         an executive summary of the findings, and other functionality such as filtering, 
                         hiding issues, and the keyboard checker mode.
                     </p>
@@ -311,7 +311,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         For more in-depth guidance, 
-                        view <Link href={chrome.runtime.getURL("usingAC.html#filter_view")} target="_blank" rel="noopener noreferred"
+                        view <Link href={chrome.runtime.getURL("usingAC.html#filter_views")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Filter views</Link> in the User guide.
                     </p>
 
@@ -371,7 +371,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList>
                     <p>
                         For more in-depth guidance, 
-                        view <Link href={chrome.runtime.getURL("usingAC.html#hide")} target="_blank" rel="noopener noreferred"
+                        view <Link href={chrome.runtime.getURL("usingAC.html#hide_issues")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Show/Hide issues</Link> in the User guide.
                     </p>    
 
