@@ -159,7 +159,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                     </OrderedList>
                     <p>
-                        For more in-depth guidance on organizing and/or filtering the list,<b> </b>view 
+                        For more in-depth guidance, view  
                         {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
@@ -350,7 +350,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
-                    <h3 id="resolving">Resolving Needs review issues</h3>
+                    <h3 id="resolving">Resolving Needs review issues - h3</h3>
                     <p>A common scenario is to resolve 'Needs review' issues. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -360,7 +360,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Press the 'Hide' button to remove the checked issues</ListItem>
                     </OrderedList>
 
-                    <h3 id="showing">Show previously hidden issues</h3>
+                    <h3 id="showing">Show previously hidden issues - h3</h3>
                         <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -425,7 +425,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                     </UnorderedList>
                     <p><strong>Note</strong>: only the keyboard related access issues are listed. 
-                    Turn off 'Keyboard Checker Mode' to see the full list of issues detected.
+                    Turn off 'Keyboard Checker Mode' to see the full list of issues again.
                     </p>
                     <p>
                         For more in-depth guidance, 

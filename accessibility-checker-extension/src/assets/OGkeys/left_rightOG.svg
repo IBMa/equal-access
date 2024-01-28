@@ -2,11 +2,11 @@
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>031F1C18-78A7-4C27-8B19-CE16C4EFA091</title>
     <style>
-        path {
-            fill: black; stroke: black;
-        }
+        path { fill: black; stroke: black; }
+
         @media (prefers-color-scheme: dark) {
-            path { fill: white; stroke: white;}
+            path { fill: white; stroke: white; }
+            rect { fill: white; stroke: white; }
         }
     </style>
     <defs>

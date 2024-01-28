@@ -85,14 +85,28 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h1>User guide - IBM Accessibility Checker</h1>
 
                 <p>
-                    The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") is a browser extension 
-                    that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements. 
-                    There is a <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Checker view</Link> to 
-                    find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Assessment view</Link> for 
-                    an executive summary of the page. 
-                    For teams seeking integrated accessibility testing, 
-                    IBM offers plug-ins and modules for NodeJS and Karma that perform cross-platform testing in the build and development process. 
-                    These tools use the same engine and rues as the Checker.
+                    The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") tests web pages for accessibility issues with 
+                    W3C Web Content Accessibility Guidelines (WCAG), IBM requirements, and other standards.
+                    The Checker is available as a browser extension and as a package for automated testing within a continuous integration / continuous delivery (CI/CD) pipeline. 
+                    The Checker rule sets include explanations and help for suggested fixes.
+                </p>
+                <UnorderedList nested={true}>
+                    <ListItem><strong>Chrome browser extension</strong>: integrates automated accessibility checking capabilities into the Chrome Developer Tools</ListItem>
+                    <ListItem><strong>Firefox browser add-ons</strong>: integrates automated accessibility checking capabilities into the Firefox Web Developer Tools</ListItem>
+                    <ListItem><strong>Edge browser add-ons</strong>: integrates automated accessibility checking capabilities into the Edge Developer Tools</ListItem>
+                    <ListItem><strong>Node accessibility-checker</strong>: automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, 
+                        such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files and scan local files</ListItem>
+                    <ListItem><strong>Karma-accessibility-checker</strong>: automated accessibility testing for the Karma environment</ListItem>
+                    <ListItem><strong>Cypress-accessibility-checker</strong>: wrapper of the accessibility-checker in the Cypress environment</ListItem>
+                </UnorderedList>
+                <p>
+                    The Developer Tools (“<strong>DevTools</strong>”) extension includes There an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Accessibility Checker</Link> tab to 
+                    find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Accessibility Assessment</Link> tab for 
+                    an executive summary of the page.
+                </p> 
+                <p>
+                    The CI/CD packages use the same engine and rules as the browser extensions, 
+                    making it easy to replicate finding issues in either environment when the Rule set settings are similar.
                 </p>
 
                 <h2 id="install">1. How to install</h2>
@@ -106,7 +120,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Microsoft Edge and <Link inline={true} href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/landing/" target="_blank" rel="noopener noreferred">Edge DevTools</Link></ListItem>
                 </UnorderedList>
                 <p>
-                    <strong>For Chrome:</strong>
+                    <strong>For Chrome:</strong> - strong P followed by OL
                 </p>
                 <OrderedList>
                     <ListItem>Open the Chrome browser</ListItem>
@@ -124,9 +138,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         Click 'Add To Chrome' button
                     </ListItem>
                 </OrderedList>
-                <p>
-                    <strong>For Firefox:</strong>
-                </p>
+
+                <h3 id="for_firefox">For Firefox - h3 followed by OL</h3>
                 <OrderedList>
                     <ListItem>Open the Firefox browser</ListItem>
                     <ListItem>
@@ -144,7 +157,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </OrderedList>
                 <p>
-                    <strong>For Firefox:</strong>
+                    <strong>For Edge:</strong>
                 </p>
                 <OrderedList>
                     <ListItem>Open the Edge browser</ListItem>
@@ -163,7 +176,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </OrderedList>
 
-                <h3 id="layout">DevTools layout and settings</h3>
+                <h3 id="layout">DevTools layout and settings - h3</h3>
                 <p>
                 The Checker integrates with DevTools and therefore its settings affect the Checker.  
                 </p>
@@ -323,15 +336,18 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Open and highlight all issues in element’s children, if any (light purple highlight)</ListItem>
                     <ListItem>Show the same set of highlighted issues in the different tabs</ListItem>
                 </UnorderedList>
-                <p><strong>Hidden content scanning</strong></p>
+                <h3 id="hidden_content">Hidden content scanning - h3</h3>
                 <p>
                     By default, the Checker skips hidden content (Web pages that use the visibility:hidden or display:none elements). 
                     If this content is revealed to users at any point, you must include the content in your test plan. 
                     Ensure the tests trigger the display of hidden content for the Checker to test.
                 </p>
-                <p><strong>Scan local files</strong></p>
+                
+                
+                <h2 id="local_files">3.2 Scan local files</h2>
                 <p>
-                    The Checker is able to scan local .html or .htm files launched in the Firefox browser by default. Follow the steps below to allow scanning of local .html or .htm files in the Chrome browser:
+                    The Checker is able to scan local .html or .htm files launched in the Firefox browser by default. 
+                    Follow the steps below to allow scanning of local .html or .htm files in the Chrome browser:
                 </p>
                 <OrderedList>
                     <ListItem>Open Chrome browser</ListItem>
@@ -340,11 +356,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Click 'Details' button of the IBM Accessibility Checker extension</ListItem>
                     <ListItem>Scroll down and turn on 'Allow access to file URLs'</ListItem>
                 </OrderedList>
-
-                <h2 id="local_files">3.2 Scan local files</h2>
-                <p>
-                    content here
-                </p>
 
                 <h2 id="sync">3.3 Synchronize views</h2>
                 <p>
@@ -497,7 +508,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
-                    <h3 id="resolving">Resolving Needs review issues</h3>
+                    <h3 id="resolving">Resolving Needs review issues - h3</h3>
                     <p>A common scenario is to resolve 'Needs review' issues. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -507,7 +518,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem>Press the 'Hide' button to remove the checked issues</ListItem>
                     </OrderedList>
 
-                    <h3 id="showing">Show previously hidden issues</h3>
+                    <h3 id="showing">Show previously hidden issues - h3</h3>
                         <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -571,7 +582,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             element not in tab stop chain with issues
                         </ListItem>
                     </UnorderedList>
-                <p><strong>Manual keyboard testing</strong></p>
+
+                <h3 id="manual">Manual keyboard testing - h3</h3>
                 <p>Automated tools can’t find all keyboard access issues. Using the visualization, test for basic keyboard navigation:</p>
                 <OrderedList>
                     <ListItem>Make sure every interactive element is a tab stop*
@@ -594,7 +606,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </OrderedList>
                 <p>* It may be acceptable to skip interactive elements if the UI provides another keyboard accessible way to perform the same function</p>
                 <p>** It may be acceptable if the first tab stop of the page is “skip to main content” link that is not visible until it has keyboard focus</p>
-                <p><strong>Keys to use for testing</strong></p>
+                
+                <h3 id="keys_testing">Keys to use for testing - h3</h3>
                 <UnorderedList>
                     <ListItem>
                         <img
@@ -734,7 +747,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
 
-                <h3 id="rule_deploy">Rule set settings</h3>
+                <h3 id="rule_deploy">Rule set settings - h3</h3>
                 <p>
                     Rule sets with rules that map to a specific WCAG version are available. 
                     The rule sets are updated regularly and each update has a date of deployment. 
@@ -778,7 +791,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>Close the Settings.</p>
                 <p><strong>Note</strong>: Screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
 
-                <h3 id="keyboard_checker_settings">Keyboard checker settings</h3>
+                <h3 id="keyboard_checker_settings">Keyboard checker settings - h3</h3>
                 <p>
                     By default, the keyboard visualization options has the 'Lines connecting tab stops'  checkbox selected. 
                     Select the 'Element outlines' checkbox to see bounding boxes for each interactive element in the tab order.
