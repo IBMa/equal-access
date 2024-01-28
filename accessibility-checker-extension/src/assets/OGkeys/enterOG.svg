@@ -3,10 +3,10 @@
     <title>BEF87785-B132-4847-A765-81711DC71A86</title>
     <style>
         path {
-            fill: black;
+            fill: black; stroke: black;
         }
         @media (prefers-color-scheme: dark) {
-            path { fill: white; }
+            path { fill: white; stroke: white;}
         }
     </style>
     <g id="Latest-workflows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

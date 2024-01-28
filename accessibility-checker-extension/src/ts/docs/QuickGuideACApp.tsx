@@ -141,7 +141,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                                 src={needsReview}
                                 alt="needs review icon"
                             />{" "}
-                            <strong> Needs review</strong> - needs manual review to confirm that it's not a violation
+                            <strong> Needs review</strong> - review to confirm that it's not a violation
                         </ListItem>
                         <ListItem>
                             <img
@@ -159,7 +159,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                     </OrderedList>
                     <p>
-                        For more in-depth guidance on organizing and/or filtering the list, view 
+                        For more in-depth guidance on organizing and/or filtering the list,<b> </b>view 
                         {" "}
                         <Link 
                             href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"

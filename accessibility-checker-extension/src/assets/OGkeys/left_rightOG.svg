@@ -3,10 +3,10 @@
     <title>031F1C18-78A7-4C27-8B19-CE16C4EFA091</title>
     <style>
         path {
-            fill: black;
+            fill: black; stroke: black;
         }
         @media (prefers-color-scheme: dark) {
-            path { fill: white; }
+            path { fill: white; stroke: white;}
         }
     </style>
     <defs>

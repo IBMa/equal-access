@@ -2,10 +2,10 @@
 <svg width="32px" height="20px" viewBox="0 0 32 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>
         path {
-            fill: black;
+            fill: black; stroke: black;
         }
         @media (prefers-color-scheme: dark) {
-            path { fill: white; }
+            path { fill: white; stroke: white;}
         }
     </style>
     <title>42A5480D-BC89-4F97-9EA1-4D87385C4D01</title>

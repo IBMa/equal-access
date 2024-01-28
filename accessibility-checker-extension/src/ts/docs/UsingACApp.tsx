@@ -175,13 +175,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </UnorderedList>
                 <p><strong>Appearance</strong> settings are supported:</p>
                 <UnorderedList>
-                    <ListItem><strong>Theme</strong>: System preferences, Dark, and Light</ListItem>
+                    <ListItem><strong>Theme</strong>: System preferences (recommended), Dark, and Light</ListItem>
                     <ListItem><strong>Panel Layout</strong>: horizontal, vertical, and auto</ListItem>
                 </UnorderedList>
                 <p>
-                    For example, the screenshots in this User guide use ’Dock to the right’, ‘Dark’ theme, and ‘horizontal’ panel layout. 
+                    For example, the screenshots in this User guide use 'Dock to the righ', 'System preferences' with 'Dark' theme, and ‘horizontal’ panel layout. 
                     Experienced DevTools users will appreciate the power and functionality that the integration provides. 
-                    All users may want to experiment with the ‘Dock side’ and ‘Appearance’ settings to take advantage of their own screen size and user preferences. 
+                    All users may want to experiment with the 'Dock side' and 'Appearance' settings to take advantage of their own screen size and user preferences. 
                 </p>
         
                 <h2 id="issues">2. Accessibility issues</h2>
@@ -211,15 +211,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             src={violation}
                             alt="violation icon"
                         />{" "}
-                        <strong> Violation</strong> - failures that need
-                        to be corrected
+                        <strong> Violation</strong> - failures that need to be corrected
                     </ListItem>
                     <ListItem>
                         <img
                             src={needsReview}
                             alt="needs review icon"
                         />{" "}
-                        <strong> Needs review</strong> - need manual review to identify if it's a violation
+                        <strong> Needs review</strong> - review to confirm that it's not a violation
                     </ListItem>
                     <ListItem>
                         <img
@@ -246,7 +245,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>There are four (4) ways to further filter one or more <strong>types</strong> of issues detected:</p>
                     <UnorderedList>
                         <ListItem><strong>Violations</strong> – failures that need to be corrected (default checked)</ListItem>
-                        <ListItem><strong>Needs review</strong> – needs manual review to confirm that it's not a violation (default checked)</ListItem>
+                        <ListItem><strong>Needs review</strong> – review to confirm that it's not a violation (default checked)</ListItem>
                         <ListItem><strong>RecommendationsRules</strong> - opportunities to apply best practices (default checked)</ListItem>
                         <ListItem><strong>Hidden</strong> - issues to be ignored or have been resolved (default not-checked)</ListItem>
                     </UnorderedList>
@@ -254,7 +253,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     For in-depth guidance, view 
                     {" "}
                     <Link 
-                    href={chrome.runtime.getURL("usingAC.html#issues")} target="_blank" rel="noopener noreferred"
+                    href={chrome.runtime.getURL("usingAC.html#filter_views")} target="_blank" rel="noopener noreferred"
                     inline={true} size="lg"
                     >Filter views</Link> in the User guide.
                 </p>
@@ -326,7 +325,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </UnorderedList>
                 <p><strong>Hidden content scanning</strong></p>
                 <p>
-                    By default, the Checker skips hidden content (Web pages that use the visibility:hidden or display:none elements). If this content is revealed to users at any point, you must include the content in your test plan. Ensure the tests trigger the display of hidden content for the Checker to test.
+                    By default, the Checker skips hidden content (Web pages that use the visibility:hidden or display:none elements). 
+                    If this content is revealed to users at any point, you must include the content in your test plan. 
+                    Ensure the tests trigger the display of hidden content for the Checker to test.
                 </p>
                 <p><strong>Scan local files</strong></p>
                 <p>
@@ -376,10 +377,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <img
 
                         src="assets/img/3.3Multi1.png"
-                        alt="an open dropdown menu with focus on 'start storing scans'"
+                        alt="an open dropdown menu with focus on 'Start storing scans'"
                     />
                 </p>
-                <p>1. Open the ‘Reports’ dropdown menu and select ‘Start storing scans.'</p>
+                <p>1. Open the 'Reports' dropdown menu and select ‘Start storing scans.'</p>
                 <p>
                     <img
 
@@ -394,14 +395,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="an open dropdown menu with focus on 'download stored scans"
                     />
                 </p>
-                <p>3. Open the ‘Reports’ dropdown menu and select ‘Download stored scans.’</p>
+                <p>3. Open the 'Reports' dropdown menu and select 'Download stored scans'.</p>
                 <p>
                     <img
                         src="assets/img/3.3Multi4.png"
                         alt="a table showing a list of stored scans"
                     />
                 </p>
-                <p>You can open the ‘Reports’ dropdown menu and select ‘View stored scans’ to:</p>
+                <p>You can open the 'Reports' dropdown menu and select 'View stored scans' to:</p>
                 <UnorderedList>
                     <ListItem>Select or unselect scans you want in the report with the checkboxes</ListItem>
                     <ListItem>Select all scans with the checkbox in the first column of the header row</ListItem>
@@ -422,9 +423,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
                 <OrderedList>
-                    <ListItem>Select an element in the DOM, or use the ‘Inspect element’ command on page.</ListItem>
-                    <ListItem>Select element name in focus view (e.g., &lt;html&gt;) to view related issues</ListItem>
-                    <ListItem>Select ‘All’ in the focus view to see all issues again</ListItem>
+                    <ListItem>Select an element in the DOM, or use the 'Inspect element' command on page.</ListItem>
+                    <ListItem>Select element name in focus view (e.g., &lt;div&gt;) to view related issues</ListItem>
+                    <ListItem>Select 'All' in the focus view to see all issues again</ListItem>
                 </OrderedList>
 
                 <h2 id="filter_views">3.7 Filter views</h2>
@@ -459,11 +460,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     'Filter views' differs from 'Focus view' because it applies only to issue types, 
                     while 'Focus view' applies only to the selected element.                    
                     </p>
-                    <p>
-                        For more in-depth guidance, 
-                        view <Link href={chrome.runtime.getURL("usingAC.html#filter_view")} target="_blank" rel="noopener noreferred"
-                            inline={true} size="lg">Filter views</Link> in the User guide.
-                    </p>
 
                 <h2 id="hide_issues">3.8 Show/Hide issues</h2>
                     <p>
@@ -489,7 +485,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             alt="previously hidden issues selected so Show button available"
                         />
                     </p>
-                    <p><strong>Note</strong>: A 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
+                    <p><strong>Note</strong>: A 'Hidden' icon is displayed next to the 'Type' icon in the list of individual issues in each row, 
                         the count of hidden issues is updated, 
                         and the count of hidden issues is listed in the Scan summary. 
                         Issue counts will also be reduced for the Violations, Needs review, and Recommendations 

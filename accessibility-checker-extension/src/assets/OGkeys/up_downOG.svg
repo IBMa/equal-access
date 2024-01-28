@@ -3,10 +3,10 @@
     <title>D6834F74-CBFE-472D-A7CF-5B654DB202C0</title>
     <style>
         path {
-            fill: black;
+            fill: black; stroke: black;
         }
         @media (prefers-color-scheme: dark) {
-            path { fill: white; }
+            path { fill: white; stroke: white;}
         }
     </style>
     <defs>
