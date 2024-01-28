@@ -33,7 +33,7 @@ import enter from "../../assets/OGkeys/enterOG.svg"; // ___OG.svg images @media 
 import esc from "../../assets/OGkeys/escOG.svg"; // @media 
 import leftRight from "../../assets/OGkeys/left_rightOG.svg"; // @media
 import shift from "../../assets/OGkeys/shiftOG.svg"; // @media 
-import space from "../../assets/OGkeys/spaceOR.svg"; // @media
+import space from "../../assets/OGkeys/spaceOG.svg"; // @media
 import tab from "../../assets/OGkeys/tabOG.svg"; // @media
 import upDown from "../../assets/OGkeys/up_downOG.svg"; // @media
 import { DocPage } from "./components/DocPage";
@@ -59,7 +59,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem><Link href="#t_single_scan_report">3.4 Create a scan report</Link></ListItem>
                         <ListItem><Link href="#t_multi_scan_report">3.5 Create a multi-scan report</Link></ListItem>
                         <ListItem><Link href="#focus_view">3.6 Focus view</Link></ListItem>
-                        <ListItem><Link href="#filter_views">3.7 Focus view</Link></ListItem>
+                        <ListItem><Link href="#filter_views">3.7 Filter views</Link></ListItem>
                         <ListItem><Link href="#hide_issues">3.8 Show/Hide issues</Link></ListItem>
                         <ListItem><Link href="#keyboard_checker_mode">3.9 Keyboard checker mode</Link></ListItem>
                     </UnorderedList>
@@ -85,7 +85,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h1>User guide - IBM Accessibility Checker</h1>
 
                 <p>
-                    The IBM Equal Access Toolkit: Accessibility Checker ("the Checker") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements. There is a <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Checker view</Link> to find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Assessment view</Link> for an executive overview of the page. For teams seeking integrated accessibility testing, IBM offers plug-ins and modules for NodeJS and Karma that perform cross-platform testing in the build and development process. These tools use the same test engine as the Accessibility Checker.
+                    The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") is a browser extension that tests web pages for accessibility issues with W3C Web Content Accessibility Guidelines (WCAG) and IBM requirements. There is a <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Checker view</Link> to find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Assessment view</Link> for an executive overview of the page. For teams seeking integrated accessibility testing, IBM offers plug-ins and modules for NodeJS and Karma that perform cross-platform testing in the build and development process. These tools use the same test engine as the Accessibility Checker.
                 </p>
                 <p>
                     <strong>Note:</strong> On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
@@ -196,8 +196,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/2_A11yIssues.png"
-                        alt="IBM checker tool highlighting issues filter and tab list for element roles, requirements, and rules"
+                        src="assets/img/1_RoleFilters.png" // was 2_A11yIssues.png
+                        alt="Checker highlighting issues found, filters, and dropdown for Element roles, Requirements, and Rules"
                     />
                 </p>
                 <p>The issues are divided into three types:</p>
@@ -474,7 +474,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             alt="previously hidden issues selected so Show button available"
                         />
                     </p>
-                    <p><strong>Note</strong>: a 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
+                    <p><strong>Note</strong>: A 'Hidden' icon is displayed next to 'Type' icon in the list of individual issues in each row, 
                         the count of hidden issues is updated, 
                         and the count of hidden issues is listed in the Scan summary. 
                         Issue counts will also be reduced for the Violations, Needs review, and Recommendations 
@@ -482,7 +482,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <p>When the 'Hidden' filter is not selected (unchecked) in the dropdown menu, then those hidden issues are filtered (not shown) from the list of issues displayed.  
                         Unlike using the Filter views feature (which only affects whether an issue is shown), 
                         Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
-                    <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
+                    <p><strong>Note</strong>: When the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
@@ -522,7 +522,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
                 
-                <p><strong>Note:</strong> the keyboard checker mode does not track page changes. Turn the mode off and on again to update the visualization.
+                <p><strong>Note</strong>: The keyboard checker mode does not track page changes. Turn the mode off and on again to update the visualization.
                 </p>
                 <p>
                     <img
@@ -710,8 +710,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         browser window.
                     </ListItem>
                     <ListItem>
-                        In the overlay that appears, select 'Settings’ and the settings will open in a new browser tab.
-                        <strong> Note:</strong> In Firefox, the Settings page may fail to open if the Enhanced Tracking Protection option is set to Strict. To avoid this, change the browser privacy settings to Standard.
+                        In the overlay that appears, select 'Settings’ and the settings will open in a new browser tab. 
+                        <strong>Note</strong>: In Firefox, the Settings page may fail to open if the Enhanced Tracking Protection option is set to Strict. 
+                        To avoid this, change the browser privacy settings to Standard.
                     </ListItem>
                 </OrderedList>
                 <p>
@@ -765,7 +766,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>Click the 'Save' button to keep the changes.</p>
                 <p>Click the 'Reset to defaults' button to restore the default settings.</p>
                 <p>Close the Settings.</p>
-                <p><strong>Note</strong>: screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
+                <p><strong>Note</strong>: Screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
 
                 <h3 id="rule_deploy">Keyboard checker settings</h3>
                 <p>
@@ -800,12 +801,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Issue details organized by requirements, element roles, and rules</ListItem>
                     <ListItem>‘Learn more’ link with detailed description for each issue</ListItem>
                 </OrderedList>
-                <p><strong>
-                    Important Note:
-                </strong>
-                    This percentage is based on automated tests only. Be sure to perform additional reviews and manual tests to complete the accessibility assessments. Use the IBM Equal Access Toolkit as a guide.
+                <p>
+                    <strong>Note</strong>: This percentage is based on automated tests only. 
+                    Be sure to perform additional reviews and manual tests to complete the accessibility assessments. 
+                    Use the IBM Equal Access Toolkit as a guide.
                 </p>
-                <h3 id="t_excel_report">MS Excel Spreadsheet report</h3>
+                <h3 id="t_excel_report">Excel XLS spreadsheet report</h3>
                 <p>
                     Both single scans or multiple scans can generate a five sheet spreadsheet report.
                 </p>
@@ -841,7 +842,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </OrderedList>
                 <p>
-                    <strong>Important note:</strong> If the same page is scanned multiple times in a multi-scan report, there may be duplicate issues, which can be identified by having the same Issue ID. If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
+                    <strong>Note</strong>: If the same page is scanned multiple times in a multi-scan report, 
+                    there may be duplicate issues, which can be identified by having the same Issue ID. 
+                    If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
                 </p>
 
                 <h2 id="a11y_considerations">7. Accessibility features</h2>
@@ -920,25 +923,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h2 id="feedback">8. Feedback</h2>
                 <p>
-                    Visit the{" "}
-                    <Link inline={true} size="lg" href="https://github.com/IBMa/equal-access/issues">
-                        Equal Access git repository</Link> to:
+                    Visit the open-source <Link inline={true} size="lg" href="https://github.com/IBMa/equal-access/issues">IBMa/equal-access</Link> GitHub repository to:
                 </p>
                 <UnorderedList>
-                    <ListItem>
-                        report a problem with the tool
-                    </ListItem>
-                    <ListItem>
-                        report a problem with the checker rules or accuracy of the errors reported by the tool
-                    </ListItem>
-                    <ListItem>
-                        find information on any existing issues
-                    </ListItem>
-                </UnorderedList>
+                        <ListItem>Request a new feature</ListItem>
+                        <ListItem>Report a bug with the Checker</ListItem>
+                        <ListItem>Report a bug with a rule, help information, or the accuracy of the violation reported</ListItem>
+                        <ListItem>Find information on existing bugs, <Link 
+                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
+                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
+                    </UnorderedList>
 
                 <h2 id="troubleshooting">9. Troubleshooting</h2>
                 <p>
-                    If the Accessibility Checker appears unresponsive:
+                    If the Checker appears unresponsive:
                 </p>
                 <OrderedList>
                     <ListItem>Close the browser DevTools</ListItem>
@@ -947,34 +945,40 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Reopen the browser DevTools</ListItem>
                     <ListItem>Click the 'Scan' button</ListItem>
                 </OrderedList>
+                <p>
+                    <strong>Note</strong>: On rare occasions, the Checker does not appear in DevTools for some sites due to a bug in the DevTools. 
+                    The workaround is to go to a site where the Checker will launch, and then launch the Checker in DevTools. 
+                    Then, in the same browser tab, load the site that did not launch.
+                </p>
                 <p><strong>
-                    Helpful hints
+                    Helpful hints - strong?
                 </strong>
                 </p>
                 <p>
-                        For Chrome on MacOS, move between the keyboard tab stop visualization on the webpage and DevTools with the following keyboard shortcuts:
+                    For Chrome on MacOS, move between the keyboard tab stop visualization on the webpage and DevTools with the following keyboard shortcuts:
                 </p>    
                 <UnorderedList>
                     <ListItem>
                         When in a webpage, <strong>Option+Command+Up</strong> four times to get to DevTools (More or less depending on which toolbars and panels are open)
                     </ListItem>
                     <ListItem>
-                        when in DevTools,  <strong>Option_Command_Down</strong> approximately five times to get to the webpage (More or less depending on how DevTools is set up)
+                        When in DevTools,  <strong>Option_Command_Down</strong> approximately five times to get to the webpage (More or less depending on the DevTools layout)
                     </ListItem>
                 </UnorderedList>
-                <p><strong>
-                    Known issues
-                </strong>
-                </p>
+                <h3 id="known_issues - h3?">Known issues</h3> 
+                {/* <p><strong>Known issues</strong></p> */}
                 <UnorderedList>
                     <ListItem>
-                        The Checker is unable to check the content of an iframe element unless both have the same origin. You will have to open the iframe URL in a new window or tab and then scan the content.
+                        The Checker is unable to check the content of an iframe element unless both have the same origin. Work around: open the iframe URL in a new window or tab and then scan the content.
                     </ListItem>
                     <ListItem>
-                        In rare situations, you cannot use the mouse pointer to select underlying items on the web page when keyboard tab stops is on.
+                        In rare situations, the mouse pointer is unable to select underlying items on the web page when Keyboard Checker Mode tab is on.
                     </ListItem>
                     <ListItem>
                         For certain websites on Firefox, the keyboard tab stops visualization may stay visible after turning it off and either partially work, or not work at all.
+                    </ListItem>
+                    <ListItem>
+                        See 'Open' issues in the open-source <Link inline={true} size="lg" href="https://github.com/IBMa/equal-access/issues">IBMa/equal-access</Link> GitHub repository.
                     </ListItem>
                     <ListItem>
                         For carousel elements, each item may be a tab stop. While only some of the carousel items are visible, the visualization will show stacked tab stop indicators for all carousel items (see image below):
