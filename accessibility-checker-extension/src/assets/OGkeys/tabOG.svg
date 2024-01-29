@@ -4,8 +4,8 @@
         path { fill: black; stroke: black; }
         text { fill: black; }
         @media (prefers-color-scheme: dark) {
-            path { fill: white; stroke: white; }
-            text { fill: white; }
+            rect { fill: none; stroke: white; }
+            text { fill: white; stroke: white; }
         }
     </style>
     <title>42A5480D-BC89-4F97-9EA1-4D87385C4D01</title>
@@ -13,7 +13,7 @@
         <g id="user-guide" transform="translate(-446.000000, -8785.000000)">
             <g id="Group-3-Copy-7" transform="translate(447.000000, 8786.000000)">
                 <rect id="Background" stroke="#8a3ffc" stroke-width="1.3" x="0" y="0" width="30" height="18" rx="2"></rect>
-                <text id="Text" font-family="IBMPlexSans-Medium, IBM Plex Sans" font-size="12" font-weight="400" line-spacing="16" letter-spacing="0.32" fill="#000000">
+                <text id="Text" fill="blue" font-family="IBMPlexSans-Medium, IBM Plex Sans" font-size="12" font-weight="400" line-spacing="16" letter-spacing="0.32">
                     <tspan x="3" y="12">tab</tspan>
                 </text>
             </g>

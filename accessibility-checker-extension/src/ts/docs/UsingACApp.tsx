@@ -896,51 +896,44 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h2 id="a11y_considerations">7. Accessibility features</h2>
                 <p>
                     Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, 
-                    including with keyboard or with a screen reader:
+                    including with a keyboard or with a screen reader.
                 </p>
-                <OrderedList>
-                    <ListItem>The Checker is responsive to users’ preferred font size and colors.</ListItem>
-                    <ListItem>
-                        The tool is fully keyboard accessible, tab order is as follows:
-                        <OrderedList>
-                            <ListItem>‘Scan’ button </ListItem>
-                            <ListItem>‘Reports’ dropdown menu</ListItem>
-                            <ListItem>
-                                ‘Focus view’ switcher,
-                                    <img
+                <p>
+                    The Checker is responsive to users’ preferred font size and colors.
+                </p>
+                <p>
+                    The tool is fully keyboard accessible, tab order is as follows:
+                </p>
+                    <OrderedList>
+                        <ListItem>‘Scan’ button </ListItem>
+                        <ListItem>‘Reports’ dropdown menu</ListItem>
+                        <ListItem>‘Focus view’ switcher, <img
                                         src={leftRight}
                                         alt="left right arrow keys"
                                     />{" "} toggles
-                            </ListItem>
-                            <ListItem>
-                                Issue filter checkboxes,
-                                    <img
+                        </ListItem>
+                        <ListItem>Issue filter checkboxes, <img
                                         src={enter}
                                         alt="enter key"
                                     />{" "}  selects checkbox
-                                </ListItem>
-                            <ListItem>
-                                Issue view tab list, <img
+                        </ListItem>
+                        <ListItem>Issue view tab list, <img
                                     src={leftRight}
                                     alt="left right arrow keys"
                                 />{" "} navigates between tabs
-                            </ListItem>
-                            <ListItem>Issue groupings associated with each requirement (element role or rule)</ListItem>
+                        </ListItem>
+                        <ListItem>Issue groupings associated with each Element role, Requirement, or by Rule
                             <UnorderedList>
-                                <ListItem>
-                                        <img
-                                            src={enter}
-                                            alt="enter key"
-                                        />{" "}
-                                        opens/closes issue grouping
+                                <ListItem><img
+                                    src={enter}
+                                    alt="enter key"
+                                    />{" "} opens/closes issue grouping
                                 </ListItem>
                                 <ListItem>
-                                        within open grouping,
-                                        <img
+                                    within open grouping, <img
                                             src={tab}
                                             alt="tab key"
-                                        />{" "}
-                                        to navigate to each issue
+                                        />{" "} to navigate to each issue
                                 </ListItem>
                                 <ListItem>
                                         <img
@@ -950,22 +943,24 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                         selects issue
                                 </ListItem>
                             </UnorderedList>
-                            <ListItem>‘Learn more’ link or the next issue</ListItem>
-                        </OrderedList>
-                    </ListItem>
-                    <ListItem>Use the heading hierarchy or implemented landmarks to navigate:</ListItem>
-                        <UnorderedList>
-                            <ListItem>The Assessment or Checker view’s main landmark includes:
+                        </ListItem>
+                        <ListItem>‘Learn more’ link or the next issue</ListItem>
+                    </OrderedList>
+                    <OrderedList>
+                        <ListItem>Use the heading hierarchy or the landmarks to navigate:
+                            <UnorderedList>
+                                <ListItem>The Assessment or Checker view’s main landmark includes:
                                     <UnorderedList>
                                         <ListItem><strong>Issue count</strong> region (by issue type and the total number of issues found)</ListItem>
                                         <ListItem><strong>Issue list</strong> region (issues grouped by element roles/requirements/rules)</ListItem>
                                         <ListItem>In the Checker view, the main landmark also contains issue help and the overview of stored scans, when those are requested by the user</ListItem>
                                     </UnorderedList>
-                            </ListItem>
-                            <ListItem>The Assessment view <strong>Scan Summary</strong> aside or the complementary landmark contains the scan summary, after the scan completes or shows the issue help when any issue is selected.</ListItem>
-                            <ListItem>The Assessment view <strong>Issue Help</strong> aside or the complementary landmark contains the issue help when any issue is selected.</ListItem>
-                        </UnorderedList>
-                </OrderedList>
+                                </ListItem>
+                                <ListItem>The Assessment view <strong>Scan Summary</strong> aside or the complementary landmark contains the scan summary, after the scan completes or shows the issue help when any issue is selected.</ListItem>
+                                <ListItem>The Assessment view <strong>Issue Help</strong> aside or the complementary landmark contains the issue help when any issue is selected.</ListItem>
+                            </UnorderedList>
+                        </ListItem>
+                    </OrderedList>
 
                 <h2 id="feedback">8. Feedback</h2>
                 <p>

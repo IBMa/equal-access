@@ -7,7 +7,7 @@
         }
         @media (prefers-color-scheme: dark) {
             path { fill: white; stroke: white; }
-            rect { fill: white; stroke: white; }
+            rect { fill: none; stroke: white; }
         }
     </style>
     <defs>
