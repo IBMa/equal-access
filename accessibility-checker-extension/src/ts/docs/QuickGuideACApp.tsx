@@ -338,7 +338,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/2_6_HideHide6wFilterOff.png"
+                            src="assets/img/2_6_Hide6wFilterOff.png"
                             alt="Scan summary updated"
                         />
                     </p>
