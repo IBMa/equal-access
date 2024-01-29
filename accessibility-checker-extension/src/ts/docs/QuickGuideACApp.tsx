@@ -273,8 +273,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <p>
                         The Checker includes four (4) filters when viewing issues. 
                         Each filter type has a checkbox in the dropdown menu. 
-                        If the checkbox is checked the issue type will show.
-                        If the checkbox is not checked the issue type will be filtered and not show.
+                        If the checkbox is checked, that type of issue type will show.
+                        If the checkbox is not checked, that type of issue will be filtered and not show.
                         The default is for three (3) types of issues: Violations, Needs review, and Recommendations, to be checked so that they will show.
                     </p>
                     <p>
@@ -284,8 +284,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         />
                     </p>
                     <p>
-                    Unchecking one of the checkboxes will filter (not show) the associated issues from the list, 
-                    but those issues are still counted in the total issues found and Scan summary report.
+                        Unchecking one of the checkboxes will filter (not show) the associated issues from the list, 
+                        but those issues are still counted in the total issues found and Scan summary report.
                     </p>
                     <p>
                         All the filters are independent. 
@@ -334,15 +334,23 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         the count of hidden issues is updated, 
                         and the count of hidden issues is listed in the Scan summary. 
                         Issue counts will also be reduced for the Violations, Needs review, and Recommendations 
-                        accounting for those types of issues that are now hidden.</p>
+                        accounting for those types of issues that are now hidden.
+                    </p>
+                    <p>
+                        <img
+                            src="assets/img/2_6_HideHide6wFilterOff.png"
+                            alt="Scan summary updated"
+                        />
+                    </p>
                     <p>When the 'Hidden' filter is not selected (unchecked) in the dropdown menu, then those hidden issues are filtered (not shown) from the list of issues displayed.  
                         Unlike using the Filter views feature (which only affects whether an issue is shown), 
                         Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
                     <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
-                        When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
-
-                    <h3 id="resolving">Resolving Needs review issues - h3</h3>
+                        When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.
+                    </p>
+                    
+                    <h3 id="resolving">Resolving Needs review issues</h3>
                     <p>A common scenario is to resolve 'Needs review' issues. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -352,7 +360,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Press the 'Hide' button to remove the checked issues</ListItem>
                     </OrderedList>
 
-                    <h3 id="showing">Show previously hidden issues - h3</h3>
+                    <h3 id="showing">Show previously hidden issues</h3>
                         <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -381,12 +389,14 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             alt="highlighting 'keyboard checker mode' icon button, counts, and visualization"
                         />
                     </p>
-                    <p><strong>Note</strong>: the keyboard checker mode does not track page changes. 
-                    Turn the mode off and on again to update the visualization.
+                    <p>
+                        <strong>Note</strong>: the keyboard checker mode does not track page changes. 
+                        Turn the mode off and on again to update the visualization.
                     </p>
                     <p>
-                    In this example, the Checker found 22 existing Keyboard tab stops, 2 missing, and lists the 8 associated keyboard issues found with those elements. 
-                    Select the icons or tab through the page to see the code highlighted, the element on the page highlighted, and the keyboard access issues highlighted:</p>
+                        In this example, the Checker found 22 existing Keyboard tab stops, 2 missing, and lists the 8 associated keyboard issues found with those elements. 
+                        Select the icons or tab through the page to see the code highlighted, the element on the page highlighted, and the keyboard access issues highlighted:
+                    </p>
                     <UnorderedList>
                         <ListItem style={{marginBottom:".5rem"}}>
                             <div style={{textAlign: "center", display: "inline-block", width: "2.5rem"}}>
@@ -416,8 +426,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             tab stops that are not in the tab order. Click to learn more.
                         </ListItem>
                     </UnorderedList>
-                    <p><strong>Note</strong>: only the keyboard related access issues are listed. 
-                    Turn off 'Keyboard Checker Mode' to see the full list of issues again.
+                    <p>
+                        <strong>Note</strong>: only the keyboard related access issues are listed. 
+                        Turn off 'Keyboard Checker Mode' to see the full list of issues again.
                     </p>
                     <p>
                         For more in-depth guidance, 

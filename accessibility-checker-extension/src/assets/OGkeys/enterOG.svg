@@ -4,17 +4,17 @@
     <style>
         path { fill: black; stroke: black; }
         text { fill: black; }
-        rect { fill: black; stroke: black; }
+        rect { stroke: black; }
         @media (prefers-color-scheme: dark) {
             path { fill: white; stroke: white; }
             text { fill: white; }
-            rect { fill: white; stroke: white; }
+            rect { stroke: white; }
         }
     </style>
     <g id="Latest-workflows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="user-guide" transform="translate(-446.000000, -8833.000000)">
             <g id="Group-3-Copy-10" transform="translate(447.000000, 8834.000000)">
-                <rect id="Background" fill="black" stroke-width="1.3" x="0" y="0" width="39" height="18" rx="2"></rect>
+                <rect id="Background" fill="none" stroke-width="1.3" x="0" y="0" width="39" height="18" rx="2"></rect>
                 <text id="Text" font-family="IBMPlexSans-Medium, IBM Plex Sans" font-size="12" font-weight="400" line-spacing="16" letter-spacing="0.32" fill="black">
                     <tspan x="3" y="12">enter</tspan>
                 </text>

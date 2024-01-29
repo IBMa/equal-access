@@ -168,8 +168,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h3 id="layout">DevTools layout and settings</h3>
                 <p>
-                    The Checker is a “<strong>DevTools</strong>” extension that includes an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Accessibility Checker</Link> tab to 
-                    find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Accessibility Assessment</Link> tab for 
+                    The Checker is a “<strong>DevTools</strong>” extension that includes an <Link inline={true} size="lg" href="#view">Accessibility Checker</Link> tab to 
+                    find and fix issues in the code and an <Link inline={true} size="lg" href="#a11y_assess">Accessibility Assessment</Link> tab for 
                     an executive summary of the page.
                     The DevTools settings affect the layout and appearance of the Checker:
                 </p> 
@@ -263,7 +263,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     For in-depth guidance, view 
                     {" "}
                     <Link 
-                    href={chrome.runtime.getURL("usingAC.html#filter_views")} target="_blank" rel="noopener noreferred"
+                    href="#filter_views"
                     inline={true} size="lg"
                     >Filter views</Link> in the User guide.
                 </p>
@@ -275,36 +275,31 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/3_1CheckerSplash.png"
+                        src="assets/img/3_1_CheckerSplash.png"
                         alt="Accessibility Checker tab highlighted"
                     />
                 </p>
                 <p><strong>To launch the Checker</strong>, do one of the following:</p>
                 <UnorderedList>
-                    <ListItem>Launch Developer Tools by either:
-                        <UnorderedList>
+                    <ListItem>Launch Developer Tools:
+                        <OrderedList>
                             <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
-                            <ListItem>Or, Right-click the web page, select '<strong>Inspect</strong>' (in the Chrome, Firefox, or Edge browser)</ListItem>
-                            <ListItem>And then select:
-                                <UnorderedList>
-                                    <ListItem>the 'Elements' panel in Chrome/Edge</ListItem>
-                                    <ListItem>or the 'Inspector' panel in Firefox</ListItem>
-                                    <ListItem>and then select the 'Accessibility Checker' tab</ListItem>
-                                </UnorderedList>    
-                            </ListItem>
-                        </UnorderedList>
+                            <ListItem>Or, Right-click the web page, select '<strong>Inspect</strong>'</ListItem>
+                            <ListItem>Select 'Elements' panel in Chrome/Edge or the 'Inspector' panel in Firefox</ListItem>
+                            <ListItem>Select 'Accessibility Checker' tab</ListItem>
+                        </OrderedList>    
                     </ListItem>
                     <ListItem>From the Chrome and Edge browser menu:
                         <OrderedList>
                             <ListItem>Select 'More tools', then 'Developer Tools'</ListItem>
-                            <ListItem>Select ‘Elements' panel</ListItem>
+                            <ListItem>Select 'Elements' panel</ListItem>
                             <ListItem>Select 'Accessibility Checker' tab</ListItem>
                         </OrderedList>
                     </ListItem>
-                    <ListItem>From the Firefox browser:
+                    <ListItem>From the Firefox browser menu:
                         <OrderedList>
                             <ListItem>Select 'More tools', then 'Web Developer Tools'</ListItem>
-                            <ListItem>Select ‘Inspector' panel</ListItem>
+                            <ListItem>Select 'Inspector' panel</ListItem>
                             <ListItem>Select 'Accessibility Checker' tab</ListItem>
                         </OrderedList>
                     </ListItem>
@@ -358,7 +353,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Open and highlight all issues in element’s children, if any (light purple highlight)</ListItem>
                     <ListItem>Show the same set of highlighted issues in the different tabs</ListItem>
                 </UnorderedList>
-                <h3 id="hidden_content">Hidden content scanning - h3</h3>
+                <h3 id="hidden_content">Hidden content scanning</h3>
                 <p>
                     By default, the Checker skips hidden content (Web pages that use the visibility:hidden or display:none elements). 
                     If this content is revealed to users at any point, you must include the content in your test plan. 
@@ -530,7 +525,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.</p>
 
-                    <h3 id="resolving">Resolving Needs review issues - h3</h3>
+                    <h3 id="resolving">Resolving Needs review issues</h3>
                     <p>A common scenario is to resolve 'Needs review' issues. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -540,7 +535,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem>Press the 'Hide' button to remove the checked issues</ListItem>
                     </OrderedList>
 
-                    <h3 id="showing">Show previously hidden issues - h3</h3>
+                    <h3 id="showing">Show previously hidden issues</h3>
                         <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
@@ -556,7 +551,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     and elements with detectable keyboard access issues. Use this for manual keyboard accessibility testing.
                 </p>
                 <p>
-                    Select the 'Keyboard checker mode' icon to turn on/off keyboard visualization.
+                    Press the 'Keyboard checker mode' icon to turn on/off keyboard visualization.
                 </p>
                 <p>
                     <img
@@ -605,7 +600,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </ListItem>
                     </UnorderedList>
 
-                <h3 id="manual">Manual keyboard testing - h3</h3>
+                <h3 id="manual">Manual keyboard testing</h3>
                 <p>Automated tools can’t find all keyboard access issues. Using the visualization, test for basic keyboard navigation:</p>
                 <OrderedList>
                     <ListItem>Make sure every interactive element is a tab stop*
@@ -629,7 +624,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>* It may be acceptable to skip interactive elements if the UI provides another keyboard accessible way to perform the same function</p>
                 <p>** It may be acceptable if the first tab stop of the page is “skip to main content” link that is not visible until it has keyboard focus</p>
                 
-                <h3 id="keys_testing">Keys to use for testing - h3</h3>
+                <h3 id="keys_testing">Keys to use for testing</h3>
                 <UnorderedList>
                     <ListItem>
                         <img
@@ -674,7 +669,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>
                         <img
                             src={leftRight}
-                            alt="left and right arrow keys"
+                            alt="left right arrow keys"
                         />{" "}
                         may move between tab or menu items, scroll horizontally, and adjust sliders
                     </ListItem>
@@ -769,7 +764,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
 
-                <h3 id="rule_deploy">Rule set settings - h3</h3>
+                <h3 id="rule_deploy">Rule set settings</h3>
                 <p>
                     Rule sets with rules that map to a specific WCAG version are available. 
                     The rule sets are updated regularly and each update has a date of deployment. 
@@ -813,7 +808,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>Close the Settings.</p>
                 <p><strong>Note</strong>: Screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
 
-                <h3 id="keyboard_checker_settings">Keyboard checker settings - h3</h3>
+                <h3 id="keyboard_checker_settings">Keyboard checker settings</h3>
                 <p>
                     By default, the keyboard visualization options has the 'Lines connecting tab stops'  checkbox selected. 
                     Select the 'Element outlines' checkbox to see bounding boxes for each interactive element in the tab order.
@@ -827,9 +822,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     Single scan reports are provided in both HTML web and Microsoft Excel XLS spreadsheet formats. 
                     Multi-scan reports are available only in the Excel XLS spreadsheet format. 
                     For how to generate reports, see <Link 
-                    href={chrome.runtime.getURL("usingAC.html#t_single_scan_report")} target="_blank" rel="noopener noreferred"
+                    href="#t_single_scan_report"
                     inline={true} size="lg">Create a scan report</Link> and <Link 
-                    href={chrome.runtime.getURL("usingAC.html#t_multi_scan_report")} target="_blank" rel="noopener noreferred"
+                    href="#t_multi_scan_report"
                     inline={true} size="lg">Create a multi-scan report</Link>.
                 </p>
                 
@@ -1016,7 +1011,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </UnorderedList>
                 
-                <h3 id="known_issues">Known issues - h3</h3> 
+                <h3 id="known_issues">Known issues</h3> 
                 {/* <p><strong>Known issues</strong></p> */}
                 <UnorderedList>
                     <ListItem>
