@@ -83,12 +83,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 aria-label="User guide details"
             >
                 <h1>User guide - IBM Accessibility Checker</h1>
-
                 <p>
-                    The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") tests web pages for accessibility issues with 
-                    W3C Web Content Accessibility Guidelines (WCAG), IBM requirements, and other standards.
-                    The Checker is available as a browser extension and as a package for automated testing within a continuous integration / continuous delivery (CI/CD) pipeline. 
-                    The Checker rule sets include explanations and help for suggested fixes.
+                    The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") tests web pages for accessibility issues with
+                    W3C Web Content Accessibility Guidelines (WCAG 2.2), IBM Accessibility requirements, and other standards.
+                    The Checker is <Link href="https://www.ibm.com/able/toolkit/tools/#develop" target="_blank" rel="noopener noreferred" inline={true}
+                    size="lg">also available as a Node package</Link> for automated testing within a continuous integration / continuous delivery (CI/CD) pipeline. 
+                    The Checker rules include explanations and help for suggested fixes.
                 </p>
                 <UnorderedList nested={true}>
                     <ListItem><strong>Chrome browser extension</strong>: integrates automated accessibility checking capabilities into the Chrome Developer Tools</ListItem>
@@ -99,11 +99,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem><strong>Karma-accessibility-checker</strong>: automated accessibility testing for the Karma environment</ListItem>
                     <ListItem><strong>Cypress-accessibility-checker</strong>: wrapper of the accessibility-checker in the Cypress environment</ListItem>
                 </UnorderedList>
-                <p>
-                    The Developer Tools (“<strong>DevTools</strong>”) extension includes There an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Accessibility Checker</Link> tab to 
-                    find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Accessibility Assessment</Link> tab for 
-                    an executive summary of the page.
-                </p> 
                 <p>
                     The CI/CD packages use the same engine and rules as the browser extensions, 
                     making it easy to replicate finding issues in either environment when the Rule set settings are similar.
@@ -119,9 +114,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Mozilla Firefox and <Link inline={true} href="https://firefox-source-docs.mozilla.org/devtools-user/" target="_blank" rel="noopener noreferred">Firefox DevTools</Link></ListItem>
                     <ListItem>Microsoft Edge and <Link inline={true} href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/landing/" target="_blank" rel="noopener noreferred">Edge DevTools</Link></ListItem>
                 </UnorderedList>
-                <p>
-                    <strong>For Chrome:</strong> - strong P followed by OL
-                </p>
+                
+                <h3 id="for_chrome">For Chrome:</h3>
                 <OrderedList>
                     <ListItem>Open the Chrome browser</ListItem>
                     <ListItem>
@@ -129,17 +123,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <Link
                             target="_blank"
                             href="https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp"
-                        >
-                            IBM Equal Access Accessibility Checker
+                            >IBM Equal Access Accessibility Checker
                         </Link>{" "}
                         in the Chrome Web Store
                     </ListItem>
                     <ListItem>
-                        Click 'Add To Chrome' button
+                        Press 'Add To Chrome' button
                     </ListItem>
                 </OrderedList>
 
-                <h3 id="for_firefox">For Firefox - h3 followed by OL</h3>
+                <h3 id="for_firefox">For Firefox:</h3>
                 <OrderedList>
                     <ListItem>Open the Firefox browser</ListItem>
                     <ListItem>
@@ -147,18 +140,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <Link
                             target="_blank"
                             href="https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/"
-                        >
-                            IBM Equal Access Accessibility Checker
+                            >IBM Equal Access Accessibility Checker
                         </Link>{" "}
                         in Firefox Browser Add-ons
                     </ListItem>
                     <ListItem>
-                        Click 'Add To Firefox' button
+                        Press 'Add To Firefox' button
                     </ListItem>
                 </OrderedList>
-                <p>
-                    <strong>For Edge:</strong>
-                </p>
+
+                <h3 id="for_edge">For Edge:</h3>
                 <OrderedList>
                     <ListItem>Open the Edge browser</ListItem>
                     <ListItem>
@@ -166,33 +157,39 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <Link
                             target="_blank"
                             href="https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka"
-                        >
-                            IBM Equal Access Accessibility Checker
+                            >IBM Equal Access Accessibility Checker
                         </Link>{" "}
                         in Microsoft Edge Add-ons
                     </ListItem>
                     <ListItem>
-                        Click 'Add To Edge' button
+                        Press 'Add To Edge' button
                     </ListItem>
                 </OrderedList>
 
-                <h3 id="layout">DevTools layout and settings - h3</h3>
+                <h3 id="layout">DevTools layout and settings</h3>
                 <p>
-                The Checker integrates with DevTools and therefore its settings affect the Checker.  
-                </p>
-                <p><strong>Dock side</strong> settings will affect the layout:</p>
-                <UnorderedList>
-                    <ListItem>Dock to the right</ListItem>
-                    <ListItem>Dock to the left</ListItem>
-                    <ListItem>Dock to the bottom</ListItem>
-                </UnorderedList>
-                <p><strong>Appearance</strong> settings are supported:</p>
-                <UnorderedList>
-                    <ListItem><strong>Theme</strong>: System preferences (recommended), Dark, and Light</ListItem>
-                    <ListItem><strong>Panel Layout</strong>: horizontal, vertical, and auto</ListItem>
-                </UnorderedList>
+                    The Checker is a “<strong>DevTools</strong>” extension that includes an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred">Accessibility Checker</Link> tab to 
+                    find and fix issues in the code and an <Link inline={true} size="lg" href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred">Accessibility Assessment</Link> tab for 
+                    an executive summary of the page.
+                    The DevTools settings affect the layout and appearance of the Checker:
+                </p> 
+                <OrderedList>
+                    <ListItem><strong>Dock side</strong> settings affect the layout:
+                        <UnorderedList>
+                            <ListItem>Dock to the right</ListItem>
+                            <ListItem>Dock to the left</ListItem>
+                            <ListItem>Dock to the bottom</ListItem>
+                        </UnorderedList>
+                    </ListItem>    
+                    <ListItem><strong>Appearance</strong> settings are supported:
+                        <UnorderedList>
+                            <ListItem><strong>Theme</strong>: System preferences (recommended), Dark, and Light</ListItem>
+                            <ListItem><strong>Panel Layout</strong>: horizontal, vertical, and auto</ListItem>
+                        </UnorderedList>
+                    </ListItem>
+                </OrderedList>
                 <p>
-                    For example, the screenshots in this User guide use 'Dock to the righ', 'System preferences' with 'Dark' theme, and ‘horizontal’ panel layout. 
+                    For example, the screenshots in this User guide use 'Dock to the right', 'System preferences' with 'Dark' theme, and ‘horizontal’ panel layout. 
                     Experienced DevTools users will appreciate the power and functionality that the integration provides. 
                     All users may want to experiment with the 'Dock side' and 'Appearance' settings to take advantage of their own screen size and user preferences. 
                 </p>
@@ -253,7 +250,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <UnorderedList>
                         <ListItem>by <strong>Element roles</strong> – issues are organized by the ARIA roles of the DOM elements. This view shows both implicit and explicit roles, and not the element names. Use this view to explore issues within a specific element and its children. (default)</ListItem>
                         <ListItem>by <strong>Requirements</strong> – issues are mapped to the most relevant IBM requirement, which corresponds to the WCAG standards. Use this view to classify and report issues.</ListItem>
-                        <ListItem>by <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see the different types of issues at once.</ListItem>
+                        <ListItem>by <strong>Rules</strong> - issues organized by rules in the rule set. Use this view to see all the issues common to a rule at once.</ListItem>
                     </UnorderedList>
                 <p>There are four (4) ways to further filter one or more <strong>types</strong> of issues detected:</p>
                     <UnorderedList>
@@ -272,23 +269,45 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
 
                 <h2 id="view">3. The Checker view</h2>
-                <p>The Accessibility Checker tab in the Elements panel in Chrome or the Inspector panel in Firefox is a code scanner for developers looking to find and fix issues in code and on the page quickly.</p>
-                <p>To use the Checker view, do one of the following:</p>
+                <p>
+                    The 'Accessibility Checker' tab is located in the 'Elements' panel in Chrome/Edge or the 'Inspector' panel in Firefox.
+                    Developers use this view to quickly find and fix issues in code and on the page.
+                </p>
+                <p>
+                    <img
+                        src="assets/img/3_1CheckerSplash.png"
+                        alt="Accessibility Checker tab highlighted"
+                    />
+                </p>
+                <p><strong>To launch the Checker</strong>, do one of the following:</p>
                 <UnorderedList>
-                    <ListItem><strong>For Chrome:</strong>
+                    <ListItem>Launch Developer Tools by either:
+                        <UnorderedList>
+                            <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
+                            <ListItem>Or, Right-click the web page, select '<strong>Inspect</strong>' (in the Chrome, Firefox, or Edge browser)</ListItem>
+                            <ListItem>And then select:
+                                <UnorderedList>
+                                    <ListItem>the 'Elements' panel in Chrome/Edge</ListItem>
+                                    <ListItem>or the 'Inspector' panel in Firefox</ListItem>
+                                    <ListItem>and then select the 'Accessibility Checker' tab</ListItem>
+                                </UnorderedList>    
+                            </ListItem>
+                        </UnorderedList>
+                    </ListItem>
+                    <ListItem>From the Chrome and Edge browser menu:
                         <OrderedList>
-                            <ListItem>From the browser ‘View’ menu, select ‘Developer’</ListItem>
-                            <ListItem>Select ‘Developer tools’</ListItem>
+                            <ListItem>Select 'More tools', then 'Developer Tools'</ListItem>
+                            <ListItem>Select ‘Elements' panel</ListItem>
+                            <ListItem>Select 'Accessibility Checker' tab</ListItem>
                         </OrderedList>
                     </ListItem>
-                    <ListItem><strong>For Firefox: </strong>
+                    <ListItem>From the Firefox browser:
                         <OrderedList>
-                            <ListItem>From the browser ‘Tools‘ menu, select ‘Web Developer’</ListItem>
-                            <ListItem>Select ‘Toggle Tools’</ListItem>
+                            <ListItem>Select 'More tools', then 'Web Developer Tools'</ListItem>
+                            <ListItem>Select ‘Inspector' panel</ListItem>
+                            <ListItem>Select 'Accessibility Checker' tab</ListItem>
                         </OrderedList>
                     </ListItem>
-                    <ListItem><strong>Command+Option+I</strong> on MacOS® or <strong>Control+Shift+I</strong> on Microsoft Windows®</ListItem>
-                    <ListItem>Right-click web page, select ‘<strong>Inspect</strong>’ (Chrome) or ‘<strong>Inspect Element</strong>’ (Firefox)</ListItem>
                 </UnorderedList>
 
                 <h2 id="a11y_check">3.1 Scan to find issues</h2>
@@ -304,7 +323,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <OrderedList>
                     <ListItem>Open ‘Elements’ panel (Chrome) or ‘Inspector’ panel (Firefox)</ListItem>
                     <ListItem>Select 'Accessibility Checker' from the tabs in the right-hand panel</ListItem>
-                    <ListItem>Click the ‘Scan’ button to scan web page</ListItem>
+                    <ListItem>Press the ‘Scan’ button to scan web page</ListItem>
                 </OrderedList>
                 <p>
                     <img
@@ -322,7 +341,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="IBM Checker tool highlighting list for element roles, requirements, and rules, an expand icon, and a 'learn more' link text"
                     />
                 </p>
-                <p>View issues by element roles, requirements, or rules and select the expand icon next to an element role/requirement/rule to see the related issues. Click on the ‘learn more’ link to view detailed information and how to fix it. </p>
+                <p>
+                    View issues by element roles, requirements, or rules and select the expand icon next to an element role/requirement/rule to see the related issues. 
+                    Click on the ‘learn more’ link to view detailed information and how to fix it.
+                </p>
                 <p>
                     <img
                         src="assets/img/3.1Checker4.png"
@@ -353,7 +375,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Open Chrome browser</ListItem>
                     <ListItem>Open the 'Window' menu</ListItem>
                     <ListItem>Select 'Extensions' menu option to see all installed extensions</ListItem>
-                    <ListItem>Click 'Details' button of the IBM Accessibility Checker extension</ListItem>
+                    <ListItem>Press the 'Details' button of the IBM Accessibility Checker extension</ListItem>
                     <ListItem>Scroll down and turn on 'Allow access to file URLs'</ListItem>
                 </OrderedList>
 
@@ -693,7 +715,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </UnorderedList>
                 <OrderedList>
                     <ListItem>Select the 'Accessibility Assessment' panel</ListItem>
-                    <ListItem>Click the ‘Scan’ button to scan web page</ListItem>
+                    <ListItem>Press the ‘Scan’ button to scan web page</ListItem>
                 </OrderedList>
                 <p>
                     <img
@@ -786,8 +808,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <strong>WCAG 2.0 (A, AA)</strong> - referenced by US Section 508
                     </ListItem>
                 </UnorderedList>
-                <p>Click the 'Save' button to keep the changes.</p>
-                <p>Click the 'Reset to defaults' button to restore the default settings.</p>
+                <p>Press the 'Save' button to keep the changes.</p>
+                <p>Press the 'Reset to defaults' button to restore the default settings.</p>
                 <p>Close the Settings.</p>
                 <p><strong>Note</strong>: Screenshots in this guide were taken with the 'Latest deployment' and 'WCAG 2.2' options selected.</p>
 
@@ -802,16 +824,19 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h2 id="the_report">6. Checker reports</h2>
                 <p>
-                    Single scan reports are provided in both HTML and MS Excel spreadsheet formats. 
-                    Multi-scan reports are available only in MS Excel spreadsheet format. 
-                    For how to generate reports, see 3.2 Create a scan report and 3.3 Create a multi-scan report.
+                    Single scan reports are provided in both HTML web and Microsoft Excel XLS spreadsheet formats. 
+                    Multi-scan reports are available only in the Excel XLS spreadsheet format. 
+                    For how to generate reports, see <Link 
+                    href={chrome.runtime.getURL("usingAC.html#t_single_scan_report")} target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg">Create a scan report</Link> and <Link 
+                    href={chrome.runtime.getURL("usingAC.html#t_multi_scan_report")} target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg">Create a multi-scan report</Link>.
                 </p>
-                <p><strong>
-                    HTML reports
-                </strong>
-                </p>
+                
+                <h3 id="HTML_reports">HTML reports</h3>
+                {/* <p><strong>HTML reports</strong></p> */}
                 <p>
-                    This interactive report is an HTML file that includes:
+                    This interactive report is an HTML web format that includes:
                 </p>
                 <p>
                     <img
@@ -956,8 +981,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ListItem>Report a bug with the Checker</ListItem>
                         <ListItem>Report a bug with a rule, help information, or the accuracy of the violation reported</ListItem>
                         <ListItem>Find information on existing bugs, <Link 
-                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
-                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
+                            inline={true} size="md" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
+                            inline={true} size="md" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
                     </UnorderedList>
 
                 <h2 id="troubleshooting">9. Troubleshooting</h2>
@@ -969,17 +994,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem>Clear browser cookies</ListItem>
                     <ListItem>Refresh the page</ListItem>
                     <ListItem>Reopen the browser DevTools</ListItem>
-                    <ListItem>Click the 'Scan' button</ListItem>
+                    <ListItem>Press the 'Scan' button</ListItem>
                 </OrderedList>
                 <p>
                     <strong>Note</strong>: On rare occasions, the Checker does not appear in DevTools for some sites due to a bug in the DevTools. 
                     The workaround is to go to a site where the Checker will launch, and then launch the Checker in DevTools. 
                     Then, in the same browser tab, load the site that did not launch.
                 </p>
-                <p><strong>
-                    Helpful hints - strong?
-                </strong>
-                </p>
+
+                <h3 id="helpful_hints">Helpful hints</h3> 
+                {/* <p><strong>Helpful hints</strong></p> */}
                 <p>
                     For Chrome on MacOS, move between the keyboard tab stop visualization on the webpage and DevTools with the following keyboard shortcuts:
                 </p>    
@@ -991,6 +1015,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         When in DevTools,  <strong>Option_Command_Down</strong> approximately five times to get to the webpage (More or less depending on the DevTools layout)
                     </ListItem>
                 </UnorderedList>
+                
                 <h3 id="known_issues">Known issues - h3</h3> 
                 {/* <p><strong>Known issues</strong></p> */}
                 <UnorderedList>

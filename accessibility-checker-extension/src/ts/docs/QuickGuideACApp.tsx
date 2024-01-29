@@ -99,14 +99,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     aria-label="Quick guide details"
                 >
                     
-                    <h1>Quick guide - IBM Accessibility Checker</h1>
+                <h1>Quick guide - IBM Accessibility Checker</h1>
                     <p>
-                        The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") 
-                        is a browser extension that tests web pages for accessibility issues 
-                        with W3C Web Content Accessibility Guidelines (WCAG 2.2),
-                        IBM Accessibility requirements, and other standards.
+                        The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") tests web pages for accessibility issues with
+                        W3C Web Content Accessibility Guidelines (WCAG 2.2), IBM Accessibility requirements, and other standards.
                         The Checker is <Link href="https://www.ibm.com/able/toolkit/tools/#develop" target="_blank" rel="noopener noreferred" inline={true}
-                        size="lg">also available as a Node package</Link> for automated testing within a continuous integration pipeline. 
+                        size="lg">also available as a Node package</Link> for automated testing within a continuous integration / continuous delivery (CI/CD) pipeline. 
                         The Checker rules include explanations and help for suggested fixes.
                     </p>
 
@@ -176,21 +174,15 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         />
                     </p>
                     <p>
-                        See the 
-                        {" "}
-                        <Link 
-                            href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred"
-                            inline={true} size="lg"
-                        >User guide</Link> for more in-depth guidance on using 
+                        For more in-depth guidance, view 
                         the <Link 
                             href={chrome.runtime.getURL("usingAC.html#view")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Checker view</Link> to 
-                        find and fix issues in the code, 
+                        find and fix issues in the code and
                         the <Link 
                             href={chrome.runtime.getURL("usingAC.html#a11y_assess")} target="_blank" rel="noopener noreferred"
                             inline={true} size="lg">Assessment view</Link> for  
-                        an executive summary of the findings, and other functionality such as filtering, 
-                        hiding issues, and the keyboard checker mode.
+                        an executive summary of the findings.
                     </p>
             
                     <h2 id="checker">1. Scan to find issues</h2>
@@ -214,7 +206,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
 
                     <h2 id="scan">2. Create a scan report</h2>
                     <p>
-                        Generate a report from a single scan in both HTML web and Microsoft Excel XLS spreadsheet formats.
+                        From a single scan, generate a report in both HTML web and Microsoft Excel XLS spreadsheet formats.
                     </p>
                     <p>
                         <img
@@ -262,7 +254,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <OrderedList>
                         <ListItem>Select an element in the code, or 'Inspect' an element on the page</ListItem>
-                        <ListItem>Select the element name in the Focus view (e.g. 'div') to switch viewing only its related issues</ListItem>
+                        <ListItem>Select the element name in the Focus view (e.g. &lt;div&gt;) to switch viewing only its related issues</ListItem>
                         <ListItem>Select 'All' in the focus view to switch back and see all issues again</ListItem>
                     </OrderedList>
                     <p>
@@ -366,7 +358,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <OrderedList>
                         <ListItem>Check the 'Hidden' filter only (uncheck the other filter options)</ListItem>
                         <ListItem>Determine if those previously hidden issues now need to be worked on and be included in the reports</ListItem>
-                        <ListItem>Confirm that those ready to be worked on (unhidden)reviewed are checked</ListItem>
+                        <ListItem>Confirm that those ready to be worked on (to be unhidden) are checked</ListItem>
                         <ListItem>Press the 'Show' button to unhide the checked issues</ListItem>
                     </OrderedList>
                     <p>
@@ -381,7 +373,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         and the elements with detectable keyboard access issues.
                     </p>
                     <p>
-                        Select 'Keyboard checker mode' icon button to turn on/off keyboard visualization.
+                        Press the 'Keyboard checker mode' icon button to turn on/off keyboard visualization.
                     </p>
                     <p>
                         <img
@@ -393,7 +385,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     Turn the mode off and on again to update the visualization.
                     </p>
                     <p>
-                    In this example, the Checker found 22 existing Keyboard tab stops, 2 missing, and lists only the 8 associated keyboard issues found with those elements. 
+                    In this example, the Checker found 22 existing Keyboard tab stops, 2 missing, and lists the 8 associated keyboard issues found with those elements. 
                     Select the icons or tab through the page to see the code highlighted, the element on the page highlighted, and the keyboard access issues highlighted:</p>
                     <UnorderedList>
                         <ListItem style={{marginBottom:".5rem"}}>
@@ -439,7 +431,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>
                         <img
-                            src="assets/img/2_8_Settings.png" // was 3.5Keyboard2a.png"
+                            src="assets/img/2_8_SettingsIcon.png" // was 3.5Keyboard2a.png"
                             alt="settings gear icon highlighted"
                         />
                     </p>
@@ -468,7 +460,10 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         Select one of the following:</p>
                         <UnorderedList>
                             <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
-                            <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>                        
+                            <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>
+                            <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
+                            <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508
+                    </ListItem>
                         </UnorderedList>
                     <p>
                         For more in-depth guidance, 
@@ -485,7 +480,9 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Request a new feature</ListItem>
                         <ListItem>Report a bug with the Checker</ListItem>
                         <ListItem>Report a bug with a rule, help information, or the accuracy of the violation reported</ListItem>
-                        <ListItem>Find information on existing bugs, Release Notes, and ReadMe’s</ListItem>
+                        <ListItem>Find information on existing bugs, <Link 
+                            inline={true} size="md" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
+                            inline={true} size="md" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
                     </UnorderedList>
 
                     <h2 id="troubleshooting">Troubleshooting</h2>
@@ -497,7 +494,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Clear browser cookies</ListItem>
                         <ListItem>Refresh the page</ListItem>
                         <ListItem>Reopen the browser DevTools</ListItem>
-                        <ListItem>Click the 'Scan' button</ListItem>
+                        <ListItem>Press the 'Scan' button</ListItem>
                     </UnorderedList>
                     <p>
                         See the <Link
