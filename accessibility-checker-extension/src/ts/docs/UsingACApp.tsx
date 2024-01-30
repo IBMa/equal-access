@@ -218,7 +218,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/1_RoleFilters.png" // was 2_A11yIssues.png
+                        src="assets/img/1_RoleFilters.png" //was 2_A11yIssues.png
                         alt="Checker highlighting issues found, filters, and dropdown for Element roles, Requirements, and Rules"
                     />
                 </p>
@@ -340,7 +340,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </OrderedList>
                 <p>
                     <img
-                        src="assets/img/1_RoleFilters.png" // was Quick_Intro.png
+                        src="assets/img/1_RoleFilters.png" //was Quick_Intro.png
                         alt="Checker highlighting types of issues"
                     />
                 </p>
@@ -412,8 +412,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <UnorderedList>
                     <ListItem>Collapse or Expand the group of issues to see the individual issues</ListItem>
                     <ListItem>Select an individual or groups of issues to be hidden</ListItem>
-                    <ListItem>Click the 'Learn more' link in the issue to view the detailed help information and how to fix it</ListItem>
-                    <ListItem>Press the 'Export to XLS' button to download the results in a spreadsheet format</ListItem>
+                    <ListItem>Click 'Learn more' link in the issue for detailed help on how to fix it</ListItem>
+                    <ListItem>Press 'Export to XLS' to download the results in a spreadsheet format</ListItem>
                 </UnorderedList>
 
                 <h3 id="hidden_content">Hidden content not scanned</h3>
@@ -457,13 +457,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     highlighting related issues in the issue list, and easily view the help information for the specific selected issue. 
                     Using the integrated power of DevTools, make changes to the code and re-scan to see the accessibility results.
                 </p>
-                <p>
+                {/* <p>
                     <img
 
                         src="assets/img/3_3_SynchronizedViewWithHelp.png" 
                         alt="issue highlighted in issue list synchronized with help and issue on the page"
                     />
-                </p>
+                </p> */}
                 {/* <p>
                     <img
 
@@ -473,7 +473,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p> */}
                 <p>
                     <img
-                        src="assets/img/3_5_SynchronizedViewsElementsIssuesPageHelp.png" // 3.1Checker4.png
+                        src="assets/img/3_5_SynchronizedViewsElementsIssuesPageHelp.png" //was 3.1Checker4.png
                         alt="browser highlighting search bar on page, an element in the DOM,and related issues in the checker tool"
                     />
                 </p>
@@ -493,7 +493,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <img
 
-                        src="assets/img/2_2_ScanReport.png" // was 3.2Report.png
+                        src="assets/img/2_2_ScanReport.png" //was 3.2Report.png
                         alt="an open dropdown menu with focus on 'download current scan'."
                     />
                 </p>
@@ -562,7 +562,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <img
 
-                        src="assets/img/2_4_Focus.png" // was 3.4Focus.png"
+                        src="assets/img/2_4_Focus.png" //was 3.4Focus.png"
                         alt="content switcher with two items: html and alt"
                     />
                 </p>
@@ -686,7 +686,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <img
 
-                        src="assets/img/2_7_KCM.png" // was 3.5Keyboard1.png
+                        src="assets/img/2_7_KCM.png" //was 3.5Keyboard1.png
                         alt="Keyboard checker mode' icon button"
                     />
                 </p>
@@ -934,7 +934,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </OrderedList>
                 <p>
                     <img
-                        src="assets/img/2_8_SettingsIcon.png" // was 3.5Keyboard2a.png"
+                        src="assets/img/2_8_SettingsIcon.png" //was 3.5Keyboard2a.png"
                         alt="settings gear icon highlighted"
                     />
                 </p>
@@ -1009,21 +1009,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h3 id="HTML_reports">HTML reports</h3>
                 {/* <p><strong>HTML reports</strong></p> */}
                 <p>
-                    This interactive report is in an HTML web format that includes:
-                </p>
-                <p>
                     <img
-                        src="assets/img/7_1_Report.png"
+                        src="assets/img/7_1_ReportHTML.png"
                         alt="an HTML page for 'IBM accessibility equal access toolkit: accessibility checker report'"
                     />
-                </p>
+                <p>
+                    This interactive report is in an HTML web format that includes:
+                </p></p>
                 <OrderedList>
                     <ListItem>The scan date and time</ListItem>
                     <ListItem>The scanned URL</ListItem>
                     <ListItem>Percentage of elements with no detected violations or items to review</ListItem>
                     <ListItem>A summary of test results </ListItem>
                     <ListItem>Issue details organized by requirements, element roles, and rules</ListItem>
-                    <ListItem>‘Learn more’ link with detailed description for each issue</ListItem>
+                    <ListItem>‘Learn more’ link with detailed help description for each issue</ListItem>
                 </OrderedList>
                 <p>
                     <strong>Note</strong>: The percentages reported are based on automated tests only. 
@@ -1041,7 +1040,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/7.1Report.png"
+                        src="assets/img/7_1_ReportXLS.png"
                         alt="an excel spreadsheet of an accessibility scan report"
                     />
                 </p>
