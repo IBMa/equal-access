@@ -5,7 +5,7 @@
         text { fill: black; }
         @media (prefers-color-scheme: dark) {
             rect { fill: none; stroke: white; }
-            text { fill: white; stroke: white; }
+            text { fill: white; }
         }
     </style>
     <title>42A5480D-BC89-4F97-9EA1-4D87385C4D01</title>

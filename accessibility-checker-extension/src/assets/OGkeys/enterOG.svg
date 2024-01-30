@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="41px" height="20px" viewBox="0 0 41 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>BEF87785-B132-4847-A765-81711DC71A86</title>
     <style>
         <!-- path { fill: black; stroke: black; } -->
         text { fill: black; }
@@ -11,6 +10,7 @@
             rect { fill: none; stroke: white; }
         }
     </style>
+    <title>BEF87785-B132-4847-A765-81711DC71A86</title>
     <g id="Latest-workflows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="user-guide" transform="translate(-446.000000, -8833.000000)">
             <g id="Group-3-Copy-10" transform="translate(447.000000, 8834.000000)">

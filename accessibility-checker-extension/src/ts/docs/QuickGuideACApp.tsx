@@ -111,7 +111,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     <h2 id="issues">Accessibility issues</h2>
                     <p>
                         As with any automated test tool for accessibility, these tests don't catch all issues. 
-                        Complete accessibility testing with 
+                        Complete the accessibility testing with 
                         {" "}
                         <Link href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank" rel="noopener noreferred" inline={true}
                         size="lg">developer unit testing</Link> and follow all the 
@@ -344,7 +344,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </p>
                     <p>When the 'Hidden' filter is not selected (unchecked) in the dropdown menu, then those hidden issues are filtered (not shown) from the list of issues displayed.  
                         Unlike using the Filter views feature (which only affects whether an issue is shown), 
-                        Hide removes the issues from the counts and Scan summary report so they can be ignored or saved for later.</p>
+                        Hide removes the issues from the counts and Scan summary report so they can be ignored or marked as resolved.</p>
                     <p><strong>Note</strong>: when the 'Hidden' filter is selected (checked), the hidden issues reappear so they can be selected individually or as a group. 
                         When one or more hidden issues are selected, then the blue 'Show' button appears in the toolbar in the heading row. 
                         When the 'Show' button is pressed, the once-hidden issues are now shown and the counts and Scan summary report are updated.
@@ -361,7 +361,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                     </OrderedList>
 
                     <h3 id="showing">Show previously hidden issues</h3>
-                        <p>Another common scenario is to un-hide issues that were previously hidden (ignored for later) so that they can now be worked on and be included in the reports. 
+                        <p>Another common scenario is to un-hide issues that were previously hidden so that they can be worked on and be included in the reports. 
                         Follow these simple steps:</p>
                     <OrderedList>
                         <ListItem>Check the 'Hidden' filter only (uncheck the other filter options)</ListItem>
@@ -457,14 +457,14 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         Select one of the following:
                         </p>
                         <UnorderedList>
-                            <ListItem><strong>Latest deployment</strong> is the default</ListItem>
-                            <ListItem>Replicate an earlier test by choosing the <strong>deployment date</strong> of the original test</ListItem>
-                            <ListItem><strong>Preview Rules</strong> to experiment with a possible future rule set</ListItem>
+                            <ListItem><strong>Latest deployment</strong> - the latest rule set of the selected accessibility guideline (default)</ListItem>
+                            <ListItem><strong>&lt;date&gt; Deployment</strong> - replicate an earlier test by choosing the deployment date of the original test</ListItem>
+                            <ListItem><strong>Preview Rules</strong> - experiment with a possible future rule set</ListItem>
                         </UnorderedList>
                     <p>
                         <img
                             src="assets/img/2_8_SettingsSelectGuideline.png"
-                            alt="settings gear icon highlighted"
+                            alt="Accessibility guidelines options"
                         />
                     </p>
                     <p>Rule sets for a specific accessibility guideline or version of the IBM Accessibility requirements are available to check against an established policy. 
@@ -473,8 +473,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
                             <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>
                             <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
-                            <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508
-                    </ListItem>
+                            <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508</ListItem>
                         </UnorderedList>
                     <p>
                         For more in-depth guidance, 
@@ -492,8 +491,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         <ListItem>Report a bug with the Checker</ListItem>
                         <ListItem>Report a bug with a rule, help information, or the accuracy of the violation reported</ListItem>
                         <ListItem>Find information on existing bugs, <Link 
-                            inline={true} size="md" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
-                            inline={true} size="md" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
+                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/releases">Release Notes</Link>, and <Link
+                            inline={true} size="lg" href="https://github.com/IBMa/equal-access/blob/master/README.md">ReadMe’s</Link></ListItem>
                     </UnorderedList>
 
                     <h2 id="troubleshooting">Troubleshooting</h2>

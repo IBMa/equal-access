@@ -7,7 +7,7 @@
         }
         @media (prefers-color-scheme: dark) {
             rect { fill: none; stroke: white; }
-            text { fill: white; stroke: white; }
+            text { fill: white; }
         }
     </style>
     <g id="Latest-workflows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
