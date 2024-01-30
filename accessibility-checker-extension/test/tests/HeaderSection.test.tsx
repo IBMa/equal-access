@@ -12,7 +12,7 @@ describe("HeaderSection", () => {
         setupTest(<HeaderSection />) //
         await (expect(document) as any).toBeAccessible();
     });
-  // Test the help button and check that it opens the quick guide. 
+  // Test the help button and check that it opens the Quick guide. 
     describe("First button", () => {
         test("Label is 'Help'", async () => {
             let button = document.body.querySelector("button");
