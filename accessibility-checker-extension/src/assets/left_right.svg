@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>031F1C18-78A7-4C27-8B19-CE16C4EFA091</title>
+    <style>
+        path {
+            fill: black;
+        }
+        @media (prefers-color-scheme: dark) {
+            path { fill: white; }
+        }
+    </style>
     <defs>
         <path d="M3,6 L3.705,6.705 L1.915,8.5 L12,8.5 L12,9.5 L1.915,9.5 L3.705,11.295 L3,12 L0,9 L3,6 Z M9,0 L12,3 L9,6 L8.295,5.295 L10.085,3.5 L0,3.5 L0,2.5 L10.085,2.5 L8.295,0.705 L9,0 Z" id="path-1"></path>
     </defs>
