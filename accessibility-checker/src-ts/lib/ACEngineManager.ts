@@ -256,18 +256,29 @@ export class ACEngineManager {
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
-                let nodePath = path.join(engineDir, "ace-node")
-                fs.writeFile(nodePath + ".js", data, function (err) {
-                    try {
-                        err && console.log(err);
-                        var ace_ibma = require(nodePath);
-                        checker = new ace_ibma.Checker();
-                    } catch (e) {
-                        console.log(e);
-                        return reject(e);
-                    }
+                const nodePath = path.join(engineDir, "ace-node")
+
+                if(fs.existsSync(`${nodePath}.js`)) {
+                    const ace_ibma = require(nodePath);
+                    checker = new ace_ibma.Checker();
                     resolve();
-                });
+                } else {
+                    fs.writeFile(nodePath + ".js", data, function (err) {
+                        try {
+                            if(err) {
+                                console.error(err);
+                                return reject(err);
+                            }
+
+                            const ace_ibma = require(nodePath);
+                            checker = new ace_ibma.Checker();
+                        } catch (e) {
+                            console.log(e);
+                            return reject(e);
+                        }
+                        resolve();
+                    });
+                }
             });
         }
         return this.localLoadPromise;
