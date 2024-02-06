@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IReport, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
+import { IReport, IIssue, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
 
 
 const stringHash = require("string-hash");
@@ -22,6 +22,7 @@ const stringHash = require("string-hash");
 interface XLSXProps {
     settings: ISettings,
     report: IReport,
+    ignored: IIssue[],
     pageURL: string,
     pageTitle: string,
     timestamp: string,
@@ -30,7 +31,7 @@ interface XLSXProps {
 
 export default class MultiScanData { 
 
-    // this class barrows heavily from singlePageReport
+    // this class borrows heavily from singlePageReport
     // however, our purpose here is just to generate the data
     // needed for a multiScanReport which will replace singlePageReport
     // also when saving scans we will be saving a reduced set of the 
@@ -46,10 +47,20 @@ export default class MultiScanData {
         let ret: any[] = [];
 
         let report = xlsx_props.report;
+        let ignored = xlsx_props.ignored;
         let tab_url = xlsx_props.pageURL;
         let tab_title = xlsx_props.pageTitle;
         const rule_map = this.id_rule_map(xlsx_props);
         const rule_checkpoints_map = this.ruleId_checkpoints_map(xlsx_props);
+
+        console.log("report.results.length = ", report.results.length);
+        console.log("ignored.length = ", ignored.length);
+        console.log(ignored);
+        let i=0;
+        for (const ig of ignored) {
+            console.log("ignored(",i++,")= ",ig);
+        }
+        console.log("DONE");
 
         const valueMap: { [key: string]: { [key2: string]: string } } = {
             "VIOLATION": {
@@ -76,9 +87,22 @@ export default class MultiScanData {
             return [];
         }
 
+
+        i=0;
         for (const item of report.results) {
             if (item.value[1] === "PASS") {
                 continue;
+            }
+        
+            // Calc hidden, add to end of row
+            let hidden = false;
+            for (const ignoredIssue of ignored) {
+                hidden = item.path.dom === ignoredIssue.path.dom
+                         && item.ruleId === ignoredIssue.ruleId
+                         && item.reasonId === ignoredIssue.reasonId;
+                if (hidden === true) {
+                    break;
+                }
             }
 
             let row = [
@@ -95,7 +119,8 @@ export default class MultiScanData {
                 this.get_element(item.snippet),
                 item.snippet,
                 item.path.dom,
-                item.help
+                item.help,
+                hidden
             ]
 
             ret.push(row);

@@ -67,6 +67,7 @@ export class DevtoolsController extends Controller {
 
     public async getStoredReportsMeta() : Promise<IStoredReportMeta[]> {
         return await this.hook("getStoredReportsMeta", null, async () => {
+            console.log("devtoolsState!.storedReports = ", devtoolsState!.storedReports);
             return devtoolsState!.storedReports.map(report => ({
                 id: report.id,
                 timestamp: report.timestamp,
@@ -183,10 +184,12 @@ export class DevtoolsController extends Controller {
     public async setReport(report: IReport | null) : Promise<void> {
         return this.hook("setReport", report, async () => {
             let bgController = getBGController();
+            
             let settings = await bgController.getSettings();
             if (report) {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
+                let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!); // fix report here?
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
                     id: devtoolsState!.storedReports.length+"",
@@ -200,6 +203,7 @@ export class DevtoolsController extends Controller {
                     storedScanData: MultiScanData.issues_sheet_rows({
                         settings: settings,
                         report: report,
+                        ignored: ignored,
                         pageTitle: tabInfo.title!,
                         pageURL: tabInfo.url!,
                         timestamp: now+"",

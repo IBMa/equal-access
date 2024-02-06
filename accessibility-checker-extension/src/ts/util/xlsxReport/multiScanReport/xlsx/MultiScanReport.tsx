@@ -359,6 +359,8 @@ export default class MultiScanReport {
         let recommendations = 0;
         let totalIssues = 0;
 
+        console.log("storeScans: ", storedScans);
+
         for (const scan of storedScans) {
             violations += scan.counts["Violation"];
             needsReviews += scan.counts["Needs review"];
