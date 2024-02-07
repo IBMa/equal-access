@@ -42,6 +42,8 @@ export default class MultiScanData {
     // sheet as all other data is either static or can be calculated
     // from the issue data
 
+    
+
     public static issues_sheet_rows(xlsx_props: XLSXProps) : StoredScanData[] {
 
         let ret: any[] = [];
@@ -52,15 +54,6 @@ export default class MultiScanData {
         let tab_title = xlsx_props.pageTitle;
         const rule_map = this.id_rule_map(xlsx_props);
         const rule_checkpoints_map = this.ruleId_checkpoints_map(xlsx_props);
-
-        console.log("report.results.length = ", report.results.length);
-        console.log("ignored.length = ", ignored.length);
-        console.log(ignored);
-        let i=0;
-        for (const ig of ignored) {
-            console.log("ignored(",i++,")= ",ig);
-        }
-        console.log("DONE");
 
         const valueMap: { [key: string]: { [key2: string]: string } } = {
             "VIOLATION": {
@@ -87,8 +80,6 @@ export default class MultiScanData {
             return [];
         }
 
-
-        i=0;
         for (const item of report.results) {
             if (item.value[1] === "PASS") {
                 continue;

@@ -67,7 +67,6 @@ export class DevtoolsController extends Controller {
 
     public async getStoredReportsMeta() : Promise<IStoredReportMeta[]> {
         return await this.hook("getStoredReportsMeta", null, async () => {
-            console.log("devtoolsState!.storedReports = ", devtoolsState!.storedReports);
             return devtoolsState!.storedReports.map(report => ({
                 id: report.id,
                 timestamp: report.timestamp,
@@ -84,8 +83,12 @@ export class DevtoolsController extends Controller {
         });
     }
 
+     /**
+     * Set stored reports
+     */
     public async setStoredReportsMeta(updateMetaArr: IStoredReportMeta[]) : Promise<void> {
         return await this.hook("setStoredReportsMeta", updateMetaArr, async () => {
+            console.log("setStoredReportsMeta with updateMetaArr.length = ", updateMetaArr.length);
             if (updateMetaArr.length === 0) {
                 devtoolsState!.storedReports = [];
                 getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: 0});
@@ -95,6 +98,7 @@ export class DevtoolsController extends Controller {
                 let newReports = [];
                 for (const updateMeta of updateMetaArr) {
                     let keepVal = devtoolsState!.storedReports.find(scan => scan.id === updateMeta.id);
+                    console.log("keepVal = ",keepVal);
                     if (keepVal) {
                         if (keepVal.timestamp !== updateMeta.timestamp) {
                             // Something's out of sync
@@ -105,6 +109,7 @@ export class DevtoolsController extends Controller {
                             (keepVal as any)[key] = (updateMeta as any)[key];
                         }
                         keepVal.id = ""+newReports.length;
+                        console.log("Add to keepVal to newReports");
                         newReports.push(keepVal);
                     } else {
                         // Something's out of sync
@@ -113,6 +118,7 @@ export class DevtoolsController extends Controller {
                     }
                 }
                 if (!misMatch) {
+                    console.log("no misMatch");
                     devtoolsState!.storedReports = newReports;
                     let data = await this.getStoredReportsMeta();
                     getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: data.length});
@@ -178,6 +184,21 @@ export class DevtoolsController extends Controller {
 
     private scanCounter = 1;
 
+    initCount() {
+        return {
+            "Violation": 0,
+            "Needs review": 0,
+            "Recommendation": 0,
+            "Hidden": 0,
+            "Pass": 0
+        }
+    }
+
+    getCountsWithHidden (counts: IReport["counts"], ignored: IIssue[]) {
+        console.log(counts);
+        console.log(ignored);
+    }
+
     /**
      * Set report 
      */
@@ -189,7 +210,9 @@ export class DevtoolsController extends Controller {
             if (report) {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
-                let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!); // fix report here?
+                let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!);
+                let newCounts = this.getCountsWithHidden(report.counts, ignored);
+                console.log("newCounts = ", newCounts);
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
                     id: devtoolsState!.storedReports.length+"",
