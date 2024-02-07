@@ -355,6 +355,7 @@ export function getRotationDegree(rotation_transform) {
     if (!value) return 0;
     const regex = /(-?[\d.]+)([a-z%]*)/;
     let parsed = value.trim().match(regex);
+    if (parsed === null) return 0;
     if (parsed[2] === '' || parsed[1] === 0) 
        //no zero value without unit which is considered as error, so implicable
        return 0;

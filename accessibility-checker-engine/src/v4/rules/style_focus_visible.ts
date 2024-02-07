@@ -82,30 +82,32 @@ export let style_focus_visible: Rule = {
                         /**
                          * passing case:  
                          *  1. browser default is not changed (no :focus style defined)
-                         *  2. focus outline or border style is none 
+                         *  2. focus outline or border style is none and no other (color or width) defined
+                         *  3. focus outline or border style is same with the normal
                          *  2. size in focus is larger than default
                          *  3. color in focus is changed
                          *  
                          */
                         let focusStyleValue = styleObj[focusStyle];
                         let normalStyleValue = normalStyles[focusStyle];
-                        if (focusStyle.includes("style")) { console.log("style id=" + ruleContext.getAttribute("id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
+                        if (focusStyle.includes("style")) { console.log("style id=" + ruleContext.getAttribute("id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalStyleValue=" + normalStyleValue);
                             if (focusStyleValue === "none") 
                                 noneStyle = true;
                             else 
                                 noneStyle = false;
-                            if (normalStyleValue && focusStyleValue !== "none" &&  normalStyleValue !== 'none' && focusStyleValue === normalStyleValue)
+
+                            if (normalStyleValue && focusStyleValue !== "none" && focusStyleValue === normalStyleValue)
                                 return RulePotential("potential_focus_not_visible");
                         
-                        } else if (focusStyle.includes("width")) {
+                        } else if (focusStyle.includes("width")) { console.log("width id=" + ruleContext.getAttribute("id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
                             numOtherStyle++;
                             focusStyleValue = getPixelsFromStyle(styleObj[focusStyle], ruleContext);
                             normalStyleValue = getPixelsFromStyle(normalStyles[focusStyle], ruleContext);
-                            console.log("id=" + ruleContext.getAttribute("width id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
+                            console.log("width id=" + ruleContext.getAttribute("id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
                             if (focusStyleValue !== 0 && normalStyleValue !== 0  && focusStyleValue <= normalStyleValue)
                                 return RulePotential("potential_focus_not_visible");
                         
-                        } else if (focusStyle.includes("color")) {
+                        } else if (focusStyle.includes("color")) {console.log("color id=" + ruleContext.getAttribute("id") + ", focusStyleValue=" + JSON.stringify(focusStyleValue) +", normalValue=" + JSON.stringify(normalStyleValue));
                             numOtherStyle++;
                             // get the element bg color
                             let colorCombo = ColorUtil.ColorCombo(ruleContext);
@@ -115,9 +117,9 @@ export let style_focus_visible: Rule = {
 
                             // get the border/outline color as fg colors
                             focusStyleValue = ColorUtil.Color(styleObj[focusStyle]);
-                            normalStyleValue = ColorUtil.Color(normalStyles[focusStyle]);
+                            normalStyleValue = ColorUtil.Color(normalStyles[focusStyle]); console.log("color id=" + ruleContext.getAttribute("id") + ", focusStyleValue=" + JSON.stringify(focusStyleValue) +", normalValue=" + JSON.stringify(normalStyleValue) +", bg="+JSON.stringify(bg));
                             if (focusStyleValue === null || normalStyleValue === null) continue;
-
+                            
                             //get the border/outline color contrast ratios
                             let focusRatio = focusStyleValue.contrastRatio(bg);
                             let normalRatio = normalStyleValue.contrastRatio(bg);
