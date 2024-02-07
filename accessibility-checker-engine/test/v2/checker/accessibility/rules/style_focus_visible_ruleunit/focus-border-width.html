@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+
+	<style type="text/css">
+		a, div { border-width: 1em; }
+		#link1:focus { border-width: 2em; }
+    #link2:focus { border-width: thick; }
+    .testBorder { outline: none; }
+	</style>
+
+	<link rel="stylesheet" type="text/css" href="theme.css">
+</head>
+
+<body>
+
+<h2>Focus style test case</h2>
+
+<a id='link1' href="http://www.cnn.com">
+	CNN
+</a>
+
+<a id='link2' href="http://www.cnn.com">
+	NBC
+</a>
+
+<div id='div1' className="testBorder" tabindex="0">
+    Some text
+</div>
+
+<script>
+    UnitTest = {
+        ruleIds: ["style_focus_visible"],
+        results: [
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "Potential_1",
+            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[2]",
+              "aria": "/document[1]/link[2]"
+            },
+            "reasonId": "Potential_1",
+            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[3]",
+              "aria": "/document[1]/link[3]"
+            },
+            "reasonId": "Potential_1",
+            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]/a[1]",
+              "aria": "/document[1]/paragraph[3]/link[1]"
+            },
+            "reasonId": "Potential_1",
+            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]/a[1]",
+              "aria": "/document[1]/paragraph[4]/link[1]"
+            },
+            "reasonId": "Potential_1",
+            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    };
+</script>
+<!-- 
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "506",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/head/style",
+        "/html/body/a[2]",
+        "/html/body/a[3]"
+      ]
+    }
+  ];
+//]]>
+</script> -->
+</body>
+</html>

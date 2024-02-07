@@ -12,28 +12,31 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles } from "../util/CSSUtil";
+import { getDefinedStyles, getPixelsFromStyle } from "../util/CSSUtil";
+import { ColorUtil } from "../../v2/dom/ColorUtil";
 
 export let style_focus_visible: Rule = {
     id: "style_focus_visible",
     context: "dom:*",
     refactor: {
         "RPT_Style_HinderFocus1": {
-            "Potential_1": "Potential_1"
+            "Potential_1": "potential_focus_not_visible"
         }
     },
     help: {
         "en-US": {
             "group": `style_focus_visible.html`,
-            "Potential_1": `style_focus_visible.html`
+            "potential_focus_not_visible": `style_focus_visible.html`,
+            "pass_focus_visible": `style_focus_visible.html`
         }
     },
     messages: {
         "en-US": {
-            "group": "The keyboard focus indicator must be highly visible when default border or outline is modified by CSS",
-            "Potential_1": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'"
+            "group": "The keyboard focus indicator should be visible when default border or outline is modified by CSS",
+            "potential_focus_not_visible": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
+            "pass_focus_visible": "The keyboard focus indicator is visible or is not changed from the browser default"
         }
     },
     rulesets: [{
@@ -50,8 +53,11 @@ export let style_focus_visible: Rule = {
                 type: "[string]"
             },
             checkParams: {
-                value: ["border", "border-width", "border-color", "border-style",
-                    "outline", "outline-width", "outline-color", "outline-style"],
+                value: ["border", "border-width", "border-style", 
+                        "border-top-width", "border-right-width", "border-bottom-width", "border-left-width", 
+                        "border-top-color", "border-right-color", "border-bottom-color", "border-left-color", 
+                        "border-top-style", "border-right-style", "border-bottom-style", "border-left-style",
+                        "outline", "outline-width", "outline-color", "outline-style"],
                 type: "[string]"
             }
         }
@@ -59,18 +65,81 @@ export let style_focus_visible: Rule = {
         if (!RPTUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
-        let arrStyles = []
-        arrStyles.push(getDefinedStyles(ruleContext));
-        arrStyles.push(getDefinedStyles(ruleContext, ":focus"));
-        arrStyles.push(getDefinedStyles(ruleContext, ":focus-visible"));
-        arrStyles.push(getDefinedStyles(ruleContext, ":focus-within"));
-        for (const st of arrStyles) {
-            for (const param of validateParams.checkParams.value) {
-                if (param in st) {
-                    return RulePotential("Potential_1");
+        let normalStyles = getDefinedStyles(ruleContext); // consider noth user-defined and browser default
+        let focusStyles = []
+        focusStyles.push(getDefinedStyles(ruleContext, ":focus"));
+        focusStyles.push(getDefinedStyles(ruleContext, ":focus-visible"));
+        focusStyles.push(getDefinedStyles(ruleContext, ":focus-within"));
+        console.log("id=" +ruleContext.getAttribute("id") + ", focusStyles=" + JSON.stringify(focusStyles));
+        console.log("id=" +ruleContext.getAttribute("id") + ", definedStyles=" + JSON.stringify(normalStyles));
+        
+        for (const styleObj of focusStyles) { 
+            if (Object.keys(styleObj).length > 0) {  console.log("id=" + ruleContext.getAttribute("id") + ", styleObj=" + JSON.stringify(styleObj));
+                let noneStyle = false;
+                let numOtherStyle = 0;
+                for (let focusStyle in styleObj) {
+                    if (validateParams.checkParams.value.includes(focusStyle)) {
+                        /**
+                         * passing case:  
+                         *  1. browser default is not changed (no :focus style defined)
+                         *  2. focus outline or border style is none 
+                         *  2. size in focus is larger than default
+                         *  3. color in focus is changed
+                         *  
+                         */
+                        let focusStyleValue = styleObj[focusStyle];
+                        let normalStyleValue = normalStyles[focusStyle];
+                        if (focusStyle.includes("style")) { console.log("style id=" + ruleContext.getAttribute("id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
+                            if (focusStyleValue === "none") 
+                                noneStyle = true;
+                            else 
+                                noneStyle = false;
+                            if (normalStyleValue && focusStyleValue !== "none" &&  normalStyleValue !== 'none' && focusStyleValue === normalStyleValue)
+                                return RulePotential("potential_focus_not_visible");
+                        
+                        } else if (focusStyle.includes("width")) {
+                            numOtherStyle++;
+                            focusStyleValue = getPixelsFromStyle(styleObj[focusStyle], ruleContext);
+                            normalStyleValue = getPixelsFromStyle(normalStyles[focusStyle], ruleContext);
+                            console.log("id=" + ruleContext.getAttribute("width id") + ", focusStyle=" + focusStyle + ", focusStyleValue=" + focusStyleValue +", normalValue=" + normalStyleValue);
+                            if (focusStyleValue !== 0 && normalStyleValue !== 0  && focusStyleValue <= normalStyleValue)
+                                return RulePotential("potential_focus_not_visible");
+                        
+                        } else if (focusStyle.includes("color")) {
+                            numOtherStyle++;
+                            // get the element bg color
+                            let colorCombo = ColorUtil.ColorCombo(ruleContext);
+                            if (colorCombo === null) continue;
+                            let bg = colorCombo.bg;
+                            if (!bg) continue;
+
+                            // get the border/outline color as fg colors
+                            focusStyleValue = ColorUtil.Color(styleObj[focusStyle]);
+                            normalStyleValue = ColorUtil.Color(normalStyles[focusStyle]);
+                            if (focusStyleValue === null || normalStyleValue === null) continue;
+
+                            //get the border/outline color contrast ratios
+                            let focusRatio = focusStyleValue.contrastRatio(bg);
+                            let normalRatio = normalStyleValue.contrastRatio(bg);
+                            console.log("color id=" + ruleContext.getAttribute("id") + ", focusStyleValue=" + JSON.stringify(focusStyleValue) +", normalValue=" + JSON.stringify(normalStyleValue) +", bg="+JSON.stringify(bg) +", focusRatio="+focusRatio +", normalRatio="+ normalRatio);
+                            if (focusRatio < 3.0 || focusRatio <= normalRatio)
+                                return RulePotential("potential_focus_not_visible");
+                            
+                        } else { 
+                            //other
+                            numOtherStyle++;
+                            if (normalStyleValue != null && focusStyleValue === normalStyleValue)
+                                return RulePotential("potential_focus_not_visible");
+                        }
+                    }
                 }
-            }
+                // warn if a border/outline focus style is 'none' and noe other (color and/or width) is defined 
+                console.log("style id=" + ruleContext.getAttribute("id") +", noneStyle=" + noneStyle); 
+                if (noneStyle && numOtherStyle === 0)
+                    return RulePotential("potential_focus_not_visible");
+            }    
         }
-        return null;
+        
+        return RulePass("pass_focus_visible");
     }
 }
