@@ -24,8 +24,8 @@
 	<title>RPT Test Suite</title>
 
 	<style type="text/css">
-		a, div { border-width: 1em; }
-		#link1:focus { border-width: 2em; }
+		a, div { border-width: 1px; }
+		#link1:focus { border-width: 2px; }
     #link2:focus { border-width: thick; }
     
 	</style>
@@ -59,6 +59,22 @@
             "path": {
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "pass_focus_visible",
+            "message": "The keyboard focus indicator is visible or is not changed from the browser default",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[2]",
+              "aria": "/document[1]/link[2]"
             },
             "reasonId": "pass_focus_visible",
             "message": "The keyboard focus indicator is visible or is not changed from the browser default",
