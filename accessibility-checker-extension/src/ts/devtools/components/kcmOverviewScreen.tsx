@@ -80,11 +80,11 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
 
                         <div style={{marginBottom:"1rem"}}>
                             Not all keyboard accessibility issues are detectable with this tool, manual testing is required. 
-                            Refer to the <a className="link" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank">quick guide</a> for more information.
+                            Refer to the <a className="link" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank">Quick guide</a> for more information.
                         </div>
 
                         <div style={{marginBottom:"1rem"}}>
-                            You can turn off connecting lines in <a className="link" href={chrome.runtime.getURL("options.html")} target="_blank">options</a> and read more in the <a className="link" href={chrome.runtime.getURL("usingAC.html")} target="_blank">user guide</a>. 
+                            You can turn off connecting lines in <a className="link" href={chrome.runtime.getURL("options.html")} target="_blank">options</a> and read more in the <a className="link" href={chrome.runtime.getURL("usingAC.html")} target="_blank">User guide</a>. 
                         </div>
 
                     </div>

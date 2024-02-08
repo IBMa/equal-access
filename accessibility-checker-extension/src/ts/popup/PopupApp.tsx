@@ -112,7 +112,7 @@
                             target="_blank"
                             rel="noopener noreferred"
                         >
-                            Options
+                            Settings
                         </Link>
                         <span style={{marginLeft: "1.5rem"}}/>
                         <Link href="https://github.com/IBMa/equal-access"
