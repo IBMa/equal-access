@@ -184,19 +184,63 @@ export class DevtoolsController extends Controller {
 
     private scanCounter = 1;
 
+    valueMap: { [key: string]: { [key2: string]: string } } = {
+        "VIOLATION": {
+            "POTENTIAL": "Needs review",
+            "FAIL": "Violation",
+            "PASS": "Pass",
+            "MANUAL": "Needs review"
+        },
+        "RECOMMENDATION": {
+            "POTENTIAL": "Recommendation",
+            "FAIL": "Recommendation",
+            "PASS": "Pass",
+            "MANUAL": "Recommendation"
+        },
+        "INFORMATION": {
+            "POTENTIAL": "Needs review",
+            "FAIL": "Violation",
+            "PASS": "Pass",
+            "MANUAL": "Recommendation"
+        }
+    };
+
     initCount() {
         return {
             "Violation": 0,
             "Needs review": 0,
             "Recommendation": 0,
             "Hidden": 0,
-            "Pass": 0
+            "Pass": 0,
+            "total": 0,
         }
     }
 
-    getCountsWithHidden (counts: IReport["counts"], ignored: IIssue[]) {
-        console.log(counts);
-        console.log(ignored);
+    async getCountsWithHidden (reportCounts: IReport["counts"], ignored: IIssue[]) {
+        let counts = this.initCount(); // setup counts
+        // populate initial counts
+        counts.Violation = reportCounts.Violation;
+        counts["Needs review"] = reportCounts["Needs review"];
+        counts.Recommendation = reportCounts.Recommendation;
+        counts.Hidden = ignored.length;
+        counts.Pass = reportCounts.Pass;
+
+        // correct issue type counts to take into account the hidden issues
+        if (ignored.length > 0) { // if we have hidden
+            for (const ignoredIssue of ignored) {
+                if ("Violation" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts.Violation--;
+                }
+                if ("Needs review" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts["Needs review"]--;
+                }
+                if ("Recommendation" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts.Recommendation--;
+                }
+            }
+        }
+        counts.total = counts.Violation + counts["Needs review"] + counts.Recommendation;
+        return counts;
     }
 
     /**
@@ -205,14 +249,12 @@ export class DevtoolsController extends Controller {
     public async setReport(report: IReport | null) : Promise<void> {
         return this.hook("setReport", report, async () => {
             let bgController = getBGController();
-            
             let settings = await bgController.getSettings();
             if (report) {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
                 let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!);
-                let newCounts = this.getCountsWithHidden(report.counts, ignored);
-                console.log("newCounts = ", newCounts);
+                let newCounts = await this.getCountsWithHidden(report.counts, ignored);
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
                     id: devtoolsState!.storedReports.length+"",
@@ -233,7 +275,7 @@ export class DevtoolsController extends Controller {
                         rulesets: await bgController.getRulesets(tabId!)
                     }),
                     testedUniqueElements: report.testedUniqueElements,
-                    counts: report.counts
+                    counts: newCounts
                 };
                 if (devtoolsState?.storeReports) {
                     devtoolsState.storedReports.push(devtoolsState.lastReportMeta);

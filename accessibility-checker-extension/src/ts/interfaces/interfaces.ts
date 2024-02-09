@@ -144,6 +144,7 @@ export interface IStoredReportMeta extends IBasicTableRowRecord {
         "Violation": number
         "Needs review": number
         "Recommendation": number
+        "Hidden" : number
         "Pass": number
         total: number
     }

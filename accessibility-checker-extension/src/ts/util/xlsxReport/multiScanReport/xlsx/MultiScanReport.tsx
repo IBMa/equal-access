@@ -77,11 +77,13 @@ export default class MultiScanReport {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
+        let hidden = 0;
 
         for (const storedScan of storedScans) {
             violations += (storedScan.counts.Violation || 0);
             needsReviews += (storedScan.counts["Needs review"] || 0);
             recommendations += (storedScan.counts.Recommendation || 0);
+            hidden += (storedScan.counts.Hidden || 0);
         }
         let totalIssues = violations + needsReviews + recommendations;
 
@@ -89,7 +91,7 @@ export default class MultiScanReport {
         const worksheet = this.workbook.addWorksheet("Overview");
 
         // Report Title
-        worksheet.mergeCells('A1', "D1");
+        worksheet.mergeCells('A1', "E1");
         const titleRow = worksheet.getRow(1);
         titleRow.height = 27;
 
@@ -105,9 +107,10 @@ export default class MultiScanReport {
             { col: 'B', width: 15.9 },
             { col: 'C', width: 16.23 },
             { col: 'D', width: 19.4 },
+            { col: 'E', width: 15.9 },
         ]
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
@@ -162,7 +165,7 @@ export default class MultiScanReport {
         }
 
         // Summary Title
-        worksheet.mergeCells('A11', "D11");
+        worksheet.mergeCells('A11', "E11");
 
         const summaryRow = worksheet.getRow(11);
         summaryRow.height = 27;
@@ -180,12 +183,13 @@ export default class MultiScanReport {
         const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
         const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
         const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
+        const cellE12 = worksheet.getCell('E12'); cellE12.value = "Hidden";
 
-        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12];
+        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12, cellE12];
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             cellObjects1[i].alignment = { vertical: "middle", horizontal: "center" };
-            if (i == 1 || i == 2 || i == 3) {
+            if (i == 1 || i == 2 || i == 3 || i == 4) {
                 cellObjects1[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             } else {
                 cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
@@ -204,6 +208,7 @@ export default class MultiScanReport {
         cellB12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
         cellC12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
         cellD12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        cellE12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
 
 
         // Scans info Values
@@ -213,10 +218,11 @@ export default class MultiScanReport {
         const cellB13 = worksheet.getCell('B13'); cellB13.value = violations;
         const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReviews;
         const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendations;
+        const cellE13 = worksheet.getCell('E13'); cellE13.value = hidden;
 
-        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13];
+        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13, cellE13];
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             cellObjects2[i].alignment = { vertical: "middle", horizontal: "center" };
             cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -246,9 +252,10 @@ export default class MultiScanReport {
             { col: 'G', width: 17.17 },
             { col: 'H', width: 17.17 },
             { col: 'I', width: 17.17 },
+            { col: 'J', width: 17.17 },
         ]
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
@@ -274,14 +281,15 @@ export default class MultiScanReport {
         const cellE1 = worksheet.getCell('E1'); cellE1.value = "Violations";
         const cellF1 = worksheet.getCell('F1'); cellF1.value = "Needs review";
         const cellG1 = worksheet.getCell('G1'); cellG1.value = "Recommendations";
-        const cellH1 = worksheet.getCell('H1'); cellH1.value = "% elements without violations";
-        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations or items to review";
+        const cellH1 = worksheet.getCell('H1'); cellH1.value = "Hidden";
+        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations";
+        const cellJ1 = worksheet.getCell('J1'); cellJ1.value = "% elements without violations or items to review";
 
-        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1];
+        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1, cellJ1];
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            if (i == 0 || i == 1 || i == 2) {
+            if (i == 0 || i == 1 || i == 2 || i == 3) {
                 cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             } else {
                 cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
@@ -299,8 +307,9 @@ export default class MultiScanReport {
         cellE1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
         cellF1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
         cellG1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
         cellI1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        cellJ1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
 
 
         // if current scan use last scan, if 
@@ -330,6 +339,7 @@ export default class MultiScanReport {
                 storedScan.counts["Violation"],
                 storedScan.counts["Needs review"],
                 storedScan.counts["Recommendation"],
+                storedScan.counts["Hidden"],
                 perc(testedElements-violationUniqueElements, testedElements),
                 perc(testedElements-violationPlusPotentialUniqueElements, testedElements)
             ]);
@@ -338,7 +348,7 @@ export default class MultiScanReport {
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
             }
-            for (let i = 5; i < 10; i++) {
+            for (let i = 5; i < 11; i++) {
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
                 // row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
