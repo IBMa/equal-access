@@ -163,7 +163,8 @@ module.exports = {
                 to: path.join(distRootPath, "archives"),
                 globOptions: {
                     ignore: [
-                        path.join("**", "ace-*.js")
+                        path.join("**", "ace-*.js"),
+                        path.join("**", "doc"),
                     ]
                 }
             }
