@@ -57,8 +57,8 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
             }
         }
 
-        return (<>
-            <Grid className={BrowserDetection.isDarkMode()?"cds--g90":"g10"}>
+        return (<div className={BrowserDetection.isDarkMode()?"cds--g90":"g10"} style={{ minWidth: "100%" }}>
+            <Grid style={{marginLeft: "-1rem"}}>
                 <Column sm={4} md={8} lg={4} className={`leftCol ${BrowserDetection.isDarkMode()?"cds--g100":"cds--g10"}`}>
                     <div role="banner">
                         <img src={BrowserDetection.isDarkMode()?beeLogoDark:beeLogoLight} alt="purple bee icon" className="icon" />
@@ -84,7 +84,7 @@ export class DocPage extends React.Component<DocPageProps, DocPageState> {
                     {this.props.children}
                 </Column>
             </Grid>
-        </>)
+        </div>)
     }
 }
 
