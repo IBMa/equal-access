@@ -62,6 +62,14 @@ export let widget_tabbable_exists: Rule = {
         if (nodeName === 'datalist')
             return null;
             
+        // Composite user interface widget roles. They act as containers that manage other, contained widgets.
+        let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
+        for (const role of roleContainers) {
+            if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
+                // it's a descendant of a composite widget already examined
+                return;
+        }
+            
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
         if (RPTUtil.isTabbable(ruleContext)) {
