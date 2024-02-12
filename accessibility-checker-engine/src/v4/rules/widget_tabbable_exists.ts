@@ -19,7 +19,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let widget_tabbable_exists: Rule = {
     id: "widget_tabbable_exists",
-    context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
+    context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:menubar, aria:grid, aria:treegrid, aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
     refactor: {
         "IBMA_Focus_Tabbable": {
             "pass": "pass",
@@ -68,8 +68,7 @@ export let widget_tabbable_exists: Rule = {
             if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
                 // it's a descendant of a composite widget already examined
                 return;
-        }
-            
+        }    
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
         if (RPTUtil.isTabbable(ruleContext)) {

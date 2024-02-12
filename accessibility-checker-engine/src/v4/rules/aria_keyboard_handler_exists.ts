@@ -72,7 +72,7 @@ export let aria_keyboard_handler_exists: Rule = {
         for (const role of roleContainers) {
             if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
                 // it's a descendant of a composite widget already examined
-                return;
+                return null;
         }
         
         let hasAttribute = RPTUtil.hasAttribute;
