@@ -367,6 +367,7 @@ export default class MultiScanReport {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
+        let hidden = 0;
         let totalIssues = 0;
 
         console.log("storeScans: ", storedScans);
@@ -375,14 +376,15 @@ export default class MultiScanReport {
             violations += scan.counts["Violation"];
             needsReviews += scan.counts["Needs review"];
             recommendations += scan.counts.Recommendation;
+            hidden += scan.counts.Hidden;
         }
-        totalIssues = violations + needsReviews + recommendations;
+        totalIssues = violations + needsReviews + recommendations - hidden;
 
         // counts
-        let level1Counts = [0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations
-        let level2Counts = [0, 0, 0, 0];
-        let level3Counts = [0, 0, 0, 0];
-        let level4Counts = [0, 0, 0, 0];
+        let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
+        let level2Counts = [0, 0, 0, 0, 0];
+        let level3Counts = [0, 0, 0, 0, 0];
+        let level4Counts = [0, 0, 0, 0, 0];
         let level1V = []; let level2V = []; let level3V = []; let level4V = [];
         let level1NR = []; let level2NR = []; let level3NR = []; let level4NR = [];
         let level1R = []; let level2R = []; let level3R = []; let level4R = [];
@@ -401,6 +403,10 @@ export default class MultiScanReport {
                     }
                     if (myStoredData[i][4] === "Recommendation") {
                         level1Counts[3]++;
+                        level1R.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Hidden") {
+                        level1Counts[4]++;
                         level1R.push(myStoredData[i][9]);
                     }
                 }
@@ -1414,17 +1420,14 @@ export default class MultiScanReport {
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
             };
@@ -1441,7 +1444,7 @@ export default class MultiScanReport {
             const myStoredData = storedScan.storedScanData;
             for (let i = 0; i < myStoredData.length; i++) {
                 let row = [myStoredData[i][0], myStoredData[i][1], storedScan.label,
-                myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
+                myStoredData[i][3], myStoredData[i][14] ? "Hidden:"+myStoredData[i][4] : myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
                 myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8],
                 myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
                 myStoredData[i][12], myStoredData[i][13]
@@ -1460,7 +1463,7 @@ export default class MultiScanReport {
             { col: 'B', width: 20.5, alignment: { vertical: "middle", horizontal: "left" } },
             { col: 'C', width: 21.0, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'D', width: 18.5, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'E', width: 17.0, alignment: { vertical: "middle", horizontal: "center" } },
+            { col: 'E', width: 23.0, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'F', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'G', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
             { col: 'H', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
@@ -1606,6 +1609,7 @@ export default class MultiScanReport {
             { key1: 'Violations', key2: 'Accessibility failures that need to be corrected.' },
             { key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.' },
             { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
+            { key1: 'Hidden', key2: 'Issues that may be ignored or have been resolved.' },
             { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
             { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
             { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
