@@ -67,7 +67,7 @@ export let widget_tabbable_exists: Rule = {
         for (const role of roleContainers) {
             if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
                 // it's a descendant of a composite widget already examined
-                return;
+                return null;
         }    
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;

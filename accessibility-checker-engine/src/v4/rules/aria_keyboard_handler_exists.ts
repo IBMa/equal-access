@@ -59,6 +59,7 @@ export let aria_keyboard_handler_exists: Rule = {
         let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
         //let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        //only consider user specified role(s), rather than native containers
         let roles = RPTUtil.getRoles(ruleContext, false);
         
         let nodeName = ruleContext.nodeName.toLowerCase();
