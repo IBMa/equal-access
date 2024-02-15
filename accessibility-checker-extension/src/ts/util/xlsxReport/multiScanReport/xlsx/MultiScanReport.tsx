@@ -378,87 +378,122 @@ export default class MultiScanReport {
             recommendations += scan.counts.Recommendation;
             hidden += scan.counts.Hidden;
         }
-        totalIssues = violations + needsReviews + recommendations - hidden;
+        totalIssues = violations + needsReviews + recommendations;
+        console.log("volations = ",violations);
+        console.log("needsReviews = ",needsReviews);
+        console.log("recommendations = ",recommendations);
+        console.log("hidden = ",hidden);
+        console.log("totalIssues = ",totalIssues);
 
         // counts
         let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
         let level2Counts = [0, 0, 0, 0, 0];
         let level3Counts = [0, 0, 0, 0, 0];
         let level4Counts = [0, 0, 0, 0, 0];
-        let level1V = []; let level2V = []; let level3V = []; let level4V = [];
-        let level1NR = []; let level2NR = []; let level3NR = []; let level4NR = [];
-        let level1R = []; let level2R = []; let level3R = []; let level4R = [];
+        let level1V: {issueDef:string, hidden:boolean}[] = []; let level2V: {issueDef:string, hidden:boolean}[] = []; let level3V: {issueDef:string, hidden:boolean}[] = []; let level4V: {issueDef:string, hidden:boolean}[] = [];
+        let level1NR: {issueDef:string, hidden:boolean}[] = []; let level2NR: {issueDef:string, hidden:boolean}[] = []; let level3NR: {issueDef:string, hidden:boolean}[] = []; let level4NR: {issueDef:string, hidden:boolean}[] = [];
+        let level1R: {issueDef:string, hidden:boolean}[] = []; let level2R: {issueDef:string, hidden:boolean}[] = []; let level3R: {issueDef:string, hidden:boolean}[] = []; let level4R: {issueDef:string, hidden:boolean}[] = [];
         for (const storedScan of storedScans) {
             const myStoredData = storedScan.storedScanData;
             for (let i = 0; i < myStoredData.length; i++) { // for each issue row
                 if (myStoredData[i][5] == 1) { // if level 1
-                    level1Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level1Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level1Counts[1]++;
-                        level1V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[1]++;
+                        }
+                        level1V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level1Counts[2]++;
-                        level1NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[2]++;
+                        }
+                        level1NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level1Counts[3]++;
-                        level1R.push(myStoredData[i][9]);
-                    }
-                    if (myStoredData[i][4] === "Hidden") {
-                        level1Counts[4]++;
-                        level1R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[3]++;
+                        }
+                        level1R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                 }
                 if (myStoredData[i][5] == 2) { // if level 2
-                    level2Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level2Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level2Counts[1]++;
-                        level2V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[1]++;
+                        }
+                        level2V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level2Counts[2]++;
-                        level2NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[2]++;
+                        }
+                        level2NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level2Counts[3]++;
-                        level2R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[3]++;
+                        }
+                        level2R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                 }
                 if (myStoredData[i][5] == 3) { // if level 3
-                    level3Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level3Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level3Counts[1]++;
-                        level3V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[1]++;
+                        }
+                        level3V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level3Counts[2]++;
-                        level3NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[2]++;
+                        }
+                        level3NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level3Counts[3]++;
-                        level3R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[3]++;
+                        }
+                        level3R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                 }
                 if (myStoredData[i][5] == 4) { // if level 4
-                    level4Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level4Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level4Counts[1]++;
-                        level4V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[1]++;
+                        }
+                        level4V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level4Counts[2]++;
-                        level4NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[2]++;
+                        }
+                        level4NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level4Counts[3]++;
-                        level4R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[3]++;
+                        }
+                        level4R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                 }
             }
         }
+        console.log("level1NR: ",level1NR)
         let level1VrowValues = MultiScanReport.countDuplicatesInArray(level1V); // note this returns an object
         let level1NRrowValues = MultiScanReport.countDuplicatesInArray(level1NR);
+        console.log("level1NRrowValues: ",level1NRrowValues);
         let level1RrowValues = MultiScanReport.countDuplicatesInArray(level1R);
 
         let level2VrowValues = MultiScanReport.countDuplicatesInArray(level2V); // note this returns an object
@@ -1609,7 +1644,7 @@ export default class MultiScanReport {
             { key1: 'Violations', key2: 'Accessibility failures that need to be corrected.' },
             { key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.' },
             { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
-            { key1: 'Hidden', key2: 'Issues that may be ignored or have been resolved.' },
+            { key1: 'Hidden', key2: 'Issues the user has selected to be hidden from view and subtracted from the issue counts.' },
             { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
             { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
             { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
@@ -1687,13 +1722,19 @@ export default class MultiScanReport {
 
     }
 
-    private static countDuplicatesInArray(array: string[]) {
+private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
         let count : {
             [key: string]: number
         } = {};
         for (const item of array) {
-            count[item] = (count[item] || 0) + 1;
+            if (!item.hidden) {
+                count[item.issueDef] = (count[item.issueDef] || 0) + 1;
+            } else {
+                count[item.issueDef] = (count[item.issueDef] || 0) + 0;
+            }
+            
         }
+        console.log("countDuplicatesInArray - count: ",count);
         return count;
     }   
 }
