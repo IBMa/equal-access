@@ -258,35 +258,35 @@ export class ACEngineManager {
                 }
 
                 let fileSuffix = "";
-
                 if (!config.toolVersion) {
                     fileSuffix = config.ruleArchiveVersion;
                 } else {
                     fileSuffix = `${config.toolVersion}-${config.ruleArchiveVersion}`
                 }
+                fileSuffix = fileSuffix.replace(/\./g, "_");
 
                 const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
                 if (fs.existsSync(`${nodePath}.js`)) {
                     const ace_ibma = require(nodePath);
                     checker = new ace_ibma.Checker();
                     return resolve();
+                } else {
+                    fs.writeFile(nodePath + ".js", data, function (err) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            try {
+                                const ace_ibma = require(nodePath);
+                                checker = new ace_ibma.Checker();
+                                resolve();
+                            } catch (e) {
+                                console.log(e);
+                                reject(e);
+                            }
+                        }
+                    });
                 }
-
-                fs.writeFile(nodePath + ".js", data, function (err) {
-                    if(err) {
-                        console.log(err);
-                        return reject(err);
-                    }
-
-                    try {
-                        const ace_ibma = require(nodePath);
-                        checker = new ace_ibma.Checker();
-                        resolve();
-                    } catch (e) {
-                        console.log(e);
-                        reject(e);
-                    }
-                });
             });
         }
         return ACEngineManager.localLoadPromise;
