@@ -1,4 +1,4 @@
-# equal-access
+# equal-access-build-test
 
 This Git repository hosts tools and supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 
