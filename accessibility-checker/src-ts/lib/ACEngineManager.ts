@@ -264,23 +264,31 @@ export class ACEngineManager {
                     fileSuffix = `${config.toolVersion}-${config.ruleArchiveVersion}`
                 }
                 fileSuffix = fileSuffix.replace(/\./g, "_");
+                console.log("1111", fileSuffix);
 
                 const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
+                console.log("2222", nodePath);
                 if (fs.existsSync(`${nodePath}.js`)) {
+                    console.log("3333 - exists");
                     const ace_ibma = require(nodePath);
                     checker = new ace_ibma.Checker();
+                    console.log("3333a - Loaded");
                     return resolve();
                 } else {
+                    console.log("4444 - write");
                     fs.writeFile(nodePath + ".js", data, function (err) {
                         if (err) {
                             console.log(err);
+                            console.log("4444a - error");
                             reject(err);
                         } else {
                             try {
                                 const ace_ibma = require(nodePath);
                                 checker = new ace_ibma.Checker();
+                                console.log("4444b - loaded");
                                 resolve();
                             } catch (e) {
+                                console.log("4444c - error");
                                 console.log(e);
                                 reject(e);
                             }
