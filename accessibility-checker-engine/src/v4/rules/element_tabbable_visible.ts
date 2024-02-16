@@ -32,7 +32,7 @@ export let element_tabbable_visible: Rule = {
         "en-US": {
             "group": "A tabbable element should be visible on the screen when it has keyboard focus",
             "pass": "The tabbable element is visible on the screen",
-            "potential_visible": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus"
+            "potential_visible": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus"
         }
     },
     rulesets: [{
@@ -47,6 +47,10 @@ export let element_tabbable_visible: Rule = {
         if (!RPTUtil.isTabbable(ruleContext))
             return null;
         
+        // ignore, Carbon design uses proxy for checkbox and radio button, and they are keyboard-accessible
+        if (ruleContext.hasAttribute("class") && (ruleContext.getAttribute("class").startsWith("bx--") || ruleContext.getAttribute("class").startsWith("cds--")))
+            return null;
+
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
         const mapper : DOMMapper = new DOMMapper();
         const bounds = mapper.getUnadjustedBounds(ruleContext);
