@@ -54,6 +54,7 @@ function maxVersion(verA, verB) {
 
 const archivePolicies = () => {
     let releaseTag = (process.env.GITHUB_REF || "").substring(10);
+    // If the release tag includes a /, then it's probably a PR or other Git action that's not a release
     if (releaseTag.includes("/")) {
         releaseTag = "9999.9999.9999";
     }
