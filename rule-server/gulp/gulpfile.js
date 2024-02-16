@@ -53,7 +53,7 @@ function maxVersion(verA, verB) {
 }
 
 const archivePolicies = () => {
-    let releaseTag = process.env.GITHUB_SHA;
+    let releaseTag = (process.env.GITHUB_REF || "").substring(10).replace("/merge", "");
     // Adds the policy ids to the archive file
     return gulp.src(["../src/static/archives.json"])
         .pipe(modifyFile((content, path, file) => {
