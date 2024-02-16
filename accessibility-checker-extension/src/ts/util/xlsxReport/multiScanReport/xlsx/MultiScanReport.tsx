@@ -517,7 +517,7 @@ export default class MultiScanReport {
         // 4. build the rows
 
         // build Issue summary title
-        worksheet.mergeCells('A1', "B1");
+        worksheet.mergeCells('A1', "B1", "C1");
 
         const titleRow = worksheet.getRow(1);
         titleRow.height = 27; // actual is 36
@@ -531,9 +531,10 @@ export default class MultiScanReport {
         const colWidthData = [
             { col: 'A', width: 155.51 }, // note .84 added to actual width
             { col: 'B', width: 21.16 },
+            { col: 'C', width: 18.00 },
         ]
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
@@ -547,13 +548,18 @@ export default class MultiScanReport {
         cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
         cellA2.alignment = { vertical: "middle", horizontal: "left" };
         cellA2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        // cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
 
-
-
-
-        // build Total issues found: title
-        // worksheet.mergeCells('A3', "B3");
+        const cellC2 = worksheet.getCell("C2");
+        cellC2.value = "Hidden issues";
+        cellC2.alignment = { vertical: "middle", horizontal: "center" };
+        cellC2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellC2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
+        cellC2.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         const totalIssuesRow = worksheet.getRow(3);
         totalIssuesRow.height = 27; // actual is 36
@@ -569,6 +575,18 @@ export default class MultiScanReport {
         cellB3.alignment = { vertical: "middle", horizontal: "right" };
         cellB3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellB3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+
+        const cellC3 = worksheet.getCell("C3");
+        cellC3.value = hidden;
+        cellC3.alignment = { vertical: "middle", horizontal: "center" };
+        cellC3.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellC3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+        cellC3.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         // build Number of issues title
         const numberOfIssuesRow = worksheet.getRow(4);
@@ -595,6 +613,8 @@ export default class MultiScanReport {
             bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
+
+        
 
         /////////////////////////////
         // build Level 1 title
@@ -653,9 +673,11 @@ export default class MultiScanReport {
             ];
             rowArray.push(row);
         }
+       
 
         // sort array according to count
         rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
+        
 
         // add array of rows
 
@@ -722,6 +744,7 @@ export default class MultiScanReport {
 
         // sort array according to count
         rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
+        console.log("rowArray: ", rowArray);
 
         // add array of rows
 
@@ -1722,19 +1745,32 @@ export default class MultiScanReport {
 
     }
 
-private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
+    private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
         let count : {
             [key: string]: number
         } = {};
         for (const item of array) {
-            if (!item.hidden) {
-                count[item.issueDef] = (count[item.issueDef] || 0) + 1;
-            } else {
-                count[item.issueDef] = (count[item.issueDef] || 0) + 0;
-            }
-            
+            count[item.issueDef] = (count[item.issueDef] || 0) + 1;
         }
-        console.log("countDuplicatesInArray - count: ",count);
         return count;
     }   
+
+// private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
+//         let count : {
+//             [key: string]: [number,number]
+            
+//         } = {};
+//         let dups = 0;
+//         let hiddens = 0;
+//         for (const item of array) {
+//             if (!item.hidden) {
+//                 dups = (count[item.issueDef] || 0) + 1;
+//             } else {
+//                 count[item.issueDef] = (count[item.issueDef] || 0) + 0;
+//             }
+//             count[item.issueDef] = [0,0]
+//         }
+//         console.log("countDuplicatesInArray - count: ",count);
+//         return count;
+//     }   
 }
