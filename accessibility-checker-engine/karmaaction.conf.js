@@ -61,7 +61,7 @@ module.exports = (config) => {
         customLaunchers: {
             ChromeCustom: {
                 base: 'ChromeHeadless',
-                flags: ['--disable-web-security', '--no-sandbox']
+                flags: ['--disable-web-security', '--no-sandbox', '--disable-gpu']
             }
         },
         preprocessors: {
