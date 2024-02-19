@@ -49,7 +49,7 @@ export let element_tabbable_visible: Rule = {
         
         // ignore, Carbon design uses proxy for checkbox and radio button, and they are keyboard-accessible
         if (ruleContext.hasAttribute("class") && (ruleContext.getAttribute("class").startsWith("bx--") || ruleContext.getAttribute("class").startsWith("cds--")))
-            return null;
+            return RulePass("pass");
 
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
         const mapper : DOMMapper = new DOMMapper();
