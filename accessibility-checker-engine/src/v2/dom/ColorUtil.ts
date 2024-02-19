@@ -167,6 +167,7 @@ export class ColorUtil {
 
     // Rewrite the color object to account for alpha
     public static Color(cssStyleColor) {
+        if (!cssStyleColor) return null;
         cssStyleColor = cssStyleColor.toLowerCase();
         if (cssStyleColor === "transparent") return new ColorObj(255, 255, 255, 0);
         if (cssStyleColor in ColorUtil.CSSColorLookup)
