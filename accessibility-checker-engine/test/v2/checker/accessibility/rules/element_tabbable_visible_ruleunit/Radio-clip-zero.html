@@ -23,31 +23,37 @@
 <head>
 	<title>Test Example</title>
   <style>
-    .bx--checkbox, .bx--radio-button {
-		    position: absolute;
-		    width: 1px;
-		    height: 1px;
-		    margin: -1px;
-		    padding: 0;
-		    overflow: hidden;
-		    white-space: nowrap;
-		    border: 1px;
-		    visibility: inherit;
-		    clip: rect(0,0,0,0);
-        display: block;
+    .catalog--radio {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
         
     }
 
-   
+    .catalog--radio-label-text {
+        flex: auto;
+        background-color: #FFF;
+        color: #1E69A6;
+        text-align: center;
+        padding: 4px 8px;
+        border: 1px solid #999CA0;
+        border-radius: 0;
+        transition: all 0.2s ease-in-out;
+    }  
 
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">    
-  <input type="checkbox" class="bx--checkbox" id="catalog">
-  <input type="radio" class="bx--radio-button" id="catalog selection">
+<div> 
+  <input type="radio" class="catalog--radio" id="catalog">
+  <label for="catalog" class="catalog--radio-label-text">iOS</label>
 </div>
 <script>
   UnitTest = {
@@ -61,22 +67,6 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[1]",
-              "aria": "/document[1]/checkbox[1]"
-            },
-            "reasonId": "pass",
-            "message": "The tabbable element is visible on the screen",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_visible",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/input[2]",
               "aria": "/document[1]/radio[1]"
             },
             "reasonId": "pass",

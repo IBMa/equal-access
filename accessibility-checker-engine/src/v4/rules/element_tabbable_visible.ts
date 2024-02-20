@@ -63,11 +63,23 @@ export let element_tabbable_visible: Rule = {
 
         if (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
             && !onfocus_styles['clip']) {
-            // ignore, Carbon design uses proxy for checkbox and radio button, and they are tabbable and visible
-            let classValue = ruleContext.getAttribute("class");
-            if (classValue && (classValue.includes("bx--checkbox") || classValue.includes("cds--checkbox")
-                || classValue.includes("bx--radio-button") || classValue.includes("cds--radio-button")))
-                return RulePass("pass");
+            /** 
+             * note that checkbox and radio buttons are automatically tabbable, and an event can be triggered on them by selecting either the button or text
+             * even though a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader 
+             * the rule passes as long as the label text exists and the button on-focus style defined which likely incurs the changes of the text style   
+             */ 
+            if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
+                const label = RPTUtil.getLabelForElement(ruleContext);
+                if (label && !RPTUtil.isInnerTextEmpty(label)) {
+                    const focus_styles = getDefinedStyles(ruleContext, ":focus");
+                    const focus_visible_styles = getDefinedStyles(ruleContext, ":focus-visible");
+                    const focus_within_styles = getDefinedStyles(ruleContext, ":focus-within");
+                    const checked_styles = getDefinedStyles(ruleContext, ":checked");
+                    
+                    if (focus_styles || focus_visible_styles || focus_within_styles || checked_styles)
+                        return RulePass("pass");
+                }     
+            }    
             return RulePotential("potential_visible", []);
         }    
 
