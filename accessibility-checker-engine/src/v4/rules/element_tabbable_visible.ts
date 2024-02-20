@@ -64,9 +64,10 @@ export let element_tabbable_visible: Rule = {
         if (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
             && !onfocus_styles['clip']) {
             /** 
-             * note that checkbox and radio buttons are automatically tabbable, and an event can be triggered on them by selecting either the button or text
-             * even though a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader 
-             * the rule passes as long as the label text exists and the button on-focus style defined which likely incurs the changes of the text style   
+             * note that A user can select a checkbox and radio button by selecting the button or the label text. 
+             * When a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader. 
+             * The rule should be passed if the label text exists and the button on-focus style is defined by the user, 
+             * which likely incurs the changes of the label style.   
              */ 
             if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
                 const label = RPTUtil.getLabelForElement(ruleContext);
