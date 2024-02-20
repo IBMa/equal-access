@@ -329,7 +329,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/3.1Checker1.png"
+                        src="assets/img/3.1Checker123.png"
                         alt="DevTools with 'Elements tab', 'Accessibility Checker tab', and blue scan button highlighted and numbered 1 to 3"
                     />
                 </p>
