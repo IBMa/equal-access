@@ -30,7 +30,7 @@
 		a:visited { color: #333333; text-decoration: line-through; }
 		a:hover { color: #800000; text-decoration: line-through; }
 		a:focus { outline: none; }
-        .testBorder { outline: none; }
+    .testBorder { outline: none; }
 	</style>
 
 	<link rel="stylesheet" type="text/css" href="theme.css">
@@ -38,7 +38,7 @@
 
 <body>
 
-<a href="#navskip">skip to main content</a>
+<a id='1' href="#navskip">skip to main content</a>
 
 
 <h2>Test case: CSS-used.html</h2>
@@ -55,11 +55,11 @@
 	<li>Test - Elements with text-decoration with value of Blink</li>
 </ul>
 
-<a href="http://www.cnn.com" style="outline:thin dotted black">
+<a id='2' href="http://www.cnn.com" style="outline:thin dotted black">
 	CNN
 </a>
 
-<a href="http://www.cnn.com" style="border:medium solid black">
+<a id='3' href="http://www.cnn.com" style="border:medium solid black">
 	CNN
 </a>
 
@@ -69,14 +69,14 @@
 
 <!-- Style element - see "head" element above -->
 <p>
-	<a href="http://www.google.com">
+	<a id='4' href="http://www.google.com">
 		Test
 	</a>
 </p>
 
 <!-- Link element - see "head" element above -->
 <p>
-	<a href="http://www.google.com">
+	<a id='5' href="http://www.google.com">
 		Test
 	</a>
 </p>
@@ -91,7 +91,7 @@
     UnitTest = {
         ruleIds: ["style_focus_visible"],
         results: [
-          {
+        {
             "ruleId": "style_focus_visible",
             "value": [
               "INFORMATION",
@@ -101,8 +101,8 @@
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "Potential_1",
-            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "reasonId": "potential_focus_not_visible",
+            "message": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -117,8 +117,8 @@
               "dom": "/html[1]/body[1]/a[2]",
               "aria": "/document[1]/link[2]"
             },
-            "reasonId": "Potential_1",
-            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "reasonId": "potential_focus_not_visible",
+            "message": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -133,8 +133,8 @@
               "dom": "/html[1]/body[1]/a[3]",
               "aria": "/document[1]/link[3]"
             },
-            "reasonId": "Potential_1",
-            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "reasonId": "potential_focus_not_visible",
+            "message": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -149,8 +149,8 @@
               "dom": "/html[1]/body[1]/p[3]/a[1]",
               "aria": "/document[1]/paragraph[3]/link[1]"
             },
-            "reasonId": "Potential_1",
-            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "reasonId": "potential_focus_not_visible",
+            "message": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -165,8 +165,8 @@
               "dom": "/html[1]/body[1]/p[4]/a[1]",
               "aria": "/document[1]/paragraph[4]/link[1]"
             },
-            "reasonId": "Potential_1",
-            "message": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'",
+            "reasonId": "potential_focus_not_visible",
+            "message": "Check the keyboard focus indicator is visible when using CSS declaration for 'border' or 'outline'",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
