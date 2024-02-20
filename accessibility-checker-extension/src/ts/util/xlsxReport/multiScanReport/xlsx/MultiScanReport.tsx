@@ -370,8 +370,6 @@ export default class MultiScanReport {
         let hidden = 0;
         let totalIssues = 0;
 
-        console.log("storeScans: ", storedScans);
-
         for (const scan of storedScans) {
             violations += scan.counts["Violation"];
             needsReviews += scan.counts["Needs review"];
@@ -379,11 +377,6 @@ export default class MultiScanReport {
             hidden += scan.counts.Hidden;
         }
         totalIssues = violations + needsReviews + recommendations;
-        console.log("volations = ",violations);
-        console.log("needsReviews = ",needsReviews);
-        console.log("recommendations = ",recommendations);
-        console.log("hidden = ",hidden);
-        console.log("totalIssues = ",totalIssues);
 
         // counts
         let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
@@ -398,7 +391,7 @@ export default class MultiScanReport {
             for (let i = 0; i < myStoredData.length; i++) { // for each issue row
                 if (myStoredData[i][5] == 1) { // if level 1
                     if (!myStoredData[i][14]) {
-                        level1Counts[0]++;
+                        level1Counts[0]++;  // Level 1 issue count
                     }
                     if (myStoredData[i][4] === "Violation") {
                         if (!myStoredData[i][14]) {
@@ -418,9 +411,13 @@ export default class MultiScanReport {
                         }
                         level1R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
+                    if (myStoredData[i][14] === true) { // we have a level 1 hidden
+                        level1Counts[4]++;
+                    }
                 }
                 if (myStoredData[i][5] == 2) { // if level 2
                     if (!myStoredData[i][14]) {
+                        console.log("level2 issue count");
                         level2Counts[0]++;
                     }
                     if (myStoredData[i][4] === "Violation") {
@@ -440,6 +437,10 @@ export default class MultiScanReport {
                             level2Counts[3]++;
                         }
                         level2R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
+                    }
+                    if (myStoredData[i][14] === true) { // we have a level 2 hidden
+                        console.log("level2 hidden issue count");
+                        level2Counts[4]++;
                     }
                 }
                 if (myStoredData[i][5] == 3) { // if level 3
@@ -464,6 +465,9 @@ export default class MultiScanReport {
                         }
                         level3R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
+                    if (myStoredData[i][14] === true) { // we have a level 3 hidden
+                        level3Counts[4]++;
+                    }
                 }
                 if (myStoredData[i][5] == 4) { // if level 4
                     if (!myStoredData[i][14]) {
@@ -487,13 +491,18 @@ export default class MultiScanReport {
                         }
                         level4R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
+                    if (myStoredData[i][14] === true) { // we have a level 4 hidden
+                        level4Counts[4]++;
+                    }
                 }
             }
         }
-        console.log("level1NR: ",level1NR)
+        console.log("level1Counts = ",level1Counts);
+        console.log("level2Counts = ",level2Counts);
+        console.log("level3Counts = ",level3Counts);
+        console.log("level4Counts = ",level4Counts);
         let level1VrowValues = MultiScanReport.countDuplicatesInArray(level1V); // note this returns an object
         let level1NRrowValues = MultiScanReport.countDuplicatesInArray(level1NR);
-        console.log("level1NRrowValues: ",level1NRrowValues);
         let level1RrowValues = MultiScanReport.countDuplicatesInArray(level1R);
 
         let level2VrowValues = MultiScanReport.countDuplicatesInArray(level2V); // note this returns an object
@@ -635,6 +644,18 @@ export default class MultiScanReport {
         cellB5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellB5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
 
+        const cellC5 = worksheet.getCell("C5");
+        cellC5.value = level1Counts[4]; // Level 1 hidden counts
+        cellC5.alignment = { vertical: "middle", horizontal: "center" };
+        cellC5.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellC5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+        cellC5.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         //       Level 1 Violation title
         const level1ViolationRow = worksheet.getRow(6);
         level1ViolationRow.height = 18; // target is 21
@@ -669,7 +690,7 @@ export default class MultiScanReport {
         let rowArray = [];
 
         for (const property in level1VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1VrowValues[property][0]}`), parseInt(`${level1VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -687,9 +708,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            // row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            // row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -697,6 +717,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -737,14 +763,13 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level1NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1NRrowValues[property][0]}`), parseInt(`${level1NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
 
         // sort array according to count
         rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-        console.log("rowArray: ", rowArray);
 
         // add array of rows
 
@@ -756,6 +781,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -766,6 +792,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -806,7 +838,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level1RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1RrowValues[property][0]}`), parseInt(`${level1RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -824,6 +856,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -834,6 +867,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -853,11 +892,23 @@ export default class MultiScanReport {
         level2Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
         level2Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
+        console.log("level2Counts[0] = ",level2Counts[0]);
         level2Row.getCell(2).value = level2Counts[0]; // total Level 2 issues
         level2Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level2Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        console.log("level2Counts[4] = ",level2Counts[4]);
+        level2Row.getCell(3).value = level2Counts[4]; // Level 2 hidden counts
+        level2Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level2Row.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level2Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+        level2Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
 
         //       Level 2 Violation title
         const level2ViolationRow = worksheet.addRow(["", 0]);
@@ -891,7 +942,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level2VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2VrowValues[property][0]}`), parseInt(`${level2VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -907,6 +958,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -917,6 +969,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -957,7 +1015,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level2NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2NRrowValues[property][0]}`), parseInt(`${level2NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -975,9 +1033,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -985,6 +1042,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1024,7 +1087,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level2RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2RrowValues[property][0]}`), parseInt(`${level2RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1042,6 +1105,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -1052,6 +1116,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1075,6 +1145,17 @@ export default class MultiScanReport {
         level3Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level3Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level3Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+
+        level3Row.getCell(3).value = level3Counts[4]; // Level 1 hidden counts
+        level3Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level3Row.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level3Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+        level3Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         //       Level 3 Violation title
         const level3ViolationRow = worksheet.addRow(["", 0]);
@@ -1108,7 +1189,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level3VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3VrowValues[property][0]}`), parseInt(`${level3VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1124,6 +1205,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -1134,6 +1216,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1174,7 +1262,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level3NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3NRrowValues[property][0]}`), parseInt(`${level3NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1192,6 +1280,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -1202,6 +1291,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1241,7 +1336,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level3RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3RrowValues[property][0]}`), parseInt(`${level3RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1259,9 +1354,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1269,6 +1363,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1293,6 +1393,17 @@ export default class MultiScanReport {
         level4Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level4Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level4Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+
+        level4Row.getCell(3).value = level4Counts[4]; // Level 1 hidden counts
+        level4Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level4Row.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level4Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+        level4Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         //       Level 4 Violation title
         const level4ViolationRow = worksheet.addRow(["", 0]);
@@ -1326,7 +1437,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level4VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4VrowValues[property][0]}`), parseInt(`${level4VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1342,9 +1453,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1352,6 +1462,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1392,7 +1508,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level4NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4NRrowValues[property][0]}`), parseInt(`${level4NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1410,6 +1526,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -1420,6 +1537,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1459,7 +1582,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level4RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4RrowValues[property][0]}`), parseInt(`${level4RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1477,6 +1600,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1486,6 +1610,12 @@ export default class MultiScanReport {
             row.getCell(2).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
 
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
             };
@@ -1746,31 +1876,25 @@ export default class MultiScanReport {
     }
 
     private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
-        let count : {
+        let dupCount : {
             [key: string]: number
         } = {};
+        let hidCount : {
+            [key: string]: number
+        } = {};
+        let finalCount: {
+            [key: string]: [number,number]
+        } = {};
         for (const item of array) {
-            count[item.issueDef] = (count[item.issueDef] || 0) + 1;
+            if (!item.hidden) {
+                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 1;
+                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 0;
+            } else {
+                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 0;
+                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 1;
+            }
+            finalCount[item.issueDef] = [dupCount[item.issueDef], hidCount[item.issueDef]]
         }
-        return count;
-    }   
-
-// private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
-//         let count : {
-//             [key: string]: [number,number]
-            
-//         } = {};
-//         let dups = 0;
-//         let hiddens = 0;
-//         for (const item of array) {
-//             if (!item.hidden) {
-//                 dups = (count[item.issueDef] || 0) + 1;
-//             } else {
-//                 count[item.issueDef] = (count[item.issueDef] || 0) + 0;
-//             }
-//             count[item.issueDef] = [0,0]
-//         }
-//         console.log("countDuplicatesInArray - count: ",count);
-//         return count;
-//     }   
+        return finalCount;
+    }    
 }
