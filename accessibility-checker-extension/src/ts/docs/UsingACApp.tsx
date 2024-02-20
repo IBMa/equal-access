@@ -613,10 +613,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h2 id="hide_issues">3.8 Show/Hide issues</h2>
                     <p>
-                        The Hide feature allows issues to be ignored or marked as resolved. 
-                        When this feature is used, issues are not only hidden from view, they are also subtracted from the respective issue counts. 
-                        Issues that are determined to be irrelevant or resolved can be hidden and removed from the counts 
-                        towards achieving a goal of zero counts both in the issues list and in the Scan summary report.
+                        The Hide feature allows issues to be removed from view and subtracted from the respective issue counts and Scan summary report. 
+                        This can be useful for showing a set of issues or reflecting progress by hiding issues that have been resolved or identified to be fixed later.
                     </p>
                     <p>
                         <img
