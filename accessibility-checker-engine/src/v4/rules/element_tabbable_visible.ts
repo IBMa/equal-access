@@ -47,10 +47,6 @@ export let element_tabbable_visible: Rule = {
         if (!RPTUtil.isTabbable(ruleContext))
             return null;
         
-        // ignore, Carbon design uses proxy for checkbox and radio button, and they are keyboard-accessible
-        if (ruleContext.hasAttribute("class") && (ruleContext.getAttribute("class").startsWith("bx--") || ruleContext.getAttribute("class").startsWith("cds--")))
-            return RulePass("pass");
-
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
         const mapper : DOMMapper = new DOMMapper();
         const bounds = mapper.getUnadjustedBounds(ruleContext);
@@ -62,10 +58,18 @@ export let element_tabbable_visible: Rule = {
         const defined_styles = getDefinedStyles(ruleContext);
         const onfocus_styles = getDefinedStyles(ruleContext, ":focus");
                 
-        if (bounds['height'] === 0 || bounds['width'] === 0 
-            || (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
-              && !onfocus_styles['clip']))
+        if (bounds['height'] === 0 || bounds['width'] === 0)
             return RulePotential("potential_visible", []);
+
+        if (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
+            && !onfocus_styles['clip']) {
+            // ignore, Carbon design uses proxy for checkbox and radio button, and they are tabbable and visible
+            let classValue = ruleContext.getAttribute("class");
+            if (classValue && (classValue.includes("bx--checkbox") || classValue.includes("cds--checkbox")
+                || classValue.includes("bx--radio-button") || classValue.includes("cds--radio-button")))
+                return RulePass("pass");
+            return RulePotential("potential_visible", []);
+        }    
 
         if (bounds['top'] >= 0 && bounds['left'] >= 0)
             return RulePass("pass");
