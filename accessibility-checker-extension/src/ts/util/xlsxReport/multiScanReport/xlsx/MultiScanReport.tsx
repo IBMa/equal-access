@@ -417,7 +417,6 @@ export default class MultiScanReport {
                 }
                 if (myStoredData[i][5] == 2) { // if level 2
                     if (!myStoredData[i][14]) {
-                        console.log("level2 issue count");
                         level2Counts[0]++;
                     }
                     if (myStoredData[i][4] === "Violation") {
@@ -439,7 +438,6 @@ export default class MultiScanReport {
                         level2R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][14] === true) { // we have a level 2 hidden
-                        console.log("level2 hidden issue count");
                         level2Counts[4]++;
                     }
                 }
@@ -943,12 +941,12 @@ export default class MultiScanReport {
         level2Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
         level2Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        console.log("level2Counts[0] = ",level2Counts[0]);
+       
         level2Row.getCell(2).value = level2Counts[0]; // total Level 2 issues
         level2Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level2Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        console.log("level2Counts[4] = ",level2Counts[4]);
+        
         level2Row.getCell(3).value = level2Counts[4]; // Level 2 hidden counts
         level2Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
         level2Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
