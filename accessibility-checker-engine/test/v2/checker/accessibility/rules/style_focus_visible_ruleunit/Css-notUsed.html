@@ -52,7 +52,56 @@
 <script>
     UnitTest = {
         ruleIds: ["style_focus_visible"],
-        results: []
+        results: [
+        {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "pass_focus_visible",
+            "message": "The keyboard focus indicator is visible or is not changed from the browser default",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[2]",
+              "aria": "/document[1]/link[2]"
+            },
+            "reasonId": "pass_focus_visible",
+            "message": "The keyboard focus indicator is visible or is not changed from the browser default",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "style_focus_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]/a[1]",
+              "aria": "/document[1]/paragraph[3]/link[1]"
+            },
+            "reasonId": "pass_focus_visible",
+            "message": "The keyboard focus indicator is visible or is not changed from the browser default",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
     }
 </script>
 </body>

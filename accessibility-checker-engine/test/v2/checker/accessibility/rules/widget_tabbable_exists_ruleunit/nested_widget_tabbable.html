@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h3>WAI-ARIA widget tabbable test</h3>
+
+<ul id="dropdown-menu" role="menu">
+  <li role='menuitem'>Menu 1 
+      <ul class="submenu" role="menu">
+          <li role='menuitem'>Submenu 1-1
+              <ul class="submenu" role="menu">
+                  <li role='menuitem'>Sub-submenu 1-1-1</li>
+              </ul>
+          </li>
+          <li role='menuitem'>Submenu 1-2</li>
+      </ul>
+  </li>
+  ...
+</ul>
+
+<script type="text/javascript">
+  UnitTest = {
+      ruleIds: ["widget_tabbable_exists"],
+      results: [
+      {
+            "ruleId": "widget_tabbable_exists",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "pass",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_exists",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "fail_no_tabbable",
+            "message": "Component with \"menu\" role does not have a tabbable element",
+            "messageArgs": [
+              "menu"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  }
+</script></body>
+</html>

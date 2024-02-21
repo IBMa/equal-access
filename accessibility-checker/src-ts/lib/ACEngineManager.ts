@@ -256,21 +256,40 @@ export class ACEngineManager {
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
-                let nodePath = path.join(engineDir, "ace-node")
-                fs.writeFile(nodePath + ".js", data, function (err) {
-                    try {
-                        err && console.log(err);
-                        var ace_ibma = require(nodePath);
-                        checker = new ace_ibma.Checker();
-                    } catch (e) {
-                        console.log(e);
-                        return reject(e);
-                    }
-                    resolve();
-                });
+
+                let fileSuffix = "";
+                if (!config.toolVersion) {
+                    fileSuffix = config.ruleArchiveVersion;
+                } else {
+                    fileSuffix = `${config.toolVersion}-${config.ruleArchiveVersion}`
+                }
+                fileSuffix = fileSuffix.replace(/\./g, "_");
+
+                const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
+                if (fs.existsSync(`${nodePath}.js`)) {
+                    const ace_ibma = require(nodePath);
+                    checker = new ace_ibma.Checker();
+                    return resolve();
+                } else {
+                    fs.writeFile(nodePath + ".js", data, function (err) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            try {
+                                const ace_ibma = require(nodePath);
+                                checker = new ace_ibma.Checker();
+                                resolve();
+                            } catch (e) {
+                                console.log(e);
+                                reject(e);
+                            }
+                        }
+                    });
+                }
             });
         }
-        return this.localLoadPromise;
+        return ACEngineManager.localLoadPromise;
     }
 
     static isPuppeteer(content) {
