@@ -88,7 +88,6 @@ export class DevtoolsController extends Controller {
      */
     public async setStoredReportsMeta(updateMetaArr: IStoredReportMeta[]) : Promise<void> {
         return await this.hook("setStoredReportsMeta", updateMetaArr, async () => {
-            console.log("setStoredReportsMeta with updateMetaArr.length = ", updateMetaArr.length);
             if (updateMetaArr.length === 0) {
                 devtoolsState!.storedReports = [];
                 getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: 0});
@@ -98,7 +97,6 @@ export class DevtoolsController extends Controller {
                 let newReports = [];
                 for (const updateMeta of updateMetaArr) {
                     let keepVal = devtoolsState!.storedReports.find(scan => scan.id === updateMeta.id);
-                    console.log("keepVal = ",keepVal);
                     if (keepVal) {
                         if (keepVal.timestamp !== updateMeta.timestamp) {
                             // Something's out of sync
@@ -109,7 +107,6 @@ export class DevtoolsController extends Controller {
                             (keepVal as any)[key] = (updateMeta as any)[key];
                         }
                         keepVal.id = ""+newReports.length;
-                        console.log("Add to keepVal to newReports");
                         newReports.push(keepVal);
                     } else {
                         // Something's out of sync
@@ -118,7 +115,6 @@ export class DevtoolsController extends Controller {
                     }
                 }
                 if (!misMatch) {
-                    console.log("no misMatch");
                     devtoolsState!.storedReports = newReports;
                     let data = await this.getStoredReportsMeta();
                     getBGController().setStoredScanCount({ tabId: this.ctrlDest.tabId, count: data.length});
