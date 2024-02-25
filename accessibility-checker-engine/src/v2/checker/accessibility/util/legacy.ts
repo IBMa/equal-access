@@ -908,6 +908,34 @@ export class RPTUtil {
     }
 
     /**
+     * WAI-ARIA’s role attribute may have a list of values, but only the first valid and supported WAI-ARIA role is used
+     * https://www.w3.org/TR/wai-aria-implementation/#mapping_role_table
+     * This function is responsible for retrieving the resoled role for an element.
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return string - resolved role for the element:
+     *       explicit role: resoled from the list of values
+     *       implicit role: if not explicitely specified, or none of the specified role values is allowed for the element
+     *       null: if none of the specified role values is allowed for the element, neither implicit role exists
+     *       
+     * @memberOf RPTUtil
+     */
+    public static getResolvedRole(elem: Element) : string {
+        if (!elem) return null;
+        const roles = RPTUtil.getRoles(elem, false);
+        let tagProperty = RPTUtil.getElementAriaProperty(elem);
+        let allowedRoles = RPTUtil.getAllowedAriaRoles(elem, tagProperty);
+        if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
+            roles.forEach(role => {
+                if (allowedRoles.includes(role)) return role; 
+            });    
+        }
+        
+        const implicitRole = RPTUtil.getImplicitRole(elem);
+        return implicitRole && implicitRole.length > 0 ? implicitRole[0] : null;
+    }
+
+    /**
      * This function is responsible for retrieving user defined element's roles from dom.
      * @parm {HTMLElement} ele - element for which to find role.
      *

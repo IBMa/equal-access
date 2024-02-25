@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let text_sensory_misuse: Rule = {
     id: "text_sensory_misuse",
@@ -47,6 +48,28 @@ export let text_sensory_misuse: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        // Extract the nodeName of the context node
+        let nodeName = ruleContext.nodeName.toLowerCase();
+
+        //skip the check if the element is hidden or disabled
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return null;
+        
+        if (VisUtil.hiddenByDefaultElements.includes(nodeName)) {
+            return null;
+        }
+
+        // ignore link and label elements
+        if (nodeName === 'a' || nodeName === 'label') return null;
+
+        const role = RPTUtil.getResolvedRole(ruleContext);
+        if (role) {
+            const roleProp =ARIADefinitions.designPatterns[role];
+            if (roleProp.roleType === 'widget' || roleProp.roleType === 'structure') 
+                return null; //inapplicable
+        }
+        
         const validateParams = {
             sensoryText: {
                 value: ["top-left", "top-right", "bottom-right", "bottom-left",
@@ -56,18 +79,11 @@ export let text_sensory_misuse: Rule = {
                 type: "[string]"
             }
         }
-        const ruleContext = context["dom"].node as Element;
-        if (VisUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
-            return null;
-        }
-
-        // Extract the nodeName of the context node
-        let nodeName = ruleContext.nodeName.toLowerCase();
 
         // In the case this is a style or link element, skip triggering rule as we do not want to scan
         // CSS for sensory words, as there can be CSS keys which contain theses sensory text that is matching.
         if (nodeName === "style" || nodeName === "link") {
-            return RulePass(1);
+            return null;
         }
 
         let violatedtextArray = null;
@@ -164,6 +180,6 @@ export let text_sensory_misuse: Rule = {
             passed = (checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body");
         }
 
-        return passed ? RulePass("Pass_0") : RulePotential("Potential_1", [violatedtext]);
+        return passed ? null : RulePotential("Potential_1", [violatedtext]);
     }
 }
