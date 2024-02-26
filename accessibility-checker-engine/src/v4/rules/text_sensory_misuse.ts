@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
@@ -23,21 +23,23 @@ export let text_sensory_misuse: Rule = {
     context: "dom:body, dom:body dom:*",
     refactor: {
         "RPT_Text_SensoryReference": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"}
+            "Pass_0": "pass",
+            "Potential_1": "potential_positional, potential_other"}
     },
     help: {
         "en-US": {
-            "Pass_0": "text_sensory_misuse.html",
-            "Potential_1": "text_sensory_misuse.html",
+            "pass": "text_sensory_misuse.html",
+            "potential_position": "text_sensory_misuse.html",
+            "potential_other": "text_sensory_misuse.html",
             "group": "text_sensory_misuse.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "If the word(s) '{0}' is part of instructions for using page content, check it is still understandable without this location or shape information",
-            "group": "Instructions must be meaningful without shape or location words"
+            "pass": "Instructions are meaningful without relying solely on shape, size, or location words",
+            "potential_position": "Confirm the word(s) '{0}' of the user instruction is used to indicate a logical rather than visual position",
+            "potential_other": "Confirm the the user instruction is still understandable without the word(s) '{0}'",
+            "group": "Instructions should be meaningful without relying solely on shape, size, or location words"
         }
     },
     rulesets: [{
@@ -51,135 +53,142 @@ export let text_sensory_misuse: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Extract the nodeName of the context node
         let nodeName = ruleContext.nodeName.toLowerCase();
-
+        
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
             return null;
         
-        if (VisUtil.hiddenByDefaultElements.includes(nodeName)) {
+        // Don't trigger if we're not in the body or if we're in a script
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
             return null;
-        }
-
+        
         // ignore link and label elements
         if (nodeName === 'a' || nodeName === 'label') return null;
 
+        //get the resolved role for the element, and ignore widget and structure
         const role = RPTUtil.getResolvedRole(ruleContext);
         if (role) {
             const roleProp =ARIADefinitions.designPatterns[role];
-            if (roleProp.roleType === 'widget' || roleProp.roleType === 'structure') 
+            if (roleProp.roleType === 'widget' || roleProp.roleType === 'landmark') 
                 return null; //inapplicable
         }
         
-        const validateParams = {
-            sensoryText: {
-                value: ["top-left", "top-right", "bottom-right", "bottom-left",
-                    "round", "square", "shape", "rectangle", "triangle",
-                    "right", "left", "above", "below", "top", "bottom",
-                    "upper", "lower", "corner", "beside"],
-                type: "[string]"
-            }
-        }
-
-        // In the case this is a style or link element, skip triggering rule as we do not want to scan
-        // CSS for sensory words, as there can be CSS keys which contain theses sensory text that is matching.
-        if (nodeName === "style" || nodeName === "link") {
-            return null;
-        }
-
-        let violatedtextArray = null;
-        let violatedtext = null;
-        let sensoryRegex = getCache(ruleContext.ownerDocument, "text_sensory_misuse", null);
-        if (sensoryRegex == null) {
-            let sensoryText = validateParams.sensoryText.value;
-            let regexStr = "(" + sensoryText[0];
-            for (let j = 1; j < sensoryText.length; ++j)
-                regexStr += "|" + sensoryText[j];
-            regexStr += ")\\W";
-            sensoryRegex = new RegExp(regexStr, "gi");
-            setCache(ruleContext.ownerDocument, "text_sensory_misuse", sensoryRegex);
-        }
-        let passed = true;
+        let violatedPositionText = "";
+        let violatedOtherText = "";
         let walkNode = ruleContext.firstChild as Node;
-        while (passed && walkNode) {
-            // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
-            // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
-            // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
-            // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
-            // if.
+        //while (passed && walkNode) {
+        while (walkNode) {    
+            // for each element it only checks that single elements text nodes and nothing else. 
+            // all inner elements will be covered on their own. 
             if (walkNode.nodeName == "#text") {
                 let txtVal = walkNode.nodeValue.trim();
                 if (txtVal.length > 0) {
-                    violatedtextArray = txtVal.match(sensoryRegex);
-                    if (violatedtextArray != null) {
-                        let hash = {}, result = [];
-                        let exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
-
-                        // Note: split(/[\n\r ]+/) will spread the string into group of words using space,
-                        // carriage return or linefeed as separators.
-                        let counts = txtVal.split(/[\n\r ]+/).reduce(function (map, word) {
-                            let sensoryTextArr = validateParams.sensoryText.value;
-                            let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, "");
-                            let lcWordWoPunc = word.toLowerCase().replace(/[.?!:;()'",`\]]/g, "");
-
-                            for (let counter = 0; counter < sensoryTextArr.length; counter++) {
-                                let a = lcWordWoPunc.indexOf(sensoryTextArr[counter]);
-                                let b = exemptWords.indexOf(lcWordWoPunc);
-                                let sensoryWordLen = sensoryTextArr[counter].length;
-                                let charFollowSensoryText = lcWordWoPunc.charAt(sensoryWordLen + a);
-
-                                // If the word does not contains substring of sensoryTextArr[counter]
-                                // proceed to the next loop iteration for next sensoryText.
-                                if (a < 0) { continue; }
-
-                                let isPuncfollowing = ((charFollowSensoryText == '\-') ||
-                                    (charFollowSensoryText == '\.') ||
-                                    (charFollowSensoryText == '\?') || (charFollowSensoryText == '\!') ||
-                                    (charFollowSensoryText == '\:') || (charFollowSensoryText == '\;') ||
-                                    (charFollowSensoryText == '\(') || (charFollowSensoryText == '\)') ||
-                                    (charFollowSensoryText == '\'') || (charFollowSensoryText == '\"') ||
-                                    (charFollowSensoryText == '\,') || (charFollowSensoryText == '.\`') ||
-                                    (charFollowSensoryText == '\\') || (charFollowSensoryText == '\]'));
-
-                                let isPuncPreceding = false;
-                                if (a > 0) {
-                                    let charPrecedeSensoryText = lcWordWoPunc.charAt(a - 1);
-                                    isPuncPreceding = ((charPrecedeSensoryText == '\-') ||
-                                        (charPrecedeSensoryText == '\.') ||
-                                        (charPrecedeSensoryText == '\?') || (charPrecedeSensoryText == '\!') ||
-                                        (charPrecedeSensoryText == '\:') || (charPrecedeSensoryText == '\;') ||
-                                        (charPrecedeSensoryText == '\(') || (charPrecedeSensoryText == '\)') ||
-                                        (charPrecedeSensoryText == '\'') || (charPrecedeSensoryText == '\"') ||
-                                        (charPrecedeSensoryText == '\,') || (charPrecedeSensoryText == '.\`') ||
-                                        (charPrecedeSensoryText == '\\') || (charPrecedeSensoryText == '\]'));
-
-                                }
-
-                                if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true)) && (b < 0)) {
-                                    passed = false;
-                                    if (!hash.hasOwnProperty(wordWoTrailingPunc)) {
-                                        hash[wordWoTrailingPunc] = true;
-                                        result.push(wordWoTrailingPunc);
-                                    }
-                                    counter = sensoryTextArr.length;
-                                }
-                            }
-                            map[wordWoTrailingPunc] = (map[wordWoTrailingPunc] || 0) + 1;
-                            return map;
-                        }, Object.create(null));
-                        violatedtext = result.join(", ");
-                    }
+                    violatedPositionText += getViolatedText(ruleContext.ownerDocument, "positionText", txtVal);
+                    violatedOtherText += getViolatedText(ruleContext.ownerDocument, "otherText", txtVal);
                 }
             }
             walkNode = walkNode.nextSibling;
         }
 
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script"]);
-            passed = (checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body");
-        }
-
-        return passed ? null : RulePotential("Potential_1", [violatedtext]);
+        let ret = [];
+        if (violatedPositionText) ret.push(RulePotential("potential_position", [violatedPositionText]));
+        if (violatedOtherText) ret.push(RulePotential("potential_other", [violatedOtherText]));
+        return ret.length == 0 ? null : ret;
     }
 }
+
+const validateParams = {
+    positionText: {
+        value: ["top-left", "top-right", "bottom-right", "bottom-left",
+            "right", "left", "above", "below", "top", "bottom",
+            "upper", "lower", "corner", "beside"],
+        type: "[string]"
+    },
+    otherText: {
+        value: ["round", "square", "shape", "rectangle", "triangle",
+            "size", "large", "small", "medium", "big", "huge", "tiny", "extra",
+            "larger", "smaller", "bigger", "little", "largest", "smallest", "biggest"
+        ],
+        type: "[string]"
+    }
+}
+
+const exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
+
+function getRegex(doc, type) {
+    if (!validateParams[type]) return null;
+    let sensoryRegex = getCache(doc, type + "_sensory_misuse", null);
+    if (sensoryRegex == null) {
+        let sensoryText = validateParams[type].value;
+        let regexStr = "(" + sensoryText[0];
+        for (let j = 1; j < sensoryText.length; ++j)
+            regexStr += "|" + sensoryText[j];
+        regexStr += ")\\W";
+        sensoryRegex = new RegExp(regexStr, "gi");
+        setCache(doc, type +"_sensory_misuse", sensoryRegex);
+    }
+    return sensoryRegex;
+}
+
+function getViolatedText(doc, type, txtVal) {
+    let sensoryRegex = getRegex(doc, type);
+    let sensoryTextArr = validateParams[type].value
+    let violatedtextArray = txtVal.match(sensoryRegex);
+    if (violatedtextArray != null) {
+        let hash = {}, result = [];
+        
+        // Note: split(/[\n\r ]+/) will spread the string into group of words using space,
+        // carriage return or linefeed as separators.
+        let counts = txtVal.split(/\s+/).reduce(function (map, word) {
+            let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, "");
+            let lcWordWoPunc = word.toLowerCase().replace(/[.?!:;()'",`\]]/g, "");
+
+            for (let counter = 0; counter < sensoryTextArr.length; counter++) {
+                let a = lcWordWoPunc.indexOf(sensoryTextArr[counter]);
+                let b = exemptWords.indexOf(lcWordWoPunc);
+                let sensoryWordLen = sensoryTextArr[counter].length;
+                let charFollowSensoryText = lcWordWoPunc.charAt(sensoryWordLen + a);
+
+                // If the word does not contains substring of sensoryTextArr[counter]
+                // proceed to the next loop iteration for next sensoryText.
+                if (a < 0) { continue; }
+
+                let isPuncfollowing = ((charFollowSensoryText == '\-') ||
+                    (charFollowSensoryText == '\.') ||
+                    (charFollowSensoryText == '\?') || (charFollowSensoryText == '\!') ||
+                    (charFollowSensoryText == '\:') || (charFollowSensoryText == '\;') ||
+                    (charFollowSensoryText == '\(') || (charFollowSensoryText == '\)') ||
+                    (charFollowSensoryText == '\'') || (charFollowSensoryText == '\"') ||
+                    (charFollowSensoryText == '\,') || (charFollowSensoryText == '.\`') ||
+                    (charFollowSensoryText == '\\') || (charFollowSensoryText == '\]'));
+
+                let isPuncPreceding = false;
+                if (a > 0) {
+                    let charPrecedeSensoryText = lcWordWoPunc.charAt(a - 1);
+                    isPuncPreceding = ((charPrecedeSensoryText == '\-') ||
+                        (charPrecedeSensoryText == '\.') ||
+                        (charPrecedeSensoryText == '\?') || (charPrecedeSensoryText == '\!') ||
+                        (charPrecedeSensoryText == '\:') || (charPrecedeSensoryText == '\;') ||
+                        (charPrecedeSensoryText == '\(') || (charPrecedeSensoryText == '\)') ||
+                        (charPrecedeSensoryText == '\'') || (charPrecedeSensoryText == '\"') ||
+                        (charPrecedeSensoryText == '\,') || (charPrecedeSensoryText == '.\`') ||
+                        (charPrecedeSensoryText == '\\') || (charPrecedeSensoryText == '\]'));
+
+                }
+
+                if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true)) && (b < 0)) {
+                    //passed = false;
+                    if (!hash.hasOwnProperty(wordWoTrailingPunc)) {
+                        hash[wordWoTrailingPunc] = true;
+                        result.push(wordWoTrailingPunc);
+                    }
+                    counter = sensoryTextArr.length;
+                }
+            }
+            map[wordWoTrailingPunc] = (map[wordWoTrailingPunc] || 0) + 1;
+            return map;
+        }, Object.create(null));
+        return result.join(", ");
+    } else
+       return "";
+} 

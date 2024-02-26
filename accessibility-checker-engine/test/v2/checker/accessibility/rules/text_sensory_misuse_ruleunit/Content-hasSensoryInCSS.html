@@ -56,7 +56,7 @@
 
 <script type="text/javascript">
 //<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  /**if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
   if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
   OpenAjax.a11y.ruleCoverage = [
     {
@@ -66,7 +66,30 @@
       failedXpaths: [
       ]
     }
-  ];
+  ];*/
+  UnitTest = {
+            ruleIds: ["text_sensory_misuse"],
+            results: [
+            {
+            "ruleId": "text_sensory_misuse",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]",
+              "aria": "/document[1]/paragraph[3]"
+            },
+            "reasonId": "potential_other",
+            "message": "Confirm the the user instruction is still understandable without the word(s) 'Large'",
+            "messageArgs": [
+              "Large"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        };
 //]]>
 </script></body>
 

@@ -66,11 +66,52 @@ beside
 
 <script type="text/javascript">
 //<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  /**if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
   if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
   OpenAjax.a11y.ruleCoverage = [
 
-  ];
+  ];*/
+  UnitTest = {
+            ruleIds: ["text_sensory_misuse"],
+            results: [
+            {
+            "ruleId": "text_sensory_misuse",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/p[1]",
+              "aria": "/document[1]/generic[1]/paragraph[1]"
+            },
+            "reasonId": "potential_position",
+            "message": "Confirm the word(s) 'right, left, top-left, top-right, bottom-right, bottom-left, above, below, top, bottom, upper, lower, corner, beside' of the user instruction is used to indicate a logical rather than visual position",
+            "messageArgs": [
+              "right, left, top-left, top-right, bottom-right, bottom-left, above, below, top, bottom, upper, lower, corner, beside"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_sensory_misuse",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/p[1]",
+              "aria": "/document[1]/generic[1]/paragraph[1]"
+            },
+            "reasonId": "potential_other",
+            "message": "Confirm the the user instruction is still understandable without the word(s) 'round, square, shape, rectangle, triangle'",
+            "messageArgs": [
+              "round, square, shape, rectangle, triangle"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        };
 //]]>
 </script></body>
 
