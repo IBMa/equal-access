@@ -1114,7 +1114,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     />{" "} opens/closes the menu dropdown
                     </ListItem>
                     <ListItem>Filter, <img src={enter} alt="enter key"/> opens/closes the menu dropdown</ListItem>
-                    <ListItem>Export XLS, <img src={enter} alt="enter key"/> downloads reports</ListItem>
+                    <ListItem>Export scan, <img src={enter} alt="enter key"/> downloads reports</ListItem>
                     <ListItem>Issues, <img src={space} alt="space bar"/> selects all issues</ListItem>
                     <ListItem>Issue groupings, <img
                                 src={leftRight}
