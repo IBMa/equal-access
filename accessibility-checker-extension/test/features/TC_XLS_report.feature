@@ -24,7 +24,7 @@ Feature: XLS Report
                 column 3 provides hidden issue counts.
                 The row "Issues found:" contains in column 2 the count of all issues found minus any hidden issues. Column 3 contains count of all hidden issues.
                 There are rows for each Level of issues.
-                The row "Level 2 - the most essential issues to addresss" contains in column 2 the count of Level 1 issues minus any Level 1 hidden issues in this category and the count of Level 1 hidden issues in this category.
+                The row "Level 1 - the most essential issues to addresss" contains in column 2 the count of Level 1 issues minus any Level 1 hidden issues in this category and the count of Level 1 hidden issues in this category.
                 For each level there are three sections: Violation, Needs review and Recommendation.
                     The row "Violation" contains in column 2 the count of all Level 1 violation issues found minus any hidden Level 1 violation issues. Column 3 contains count of all Level 1 violation hidden issues.
                         Beneath the row "Violation" there are 0 to n issue rows that enumerate the Level 1 violation issues.
