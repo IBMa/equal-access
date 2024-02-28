@@ -81,24 +81,24 @@ export let text_sensory_misuse: Rule = {
         let violatedOtherText = "";
         let walkNode = ruleContext.firstChild as Node;
         let txtVal = ""; 
-        while (walkNode) {console.log("rule node="+nodeName +", nodeType=" + walkNode.nodeType + ", nodeName=" + walkNode.nodeName + ", orig node value=" + walkNode.textContent);
+        while (walkNode) {
             // for each element it only checks that single elements text nodes and nothing else. 
             // all inner elements will be covered on their own. 
             // whitespace characters (space, newline, tab) between elements are considered a node too.
             if (walkNode.nodeName === "#text") {
-                let txt = walkNode.nodeValue.trim();console.log("orig txt=" + txt);
+                let txt = walkNode.nodeValue.trim();
                 if (txt.length > 0)
                     txtVal += (txtVal.length > 0 ? ", " + txt : txt);
             }
             walkNode = walkNode.nextSibling;
         }
-        console.log("rule node="+nodeName + ", txtVal=" + txtVal);
+        
         if (txtVal.length > 0) {
             violatedPositionText = getViolatedText(ruleContext.ownerDocument, "positionText", txtVal);
             violatedOtherText = getViolatedText(ruleContext.ownerDocument, "otherText", txtVal);
         }
 
-        let ret = [];
+        let ret = []; 
         if (violatedPositionText) ret.push(RulePotential("potential_position", [violatedPositionText]));
         if (violatedOtherText) ret.push(RulePotential("potential_other", [violatedOtherText]));
         return ret.length == 0 ? null : ret;
@@ -110,7 +110,8 @@ const validateParams = {
         value: ["top-left", "top-right", "bottom-right", "bottom-left",
             "top-to-bottom", "left-to-right", "bottom-to-top", "right-to-left",
             "right", "left", "above", "below", "top", "bottom",
-            "upper", "lower", "corner", "beside"],
+            "upper", "lower", "corner", "beside"
+        ],
         type: "[string]"
     },
     otherText: {
@@ -128,8 +129,6 @@ const validateParams = {
     }    
 }
 
-//const exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
-
 function getRegex(doc, type) {
     if (!validateParams[type]) return "";
     let sensoryRegex = getCache(doc, type + "_sensory_misuse", null);
@@ -137,7 +136,6 @@ function getRegex(doc, type) {
         let sensoryText = validateParams[type].value;
         let regexStr = "(" + sensoryText[0];
         for (let j = 1; j < sensoryText.length; ++j) {
-            //regexStr += "|" + sensoryText[j];
             let words = sensoryText[j].trim().split(" ");
             regexStr += "|" + words[0];
             if (words.length > 1) {
@@ -153,70 +151,65 @@ function getRegex(doc, type) {
     return sensoryRegex;
 }
 
-function getViolatedText(doc, type, text) { //console.log("text=" + text);
+function getViolatedText(doc, type, text) {
     if (!text) return "";
     // first to replace all the exempt words in the text
-    let exemptRegex = getRegex(doc, "exemptText");  //console.log("exemptRegex=" + exemptRegex);
-    let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " "); //console.log("text=" + text + ", txtVal=" + txtVal);
+    let exemptRegex = getRegex(doc, "exemptText");
+    let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " ");
     
-    let sensoryRegex = getRegex(doc, type);
     let sensoryTextArr = validateParams[type].value
-    let violatedtextArray = txtVal.match(sensoryRegex);
-    //if (violatedtextArray != null) {
-        let hash = {}, result = [];
-        
-        // split the string into words
-        let counts = txtVal.split(/\s+/).reduce(function (map, word) {
-            let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, ""); //console.log("word=" +word + ", wordWoTrailingPunc=" +wordWoTrailingPunc);
-            let lcWordWoPunc = word.toLowerCase().replace(/[.?!:;()'",`\]]/g, "");
+    let hash = {}, result = [];
+    
+    // split the string into words
+    let counts = txtVal.split(/\s+/).reduce(function (map, word) {
+        let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, "");
+        let lcWordWoPunc = word.toLowerCase().replace(/[.?!:;()'",`\]]/g, "");
 
-            for (let counter = 0; counter < sensoryTextArr.length; counter++) {
-                let a = lcWordWoPunc.indexOf(sensoryTextArr[counter]);
-                //let b = exemptWords.indexOf(lcWordWoPunc);
-                let sensoryWordLen = sensoryTextArr[counter].length;
-                let charFollowSensoryText = lcWordWoPunc.charAt(sensoryWordLen + a);
+        for (let counter = 0; counter < sensoryTextArr.length; counter++) {
+            let a = lcWordWoPunc.indexOf(sensoryTextArr[counter]);
+            
+            let sensoryWordLen = sensoryTextArr[counter].length;
+            let charFollowSensoryText = lcWordWoPunc.charAt(sensoryWordLen + a);
 
-                // If the word does not contains substring of sensoryTextArr[counter]
-                // proceed to the next loop iteration for next sensoryText.
-                if (a < 0) { continue; }
+            // If the word does not contains substring of sensoryTextArr[counter]
+            // proceed to the next loop iteration for next sensoryText.
+            if (a < 0) { continue; }
 
-                //check the following and proceeding punctuations
-                //let isPuncfollowing = ((charFollowSensoryText == '\-') ||
-                let isPuncfollowing = (
-                    (charFollowSensoryText == '\.') ||
-                    (charFollowSensoryText == '\?') || (charFollowSensoryText == '\!') ||
-                    (charFollowSensoryText == '\:') || (charFollowSensoryText == '\;') ||
-                    (charFollowSensoryText == '\(') || (charFollowSensoryText == '\)') ||
-                    (charFollowSensoryText == '\'') || (charFollowSensoryText == '\"') ||
-                    (charFollowSensoryText == '\,') || (charFollowSensoryText == '.\`') ||
-                    (charFollowSensoryText == '\\') || (charFollowSensoryText == '\]'));
+            //check the following and proceeding punctuations
+            //let isPuncfollowing = ((charFollowSensoryText == '\-') ||
+            let isPuncfollowing = (
+                (charFollowSensoryText == '\.') ||
+                (charFollowSensoryText == '\?') || (charFollowSensoryText == '\!') ||
+                (charFollowSensoryText == '\:') || (charFollowSensoryText == '\;') ||
+                (charFollowSensoryText == '\(') || (charFollowSensoryText == '\)') ||
+                (charFollowSensoryText == '\'') || (charFollowSensoryText == '\"') ||
+                (charFollowSensoryText == '\,') || (charFollowSensoryText == '.\`') ||
+                (charFollowSensoryText == '\\') || (charFollowSensoryText == '\]'));
 
-                let isPuncPreceding = false;
-                if (a > 0) {
-                    let charPrecedeSensoryText = lcWordWoPunc.charAt(a - 1);
-                    isPuncPreceding = ((charPrecedeSensoryText == '\-') ||
-                        (charPrecedeSensoryText == '\.') ||
-                        (charPrecedeSensoryText == '\?') || (charPrecedeSensoryText == '\!') ||
-                        (charPrecedeSensoryText == '\:') || (charPrecedeSensoryText == '\;') ||
-                        (charPrecedeSensoryText == '\(') || (charPrecedeSensoryText == '\)') ||
-                        (charPrecedeSensoryText == '\'') || (charPrecedeSensoryText == '\"') ||
-                        (charPrecedeSensoryText == '\,') || (charPrecedeSensoryText == '.\`') ||
-                        (charPrecedeSensoryText == '\\') || (charPrecedeSensoryText == '\]'));
+            let isPuncPreceding = false;
+            if (a > 0) {
+                let charPrecedeSensoryText = lcWordWoPunc.charAt(a - 1);
+                isPuncPreceding = ((charPrecedeSensoryText == '\-') ||
+                    (charPrecedeSensoryText == '\.') ||
+                    (charPrecedeSensoryText == '\?') || (charPrecedeSensoryText == '\!') ||
+                    (charPrecedeSensoryText == '\:') || (charPrecedeSensoryText == '\;') ||
+                    (charPrecedeSensoryText == '\(') || (charPrecedeSensoryText == '\)') ||
+                    (charPrecedeSensoryText == '\'') || (charPrecedeSensoryText == '\"') ||
+                    (charPrecedeSensoryText == '\,') || (charPrecedeSensoryText == '.\`') ||
+                    (charPrecedeSensoryText == '\\') || (charPrecedeSensoryText == '\]'));
 
-                }
-
-                if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true))) {
-                    if (!hash.hasOwnProperty(wordWoTrailingPunc)) {
-                        hash[wordWoTrailingPunc] = true;
-                        result.push(wordWoTrailingPunc);
-                    }
-                    counter = sensoryTextArr.length;
-                }
             }
-            map[wordWoTrailingPunc] = (map[wordWoTrailingPunc] || 0) + 1;
-            return map;
-        }, Object.create(null));
-        return result.join(", ");
-    //} else
-    //  return "";
+
+            if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true))) {
+                if (!hash.hasOwnProperty(wordWoTrailingPunc)) {
+                    hash[wordWoTrailingPunc] = true;
+                    result.push(wordWoTrailingPunc);
+                }
+                counter = sensoryTextArr.length;
+            }
+        }
+        map[wordWoTrailingPunc] = (map[wordWoTrailingPunc] || 0) + 1;
+        return map;
+    }, Object.create(null));
+    return result.join(", ");
 } 
