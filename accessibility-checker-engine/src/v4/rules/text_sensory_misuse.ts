@@ -38,7 +38,7 @@ export let text_sensory_misuse: Rule = {
         "en-US": {
             "pass": "Instructions are meaningful without relying solely on shape, size, or location words",
             "potential_position": "Confirm the word(s) '{0}' of the user instruction is used to indicate a logical rather than visual position",
-            "potential_other": "Confirm the the user instruction is still understandable without the word(s) '{0}'",
+            "potential_other": "Confirm the user instruction is still understandable without the word(s) '{0}'",
             "group": "Instructions should be meaningful without relying solely on shape, size, or location words"
         }
     },
