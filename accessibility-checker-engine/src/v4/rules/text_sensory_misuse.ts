@@ -123,7 +123,7 @@ const validateParams = {
     },
     exemptText: {
         value: ["right-click", "left-click", "right-clicking", "right-clicks", 
-           "left-clicking", "left-clicks", "square root", "right now"
+           "left-clicking", "left-clicks", "square root", "right now", "off the top"   //example only
         ],
         type: "[string]"
     }    
