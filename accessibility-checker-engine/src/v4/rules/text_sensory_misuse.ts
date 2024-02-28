@@ -24,7 +24,7 @@ export let text_sensory_misuse: Rule = {
     refactor: {
         "RPT_Text_SensoryReference": {
             "Pass_0": "pass",
-            "Potential_1": "potential_positional, potential_other"}
+            "Potential_1": "potential_position, potential_other"}
     },
     help: {
         "en-US": {
@@ -65,29 +65,37 @@ export let text_sensory_misuse: Rule = {
         // ignore link and label elements
         if (nodeName === 'a' || nodeName === 'label') return null;
 
-        //get the resolved role for the element, and ignore widget and structure
+        //get the resolved role for the element
         const role = RPTUtil.getResolvedRole(ruleContext);
         if (role) {
             const roleProp =ARIADefinitions.designPatterns[role];
+            //ignore all widgets and landmarks
             if (roleProp.roleType === 'widget' || roleProp.roleType === 'landmark') 
-                return null; //inapplicable
+                return null;
+            // ignore certain structures
+            if (roleProp.roleType === 'structure' && !["paragraph", "strong", "suggestion", "tooltip"].includes(role)) 
+                return null;
         }
-        
+
         let violatedPositionText = "";
         let violatedOtherText = "";
         let walkNode = ruleContext.firstChild as Node;
-        //while (passed && walkNode) {
-        while (walkNode) {    
+        let txtVal = ""; 
+        while (walkNode) {console.log("rule node="+nodeName +", nodeType=" + walkNode.nodeType + ", nodeName=" + walkNode.nodeName + ", orig node value=" + walkNode.textContent);
             // for each element it only checks that single elements text nodes and nothing else. 
             // all inner elements will be covered on their own. 
-            if (walkNode.nodeName == "#text") {
-                let txtVal = walkNode.nodeValue.trim();
-                if (txtVal.length > 0) {
-                    violatedPositionText += getViolatedText(ruleContext.ownerDocument, "positionText", txtVal);
-                    violatedOtherText += getViolatedText(ruleContext.ownerDocument, "otherText", txtVal);
-                }
+            // whitespace characters (space, newline, tab) between elements are considered a node too.
+            if (walkNode.nodeName === "#text") {
+                let txt = walkNode.nodeValue.trim();console.log("orig txt=" + txt);
+                if (txt.length > 0)
+                    txtVal += (txtVal.length > 0 ? ", " + txt : txt);
             }
             walkNode = walkNode.nextSibling;
+        }
+        console.log("rule node="+nodeName + ", txtVal=" + txtVal);
+        if (txtVal.length > 0) {
+            violatedPositionText = getViolatedText(ruleContext.ownerDocument, "positionText", txtVal);
+            violatedOtherText = getViolatedText(ruleContext.ownerDocument, "otherText", txtVal);
         }
 
         let ret = [];
@@ -100,6 +108,7 @@ export let text_sensory_misuse: Rule = {
 const validateParams = {
     positionText: {
         value: ["top-left", "top-right", "bottom-right", "bottom-left",
+            "top-to-bottom", "left-to-right", "bottom-to-top", "right-to-left",
             "right", "left", "above", "below", "top", "bottom",
             "upper", "lower", "corner", "beside"],
         type: "[string]"
@@ -110,42 +119,60 @@ const validateParams = {
             "larger", "smaller", "bigger", "little", "largest", "smallest", "biggest"
         ],
         type: "[string]"
-    }
+    },
+    exemptText: {
+        value: ["right-click", "left-click", "right-clicking", "right-clicks", 
+           "left-clicking", "left-clicks", "square root"
+        ],
+        type: "[string]"
+    }    
 }
 
-const exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
+//const exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
 
 function getRegex(doc, type) {
-    if (!validateParams[type]) return null;
+    if (!validateParams[type]) return "";
     let sensoryRegex = getCache(doc, type + "_sensory_misuse", null);
     if (sensoryRegex == null) {
         let sensoryText = validateParams[type].value;
         let regexStr = "(" + sensoryText[0];
-        for (let j = 1; j < sensoryText.length; ++j)
-            regexStr += "|" + sensoryText[j];
-        regexStr += ")\\W";
+        for (let j = 1; j < sensoryText.length; ++j) {
+            //regexStr += "|" + sensoryText[j];
+            let words = sensoryText[j].trim().split(" ");
+            regexStr += "|" + words[0];
+            if (words.length > 1) {
+                for (let c = 1; c < words.length; ++c)
+                    regexStr += " +" + words[c];
+            }
+        }
+        //regexStr += ")\\W";
+        regexStr += ")";
         sensoryRegex = new RegExp(regexStr, "gi");
         setCache(doc, type +"_sensory_misuse", sensoryRegex);
     }
     return sensoryRegex;
 }
 
-function getViolatedText(doc, type, txtVal) {
+function getViolatedText(doc, type, text) { //console.log("text=" + text);
+    if (!text) return "";
+    // first to replace all the exempt words in the text
+    let exemptRegex = getRegex(doc, "exemptText");  //console.log("exemptRegex=" + exemptRegex);
+    let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " "); //console.log("text=" + text + ", txtVal=" + txtVal);
+    
     let sensoryRegex = getRegex(doc, type);
     let sensoryTextArr = validateParams[type].value
     let violatedtextArray = txtVal.match(sensoryRegex);
-    if (violatedtextArray != null) {
+    //if (violatedtextArray != null) {
         let hash = {}, result = [];
         
-        // Note: split(/[\n\r ]+/) will spread the string into group of words using space,
-        // carriage return or linefeed as separators.
+        // split the string into words
         let counts = txtVal.split(/\s+/).reduce(function (map, word) {
-            let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, "");
+            let wordWoTrailingPunc = word.replace(/[.?!:;()'",`\]]+$/, ""); //console.log("word=" +word + ", wordWoTrailingPunc=" +wordWoTrailingPunc);
             let lcWordWoPunc = word.toLowerCase().replace(/[.?!:;()'",`\]]/g, "");
 
             for (let counter = 0; counter < sensoryTextArr.length; counter++) {
                 let a = lcWordWoPunc.indexOf(sensoryTextArr[counter]);
-                let b = exemptWords.indexOf(lcWordWoPunc);
+                //let b = exemptWords.indexOf(lcWordWoPunc);
                 let sensoryWordLen = sensoryTextArr[counter].length;
                 let charFollowSensoryText = lcWordWoPunc.charAt(sensoryWordLen + a);
 
@@ -153,7 +180,9 @@ function getViolatedText(doc, type, txtVal) {
                 // proceed to the next loop iteration for next sensoryText.
                 if (a < 0) { continue; }
 
-                let isPuncfollowing = ((charFollowSensoryText == '\-') ||
+                //check the following and proceeding punctuations
+                //let isPuncfollowing = ((charFollowSensoryText == '\-') ||
+                let isPuncfollowing = (
                     (charFollowSensoryText == '\.') ||
                     (charFollowSensoryText == '\?') || (charFollowSensoryText == '\!') ||
                     (charFollowSensoryText == '\:') || (charFollowSensoryText == '\;') ||
@@ -176,8 +205,7 @@ function getViolatedText(doc, type, txtVal) {
 
                 }
 
-                if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true)) && (b < 0)) {
-                    //passed = false;
+                if (((lcWordWoPunc.length == sensoryWordLen) || (isPuncfollowing == true) || (isPuncPreceding == true))) {
                     if (!hash.hasOwnProperty(wordWoTrailingPunc)) {
                         hash[wordWoTrailingPunc] = true;
                         result.push(wordWoTrailingPunc);
@@ -189,6 +217,6 @@ function getViolatedText(doc, type, txtVal) {
             return map;
         }, Object.create(null));
         return result.join(", ");
-    } else
-       return "";
+    //} else
+    //  return "";
 } 
