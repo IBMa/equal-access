@@ -97,10 +97,6 @@
             "0": "Quotations should be marked with <q> or <blockquote> elements",
             "Pass_0": "Rule Passed"
         },
-        "text_sensory_misuse": {
-            "0": "Instructions must be meaningful without shape or location words",
-            "Pass_0": "Rule Passed"
-        },
         "text_whitespace_valid": {
             "0": "Space characters should not be used to control spacing within a word",
             "pass": "Rule Passed"
@@ -114,7 +110,7 @@
             "pass": "Rule Passed"
         }
     },
-    "numExecuted": 90,
+    "numExecuted": 82,
     "results": [
         {
             "apiArgs": [],
@@ -498,32 +494,6 @@
                 "dom": "/html[1]/body[1]/div[2]/h1[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<h1>",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 999,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]/heading[1]",
-                "dom": "/html[1]/body[1]/div[2]/h1[1]"
-            },
-            "reasonId": "Pass_0",
             "ruleId": "text_quoted_correctly",
             "snippet": "<h1>",
             "value": [
@@ -766,32 +736,6 @@
                 "dom": "/html[1]/body[1]/div[2]/div[2]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<div id=\"firstDiv\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/div[2]"
-            },
-            "reasonId": "Pass_0",
             "ruleId": "text_quoted_correctly",
             "snippet": "<div id=\"firstDiv\">",
             "value": [
@@ -960,32 +904,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/div[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<div id=\"firstDiv\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1185,32 +1103,6 @@
                 "dom": "/html[1]/body[1]/div[2]/a[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<a name=\"navskip\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 0,
-                "left": 999,
-                "top": 999,
-                "width": 0
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]/a[1]"
-            },
-            "reasonId": "Pass_0",
             "ruleId": "text_quoted_correctly",
             "snippet": "<a name=\"navskip\">",
             "value": [
@@ -1324,32 +1216,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 999,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<div role=\"main\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1656,32 +1522,6 @@
                 "dom": "/html[1]/body[1]/div[1]/a[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 999,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/navigation[1]/link[1]",
-                "dom": "/html[1]/body[1]/div[1]/a[1]"
-            },
-            "reasonId": "Pass_0",
             "ruleId": "text_quoted_correctly",
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "value": [
@@ -1924,32 +1764,6 @@
                 "dom": "/html[1]/body[1]/div[1]"
             },
             "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<div role=\"navigation\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 999,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/navigation[1]",
-                "dom": "/html[1]/body[1]/div[1]"
-            },
-            "reasonId": "Pass_0",
             "ruleId": "text_quoted_correctly",
             "snippet": "<div role=\"navigation\">",
             "value": [
@@ -2170,32 +1984,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 999,
-                "left": 999,
-                "top": 999,
-                "width": 999
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]",
-                "dom": "/html[1]/body[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "text_sensory_misuse",
-            "snippet": "<body>",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -2494,7 +2282,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 89,
+            "pass": 81,
             "ignored": 1,
             "elements": 13,
             "elementsViolation": 0,
