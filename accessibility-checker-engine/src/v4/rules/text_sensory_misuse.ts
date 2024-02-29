@@ -62,20 +62,24 @@ export let text_sensory_misuse: Rule = {
         if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
             return null;
         
-        // ignore link and label elements
-        if (nodeName === 'a' || nodeName === 'label') return null;
-
-        //get the resolved role for the element
+        // ignore link, label and their child elements
+        if (RPTUtil.getAncestor(ruleContext, ["a", 'label']) !== null)
+            return null;
+    
+        // ignore text on landmark roles, but not on their children (e.g., section, main)
         const role = RPTUtil.getResolvedRole(ruleContext);
         if (role) {
-            const roleProp =ARIADefinitions.designPatterns[role];
-            //ignore all widgets and landmarks
-            if (roleProp.roleType === 'widget' || roleProp.roleType === 'landmark') 
+            let lmRoles = RPTUtil.getRolesWithTypes(ruleContext, ["landmark"]);
+            if (lmRoles && lmRoles.includes(role))
                 return null;
-            // ignore certain structures
-            if (roleProp.roleType === 'structure' && !["paragraph", "strong", "suggestion", "tooltip"].includes(role)) 
-                return null;
-        }
+        }    
+        
+        // ignore all widgets and headings, and their children, and certain structure roles
+        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget", "heading"]);
+        // add some structure roles
+        RPTUtil.concatUniqueArrayItemList(["caption", "cell", "code", "columnheader", "definition", "figure", "list", "listitem", "math", "meter", "row", "rowgroup", "rowheader", "term"], roles);
+        if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+            return null;
 
         let violatedPositionText = "";
         let violatedOtherText = "";
@@ -94,6 +98,10 @@ export let text_sensory_misuse: Rule = {
         }
         
         if (txtVal.length > 0) {
+             // first to remove each exempt word with a single space in the text
+            let exemptRegex = getRegex(ruleContext.ownerDocument, "exemptText");
+            txtVal = txtVal.replace(exemptRegex, " ");
+
             violatedPositionText = getViolatedText(ruleContext.ownerDocument, "positionText", txtVal);
             violatedOtherText = getViolatedText(ruleContext.ownerDocument, "otherText", txtVal);
         }
@@ -123,7 +131,7 @@ const validateParams = {
     },
     exemptText: {
         value: ["right-click", "left-click", "right-clicking", "right-clicks", 
-           "left-clicking", "left-clicks", "square root", "right now", "off the top"   //example only
+           "left-clicking", "left-clicks", "square root", "right now", "off the top"   //append as needed
         ],
         type: "[string]"
     }    
@@ -134,7 +142,7 @@ function getRegex(doc, type) {
     let sensoryRegex = getCache(doc, type + "_sensory_misuse", null);
     if (sensoryRegex == null) {
         let sensoryText = validateParams[type].value;
-        let regexStr = "(" + sensoryText[0];
+        let regexStr = "(\s\s+|" + sensoryText[0];
         for (let j = 1; j < sensoryText.length; ++j) {
             let words = sensoryText[j].trim().split(" ");
             regexStr += "|" + words[0];
@@ -151,11 +159,11 @@ function getRegex(doc, type) {
     return sensoryRegex;
 }
 
-function getViolatedText(doc, type, text) {
-    if (!text) return "";
+function getViolatedText(doc, type, txtVal) {
+    if (!txtVal) return "";
     // first to replace all the exempt words in the text
-    let exemptRegex = getRegex(doc, "exemptText");
-    let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " ");
+    //let exemptRegex = getRegex(doc, "exemptText");
+    //let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " ");
     
     let sensoryTextArr = validateParams[type].value
     let hash = {}, result = [];
