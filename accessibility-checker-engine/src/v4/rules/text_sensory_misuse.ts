@@ -59,11 +59,11 @@ export let text_sensory_misuse: Rule = {
             return null;
         
         // Don't trigger if we're not in the body or if we're in a script
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) 
             return null;
         
-        // ignore link, label and their child elements
-        if (RPTUtil.getAncestor(ruleContext, ["a", 'label']) !== null)
+        // ignore script, link, label and their child elements
+        if (RPTUtil.getAncestor(ruleContext, ["script", "a", 'label']) !== null)
             return null;
     
         // ignore text on landmark roles, but not on their children (e.g., section, main)
