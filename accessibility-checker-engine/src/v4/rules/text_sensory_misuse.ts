@@ -161,10 +161,6 @@ function getRegex(doc, type) {
 
 function getViolatedText(doc, type, txtVal) {
     if (!txtVal) return "";
-    // first to replace all the exempt words in the text
-    //let exemptRegex = getRegex(doc, "exemptText");
-    //let txtVal = text.replaceAll("  ", " ").replaceAll(exemptRegex, " ");
-    
     let sensoryTextArr = validateParams[type].value
     let hash = {}, result = [];
     
