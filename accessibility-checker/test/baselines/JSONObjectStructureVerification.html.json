@@ -367,32 +367,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/h1[1]",
-                "aria": "/document[1]/main[1]/heading[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<h1>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -635,32 +609,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/div[2]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 144,
-                "height": 0,
-                "width": 784
-            },
-            "snippet": "<div id=\"firstDiv\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -846,32 +794,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/div[1]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 144,
-                "height": 0,
-                "width": 784
-            },
-            "snippet": "<div id=\"firstDiv\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -1054,32 +976,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/a[1]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<a name=\"navskip\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -1208,32 +1104,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<div role=\"main\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "text_quoted_correctly",
@@ -1525,32 +1395,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[1]/a[1]",
-                "aria": "/document[1]/navigation[1]/link[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 18,
-                "width": 56
-            },
-            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -1793,32 +1637,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[1]",
-                "aria": "/document[1]/navigation[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 19,
-                "width": 784
-            },
-            "snippet": "<div role=\"navigation\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
@@ -2054,32 +1872,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_sensory_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 114,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_sensory_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_sensory_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "text_quoted_correctly",
@@ -2370,7 +2162,7 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20language%20detected%20as%20%5C%22en%5C%22%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%22en%22%5D%7D"
         }
     ],
-    "numExecuted": 90,
+    "numExecuted": 82,
     "ruleTime": 999,
     "nls": {
         "html_lang_valid": {
@@ -2411,10 +2203,6 @@
         },
         "skip_main_described": {
             "0": "The description of a hyperlink used to skip content must communicate where it links to",
-            "Pass_0": "Rule Passed"
-        },
-        "text_sensory_misuse": {
-            "0": "Instructions must be meaningful without shape or location words",
             "Pass_0": "Rule Passed"
         },
         "text_quoted_correctly": {
@@ -2494,7 +2282,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 89,
+            "pass": 81,
             "ignored": 1,
             "elements": 13,
             "elementsViolation": 0,
