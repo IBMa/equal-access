@@ -63,10 +63,10 @@ export let list_markup_review: Rule = {
         if (RPTUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
             return null;
 
-        // ignore all widgets and headings, and their children, and certain structure roles
-        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget", "heading"]);
+        // ignore all widgets and their children, and certain structure roles
+        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget"]);
         // add some structure roles
-        RPTUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter",  "rowheader"], roles);
+        RPTUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
         if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
             return null;
 
@@ -77,7 +77,7 @@ export let list_markup_review: Rule = {
             // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
             // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
             // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
+            // In the case in the future something changes, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
             // if.
             if (walkNode.nodeName == "#text") {
                 let txtVal = walkNode.nodeValue;
@@ -102,12 +102,6 @@ export let list_markup_review: Rule = {
                 }
             }
             walkNode = walkNode.nextSibling;
-        }
-
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
         }
 
         if (passed) return null;
