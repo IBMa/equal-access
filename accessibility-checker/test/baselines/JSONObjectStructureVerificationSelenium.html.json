@@ -164,7 +164,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -242,7 +242,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -320,7 +320,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -398,7 +398,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -562,7 +562,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -796,7 +796,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -981,7 +981,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1137,7 +1137,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1293,7 +1293,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1616,7 +1616,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1824,7 +1824,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -2087,7 +2087,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -2165,7 +2165,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doclist_markup_review_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
