@@ -1,16 +1,18 @@
 # equal-access
 
 This Git repository hosts tools and supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit is a major part of the applications and accessibility information at [ibm.com/able](https://ibm.com/able/).
 
 ## Overview
 
-This README covers topics for users who want to find the deployed tools as well as topics for developers who want to better understand the various components and build the tools.
+This README covers topics for users who want to find and install the deployed tools as well as topics for developers who want to better understand the various components and build the tools themselves.
 
 The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
+See the [Release Notes](https://github.com/IBMa/equal-access/releases) for the latest deployed changes in the tools and components.
 
 ## Usage
 
-The tools have been deployed to the various stores and NPM so they can be easily downloaded and installed:
+The tools have been deployed to the browser and NPM stores so they can be easily downloaded and installed:
 
 * [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
 * [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
@@ -18,7 +20,7 @@ The tools have been deployed to the various stores and NPM so they can be easily
 * [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
 * [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
 
-## Requirements
+## Requirements for building the tools
 
 * [Node Version 18](https://nodejs.org/en/download/).
 
