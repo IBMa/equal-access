@@ -1,7 +1,9 @@
 # equal-access
 
 This Git repository hosts tools and supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
-The Toolkit is a major part of the applications and accessibility information at [ibm.com/able](https://ibm.com/able/).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate these automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Overview
 
@@ -12,13 +14,20 @@ See the [Release Notes](https://github.com/IBMa/equal-access/releases) for the l
 
 ## Usage
 
-The tools have been deployed to the browser and NPM stores so they can be easily downloaded and installed:
+The tools have been deployed to the browser and NPM stores so they can be easily downloaded and installed.
 
-* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
-* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
-* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
-* [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
+#### Browser extensions
+
+The browser extensions provide an integrated checking experience and visualizations to help users quickly identify the source of accessibility issues and try fixes:
+
+* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools.
+* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools.
+* [Edge accessibility-checker-extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
+
+#### Automated testing packages
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.
+* [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment.
+* [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment.
 
 ## Requirements for building the tools
 
