@@ -10,7 +10,7 @@ The Toolkit is a major part of the accessibility information and applications at
 This README covers topics for users who want to find and install the deployed tools as well as topics for developers who want to better understand the various components and build the tools themselves.
 
 The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
-See the [Release Notes](https://github.com/IBMa/equal-access/releases) for the latest deployed changes in the tools and components.
+See the [Release Notes](https://github.com/IBMa/equal-access/releases) for the latest deployed changes in the tools, rules, and components.
 
 ## Usage
 
@@ -20,9 +20,9 @@ The tools have been deployed to the browser and NPM stores so they can be easily
 
 The browser extensions provide an integrated checking experience and visualizations to help users quickly identify the source of accessibility issues and try fixes:
 
-* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools.
-* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools.
-* [Edge accessibility-checker-extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
+* [Chrome Web Store extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools.
+* [Firefox Add-on extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools.
+* [Edge Add-on extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
 
 #### Automated testing packages
 * [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.

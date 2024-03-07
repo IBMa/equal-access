@@ -1,13 +1,22 @@
 # cypress-accessibility-checker
 
-Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). 
+Cypress plugin for automated accessibility testing.
 
+The [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker) is a wrapper of the `accessibility-checker` in the Cypress environment.
+The deployed package can be downloaded and installed from NPM.
+
+This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker).
 The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next generation front end testing tool built for the modern web and scanning the page in context. Please see the `Usage` section in this README for more details.
+
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Requirements
 
 * [Node Version 18](https://nodejs.org/en/download/)
-* Cypress 13
+* Cypress 13 from [cypress.io](https://www.cypress.io/)
 
 ## Installation
 
