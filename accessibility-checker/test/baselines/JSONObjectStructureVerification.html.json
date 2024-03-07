@@ -29,32 +29,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/page_title_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22page_title_valid%22%2C%22msgArgs%22%3A%5B%22Helo%20World%22%5D%7D"
         },
         {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/title[1]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<title>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "img_alt_background",
             "value": [
                 "RECOMMENDATION",
@@ -105,32 +79,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ctitle%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[2]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta content=\"text\" name=\"Description\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -185,32 +133,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20content%3D%5C%22text%5C%22%20name%3D%5C%22Description%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[1]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta charset=\"utf-8\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "img_alt_background",
             "value": [
                 "RECOMMENDATION",
@@ -261,32 +183,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cmeta%20charset%3D%5C%22utf-8%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<head>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -425,32 +321,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
-        },
-        {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/h1[1]",
-                "aria": "/document[1]/main[1]/heading[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<h1>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -1002,32 +872,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/a[1]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<a name=\"navskip\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20name%3D%5C%22navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "img_alt_background",
             "value": [
                 "RECOMMENDATION",
@@ -1156,32 +1000,6 @@
             "ignored": false,
             "level": "pass",
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]",
-                "aria": "/document[1]/main[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<div role=\"main\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -1952,32 +1770,6 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/skip_main_described.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22skip_main_described%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
-            "ruleId": "list_markup_review",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 114,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/list_markup_review.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22list_markup_review%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
             "ruleId": "img_alt_background",
             "value": [
                 "RECOMMENDATION",
@@ -2162,7 +1954,7 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20language%20detected%20as%20%5C%22en%5C%22%22%2C%22snippet%22%3A%22%3Chtml%20lang%3D%5C%22en%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%22en%22%5D%7D"
         }
     ],
-    "numExecuted": 82,
+    "numExecuted": 69,
     "ruleTime": 999,
     "nls": {
         "html_lang_valid": {
@@ -2183,10 +1975,6 @@
         },
         "img_alt_background": {
             "0": "Background images that convey important information must have a text alternative that describes the image",
-            "Pass_0": "Rule Passed"
-        },
-        "list_markup_review": {
-            "0": "Use proper HTML list elements to create lists",
             "Pass_0": "Rule Passed"
         },
         "aria_content_in_landmark": {
@@ -2282,7 +2070,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 81,
+            "pass": 68,
             "ignored": 1,
             "elements": 13,
             "elementsViolation": 0,

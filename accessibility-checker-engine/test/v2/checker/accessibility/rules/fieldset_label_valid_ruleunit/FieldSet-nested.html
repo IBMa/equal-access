@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: FieldSet-nested.html</h2>
+
+<form action="..." method="post">
+  <fieldset aria-labelledby="mylegend">
+    <legend id="mylegend">Please enter following information</legend>
+    <label for="cpname">Company Name</label>
+    <input type="text" name="cpname" id="cpname" value="enter company name">
+
+    <fieldset aria-labelledby="alegend">
+      <legend id="alegend">Please enter following information</legend>
+  
+      <label for="phone">Phone</label>
+      <input type="text" name="phone" id="phone" value="enter company phone">
+  
+    </fieldset>
+
+  </fieldset>
+
+</form>
+
+
+<a name="navskip"></a>
+
+
+<script>
+  UnitTest = {
+      ruleIds: ["fieldset_label_valid"],
+      results: [
+      {
+            "ruleId": "fieldset_label_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/fieldset[1]",
+              "aria": "/document[1]/form[1]/group[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Group/Fieldset \"Please enter following information\" has a duplicate name to another group",
+            "messageArgs": [
+              "Please enter following information"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "fieldset_label_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/fieldset[1]/fieldset[1]",
+              "aria": "/document[1]/form[1]/group[1]/group[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "Group/Fieldset \"Please enter following information\" has a duplicate name to another group",
+            "messageArgs": [
+              "Please enter following information"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+
+  }
+</script>
+</body>
+
+</html>

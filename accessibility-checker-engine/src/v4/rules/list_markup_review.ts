@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let list_markup_review: Rule = {
     id: "list_markup_review",
@@ -25,16 +26,16 @@ export let list_markup_review: Rule = {
     },
     help: {
         "en-US": {
-            "Pass_0": "list_markup_review.html",
-            "Potential_1": "list_markup_review.html",
+            "pass": "list_markup_review.html",
+            "potential_list": "list_markup_review.html",
             "group": "list_markup_review.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Verify whether this is a list that should use HTML list elements",
-            "group": "Use proper HTML list elements to create lists"
+            "pass": "Proper HTML elements are used to create a list",
+            "potential_list": "Verify this is a list and if so, modify to use proper HTML elements for the list",
+            "group": "Proper HTML elements should be used to create a list"
         }
     },
     rulesets: [{
@@ -46,6 +47,29 @@ export let list_markup_review: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        // Extract the nodeName of the context node
+        let nodeName = ruleContext.nodeName.toLowerCase();
+
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
+            return null;
+
+        // Don't trigger if we're not in the body or if we're in a script
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) 
+            return null;
+
+        // ignore script, label and their child elements
+        if (RPTUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
+            return null;
+
+        // ignore all widgets and their children, and certain structure roles
+        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget"]);
+        // add some structure roles
+        RPTUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
+        if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+            return null;
+
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
         while (passed && walkNode) {
@@ -53,7 +77,7 @@ export let list_markup_review: Rule = {
             // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
             // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
             // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
+            // In the case in the future something changes, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
             // if.
             if (walkNode.nodeName == "#text") {
                 let txtVal = walkNode.nodeValue;
@@ -80,14 +104,8 @@ export let list_markup_review: Rule = {
             walkNode = walkNode.nextSibling;
         }
 
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
-        }
-
-        if (passed) return RulePass("Pass_0");
-        if (!passed) return RulePotential("Potential_1");
+        if (passed) return null;
+        if (!passed) return RulePotential("potential_list");
 
     }
 }
