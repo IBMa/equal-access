@@ -32,7 +32,7 @@ export let element_tabbable_visible: Rule = {
         "en-US": {
             "group": "A tabbable element should be visible on the screen when it has keyboard focus",
             "pass": "The tabbable element is visible on the screen",
-            "potential_visible": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus"
+            "potential_visible": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus"
         }
     },
     rulesets: [{
@@ -58,10 +58,31 @@ export let element_tabbable_visible: Rule = {
         const defined_styles = getDefinedStyles(ruleContext);
         const onfocus_styles = getDefinedStyles(ruleContext, ":focus");
                 
-        if (bounds['height'] === 0 || bounds['width'] === 0 
-            || (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
-              && !onfocus_styles['clip']))
+        if (bounds['height'] === 0 || bounds['width'] === 0)
             return RulePotential("potential_visible", []);
+
+        if (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
+            && !onfocus_styles['clip']) {
+            /** 
+             * note that A user can select a checkbox and radio button by selecting the button or the label text. 
+             * When a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader. 
+             * The rule should be passed if the label text exists and the button on-focus style is defined by the user, 
+             * which likely incurs the changes of the label style.   
+             */ 
+            if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
+                const label = RPTUtil.getLabelForElement(ruleContext);
+                if (label && !RPTUtil.isInnerTextEmpty(label)) {
+                    const focus_styles = getDefinedStyles(ruleContext, ":focus");
+                    const focus_visible_styles = getDefinedStyles(ruleContext, ":focus-visible");
+                    const focus_within_styles = getDefinedStyles(ruleContext, ":focus-within");
+                    const checked_styles = getDefinedStyles(ruleContext, ":checked");
+                    
+                    if (focus_styles || focus_visible_styles || focus_within_styles || checked_styles)
+                        return RulePass("pass");
+                }     
+            }    
+            return RulePotential("potential_visible", []);
+        }    
 
         if (bounds['top'] >= 0 && bounds['left'] >= 0)
             return RulePass("pass");

@@ -21,19 +21,40 @@
 <html lang="en">
 
 <head>
-	<title>RPT Test Suite</title>
+	<title>Test Example</title>
+  <style>
+    .catalog--radio {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+        
+    }
+
+    .catalog--radio-label-text {
+        flex: auto;
+        background-color: #FFF;
+        color: #1E69A6;
+        text-align: center;
+        padding: 4px 8px;
+        border: 1px solid #999CA0;
+        border-radius: 0;
+        transition: all 0.2s ease-in-out;
+    }  
+
+</style>
 </head>
 
 <body>
 
-<h3>Elements Tests</h3>
-
-<button width="350" height="350" style="position: absolute; left: -1000px;">
-	 OK
-</button>
-
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
-
+<div> 
+  <input type="radio" class="catalog--radio" id="catalog">
+  <label for="catalog" class="catalog--radio-label-text">iOS</label>
+</div>
 <script>
   UnitTest = {
       ruleIds: ["element_tabbable_visible"],
@@ -42,30 +63,14 @@
             "ruleId": "element_tabbable_visible",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/button[1]",
-              "aria": "/document[1]/button[1]"
+              "dom": "/html[1]/body[1]/div[1]/input[1]",
+              "aria": "/document[1]/radio[1]"
             },
-            "reasonId": "potential_visible",
-            "message": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_visible",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "potential_visible",
-            "message": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus",
+            "reasonId": "pass",
+            "message": "The tabbable element is visible on the screen",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

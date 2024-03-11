@@ -68,7 +68,7 @@
 
 
 <script type="text/javascript">
-//<![CDATA[
+/** //<![CDATA[
   if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
   if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
   OpenAjax.a11y.ruleCoverage = [
@@ -82,7 +82,44 @@
       ]
     }
   ];
-//]]>
+//]]>*/
+UnitTest = {
+    ruleIds: ["list_markup_review"],
+    results: [
+    {
+            "ruleId": "list_markup_review",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/paragraph[1]"
+            },
+            "reasonId": "potential_list",
+            "message": "Verify this is a list and if so, modify to use proper HTML elements for the list",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "list_markup_review",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/pre[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "potential_list",
+            "message": "Verify this is a list and if so, modify to use proper HTML elements for the list",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+};
 </script></body>
 
 </html>
