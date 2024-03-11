@@ -65,11 +65,14 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * for example, for 'transform: rotate(2.5deg);', the computed style returns 'matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0)' 
  *  and the defined style returns 'rotate(2.5deg)'  
  * 
+ * change the type of the parameter pseudoClass from PseudoClass to string to include both pseudo classes (e.g., :focus, :checked) 
+ * and pseudo elements (e.g., ::before, ::after).  
+ * 
  * @param {HTMLElement} elem 
  * @param {string} [pseudoClass] If specified, will return values that are different
  * than when the pseudoClass does not match.
  */
-export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
+export function getDefinedStyles(elem: HTMLElement, pseudoClass?: string ) {
     // console.log("Function: getDefinedStyles");
     let definedStyles = {};
     let definedStylePseudo = {};
