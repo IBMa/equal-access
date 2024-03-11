@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
@@ -26,16 +26,16 @@ export let text_block_heading: Rule = {
     },
     help: {
         "en-US": {
-            "Pass_0": "text_block_heading.html",
-            "Potential_1": "text_block_heading.html",
+            "pass": "text_block_heading.html",
+            "potential_heading": "text_block_heading.html",
             "group": "text_block_heading.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Check if this text should be marked up as a heading: {0}",
-            "group": "Heading text must use a heading element"
+            "pass": "Heading text uses a heading element or role",
+            "potential_heading": "Confirm this text {0} is used as a heading and if so, modify to use a heading element or role”",
+            "group": "Heading text should use a heading element or role"
         }
     },
     rulesets: [{
@@ -94,9 +94,9 @@ export let text_block_heading: Rule = {
         if (wordsSeen == 0) passed = true;
 
         if (passed) {
-            return RulePass("Pass_0");
+            return null;
         } else {
-            return RulePotential("Potential_1", [wordStr.join(" ")]);
+            return RulePotential("potential_heading", [wordStr.join(" ")]);
         }
     }
 }
