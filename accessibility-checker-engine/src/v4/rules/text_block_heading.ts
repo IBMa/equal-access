@@ -15,14 +15,16 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { getDefinedStyles, getComputedStyle, getPixelsFromStyle } from "../util/CSSUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let text_block_heading: Rule = {
     id: "text_block_heading",
     context: "dom:p, dom:div, dom:br",
     refactor: {
         "RPT_Block_ShouldBeHeading": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"}
+            "Pass_0": "pass",
+            "Potential_1": "potential_heading"}
     },
     help: {
         "en-US": {
@@ -46,6 +48,15 @@ export let text_block_heading: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as HTMLElement;
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+            return null;
+
+        // Don't trigger if we're not in the body or if we're in a script
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
+            return null;
+
         const validateParams = {
             numWords: {
                 value: 10,
@@ -53,12 +64,17 @@ export let text_block_heading: Rule = {
             }
         }
 
-        const ruleContext = context["dom"].node as Element;
+        let bodyStyle = null;
+        let body = ruleContext.ownerDocument.getElementsByTagName("body");
+        if (body != null) 
+            bodyStyle = getComputedStyle(body[0]);
+
         let numWords = validateParams.numWords.value;
         let wordsSeen = 0;
         let wordStr: string[] = [];
         let emphasizedText = false;
         let nw = new NodeWalker(ruleContext);
+
         let passed = false;
         while (!passed &&
             nw.nextNode() &&
@@ -67,8 +83,13 @@ export let text_block_heading: Rule = {
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
             let nwName = nw.node.nodeName.toLowerCase();
-            if ((nwName == "b" || nwName == "em" || nwName == "i" ||
-                nwName == "strong" || nwName == "u" || nwName == "font") && !RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
+            if (nw.node.nodeType !== 1 ) continue;
+            let style = getDefinedStyles(nw.node as HTMLElement);
+            if ((nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font"
+                || style['font-weight'] === 'bold' || style['font-weight'] >= 700
+                ||  (style['font-size'] && style['font-size'].includes("large")) 
+                || (style['font-size'] && bodyStyle['font-size'] && getPixelsFromStyle(style['font-size'],nw.node)  > bodyStyle['font-size'])) 
+                && !RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
                 let nextStr = RPTUtil.getInnerText(nw.node);
                 let wc = RPTUtil.wordCount(nextStr);
                 if (wc > 0) {
@@ -80,15 +101,12 @@ export let text_block_heading: Rule = {
                 // Skip this node because it's emphasized
                 nw.bEndTag = true;
             } else {
-                passed =
-                    (nw.node.nodeType == 1 && RPTUtil.attributeNonEmpty(nw.node, "alt") &&
-                        (nwName == "applet" || nwName == "embed" || nwName == "img" ||
-                            (nwName === "input" && nw.elem().hasAttribute("type") && nw.elem().getAttribute("type") == "image")
-                        )
-                    )
-                    || (nwName === "#text" && nw.node.nodeValue.trim().length > 0)
-                    // Give them the benefit of the doubt if there's a link
-                    || (nwName === "a" && nw.elem().hasAttribute("href") && RPTUtil.attributeNonEmpty(nw.node, "href"));
+                let role = RPTUtil.getResolvedRole(nw.node as HTMLElement);
+                // ignore the text that is not emphasized
+                // ignore the element which has a role except 'generic', 'paragraph' or 'strong'
+                // ignore applet element that is deprecated anyway
+                passed = (nwName === "#text" && nw.node.nodeValue.trim().length > 0) || 
+                      (role !== null && role !== 'generic' && role !== 'paragraph' && role !== 'strong') || nwName === "applet";
             }
         }
         if (wordsSeen == 0) passed = true;
