@@ -64,11 +64,12 @@ export let text_block_heading: Rule = {
             }
         }
 
-        let bodyStyle = null;
+        let bodyFont = 0;
         let body = ruleContext.ownerDocument.getElementsByTagName("body");
-        if (body != null) 
-            bodyStyle = getComputedStyle(body[0]);
-
+        if (body != null) {
+            let bodyStyle = getComputedStyle(body[0]);
+            if (bodyStyle) bodyFont = getPixelsFromStyle(bodyStyle['font-size'], body);
+        }
         let numWords = validateParams.numWords.value;
         let wordsSeen = 0;
         let wordStr: string[] = [];
@@ -82,31 +83,53 @@ export let text_block_heading: Rule = {
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
+            if (RPTUtil.shouldNodeBeSkippedHidden(nw.node))
+                continue;
+
             let nwName = nw.node.nodeName.toLowerCase();
-            if (nw.node.nodeType !== 1 ) continue;
-            let style = getDefinedStyles(nw.node as HTMLElement);
-            if ((nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font"
-                || style['font-weight'] === 'bold' || style['font-weight'] >= 700
-                ||  (style['font-size'] && style['font-size'].includes("large")) 
-                || (style['font-size'] && bodyStyle['font-size'] && getPixelsFromStyle(style['font-size'],nw.node)  > bodyStyle['font-size'])) 
-                && !RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
-                let nextStr = RPTUtil.getInnerText(nw.node);
-                let wc = RPTUtil.wordCount(nextStr);
-                if (wc > 0) {
-                    wordStr.push(nextStr);
-                    emphasizedText = true;
-                    wordsSeen += wc;
+            if (nw.node.nodeType === 3) {
+                // for text child
+                if (nw.node.nodeValue.trim().length > 0) {
+                    // check it's style if the target element contains text, e.g., <p> fake heading</p> 
+                    let style = getDefinedStyles(nw.node.parentElement);
+                    if (style['font-weight'] === 'bold' || style['font-weight'] >= 700
+                        ||  (style['font-size'] && style['font-size'].includes("large")) 
+                        || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont)) {
+                        let nextStr = nw.node.nodeValue.trim();
+                        let wc = RPTUtil.wordCount(nextStr);
+                        if (wc > 0) {
+                            wordStr.push(nextStr);
+                            emphasizedText = true;
+                            wordsSeen += wc;
+                        }
+                        passed = wordsSeen > numWords;
+                        // Skip this node because it's emphasized
+                        nw.bEndTag = true;
+                    } else {
+                        // the node contain regular text
+                        passed = true;
+                    }   
                 }
-                passed = wordsSeen > numWords;
-                // Skip this node because it's emphasized
-                nw.bEndTag = true;
-            } else {
-                let role = RPTUtil.getResolvedRole(nw.node as HTMLElement);
-                // ignore the text that is not emphasized
-                // ignore the element which has a role except 'generic', 'paragraph' or 'strong'
-                // ignore applet element that is deprecated anyway
-                passed = (nwName === "#text" && nw.node.nodeValue.trim().length > 0) || 
-                      (role !== null && role !== 'generic' && role !== 'paragraph' && role !== 'strong') || nwName === "applet";
+            } else if (nw.node.nodeType === 1) {
+                // for element child
+                if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
+                    // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
+                    let nextStr = RPTUtil.getInnerText(nw.node);
+                    let wc = RPTUtil.wordCount(nextStr);
+                    if (wc > 0) {
+                        wordStr.push(nextStr);
+                        emphasizedText = true;
+                        wordsSeen += wc;
+                    }
+                    passed = wordsSeen > numWords;
+                    // Skip this node because it's emphasized
+                    nw.bEndTag = true;
+                } else {
+                    // ignore the element which has a role except 'generic', 'paragraph' or 'strong'
+                    // ignore applet element that is deprecated anyway
+                    let role = RPTUtil.getResolvedRole(nw.node as HTMLElement);
+                    passed = (role !== null && role !== 'generic' && role !== 'paragraph' && role !== 'strong') || nwName === "applet";
+                }
             }
         }
         if (wordsSeen == 0) passed = true;
