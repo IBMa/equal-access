@@ -21,19 +21,46 @@
 <html lang="en">
 
 <head>
-	<title>RPT Test Suite</title>
+	<title>Test Example</title>
+  <style>
+    .catalog--checkbox {
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    margin: -1px;
+		    padding: 0;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    border: 1px;
+		    visibility: inherit;
+		    clip: rect(0,0,0,0);
+        display: block;
+        
+    }
+
+    .catalog--checkbox-label-text::before {
+        position: absolute;
+        top: 0.125rem;
+        left: 0;
+        width: 1rem;
+        height: 1rem;
+        border: 1px solid var(--cds-icon-01, #161616);
+        margin: 0.125rem 0.125rem 0.125rem 0.1875rem;
+        background-color: rgba(0,0,0,0);
+        border-radius: 1px;
+        display:block;
+        content: "";
+    }  
+
+</style>
 </head>
 
 <body>
 
-<h3>Elements Tests</h3>
-
-<button width="350" height="350" style="position: absolute; left: -1000px;">
-	 OK
-</button>
-
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
-
+<div> 
+  <input type="checkbox" class="catalog--checkbox" id="catalog">
+  <label for="catalog" class="catalog--checkbox-label-text">iOS</label>
+</div>
 <script>
   UnitTest = {
       ruleIds: ["element_tabbable_visible"],
@@ -42,30 +69,14 @@
             "ruleId": "element_tabbable_visible",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/button[1]",
-              "aria": "/document[1]/button[1]"
+              "dom": "/html[1]/body[1]/div[1]/input[1]",
+              "aria": "/document[1]/checkbox[1]"
             },
-            "reasonId": "potential_visible",
-            "message": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_visible",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "potential_visible",
-            "message": "Confirm the element should be tabbable and if so, it becomes visible when it has keyboard focus",
+            "reasonId": "pass",
+            "message": "The tabbable element is visible on the screen",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
