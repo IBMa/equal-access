@@ -36,7 +36,7 @@ export let text_block_heading: Rule = {
     messages: {
         "en-US": {
             "pass": "Heading text uses a heading element or role",
-            "potential_heading": "Confirm this text {0} is used as a heading and if so, modify to use a heading element or role”",
+            "potential_heading": "Confirm this text '{0}' is used as a heading and if so, modify to use a heading element or role",
             "group": "Heading text should use a heading element or role"
         }
     },
@@ -76,6 +76,7 @@ export let text_block_heading: Rule = {
         let emphasizedText = false;
         let nw = new NodeWalker(ruleContext);
 
+        const reg = /[:,;\-\.]$/;
         let passed = false;
         while (!passed &&
             nw.nextNode() &&
@@ -96,6 +97,10 @@ export let text_block_heading: Rule = {
                         ||  (style['font-size'] && style['font-size'].includes("large")) 
                         || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont)) {
                         let nextStr = nw.node.nodeValue.trim();
+                        //ignore if the string ends with “:”  “,”  “-”  “;” or “.” 
+                        passed = reg.test(nextStr);
+                        if (passed) break;
+
                         let wc = RPTUtil.wordCount(nextStr);
                         if (wc > 0) {
                             wordStr.push(nextStr);
@@ -115,6 +120,10 @@ export let text_block_heading: Rule = {
                 if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
                     // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
                     let nextStr = RPTUtil.getInnerText(nw.node);
+                    //ignore if the string ends with “:”  “,”  “-”  “;” or “.”
+                    passed = !nextStr || reg.test(nextStr.trim());
+                    if (passed) break;
+
                     let wc = RPTUtil.wordCount(nextStr);
                     if (wc > 0) {
                         wordStr.push(nextStr);
