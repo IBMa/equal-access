@@ -36,14 +36,14 @@ export let a_text_purpose: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "Hyperlinks must have a text description of their purpose",
+            "group": "Hyperlinks must have accessible text for their purpose",
             "Pass_0": "Hyperlink has a description of its purpose",
             "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
         }
     },
     rulesets: [{
         id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
-        num: "2.4.4", // num: [ "2.4.4", "x.y.z" ] also allowed
+        num: ["2.4.4", "4.1.2"], // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
     }],
