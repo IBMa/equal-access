@@ -2,7 +2,12 @@
 
 Automated accessibility testing for Node-based test environments.
 
-To get started using the deployed packages, review the [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
+To get started using the deployed packages, download the [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) from NPM.
+
+This tool is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Features
 
@@ -58,7 +63,7 @@ Review the examples of validating automated accessibility testing results agains
 
 ### Requirements
 
-- [Node Version 16](https://nodejs.org/en/download/)
+- [Node Version 18](https://nodejs.org/en/download/)
 
 ### Install
 
@@ -93,7 +98,7 @@ $ npm test
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `node-accessibility-checker`.
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
