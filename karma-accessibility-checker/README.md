@@ -1,6 +1,13 @@
 # karma-accessibility-checker
 
-Karma Plugin for Accessibility Testing
+Automated accessibility testing for the Karma environment.
+
+The deployed [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker) package is available from NPM.
+
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 <!-- START doctoc generated TOC please keep comments here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -11,7 +18,6 @@ Karma Plugin for Accessibility Testing
   - [Requirements](#requirements)
   - [Running Locally](#running-locally)
   - [How to Debug](#how-to-debug)
-  - [How to publish to npm repository](#how-to-publish-to-npm-repository)
   - [How to write Karma Reporter:](#how-to-write-karma-reporter)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -22,7 +28,7 @@ All bugs or issues related to the karma-accessibility-checker code can be create
 
 ## Requirements
 
-* [Node Version 16](https://nodejs.org/en/download/).
+* [Node Version 18](https://nodejs.org/en/download/).
 
 ## Running Locally
 
@@ -80,9 +86,6 @@ $ karma start            # Start Karma and runs tests
     - Browser Debugging:
         Since the rules are loaded into the browser, the rules can actually be debugged directly in the browsers debugged as ace.js is just loaded as a script in the browser. Use the normal steps to debug as you would when debugging rules during unit testing. The only difference is that you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
 
-## How to publish to npm repository
-
-TBD
 
 ## How to write Karma Reporter:
 

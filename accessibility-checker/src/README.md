@@ -9,6 +9,11 @@
 - allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
+The NodeJS module is a component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate the automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
+
 Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
 
 ## Usage
@@ -23,7 +28,7 @@ This module provides some basic command-line utilities that will allow scanning 
 
 ### Programmatic
 
-The following is how to perform an accessibility scan within your test cases and verifying the scan results:
+The following is how to perform an accessibility scan within your test cases and verify the scan results:
 
 ```javascript
 const aChecker = require("accessibility-checker");
@@ -31,7 +36,7 @@ const aChecker = require("accessibility-checker");
 aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
     const report = results.report;
 
-    // Call the aChecker.assertCompliance API which is used to compare the results with baseline object if we can find one that
+    // Call the aChecker.assertCompliance API which is used to compare the results with the baseline object if we can find one that
     // matches the same label which was provided.
     const returnCode = aChecker.assertCompliance(report);
 
@@ -98,13 +103,13 @@ options for `accessibility-checker`. Following is the structure of the `.achecke
 # Default: latest
 # Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids.
 # If "latest", will use the latest rule release
-# If "versioned" (supported in 3.1.61+), will use latest rule release at
+# If "versioned" (supported in 3.1.61+), will use the latest rule release at
 # the time this version of the tool was released 
 ruleArchive: latest
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility
-# i.e. Multiple policies: IBM_Accessibility,WCAG_2_1
+# i.e. Multiple policies: IBM_Accessibility, WCAG_2_1
 # Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
 policies:
     - IBM_Accessibility
@@ -119,7 +124,7 @@ failLevels:
     - violation
     - potentialviolation
 
-# optional - Specify one or many violation levels which should be reported
+# optional - Specify one or many violation levels that should be reported
 #            i.e. If specified violation then in the report it would only contain
 #                 results which are level of violation.
 # i.e. reportLevels: violation
@@ -207,7 +212,7 @@ Execute accessibility scan on provided content. `content` can be in the followin
 - Puppeteer page
 - Playwright page
 
-Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using puppeteer, aChecker.getCompliance expects the Page object.
+Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using Puppeteer, aChecker.getCompliance expects the Page object.
 
 Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
@@ -313,13 +318,13 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
 
 Perform assertion on the scan results. Will perform one of the following assertions based on the condition that is met:
 
-1. In the case a baseline file is provided and available in memory for these scan results, a compare of baseline to `report` will be made. In this case if `report` matches baseline, it returns 0, otherwise returns 1. For this case, assertion is only run on the xpath and ruleId.
+1. In the case a baseline file is provided and available in memory for these scan results, a compare of baseline to `report` will be made. In this case if `report` matches the baseline, it returns 0, otherwise returns 1. For this case, assertion is only run on the xpath and ruleId.
 
 2. In the case **_no baseline_** file is provided for this particular scan, assertion will be made based on the provided `failLevels`. In this case, it returns 2 if there are failures based on failLevels. (violation level matches at least one provided in the `failLevels` object)
 
 `report` - (Object) results for which assertion needs to be run. See above for report format.
 
-- Returns `0` in the case `actualResults` matches baseline or no violations fall into the failLevels
+- Returns `0` in the case `actualResults` matches the baseline or no violations fall into the failLevels
 - Returns `1` in the case `actualResults` **_don't match_** baseline
 - Returns `2` in the case that there is a failure based on failLevels.
 - Returns `-1` in the case that an exception has occurred during scanning and the results reflected that.
@@ -371,7 +376,7 @@ Retrieve the readable stringified representation of the scan results.
 - `report` - (Object) results which need to be stringified.
     Refer to aChecker.assertCompliance APIs for details on properties to include
 
-Returns `String` representation of the scan results which can be logged to console.
+Returns `String` representation of the scan results which can be logged to the console.
 
 ### async aChecker.getConfig()
 
