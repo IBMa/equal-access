@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { getDefinedStyles, getComputedStyle, getPixelsFromStyle } from "../util/CSSUtil";
+import { getComputedStyle, getPixelsFromStyle } from "../util/CSSUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let text_block_heading: Rule = {
@@ -76,10 +76,9 @@ export let text_block_heading: Rule = {
         let emphasizedText = false;
         let nw = new NodeWalker(ruleContext);
 
-        const reg = /[:,;\-\.]$/;
         let passed = false;
         while (!passed &&
-            nw.nextNode() &&
+            nw.nextNode() && 
             nw.node !== ruleContext &&
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
@@ -90,17 +89,14 @@ export let text_block_heading: Rule = {
             let nwName = nw.node.nodeName.toLowerCase();
             if (nw.node.nodeType === 3) {
                 // for text child
-                if (nw.node.nodeValue.trim().length > 0) {
+                if (nw.node.nodeValue.trim().length > 0 && nw.node.parentElement) {
                     // check it's style if the target element contains text, e.g., <p> fake heading</p> 
-                    let style = getDefinedStyles(nw.node.parentElement);
-                    if (style['font-weight'] === 'bold' || style['font-weight'] >= 700
+                    let style = getComputedStyle(nw.node.parentElement);
+                    if (style && (style['font-weight'] === 'bold' || style['font-weight'] >= 700
                         ||  (style['font-size'] && style['font-size'].includes("large")) 
-                        || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont)) {
+                        || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
                         let nextStr = nw.node.nodeValue.trim();
-                        //ignore if the string ends with “:”  “,”  “-”  “;” or “.” 
-                        passed = reg.test(nextStr);
-                        if (passed) break;
-
+                        
                         let wc = RPTUtil.wordCount(nextStr);
                         if (wc > 0) {
                             wordStr.push(nextStr);
@@ -120,10 +116,7 @@ export let text_block_heading: Rule = {
                 if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
                     // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
                     let nextStr = RPTUtil.getInnerText(nw.node);
-                    //ignore if the string ends with “:”  “,”  “-”  “;” or “.”
-                    passed = !nextStr || reg.test(nextStr.trim());
-                    if (passed) break;
-
+                    
                     let wc = RPTUtil.wordCount(nextStr);
                     if (wc > 0) {
                         wordStr.push(nextStr);
@@ -142,7 +135,9 @@ export let text_block_heading: Rule = {
             }
         }
         if (wordsSeen == 0) passed = true;
-
+        //ignore if the string ends with “:”  “,”  “-”  “;” or “.” 
+        if (!passed) passed = /[:,;\-\.]$/.test(wordStr.join(" ").trim());
+        
         if (passed) {
             return null;
         } else {
