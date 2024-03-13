@@ -25,7 +25,7 @@ The browser extensions provide an integrated checking experience and visualizati
 * [Edge Add-on extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
 
 #### Automated testing packages
-* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.
 * [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment.
 * [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment.
 
@@ -110,7 +110,7 @@ Please check the README for each individual tool for its build instructions:
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 

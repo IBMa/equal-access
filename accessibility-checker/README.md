@@ -98,7 +98,7 @@ $ npm test
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `node-accessibility-checker`.
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
