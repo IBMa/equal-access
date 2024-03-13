@@ -908,6 +908,44 @@ export class RPTUtil {
     }
 
     /**
+     * WAI-ARIA’s role attribute may have a list of values, but only the first valid and supported WAI-ARIA role is used
+     * https://www.w3.org/TR/wai-aria-implementation/#mapping_role_table
+     * This function is responsible for retrieving the resoled role for an element.
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return string - resolved role for the element:
+     *       explicit role: resoled from the list of values
+     *       implicit role: if not explicitely specified, or none of the specified role values is allowed for the element
+     *       null: if none of the specified role values is allowed for the element, neither implicit role exists
+     *       
+     * @memberOf RPTUtil
+     */
+    public static getResolvedRole(elem: Element) : string {
+        if (!elem) return null;
+        let role = getCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", null);
+        if (role === null) {
+            const roles = RPTUtil.getUserDefinedRoles(elem);
+            let tagProperty = RPTUtil.getElementAriaProperty(elem);
+            let allowedRoles = RPTUtil.getAllowedAriaRoles(elem, tagProperty);
+            if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
+                for (let i=0; i < roles.length; i++) {
+                    if (allowedRoles.includes(roles[i])) {
+                        role = roles[i];
+                        break;
+                    }    
+                } 
+            }
+            
+            if (role === null) {
+                const implicitRole = RPTUtil.getImplicitRole(elem);
+                role = implicitRole && implicitRole.length > 0 ? implicitRole[0] : undefined;
+            }
+            setCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", role);
+        }   
+        return role !== undefined ? role : null;
+    }
+
+    /**
      * This function is responsible for retrieving user defined element's roles from dom.
      * @parm {HTMLElement} ele - element for which to find role.
      *
@@ -1571,7 +1609,56 @@ export class RPTUtil {
             walkNode = DOMWalker.parentNode(walkNode);
         }
         return walkNode;
-    }   
+    } 
+    
+    /**
+     * return the ancestor of the given element and roles.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {array} roles - the role names to search for
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} walkNode - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAncestorWithRoles(element, roleNames) {
+        if (!element || !roleNames || !roleNames.length || roleNames.length === 0) return null;
+        let walkNode = element;
+        while (walkNode !== null) {
+            let role = RPTUtil.getResolvedRole(walkNode);
+            if (role !== null && roleNames.includes(role))
+                return walkNode;
+            walkNode = DOMWalker.parentNode(walkNode);
+        }
+        return null;
+    } 
+
+    /**
+     * return the roles with given role type.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {array} roleTyples - role types, such as 'widget', 'structure' etc.
+     *
+     * @return {array} roles - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getRolesWithTypes(element, types: string[]) {
+        if (!element || !types || !types.length || types.length ===0) return null;
+        
+        let roles = getCache(element.ownerDocument, "roles_with_given_types", null);
+        if (!roles || roles.length === 0) {
+            roles = [];
+            Object.entries(ARIADefinitions.designPatterns).forEach(([key, value]) => {
+                if (types.includes(value.roleType))
+                    roles.push(key);   
+            });
+            setCache(element.ownerDocument, "roles_with_given_types", roles);
+        } 
+        return roles;
+    } 
+
     /**
      * return the ancestor with the given style properties.
      *
