@@ -36,7 +36,7 @@ export let a_text_purpose: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "Hyperlinks must have accessible text for their purpose",
+            "group": "Hyperlinks must have an accessible name for their purpose",
             "Pass_0": "Hyperlink has a description of its purpose",
             "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
         }
