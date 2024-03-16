@@ -869,6 +869,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                 let url = (await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!;
                                 ReportTreeGrid.bgcontroller.setIgnore(url, this.state.checkedIssues, ignoreAction !== "Show");
                                 this.setState({checkedIssues: []});
+                                let report = await ReportTreeGrid.devtoolsController.getReport();
+                                await ReportTreeGrid.devtoolsController.setReport(report);
                                 this.props.onFilterToolbar(true);
                             }}
                         >{ignoreAction}</TableBatchAction>
