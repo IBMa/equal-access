@@ -21,28 +21,28 @@ export let input_autocomplete_valid: Rule = {
     context: "dom:input[autocomplete], dom:textarea[autocomplete], dom:select[autocomplete]",
     refactor: {
         "WCAG21_Input_Autocomplete": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2",
-            "Fail_attribute_incorrect": "Fail_attribute_incorrect"
+            "Pass_0": "pass",
+            "Fail_1": "fail_inappropriate",
+            "Fail_2": "fail_invalid",
+            "Fail_attribute_incorrect": "fail_incorrect"
         }
     },
     help: {
         "en-US": {
             "group": "input_autocomplete_valid.html",
-            "Pass_0": "input_autocomplete_valid.html",
-            "Fail_1": "input_autocomplete_valid.html",
-            "Fail_2": "input_autocomplete_valid.html",
-            "Fail_attribute_incorrect": "input_autocomplete_valid.html"
+            "pass": "input_autocomplete_valid.html",
+            "fail_inappropriate": "input_autocomplete_valid.html",
+            "fail_invalid": "input_autocomplete_valid.html",
+            "fail_incorrect": "input_autocomplete_valid.html"
         }
     },
     messages: {
         "en-US": {
             "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
-            "Fail_2": "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
-            "Fail_attribute_incorrect": "The 'autocomplete' attribute has an incorrect value"
+            "pass": "The 'autocomplete' attribute's token(s) is appropriate for the input form field",
+            "fail_inappropriate": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "fail_invalid": "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+            "fail_incorrect": "The 'autocomplete' attribute has an incorrect value"
         }
     },
     rulesets: [{
@@ -54,18 +54,24 @@ export let input_autocomplete_valid: Rule = {
     
     act: [{
         "73f2c2": {
-            "Pass_0": "pass",
-            "Fail_1": "fail",
-            "Fail_2": "pass",
-            "Fail_attribute_incorrect": "fail"
+            "pass": "pass",
+            "fail_inappropriate": "fail",
+            "fail_invalid": "pass",
+            "fail_incorrect": "fail"
         }
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+            return null;
+
         const cache = {
             "tokensOnOff": ["on", "off"],
             "tokenOptionalSection": "section-",
             "tokensOptionalPurpose": ["shipping", "billing"],
-            "tokensMandatoryGroup1_password": ["new-password", "current-password", "one-time-code"],
+            "tokensMandatoryGroup1_password": ["new-password", "current-password", "one-time-code", "webauthn"],
             "tokensMandatoryGroup1_multiline": ["street-address"],
             "tokensMandatoryGroup1_month": ["cc-exp"],
             "tokensMandatoryGroup1_numeric": ["cc-exp-month",
@@ -180,7 +186,6 @@ export let input_autocomplete_valid: Rule = {
         for (var key in cache)
             valid_values=valid_values.concat(cache[key]);
         
-        const ruleContext = context["dom"].node as Element;
         let foundMandatoryToken = false;
         let foundRecognizedToken = true;
         let nodeName = ruleContext.nodeName.toLowerCase();
@@ -199,7 +204,7 @@ export let input_autocomplete_valid: Rule = {
         }
         
         if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
-            return RuleFail("Fail_attribute_incorrect");
+            return RuleFail("fail_incorrect");
         
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
@@ -335,11 +340,11 @@ export let input_autocomplete_valid: Rule = {
 
         // Only pass if we have seen either of the mandatory groups and all tokens have been consumed
         if (foundMandatoryToken && tokens.length === currIndex) {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         } else if (foundRecognizedToken && tokens.length === currRecognizedIndex) {
-            return RuleFail("Fail_2");
+            return RuleFail("fail_incorrect");
         } else {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_inappropriate");
         }
     }
 }

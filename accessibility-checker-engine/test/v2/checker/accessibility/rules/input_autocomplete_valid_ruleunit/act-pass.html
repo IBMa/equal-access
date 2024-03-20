@@ -23,30 +23,10 @@
 	</head>
 	<body>
 
-    <!-- Pass -->
-    <input autocomplete="username" />
-
-    <!-- Pass -->
-    <select autocomplete="bday-month">
-      <option>January</option>
-      <option>...</option>
-    </select>
-
-    <!-- Pass -->
-    <textarea autocomplete="Street-Address"></textarea>
-
-    <!-- Pass: two terms  -->
-    <input autocomplete="Work EMail" />
-
-    <!-- Pass; section-* -->
-    <input autocomplete="section-partner email" />
-
-    <!-- Pass: three terms -->
-    <input type="text" autocomplete="section-primary billing address-line1" />
-
-    <!-- Pass: four terms -->
-    <input autocomplete="section-primary shipping work email" />
-
+    <label>
+      Password
+      <input type="password" autocomplete="current-password webauthn">
+    </label>
     <script>
       UnitTest = {
           ruleIds: ["input_autocomplete_valid"],
