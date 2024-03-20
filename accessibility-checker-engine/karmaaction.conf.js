@@ -53,7 +53,9 @@ module.exports = (config) => {
         ],
         exclude: [
             //Disable  - due to a defect that needs to be addressed regarding visibility.
-            'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html'
+            'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html',
+            // disable because the rule is turned off
+            'test/v2/checker/accessibility/rules/style_before_after_review_ruleunit/*'
         ],
 
         frameworks: ['jasmine'],
