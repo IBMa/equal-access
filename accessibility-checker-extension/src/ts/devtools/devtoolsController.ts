@@ -83,6 +83,9 @@ export class DevtoolsController extends Controller {
         });
     }
 
+     /**
+     * Set stored reports
+     */
     public async setStoredReportsMeta(updateMetaArr: IStoredReportMeta[]) : Promise<void> {
         return await this.hook("setStoredReportsMeta", updateMetaArr, async () => {
             if (updateMetaArr.length === 0) {
@@ -177,6 +180,65 @@ export class DevtoolsController extends Controller {
 
     private scanCounter = 1;
 
+    valueMap: { [key: string]: { [key2: string]: string } } = {
+        "VIOLATION": {
+            "POTENTIAL": "Needs review",
+            "FAIL": "Violation",
+            "PASS": "Pass",
+            "MANUAL": "Needs review"
+        },
+        "RECOMMENDATION": {
+            "POTENTIAL": "Recommendation",
+            "FAIL": "Recommendation",
+            "PASS": "Pass",
+            "MANUAL": "Recommendation"
+        },
+        "INFORMATION": {
+            "POTENTIAL": "Needs review",
+            "FAIL": "Violation",
+            "PASS": "Pass",
+            "MANUAL": "Recommendation"
+        }
+    };
+
+    initCount() {
+        return {
+            "Violation": 0,
+            "Needs review": 0,
+            "Recommendation": 0,
+            "Hidden": 0,
+            "Pass": 0,
+            "total": 0,
+        }
+    }
+
+    async getCountsWithHidden (reportCounts: IReport["counts"], ignored: IIssue[]) {
+        let counts = this.initCount(); // setup counts
+        // populate initial counts
+        counts.Violation = reportCounts.Violation;
+        counts["Needs review"] = reportCounts["Needs review"];
+        counts.Recommendation = reportCounts.Recommendation;
+        counts.Hidden = ignored.length;
+        counts.Pass = reportCounts.Pass;
+
+        // correct issue type counts to take into account the hidden issues
+        if (ignored.length > 0) { // if we have hidden
+            for (const ignoredIssue of ignored) {
+                if ("Violation" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts.Violation--;
+                }
+                if ("Needs review" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts["Needs review"]--;
+                }
+                if ("Recommendation" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
+                    counts.Recommendation--;
+                }
+            }
+        }
+        counts.total = counts.Violation + counts["Needs review"] + counts.Recommendation;
+        return counts;
+    }
+
     /**
      * Set report 
      */
@@ -187,6 +249,8 @@ export class DevtoolsController extends Controller {
             if (report) {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
+                let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!);
+                let newCounts = await this.getCountsWithHidden(report.counts, ignored);
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
                     id: devtoolsState!.storedReports.length+"",
@@ -200,13 +264,14 @@ export class DevtoolsController extends Controller {
                     storedScanData: MultiScanData.issues_sheet_rows({
                         settings: settings,
                         report: report,
+                        ignored: ignored,
                         pageTitle: tabInfo.title!,
                         pageURL: tabInfo.url!,
                         timestamp: now+"",
                         rulesets: await bgController.getRulesets(tabId!)
                     }),
                     testedUniqueElements: report.testedUniqueElements,
-                    counts: report.counts
+                    counts: newCounts
                 };
                 if (devtoolsState?.storeReports) {
                     devtoolsState.storedReports.push(devtoolsState.lastReportMeta);
@@ -534,6 +599,7 @@ export class DevtoolsController extends Controller {
                 this.xlsxReportHandler("current");
             }
         });
+        
     }
 
     private async htmlReportHandler() {

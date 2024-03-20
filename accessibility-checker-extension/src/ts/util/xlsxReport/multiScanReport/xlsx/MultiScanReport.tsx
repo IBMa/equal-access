@@ -77,11 +77,13 @@ export default class MultiScanReport {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
+        let hidden = 0;
 
         for (const storedScan of storedScans) {
             violations += (storedScan.counts.Violation || 0);
             needsReviews += (storedScan.counts["Needs review"] || 0);
             recommendations += (storedScan.counts.Recommendation || 0);
+            hidden += (storedScan.counts.Hidden || 0);
         }
         let totalIssues = violations + needsReviews + recommendations;
 
@@ -89,7 +91,7 @@ export default class MultiScanReport {
         const worksheet = this.workbook.addWorksheet("Overview");
 
         // Report Title
-        worksheet.mergeCells('A1', "D1");
+        worksheet.mergeCells('A1', "E1");
         const titleRow = worksheet.getRow(1);
         titleRow.height = 27;
 
@@ -105,9 +107,10 @@ export default class MultiScanReport {
             { col: 'B', width: 15.9 },
             { col: 'C', width: 16.23 },
             { col: 'D', width: 19.4 },
+            { col: 'E', width: 15.9 },
         ]
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
@@ -162,7 +165,7 @@ export default class MultiScanReport {
         }
 
         // Summary Title
-        worksheet.mergeCells('A11', "D11");
+        worksheet.mergeCells('A11', "E11");
 
         const summaryRow = worksheet.getRow(11);
         summaryRow.height = 27;
@@ -180,12 +183,13 @@ export default class MultiScanReport {
         const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
         const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
         const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
+        const cellE12 = worksheet.getCell('E12'); cellE12.value = "Hidden";
 
-        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12];
+        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12, cellE12];
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             cellObjects1[i].alignment = { vertical: "middle", horizontal: "center" };
-            if (i == 1 || i == 2 || i == 3) {
+            if (i == 1 || i == 2 || i == 3 || i == 4) {
                 cellObjects1[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             } else {
                 cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
@@ -204,6 +208,7 @@ export default class MultiScanReport {
         cellB12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
         cellC12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
         cellD12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        cellE12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
 
 
         // Scans info Values
@@ -213,10 +218,11 @@ export default class MultiScanReport {
         const cellB13 = worksheet.getCell('B13'); cellB13.value = violations;
         const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReviews;
         const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendations;
+        const cellE13 = worksheet.getCell('E13'); cellE13.value = hidden;
 
-        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13];
+        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13, cellE13];
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             cellObjects2[i].alignment = { vertical: "middle", horizontal: "center" };
             cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -246,9 +252,10 @@ export default class MultiScanReport {
             { col: 'G', width: 17.17 },
             { col: 'H', width: 17.17 },
             { col: 'I', width: 17.17 },
+            { col: 'J', width: 17.17 },
         ]
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
@@ -274,14 +281,15 @@ export default class MultiScanReport {
         const cellE1 = worksheet.getCell('E1'); cellE1.value = "Violations";
         const cellF1 = worksheet.getCell('F1'); cellF1.value = "Needs review";
         const cellG1 = worksheet.getCell('G1'); cellG1.value = "Recommendations";
-        const cellH1 = worksheet.getCell('H1'); cellH1.value = "% elements without violations";
-        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations or items to review";
+        const cellH1 = worksheet.getCell('H1'); cellH1.value = "Hidden";
+        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations";
+        const cellJ1 = worksheet.getCell('J1'); cellJ1.value = "% elements without violations or items to review";
 
-        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1];
+        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1, cellJ1];
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            if (i == 0 || i == 1 || i == 2) {
+            if (i == 0 || i == 1 || i == 2 || i == 3) {
                 cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             } else {
                 cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
@@ -299,8 +307,9 @@ export default class MultiScanReport {
         cellE1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
         cellF1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
         cellG1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
         cellI1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        cellJ1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
 
 
         // if current scan use last scan, if 
@@ -330,6 +339,7 @@ export default class MultiScanReport {
                 storedScan.counts["Violation"],
                 storedScan.counts["Needs review"],
                 storedScan.counts["Recommendation"],
+                storedScan.counts["Hidden"],
                 perc(testedElements-violationUniqueElements, testedElements),
                 perc(testedElements-violationPlusPotentialUniqueElements, testedElements)
             ]);
@@ -338,7 +348,7 @@ export default class MultiScanReport {
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
             }
-            for (let i = 5; i < 10; i++) {
+            for (let i = 5; i < 11; i++) {
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
                 // row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -354,91 +364,138 @@ export default class MultiScanReport {
 
     private createIssueSummarySheet(storedScans: IStoredReportMeta[]) {
 
-        let violations = 0;
-        let needsReviews = 0;
-        let recommendations = 0;
-        let totalIssues = 0;
+        // let violations = 0;
+        // let needsReviews = 0;
+        // let recommendations = 0;
+        // let hidden = 0;
+        // let totalIssues = 0;
 
-        for (const scan of storedScans) {
-            violations += scan.counts["Violation"];
-            needsReviews += scan.counts["Needs review"];
-            recommendations += scan.counts.Recommendation;
-        }
-        totalIssues = violations + needsReviews + recommendations;
+        // for (const scan of storedScans) {
+        //     violations += scan.counts["Violation"];
+        //     needsReviews += scan.counts["Needs review"];
+        //     recommendations += scan.counts.Recommendation;
+        //     hidden += scan.counts.Hidden;
+        // }
+        // totalIssues = violations + needsReviews + recommendations;
 
         // counts
-        let level1Counts = [0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations
-        let level2Counts = [0, 0, 0, 0];
-        let level3Counts = [0, 0, 0, 0];
-        let level4Counts = [0, 0, 0, 0];
-        let level1V = []; let level2V = []; let level3V = []; let level4V = [];
-        let level1NR = []; let level2NR = []; let level3NR = []; let level4NR = [];
-        let level1R = []; let level2R = []; let level3R = []; let level4R = [];
+        let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
+        let level2Counts = [0, 0, 0, 0, 0];
+        let level3Counts = [0, 0, 0, 0, 0];
+        let level4Counts = [0, 0, 0, 0, 0];
+        let level1V: {issueDef:string, hidden:boolean}[] = []; let level2V: {issueDef:string, hidden:boolean}[] = []; let level3V: {issueDef:string, hidden:boolean}[] = []; let level4V: {issueDef:string, hidden:boolean}[] = [];
+        let level1NR: {issueDef:string, hidden:boolean}[] = []; let level2NR: {issueDef:string, hidden:boolean}[] = []; let level3NR: {issueDef:string, hidden:boolean}[] = []; let level4NR: {issueDef:string, hidden:boolean}[] = [];
+        let level1R: {issueDef:string, hidden:boolean}[] = []; let level2R: {issueDef:string, hidden:boolean}[] = []; let level3R: {issueDef:string, hidden:boolean}[] = []; let level4R: {issueDef:string, hidden:boolean}[] = [];
         for (const storedScan of storedScans) {
             const myStoredData = storedScan.storedScanData;
             for (let i = 0; i < myStoredData.length; i++) { // for each issue row
                 if (myStoredData[i][5] == 1) { // if level 1
-                    level1Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level1Counts[0]++;  // Level 1 issue count
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level1Counts[1]++;
-                        level1V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[1]++;
+                        }
+                        level1V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level1Counts[2]++;
-                        level1NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[2]++;
+                        }
+                        level1NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level1Counts[3]++;
-                        level1R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level1Counts[3]++;
+                        }
+                        level1R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
+                    }
+                    if (myStoredData[i][14] === true) { // we have a level 1 hidden
+                        level1Counts[4]++;
                     }
                 }
                 if (myStoredData[i][5] == 2) { // if level 2
-                    level2Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level2Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level2Counts[1]++;
-                        level2V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[1]++;
+                        }
+                        level2V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level2Counts[2]++;
-                        level2NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[2]++;
+                        }
+                        level2NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level2Counts[3]++;
-                        level2R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level2Counts[3]++;
+                        }
+                        level2R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
+                    }
+                    if (myStoredData[i][14] === true) { // we have a level 2 hidden
+                        level2Counts[4]++;
                     }
                 }
                 if (myStoredData[i][5] == 3) { // if level 3
-                    level3Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level3Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level3Counts[1]++;
-                        level3V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[1]++;
+                        }
+                        level3V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level3Counts[2]++;
-                        level3NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[2]++;
+                        }
+                        level3NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level3Counts[3]++;
-                        level3R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level3Counts[3]++;
+                        }
+                        level3R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
+                    }
+                    if (myStoredData[i][14] === true) { // we have a level 3 hidden
+                        level3Counts[4]++;
                     }
                 }
                 if (myStoredData[i][5] == 4) { // if level 4
-                    level4Counts[0]++;
+                    if (!myStoredData[i][14]) {
+                        level4Counts[0]++;
+                    }
                     if (myStoredData[i][4] === "Violation") {
-                        level4Counts[1]++;
-                        level4V.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[1]++;
+                        }
+                        level4V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Needs review") {
-                        level4Counts[2]++;
-                        level4NR.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[2]++;
+                        }
+                        level4NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
                     }
                     if (myStoredData[i][4] === "Recommendation") {
-                        level4Counts[3]++;
-                        level4R.push(myStoredData[i][9]);
+                        if (!myStoredData[i][14]) {
+                            level4Counts[3]++;
+                        }
+                        level4R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
+                    }
+                    if (myStoredData[i][14] === true) { // we have a level 4 hidden
+                        level4Counts[4]++;
                     }
                 }
             }
         }
+        
         let level1VrowValues = MultiScanReport.countDuplicatesInArray(level1V); // note this returns an object
         let level1NRrowValues = MultiScanReport.countDuplicatesInArray(level1NR);
         let level1RrowValues = MultiScanReport.countDuplicatesInArray(level1R);
@@ -455,6 +512,9 @@ export default class MultiScanReport {
         let level4NRrowValues = MultiScanReport.countDuplicatesInArray(level4NR);
         let level4RrowValues = MultiScanReport.countDuplicatesInArray(level4R);
 
+        let totalIssues = level1Counts[0]+level2Counts[0]+level3Counts[0]+level4Counts[0];
+        let hidden = level1Counts[4]+level2Counts[4]+level3Counts[4]+level4Counts[4];
+
         const worksheet = this.workbook.addWorksheet("Issue summary");
 
         // Approach:
@@ -464,7 +524,7 @@ export default class MultiScanReport {
         // 4. build the rows
 
         // build Issue summary title
-        worksheet.mergeCells('A1', "B1");
+        worksheet.mergeCells('A1', 'B1', 'C1');
 
         const titleRow = worksheet.getRow(1);
         titleRow.height = 27; // actual is 36
@@ -474,33 +534,54 @@ export default class MultiScanReport {
         cellA1.alignment = { vertical: "middle", horizontal: "left" };
         cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        const cellC1 = worksheet.getCell('C1');
+        cellC1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
 
         const colWidthData = [
             { col: 'A', width: 155.51 }, // note .84 added to actual width
             { col: 'B', width: 21.16 },
+            { col: 'C', width: 18.00 },
         ]
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
         }
 
         // build Description title
-        worksheet.mergeCells('A2', "B2");
+        // worksheet.mergeCells('A2', 'B2');
 
         const descriptionRow = worksheet.getRow(2);
         descriptionRow.height = 20.25; // actual is 27
 
         const cellA2 = worksheet.getCell("A2");
-        cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
+        cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into four levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
         cellA2.alignment = { vertical: "middle", horizontal: "left" };
         cellA2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        // cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
+        cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
 
+        const cellB2 = worksheet.getCell("B2");
+        cellB2.value = "Number of issues";
+        cellB2.alignment = { vertical: "middle", horizontal: "right" };
+        cellB2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellB2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3E3E3' } };
+        cellB2.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
-
-
-        // build Total issues found: title
-        // worksheet.mergeCells('A3', "B3");
+        const cellC2 = worksheet.getCell("C2");
+        cellC2.value = "Hidden issues";
+        cellC2.alignment = { vertical: "middle", horizontal: "center" };
+        cellC2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellC2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3E3E3' } };
+        cellC2.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         const totalIssuesRow = worksheet.getRow(3);
         totalIssuesRow.height = 27; // actual is 36
@@ -517,6 +598,18 @@ export default class MultiScanReport {
         cellB3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellB3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
 
+        const cellC3 = worksheet.getCell("C3");
+        cellC3.value = hidden;
+        cellC3.alignment = { vertical: "middle", horizontal: "center" };
+        cellC3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
+        cellC3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        cellC3.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // build Number of issues title
         const numberOfIssuesRow = worksheet.getRow(4);
         numberOfIssuesRow.height = 20.25; // actual is 27
@@ -532,16 +625,9 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
         };
 
-        const cellB4 = worksheet.getCell("B4");
-        cellB4.value = "Number of issues";
-        cellB4.alignment = { vertical: "middle", horizontal: "right" };
-        cellB4.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellB4.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
+        
+
+        
 
         /////////////////////////////
         // build Level 1 title
@@ -561,6 +647,18 @@ export default class MultiScanReport {
         cellB5.alignment = { vertical: "middle", horizontal: "right" };
         cellB5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellB5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+
+        const cellC5 = worksheet.getCell("C5");
+        cellC5.value = level1Counts[4]; // Level 1 hidden counts
+        cellC5.alignment = { vertical: "middle", horizontal: "center" };
+        cellC5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
+        cellC5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        cellC5.border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         //       Level 1 Violation title
         const level1ViolationRow = worksheet.getRow(6);
@@ -590,19 +688,39 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 1 violations
+        let level1HiddenVCounts = 0;
+        for (const property in level1VrowValues) {
+            level1HiddenVCounts += level1VrowValues[property][1];
+        }
+        
+        const cellC6 = worksheet.getCell("C6");
+        cellC6.value = level1HiddenVCounts; // hidden level 1 violations
+        cellC6.alignment = { vertical: "middle", horizontal: "center" };
+        cellC6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        cellC6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
+        level1ViolationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 1 Violation Rows
 
         // build rows
         let rowArray = [];
 
         for (const property in level1VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1VrowValues[property][0]}`), parseInt(`${level1VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
+       
 
         // sort array according to count
         rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
+        
 
         // add array of rows
 
@@ -612,9 +730,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            // row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            // row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -622,6 +739,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -656,13 +779,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 1 needs review
+        let level1HiddenNRCounts = 0;
+        for (const property in level1NRrowValues) {
+            level1HiddenNRCounts += level1NRrowValues[property][1];
+        }
+
+        level1NeedsReviewRow.getCell(3).value = level1HiddenNRCounts; // hidden level 1 needs review
+        level1NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level1NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level1NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
+        level1NeedsReviewRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 1 Needs review Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level1NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1NRrowValues[property][0]}`), parseInt(`${level1NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -680,9 +820,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -690,6 +829,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -723,6 +868,23 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 1 recommendations
+        let level1HiddenRCounts = 0;
+        for (const property in level1RrowValues) {
+            level1HiddenRCounts += level1RrowValues[property][1];
+        }
+
+        level1RecommendationRow.getCell(3).value = level1HiddenRCounts; // hidden level 1 recommendations
+        level1RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level1RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+        level1RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        level1RecommendationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
 
         // Level 1 Recommendation Rows
 
@@ -730,7 +892,7 @@ export default class MultiScanReport {
         rowArray = [];
 
         for (const property in level1RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level1RrowValues[property][0]}`), parseInt(`${level1RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -748,9 +910,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -758,6 +919,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -777,11 +944,23 @@ export default class MultiScanReport {
         level2Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
         level2Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
+       
         level2Row.getCell(2).value = level2Counts[0]; // total Level 2 issues
         level2Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level2Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level2Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        
+        level2Row.getCell(3).value = level2Counts[4]; // Level 2 hidden counts
+        level2Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level2Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
+        level2Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        level2Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
 
         //       Level 2 Violation title
         const level2ViolationRow = worksheet.addRow(["", 0]);
@@ -809,13 +988,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 2 violations
+        let level2HiddenVCounts = 0;
+        for (const property in level2VrowValues) {
+            level2HiddenVCounts += level2VrowValues[property][1];
+        }
+
+        level2ViolationRow.getCell(3).value = level2HiddenVCounts; // hidden level 2 violations
+        level2ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level2ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level2ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
+        level2ViolationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 2 Violation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level2VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2VrowValues[property][0]}`), parseInt(`${level2VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -831,9 +1027,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -841,6 +1036,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -875,13 +1076,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 2 needs review
+        let level2HiddenNRCounts = 0;
+        for (const property in level2NRrowValues) {
+            level2HiddenNRCounts += level2NRrowValues[property][1];
+        }
+
+        level2NeedsReviewRow.getCell(3).value = level2HiddenNRCounts; // hidden level 2 needs review
+        level2NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level2NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level2NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
+        level2NeedsReviewRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 2 Needs review Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level2NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2NRrowValues[property][0]}`), parseInt(`${level2NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -899,9 +1117,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -909,6 +1126,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -942,13 +1165,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 2 recommendations
+        let level2HiddenRCounts = 0;
+        for (const property in level2RrowValues) {
+            level2HiddenRCounts += level2RrowValues[property][1];
+        }
+
+        level2RecommendationRow.getCell(3).value = level2HiddenRCounts; // hidden level 2 recommendations
+        level2RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level2RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+        level2RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        level2RecommendationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 2 Recommendation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level2RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level2RrowValues[property][0]}`), parseInt(`${level2RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -966,6 +1206,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -976,6 +1217,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -999,6 +1246,17 @@ export default class MultiScanReport {
         level3Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level3Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level3Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+
+        level3Row.getCell(3).value = level3Counts[4]; // Level 1 hidden counts
+        level3Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level3Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
+        level3Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        level3Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         //       Level 3 Violation title
         const level3ViolationRow = worksheet.addRow(["", 0]);
@@ -1026,13 +1284,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 3 violations
+        let level3HiddenVCounts = 0;
+        for (const property in level3VrowValues) {
+            level3HiddenVCounts += level3VrowValues[property][1];
+        }
+
+        level3ViolationRow.getCell(3).value = level3HiddenVCounts; // hidden level 3 violations
+        level3ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level3ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+        level3ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
+        level3ViolationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 3 Violation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level3VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3VrowValues[property][0]}`), parseInt(`${level3VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1048,9 +1323,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1058,6 +1332,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1092,13 +1372,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 3 needs review
+        let level3HiddenNRCounts = 0;
+        for (const property in level3NRrowValues) {
+            level3HiddenNRCounts += level3NRrowValues[property][1];
+        }
+
+        level3NeedsReviewRow.getCell(3).value = level3HiddenNRCounts; // hidden level 3 needs review
+        level3NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level3NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level3NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
+        level3NeedsReviewRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 3 Needs review Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level3NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3NRrowValues[property][0]}`), parseInt(`${level3NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1116,9 +1413,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1126,6 +1422,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1159,13 +1461,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 3 recommendations
+        let level3HiddenRCounts = 0;
+        for (const property in level3RrowValues) {
+            level3HiddenRCounts += level3RrowValues[property][1];
+        }
+
+        level3RecommendationRow.getCell(3).value = level3HiddenRCounts; // hidden level 3 recommendations
+        level3RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level3RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+        level3RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        level3RecommendationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 3 Recommendation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level3RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level3RrowValues[property][0]}`), parseInt(`${level3RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1183,9 +1502,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1193,6 +1511,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1217,6 +1541,17 @@ export default class MultiScanReport {
         level4Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
         level4Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         level4Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+
+        level4Row.getCell(3).value = level4Counts[4]; // Level 1 hidden counts
+        level4Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level4Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
+        level4Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        level4Row.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
 
         //       Level 4 Violation title
         const level4ViolationRow = worksheet.addRow(["", 0]);
@@ -1244,13 +1579,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 4 violations
+        let level4HiddenVCounts = 0;
+        for (const property in level4VrowValues) {
+            level4HiddenVCounts += level4VrowValues[property][1];
+        }
+
+        level4ViolationRow.getCell(3).value = level4HiddenVCounts; // total level 4 violations
+        level4ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level4ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level4ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
+        level4ViolationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 4 Violation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level4VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4VrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4VrowValues[property][0]}`), parseInt(`${level4VrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1266,9 +1618,8 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1276,6 +1627,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1310,13 +1667,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 4 needs review
+        let level4HiddenNRCounts = 0;
+        for (const property in level4NRrowValues) {
+            level4HiddenNRCounts += level4NRrowValues[property][1];
+        }
+
+        level4NeedsReviewRow.getCell(3).value = level4HiddenNRCounts; // total level 4 needs review
+        level4NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level4NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
+        level4NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
+        level4NeedsReviewRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 4 Needs review Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level4NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4NRrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4NRrowValues[property][0]}`), parseInt(`${level4NRrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1334,6 +1708,7 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
             //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -1344,6 +1719,12 @@ export default class MultiScanReport {
                 // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1377,13 +1758,30 @@ export default class MultiScanReport {
             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
         };
 
+        // hidden counts for level 4 recommendations
+        let level4HiddenRCounts = 0;
+        for (const property in level4RrowValues) {
+            level4HiddenRCounts += level4RrowValues[property][1];
+        }
+
+        level4RecommendationRow.getCell(3).value = level4HiddenRCounts; // total level 4 recommendations
+        level4RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
+        level4RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
+        level4RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
+        level4RecommendationRow.getCell(3).border = {
+            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        };
+
         // Level 4 Recommendation Rows
 
         // build rows
         rowArray = [];
 
         for (const property in level4RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4RrowValues[property]}`)
+            let row = ["     " + `${property}`, parseInt(`${level4RrowValues[property][0]}`), parseInt(`${level4RrowValues[property][1]}`)
             ];
             rowArray.push(row);
         }
@@ -1401,16 +1799,20 @@ export default class MultiScanReport {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
             row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
+            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
             row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
             row.getCell(1).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
             };
             row.getCell(2).border = {
+                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+
+                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
+                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+            };
+            row.getCell(3).border = {
                 top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
                 // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
                 bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
@@ -1429,7 +1831,7 @@ export default class MultiScanReport {
             const myStoredData = storedScan.storedScanData;
             for (let i = 0; i < myStoredData.length; i++) {
                 let row = [myStoredData[i][0], myStoredData[i][1], storedScan.label,
-                myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
+                myStoredData[i][3], myStoredData[i][14] ? "Hidden:"+myStoredData[i][4] : myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
                 myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8],
                 myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
                 myStoredData[i][12], myStoredData[i][13]
@@ -1448,7 +1850,7 @@ export default class MultiScanReport {
             { col: 'B', width: 20.5, alignment: { vertical: "middle", horizontal: "left" } },
             { col: 'C', width: 21.0, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'D', width: 18.5, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'E', width: 17.0, alignment: { vertical: "middle", horizontal: "center" } },
+            { col: 'E', width: 23.0, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'F', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
             { col: 'G', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
             { col: 'H', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
@@ -1594,6 +1996,7 @@ export default class MultiScanReport {
             { key1: 'Violations', key2: 'Accessibility failures that need to be corrected.' },
             { key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.' },
             { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
+            { key1: 'Hidden', key2: 'Issues the user has selected to be hidden from view and subtracted from the issue counts.' },
             { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
             { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
             { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
@@ -1671,13 +2074,26 @@ export default class MultiScanReport {
 
     }
 
-    private static countDuplicatesInArray(array: string[]) {
-        let count : {
+    private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
+        let dupCount : {
             [key: string]: number
         } = {};
+        let hidCount : {
+            [key: string]: number
+        } = {};
+        let finalCount: {
+            [key: string]: [number,number]
+        } = {};
         for (const item of array) {
-            count[item] = (count[item] || 0) + 1;
+            if (!item.hidden) {
+                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 1;
+                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 0;
+            } else {
+                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 0;
+                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 1;
+            }
+            finalCount[item.issueDef] = [dupCount[item.issueDef], hidCount[item.issueDef]]
         }
-        return count;
-    }   
+        return finalCount;
+    }    
 }
