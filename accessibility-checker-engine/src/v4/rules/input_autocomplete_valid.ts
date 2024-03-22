@@ -64,14 +64,22 @@ export let input_autocomplete_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         //skip the check if the element is hidden or disabled
-        if (RPTUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
+        }
+        
+        let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
+
+        let tokens = autocompleteAttr.split(/\s+/);
+        if (tokens.length === 0 || autocompleteAttr.length === 0) {
+            return null;
+        }
 
         const cache = {
             "tokensOnOff": ["on", "off"],
             "tokenOptionalSection": "section-",
             "tokensOptionalPurpose": ["shipping", "billing"],
-            "tokensMandatoryGroup1_password": ["new-password", "current-password", "one-time-code", "webauthn"],
+            "tokensMandatoryGroup1_password": ["new-password", "current-password", "one-time-code"],
             "tokensMandatoryGroup1_multiline": ["street-address"],
             "tokensMandatoryGroup1_month": ["cc-exp"],
             "tokensMandatoryGroup1_numeric": ["cc-exp-month",
@@ -180,7 +188,8 @@ export let input_autocomplete_valid: Rule = {
                 "tel-local-suffix",
                 "tel-extension",
                 "email",
-                "impp"]
+                "impp"],
+            "tokensOptionGroup1_webauthn": ["webauthn"]    
         }
         let valid_values = [];
         for (var key in cache)
@@ -189,31 +198,24 @@ export let input_autocomplete_valid: Rule = {
         let foundMandatoryToken = false;
         let foundRecognizedToken = true;
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (!VisUtil.isNodeVisible(ruleContext) ||
-            RPTUtil.isNodeDisabled(ruleContext)) {
-            return null;
-        }
-
-        let type = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").trim().toLowerCase() : "text";
-
-        let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
-
-        let tokens = autocompleteAttr.split(/\s+/);
-        if (tokens.length === 0 || autocompleteAttr.length === 0) {
-            return null;
-        }
-        
         if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
             return RuleFail("fail_incorrect");
         
+        let type = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").trim().toLowerCase() : "text";
+        
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
+        let tokensOptionalGroup = [];
 
         if (nodeName === "textarea" || nodeName === "select") {
             // accept all tokens
             tokensMandatoryGroup1 = cache.tokensMandatoryGroup1_all;
             tokensMandatoryGroup2 = cache.tokensMandatoryGroup2_all;
+            if (nodeName === "textarea")
+                tokensOptionalGroup = cache.tokensOptionGroup1_webauthn;
+
         } else if (nodeName === "input") {
+            tokensOptionalGroup = cache.tokensOptionGroup1_webauthn;
             // handle the various 'input' types
             switch (type) {
 
@@ -275,9 +277,9 @@ export let input_autocomplete_valid: Rule = {
             if (tokens.includes("on") || tokens.includes("off")) {
                 // on|off should be the only token
                 if (tokens.length === 1) {
-                    return RulePass(1);
+                    return RulePass("pass");
                 } else {
-                    return RuleFail(2);
+                    return RuleFail("fail_invalid");
                 }
             }
         }
@@ -336,6 +338,18 @@ export let input_autocomplete_valid: Rule = {
                     currRecognizedIndex++;
                 }
             }
+        }
+        console.log("node="+nodeName + ", tokens.length="+ tokens.length +",urrIndex="+currIndex+",currRecognizedIndex="+currRecognizedIndex);
+        if (tokens.length > currIndex + currRecognizedIndex) {
+            // check optional tokens webauthn
+            if (tokensOptionalGroup.includes(tokens[currIndex + currRecognizedIndex])) {
+                currIndex++;
+            }
+        }
+        if ((tokens.length > currIndex && tokensOptionalGroup.includes(tokens[currIndex]))
+            || (tokens.length > currRecognizedIndex && tokensOptionalGroup.includes(tokens[currRecognizedIndex]))) {
+            currIndex++;
+            currRecognizedIndex++;
         }
 
         // Only pass if we have seen either of the mandatory groups and all tokens have been consumed
