@@ -339,7 +339,7 @@ export let input_autocomplete_valid: Rule = {
                 }
             }
         }
-        console.log("node="+nodeName + ", tokens.length="+ tokens.length +",urrIndex="+currIndex+",currRecognizedIndex="+currRecognizedIndex);
+        
         if (tokens.length > currIndex + currRecognizedIndex) {
             // check optional tokens webauthn
             if (tokensOptionalGroup.includes(tokens[currIndex + currRecognizedIndex])) {
