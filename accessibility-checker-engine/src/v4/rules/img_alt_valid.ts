@@ -57,43 +57,39 @@ export let img_alt_valid: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
         
-        //pass if images with a valid 'alt'    
-        let alt = ruleContext.getAttribute("alt");
-        if (alt !== null) {
-            if (alt.trim().length > 0)
-                return RulePass("pass");   
-            else { 
-                // alt.trim().length === 0
-                if (alt.length > 0) {
-                    // alt contains blank space only (alt=" ")
-                    return RuleFail("fail_blank_alt");  
-                } else {
-                    // alt.length === 0, presentational image, title is optional, handled by other rule(s)
-                    return  RulePass("pass");
-                }
-            }
-        } else {
-            // no alt
-            let label = RPTUtil.getAriaLabel(ruleContext);
-            if (label && label.trim().length > 0)
-                return RulePass("pass");
-            else {
-                let title = ruleContext.getAttribute("title");
-                if (title) {
-                    if (title.trim().length > 0)
-                        return RulePass("pass");   
-                    else { 
-                        // title.trim().length === 0
-                        if (title.length > 0) {
-                            // title contains blank space only (title=" ")
-                            return RuleFail("fail_blank_title");  
-                        }    
-                    }
-                } else {
-                    // neither alt nor aria label or title 
-                    return RuleFail("fail_no_alt"); 
-                }  
-            } 
+        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
+        let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
+        if ( RPTUtil.getAriaLabel(ruleContext).trim().length !== 0) {
+            // the img has non-empty aria label
+            return RulePass("pass");
         }
+
+        // check title attribute
+        if (alt === null || alt.length === 0) {
+            // the img has either no alt or an empty alt (alt=""), further examine the title attribute 
+            if (title === null || title.length === 0) {
+                // no title or title is empty
+                if (alt === null)
+                    return RuleFail("fail_no_alt");
+                if (alt.length === 0)
+                    return RulePass("pass"); 
+            } else {
+                if (title.trim().length === 0) {
+                    // title contains blank space only (title="  ")
+                    return RuleFail("fail_blank_title"); 
+                }
+                // title contains some text (title="some text")
+                return RulePass("pass");
+            }
+        } else { 
+            // alt contain something
+            if (alt.trim().length > 0) {
+                // the img has non-empty alt (alt="some text")
+                return RulePass("pass"); 
+            } else {
+                // alt contains blank space only (alt=" ")
+                return RuleFail("fail_blank_alt"); 
+            }    
+        }        
     }
 }

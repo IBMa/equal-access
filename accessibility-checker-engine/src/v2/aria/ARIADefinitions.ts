@@ -2374,26 +2374,6 @@ export class ARIADefinitions {
                 validRoles: ["presentation", "none"],
                 globalAriaAttributesValid: false, 
                 otherAllowedAriaAttributes: ["aria-hidden=true"]
-            },
-            "img-with-alt-text": {
-                implicitRole: ["img"],
-                //roleCondition: " when alt attribute has text (is not empty)",
-                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "radio", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
-                globalAriaAttributesValid: true
-            },
-            "img-with-empty-alt": {
-                implicitRole: ["presentation"],
-                //roleCondition: " when alt attribute is empty",
-                validRoles: null,
-                globalAriaAttributesValid: false, 
-                otherAllowedAriaAttributes: ["aria-hidden=true"]
-            },
-            "img-without-alt": {
-                implicitRole: ["img"],
-                //roleCondition: " when alt attribute, aria-label, or aria-labelledby are not present",
-                validRoles: null,
-                globalAriaAttributesValid: false, 
-                otherAllowedAriaAttributes: ["aria-hidden=true"]
             }
         },
         "input": {

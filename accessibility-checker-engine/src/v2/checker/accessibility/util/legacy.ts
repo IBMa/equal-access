@@ -2868,11 +2868,20 @@ export class RPTUtil {
                             tagProperty = specialTagProperties["other"];   
                         break;
                     case "img":
-                        if (ruleContext.hasAttribute("alt")) {
-                            ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
+                        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
+                        let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
+                        if ( RPTUtil.getAriaLabel(ruleContext).trim().length !== 0 || (alt !== null && alt.length > 0) || (title !== null && title.length > 0)) {
+                            // If the img has non-empty alt (alt="some text" or alt="  ") or an accessible name is provided
+                            tagProperty = specialTagProperties["img-with-accname"];
                         } else {
-                            RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
-                        }
+                            if (alt !== null) {
+                                // If the img has an empty alt (alt="") 
+                                tagProperty = specialTagProperties["img-without-accname-empty-alt"];
+                            } else {
+                                // If the img lacks an alt attribute 
+                                tagProperty = specialTagProperties["img-without-accname-no-alt"];
+                            }  
+                        }    
                         break;
                     case "input":
                         if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
