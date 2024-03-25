@@ -2355,6 +2355,26 @@ export class ARIADefinitions {
 
         },
         "img": {
+            "img-with-accname": {
+                implicitRole: ["img"],
+                //roleCondition: "when accessible name presents",
+                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "meter", "option", "progressbar", "radio", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
+                globalAriaAttributesValid: true
+            },
+            "img-without-accname-empty-alt": {
+                implicitRole: ["presentation", "none"],
+                //roleCondition: "when no accessible name presents and alt=''",
+                validRoles: null,
+                globalAriaAttributesValid: false, 
+                otherAllowedAriaAttributes: ["aria-hidden=true"]
+            },
+            "img-without-accname-no-alt": {
+                implicitRole: ["img"],
+                //roleCondition: "when neither accessible name no alt presents",
+                validRoles: ["presentation", "none"],
+                globalAriaAttributesValid: false, 
+                otherAllowedAriaAttributes: ["aria-hidden=true"]
+            },
             "img-with-alt-text": {
                 implicitRole: ["img"],
                 //roleCondition: " when alt attribute has text (is not empty)",
