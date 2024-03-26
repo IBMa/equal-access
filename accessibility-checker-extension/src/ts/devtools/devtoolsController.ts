@@ -599,6 +599,7 @@ export class DevtoolsController extends Controller {
                 this.xlsxReportHandler("current");
             }
         });
+        
     }
 
     private async htmlReportHandler() {

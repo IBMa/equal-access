@@ -364,19 +364,19 @@ export default class MultiScanReport {
 
     private createIssueSummarySheet(storedScans: IStoredReportMeta[]) {
 
-        let violations = 0;
-        let needsReviews = 0;
-        let recommendations = 0;
-        let hidden = 0;
-        let totalIssues = 0;
+        // let violations = 0;
+        // let needsReviews = 0;
+        // let recommendations = 0;
+        // let hidden = 0;
+        // let totalIssues = 0;
 
-        for (const scan of storedScans) {
-            violations += scan.counts["Violation"];
-            needsReviews += scan.counts["Needs review"];
-            recommendations += scan.counts.Recommendation;
-            hidden += scan.counts.Hidden;
-        }
-        totalIssues = violations + needsReviews + recommendations;
+        // for (const scan of storedScans) {
+        //     violations += scan.counts["Violation"];
+        //     needsReviews += scan.counts["Needs review"];
+        //     recommendations += scan.counts.Recommendation;
+        //     hidden += scan.counts.Hidden;
+        // }
+        // totalIssues = violations + needsReviews + recommendations;
 
         // counts
         let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
@@ -511,6 +511,9 @@ export default class MultiScanReport {
         let level4VrowValues = MultiScanReport.countDuplicatesInArray(level4V); // note this returns an object
         let level4NRrowValues = MultiScanReport.countDuplicatesInArray(level4NR);
         let level4RrowValues = MultiScanReport.countDuplicatesInArray(level4R);
+
+        let totalIssues = level1Counts[0]+level2Counts[0]+level3Counts[0]+level4Counts[0];
+        let hidden = level1Counts[4]+level2Counts[4]+level3Counts[4]+level4Counts[4];
 
         const worksheet = this.workbook.addWorksheet("Issue summary");
 
