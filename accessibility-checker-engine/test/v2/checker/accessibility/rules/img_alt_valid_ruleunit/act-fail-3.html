@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html lang="en">
+
+<head>
+	<title>ACT Test case</title>
+</head>
+
+<body>
+
+  <div style="margin-left:-9999px;"><img src="/test-assets/shared/w3c-logo.png" /></div>
+
+<script>
+  UnitTest = {
+    ruleIds: ["img_alt_valid"],
+    results: [
+    {
+            "ruleId": "img_alt_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/img[1]",
+              "aria": "/document[1]/img[1]"
+            },
+            "reasonId": "fail_no_alt",
+            "message": "The image has neither an 'alt' attribute, an ARIA label, nor a title",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  };
+</script>
+</body>
+
+</html>

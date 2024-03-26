@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html lang="en">
+
+<head>
+	<title>ACT Test case</title>
+</head>
+
+<body>
+
+  <img src="/test-assets/shared/w3c-logo.png" title="  " />
+  <img src="/test-assets/shared/w3c-logo.png" alt="" title="  " />
+  <img src="/test-assets/shared/w3c-logo.png" alt="logo" title="  " />
+
+<script>
+  UnitTest = {
+    ruleIds: ["img_alt_valid"],
+    results: [
+    {
+            "ruleId": "img_alt_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/img[1]",
+              "aria": "/document[1]/img[1]"
+            },
+            "reasonId": "fail_blank_title",
+            "message": "The image does not have an 'alt' attribute or ARIA label, and the 'title' attribute value consists only of blank space(s)",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "img_alt_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/img[2]",
+              "aria": "/document[1]/img[2]"
+            },
+            "reasonId": "pass",
+            "message": "Image has required 'alt' attribute, ARIA label, or title if it conveys meaning, or 'alt=\"\" if decorative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "img_alt_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/img[3]",
+              "aria": "/document[1]/img[3]"
+            },
+            "reasonId": "pass",
+            "message": "Image has required 'alt' attribute, ARIA label, or title if it conveys meaning, or 'alt=\"\" if decorative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  };
+</script>
+</body>
+
+</html>

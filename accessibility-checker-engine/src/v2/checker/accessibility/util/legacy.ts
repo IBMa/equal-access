@@ -920,7 +920,7 @@ export class RPTUtil {
      *       
      * @memberOf RPTUtil
      */
-    public static getResolvedRole(elem: Element) : string {
+    public static getResolvedRole(elem: Element, considerImplicitRoles: boolean = true) : string {
         if (!elem) return null;
         let role = getCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", null);
         if (role === null) {
@@ -936,7 +936,7 @@ export class RPTUtil {
                 } 
             }
             
-            if (role === null) {
+            if (role === null && considerImplicitRoles) {
                 const implicitRole = RPTUtil.getImplicitRole(elem);
                 role = implicitRole && implicitRole.length > 0 ? implicitRole[0] : undefined;
             }

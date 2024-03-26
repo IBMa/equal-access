@@ -57,20 +57,26 @@ export let img_alt_valid: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
         
-        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
-        let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
-        if ( RPTUtil.getAriaLabel(ruleContext).trim().length !== 0) {
+        if (RPTUtil.getAriaLabel(ruleContext).trim().length !== 0) {
             // the img has non-empty aria label
             return RulePass("pass");
         }
 
+        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
+        
         // check title attribute
-        if (alt === null || alt.length === 0) {
-            // the img has either no alt or an empty alt (alt=""), further examine the title attribute 
+        if (alt === null) {
+            // the img has no alt or attribute, examine the title attribute
+            let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
             if (title === null || title.length === 0) {
-                // no title or title is empty
-                if (alt === null)
+                // no title or title is empty, examine alt further
+                if (alt === null) {
+                    let role = RPTUtil.getResolvedRole(ruleContext, false);
+                    if (role === 'presentation' || role === 'none')
+                        return RulePass("pass");
+                    
                     return RuleFail("fail_no_alt");
+                }    
                 if (alt.length === 0)
                     return RulePass("pass"); 
             } else {
@@ -81,10 +87,9 @@ export let img_alt_valid: Rule = {
                 // title contains some text (title="some text")
                 return RulePass("pass");
             }
-        } else { 
-            // alt contain something
-            if (alt.trim().length > 0) {
-                // the img has non-empty alt (alt="some text")
+        } else {
+            if (alt.length === 0 || alt.trim().length > 0) {
+                // the img has empty alt (alt="") or non-empty alt (alt="some text")
                 return RulePass("pass"); 
             } else {
                 // alt contains blank space only (alt=" ")
