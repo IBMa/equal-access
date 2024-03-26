@@ -21,7 +21,7 @@ import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
-import { getBGController, TabChangeType } from '../../background/backgroundController';
+import { getBGController, issueBaselineMatch, TabChangeType } from '../../background/backgroundController';
 import { 
     Button,
     Column,
@@ -252,6 +252,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
 
     getCounts(issues: UIIssue[] | null) : CountType {
         let counts = this.initCount();
+        if (!issues) return counts;
         if (issues) {
             for (const issue of issues) {
                 let sing = UtilIssue.valueToStringSingular(issue.value);
@@ -263,11 +264,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (this.state.ignoredIssues) {
             for (const ignoredIssue of this.state.ignoredIssues) {
+                if (!issues.some(issue => issueBaselineMatch(issue, ignoredIssue))) continue;
                 ++counts["Hidden" as eLevel].total;
                 if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
                     ++counts["Hidden" as eLevel].focused;
                 }
-                // remove from appropriate eLevel V, NR, R
                 let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
                 --counts[sing as eLevel].total;
                 if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
@@ -293,6 +294,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (reportIssues) {
             filterCounts = this.getCounts(reportIssues);
+            console.log("scan section filterCounts = ",filterCounts);
             reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
@@ -483,7 +485,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                         {UtilIssueReact.valueSingToIcon(BrowserDetection.isDarkMode()?"ViewOn":"ViewOff", "reportSecIcon")}</DefinitionTooltip>
                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                 {reportIssues && <>
-                                    {this.state.ignoredIssues.length}
+                                    {(filterCounts["Hidden"].focused === filterCounts["Hidden"].total) ?
+                                            filterCounts["Hidden"].total
+                                            : <>
+                                                {filterCounts["Hidden"].focused}/{filterCounts["Hidden"].total}
+                                            </>}
                                 </>}
                             </span>
                             <span style={{ marginRight: "18px" }}></span>
