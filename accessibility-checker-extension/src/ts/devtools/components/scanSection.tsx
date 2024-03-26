@@ -350,11 +350,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     ariaLabel="stored scans" 
                                     renderIcon={ChevronDown}
                                 >
-                                    <OverflowMenuItem
+                                    {/* <OverflowMenuItem
                                         disabled={!this.state.reportContent}
                                         itemText="Download current scan" 
                                         onClick={() => devtoolsController.exportXLS("last") }
-                                    />
+                                    /> */}
                                     <OverflowMenuItem 
                                         // if scanStorage false not storing scans, if true storing scans
                                         itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
@@ -364,7 +364,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     />
                                     <OverflowMenuItem 
                                         disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                        itemText="Download stored scans" 
+                                        itemText="Export stored scans" 
                                         onClick={() => devtoolsController.exportXLS("all") }
                                     />
                                     <OverflowMenuItem 

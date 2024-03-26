@@ -179,7 +179,7 @@ export default class MultiScanReport {
         // Scans info Headers
         worksheet.getRow(12).height = 16; // actual height is
 
-        const cellA12 = worksheet.getCell('A12'); cellA12.value = "Total issues";
+        const cellA12 = worksheet.getCell('A12'); cellA12.value = "Issues";
         const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
         const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
         const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
@@ -560,7 +560,7 @@ export default class MultiScanReport {
         cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
 
         const cellB2 = worksheet.getCell("B2");
-        cellB2.value = "Number of issues";
+        cellB2.value = "Issues";
         cellB2.alignment = { vertical: "middle", horizontal: "right" };
         cellB2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
         cellB2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3E3E3' } };
@@ -587,7 +587,7 @@ export default class MultiScanReport {
         totalIssuesRow.height = 27; // actual is 36
 
         const cellA3 = worksheet.getCell("A3");
-        cellA3.value = "Total issues found:";
+        cellA3.value = "Issues found:";
         cellA3.alignment = { vertical: "middle", horizontal: "left" };
         cellA3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
         cellA3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
