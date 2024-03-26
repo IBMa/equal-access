@@ -294,7 +294,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (reportIssues) {
             filterCounts = this.getCounts(reportIssues);
-            console.log("scan section filterCounts = ",filterCounts);
             reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
