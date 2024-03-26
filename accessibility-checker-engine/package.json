@@ -21,6 +21,7 @@
         "chai": "^4.3.4",
         "coverage-istanbul-loader": "^3.0.5",
         "express": "^4.17.1",
+        "jsdom": "^24.0.0",
         "karma": "^6.3.9",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^3.1.0",

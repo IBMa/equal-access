@@ -27,8 +27,11 @@ export class StyleMapper extends CommonMapper {
         let retVal = {};
         if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
             const elem = node as Element;
-            const style = elem.ownerDocument.defaultView.getComputedStyle(elem);
-            for (let idx=0; idx<style.length; ++idx) {
+            let style: CSSStyleDeclaration;
+            try {
+                style = elem?.ownerDocument?.defaultView?.getComputedStyle(elem);
+            } catch (err) {}
+            for (let idx=0; style && idx<style.length; ++idx) {
                 const name = style[idx].toLowerCase();
                 retVal[name] = style[name];
             }

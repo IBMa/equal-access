@@ -156,12 +156,17 @@ export class ARIAMapper extends CommonMapper {
                     roleCount: {},
                     childrenCanHaveRole: true
                 };
-                while (parentInfo.role === "none" || parentInfo.role === "/none") {
+                while (parentInfo && (parentInfo.role === "none" || parentInfo.role === "/none")) {
                     parent = ARIAMapper.getAriaOwnedBy(parent) || DOMWalker.parentElement(parent) as HTMLElement;
                     parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
                     parentInfo = parentHierarchy[parentHierarchy.length-1];
                 }
-
+                parentInfo ||= {
+                    role: "",
+                    rolePath: "",
+                    roleCount: {},
+                    childrenCanHaveRole: true
+                }
                 // Set initial node info
                 let nodeInfo : {
                     attributes: {
@@ -553,7 +558,7 @@ export class ARIAMapper extends CommonMapper {
             //   For :after pseudo elements, User agents MUST append CSS textual content, without a 
             //     space, to the textual content of the current node.
             let before = null;
-            before = elem.ownerDocument.defaultView.getComputedStyle(elem,"before").content;
+            before = elem?.ownerDocument?.defaultView?.getComputedStyle?.(elem,"before")?.content || "";
 
             if (before && before !== "none") {
                 before = before.replace(/^"/,"").replace(/"$/,"");
@@ -588,7 +593,7 @@ export class ARIAMapper extends CommonMapper {
 
             let after = null;
             try {
-                after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
+                after = elem?.ownerDocument?.defaultView?.getComputedStyle?.(elem,"after")?.content || "";
             } catch (e) {}
 
             if (after && after !== "none") {
