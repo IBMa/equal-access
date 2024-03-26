@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="faq" xml:lang="en-us">
+<title>FAQ for AEM</title>
+<titlealts>
+<navtitle>FAQ</navtitle>
+</titlealts>
+<shortdesc>Find answers to frequently asked questions about the AEM migration. </shortdesc>
+<conbody>
+<section>
+<title>Why is IBM moving to the Adobe platform?</title>
+<p>Adobe is a strategic partner of IBM. IBM leadership has stated that a goal is to move IBM process
+and applications to our strategic partner platforms. For more information, see the <xref
+href="https://w3.ibm.com/cio/business-platform-transformation-bpt/our-platforms" format="html"
+scope="external">CIO blog</xref>. </p>
+</section>
+<section>
+<title>What is the time line for this migrations?</title>
+<p>There is no time line for this migration at this time. We will let you know when a time line is
+determined.</p>
+</section>
+<section>
+<title>Will this migration impact my release or GA?</title>
+<p>This migration will not impact your release or GA. Our plan is to automate much of the migration
+and we also have help from Adobe experts for the migration.</p>
+</section>
+<section>
+<title>What documentation applications are impacted for this migration?</title>
+<p>The following applications are impacted and will eventually be sunset. When the following
+applications will be sunset is TBD.<ul>
+<li>IBM Workflow Manager (WFM)</li>
+<li>IBM Review Manager (RM)</li>
+<li>IBM  Docs Manager (IDM)</li>
+<li>IBM Docs COS Viewer</li>
+<li>IBM Docs<ul>
+<li>Product documentation</li>
+<li>Announcement Letters</li>
+<li>Sales Manuals</li>
+<li>Redbooks</li>
+</ul></li>
+</ul></p>
+</section>
+<section>
+<title>Where will my source files be hosted?</title>
+<p>Your source files will move from IBM GitHub repositories to Adobe Assets, which is part of the
+Adobe Experience Manager (AEM) platform. IBM GitHub as a platform is not going away. Documentation
+source files will no longer be stored in GitHub repositories.</p>
+</section>
+<section>
+<title>Where can I go to get started on education?</title>
+<p>At this point in time, you do not need to worry about education. We will provide detailed
+education for all content creators at a later point in time. </p>
+</section>
+<section>
+<title>Will the URL's change from today?</title>
+<p>CAN SOMEON ELSE ANSWER THIS</p>
+</section>
+<section>
+<title>Will Markdown and AsciiDoc be supported on the AEM platform?</title>
+<p>To be determined. DITA source files are supported on the AEM platform.</p>
+</section>
+<section>
+<title/>
+</section>
+</conbody>
+</concept>

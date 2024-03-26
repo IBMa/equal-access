@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
+import { Rule } from "./common/engine/IRule";
 
 let ace;
 
@@ -10,6 +11,7 @@ let checker: IChecker;
 
 export class ACEngineManager {
     static customRulesets = []
+    static customRules = []
     static engineContent = null;
     static async loadEngine(content) {
         let config = await ACConfigManager.getConfigUnsupported();
@@ -325,6 +327,10 @@ export class ACEngineManager {
 
     static addRuleset = (ruleset) => {
         ACEngineManager.customRulesets.push(ruleset);
+    }
+
+    static addRule = async (rule: Rule) => {
+        ACEngineManager.customRules.push(rule);
     }
 
     static getRuleset = async (rsId) => {

@@ -401,6 +401,9 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
     try {
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
+        ACEngineManager.customRules.forEach((rule) => {
+            (checker as any).engine.addRule(rule);
+        })
         ACEngineManager.customRulesets.forEach((rs) => checker.addGuideline(rs));
         let report : IEngineReport = await checker.check(parsed, Config.policies)
             .then(function (report) {
@@ -409,7 +412,9 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
                 }
                 return report;
             })
-
+        ACEngineManager.customRules.forEach((rule) => {
+            report.nls[rule.id] = rule.messages["en-US"];
+        })
         if (curPol != null && !checkPolicy) {
             let valPolicies = checker.getGuidelineIds();
             checkPolicy = true;
