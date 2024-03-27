@@ -37,11 +37,11 @@ export let img_alt_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Image has required 'alt' attribute, ARIA label, or title if it conveys meaning, or 'alt=\"\" if decorative",
+            "pass": "The image has an accessible name or is correctly marked as decorative or redundant",
             "fail_blank_alt": "Image 'alt' attribute value consists only of blank space(s)",
-            "fail_no_alt": "The image has neither an 'alt' attribute, an ARIA label, nor a title",
+            "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant",
             "fail_blank_title": "The image does not have an 'alt' attribute or ARIA label, and the 'title' attribute value consists only of blank space(s)",
-            "group": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
+            "group": "Images must have accessible names unless they are decorative or redundance"
         }
     },
     rulesets: [{
