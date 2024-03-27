@@ -284,12 +284,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     render() {
         let reportIssues : IIssue[] | null = null;
         let filterCounts: CountType = this.initCount();
-        let quickTotalCount = 0;
+        // let quickTotalCount = 0;
         let totalCount = 0;
         if (this.state.report) {
-            quickTotalCount = this.state.report.counts.Violation +
-                         this.state.report.counts['Needs review'] +
-                         this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
+            // quickTotalCount = this.state.report.counts.Violation +
+            //              this.state.report.counts['Needs review'] +
+            //              this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
             reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;           
         }
         if (reportIssues) {
@@ -309,7 +309,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             totalCount += filterCounts[levelStr as eLevel].total;
             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
         })}
-
         let selectedElementStr = this.state.selectedElemPath;
     
         if (selectedElementStr) {
@@ -457,7 +456,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                
                     <div className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
                     {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
-                        totalCount += filterCounts[levelStr as eLevel].total;
+                        // totalCount += filterCounts[levelStr as eLevel].total;
                         return <>
                             <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
                                 <span className="countCol">
@@ -504,7 +503,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             let appController = getDevtoolsAppController();
                             getDevtoolsAppController().setSecondaryView("summary");
                             appController.openSecondary("totalIssuesCount");
-                    }}>{quickTotalCount} issues found</Link>
+                    }}>{totalCount} issues found</Link>
                     </div>
                 </Column>
             </Grid>
