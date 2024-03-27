@@ -14,8 +14,8 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getBGController, TabChangeType } from "../background/backgroundController";
-import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
+import { getBGController, issueBaselineMatch, TabChangeType } from "../background/backgroundController";
+import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta, UIIssue } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
@@ -212,18 +212,20 @@ export class DevtoolsController extends Controller {
         }
     }
 
-    async getCountsWithHidden (reportCounts: IReport["counts"], ignored: IIssue[]) {
+    async getCountsWithHidden (reportCounts: IReport["counts"], issues:UIIssue[], ignored: IIssue[]) {
         let counts = this.initCount(); // setup counts
         // populate initial counts
         counts.Violation = reportCounts.Violation;
         counts["Needs review"] = reportCounts["Needs review"];
         counts.Recommendation = reportCounts.Recommendation;
-        counts.Hidden = ignored.length;
+        counts.Hidden = 0;
         counts.Pass = reportCounts.Pass;
 
         // correct issue type counts to take into account the hidden issues
         if (ignored.length > 0) { // if we have hidden
             for (const ignoredIssue of ignored) {
+                if (!issues.some(issue => issueBaselineMatch(issue, ignoredIssue))) continue;
+                counts.Hidden++;
                 if ("Violation" === this.valueMap[ignoredIssue.value[0]][ignoredIssue.value[1]]) {
                     counts.Violation--;
                 }
@@ -250,7 +252,7 @@ export class DevtoolsController extends Controller {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
                 let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!);
-                let newCounts = await this.getCountsWithHidden(report.counts, ignored);
+                let newCounts = await this.getCountsWithHidden(report.counts, report.results, ignored);
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
                     id: devtoolsState!.storedReports.length+"",
