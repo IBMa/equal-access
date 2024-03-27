@@ -41,7 +41,7 @@ export let img_alt_valid: Rule = {
             "fail_blank_alt": "Image 'alt' attribute value consists only of blank space(s)",
             "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant",
             "fail_blank_title": "The image does not have an 'alt' attribute or ARIA label, and the 'title' attribute value consists only of blank space(s)",
-            "group": "Images must have accessible names unless they are decorative or redundance"
+            "group": "Images must have accessible names unless they are decorative or redundant"
         }
     },
     rulesets: [{
