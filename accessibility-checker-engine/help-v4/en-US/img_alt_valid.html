@@ -45,17 +45,20 @@
 
 ### Why is this important?
 
-When an image contains important information, providing a text alternative makes the same information accessible through audio or other channels, such as a Braille display.
+When an image contains important information, providing a text alternative makes the same information accessible through assistive technologies, such as a Braille display.
+When an image is decorative or redundant, providing correct markup allows assistive technologies to ignore or not repeat the information.
+
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If the image conveys meaning, use the `alt` attribute on the `<img>` element to provide a short description that serves the same purpose as the image
+If the image conveys meaning, provide an `non-empty accessible name`:
+* Use the `alt` attribute on the `<img>` element to provide a short description that serves the same purpose as the image
 * **Or**, use an `aria-label` or `aria-labelledby` to provide a short description that correctly follows the [accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
-* **And**, if the image contains important words, include them in the short description (e.g., `alt="submit"`)
-* **Or**, if the image is decorative or redundant, use the attribute with an empty string as its value (e.g., `<img alt="">`)
+* **And**, if the image contains important words, include them in the short description (e.g., `alt="Submit"`) so they match
+* **Or**, if the image is decorative or redundant, use an empty string as the attribute's value (e.g., `<img alt="">`) or set the `role="presentation"`
 
 </script></mark-down>
 <!-- End main panel -->
@@ -70,14 +73,16 @@ When an image contains important information, providing a text alternative makes
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
 * [H37: Using alt attributes on img elements](https://www.w3.org/WAI/WCAG22/Techniques/html/H37)
+* [G94: Providing short text alternatives that serve the same purpose as the non-text content](https://www.w3.org/WAI/WCAG22/Techniques/general/G94)
+* [F38: Not marking up decorative images in a way that allows assistive technology to ignore them](https://www.w3.org/WAI/WCAG22/Techniques/failures/F38)
 * [ARIA specification - accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision, and neurodivergent people
 * People who turn off image-loading on their web browsers
-* People using text only, monochrome, or Braille displays
-* People using text-based browsers (e.g., Lynx) or audio interfaces
+* People using Braille displays
+* People using text-only browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>
 <!-- End side panel -->

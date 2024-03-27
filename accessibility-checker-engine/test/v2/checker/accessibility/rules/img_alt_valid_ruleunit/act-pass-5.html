@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html lang="en">
+
+<head>
+	<title>ACT Test case</title>
+</head>
+
+<body>
+
+  <img alt="" src="/test-assets/shared/background.png" />
+
+<script>
+  UnitTest = {
+    ruleIds: ["img_alt_valid"],
+    results: [
+    {
+            "ruleId": "img_alt_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/img[1]",
+              "aria": "/document[1]/presentation[1]"
+            },
+            "reasonId": "pass",
+            "message": "The image has an accessible name or is correctly marked as decorative or redundant",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  };
+</script>
+</body>
+
+</html>
