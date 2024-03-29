@@ -17,7 +17,8 @@ import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 //import { setCache } from "../util/CacheUtil";
-import { getWeightNumber, getFontInPixels } from "../util/CSSUtil";
+import { getWeightNumber, getFontInPixels} from "../util/CSSUtil";
+import { containsCKJ } from "../util/CommonUtil";
 
 export let text_contrast_sufficient: Rule = {
     id: "text_contrast_sufficient",
@@ -105,8 +106,8 @@ export let text_contrast_sufficient: Rule = {
              * (3) for now not consider unicode special characters that are different in different languages
             */
             let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
-            const removed = childStr.trim().replace(regex, '');
-            if (removed.trim().length === 0)
+            childStr = childStr.trim().replace(regex, '');
+            if (childStr.trim().length === 0)
                 return null;
         }
 
@@ -252,6 +253,11 @@ export let text_contrast_sufficient: Rule = {
         let weight = getWeightNumber(style.fontWeight);
         let size = getFontInPixels(style.fontSize, elem);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
+        
+        if (containsCKJ(childStr)) {
+            // for CJK, 22 pt or 18 pt with font-weight >= 700, 1pt = 1.333 px
+            isLargeScale = size >= 29.3 || size >= 24 && weight >= 700;
+        }    
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
         let textShadow = colorCombo.textShadow;
