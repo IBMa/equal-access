@@ -32,14 +32,14 @@
 
     .totalCountDisable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: none;
         color: $text-disabled;
         text-align: right;
     }
     .totalCountEnable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: auto;
         text-align: right;
     }
@@ -63,10 +63,11 @@
 }
 
 .viewMulti {
+    float:right;
     width: 230px;
     .cds--list-box {
         max-height: 2rem;
-        border-left: solid $gray-40 1px
+        border: solid $gray-40 1px;
     }   
 }
 

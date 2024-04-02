@@ -86,7 +86,7 @@
     }
     .totalCountDisable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: none;
         
         text-align: right;
@@ -100,7 +100,7 @@
     }
     .totalCountEnable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: auto;
         text-align: right;
         .darkLink {

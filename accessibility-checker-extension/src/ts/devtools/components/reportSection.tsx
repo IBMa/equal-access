@@ -222,89 +222,84 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
-                <Column sm={4} md={8} lg={8} style={{ marginRight: "0px" }}>
-                    <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", float: "right"}}>
-                            <div style={{flex: "0 1 8.75rem"}}>
-                                <div style={{display: "flex"}}>
-                                    <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem", marginRight: "8px" }}>
-                                        {!this.state.viewState || !this.state.viewState!.kcm &&
-                                            <Dropdown
-                                                className="viewMulti"
-                                                ariaLabel="Select report view"
-                                                disabled={totalCount === 0}
-                                                id="reportView"
-                                                size="sm" 
-                                                items={viewItems}
-                                                light={false}
-                                                type="default"
-                                                style={{width:"160px"}}
-                                                selectedItem={this.state.reportViewState}
-                                                onChange={async (evt: any) => {
-                                                    // set state
-                                                    this.setState({ reportViewState: evt.selectedItem });
-                                                }}
-                                            />
+                <Column sm={4} md={8} lg={8}>
+                    <div style={{display: "flex", flexWrap: "wrap", float: "right", gap: "1px 0px"}}>
+                        <div style={{flex: "1 1 auto", margin: "-1px 0px" }}></div>
+                        <div style={{flex: "1 1 0", marginRight: "0px", margin: "-1px 0px" }}>
+                            {!this.state.viewState || !this.state.viewState!.kcm &&
+                                <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    disabled={totalCount === 0}
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
+                            }
+                        </div>
+                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
+                            {
+                                <MultiSelect
+                                    className="viewMulti"
+                                    ariaLabel="Issue type filter"
+                                    label="Filter"
+                                    size="sm" 
+                                    hideLabel={true}
+                                    disabled={totalCount === 0}
+                                    id="filterSelection"
+                                    items={filterItems}
+                                    itemToString={(item:any) => (item ? item.text : '')}
+                                    itemToElement={(item:any) => {
+                                            if (item && item.id === "0") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "1") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "2") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
+                                            } else if (item && item.id === "3") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
+                                            }
+                                            return <></>
                                         }
-                                    </div>
-                                    <div style={{flex: "1 1 8.75rem"}}>
-                                        {
-                                            <MultiSelect
-                                                className="viewMulti"
-                                                ariaLabel="Issue type filter"
-                                                label="Filter"
-                                                size="sm" 
-                                                hideLabel={true}
-                                                disabled={totalCount === 0}
-                                                id="filterSelection"
-                                                items={filterItems}
-                                                itemToString={(item:any) => (item ? item.text : '')}
-                                                itemToElement={(item:any) => {
-                                                        if (item && item.id === "0") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
-                                                        } else if (item && item.id === "1") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
-                                                        } else if (item && item.id === "2") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
-                                                        } else if (item && item.id === "3") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
-                                                        }
-                                                        return <></>
-                                                    }
-                                                }
-                                                light={false}
-                                                type="default"
-                                                style={{ float: "right" }}
-                                                selectedItems={levelSelectedItems}
-                                                initialSelectedItems={levelSelectedItems}
-                                                onChange={async (evt: any) => {
-                                                    let checked = appController.getLevelFilters();
-                                                    if (evt.selectedItems != undefined) {
-                                                        checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
-                                                        checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
-                                                        checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
-                                                        checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
-                                                    }
-                                                    appController.setLevelFilters(checked);
-                                                }}
-                                            />
+                                    }
+                                    light={false}
+                                    type="default"
+                                    selectedItems={levelSelectedItems}
+                                    initialSelectedItems={levelSelectedItems}
+                                    onChange={async (evt: any) => {
+                                        let checked = appController.getLevelFilters();
+                                        if (evt.selectedItems != undefined) {
+                                            checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
+                                            checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
+                                            checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
+                                            checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
                                         }
-                                    </div>
-                                    <div style={{flex: "1 1 8.75rem"}}>
-                                        <div>
-                                            <Button
-                                                kind="tertiary"
-                                                disabled={totalCount === 0}
-                                                style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
-                                                onClick={() => devtoolsController.exportXLS("last") }
-                                            >Export XLS</Button>
-                                        </div>
-                                    </div>
+                                        appController.setLevelFilters(checked);
+                                    }}
+                                />
+                            }
+                        </div>
+                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
+                            <div>
+                                <Button
+                                    kind="tertiary"
+                                    disabled={totalCount === 0}
+                                    style={{ float: "right", minHeight: "18px", maxHeight: "32px", minWidth: "10rem" }}
+                                    onClick={() => devtoolsController.exportXLS("last") }
+                                >Export XLS</Button>
                             </div>
                         </div>
                     </div>
                 </Column>
              </Grid>}
-             <div className="reportFilterBorder" />
         </>        
 
         return (<>
