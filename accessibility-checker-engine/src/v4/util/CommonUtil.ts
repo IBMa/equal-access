@@ -227,11 +227,9 @@ export function getDeprecatedAriaAttributes(element: Element) {
 export function containsCKJ(text: string) {
     if (!text) return false;
 
-    // https://en.wikipedia.org/wiki/CJK_Unified_Ideographs
-    let regex = /[\u4E00-\u9FFF]+/g;
-    //[\u4e00-\u9fff\u3400-\u4dbf\ufa0e\ufa0f\ufa11\ufa13\ufa14\ufa1f\ufa21\ufa23\ufa24\ufa27\ufa28\ufa29\u3006\u3007]|[\ud840-\ud868\ud86a-\ud879\ud880-\ud887][\udc00-\udfff]|\ud869[\udc00-\udedf\udf00-\udfff]|\ud87a[\udc00-\udfef]|\ud888[\udc00-\udfaf])([\ufe00-\ufe0f]|\udb40[\udd00-\uddef]
-    //[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\u{30000}-\u{323af}\ufa0e\ufa0f\ufa11\ufa13\ufa14\ufa1f\ufa21\ufa23\ufa24\ufa27\ufa28\ufa29\u3006\u3007][\ufe00-\ufe0f\u{e0100}-\u{e01ef}]?
-
+    // https://en.wikipedia.org/wiki/CJK_Unified_Ideographs  https://ayaka.shn.hk/hanregex/
+    let regex =/(?:[\u4e00-\u9fff\u3400-\u4dbf])+/g;
+    
     const replaced = text.trim().replace(regex, '');
     if (replaced.length === text.trim().length)
         return false;

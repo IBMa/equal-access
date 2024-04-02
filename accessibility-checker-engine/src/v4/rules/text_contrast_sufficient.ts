@@ -25,33 +25,33 @@ export let text_contrast_sufficient: Rule = {
     context: "dom:*",
     refactor: {
         "IBMA_Color_Contrast_WCAG2AA": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Potential_1": "Potential_same_color"
+            "Pass_0": "pass",
+            "Fail_1": "fail_contrast",
+            "Potential_1": "potential_same_color"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_graphic_background"
+            "pass_0": "pass",
+            "potential_1": "potential_graphic_background"
         }
     },
     help: {
         "en-US": {
             "group": `text_contrast_sufficient.html`,
-            "Pass_0": `text_contrast_sufficient.html`,
-            "Fail_1": `text_contrast_sufficient.html`,
-            "Potential_same_color": `text_contrast_sufficient.html`,
-            "Potential_graphic_background": `text_contrast_sufficient.html`,
-            "Potential_text_shadow": `text_contrast_sufficient.html`
+            "pass": `text_contrast_sufficient.html`,
+            "fail_contrast": `text_contrast_sufficient.html`,
+            "potential_same_color": `text_contrast_sufficient.html`,
+            "potential_graphic_background": `text_contrast_sufficient.html`,
+            "potential_text_shadow": `text_contrast_sufficient.html`
         }
     },
     messages: {
         "en-US": {
             "group": "The contrast ratio of text with its background must meet WCAG AA requirements",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
-            "Potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG AA requirements for minimum contrast",
-            "Potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
-            "Potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}"
+            "pass": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "fail_contrast": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
+            "potential_same_color": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG AA requirements for minimum contrast",
+            "potential_graphic_background": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
+            "potential_text_shadow": "Verify the contrast ratio of the text with shadow meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}"
         }
     },
     rulesets: [{
@@ -105,7 +105,8 @@ export let text_contrast_sufficient: Rule = {
              *  see https://stackoverflow.com/questions/3770117/what-is-the-range-of-unicode-printable-characters
              * (3) for now not consider unicode special characters that are different in different languages
             */
-            let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
+            //let regex = /[^(a-zA-Z\d\s)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
+            let regex = /[^(a-zA-Z\d\s)\^(\u4e00-\u9fff\u3400-\u4dbf)\u0000-\u0008\u000B-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\uFEFF]+/g;
             childStr = childStr.trim().replace(regex, '');
             if (childStr.trim().length === 0)
                 return null;
@@ -255,6 +256,7 @@ export let text_contrast_sufficient: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         
         if (containsCKJ(childStr)) {
+            // https://github.com/act-rules/act-rules.github.io/pull/2121/files
             // for CJK, 22 pt or 18 pt with font-weight >= 700, 1pt = 1.333 px
             isLargeScale = size >= 29.3 || size >= 24 && weight >= 700;
         }    
@@ -293,19 +295,19 @@ export let text_contrast_sufficient: Rule = {
         if (!passed) {
             if (hasBackground) {
                 // fire potential since a text on an image or gradient may be still viewable, depending on the text location on the gradient or image
-                return RulePotential("Potential_graphic_background", [ratio.toFixed(2), size, weight]);;
+                return RulePotential("potential_graphic_background", [ratio.toFixed(2), size, weight]);;
             } else if (textShadow) {
                 // fire potential since a text with shadow may be still viewable, depending on the shadow efffects
-                return RulePotential("Potential_text_shadow", [ratio.toFixed(2), size, weight]);;
+                return RulePotential("potential_text_shadow", [ratio.toFixed(2), size, weight]);;
             } else {
                 if (fg.toHex() === bg.toHex()) {
-                    return RulePotential("Potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                    return RulePotential("potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
                 } else {
-                    return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+                    return RuleFail("fail_contrast", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
                 }
             }    
         } else {
-            return RulePass("Pass_0", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
+            return RulePass("pass", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
         }
     }
 }

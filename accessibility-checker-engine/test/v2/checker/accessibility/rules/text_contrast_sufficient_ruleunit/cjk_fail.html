@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <p style="font-weight:bold;">
+        Test color contrast in CJK characters
+  </p>
+
+  <p> text font size: 12px</p>
+  <button style="color: #777; background: #EEE;font-size:12px;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:12px;">提交</div>
+
+  <p style="margin-top: 20px;"> text font size: 16px</p>
+  <button style="color: #777; background: #EEE;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;">提交</div>
+
+  <p style="margin-top: 20px;"> text font size: 24px bold</p>
+  <button style="color: #777; background: #EEE;font-size:24px;font-weight:bold;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:24px;font-weight:bold;">提交</div>
+
+  <p style="margin-top: 20px;"> text font size: 30px</p>
+  <button style="color: #777; background: #EEE;font-size:30px;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:30px;">提交</div>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["text_contrast_sufficient"],
+            results: [
+            {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/paragraph[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              700,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[2]",
+              "aria": "/document[1]/paragraph[2]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 12px and weight of 400",
+            "messageArgs": [
+              "3.86",
+              12,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 12px and weight of 400",
+            "messageArgs": [
+              "3.86",
+              12,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]",
+              "aria": "/document[1]/paragraph[3]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 13.3333px and weight of 400",
+            "messageArgs": [
+              "3.86",
+              13.3333,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "3.86",
+              16,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]",
+              "aria": "/document[1]/paragraph[4]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              24,
+              700,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/button[6]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              24,
+              700,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[5]",
+              "aria": "/document[1]/paragraph[5]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[7]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              30,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/button[8]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              30,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>
