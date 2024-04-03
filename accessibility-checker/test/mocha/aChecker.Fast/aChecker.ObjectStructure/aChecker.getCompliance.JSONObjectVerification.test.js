@@ -127,7 +127,7 @@ describe("JSON Structure Verification Zombie", function () {
                             return b.ruleId.localeCompare(a.ruleId);
                         })
                         // Run the diff algo to get the list of differences
-                        differences = aChecker.diffResultsWithExpected(report, expected, false);console.log("report=" + JSON.stringify(report));
+                        differences = aChecker.diffResultsWithExpected(report, expected, false);
                     }
                     expect(typeof differences).to.equal("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
                     // Mark the testcase as done.

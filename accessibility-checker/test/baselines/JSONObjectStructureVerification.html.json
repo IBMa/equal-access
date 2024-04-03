@@ -320,7 +320,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_contrast_sufficient_pass#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -468,7 +468,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -494,7 +494,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -520,7 +520,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -528,7 +528,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -546,7 +546,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -575,7 +575,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -601,7 +601,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -627,7 +627,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -653,7 +653,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -679,7 +679,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -687,7 +687,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -705,7 +705,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -731,7 +731,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -757,7 +757,7 @@
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 144,
+                "top": 143,
                 "height": 0,
                 "width": 784
             },
@@ -947,7 +947,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -1099,7 +1099,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1125,7 +1125,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1151,7 +1151,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1177,7 +1177,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1211,14 +1211,14 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_contrast_sufficient_pass#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%229.40%22%2C16%2C400%2C%22%230000ee%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%229.40%22%2C16%2C400%2C%22%230000ee%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
         },
         {
             "ruleId": "style_focus_visible",
@@ -1237,7 +1237,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1263,7 +1263,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1289,7 +1289,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1315,7 +1315,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1341,7 +1341,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 18,
+                "height": 17,
                 "width": 56
             },
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
@@ -1367,7 +1367,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1393,7 +1393,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1419,14 +1419,14 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_background",
@@ -1445,7 +1445,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1474,7 +1474,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1500,7 +1500,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1526,7 +1526,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1552,7 +1552,7 @@
             "bounds": {
                 "left": 8,
                 "top": 8,
-                "height": 19,
+                "height": 18,
                 "width": 784
             },
             "snippet": "<div role=\"navigation\">",
@@ -1708,7 +1708,7 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 144,
+                "height": 143,
                 "width": 800
             },
             "snippet": "<html lang=\"en\">",
@@ -1734,7 +1734,7 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 144,
+                "height": 143,
                 "width": 800
             },
             "snippet": "<html lang=\"en\">",
@@ -1760,7 +1760,7 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 144,
+                "height": 143,
                 "width": 800
             },
             "snippet": "<html lang=\"en\">",
@@ -1786,7 +1786,7 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 144,
+                "height": 143,
                 "width": 800
             },
             "snippet": "<html lang=\"en\">",
@@ -1814,7 +1814,7 @@
             "bounds": {
                 "left": 0,
                 "top": 0,
-                "height": 144,
+                "height": 143,
                 "width": 800
             },
             "snippet": "<html lang=\"en\">",
