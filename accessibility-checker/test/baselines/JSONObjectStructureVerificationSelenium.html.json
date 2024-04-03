@@ -87,7 +87,7 @@
         },
         "text_contrast_sufficient": {
             "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
-            "Pass_0": "Rule Passed"
+            "pass": "The contrast ratio of text with its background meets WCAG AA requirements"
         },
         "text_quoted_correctly": {
             "0": "Quotations should be marked with <q> or <blockquote> elements",
@@ -405,7 +405,7 @@
                 "width": 999
             },
             "category": "Accessibility",
-            "message": "Rule Passed",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
             "messageArgs": [
                 "21.00",
                 32,
@@ -419,7 +419,7 @@
                 "aria": "/document[1]/main[1]/heading[1]",
                 "dom": "/html[1]/body[1]/div[2]/h1[1]"
             },
-            "reasonId": "Pass_0",
+            "reasonId": "pass",
             "ruleId": "text_contrast_sufficient",
             "snippet": "<h1>",
             "value": [
@@ -428,7 +428,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_contrast_sufficient_pass#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%2221.00%22%2C32%2C700%2C%22%23000000%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
         },
         {
             "apiArgs": [],
@@ -636,7 +636,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -795,7 +795,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1055,7 +1055,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22main%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1303,7 +1303,7 @@
                 "width": 999
             },
             "category": "Accessibility",
-            "message": "Rule Passed",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
             "messageArgs": [
                 "9.40",
                 16,
@@ -1317,7 +1317,7 @@
                 "aria": "/document[1]/navigation[1]/link[1]",
                 "dom": "/html[1]/body[1]/div[1]/a[1]"
             },
-            "reasonId": "Pass_0",
+            "reasonId": "pass",
             "ruleId": "text_contrast_sufficient",
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "value": [
@@ -1326,7 +1326,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%229.40%22%2C16%2C400%2C%22%230000ee%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_contrast_sufficient_pass#%7B%22message%22%3A%22The%20contrast%20ratio%20of%20text%20with%20its%20background%20meets%20WCAG%20AA%20requirements%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%229.40%22%2C16%2C400%2C%22%230000ee%22%2C%22%23ffffff%22%2Cfalse%2Cfalse%5D%7D"
         },
         {
             "apiArgs": [],
@@ -1534,7 +1534,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_block_heading.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doctext_block_heading_Pass_0#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_block_heading%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
