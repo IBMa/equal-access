@@ -11,21 +11,25 @@
         Test color contrast in CJK characters
   </p>
 
-  <p> text font size: 12px</p>
-  <button style="color: #777; background: #EEE;font-size:12px;">提交</button>
-  <div role="button" style="color: #777; background: #EEE;font-size:12px;">提交</div>
+  <p style="margin-top: 20px;color: #777; background: #EEE;"> English default, font size: 16px</p>
+  <p style="margin-top: 20px;color: #777; background: #EEE;font-size:19px;font-weight:bold;"> English text font size 19px bold</p>
+  <p style="margin-top: 20px;color: #777; background: #EEE;font-size:24px;"> text font size: 24px</p>
 
-  <p style="margin-top: 20px;"> text font size: 16px</p>
-  <button style="color: #777; background: #EEE;">提交</button>
-  <div role="button" style="color: #777; background: #EEE;">提交</div>
+  <p> Chinese text font size: 14px</p>
+  <button style="color: #777; background: #EEE;font-size:14px;font-family:SimSun-18030;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:14px;font-family:SimSun-18030;">提交</div>
 
-  <p style="margin-top: 20px;"> text font size: 24px bold</p>
-  <button style="color: #777; background: #EEE;font-size:24px;font-weight:bold;">提交</button>
-  <div role="button" style="color: #777; background: #EEE;font-size:24px;font-weight:bold;">提交</div>
+  <p style="margin-top: 20px;"> Chinese text font size: 16px</p>
+  <button style="color: #777; background: #EEE;font-size:16px;font-family:SimSun-18030;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:16px;font-family:SimSun-18030;">提交</div>
 
-  <p style="margin-top: 20px;"> text font size: 30px</p>
-  <button style="color: #777; background: #EEE;font-size:30px;">提交</button>
-  <div role="button" style="color: #777; background: #EEE;font-size:30px;">提交</div>
+  <p style="margin-top: 20px;"> Chinese text font size: 24px bold</p>
+  <button style="color: #777; background: #EEE;font-size:24px;font-weight:bold;font-family:SimSun-18030;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:24px;font-weight:bold;font-family:SimSun-18030;">提交</div>
+
+  <p style="margin-top: 20px;"> Chinese text font size: 30px</p>
+  <button style="color: #777; background: #EEE;font-size:30px;font-family:SimSun-18030;">提交</button>
+  <div role="button" style="color: #777; background: #EEE;font-size:30px;font-family:SimSun-18030;">提交</div>
 
 <script type="text/javascript">
         UnitTest = {
@@ -59,11 +63,83 @@
             "ruleId": "text_contrast_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/p[2]",
               "aria": "/document[1]/paragraph[2]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "3.86",
+              16,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]",
+              "aria": "/document[1]/paragraph[3]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              19,
+              700,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]",
+              "aria": "/document[1]/paragraph[4]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.86",
+              24,
+              400,
+              "#777777",
+              "#eeeeee",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[5]",
+              "aria": "/document[1]/paragraph[5]"
             },
             "reasonId": "pass",
             "message": "The contrast ratio of text with its background meets WCAG AA requirements",
@@ -90,10 +166,10 @@
               "aria": "/document[1]/button[1]"
             },
             "reasonId": "fail_contrast",
-            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 12px and weight of 400",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 14px and weight of 400",
             "messageArgs": [
               "3.86",
-              12,
+              14,
               400,
               "#777777",
               "#eeeeee",
@@ -114,10 +190,10 @@
               "aria": "/document[1]/button[2]"
             },
             "reasonId": "fail_contrast",
-            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 12px and weight of 400",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 14px and weight of 400",
             "messageArgs": [
               "3.86",
-              12,
+              14,
               400,
               "#777777",
               "#eeeeee",
@@ -134,8 +210,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/p[3]",
-              "aria": "/document[1]/paragraph[3]"
+              "dom": "/html[1]/body[1]/p[6]",
+              "aria": "/document[1]/paragraph[6]"
             },
             "reasonId": "pass",
             "message": "The contrast ratio of text with its background meets WCAG AA requirements",
@@ -162,10 +238,10 @@
               "aria": "/document[1]/button[3]"
             },
             "reasonId": "fail_contrast",
-            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 13.3333px and weight of 400",
+            "message": "Text contrast of 3.86 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
             "messageArgs": [
               "3.86",
-              13.3333,
+              16,
               400,
               "#777777",
               "#eeeeee",
@@ -206,8 +282,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/p[4]",
-              "aria": "/document[1]/paragraph[4]"
+              "dom": "/html[1]/body[1]/p[7]",
+              "aria": "/document[1]/paragraph[7]"
             },
             "reasonId": "pass",
             "message": "The contrast ratio of text with its background meets WCAG AA requirements",
@@ -278,8 +354,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/p[5]",
-              "aria": "/document[1]/paragraph[5]"
+              "dom": "/html[1]/body[1]/p[8]",
+              "aria": "/document[1]/paragraph[8]"
             },
             "reasonId": "pass",
             "message": "The contrast ratio of text with its background meets WCAG AA requirements",
