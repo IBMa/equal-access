@@ -129,6 +129,7 @@ export type StoredScanData = [
     string, //item.snippet,
     string, //item.path.dom,
     string, //engine_end_point + '/tools/help/' + item.ruleId
+    boolean,//hidden if true
 ];
 
 export interface IStoredReportMeta extends IBasicTableRowRecord {
@@ -143,6 +144,7 @@ export interface IStoredReportMeta extends IBasicTableRowRecord {
         "Violation": number
         "Needs review": number
         "Recommendation": number
+        "Hidden" : number
         "Pass": number
         total: number
     }

@@ -7,7 +7,13 @@ This README covers topics for developers who want to better understand the rules
 
 ## Overview
 
-`accessibility-checker-engine` contains accessibility rules and an evaluation engine to help users to check their web pages to identify and report accessibility issues.
+`accessibility-checker-engine` contains accessibility rules, help, and an evaluation engine to help users to check their web pages to identify and report accessibility issues.
+
+The engine is used by the [IBM Equal Access Accessibility Checker](https://www.ibm.com/able/toolkit/tools#develop) suite of tools.
+The engine and tools are supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate the automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Accessibility Requirements and Rulesets
 
@@ -15,11 +21,11 @@ The `"IBM Accessibility"` ruleset is based on the [IBM Accessibility Requirement
 
 The rules test conformance against the standards and specifications, such as the [Accessible Rich Internet Applications (ARIA) specification](https://www.w3.org/TR/wai-aria-1.2/).
 The rules are harmonized with open rules published by the [W3C ACT-Rules Community](https://www.w3.org/community/act-r/) group as reported in the [IBM Equal Access Accessibility Checker ACT implementation report](https://wai-wcag-act-rules.netlify.app/standards-guidelines/act/implementations/equal-access/).
-`Rulesets` are also provided for `"WCAG 2.1 (A,AA)"` and `"WCAG 2.0 (A,AA)"`.
+`Rulesets` are also provided for `"WCAG 2.2 (A,AA)"`, `"WCAG 2.1 (A,AA)"`, and `"WCAG 2.0 (A,AA)"`.
 
 Mappings of the latest rules to the standards, the individual failure messages, and links to the Help files explaining _Why it is important_ and _What to do_ are listed in the [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
 
-## Install and build
+## Building and running locally
 
 Review [equal-access/README](../README.md) on how to clone the source.
 Once the source code is cloned to your local environment, you can build the source code based on the requirements of your local environment.
@@ -217,17 +223,24 @@ The following code snippet demonstrates how to use ACE to test a web page for ac
 
 ### Browser extensions
 
-You can use the [accessibility-checker-extension](../accessibility-checker-extension) for Chrome or Firefox. The browser extensions integrate the accessibility web engine (ace.js) and formatted results into the browser developer tool to visually view the accessibility issues and the locations of violating components. For more information and instructions, review [accessibility-checker-extensions](../accessibility-checker-extension).
+The [accessibility-checker-extension](../accessibility-checker-extension) has been deployed as a DevTools extension for Chrome, Edge, or Firefox: 
 
-### Integration with test frameworks
+* [Chrome Web store extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp)
+* [Firefox Add-on extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/)
+* [Edge Add-On extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka)
 
-You can use the [karma-accessibility-checker](../karma-accessibility-checker) to integrate accessibility web engine into [Karma](https://karma-runner.github.io/latest/index.html) or [Selenium](https://www.selenium.dev/) test framework. For more information and instructions, view [karma-accessibility-checker](../karma-accessibility-checker).
+The browser extensions integrate the accessibility checker engine (ace.js) and formatted results into the browser developer tool to view the accessibility issues and the locations of violating components.
+The browser extensions provide an integrated checking experience and visualizations to help users quickly identify the source of accessibility issues and try fixes. 
 
-You can use the [cypress-accessibility-checker](../cypress-accessibility-checker) to integrate automated accessibility testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress) a next generation front end testing tool built for the modern web. For more information and instructions, view [cypress-accessibility-checker](../cypress-accessibility-checker).
+### Integration with automated test frameworks
+
+Use the [karma-accessibility-checker](../karma-accessibility-checker) to integrate accessibility web engine into [Karma](https://karma-runner.github.io/latest/index.html) or [Selenium](https://www.selenium.dev/) test framework. For more information and instructions, view [karma-accessibility-checker](../karma-accessibility-checker).
+
+Use the [cypress-accessibility-checker](../cypress-accessibility-checker) to integrate automated accessibility testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress) a next generation front end testing tool built for the modern web. For more information and instructions, view [cypress-accessibility-checker](../cypress-accessibility-checker).
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Aengine), tagged with `engine`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `engine`.
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 

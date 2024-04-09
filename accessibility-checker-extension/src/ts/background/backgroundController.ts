@@ -31,10 +31,11 @@ export type TabChangeType = {
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
 
-export function issueBaselineMatch(baselineIssue: {ruleId: string, reasonId:string, path: { dom: string}}, issue: IIssue) {
+export function issueBaselineMatch(baselineIssue: {ruleId: string, reasonId:string, path: { dom: string}, messageArgs: string[]}, issue: IIssue) {
     return baselineIssue.ruleId === issue.ruleId
         && baselineIssue.reasonId === issue.reasonId
-        && baselineIssue.path.dom === issue.path.dom;
+        && baselineIssue.path.dom === issue.path.dom
+        && JSON.stringify(baselineIssue.messageArgs) === JSON.stringify(issue.messageArgs);
 }
 
 class BackgroundController extends Controller {
@@ -399,6 +400,17 @@ class BackgroundController extends Controller {
                         }
                     });
                 }, [settings]);
+
+                // Remove issues that are essentially equivalent to the user (same path, rule, reason, and message)
+                for (let idx=0; idx<report.results.length; ++idx) {
+                    for (let checkIdx=0; checkIdx < idx; ++checkIdx) {
+                        if (issueBaselineMatch(report.results[idx], report.results[checkIdx])) {
+                            report.results.splice(idx--, 1);
+                            break;
+                        }
+                    }
+                }
+
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
                 this.metrics.profileV2(report.totalTime, browser, settings.selected_ruleset.id);

@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IReport, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
+import { IReport, IIssue, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
 
 
 const stringHash = require("string-hash");
@@ -22,6 +22,7 @@ const stringHash = require("string-hash");
 interface XLSXProps {
     settings: ISettings,
     report: IReport,
+    ignored: IIssue[],
     pageURL: string,
     pageTitle: string,
     timestamp: string,
@@ -30,7 +31,7 @@ interface XLSXProps {
 
 export default class MultiScanData { 
 
-    // this class barrows heavily from singlePageReport
+    // this class borrows heavily from singlePageReport
     // however, our purpose here is just to generate the data
     // needed for a multiScanReport which will replace singlePageReport
     // also when saving scans we will be saving a reduced set of the 
@@ -41,11 +42,14 @@ export default class MultiScanData {
     // sheet as all other data is either static or can be calculated
     // from the issue data
 
+    
+
     public static issues_sheet_rows(xlsx_props: XLSXProps) : StoredScanData[] {
 
         let ret: any[] = [];
 
         let report = xlsx_props.report;
+        let ignored = xlsx_props.ignored;
         let tab_url = xlsx_props.pageURL;
         let tab_title = xlsx_props.pageTitle;
         const rule_map = this.id_rule_map(xlsx_props);
@@ -80,6 +84,17 @@ export default class MultiScanData {
             if (item.value[1] === "PASS") {
                 continue;
             }
+        
+            // Calc hidden, add to end of row
+            let hidden = false;
+            for (const ignoredIssue of ignored) {
+                hidden = item.path.dom === ignoredIssue.path.dom
+                         && item.ruleId === ignoredIssue.ruleId
+                         && item.reasonId === ignoredIssue.reasonId;
+                if (hidden === true) {
+                    break;
+                }
+            }
 
             let row = [
                 tab_title,
@@ -95,7 +110,8 @@ export default class MultiScanData {
                 this.get_element(item.snippet),
                 item.snippet,
                 item.path.dom,
-                item.help
+                item.help,
+                hidden
             ]
 
             ret.push(row);

@@ -1,17 +1,25 @@
 # accessibility-checker-extension
 
-Browser extensions integrated with the web developer tools that add automated accessibility checking, automated keyboard checking visualizations, and reporting capabilities
+Browser extensions integrated with the web developer tools (DEvTools) that add automated accessibility checking, automated keyboard checking visualizations, and reporting capabilities.
+
+The extensions are supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate the automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Usage
 
 The extensions have been deployed to the various stores so they can be easily downloaded and installed:
 
-* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
-* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
-  
-## Requirements for building the extensions
+* [Chrome Web Store extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
+* [Firefox Add-on extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
+* [Edge Add-on extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
 
-* [Node Version 16](https://nodejs.org/en/download/).
+The browser extensions provide an integrated checking experience and visualizations to help users quickly identify the source of accessibility issues and try fixes.
+
+## Requirements for building and running locally
+
+* [Node Version 18](https://nodejs.org/en/download/).
 
 ### Install dependencies
 
@@ -72,7 +80,7 @@ The commands generate a `package/accessibility-checker-extension.zip` file. The 
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Aextension-checker), tagged with `extension-checker`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `extension-checker`.
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 

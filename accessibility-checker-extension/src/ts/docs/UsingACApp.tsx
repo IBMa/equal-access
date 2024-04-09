@@ -329,7 +329,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/3.1Checker1.png"
+                        src="assets/img/3.1Checker123.png"
                         alt="DevTools with 'Elements tab', 'Accessibility Checker tab', and blue scan button highlighted and numbered 1 to 3"
                     />
                 </p>
@@ -613,10 +613,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h2 id="hide_issues">3.8 Show/Hide issues</h2>
                     <p>
-                        The Hide feature allows issues to be ignored or marked as resolved. 
-                        When this feature is used, issues are not only hidden from view, they are also subtracted from the respective issue counts. 
-                        Issues that are determined to be irrelevant or resolved can be hidden and removed from the counts 
-                        towards achieving a goal of zero counts both in the issues list and in the Scan summary report.
+                        The Hide feature allows issues to be removed from view and subtracted from the respective issue counts and Scan summary report. 
+                        This can be useful for showing a set of issues or reflecting progress by hiding issues that have been resolved or identified to be fixed later.
                     </p>
                     <p>
                         <img
@@ -1017,11 +1015,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     This interactive report is in an HTML web format that includes:
                 </p></p>
                 <OrderedList>
-                    <ListItem>The scan date and time</ListItem>
-                    <ListItem>The scanned URL</ListItem>
+                    <ListItem>Scan date and time</ListItem>
+                    <ListItem>URL scanned</ListItem>
                     <ListItem>Percentage of elements with no detected violations or items to review</ListItem>
-                    <ListItem>A summary of test results </ListItem>
-                    <ListItem>Issue details organized by requirements, element roles, and rules</ListItem>
+                    <ListItem>Summary of test results </ListItem>
+                    <ListItem>Issue details organized by Requirements or by Rules</ListItem>
                     <ListItem>‘Learn more’ link with detailed help description for each issue</ListItem>
                 </OrderedList>
                 <p>
@@ -1040,8 +1038,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                 <p>
                     <img
-                        src="assets/img/7_1_ReportXLS.png"
-                        alt="an excel spreadsheet of an accessibility scan report"
+                        src="assets/img/7_1_ReportXLS_hidden.png"
+                        alt="an Excel spreadsheet of an accessibility scan report"
                     />
                 </p>
                 <OrderedList>
@@ -1056,9 +1054,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <strong>Issue Summary</strong> provides an overview of the issues found across all the scans.
                         Issues are summarized in a prioritized order, starting with Level 1 items,
                         as defined in the IBM Equal Access Toolkit, followed by Level 2 and Levels 3
-                        and 4.  Levels 1-3 are necessary to complete the IBM requirements. Within each
+                        and 4.  Levels 1-3 are necessary to complete the IBM accessibility requirements. Within each
                         level, the summary lists issues that are Violations, items that Need Review,
-                        and Recommendations. Counts are provided for each type of issue.
+                        Recommendations, and Hidden. Totals and counts are provided for each type of issue.
                     </ListItem>
                     <ListItem>
                         <strong>Issues</strong> has the details of the individual issues. This includes the scan label
@@ -1070,9 +1068,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </ListItem>
                 </OrderedList>
                 <p>
-                    <strong>Note</strong>: If the same page is scanned multiple times in a multi-scan report, 
-                    there may be duplicate issues, which can be identified as having the same Issue ID. 
-                    If a template or reused component has issues, these will also be repeated in the report, but may have different Issue IDs.
+                    <strong>Note</strong>: If the same page is scanned multiple times, 
+                    there will be duplicate issues in the multi-scan report, which can be identified as having the <strong>same</strong> Issue ID. 
+                    If a template or reused component has issues, these will also be repeated in the report, but will have <strong>different</strong> Issue IDs.
                 </p>
 
                 <h2 id="a11y_considerations">7. Accessibility features</h2>
@@ -1116,7 +1114,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     />{" "} opens/closes the menu dropdown
                     </ListItem>
                     <ListItem>Filter, <img src={enter} alt="enter key"/> opens/closes the menu dropdown</ListItem>
-                    <ListItem>Export XLS, <img src={enter} alt="enter key"/> downloads reports</ListItem>
+                    <ListItem>Export scan, <img src={enter} alt="enter key"/> downloads reports</ListItem>
                     <ListItem>Issues, <img src={space} alt="space bar"/> selects all issues</ListItem>
                     <ListItem>Issue groupings, <img
                                 src={leftRight}
