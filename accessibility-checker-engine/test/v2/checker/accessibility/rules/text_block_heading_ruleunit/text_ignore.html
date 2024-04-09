@@ -3,13 +3,10 @@
 <!--
    /******************************************************************************
      Copyright:: 2020- IBM, Inc
-
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,52 +19,27 @@
 
 <head>
 	<title>RPT Test Suite</title>
-
-	<style type="text/css">
-		h3::before {content:"my content from css--";}
-		h3::after {content:"--after content from css";}
-	</style>
-
 </head>
 
 <body>
-
-<a href="#navskip">skip to main content</a>
-
-
-<h2>Test case: Style-hasNoBeforeAfterNone.html</h2>
-
-
-<!-- ################################################################### -->
-
-
-<h3>Style Before or After psuedo-element Tests</h3>
-
-
-<ul>
-	<li>Test - Style with no before or after psuedo-elements</li>
-</ul>
-
-<p>
-	Style - no psuedo-elements
-</p>
-
-<a name="navskip"></a>
-
+  <main>
+    <div>
+      <ul>
+           <li><strong>test options</strong></li>
+              <li><u>test 0</u></li>
+              <li><i>test 1</i> </li>
+              <li><b>test 2</b></li>
+          </ul>
+      </div>
+  </main>
 
 <script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "1069",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-      ]
-    },
-  ];
+  UnitTest = {
+            ruleIds: ["text_block_heading"],
+            results: [
+
+            ]
+        };
 //]]>
 </script></body>
 
