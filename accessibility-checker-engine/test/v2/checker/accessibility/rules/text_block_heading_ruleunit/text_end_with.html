@@ -3,13 +3,10 @@
 <!--
    /******************************************************************************
      Copyright:: 2020- IBM, Inc
-
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,52 +19,40 @@
 
 <head>
 	<title>RPT Test Suite</title>
-
-	<style type="text/css">
-		h3::before {content:"my content from css--";}
-		h3::after {content:"--after content from css";}
-	</style>
-
 </head>
 
 <body>
-
-<a href="#navskip">skip to main content</a>
-
-
-<h2>Test case: Style-hasNoBeforeAfterNone.html</h2>
-
-
-<!-- ################################################################### -->
-
-
-<h3>Style Before or After psuedo-element Tests</h3>
-
-
-<ul>
-	<li>Test - Style with no before or after psuedo-elements</li>
-</ul>
-
-<p>
-	Style - no psuedo-elements
-</p>
-
-<a name="navskip"></a>
-
+  <main>
+    <div>
+      <p id='11' style="font-weight: bold;">Fake Heading 1:</p>
+    </div>
+    <div>
+      <p id='21' style="font-weight: 400;">not a heading</p>
+    </div>
+    <div>
+      <p id='31' style="font-weight: 800;">Fake Heading 2,</p>
+    </div>
+    <div>
+      <p id='41' style="font-size: 24px;">Fake Heading 3;</p>
+    </div>
+    <div>
+      <p id='51' style="font-size: 1.2rem;">Fake Heading 4.</p>
+    </div>
+    <div>
+      <p id='61' style="font-size: 0.8rem;">not a Heading</p>
+    </div>
+    <div>
+      <p id='71' style="font-size: large;">Fake Heading 5-</p>
+    </div>
+  </main>
 
 <script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "1069",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-      ]
-    },
-  ];
+  UnitTest = {
+            ruleIds: ["text_block_heading"],
+            results: [
+            
+            ]
+        };
 //]]>
 </script></body>
 
