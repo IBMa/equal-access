@@ -37,6 +37,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             ovElemStyle.outline = "solid #8A3FFC 3px";
             ovElemStyle.position = "absolute";
             ovElemStyle.zIndex = "2147483647";
+            ovElemStyle.pointerEvents = "none";
 
 
             let ovInfoStyle = overlays.info.style;
@@ -46,6 +47,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             ovInfoStyle.position = "absolute";
             ovInfoStyle.padding = "8px";
             ovInfoStyle.zIndex = "2147483647";
+            ovInfoStyle.pointerEvents = "none";
             ovInfoStyle.fontFamily = "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif";
         }
         return (window as any).aceOverlays;
