@@ -23,34 +23,14 @@
 	</head>
 	<body>
 
-<form method=post action="step2.cgi">
-  <input type=hidden autocomplete=transaction-currency value="CHF">
-  <input type=hidden autocomplete=transaction-amount value="15.00">
-  <p><label>Credit card number: <input type=text autocomplete=cc-number></label>
-  <p><label>Expiry Date: <input type=month autocomplete=cc-exp></label>
-  <p><input type=submit value="Continue...">
-</form>
-
-<script>
-  UnitTest = {
-      ruleIds: ["input_autocomplete_valid"],
-      results: [
-      {
-            "ruleId": "input_autocomplete_valid",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/form[1]/p[1]/label[1]/input[1]",
-              "aria": "/document[1]/form[1]/paragraph[1]/textbox[1]"
-            },
-            "reasonId": "pass",
-            "message": "The 'autocomplete' attribute's token(s) is appropriate for the input form field",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
+    <label>
+      Password
+      <input type="password" autocomplete="current-password webauthn">
+    </label>
+    <script>
+      UnitTest = {
+          ruleIds: ["input_autocomplete_valid"],
+          results: [
           {
             "ruleId": "input_autocomplete_valid",
             "value": [
@@ -58,8 +38,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/form[1]/p[2]/label[1]/input[1]",
-              "aria": "/document[1]/form[1]/paragraph[2]"
+              "dom": "/html[1]/body[1]/label[1]/input[1]",
+              "aria": "/document[1]"
             },
             "reasonId": "pass",
             "message": "The 'autocomplete' attribute's token(s) is appropriate for the input form field",
@@ -67,8 +47,8 @@
             "apiArgs": [],
             "category": "Accessibility"
           }
-      ]
-  }
-</script>
+          ]
+      }
+    </script>
 	</body>
 	</html>
