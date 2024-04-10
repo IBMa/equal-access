@@ -153,7 +153,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
 
     async function getParsed(content) {
         if (!content) return null;
-        content = ACBrowserManager.buildIframeAndGetDoc(content);
+        // Handle local file and URL's
         if (typeof content === "string") {
             let isURLRegex = /^(ftp|http|https):\/\//;
 
@@ -165,7 +165,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
             // so build an iframe based on this and get the frame doc and then scan this.
             return ACBrowserManager.buildIframeAndGetDoc(content);
         } else if (ACEngineManager.isSelenium(content) || ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content) || ACEngineManager.isWebDriverIO(content)) {
-            
+        
         }
         // Handle Array of nodes
         else if (content instanceof Array) {
