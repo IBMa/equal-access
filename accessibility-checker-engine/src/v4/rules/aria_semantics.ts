@@ -123,7 +123,7 @@ export let aria_attribute_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
+            "group": "ARIA attributes should be valid for the element and ARIA role to which they are assigned",
             "Pass": "ARIA attributes are valid for the element and ARIA role",
             "Fail_invalid_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with ARIA role \"{2}\"",
             "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\""
@@ -131,7 +131,7 @@ export let aria_attribute_valid: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["4.1.2"],
+        "num": ["ARIA"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],

@@ -1796,7 +1796,7 @@
             "Pass_0": "Rule Passed"
         },
         "a_text_purpose": {
-            "0": "Hyperlinks must have a text description of their purpose",
+            "0": "Hyperlinks must have an accessible name for their purpose",
             "Pass_0": "Hyperlink has a description of its purpose"
         },
         "widget_tabbable_exists": {
