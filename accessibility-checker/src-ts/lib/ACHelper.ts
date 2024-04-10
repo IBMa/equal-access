@@ -153,7 +153,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
 
     async function getParsed(content) {
         if (!content) return null;
-        // Handle local file and URL's
+        content = ACBrowserManager.buildIframeAndGetDoc(content);
         if (typeof content === "string") {
             let isURLRegex = /^(ftp|http|https):\/\//;
 
@@ -190,39 +190,33 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
         return content;
     }
 
-    try {
-        let parsed = await getParsed(content);
-        if (parsed === null) return null;
-        await ACEngineManager.loadEngine(parsed);
+    let parsed = await getParsed(content);
+    if (parsed === null) return null;
+    await ACEngineManager.loadEngine(parsed);
 
-        // Get the Data when the scan is started
-        // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        let policies = Config.policies;
-        let curPol = null;
-        if (policies) {
-            curPol = JSON.parse(JSON.stringify(policies));
-        }
-        if (ACEngineManager.isSelenium(parsed)) {
-            Config.DEBUG && console.log("getComplianceHelper:Selenium");
-            return await getComplianceHelperSelenium(label, parsed, curPol);
-        } else if (ACEngineManager.isPuppeteer(parsed)) {
-            Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Puppeteer");
-            return await getComplianceHelperPuppeteer(label, parsed, curPol);
-        } else if (ACEngineManager.isPlaywright(parsed)) {
-            Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
-            return await getComplianceHelperPuppeteer(label, parsed, curPol);
-        } else if (ACEngineManager.isWebDriverIO(parsed)) {
-            Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
-            return await getComplianceHelperWebDriverIO(label, parsed, curPol);
-        } else {
-            Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Local");
-            return await getComplianceHelperLocal(label, parsed, curPol);
-        }
-    } catch (err) {
-        console.error(err);
-    } finally {
-        await ACBrowserManager.close();
-    };
+    // Get the Data when the scan is started
+    // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
+    let policies = Config.policies;
+    let curPol = null;
+    if (policies) {
+        curPol = JSON.parse(JSON.stringify(policies));
+    }
+    if (ACEngineManager.isSelenium(parsed)) {
+        Config.DEBUG && console.log("getComplianceHelper:Selenium");
+        return await getComplianceHelperSelenium(label, parsed, curPol);
+    } else if (ACEngineManager.isPuppeteer(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Puppeteer");
+        return await getComplianceHelperPuppeteer(label, parsed, curPol);
+    } else if (ACEngineManager.isPlaywright(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
+        return await getComplianceHelperPuppeteer(label, parsed, curPol);
+    } else if (ACEngineManager.isWebDriverIO(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
+        return await getComplianceHelperWebDriverIO(label, parsed, curPol);
+    } else {
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Local");
+        return await getComplianceHelperLocal(label, parsed, curPol);
+    }
 }
 
 async function getComplianceHelperSelenium(label, parsed, curPol) : Promise<ICheckerResult> {
