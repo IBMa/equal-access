@@ -153,7 +153,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
 
     async function getParsed(content) {
         if (!content) return null;
-        
+    
         // Handle local file and URL's
         if (typeof content === "string") {
             let isURLRegex = /^(ftp|http|https):\/\//;

@@ -36,16 +36,22 @@ async function toBeAccessible(node) {
   
       aChecker.addRuleset(customRuleset);
     }
-    const results = await aChecker.getCompliance(node, this.currentTestName);
-    if (aChecker.assertCompliance(results.report) === 0) {
-        return {
-            pass: true
-        }
-    } else {
-        return {
-            pass: false,
-            message: () => aChecker.stringifyResults(results.report)
-        };
+    try {
+      const results = await aChecker.getCompliance(node, this.currentTestName);
+      if (aChecker.assertCompliance(results.report) === 0) {
+          return {
+              pass: true
+          }
+      } else {
+          return {
+              pass: false,
+              message: () => aChecker.stringifyResults(results.report)
+          };
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+        await aChecker.close();
     }
   }
 
