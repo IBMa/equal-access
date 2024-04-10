@@ -21,28 +21,28 @@ export let input_autocomplete_valid: Rule = {
     context: "dom:input[autocomplete], dom:textarea[autocomplete], dom:select[autocomplete]",
     refactor: {
         "WCAG21_Input_Autocomplete": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2",
-            "Fail_attribute_incorrect": "Fail_attribute_incorrect"
+            "Pass_0": "pass",
+            "Fail_1": "fail_inappropriate",
+            "Fail_2": "fail_invalid",
+            "Fail_attribute_incorrect": "fail_incorrect"
         }
     },
     help: {
         "en-US": {
             "group": "input_autocomplete_valid.html",
-            "Pass_0": "input_autocomplete_valid.html",
-            "Fail_1": "input_autocomplete_valid.html",
-            "Fail_2": "input_autocomplete_valid.html",
-            "Fail_attribute_incorrect": "input_autocomplete_valid.html"
+            "pass": "input_autocomplete_valid.html",
+            "fail_inappropriate": "input_autocomplete_valid.html",
+            "fail_invalid": "input_autocomplete_valid.html",
+            "fail_incorrect": "input_autocomplete_valid.html"
         }
     },
     messages: {
         "en-US": {
             "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
-            "Fail_2": "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
-            "Fail_attribute_incorrect": "The 'autocomplete' attribute has an incorrect value"
+            "pass": "The 'autocomplete' attribute's token(s) is appropriate for the input form field",
+            "fail_inappropriate": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "fail_invalid": "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+            "fail_incorrect": "The 'autocomplete' attribute has an incorrect value"
         }
     },
     rulesets: [{
@@ -54,13 +54,27 @@ export let input_autocomplete_valid: Rule = {
     
     act: [{
         "73f2c2": {
-            "Pass_0": "pass",
-            "Fail_1": "fail",
-            "Fail_2": "pass",
-            "Fail_attribute_incorrect": "fail"
+            "pass": "pass",
+            "fail_inappropriate": "fail",
+            "fail_invalid": "pass",
+            "fail_incorrect": "fail"
         }
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        
+        //skip the check if the element is hidden or disabled
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
+            return null;
+        }
+        
+        let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
+
+        let tokens = autocompleteAttr.split(/\s+/);
+        if (tokens.length === 0 || autocompleteAttr.length === 0) {
+            return null;
+        }
+
         const cache = {
             "tokensOnOff": ["on", "off"],
             "tokenOptionalSection": "section-",
@@ -174,41 +188,34 @@ export let input_autocomplete_valid: Rule = {
                 "tel-local-suffix",
                 "tel-extension",
                 "email",
-                "impp"]
+                "impp"],
+            "tokensOptionGroup1_webauthn": ["webauthn"]    
         }
         let valid_values = [];
         for (var key in cache)
             valid_values=valid_values.concat(cache[key]);
         
-        const ruleContext = context["dom"].node as Element;
         let foundMandatoryToken = false;
         let foundRecognizedToken = true;
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (!VisUtil.isNodeVisible(ruleContext) ||
-            RPTUtil.isNodeDisabled(ruleContext)) {
-            return null;
-        }
-
-        let type = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").trim().toLowerCase() : "text";
-
-        let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
-
-        let tokens = autocompleteAttr.split(/\s+/);
-        if (tokens.length === 0 || autocompleteAttr.length === 0) {
-            return null;
-        }
-        
         if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
-            return RuleFail("Fail_attribute_incorrect");
+            return RuleFail("fail_incorrect");
+        
+        let type = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").trim().toLowerCase() : "text";
         
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
+        let tokensOptionalGroup = [];
 
         if (nodeName === "textarea" || nodeName === "select") {
             // accept all tokens
             tokensMandatoryGroup1 = cache.tokensMandatoryGroup1_all;
             tokensMandatoryGroup2 = cache.tokensMandatoryGroup2_all;
+            if (nodeName === "textarea")
+                tokensOptionalGroup = cache.tokensOptionGroup1_webauthn;
+
         } else if (nodeName === "input") {
+            tokensOptionalGroup = cache.tokensOptionGroup1_webauthn;
             // handle the various 'input' types
             switch (type) {
 
@@ -270,9 +277,9 @@ export let input_autocomplete_valid: Rule = {
             if (tokens.includes("on") || tokens.includes("off")) {
                 // on|off should be the only token
                 if (tokens.length === 1) {
-                    return RulePass(1);
+                    return RulePass("pass");
                 } else {
-                    return RuleFail(2);
+                    return RuleFail("fail_invalid");
                 }
             }
         }
@@ -332,14 +339,26 @@ export let input_autocomplete_valid: Rule = {
                 }
             }
         }
+        
+        if (tokens.length > currIndex + currRecognizedIndex) {
+            // check optional tokens webauthn
+            if (tokensOptionalGroup.includes(tokens[currIndex + currRecognizedIndex])) {
+                currIndex++;
+            }
+        }
+        if ((tokens.length > currIndex && tokensOptionalGroup.includes(tokens[currIndex]))
+            || (tokens.length > currRecognizedIndex && tokensOptionalGroup.includes(tokens[currRecognizedIndex]))) {
+            currIndex++;
+            currRecognizedIndex++;
+        }
 
         // Only pass if we have seen either of the mandatory groups and all tokens have been consumed
         if (foundMandatoryToken && tokens.length === currIndex) {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         } else if (foundRecognizedToken && tokens.length === currRecognizedIndex) {
-            return RuleFail("Fail_2");
+            return RuleFail("fail_incorrect");
         } else {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_inappropriate");
         }
     }
 }

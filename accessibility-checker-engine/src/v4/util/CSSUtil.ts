@@ -49,6 +49,7 @@ export function selectorMatchesElem(element, selector) {
  * @param elem 
  */
 export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
+    if (!elem) return null;
     const doc = elem.ownerDocument;
     const win = doc.defaultView;
     return win.getComputedStyle(elem, pseudoElt);
@@ -74,9 +75,11 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  */
 export function getDefinedStyles(elem: HTMLElement, pseudoClass?: string ) {
     // console.log("Function: getDefinedStyles");
+    if (!elem) return null;
+
     let definedStyles = {};
     let definedStylePseudo = {};
-    
+
     function fillStyle(maps, style) {
         for (let sIndex=0; sIndex < style.length; ++sIndex) {
             if (style[sIndex] === "all" && style[style[sIndex]]) {
