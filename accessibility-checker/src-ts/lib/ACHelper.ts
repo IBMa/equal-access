@@ -153,7 +153,6 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
 
     async function getParsed(content) {
         if (!content) return null;
-        content = ACBrowserManager.buildIframeAndGetDoc(content);console.log("I AM HERE: " + typeof content === "string" +" :" + ACEngineManager.isPuppeteer(content));
         // Handle local file and URL's
         if (typeof content === "string") {
             let isURLRegex = /^(ftp|http|https):\/\//;
