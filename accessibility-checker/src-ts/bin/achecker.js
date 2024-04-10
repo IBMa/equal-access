@@ -218,7 +218,7 @@ getInputFileList().then(async (rptInputFiles) => {
     }
     console.log();
     console.log(`${rptInputFiles.length-failures.length-errors} of ${rptInputFiles.length} passed.`)
-    await aChecker.close();
+    //await aChecker.close();
     if (failures.length !== 0 || errors !== 0) {
         process.exitCode = 1;
     }
