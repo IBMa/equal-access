@@ -32,18 +32,26 @@ The following is how to perform an accessibility scan within your test cases and
 
 ```javascript
 const aChecker = require("accessibility-checker");
-// Perform the accessibility scan using the aChecker.getCompliance API
-aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
-    const report = results.report;
+try {
+    // Perform the accessibility scan using the aChecker.getCompliance API
+    aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
+        const report = results.report;
 
-    // Call the aChecker.assertCompliance API which is used to compare the results with the baseline object if we can find one that
-    // matches the same label which was provided.
-    const returnCode = aChecker.assertCompliance(report);
+        // Call the aChecker.assertCompliance API which is used to compare the results with the baseline object if we can find one that
+        // matches the same label which was provided.
+        const returnCode = aChecker.assertCompliance(report);
 
-    // In the case that the violationData is not defined then trigger an error right away.
-    expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
-});
+        // In the case that the violationData is not defined then trigger an error right away.
+        expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
+    });
+} catch (err) {
+        console.error(err);
+    } finally {
+        // close the engine
+        await aChecker.close();
+    };
 ```
+Note that it's important to close the engine, otherwise, output files for the report may not be generated properly.
 
 Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
 
