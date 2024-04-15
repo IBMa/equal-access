@@ -21,7 +21,7 @@ import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
-import { getBGController, TabChangeType } from '../../background/backgroundController';
+import { getBGController, issueBaselineMatch, TabChangeType } from '../../background/backgroundController';
 import { 
     Button,
     Column,
@@ -252,6 +252,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
 
     getCounts(issues: UIIssue[] | null) : CountType {
         let counts = this.initCount();
+        if (!issues) return counts;
         if (issues) {
             for (const issue of issues) {
                 let sing = UtilIssue.valueToStringSingular(issue.value);
@@ -263,11 +264,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (this.state.ignoredIssues) {
             for (const ignoredIssue of this.state.ignoredIssues) {
+                if (!issues.some(issue => issueBaselineMatch(issue, ignoredIssue))) continue;
                 ++counts["Hidden" as eLevel].total;
                 if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
                     ++counts["Hidden" as eLevel].focused;
                 }
-                // remove from appropriate eLevel V, NR, R
                 let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
                 --counts[sing as eLevel].total;
                 if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
@@ -283,12 +284,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     render() {
         let reportIssues : IIssue[] | null = null;
         let filterCounts: CountType = this.initCount();
-        let quickTotalCount = 0;
+        // let quickTotalCount = 0;
         let totalCount = 0;
         if (this.state.report) {
-            quickTotalCount = this.state.report.counts.Violation +
-                         this.state.report.counts['Needs review'] +
-                         this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
+            // quickTotalCount = this.state.report.counts.Violation +
+            //              this.state.report.counts['Needs review'] +
+            //              this.state.report.counts.Recommendation - this.state.ignoredIssues.length;
             reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;           
         }
         if (reportIssues) {
@@ -308,7 +309,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             totalCount += filterCounts[levelStr as eLevel].total;
             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
         })}
-
         let selectedElementStr = this.state.selectedElemPath;
     
         if (selectedElementStr) {
@@ -350,11 +350,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     ariaLabel="stored scans" 
                                     renderIcon={ChevronDown}
                                 >
-                                    <OverflowMenuItem
+                                    {/* <OverflowMenuItem
                                         disabled={!this.state.reportContent}
                                         itemText="Download current scan" 
                                         onClick={() => devtoolsController.exportXLS("last") }
-                                    />
+                                    /> */}
                                     <OverflowMenuItem 
                                         // if scanStorage false not storing scans, if true storing scans
                                         itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
@@ -364,7 +364,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     />
                                     <OverflowMenuItem 
                                         disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                        itemText="Download stored scans" 
+                                        itemText="Export stored scans" 
                                         onClick={() => devtoolsController.exportXLS("all") }
                                     />
                                     <OverflowMenuItem 
