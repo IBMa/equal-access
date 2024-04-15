@@ -457,7 +457,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 
                         <div style={{ flex: "1 1 1" }} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
                             {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
-                                totalCount += filterCounts[levelStr as eLevel].total;
+                                // totalCount += filterCounts[levelStr as eLevel].total;
                                 return <>
                                     <span className='scanFilterSection' data-tip style={{ marginRight: "1rem", display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
                                         <span className="countCol">
@@ -499,7 +499,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     let appController = getDevtoolsAppController();
                                     getDevtoolsAppController().setSecondaryView("summary");
                                     appController.openSecondary("totalIssuesCount");
-                            }}><span style={{whiteSpace: "nowrap"}}>{quickTotalCount} issues found</span></Link>
+                            }}><span style={{whiteSpace: "nowrap"}}>{totalCount} issues found</span></Link>
                         </div>
                     </div>
                 </Column>
