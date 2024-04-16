@@ -448,62 +448,59 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             </Grid>
             <Grid>
                 <Column sm={4} md={8} lg={8}>
-                    <div className="storedCount">
-                        {this.state.storeReports && "Storing: "}
-                        {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
-                        {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
-                    </div>
-               
-                    <div className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
-                    {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
-                        // totalCount += filterCounts[levelStr as eLevel].total;
-                        return <>
+                    <div style={{display: "flex", flexWrap: "wrap", gap: "0rem 1rem"}}>
+                        <div className="storedCount" style={{ flex: "1 1 0", whiteSpace: "nowrap" }}>
+                            {this.state.storeReports && "Storing: "}
+                            {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
+                            {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
+                        </div>
+                
+                        <div style={{ flex: "1 1 1" }} className={totalCount === 0 ? "totalCountDisable" : "totalCountEnable"} >
+                            {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
+                                // totalCount += filterCounts[levelStr as eLevel].total;
+                                return <>
+                                    <span className='scanFilterSection' data-tip style={{ marginRight: "1rem", display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
+                                        <span className="countCol">
+                                            <DefinitionTooltip openOnHover align="top-left" definition={levelStr}>
+                                            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}</DefinitionTooltip>
+                                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
+                                                {reportIssues && <>
+                                                    {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
+                                                        filterCounts[levelStr as eLevel].total
+                                                    : <>
+                                                        {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
+                                                    </>}
+                                                </>}
+                                            </span>
+                                        </span>
+                                        {/* </Tooltip> */}
+                                    </span>
+                                </>
+                            })}
                             <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
                                 <span className="countCol">
-                                    <DefinitionTooltip openOnHover align="top-left" definition={levelStr}>
-                                    {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}</DefinitionTooltip>
+                                <DefinitionTooltip openOnHover align="top-left" definition="Hidden">
+                                {UtilIssueReact.valueSingToIcon(BrowserDetection.isDarkMode()?"ViewOn":"ViewOff", "reportSecIcon")}</DefinitionTooltip>
                                     <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                         {reportIssues && <>
-                                            {(filterCounts[levelStr as eLevel].focused === filterCounts[levelStr as eLevel].total) ?
-                                                filterCounts[levelStr as eLevel].total
-                                            : <>
-                                                {filterCounts[levelStr as eLevel].focused}/{filterCounts[levelStr as eLevel].total}
-                                            </>}
+                                            {this.state.ignoredIssues.length}
                                         </>}
                                     </span>
                                     <span style={{ marginRight: "18px" }}></span>
                                 </span>
-                                {/* </Tooltip> */}
                             </span>
-                        </>
-                    })}
-                    <span className='scanFilterSection' data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
-                        <span className="countCol">
-                        <DefinitionTooltip openOnHover align="top-left" definition="Hidden">
-                        {UtilIssueReact.valueSingToIcon(BrowserDetection.isDarkMode()?"ViewOn":"ViewOff", "reportSecIcon")}</DefinitionTooltip>
-                            <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
-                                {reportIssues && <>
-                                    {(filterCounts["Hidden"].focused === filterCounts["Hidden"].total) ?
-                                            filterCounts["Hidden"].total
-                                            : <>
-                                                {filterCounts["Hidden"].focused}/{filterCounts["Hidden"].total}
-                                            </>}
-                                </>}
-                            </span>
-                            <span style={{ marginRight: "18px" }}></span>
-                        </span>
-                    </span>
-                    <Link 
-                        id="totalIssuesCount" 
-                        href="#0"
-                        className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
-                        aria-disabled={totalCount === 0}
-                        inline={true}
-                        onClick={() => {
-                            let appController = getDevtoolsAppController();
-                            getDevtoolsAppController().setSecondaryView("summary");
-                            appController.openSecondary("totalIssuesCount");
-                    }}>{totalCount} issues found</Link>
+                            <Link 
+                                id="totalIssuesCount" 
+                                href="#0"
+                                className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
+                                aria-disabled={totalCount === 0}
+                                inline={true}
+                                onClick={() => {
+                                    let appController = getDevtoolsAppController();
+                                    getDevtoolsAppController().setSecondaryView("summary");
+                                    appController.openSecondary("totalIssuesCount");
+                            }}><span style={{whiteSpace: "nowrap"}}>{totalCount} issues found</span></Link>
+                        </div>
                     </div>
                 </Column>
             </Grid>
