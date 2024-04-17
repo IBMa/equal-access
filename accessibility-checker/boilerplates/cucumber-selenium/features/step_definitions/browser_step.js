@@ -183,8 +183,8 @@ Then(/^I should see "([^"]*)"$/, function(text) {
 
 Then(/^Page is accessible with label "([^"]*)"$/, { "timeout": 30000 }, async function(label) {
     const world = this;
+    const { report } = await aChecker.getCompliance(world.driver, label);
     try {
-        const { report } = await aChecker.getCompliance(world.driver, label);
         // If assert fails, value is either 1 or 2 depending on if there's a baseline
         let assertResult = aChecker.assertCompliance(report);
         expect(assertResult).to.equal(0, assertResult === 1 ? "Results do not match baseline": "Failing issues found");
@@ -193,22 +193,18 @@ Then(/^Page is accessible with label "([^"]*)"$/, { "timeout": 30000 }, async fu
         const buffer = await world.driver.takeScreenshot();
         await world.attach(buffer, 'image/png');
         return Promise.reject(e);
-    } finally {
-        await aChecker.close();
     }
 })
 
 Then(/^Scan page for accessibility with label "([^"]*)"$/, { "timeout": 30000 }, async function(label) {
     const world = this;
+    const { report } = await aChecker.getCompliance(world.driver, label);
     try {
-        const { report } = await aChecker.getCompliance(world.driver, label);
         let assertResult = aChecker.assertCompliance(report);
         expect(assertResult).to.equal(0, assertResult === 1 ? "Results do not match baseline": "Failing issues found");
     } catch (e) {
         world.attach(escape(aChecker.stringifyResults(report)));
         const buffer = await world.driver.takeScreenshot();
         await world.attach(buffer, 'image/png');
-    } finally {
-        await aChecker.close();
-    }
+    };
 })

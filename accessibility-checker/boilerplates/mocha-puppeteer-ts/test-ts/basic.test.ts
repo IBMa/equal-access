@@ -1,7 +1,7 @@
 'use strict';
 import * as Puppeteer from "puppeteer";
 // import { Browser, Page, launch } from "puppeteer";
-import { assertCompliance, getCompliance, stringifyResults, close } from "accessibility-checker";
+import { assertCompliance, getCompliance, stringifyResults } from "accessibility-checker";
 import * as path from "path";
 import { expect } from "chai";
 import { before, after, describe, it } from "mocha";
@@ -27,26 +27,20 @@ after(async() => {
 
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Hello World Basics", function () {
-    try {
-        it("HomePage", async () => {
-            const sample = path.join(__dirname, "..", "sample", "Hello.html");
-            await page.goto(`file://${sample}`);
+    it("HomePage", async () => {
+        const sample = path.join(__dirname, "..", "sample", "Hello.html");
+        await page.goto(`file://${sample}`);
 
-            const result = await getCompliance(page, "HOME");
-            const report : ICheckerReport = result!.report as ICheckerReport;
-            expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
-        }).timeout(10000);
+        const result = await getCompliance(page, "HOME");
+        const report : ICheckerReport = result!.report as ICheckerReport;
+        expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
+    }).timeout(10000);
 
-        it("Homepage, Show Card", async() => {
-            await page.click("#clickMe");
-            const result = await getCompliance(page, "HOME_CARD");
-            const report : ICheckerReport = result!.report as ICheckerReport;
-            expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
-        }).timeout(10000);
-    } catch (e) {
-        console.error(e);
-    } finally {
-        close();
-    }
+    it("Homepage, Show Card", async() => {
+        await page.click("#clickMe");
+        const result = await getCompliance(page, "HOME_CARD");
+        const report : ICheckerReport = result!.report as ICheckerReport;
+        expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
+    }).timeout(10000);
 });
 //# sourceMappingURL=basic.test.js.map

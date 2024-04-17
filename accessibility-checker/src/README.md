@@ -45,13 +45,13 @@ try {
         expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
     });
 } catch (err) {
-    console.error(err);
-} finally {
-    // close the engine
-    await aChecker.close();
-};
+        console.error(err);
+    } finally {
+        // close the engine
+        await aChecker.close();
+    };
 ```
-Note that it's important to close the checker engine, otherwise, output files for the report may not be generated properly.
+Note that it's important to close the engine, otherwise, output files for the report may not be generated properly.
 
 Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
 

@@ -45,31 +45,25 @@ after(function(done) {
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Hello World Basics", function () {
     this.timeout(0);
-    try {
-        it("HomePage", function (done) {
-            const sample = path.join(__dirname, "..", "sample", "Hello.html");
-            loadSeleniumTestFile(browser, sample).then(function() {
-                // Perform the accessibility scan using the IBMaScan Wrapper
-                aChecker.getCompliance(browser, "HOME", function (data, doc) {
-                    try {
-                        expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyResults(data));
-                        done();
-                    } catch (e) {
-                        done(e);
-                    }
-                });
+    it("HomePage", function (done) {
+        const sample = path.join(__dirname, "..", "sample", "Hello.html");
+        loadSeleniumTestFile(browser, sample).then(function() {
+            // Perform the accessibility scan using the IBMaScan Wrapper
+            aChecker.getCompliance(browser, "HOME", function (data, doc) {
+                try {
+                    expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyResults(data));
+                    done();
+                } catch (e) {
+                    done(e);
+                }
             });
         });
+    });
 
-        it("Hompage, Show Card", async () => {
-            await browser.findElement({"id": "clickMe"}).click();
-            let result = await aChecker.getCompliance(browser, "HOME_CARD");
-            let report = result.report;
-            expect(aChecker.assertCompliance(report)).to.equal(0, aChecker.stringifyResults(report));
-        });
-    } catch (e) {
-        console.error(e);
-    } finally {
-        aChecker.close();
-    }
+    it("Hompage, Show Card", async () => {
+        await browser.findElement({"id": "clickMe"}).click();
+        let result = await aChecker.getCompliance(browser, "HOME_CARD");
+        let report = result.report;
+        expect(aChecker.assertCompliance(report)).to.equal(0, aChecker.stringifyResults(report));
+    });
 });
