@@ -45,13 +45,57 @@ try {
         expect(returnCode).toBe(0, "Scanning " + testLabel + " failed.");
     });
 } catch (err) {
-        console.error(err);
-    } finally {
-        // close the engine
-        await aChecker.close();
-    };
+    console.error(err);
+} finally {
+    // close the engine
+    await aChecker.close();
+};
 ```
-Note that it's important to close the engine, otherwise, output files for the report may not be generated properly.
+Note that it's critical to close the engine, otherwise, output files for the report may not be generated properly.
+If you execute batch scans, the engine should be closed after all the scans are completed for better performance:
+```javascript
+async batchScan(rptInputFiles) {
+    let failures = [];
+    try {
+        for (let f of rptInputFiles) {
+            let result;
+            let isFile = false;
+            try {
+                isFile = fs.lstatSync(f).isFile();
+                f = path.resolve(f);
+            } catch (e) {}
+            if (isFile) {
+                result = await aChecker.getCompliance("file://"+f, f.replace(/^file:\/\//,"").replace(/[:?&=]/g,"_"));
+            } else {
+                result = await aChecker.getCompliance(f, f.replace(/^(https?:|file:)\/\//,"").replace(/[:?&=]/g,"_"));
+            }
+            if (result) {
+                if (aChecker.assertCompliance(result.report) === 0) {
+                    console.log("Passed:", f);
+                } else {
+                    failures.push({
+                        file: f,
+                        report: result.report
+                    });
+                    console.log("Failed:", f);
+                }
+            } else {
+                console.log("Error:", f);
+            }
+        }
+        if (failures.length > 0) {
+            console.log("Failing scan details:");
+            for (const fail of failures) {
+                console.log(aChecker.stringifyResults(fail.report));
+            }
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await aChecker.close();
+    }
+}    
+```
 
 Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
 
