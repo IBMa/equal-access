@@ -37,6 +37,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             ovElemStyle.outline = "solid #8A3FFC 3px";
             ovElemStyle.position = "absolute";
             ovElemStyle.zIndex = "2147483647";
+            ovElemStyle.pointerEvents = "none";
 
 
             let ovInfoStyle = overlays.info.style;
