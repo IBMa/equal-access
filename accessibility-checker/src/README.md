@@ -52,7 +52,7 @@ try {
 };
 ```
 Note that it's critical to close the engine, otherwise, output files for the report may not be generated properly.
-If you execute batch scans, the engine should be closed after all the scans are completed for better performance:
+If you execute batch scans, the engine should be closed after all the scans are completed for better performance. The following is a sample usage scenario:
 ```javascript
 async batchScan(rptInputFiles) {
     let failures = [];
