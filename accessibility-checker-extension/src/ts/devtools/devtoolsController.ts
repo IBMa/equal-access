@@ -367,6 +367,18 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onViewState`);
     }
 
+    public async clearInspectOverlay() : Promise<void> {
+        return this.hook("setSelectedIssue", null, async () => {
+            setTimeout(async () => {
+                this.notifyEventListeners("DT_onClearInspectOverlay", this.ctrlDest.tabId, null);
+            }, 0);
+        });
+    }
+
+    public async addClearInspectOverlay(listener: ListenerType<void>) {
+        this.addEventListener(listener, `DT_onClearInspectOverlay`);
+    }
+
     ///// Issue/path functions /////////////////////////////////////////
 
     /**
