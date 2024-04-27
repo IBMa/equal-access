@@ -284,7 +284,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         }
     });
 
-    devtoolsController.addClearInspectOverlay(async () => {
+    devtoolsController.addClearInspectOverlayListener(async () => {
         hideOverlays();
     })
 })();
