@@ -47,7 +47,8 @@
 
 The primary keyboard navigation convention uses `Tab` and `Shift+Tab` keys to move focus from one UI component to another.
 Other keys (primarily the arrow keys) move focus within components comprised of multiple focusable elements.
-Authors must follow this convention and provide no more than one tab stop per component (providing keyboard focus).
+Authors must follow this convention and provide no more than one tab stop per component (providing keyboard focus) and insure the keyboard tab sequence is logical.
+In addition, the keyboard operations should be consistent with common keyboard interface conventions described in the [ARIA Patterns](https://www.w3.org/WAI/ARIA/apg/patterns/), especially for assistive technology users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -68,7 +69,11 @@ Authors must follow this convention and provide no more than one tab stop per co
 ### About this requirement
 
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [IBM 2.4.3 Focus Order](https://www.ibm.com/able/requirements/requirements/#2_4_3)
+* [ARIA practices - Patterns](https://www.w3.org/WAI/ARIA/apg/patterns/)    
 * [ARIA practices - Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [Verify - Check tab or navigation order](https://www.ibm.com/able/toolkit/verify/manual/#tabnavorder)
+* [Verify - Maintaining user's point of regard](https://www.ibm.com/able/toolkit/verify/manual/#pointofregard)    
 
 ### Who does this affect?
 
