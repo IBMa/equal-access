@@ -1256,7 +1256,7 @@
                 "dom": "/html[1]/body[1]/div[1]/a[1]",
                 "aria": "/document[1]/navigation[1]/link[1]"
             },
-            "reasonId": "Pass_0",
+            "reasonId": "pass",
             "message": "Hyperlink has a description of its purpose",
             "messageArgs": [],
             "apiArgs": [],
@@ -1270,7 +1270,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/a_text_purpose.html#%7B%22message%22%3A%22Hyperlink%20has%20a%20description%20of%20its%20purpose%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22a_text_purpose%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/a_text_purpose.html#%7B%22message%22%3A%22Hyperlink%20has%20a%20description%20of%20its%20purpose%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22a_text_purpose%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "text_whitespace_valid",
@@ -1797,7 +1797,7 @@
         },
         "a_text_purpose": {
             "0": "Hyperlinks must have an accessible name for their purpose",
-            "Pass_0": "Hyperlink has a description of its purpose"
+            "pass": "Hyperlink has a description of its purpose"
         },
         "widget_tabbable_exists": {
             "0": "Component must have at least one tabbable element",
