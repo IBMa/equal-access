@@ -58,8 +58,10 @@ let myKCMState = false;
         }
         delayTimer = setTimeout(() => {
             deleteDrawing(".deleteMe");
-            refreshDrawing();
-        }, 0);
+            if (myKCMState) {
+                refreshDrawing();
+            }
+        }, 100);
     });
     addEventListener("scroll", () => {
         if (typeof delayTimer !== "undefined") {
@@ -68,8 +70,10 @@ let myKCMState = false;
         }
         delayTimer = setTimeout(() => {
             deleteDrawing(".deleteMe");
-            refreshDrawing();
-        }, 0);
+            if (myKCMState) {
+                refreshDrawing();
+            }
+        }, 100);
     });
 
 })();
