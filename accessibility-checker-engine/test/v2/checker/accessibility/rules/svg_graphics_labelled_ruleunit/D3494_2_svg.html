@@ -21,36 +21,24 @@
 
 <head id="id-29">
     <title id="id-36">svg</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 
 <body id="id-9" aria-atomic="true">
-    <p>How many circles are there?</p>
-    <svg xmlns="https://www.w3.org/2000/svg">
-        <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow"
-            aria-label="1 circle"></circle>
-    </svg>
-
+  <p>Cool graphics</p>
+  <svg width="100" height="100">
+    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+  </svg>
+  <svg width="400" height="180">
+    <rect x="50" y="20" rx="20" ry="20" width="150" height="150"
+    style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+  </svg>  
+    <p>Example 5: Linked Icon, with dynamic text</p>
+  
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_graphic_labelled"],
+            ruleIds: ["svg_graphics_labelled"],
             results: [
-                {
-                    "ruleId": "aria_graphic_labelled",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/svg[1]/circle[1]",
-                        "aria": "/document[1]/generic[1]/graphics-document[1]/graphics-symbol[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [],
-                    "apiArgs": [],
-                    "category": "Other"
-                }
+            
             ]
         }
     </script>
