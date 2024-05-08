@@ -240,6 +240,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     onKeyDown(evt: React.KeyboardEvent) {
+        if (evt.key === "Escape") {
+            evt.stopPropagation();
+            getDevtoolsController().clearInspectOverlay();
+        }
         let focusedElemId = this.state.tabRowId;
         let focusedGroup = this.props.rowData?.find((value: IRowGroup) => value.id === focusedElemId);
         if (focusedGroup) {
