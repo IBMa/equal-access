@@ -18,8 +18,7 @@ import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
 import DomPathUtils from "./DomPathUtils";
 import { 
-    IIssue, 
-    IReport 
+    IIssue 
 } from "../interfaces/interfaces";
 
 export default class TabStopHighlight {
@@ -27,7 +26,7 @@ export default class TabStopHighlight {
     //       We need to differentiate between regular circles and circles with errors.
     //       The number text inside the circle (doesn't matter if error or not) 
     //       will be normal if not highlighting, bold if highlight
-    public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IReport, regularTabstops: IReport) { // doc type is main, iframe, shadowdom, click
+    public static async handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string, tabStopsErrors: IIssue[], regularTabstops: IIssue[]) { // doc type is main, iframe, shadowdom, click
         let elementXpath = "";
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
             if (docType === "main") {
@@ -228,14 +227,15 @@ export default class TabStopHighlight {
                     this.highlightCircle(circle,"circle");
 
                     let issue = this.getIssueByXpath(elementXpath,regularTabstops);
-
-                    let tabId = await getBGController().getTabId();
-                    let devtoolsController = getDevtoolsController(true, "remote", tabId);
-                    await devtoolsController.setSelectedIssue(null);
-                    if (await devtoolsController.getActivePanel() === "elements") {
-                        await devtoolsController.inspectPath(elementXpath,element);
-                    } else {
-                        await devtoolsController.setSelectedElementPath(issue.path.dom);
+                    if (issue) {
+                        let tabId = await getBGController().getTabId();
+                        let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                        await devtoolsController.setSelectedIssue(null);
+                        if (await devtoolsController.getActivePanel() === "elements") {
+                            await devtoolsController.inspectPath(elementXpath,element);
+                        } else {
+                            await devtoolsController.setSelectedElementPath(issue.path.dom);
+                        }
                     }
                 } else {
                     console.log("No circle to highlight = ",circle);
@@ -245,14 +245,15 @@ export default class TabStopHighlight {
                     this.highlightCircle(errorCircle,"errorCircle");
 
                     let issue = this.getIssueByXpath(elementXpath,tabStopsErrors);
-
-                    let tabId = await getBGController().getTabId();
-                    let devtoolsController = getDevtoolsController(true, "remote", tabId);
-                    await devtoolsController.setSelectedIssue(issue);
-                    if (await devtoolsController.getActivePanel() === "elements") {
-                        await devtoolsController.inspectPath(elementXpath,element);
-                    } else {
-                        await devtoolsController.setSelectedElementPath(issue.path.dom);
+                    if (issue) {
+                        let tabId = await getBGController().getTabId();
+                        let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                        await devtoolsController.setSelectedIssue(issue);
+                        if (await devtoolsController.getActivePanel() === "elements") {
+                            await devtoolsController.inspectPath(elementXpath,element);
+                        } else {
+                            await devtoolsController.setSelectedElementPath(issue.path.dom);
+                        }
                     }
                 } else {
                     console.log("No errorCircle to highlight = ",circle);
@@ -324,14 +325,7 @@ export default class TabStopHighlight {
         }
     }
 
-    private static getIssueByXpath(elementXpath:string, tabStopsErrors: IReport) {
-        let issue: any;
-        let tabStops:any = tabStopsErrors;
-        for (let i = 0; i < tabStops.length; i++) {
-            if (tabStops[i].path.dom === elementXpath) {
-                issue = tabStops[i];
-            }
-        }
-        return issue as IIssue;
+    private static getIssueByXpath(elementXpath:string, tabStops: IIssue[]) {
+        return tabStops.find(tabStop => tabStop.path.dom === elementXpath);
     }
 }
