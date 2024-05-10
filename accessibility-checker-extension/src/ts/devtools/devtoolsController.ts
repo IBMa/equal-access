@@ -382,6 +382,18 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onViewState`);
     }
 
+    public async clearInspectOverlay() : Promise<void> {
+        return this.hook("clearInspectOverlay", null, async () => {
+            setTimeout(async () => {
+                this.notifyEventListeners("DT_onClearInspectOverlay", this.ctrlDest.tabId, null);
+            }, 0);
+        });
+    }
+
+    public async addClearInspectOverlayListener(listener: ListenerType<void>) {
+        this.addEventListener(listener, `DT_onClearInspectOverlay`);
+    }
+
     ///// Issue/path functions /////////////////////////////////////////
 
     /**
@@ -754,6 +766,7 @@ export class DevtoolsController extends Controller {
                 "DT_setStoredReportsMeta": async(msgBody) => self.setStoredReportsMeta(msgBody.content),
                 "DT_setStoredReportsMetaLabel": async(msgBody) => self.setStoredReportsMetaLabel(msgBody.content.idx, msgBody.content.label),
                 "DT_clearStoredReports": async () => self.clearStoredReports(),
+                "DT_clearInspectOverlay": async () => self.clearInspectOverlay(),
                 "DT_getStoreReports": async () => self.getStoreReports(),
                 "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),

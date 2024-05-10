@@ -20,6 +20,8 @@ import TabStopLine from "./TabStopLine";
 import TabStopText from "./TabStopText";
 import NotificationDot from "./NotificationDot";
 
+const getScreenRect = DomPathUtils.getScreenRect;
+
 export default class TabStopErrorCircles {
     // Tab Stop error NOT in the tab chain - get ? instead of number
     public static draw(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
@@ -28,9 +30,8 @@ export default class TabStopErrorCircles {
         setTimeout(() => {
             let tabbableNodesXpaths = DomPathUtils.issuesToDomPaths(tabStops);
             
-            let nodes = DomPathUtils.issuesToDomPaths(tabStopsErrors);
-            let nodeXpaths = nodes;
-            nodes = DomPathUtils.domPathsToElements(nodeXpaths);
+            let nodeXpaths = DomPathUtils.issuesToDomPaths(tabStopsErrors);
+            let nodes = DomPathUtils.domPathsToElements(nodeXpaths);
             
             // console.log("tabStopsErrors = ", tabStopsErrors);
             nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
@@ -65,10 +66,9 @@ export default class TabStopErrorCircles {
                             // console.log("Non tabbable nodes[",i,"]   element exists");
                             if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
                                 // console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
-                                if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                                if (getScreenRect(nodes[i]) !== null) {
                                     // console.log("Non tabbable nodes[",i,"] has bounding rect");
-                                }
-                                else {
+                                } else {
                                     console.log("Non tabbable nodes[",i,"] has NO bounding rect");
                                 }
                             } else {
@@ -80,15 +80,16 @@ export default class TabStopErrorCircles {
                     }
                     // console.log("--------------------------------");
 
-                    if (nodes[i] != null ) { // JCH - if node exists
-
+                    if (nodes[i] !== null && getScreenRect(nodes[i]) !== null) { // JCH - tabbable nodes
+                        let nodeRect = getScreenRect(nodes[i])!;
+    
                         // coords for nodes[i] and its bounding box if not in iframe or shadow dom
-                        let x = nodes[i].getBoundingClientRect().x;
-                        // console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
-                        let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
+                        let x = nodeRect.x;
+                        // console.log("nodeRect = ",nodeRect);
+                        let xPlusWidth = nodeRect.x + nodeRect.width;
 
-                        let y = nodes[i].getBoundingClientRect().y;
-                        let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
+                        let y = nodeRect.y;
+                        let yPlusHeight = nodeRect.y + nodeRect.height;
             
                         // adjustment for iframes
                         // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
@@ -99,7 +100,7 @@ export default class TabStopErrorCircles {
                             if (lastElement.includes("iframe")) { // this is for the iframe element
                                 // console.log("We Have an iframe, lastElement", lastElement);
                                 if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
-                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
+                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodeRect.x, y: nodeRect.y};
                                     iframes.push(iframe);
                                 }
                                 // no need to adjust coords as the iframe is an element on the main page
@@ -109,8 +110,8 @@ export default class TabStopErrorCircles {
                                 // find the iframe in iframes
                                 const iframesObj = iframes.find((e:any) => e.name === realIframeString);
                                 // console.log("iframesObj = ",iframesObj);
-                                x = iframesObj.x + nodes[i].getBoundingClientRect().x;
-                                y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+                                x = iframesObj.x + nodeRect.x;
+                                y = iframesObj.y + nodeRect.y;
 
                             }
                         }

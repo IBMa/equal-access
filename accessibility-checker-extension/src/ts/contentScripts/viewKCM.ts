@@ -16,7 +16,7 @@
 
 import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { ISettings, IReport } from "../interfaces/interfaces";
+import { ISettings, IReport, IIssue } from "../interfaces/interfaces";
 import { UtilKCM } from "../util/UtilKCM";
 import TabChainCircles from "./TabChainCircles";
 import TabStopErrorCircles from "./TabStopErrorCircles";
@@ -28,24 +28,56 @@ let myKCMState = false;
 (async() => {
     let settings = await bgController.getSettings();
     let myTabId = await bgController.getTabId()!;
-    console.log(myTabId);
     let devtoolsController = getDevtoolsController(myTabId, true);
+
+    async function refreshDrawing() {
+        // if viewState.kcm === true then scan has occurred and KCM button has been pushed
+        //    so draw KCM visualization
+        let report = await devtoolsController.getReport();
+        // @ts-ignore
+        getKCMData(report, settings);
+    }
+
     // console.log("ADDING ViewState LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
         if (viewState.kcm === myKCMState) return;
         if (viewState.kcm === true) {
             myKCMState = true;
-            // if viewState.kcm === true then scan has occurred and KCM button has been pushed
-            //    so draw KCM visualization
-            let report = await devtoolsController.getReport();
-            // @ts-ignore
-            getKCMData(report, settings);
+            await refreshDrawing();
         } else {
             deleteDrawing(".deleteMe");
             myKCMState = false;
         }
     });
+
+    let delayTimer: string | number | NodeJS.Timeout | undefined;
+    addEventListener("resize", () => {
+        if (typeof delayTimer !== "undefined") {
+            clearTimeout(delayTimer);
+            delayTimer = undefined;
+        }
+        delayTimer = setTimeout(() => {
+            deleteDrawing(".deleteMe");
+            if (myKCMState) {
+                refreshDrawing();
+            }
+        }, 100);
+    });
+    addEventListener("scroll", () => {
+        if (typeof delayTimer !== "undefined") {
+            clearTimeout(delayTimer);
+            delayTimer = undefined;
+        }
+        delayTimer = setTimeout(() => {
+            deleteDrawing(".deleteMe");
+            if (myKCMState) {
+                refreshDrawing();
+            }
+        }, 100);
+    });
+
 })();
+
 
 function getKCMData (report:IReport | null, settings: ISettings) {
     /* JCH before finish scan collect and order tab stops
@@ -60,7 +92,7 @@ function getKCMData (report:IReport | null, settings: ISettings) {
     drawDeleteKCM(tabbable,tabbableErrors,settings);
 }
 
-function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISettings) {
+function drawDeleteKCM(tabbable:IIssue[], tabbableErrors:IIssue[], settings:ISettings) {
    
     injectCSS(
         `
@@ -183,10 +215,10 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
     );
     
     // Create nodes that have keyboard errors
-    let tabStopsErrors: any = tabbableErrors;
+    let tabStopsErrors = tabbableErrors;
 
     // Create nodes that are tabbable, i.e., in the tab chain
-    let regularTabstops: any = tabbable;
+    let regularTabstops = tabbable;
     for (let index = 0; index < regularTabstops.length; index++) {
         const tabElem = regularTabstops[index];
         let flagMatchFound = false;
@@ -196,22 +228,16 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             }
         });
         if (flagMatchFound) {
-            regularTabstops[index].nodeHasError = true;
+            (regularTabstops[index] as any).nodeHasError = true;
         } 
     }
     
-    // JCH - this allows the web to scroll to the top before drawing occurs
-    //       we get the lines and outlines (both booleans) from settings
-    goToTop().then(function() {
-        setTimeout(() => {
-                let iframes: any = [];
-                TabChainCircles.draw(regularTabstops, tabStopsErrors, settings.tabStopLines, settings.tabStopOutlines,iframes).then(function() {
-                TabStopErrorCircles.draw(tabStopsErrors, regularTabstops, settings.tabStopOutlines,iframes);
-            });
-            
-        }, 1000)
-        
-    });
+    setTimeout(() => {
+            let iframes: any = [];
+            TabChainCircles.draw(regularTabstops, tabStopsErrors, settings.tabStopLines, settings.tabStopOutlines,iframes).then(function() {
+            TabStopErrorCircles.draw(tabStopsErrors, regularTabstops, settings.tabStopOutlines,iframes);
+        });            
+    }, 0)
 
     // left mouse click listener for the circles and triangles
     window.addEventListener('mousedown', function(event:any) {
@@ -268,15 +294,6 @@ function injectCSS(styleString: string) {
     style.classList.add("deleteMe");
     style.textContent = styleString;
     document.head.append(style);
-}
-
-
-async function goToTop() {
-    window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
 }
 
 function deleteDrawing(classToRemove: string) {
