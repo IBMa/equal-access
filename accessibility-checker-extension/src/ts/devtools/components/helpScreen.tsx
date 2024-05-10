@@ -19,6 +19,7 @@ import { Column, InlineLoading, Grid } from "@carbon/react";
 import { IIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
 import { getBGController } from "../../background/backgroundController";
+import { getDevtoolsAppController } from "../devtoolsAppController";
 
 interface IHelpScreenState {
     issue: IIssue | null
@@ -38,13 +39,14 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         help2: null,
         loading: true
     }
-    private static devtoolsController = getDevtoolsController();
+    private devtoolsAppController = getDevtoolsAppController();
+    private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
 
     async componentDidMount(): Promise<void> {
-        HelpScreen.devtoolsController.addSelectedIssueListener(async (issue) => {
+        this.devtoolsController.addSelectedIssueListener(async (issue) => {
             this.setIssue(issue);
         });
-        let issue = await HelpScreen.devtoolsController.getSelectedIssue();
+        let issue = await this.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
     }
 

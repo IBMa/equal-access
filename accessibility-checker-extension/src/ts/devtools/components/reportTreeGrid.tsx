@@ -40,7 +40,6 @@ import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController'
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
-import { getTabId } from '../../util/tabId';
 
 export interface IRowGroup {
     id: string;
@@ -71,9 +70,9 @@ interface ReportTreeGridState {
 }
 
 export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<ReportTreeGridProps<RowType>, ReportTreeGridState> {
-    private static devtoolsAppController = getDevtoolsAppController();
-    private static devtoolsController = getDevtoolsController();
-    private static bgcontroller = getBGController();
+    private devtoolsAppController = getDevtoolsAppController();
+    private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
+    private bgcontroller = getBGController();
     private treeGridRef = React.createRef<HTMLDivElement>();
     state: ReportTreeGridState = {
         expandedGroups: [],
@@ -100,7 +99,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     async componentDidMount(): Promise<void> {
-        ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
+        this.devtoolsController.addSelectedIssueListener(async (issue) => {
             for (const group of this.props.rowData!) {
                 for (const groupIssue of group.children) {
                     if (groupIssue.path.dom === issue.path.dom
@@ -112,17 +111,17 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 }
             }
         });
-        let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
+        let issue = await this.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
 
         if (this.props.rowData && this.props.rowData.length > 0) {
             this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: "tableGridHeader" });
         }
-        ReportTreeGrid.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
+        this.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
             this.setState({ viewState });
         })
         this.setState({
-            viewState: (await ReportTreeGrid.devtoolsController.getViewState())!
+            viewState: (await this.devtoolsController.getViewState())!
         })
     }
 
@@ -222,19 +221,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     async onRow(_group: IRowGroup, issue: IIssue, inspect?: boolean) {
-        await ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
+        await this.devtoolsController.setSelectedIssue(issue);
         if (this.props.panel === "elements" && inspect !== false) {
             // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
             let focusTarget: HTMLElement | null = this.treeGridRef.current;
-            if (ReportTreeGrid.devtoolsAppController.getSecondaryOpen()) {
+            if (this.devtoolsAppController.getSecondaryOpen()) {
                 let secondaryPanel = document.querySelector(".secondaryDialog") as HTMLElement;
                 if (window.getComputedStyle(secondaryPanel).display !== "none") {
                     focusTarget = secondaryPanel.querySelector(".cds--modal-close")
                 }
             }
-            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, focusTarget);
+            await this.devtoolsController.inspectPath(issue.path.dom, focusTarget);
         } else {
-            await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
+            await this.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
         this.setState({ tabRowId: ReportTreeGrid.getRowId(_group, issue) });
     }
@@ -571,7 +570,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 No issues detected for the chosen filter criteria. To see all issues, <Link
                     inline={true}
                     onClick={() => {
-                        getDevtoolsController().setFocusMode(false);
+                        this.devtoolsController.setFocusMode(false);
                     }}
                 >turn off focus view</Link>, <Link
                     inline={true}
@@ -835,15 +834,16 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             role="link"
                                             href="#0"
                                             // tabIndex={focused ? 0 : -1}
-                                            onClick={() => {
+                                            onClick={(evt: any) => {
                                                 this.onRow(group, thisIssue);
-                                                ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
-                                                ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
+                                                this.devtoolsAppController.setSecondaryView("help");
+                                                this.devtoolsAppController.openSecondary(`#${rowId} a`);
+                                                evt.preventDefault();
                                             }}
                                             // onKeyDown={(evt: React.KeyboardEvent) => {
                                             //     if (evt.key === "Enter" || evt.key === "Return") {
                                             //         this.onRow(group, thisIssue);
-                                            //         ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
+                                            //         this.devtoolsAppController.openSecondary(`#${rowId} a`);
                                             //     }
                                             // }}
                                         >Learn more</Link>
@@ -866,11 +866,11 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                             tabIndex={0}
                             renderIcon={ignoreAction === "Show" ? ViewFilled : ViewOffFilled }
                             onClick={async () => {
-                                let url = (await ReportTreeGrid.bgcontroller.getTabInfo(getTabId())).url!;
-                                ReportTreeGrid.bgcontroller.setIgnore(url, this.state.checkedIssues, ignoreAction !== "Show");
+                                let url = (await this.bgcontroller.getTabInfo(this.devtoolsAppController.contentTabId!)).url!;
+                                this.bgcontroller.setIgnore(url, this.state.checkedIssues, ignoreAction !== "Show");
                                 this.setState({checkedIssues: []});
-                                let report = await ReportTreeGrid.devtoolsController.getReport();
-                                await ReportTreeGrid.devtoolsController.setReport(report);
+                                let report = await this.devtoolsController.getReport();
+                                await this.devtoolsController.setReport(report);
                                 this.props.onFilterToolbar(true);
                             }}
                         >{ignoreAction}</TableBatchAction>

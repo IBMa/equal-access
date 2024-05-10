@@ -20,7 +20,6 @@ import { IIssue, IReport, UIIssue, eFilterLevel } from '../../interfaces/interfa
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
-import { getTabId } from '../../util/tabId';
 import { getBGController, issueBaselineMatch, TabChangeType } from '../../background/backgroundController';
 import { 
     Button,
@@ -45,9 +44,7 @@ import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { DefinitionTooltip } from '@carbon/react';
 import { BrowserDetection } from "../../util/browserDetection";
-
-let devtoolsController = getDevtoolsController();
-let bgController = getBGController();
+import { getTabIdAsync } from '../../util/tabId';
 
 interface ScanSectionState {
     report: IReport | null,
@@ -98,6 +95,10 @@ type CountType = {
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
+    private devtoolsAppController = getDevtoolsAppController();
+    private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
+    private bgController = getBGController();
+
     state : ScanSectionState = {
         report: null,
         selectedPath: null,
@@ -132,8 +133,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             hasReportContent = true;
         }
         // If a scan never started, we can't be done
-        let url = (await bgController.getTabInfo(getTabId())).url!;
-        let alreadyIgnored = await bgController.getIgnore(url);
+        let url = (await this.bgController.getTabInfo(getDevtoolsAppController().contentTabId)).url!;
+        let alreadyIgnored = await this.bgController.getIgnore(url);
         self.setState( { 
             ignoredIssues: alreadyIgnored,
             scanningState: this.state.scanningState !== "idle"? "done" : "idle",
@@ -154,63 +155,64 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     
 
     async componentDidMount(): Promise<void> {
-        devtoolsController.addReportListener(this.reportListener);
-        devtoolsController.addScanningStateListener(async (newState) => {
+        let tabId = getDevtoolsAppController().contentTabId
+        this.devtoolsController.addReportListener(this.reportListener);
+        this.devtoolsController.addScanningStateListener(async (newState) => {
             this.setState({scanningState: newState });
         });
-        devtoolsController.addViewStateListener(async (newState) => {
+        this.devtoolsController.addViewStateListener(async (newState) => {
             this.setState( { viewState: newState });
         })
-        devtoolsController.addStoreReportsListener(async (newState) => {
+        this.devtoolsController.addStoreReportsListener(async (newState) => {
             this.setState( { 
                 storeReports: newState,
-                storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length
+                storedReportsCount: (await this.devtoolsController.getStoredReportsMeta()).length
             });
         })
-        devtoolsController.addStoredReportsMetaListener(async (newState) => {
+        this.devtoolsController.addStoredReportsMetaListener(async (newState) => {
             this.setState( { 
                 storedReportsCount: newState.length
             });
         })
-        devtoolsController.addSelectedElementPathListener(async (newPath) => {
+        this.devtoolsController.addSelectedElementPathListener(async (newPath) => {
             this.setState( { selectedElemPath: newPath });
         })
-        devtoolsController.addFocusModeListener(async (newValue) => {
+        this.devtoolsController.addFocusModeListener(async (newValue) => {
             this.setState({ focusMode: newValue })
         })
-        bgController.addTabChangeListener(async (content: TabChangeType) => {
+        this.bgController.addTabChangeListener(async (content: TabChangeType) => {
             if (content.changeInfo.status) {
                 this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
             }
             if (content.changeInfo.status === "complete") {
                 this.setState({
-                    canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+                    canScan: (await this.bgController.getTabInfo(tabId)).canScan
                 });
             }
         });
-        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
-            if (url === (await bgController.getTabInfo(getTabId())).url) {
+        this.bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await this.bgController.getTabInfo(tabId)).url) {
                 this.setState({ ignoredIssues: issues });
             }
         })
-        this.reportListener((await devtoolsController.getReport())!);
+        this.reportListener((await this.devtoolsController.getReport())!);
         this.setState({ 
-            viewState: (await devtoolsController.getViewState())!, 
-            storeReports: (await devtoolsController.getStoreReports()),
-            selectedElemPath: (await devtoolsController.getSelectedElementPath())! || "/html",
-            focusMode: (await devtoolsController.getFocusMode()),
-            storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length,
-            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+            viewState: (await this.devtoolsController.getViewState())!, 
+            storeReports: (await this.devtoolsController.getStoreReports()),
+            selectedElemPath: (await this.devtoolsController.getSelectedElementPath())! || "/html",
+            focusMode: (await this.devtoolsController.getFocusMode()),
+            storedReportsCount: (await this.devtoolsController.getStoredReportsMeta()).length,
+            canScan: (await this.bgController.getTabInfo(tabId)).canScan
         });
     }
 
     componentWillUnmount(): void {
-        devtoolsController.removeReportListener(this.reportListener);
+        this.devtoolsController.removeReportListener(this.reportListener);
     }
 
     async scan() {
         this.setState( { scannedOnce: true });
-        await bgController.requestScan(getTabId()!);
+        await this.bgController.requestScan({ contentTabId: this.devtoolsAppController.contentTabId!, toolTabId: await getTabIdAsync()});
         // The scan is done here so can calc issues found and issue type counts
         // see newReport in reportListener
     }
@@ -353,19 +355,19 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     {/* <OverflowMenuItem
                                         disabled={!this.state.reportContent}
                                         itemText="Download current scan" 
-                                        onClick={() => devtoolsController.exportXLS("last") }
+                                        onClick={() => this.devtoolsController.exportXLS("last") }
                                     /> */}
                                     <OverflowMenuItem 
                                         // if scanStorage false not storing scans, if true storing scans
                                         itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
                                         onClick={() => {
-                                            devtoolsController.setStoreReports(!this.state.storeReports);
+                                            this.devtoolsController.setStoreReports(!this.state.storeReports);
                                         }}
                                     />
                                     <OverflowMenuItem 
                                         disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
                                         itemText="Export stored scans" 
-                                        onClick={() => devtoolsController.exportXLS("all") }
+                                        onClick={() => this.devtoolsController.exportXLS("all") }
                                     />
                                     <OverflowMenuItem 
                                         disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
@@ -399,7 +401,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     selectionMode="manual"
                                     selectedIndex={this.state.focusMode ? 0 : 1}
                                     onChange={(newState: { index: string, name: "All" | "Focused", text: string }) => {
-                                        devtoolsController.setFocusMode(newState.name === "Focused");
+                                        this.devtoolsController.setFocusMode(newState.name === "Focused");
                                     }}
                                 >
                                     <Switch
@@ -423,7 +425,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             disabled={!this.state.reportContent}
                             iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             onClick={async () => {
-                                let settings = await bgController.getSettings();
+                                let settings = await this.bgController.getSettings();
                                 let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));                                
                                 newState.kcm = !newState.kcm;
                                 let devtoolsAppController = getDevtoolsAppController();
@@ -438,7 +440,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         devtoolsAppController.closeSecondary();
                                     }
                                 }
-                                await devtoolsController.setViewState(newState);
+                                await this.devtoolsController.setViewState(newState);
                             }}
                             size="sm"
                             kind="secondary"
@@ -495,10 +497,10 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                 className= {totalCount === 0 ? "darkLink totalCountDisable" : "darkLink totalCountEnable"}
                                 aria-disabled={totalCount === 0}
                                 inline={true}
-                                onClick={() => {
-                                    let appController = getDevtoolsAppController();
+                                onClick={(evt: any) => {
                                     getDevtoolsAppController().setSecondaryView("summary");
-                                    appController.openSecondary("totalIssuesCount");
+                                    this.devtoolsAppController.openSecondary("totalIssuesCount");
+                                    evt.preventDefault();
                             }}><span style={{whiteSpace: "nowrap"}}>{totalCount} issues found</span></Link>
                         </div>
                     </div>
@@ -518,7 +520,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             this.setState({ confirmClearStored: false });
                         }).bind(this)}
                         onRequestSubmit={(() => {
-                            devtoolsController.clearStoredReports();
+                            this.devtoolsController.clearStoredReports();
                             this.setState({
                                 storedReportsCount: 0,
                                 confirmClearStored: false

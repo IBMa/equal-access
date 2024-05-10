@@ -28,7 +28,8 @@ let myKCMState = false;
 (async() => {
     let settings = await bgController.getSettings();
     let myTabId = await bgController.getTabId()!;
-    let devtoolsController = getDevtoolsController(true, "remote", myTabId);
+    console.log(myTabId);
+    let devtoolsController = getDevtoolsController(myTabId, true);
     // console.log("ADDING ViewState LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
         if (viewState.kcm === myKCMState) return;
@@ -287,7 +288,7 @@ function deleteDrawing(classToRemove: string) {
 document.documentElement.addEventListener("keypress", async (evt: KeyboardEvent) => {
     if (evt.code === "KeyS" && evt.ctrlKey && evt.altKey) {
         let tabId = await bgController.getTabId();
-        bgController.requestScan(tabId);    
+        bgController.requestScan({ toolTabId: tabId, contentTabId: tabId });    
         evt.preventDefault();
         evt.stopPropagation();
     }

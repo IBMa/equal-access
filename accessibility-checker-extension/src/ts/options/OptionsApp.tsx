@@ -178,7 +178,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         let tabStoredScans = (await getBGController().getSessionState()).tabStoredCount;
         for (const tabId in tabStoredScans) {
             if (tabStoredScans[tabId] > 0) {
-                getDevtoolsController(false, "remote", parseInt(tabId)).clearStoredReports();
+                getDevtoolsController(parseInt(tabId), false, "remote").clearStoredReports();
             }
         }
         this.setState({storedScansExist: false});

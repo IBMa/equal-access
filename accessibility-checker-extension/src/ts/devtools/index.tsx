@@ -15,9 +15,12 @@
 *****************************************************************************/
 
 import Config from "../util/config";
+import { getTabIdSync } from "../util/tabId";
 import { getDevtoolsController } from "./devtoolsController";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
 let devStr = (Config.workspace && Config.workspace === "development" && " (dev)") || "";
+let devtoolsController = getDevtoolsController(getTabIdSync()!, false, "local", getTabIdSync()!);
+
 chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+devStr+localStr,
     function(newPanel) {
         //sidebar initialization code here
@@ -42,4 +45,3 @@ chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "d
     }
 );
 
-let devtoolsController = getDevtoolsController(false, "local");

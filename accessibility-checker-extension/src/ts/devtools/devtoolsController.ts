@@ -20,7 +20,7 @@ import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
 import { genReport } from "../util/htmlReport/genReport";
-import { getTabId } from "../util/tabId";
+import { getTabIdSync } from "../util/tabId";
 import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
 import MultiScanReport from "../util/xlsxReport/multiScanReport/xlsx/MultiScanReport";
 
@@ -54,6 +54,22 @@ export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
 
     ///// Stored reports functions /////////////////////////////////////////
+
+    /**
+     * Wait for connection to open
+     */
+    public async awaitConnection(): Promise<string> {
+        let resp = null;
+        do {
+            resp = await this.hook("awaitConnection", null, async () => {
+                return "OK";
+            })
+            if (!resp) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        } while (resp === null);
+        return resp;
+    }
 
     /**
      * Get stored reports
@@ -249,9 +265,8 @@ export class DevtoolsController extends Controller {
             let bgController = getBGController();
             let settings = await bgController.getSettings();
             if (report) {
-                let tabId = getTabId();
-                let tabInfo = await bgController.getTabInfo(tabId);
-                let ignored: IIssue[] = await bgController.getIgnore(tabInfo.url!);
+                let contentTabInfo = await bgController.getTabInfo(this.contentTabId!);
+                let ignored: IIssue[] = await bgController.getIgnore(contentTabInfo.url!);
                 let newCounts = await this.getCountsWithHidden(report.counts, report.results, ignored);
                 const now = new Date().getTime();
                 devtoolsState!.lastReportMeta = {
@@ -260,17 +275,17 @@ export class DevtoolsController extends Controller {
                     label: `scan_${this.scanCounter++}`,
                     ruleset: settings.selected_archive.id,
                     guideline: settings.selected_ruleset.id,
-                    pageTitle: tabInfo.title!,
-                    pageURL: tabInfo.url!,
-                    screenshot: await bgController.getScreenshot(tabId),
+                    pageTitle: contentTabInfo.title!,
+                    pageURL: contentTabInfo.url!,
+                    screenshot: await bgController.getScreenshot(this.contentTabId),
                     storedScanData: MultiScanData.issues_sheet_rows({
                         settings: settings,
                         report: report,
                         ignored: ignored,
-                        pageTitle: tabInfo.title!,
-                        pageURL: tabInfo.url!,
+                        pageTitle: contentTabInfo.title!,
+                        pageURL: contentTabInfo.url!,
                         timestamp: now+"",
-                        rulesets: await bgController.getRulesets(tabId!)
+                        rulesets: await bgController.getRulesets(this.contentTabId!)
                     }),
                     testedUniqueElements: report.testedUniqueElements,
                     counts: newCounts
@@ -605,10 +620,12 @@ export class DevtoolsController extends Controller {
     }
 
     private async htmlReportHandler() {
+        if (!this.contentTabId) {
+            throw new Error("Cannot call this function directly from remote controllers")
+        }
         let bgController = await getBGController();
-        let tabId = getTabId();
-        let rulesets = await bgController.getRulesets(tabId!);
-        let tabInfo = await bgController.getTabInfo(getTabId());
+        let rulesets = await bgController.getRulesets(this.contentTabId);
+        let tabInfo = await bgController.getTabInfo(this.contentTabId);
         if (devtoolsState?.lastReport && rulesets) {
             let reportObj: any = {
                 tabURL: tabInfo.url,
@@ -708,8 +725,8 @@ export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    constructor(isContentScript: boolean, type: eControllerType, tabId?: number) {
-        super(type, { type: "devTools", tabId: (tabId || getTabId())!, relay: isContentScript}, "DT");
+    constructor(toolTabId: number, isContentScript: boolean, type: eControllerType, private contentTabId?: number) {
+        super(type, { type: "devTools", tabId: (toolTabId || getTabIdSync())!, relay: isContentScript}, "DT");
         if (type === "local") {
             let self = this;
             devtoolsState = {
@@ -752,7 +769,8 @@ export class DevtoolsController extends Controller {
                 "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content),
                 "DT_setScanningState": async(msgBody) => self.setScanningState(msgBody.content),
                 "DT_setActivePanel": async(msgBody) => self.setActivePanel(msgBody.content),
-                "DT_getActivePanel": async() => self.getActivePanel()
+                "DT_getActivePanel": async() => self.getActivePanel(),
+                "DT_awaitConnection": async() => self.awaitConnection()
             }
 
             // Hook the above definitions
@@ -794,15 +812,20 @@ let singletons : {
  * Get a devtools controller
  * @param relay 
  * @param type Set to false if sending messages in the same context (e.g., from devtools panel to devtools main)
- * @param tabId 
+ * @param toolTabId 
  * @returns 
  */
-export function getDevtoolsController(isContentScript?: boolean, type?: eControllerType, tabId?: number) {
-    if (!singletons[(tabId || getTabId())!]) {
+export function getDevtoolsController(toolTabId: number, isContentScript?: boolean, type?: eControllerType, contentTabId?: number) {
+    type = type || "remote";
+    if (!singletons[toolTabId] && contentTabId) {
         // console.log("Creating devtools controller", type);
-        singletons[(tabId || getTabId())!] = new DevtoolsController(isContentScript === true, type || "remote", tabId);
+        singletons[toolTabId] = new DevtoolsController(toolTabId, isContentScript === true, type, contentTabId);
+    } else if (!singletons[toolTabId] && type === "remote") {
+        singletons[toolTabId] = new DevtoolsController(toolTabId, isContentScript === true, type);
+    } else if (!singletons[toolTabId]) {
+        throw new Error("Initialization error");
     }
-    return singletons[(tabId || getTabId())!];
+    return singletons[toolTabId];
 }
 
 

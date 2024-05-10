@@ -34,6 +34,7 @@ import { getDevtoolsController } from "../devtoolsController";
 import { BrowserDetection } from '../../util/browserDetection';
 import "./storedScreen.scss";
 import { BasicTable } from "./BasicTable";
+import { getDevtoolsAppController } from "../devtoolsAppController";
 
 interface IStoredScreenState {
     storedReports: IStoredReportMeta[]
@@ -45,7 +46,8 @@ interface IStoredScreenProps {
 }
 
 export default class StoredScreen extends React.Component<IStoredScreenProps, IStoredScreenState> {
-    private devtoolsController = getDevtoolsController();
+    private devtoolsAppController = getDevtoolsAppController();
+    private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
     state: IStoredScreenState = {
         storedReports: []
     }
@@ -154,7 +156,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                     let idx = newList.findIndex(scan => scan.id === deleteScan.id);
                                     newList.splice(idx, 1);
                                 }
-                                await getDevtoolsController().setStoredReportsMeta(newList);
+                                await this.devtoolsController.setStoredReportsMeta(newList);
                                 this.setState({ deleteSelectedRows: undefined });
                             }}>
                                 Delete

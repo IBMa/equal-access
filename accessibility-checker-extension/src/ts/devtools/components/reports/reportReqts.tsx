@@ -21,8 +21,8 @@ import { UtilIssue } from '../../../util/UtilIssue';
 
 import "../reportSection.scss";
 import { getBGController } from '../../../background/backgroundController';
-import { getTabId } from '../../../util/tabId';
 import { ePanel } from '../../devtoolsController';
+import { getDevtoolsAppController } from '../../devtoolsAppController';
 
 interface ReportProps {
     unfilteredCount: number
@@ -49,8 +49,9 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
 
     async componentDidMount(): Promise<void> {
         let bgController = getBGController();
+        let appController = getDevtoolsAppController();
         let settings = await bgController.getSettings();
-        let rulesets = await bgController.getRulesets(getTabId()!);
+        let rulesets = await bgController.getRulesets(appController.contentTabId!);
         let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
         if (ruleset) {
             this.setState({ ruleset });
