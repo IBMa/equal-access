@@ -500,9 +500,9 @@ jobs:
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
-    - name: Jest tests
+    - name: UI Tests
       run: npm test
-      working-directory: accessibility-checker-extension
+      working-directory: accessibility-checker-extension/test
 
   rule-deploy:
     runs-on: ubuntu-22.04
