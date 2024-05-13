@@ -95,7 +95,7 @@ export class BrowserWrapper {
         const tab = await (await this.browser!).newPage()!;
         tab.on('console', async e => {
             const args = await Promise.all(e.args().map(a => a.jsonValue()));
-            console.log(...args);
+            console.log(`[${e.type()}]:`,...args);
         });
 
         // https://github.com/puppeteer/puppeteer/issues/8166

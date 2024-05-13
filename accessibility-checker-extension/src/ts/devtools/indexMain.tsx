@@ -27,6 +27,9 @@ import { getTabIdAsync } from '../util/tabId';
         let tabRef = (await chrome.tabs.query({ index }))[0];
         let contentTabId = tabRef.id;
         let toolTabId = await getTabIdAsync();
+        if (!toolTabId || !contentTabId) {
+            console.warn("Test initializing", toolTabId, contentTabId);
+        }
         let dtc = getDevtoolsController(toolTabId, false, "local", contentTabId);
         getDevtoolsAppController(toolTabId, contentTabId);
         await dtc.awaitConnection();
