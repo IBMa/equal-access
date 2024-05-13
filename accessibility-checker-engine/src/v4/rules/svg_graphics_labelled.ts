@@ -19,21 +19,11 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let svg_graphics_labelled: Rule = {
     id: "svg_graphics_labelled",
     context: "dom:svg",
-    refactor: {
-        "HAAC_Aria_SvgAlt": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2",
-            "Fail_3": "Fail_3"
-        }
-    },
     help: {
         "en-US": {
-            "group": "aria_graphic_labelled.html",
-            "Pass_0": "aria_graphic_labelled.html",
-            "Fail_1": "aria_graphic_labelled.html",
-            "Fail_2": "aria_graphic_labelled.html",
-            "Fail_3": "aria_graphic_labelled.html"
+            "group": "svg_graphics_labelled.html",
+            "pass": "svg_graphics_labelled.html",
+            "fail_acc_name": "svg_graphics_labelled.html"
         }
     },
     messages: {
@@ -71,8 +61,18 @@ export let svg_graphics_labelled: Rule = {
         if (desc && RPTUtil.hasInnerContent(desc))
             return RulePass("pass");
         
-        // 3. for text container elements, the text content. note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
-        if (RPTUtil.hasInnerContent(ruleContext))
+        /** 3. for text container elements, the text content. 
+         * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
+         *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
+         * 
+         * select text content excluded the text from the nested svg elements and their children 
+         */ 
+        let text = "";
+        ruleContext.querySelectorAll(":scope > *").forEach((element) => {
+            if (element.nodeName.toLowerCase() !== 'svg' && RPTUtil.hasInnerContent(element))
+                text += RPTUtil.getInnerText(element);
+        });
+        if (text !== '')
             return RulePass("pass");
 
         // 4. a direct child title element that provides a tooltip

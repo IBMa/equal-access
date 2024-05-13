@@ -21,19 +21,23 @@
 
 <head id="id-29">
     <title id="id-36">svg</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 
 <body id="id-9" aria-atomic="true">
-  <p>Cool graphics</p>
-  <svg width="100" height="100">
-    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+  <svg id='top' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg x="10">
+      <title>first nested svg</title>
+      <rect x="10" y="10" height="100" width="100"
+          style="stroke:#ff0000; fill: #0000ff"/>
+    </svg>
+    <svg x="200">
+      <desc>second nested svg</desc>
+      <rect x="10" y="10" height="100" width="100"
+          style="stroke:#009900; fill: #00cc00"/>
+    </svg>
   </svg>
-  <svg width="400" height="180">
-    <rect x="50" y="20" rx="20" ry="20" width="150" height="150"
-    style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
-  </svg>  
-    <p>Example 5: Linked Icon, with dynamic text</p>
-  
+
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["svg_graphics_labelled"],
@@ -58,14 +62,30 @@
             "ruleId": "svg_graphics_labelled",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/svg[2]",
-              "aria": "/document[1]/generic[1]/graphics-document[2]"
+              "dom": "/html[1]/body[1]/svg[1]/svg[1]",
+              "aria": "/document[1]/generic[1]/graphics-document[1]/graphics-document[1]"
             },
-            "reasonId": "fail_acc_name",
-            "message": "The SVG element has no accessible name",
+            "reasonId": "pass",
+            "message": "The SVG element has an accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/svg[1]/svg[2]",
+              "aria": "/document[1]/generic[1]/graphics-document[1]/graphics-document[2]"
+            },
+            "reasonId": "pass",
+            "message": "The SVG element has an accessible name",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
