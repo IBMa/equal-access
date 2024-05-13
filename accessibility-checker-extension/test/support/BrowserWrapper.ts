@@ -93,6 +93,10 @@ export class BrowserWrapper {
             "desktop": 1200
         }
         const tab = await (await this.browser!).newPage()!;
+        tab.on('console', async e => {
+            const args = await Promise.all(e.args().map(a => a.jsonValue()));
+            console.log(...args);
+        });
 
         // https://github.com/puppeteer/puppeteer/issues/8166
         await tab.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36')
