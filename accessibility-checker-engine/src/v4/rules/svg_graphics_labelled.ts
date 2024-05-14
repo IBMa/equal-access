@@ -56,12 +56,17 @@ export let svg_graphics_labelled: Rule = {
         if (label && label.length > 0)
             return RulePass("pass");
         
-        // 2. a direct child desc element
-        let desc = ruleContext.querySelector(":scope > desc");
-        if (desc && RPTUtil.hasInnerContent(desc))
+        // 2. a direct child title element 
+        let svgTitle = ruleContext.querySelector(":scope > title");
+        if (svgTitle && RPTUtil.hasInnerContent(svgTitle))
             return RulePass("pass");
-        
-        /** 3. for text container elements, the text content. 
+
+        // 3. xlink:title attribute on a link
+        let linkTitle = ruleContext.querySelector("a");
+        if (linkTitle && linkTitle.hasAttribute("xlink:title") && linkTitle.getAttribute("xlink:title").trim().length > 0)
+            return RulePass("pass");
+
+        /** 4. for text container elements, the text content. 
          * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
          *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
          * 
@@ -75,15 +80,20 @@ export let svg_graphics_labelled: Rule = {
         if (text !== '')
             return RulePass("pass");
 
-        // 4. a direct child title element that provides a tooltip
-        let svgTitle = ruleContext.querySelector(":scope > title");
-        if (svgTitle && RPTUtil.hasInnerContent(svgTitle))
+        // 5. aria-describedby or aria-description 
+        let descby = RPTUtil.getAriaDescription(ruleContext);
+        if (descby && descby.length > 0)
+            return RulePass("pass");
+
+        // 6. a direct child desc element
+        let desc = ruleContext.querySelector(":scope > desc");
+        if (desc && RPTUtil.hasInnerContent(desc))
             return RulePass("pass");
         
-        // 5. xlink:title attribute on a link
-        let linkTitle = ruleContext.querySelector("a");
-        if (linkTitle && linkTitle.hasAttribute("xlink:title") && linkTitle.getAttribute("xlink:title").trim().length > 0)
-            return RulePass("pass");  
+        // 7. title attribue that provides a tooltip 
+        // not clear from the svg mapping spec yet, but Chrome uses svg title attribute in the accessible name, but Firefox doesn't
+        if (ruleContext.hasAttribute("title") && ruleContext.getAttribute("title").trim().length > 0)
+            return RulePass("pass");
 
         return RuleFail("fail_acc_name")
     }

@@ -40,7 +40,24 @@
   <script type="text/javascript">
     UnitTest = {
         ruleIds: ["svg_graphics_labelled"],
-        results: []
+        results: [
+        {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/svg[1]",
+              "aria": "/document[1]/main[1]/graphics-document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The SVG element has an accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
     }
   </script>
 </div>

@@ -25,10 +25,10 @@
 </head>
 
 <body id="id-9" aria-atomic="true">
-  <svg role="img" title="A test circle">
-    <circle cx="30" cy="30" r="10" fill="brown"></circle>
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" fill="yellow"></circle>
   </svg>
- 
+
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["svg_graphics_labelled"],
@@ -37,14 +37,14 @@
             "ruleId": "svg_graphics_labelled",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/svg[1]",
-              "aria": "/document[1]/generic[1]/img[1]"
+              "aria": "/document[1]/generic[1]/graphics-document[1]"
             },
-            "reasonId": "pass",
-            "message": "The SVG element has an accessible name",
+            "reasonId": "fail_acc_name",
+            "message": "The SVG element has no accessible name",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
