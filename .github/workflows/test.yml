@@ -486,6 +486,9 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
+    - name: UI Tests
+      run: npm test
+      working-directory: accessibility-checker-extension/test
     - name: Upload packed extension
       uses: actions/upload-artifact@v1
       with:
@@ -500,9 +503,6 @@ jobs:
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
-    - name: UI Tests
-      run: npm test
-      working-directory: accessibility-checker-extension/test
 
   rule-deploy:
     runs-on: ubuntu-22.04
