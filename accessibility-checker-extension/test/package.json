@@ -19,6 +19,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "exceljs": "^4.4.0",
     "ts-node": "^10.9.2"
   }
 }
