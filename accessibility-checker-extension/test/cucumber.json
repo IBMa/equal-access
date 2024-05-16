@@ -1,0 +1,14 @@
+{
+    "default": {
+      "requireModule": ["ts-node/register"],
+      "require": ["support/**/*.ts"],
+      "format": [
+        "@cucumber/pretty-formatter",
+        "rerun:@rerun.txt",
+        "message:dist/cucumber.ndjson",
+        "json:dist/cucumber.json",
+        "junit:dist/TEST-cucumber.xml",
+        "html:dist/cucumber.html"
+      ]
+    }
+  }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <p style="font-weight:bold;">
+    Test color contrast in CJK characters
+</p>
+
+<p>
+   早上好 with color contrast 21.1:1
+</p>
+
+<p style="color: #000; font-size:30pt; background: #666;">
+	  早上好 with color contrast 3.6:1 font-size 30px;
+</p>
+
+<p style="color: #000; font-size:24pt; font-weight:700; background: #666;">
+     早上好 with color contrast 3.6:1 font-size 24px bold;
+</p>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["text_contrast_sufficient"],
+            results: [
+            {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/paragraph[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              700,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[2]",
+              "aria": "/document[1]/paragraph[2]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[3]",
+              "aria": "/document[1]/paragraph[3]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.66",
+              40,
+              400,
+              "#000000",
+              "#666666",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[4]",
+              "aria": "/document[1]/paragraph[4]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.66",
+              32,
+              700,
+              "#000000",
+              "#666666",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>

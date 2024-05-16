@@ -5,6 +5,18 @@
         "path": "/archives/latest"
     },
     {
+        "id": "09May2024",
+        "name": "09 May 2024 Deployment",
+        "version": "3.1.71",
+        "path": "/archives/2024.05.09"
+    },
+    {
+        "id": "19April2024",
+        "name": "19 April 2024 Deployment",
+        "version": "3.1.70",
+        "path": "/archives/2024.04.19"
+    },
+    {
         "id": "18March2024",
         "name": "18 March 2024 Deployment",
         "version": "3.1.68",

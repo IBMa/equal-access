@@ -1,15 +1,35 @@
-Feature: XLS Report
-    Scenario: Generate a basic XLS report from side panel for current scan
-        When manual step 
-            """
-            Given page "https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/"
-            When user opens Devtools
-            When user opens Devtools panel "Elements"
-            When user opens Devtools subpanel "Accessibility Checker"
-            When user activates Button "Scan"
-            When user activates Button "Export XLS"
-            When user opens downloaded file "Accessibility_Report-Altoro Accessibility Testing Site.xlsx"
-            When user examines the "Overview" sheet and finds two sections: "Accessibility Scan Report" and "Summary"
+Feature: XLSX Report
+    Background:
+        # Load the checker panel, scan the page, and then download the reports
+        Given "desktop" page "altoro" and panel "assessment"
+        Given browser download folder "TC_HTML_report"
+        Then Button "Scan" is enabled
+        When user activates Button "Scan"
+        Then elem ".reportTreeGrid #tableGridHeader .gridHeaderCell > span" is visible
+        Then elem "#totalIssuesCount" text ends with "issues found"
+        When user activates Button "Export XLS"
+        When wait 2000
+        Then downloaded file "Accessibility_Report-Altoro Accessibility Testing Site.xlsx" exists
+
+    @e2e
+    Scenario: XLSX report exists and has major headings
+        Given excel file "Accessibility_Report-Altoro Accessibility Testing Site.xlsx"
+        Then Excel Sheet "Overview" Cell "A1" is "Accessibility Scan Report"
+        Then Excel Sheet "Overview" Cell "A11" is "Summary"
+        Then Excel Sheet "Overview" Cell "A12" is "Issues"
+        Then Excel Sheet "Overview" Cell "B12" is "Violations"
+        Then Excel Sheet "Overview" Cell "C12" is "Needs review"
+        Then Excel Sheet "Overview" Cell "D12" is "Recommendations"
+        Then Excel Sheet "Overview" Cell "E12" is "Hidden"
+
+        Then Excel Sheet "Scan summary" Cell "A1" is "Page title"
+        Then Excel Sheet "Issue summary" Cell "A1" is "Issue summary"
+        Then Excel Sheet "Issues" Cell "A1" is "Page title"
+        Then Excel Sheet "Definition of fields" Cell "A1" is "Definition of fields"
+
+    Scenario: XLSX report manual evaluation
+        Then manual step 
+        """
             When user examines the "Accessibility Scan Report" section and finds:
                 Tool name, Version number, Rule Set used, Guidelines used, Report date, Platform, Number of scans, Number of Pages scanned
             When user examines the "Summary" section and finds 5 columns with the counts of 
@@ -115,7 +135,6 @@ Feature: XLS Report
                 "Xpath" - "Xpath of the HTML element where the issue is found."
                 "Help" - "Link to a more detailed description of the issue and suggested solutions."
                 
-
             """
 
-
+        

@@ -40,9 +40,6 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ReportTabs } from './reports/reportTabs';
 import { UtilKCM } from '../../util/UtilKCM';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
-import { getTabId } from '../../util/tabId';
-
-let devtoolsController = getDevtoolsController();
 
 interface ReportSectionProps {
     panel: ePanel;
@@ -60,10 +57,11 @@ interface ReportSectionState {
     ignoredIssues: UIIssue[]
 }
 
-let bgController = getBGController();
-let appController = getDevtoolsAppController();
-
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
+    private bgController = getBGController();
+    private devtoolsAppController = getDevtoolsAppController();
+    private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
+
     state: ReportSectionState = {
         report: null,        
         selectedPath: null,
@@ -76,42 +74,42 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     async componentDidMount(): Promise<void> {
-        devtoolsController.addReportListener(this.reportListener);
-        let report = await devtoolsController.getReport();
+        this.devtoolsController.addReportListener(this.reportListener);
+        let report = await this.devtoolsController.getReport();
         this.setState({
-            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+            canScan: (await this.bgController.getTabInfo(this.devtoolsAppController.contentTabId)).canScan
         });
         this.reportListener(report!);
 
-        devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
-        let path = await devtoolsController.getSelectedElementPath();
+        this.devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
+        let path = await this.devtoolsController.getSelectedElementPath();
         this.setPath(path!);
-        devtoolsController.addFocusModeListener(async (newValue: boolean) => {
+        this.devtoolsController.addFocusModeListener(async (newValue: boolean) => {
             this.setState({ focusMode: newValue });
         })
-        devtoolsController.addViewStateListener(async (viewState: ViewState) => {
+        this.devtoolsController.addViewStateListener(async (viewState: ViewState) => {
             this.setState({ viewState });
         })
         this.setState({
-            focusMode: await devtoolsController.getFocusMode(),
-            viewState: (await devtoolsController.getViewState())!
+            focusMode: await this.devtoolsController.getFocusMode(),
+            viewState: (await this.devtoolsController.getViewState())!
         })
-        bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
-            if (url === (await bgController.getTabInfo(getTabId())).url) {
+        this.bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+            if (url === (await this.bgController.getTabInfo(this.devtoolsAppController.contentTabId!)).url) {
                 this.setState({ ignoredIssues: issues });
             }
         })
-        appController.addLevelFilterListener(() => {
+        this.devtoolsAppController.addLevelFilterListener(() => {
             this.setState({});
         })
     }
 
     componentWillUnmount(): void {
-        devtoolsController.removeReportListener(this.reportListener);
+        this.devtoolsController.removeReportListener(this.reportListener);
     }
 
     onResetFilters() {
-        appController.setLevelFilters({
+        this.devtoolsAppController.setLevelFilters({
             "Violation": true,
             "Needs review": true,
             "Recommendation": true,
@@ -123,12 +121,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS" || issue.ruleId === "detector_tabbable");
         }
-        let url = (await bgController.getTabInfo(getTabId())).url!;
-        let alreadyIgnored = await bgController.getIgnore(url);
+        let url = (await this.bgController.getTabInfo(this.devtoolsAppController.contentTabId!)).url!;
+        let alreadyIgnored = await this.bgController.getIgnore(url);
         this.setState({ 
             ignoredIssues: alreadyIgnored,
             report,
-            canScan: (await bgController.getTabInfo(getTabId()!)).canScan
+            canScan: (await this.bgController.getTabInfo(this.devtoolsAppController.contentTabId!)).canScan
         });
     }
 
@@ -188,7 +186,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         if (reportIssues) {
             reportIssues = reportIssues.filter((issue: UIIssue) => {
                 issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
-                const checked = appController.getLevelFilters();
+                const checked = this.devtoolsAppController.getLevelFilters();
                 let retVal = ( ((checked["Hidden"] && issue.ignored) || checked[UtilIssue.valueToStringSingular(issue.value) as eFilterLevel]) 
                     && (!this.state.focusMode
                         || !this.state.selectedPath
@@ -213,8 +211,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             { id: '3', text: 'Hidden' },
         ]
         let levelSelectedItems: Array<{id: string, text: string}> = [];
-        for (const key of appController.getLevelFilterKeys()) {
-            if (appController.getLevelFilter(key)) {
+        for (const key of this.devtoolsAppController.getLevelFilterKeys()) {
+            if (this.devtoolsAppController.getLevelFilter(key)) {
                 levelSelectedItems.push(filterItems.find(filtItem => filtItem.text === UtilIssue.singToStringPlural(key))!)
             }
         }
@@ -222,89 +220,84 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let viewFilterSection = <>
              <div className="reportFilterBorder" />
              {this.state.filterShown && <Grid className="reportViewFilterSection">
-                <Column sm={4} md={8} lg={8} style={{ marginRight: "0px" }}>
-                    <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", float: "right"}}>
-                            <div style={{flex: "0 1 8.75rem"}}>
-                                <div style={{display: "flex"}}>
-                                    <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem", marginRight: "8px" }}>
-                                        {!this.state.viewState || !this.state.viewState!.kcm &&
-                                            <Dropdown
-                                                className="viewMulti"
-                                                ariaLabel="Select report view"
-                                                disabled={totalCount === 0}
-                                                id="reportView"
-                                                size="sm" 
-                                                items={viewItems}
-                                                light={false}
-                                                type="default"
-                                                style={{width:"160px"}}
-                                                selectedItem={this.state.reportViewState}
-                                                onChange={async (evt: any) => {
-                                                    // set state
-                                                    this.setState({ reportViewState: evt.selectedItem });
-                                                }}
-                                            />
+                <Column sm={4} md={8} lg={8}>
+                    <div style={{display: "flex", flexWrap: "wrap", float: "right", gap: "1px 0px"}}>
+                        <div style={{flex: "1 1 auto", margin: "-1px 0px" }}></div>
+                        <div style={{flex: "1 1 0", marginRight: "0px", margin: "-1px 0px" }}>
+                            {!this.state.viewState || !this.state.viewState!.kcm &&
+                                <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    disabled={totalCount === 0}
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
+                            }
+                        </div>
+                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
+                            {
+                                <MultiSelect
+                                    className="viewMulti"
+                                    ariaLabel="Issue type filter"
+                                    label="Filter"
+                                    size="sm" 
+                                    hideLabel={true}
+                                    disabled={totalCount === 0}
+                                    id="filterSelection"
+                                    items={filterItems}
+                                    itemToString={(item:any) => (item ? item.text : '')}
+                                    itemToElement={(item:any) => {
+                                            if (item && item.id === "0") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "1") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "2") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
+                                            } else if (item && item.id === "3") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
+                                            }
+                                            return <></>
                                         }
-                                    </div>
-                                    <div style={{flex: "1 1 8.75rem"}}>
-                                        {
-                                            <MultiSelect
-                                                className="viewMulti"
-                                                ariaLabel="Issue type filter"
-                                                label="Filter"
-                                                size="sm" 
-                                                hideLabel={true}
-                                                disabled={totalCount === 0}
-                                                id="filterSelection"
-                                                items={filterItems}
-                                                itemToString={(item:any) => (item ? item.text : '')}
-                                                itemToElement={(item:any) => {
-                                                        if (item && item.id === "0") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
-                                                        } else if (item && item.id === "1") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
-                                                        } else if (item && item.id === "2") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
-                                                        } else if (item && item.id === "3") {
-                                                            return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
-                                                        }
-                                                        return <></>
-                                                    }
-                                                }
-                                                light={false}
-                                                type="default"
-                                                style={{ float: "right" }}
-                                                selectedItems={levelSelectedItems}
-                                                initialSelectedItems={levelSelectedItems}
-                                                onChange={async (evt: any) => {
-                                                    let checked = appController.getLevelFilters();
-                                                    if (evt.selectedItems != undefined) {
-                                                        checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
-                                                        checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
-                                                        checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
-                                                        checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
-                                                    }
-                                                    appController.setLevelFilters(checked);
-                                                }}
-                                            />
+                                    }
+                                    light={false}
+                                    type="default"
+                                    selectedItems={levelSelectedItems}
+                                    initialSelectedItems={levelSelectedItems}
+                                    onChange={async (evt: any) => {
+                                        let checked = this.devtoolsAppController.getLevelFilters();
+                                        if (evt.selectedItems != undefined) {
+                                            checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
+                                            checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
+                                            checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
+                                            checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
                                         }
-                                    </div>
-                                    <div style={{flex: "1 1 8.75rem"}}>
-                                        <div>
-                                            <Button
-                                                kind="tertiary"
-                                                disabled={totalCount === 0}
-                                                style={{ float: "right", marginRight: "16px", minHeight: "18px", maxHeight: "32px" }}
-                                                onClick={() => devtoolsController.exportXLS("last") }
-                                            >Export scan</Button>
-                                        </div>
-                                    </div>
+                                        this.devtoolsAppController.setLevelFilters(checked);
+                                    }}
+                                />
+                            }
+                        </div>
+                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
+                            <div>
+                                <Button
+                                    kind="tertiary"
+                                    disabled={totalCount === 0}
+                                    style={{ float: "right", minHeight: "18px", maxHeight: "32px", minWidth: "10rem" }}
+                                    onClick={() => this.devtoolsController.exportXLS("last") }
+                                >Export XLS</Button>
                             </div>
                         </div>
                     </div>
                 </Column>
              </Grid>}
-             <div className="reportFilterBorder" />
         </>        
 
         return (<>
@@ -319,7 +312,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                             unfilteredCount={totalCount}
                                             issues={reportIssues}
                                             panel={this.props.panel} 
-                                            checked={appController.getLevelFilters()} 
+                                            checked={this.devtoolsAppController.getLevelFilters()} 
                                             selectedPath={this.state.selectedPath} 
                                             onResetFilters={this.onResetFilters.bind(this)}
                                             canScan={this.state.canScan}
@@ -333,7 +326,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         unfilteredCount={totalCount}
                                         issues={reportIssues} 
                                         panel={this.props.panel} 
-                                        checked={appController.getLevelFilters()} 
+                                        checked={this.devtoolsAppController.getLevelFilters()} 
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
@@ -348,7 +341,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         report={this.state.report}
                                         issues={reportIssues} 
                                         panel={this.props.panel} 
-                                        checked={appController.getLevelFilters()} 
+                                        checked={this.devtoolsAppController.getLevelFilters()} 
                                         selectedPath={this.state.selectedPath} 
                                         onResetFilters={this.onResetFilters.bind(this)}
                                         canScan={this.state.canScan}
@@ -375,8 +368,8 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         kind="ghost"
                                         hasIconOnly iconDescription="Keyboard Checker Mode information" tooltipPosition="top"
                                         onClick={(() => {
-                                            getDevtoolsAppController().setSecondaryView("kcm_overview");
-                                            getDevtoolsAppController().openSecondary("#kcmInfo");
+                                            this.devtoolsAppController.setSecondaryView("kcm_overview");
+                                            this.devtoolsAppController.openSecondary("#kcmInfo");
                                         }).bind(this)}>
                                     </Button>
                                 </span>
@@ -391,7 +384,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 issues={reportIssues}
                                 tabbable={tabbableDetectors}
                                 panel={this.props.panel} 
-                                checked={appController.getLevelFilters()} 
+                                checked={this.devtoolsAppController.getLevelFilters()} 
                                 selectedPath={this.state.selectedPath} 
                                 onResetFilters={this.onResetFilters.bind(this)}
                                 canScan={this.state.canScan}

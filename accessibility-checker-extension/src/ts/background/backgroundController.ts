@@ -116,7 +116,7 @@ class BackgroundController extends Controller {
         this.addEventListener(listener, `BG_onTabUpdate`);
     }
 
-    public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
+    public async getTabInfo(tabId: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
         return this.hook("getTabInfo", tabId, async () => {
             let tab = await new Promise<chrome.tabs.Tab>(async (resolve2) => {
                 let manifest = chrome.runtime.getManifest();
@@ -317,12 +317,12 @@ class BackgroundController extends Controller {
     /**
      * Get the rulesets for the currently loaded engine
      */
-    public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
-        return this.hook("getRulesets", senderTabId, async () => {
-            await this.initTab(senderTabId!);
+    public async getRulesets(contentTabId: number) : Promise<IRuleset[]> {
+        return this.hook("getRulesets", contentTabId, async () => {
+            await this.initTab(contentTabId!);
             // let isLoaded = await this.isEngineLoaded(senderTabId);
             // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
-            return await myExecuteScript2(senderTabId, () => {
+            return await myExecuteScript2(contentTabId, () => {
                 let checker = new (<any>window).aceIBMa.Checker();
                 return checker.rulesets;
             });
@@ -336,15 +336,16 @@ class BackgroundController extends Controller {
     }
     ///// Scan related functions /////////////////////////////////////////
 
-    public async requestScan(senderTabId: number) {
-        return this.hook("requestScan", senderTabId, async () => {
-            getDevtoolsController(false, "remote", senderTabId).setScanningState("initializing");
-            await this.initTab(senderTabId!);
+    public async requestScan(tabIds: {toolTabId: number, contentTabId: number}) {
+        return this.hook("requestScan", tabIds, async () => {
+            const { toolTabId, contentTabId } = tabIds;
+            getDevtoolsController(toolTabId, false, "remote").setScanningState("initializing");
+            await this.initTab(contentTabId!);
             // We want this to execute after the message returns
             (async () => {
                 let settings = await this.getSettings();
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
-                let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("running");
+                let report : IReport = await myExecuteScript2(contentTabId, (settings: ISettings) => {
                     let checker = new (<any>window).aceIBMa.Checker();
                     if (Object.keys(checker.engine.nlsMap).length === 0) {
                         // Some problem grabbing messages for given locale. Let's try to get en-US data out of the engine
@@ -415,7 +416,7 @@ class BackgroundController extends Controller {
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
                 this.metrics.profileV2(report.totalTime, browser, settings.selected_ruleset.id);
                 this.metrics.sendLogsV2();
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("processing");
                 if (report) {
                     for (const result of report.results) {
                         if (result.ruleTime > 50) {
@@ -459,8 +460,8 @@ class BackgroundController extends Controller {
                     report.counts = counts;
                 }
 
-                getDevtoolsController(false, "remote", senderTabId).setReport(report);
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("idle");
+                getDevtoolsController(toolTabId, false, "remote").setReport(report);
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("idle");
             })();
             return {};
         });

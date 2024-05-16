@@ -17,6 +17,17 @@
 import { IIssue } from "../interfaces/interfaces";
 
 export default class DomPathUtils {
+    public static getScreenRect(node: HTMLElement) {
+        if (typeof node.getBoundingClientRect === 'undefined') {
+            return null;
+        } else {
+            let rect = node.getBoundingClientRect();
+            rect.y += window.scrollY;
+            rect.x += window.scrollX;
+            return rect;
+        }
+    }
+
     public static domPathsToElements(xpaths: string[]) {
         // console.log("Function: domPathsToElements: ")
         let results: HTMLElement[] = [];
@@ -34,8 +45,8 @@ export default class DomPathUtils {
     
     public static issuesToDomPaths(issues: IIssue[]) {
         // console.log("Inside issuesToDomPaths");
-        let tabXpaths: any = [];
-        issues.map((result: any) => {
+        let tabXpaths: string[] = [];
+        issues.map((result) => {
             if (result != null) {
                 // console.log("result.path.dom = "+result.path.dom);
                 tabXpaths.push(result.path.dom);
