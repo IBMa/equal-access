@@ -25,7 +25,6 @@
     import { getBGController } from '../../background/backgroundController';
     import { getDevtoolsAppController } from '../devtoolsAppController';
     import { BrowserDetection } from '../../util/browserDetection';
-    import { getTabId } from '../../util/tabId';
     import "./summaryScreen.scss";
     
     interface ISummaryScreenState {
@@ -38,34 +37,36 @@
         
     }
     
-    let bgController = getBGController();
-    let appController = getDevtoolsAppController();
     export default class SummaryScreen extends React.Component<ISummaryScreenProps, ISummaryScreenState> {
-        private devtoolsController = getDevtoolsController();
+        private devtoolsAppController = getDevtoolsAppController();
+        private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
+        private bgController = getBGController();
+        private appController = getDevtoolsAppController();
         state: ISummaryScreenState = {
             ignoredIssues: []
         }
         async componentDidMount(): Promise<void> {
             let self = this;
+            let contentTabInfo = await this.bgController.getTabInfo(this.appController.contentTabId!);
             this.devtoolsController.addReportListener(async (newState) => {
-                let url = (await bgController.getTabInfo(getTabId())).url!;
-                let alreadyIgnored = await bgController.getIgnore(url);
+                let url = contentTabInfo.url!;
+                let alreadyIgnored = await this.bgController.getIgnore(url);
                 self.setState({
                     ignoredIssues: alreadyIgnored,
                     report: newState,
                     reportMeta: await self.devtoolsController.getReportMeta() || undefined
                 });
             })
-            appController.addLevelFilterListener(() => {
+            this.appController.addLevelFilterListener(() => {
                 this.setState({});
             })
-            bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
-                if (url === (await bgController.getTabInfo(getTabId())).url) {
+            this.bgController.addIgnoreUpdateListener(async ({ url, issues }) => {
+                if (url === contentTabInfo.url) {
                     this.setState({ ignoredIssues: issues });
                 }
             })
-            let url = (await bgController.getTabInfo(getTabId())).url!;
-            let alreadyIgnored = await bgController.getIgnore(url);
+            let url = contentTabInfo.url!;
+            let alreadyIgnored = await this.bgController.getIgnore(url);
             this.setState({ 
                 ignoredIssues: alreadyIgnored,
                 report: await self.devtoolsController.getReport() || undefined,
@@ -148,11 +149,11 @@
                         <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
                             <SelectableTile 
                                 className="tile count-tile"
-                                selected={appController.getLevelFilter("Violation")}
+                                selected={this.appController.getLevelFilter("Violation")}
                                 onChange={async () => {
-                                    let checked = appController.getLevelFilters();
+                                    let checked = this.appController.getLevelFilters();
                                     checked["Violation"] = !checked["Violation"];
-                                    appController.setLevelFilters(checked);
+                                    this.appController.setLevelFilters(checked);
                                 }}
                                 >
                                 <div>
@@ -167,11 +168,11 @@
                     <Grid style={{margin: "0rem"}}>
                         <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
                             <SelectableTile className="tile count-tile"
-                                selected={appController.getLevelFilter("Needs review")}
+                                selected={this.appController.getLevelFilter("Needs review")}
                                 onChange={async () => {
-                                    let checked = appController.getLevelFilters();
+                                    let checked = this.appController.getLevelFilters();
                                     checked["Needs review"] = !checked["Needs review"];
-                                    appController.setLevelFilters(checked);
+                                    this.appController.setLevelFilters(checked);
                                 }}
                                 >
                                 <div>
@@ -184,11 +185,11 @@
                         </Column>
                         <Column sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
                             <SelectableTile className="tile count-tile"
-                                selected={appController.getLevelFilter("Recommendation")}
+                                selected={this.appController.getLevelFilter("Recommendation")}
                                 onChange={async () => {
-                                    let checked = appController.getLevelFilters();
+                                    let checked = this.appController.getLevelFilters();
                                     checked["Recommendation"] = !checked["Recommendation"];
-                                    appController.setLevelFilters(checked);
+                                    this.appController.setLevelFilters(checked);
                                 }}
                             >
                                 <div>

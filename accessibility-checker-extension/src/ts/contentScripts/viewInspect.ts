@@ -24,7 +24,21 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
 
 (async () => {
     let myTabId = await getBGController().getTabId()!;
-    let devtoolsController = getDevtoolsController(true, "remote", myTabId);
+    let devtoolsController = getDevtoolsController(myTabId, true);
+
+    function setProps<T>(objToModify: T, objPropsToSet: Partial<T>) {
+        for (const key in objPropsToSet) {
+            (objToModify as any)[key] = objPropsToSet[key];
+        }
+    }
+    
+    function hideOverlays() {
+        if ((window as any).aceOverlays) {
+            const overlays: Overlays = (window as any).aceOverlays;
+            overlays.elem.parentNode?.removeChild(overlays.elem);
+            overlays.info.parentNode?.removeChild(overlays.info);
+        }
+    }
 
     function getOverlays() : Overlays {
         if (!(window as any).aceOverlays) {
@@ -32,41 +46,46 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
                 elem: document.createElement("div"),
                 info: document.createElement("div")
             }
-            let ovElemStyle = overlays.elem.style;
-            ovElemStyle.display = "none";
-            ovElemStyle.outline = "solid #8A3FFC 3px";
-            ovElemStyle.position = "absolute";
-            ovElemStyle.zIndex = "2147483647";
 
+            setProps(overlays.elem.style, {
+                display: "none",
+                outline: "solid #8A3FFC 3px",
+                position: "absolute",
+                zIndex: "2147483647",
+                pointerEvents: "none"
+            });
+            overlays.elem.setAttribute("aChecker", "ACE");
 
-            let ovInfoStyle = overlays.info.style;
-            ovInfoStyle.display = "none";
-            ovInfoStyle.outline = "solid #8A3FFC 2px";
-            ovInfoStyle.backgroundColor = "#161616";
-            ovInfoStyle.position = "absolute";
-            ovInfoStyle.padding = "8px";
-            ovInfoStyle.zIndex = "2147483647";
-            ovInfoStyle.fontFamily = "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif";
+            setProps(overlays.info.style, {
+                display: "none",
+                outline: "solid #8A3FFC 2px",
+                backgroundColor: "#161616",
+                position: "absolute",
+                padding: "8px",
+                zIndex: "2147483647",
+                fontFamily: "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif"
+            });
+            overlays.info.setAttribute("aChecker", "ACE");
         }
         return (window as any).aceOverlays;
     }
     
-    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds, noVisibleElement: Boolean, elemOffScreen: Boolean) : Promise<Overlays> {
+    async function updateOverlay(issue: IIssue, _elem: HTMLElement, bounds: Bounds, noVisibleElement: boolean, elemOffScreen: boolean) : Promise<Overlays> {
         let overlays = getOverlays();
 
-        overlays.elem.style.top = `${bounds.top}px`; // values are strings of form "10px"
-        overlays.elem.style.left = `${bounds.left}px`;
-        overlays.elem.style.width = `${bounds.width}px`;
-        overlays.elem.style.height = `${bounds.height}px`;
-        if (noVisibleElement === true || elemOffScreen === true) {
-            overlays.elem.style.backgroundColor = "#f6f2ff";
-        } else {
-            overlays.elem.style.backgroundColor = "";
-        }
+        setProps(overlays.elem.style, {
+            top: `${bounds.top}px`, // values are strings of form "10px"
+            left: `${bounds.left}px`,
+            width: `${bounds.width}px`,
+            height: `${bounds.height}px`,
+            backgroundColor: (noVisibleElement === true || elemOffScreen === true) ? "#f6f2ff" : ""
+        })        
         
-        
-        overlays.info.style.top = `${bounds.top+bounds.height+4}px`;
-        overlays.info.style.left = `${bounds.left}px`;
+        setProps(overlays.info.style, {
+            top: `${bounds.top+bounds.height+4}px`,
+            left: `${bounds.left}px`
+        });
+
         // Get Issue info data
         let report = await devtoolsController.getReport();
         let types = [0,0,0];
@@ -104,7 +123,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             </svg>`
         let violationImageText = violationImage + "&nbsp;&nbsp;";
 
-        nrText = types[1] < 2 ? types[1]+" Needs review<br>" : types[1]+" Needs review<br>";
+        nrText = types[1] < 2 ? types[1]+" Needs review<br>" : types[1]+" Need review<br>";
         let nrImage = `<svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="16px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
             <style type="text/css">
@@ -147,59 +166,58 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             </svg>`
         let recommendationImageText = recommendationImage + "&nbsp;&nbsp;";
 
-        let typesText = (types[0] == 0 ? "" : "<span>" + violationImageText      + violationText + "</span>") 
-                      + (types[1] == 0 ? "" : "<span>" + nrImageText             + nrText        + "</span") 
-                      + (types[2] == 0 ? "" : "<span>" + recommendationImageText + recommendationText + "</span>");
+        let typesText = (types[0] === 0 ? "" : ("<span style='white-space: nowrap'>" + violationImageText      + violationText + "</span>")) 
+                      + (types[1] === 0 ? "" : ("<span style='white-space: nowrap'>" + nrImageText             + nrText        + "</span")) 
+                      + (types[2] === 0 ? "" : ("<span style='white-space: nowrap'>" + recommendationImageText + recommendationText + "</span>"));
         //--------------------------------------------
+        overlays.elem.style.pointerEvents = "unset";
         if (await devtoolsController.getActivePanel() === "main") {
             // JCH Need this
-        } else {
+        } else { 
+            // Set the common error information
+            overlays.info.innerHTML = (`
+<div style="color:white;">
+    <button aria-label="closes notification" title="closes notification" style="float:right;margin-left:.5rem;background-color:transparent;border:0">
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="white" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" class="cds--inline-notification__close-icon" xmlns="http://www.w3.org/2000/svg"><path d="M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z"></path></svg>
+    </button>
+    ${typesText}
+</div>
+            `);
+            overlays.info.querySelector("button")?.addEventListener("click", _evt => {
+                hideOverlays();
+            })
+
             if (noVisibleElement === true) {
-                overlays.elem.innerHTML = (
-                    `
-                    <div style="color:black;">
-                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue<br>not visible</span>
-                    </div>
+                // Selected element isn't visible
+                overlays.elem.innerHTML = (`
+    <div style="color:black;">
+        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue<br>not visible</span>
+    </div>
                 `);
-                overlays.info.innerHTML = (
-                    `
-                        <div style="color:white;">
-                            ${typesText}
-                        </div>
-                    `);
+
                 window.scrollTo({
                     top: 0,
                     left: 0,
                     behavior: 'smooth'
                 });
             } else if (elemOffScreen === true) {
-                overlays.elem.innerHTML = (
-                    `
-                    <div style="color:black;">
-                        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue <br>off screen</span>
-                    </div>
+                // Selected element is 'rendered', but offscreen
+                overlays.elem.innerHTML = (`
+    <div style="color:black;">
+        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue <br>off screen</span>
+    </div>
                 `);
-                overlays.info.innerHTML = (
-                    `
-                        <div style="color:white;">
-                            ${typesText}
-                        </div>
-                    `);
+
                 window.scrollTo({
                     top: 0,
                     left: 0,
                     behavior: 'smooth'
                 });    
             } else {
+                // Selected element is on the screen
                 overlays.elem.innerHTML = "";
-                overlays.info.innerHTML = (
-                    `
-                        <div style="color:white;">
-                            ${typesText}
-                        </div>
-                    `);
+                overlays.elem.style.pointerEvents = "none";
             }
-            
         }
         overlays.info.querySelector("a")?.addEventListener("click", async () => {
             await devtoolsController.inspectPath(issue.path.dom);
@@ -265,9 +283,8 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             showOverlay(issue);
         }
     });
-    // chrome.runtime.onMessage.addListener((msg: any) => {
-    //     if (msg.type === "DT_onSelectedIssue" && msg.dest.tabId === tabId) {
-    //         let issue: IIssue = msg.content;
-    //     }
-    // });
+
+    devtoolsController.addClearInspectOverlayListener(async () => {
+        hideOverlays();
+    })
 })();

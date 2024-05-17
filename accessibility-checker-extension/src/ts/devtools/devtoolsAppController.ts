@@ -19,7 +19,6 @@ import { getDevtoolsController } from "./devtoolsController";
 
 export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview" | "checkerViewAware";
 
-let devtoolsController = getDevtoolsController();
 
 export type LevelFilters = {
     [key in eFilterLevel]: boolean
@@ -46,13 +45,16 @@ export class DevtoolsAppController {
         "Hidden": false
     };
 
-    constructor() {
-        getDevtoolsController().addSelectedIssueListener(async () => {
+    private devToolsController;
+
+    constructor(public toolTabId: number, public contentTabId: number) {
+        this.devToolsController = getDevtoolsController(toolTabId);
+        this.devToolsController.addSelectedIssueListener(async () => {
             if (!this.secondaryOpen) {
                 this.setSecondaryView("help");
             }
         });
-        getDevtoolsController().addReportListener(async (report: IReport) => {
+        this.devToolsController.addReportListener(async (report: IReport) => {
             if (!report) {
                 this.setSecondaryView("splash");
             }
@@ -197,7 +199,7 @@ export class DevtoolsAppController {
                     console.error(err);
                 }
             })($0)`, async (result: string) => {
-                await devtoolsController.setSelectedElementPath(result, true);
+                await this.devToolsController.setSelectedElementPath(result, true);
             });
         });
         chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
@@ -226,9 +228,11 @@ export class DevtoolsAppController {
 }
 
 let singleton : DevtoolsAppController;
-export function getDevtoolsAppController() {
-    if (!singleton) {
-        singleton = new DevtoolsAppController();
+export function getDevtoolsAppController(toolTabId?: number, contentTabId?: number) {
+    if (!singleton && toolTabId && contentTabId) {
+        singleton = new DevtoolsAppController(toolTabId, contentTabId);
+    } else if (!singleton) {
+        throw new Error("Controller not initialized")
     }
     return singleton;
 }

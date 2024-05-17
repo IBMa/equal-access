@@ -8,7 +8,7 @@
         "install:accessibility-checker": "cd accessibility-checker && npm install",
         "install:karma-accessibility-checker": "cd karma-accessibility-checker && npm install",
         "install:rule-server": "cd rule-server && npm install",
-        "install:extension": "cd accessibility-checker-extension && npm install",
+        "install:extension": "cd accessibility-checker-extension && npm install && cd test && npm install",
         "install:report": "cd report-react && npm install",
         "install:cypress-accessibility-checker": "cd cypress-accessibility-checker && npm install",
         "install:common": "cd common/module && npm install",
