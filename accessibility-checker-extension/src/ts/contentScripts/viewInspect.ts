@@ -24,7 +24,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
 
 (async () => {
     let myTabId = await getBGController().getTabId()!;
-    let devtoolsController = getDevtoolsController(true, "remote", myTabId);
+    let devtoolsController = getDevtoolsController(myTabId, true);
 
     function setProps<T>(objToModify: T, objPropsToSet: Partial<T>) {
         for (const key in objPropsToSet) {

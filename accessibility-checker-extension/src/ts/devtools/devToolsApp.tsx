@@ -54,8 +54,8 @@ interface DevToolsAppState {
 }
 
 export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppState> {
-    bgController = getBGController();
-    devtoolsAppController = getDevtoolsAppController();
+    private bgController = getBGController();
+    private devtoolsAppController = getDevtoolsAppController();
     
     state : DevToolsAppState = {
         secondaryView: "checkerViewAware",

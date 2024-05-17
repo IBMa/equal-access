@@ -229,7 +229,7 @@ export default class TabStopHighlight {
                     let issue = this.getIssueByXpath(elementXpath,regularTabstops);
                     if (issue) {
                         let tabId = await getBGController().getTabId();
-                        let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                        let devtoolsController = getDevtoolsController(tabId, true, "remote");
                         await devtoolsController.setSelectedIssue(null);
                         if (await devtoolsController.getActivePanel() === "elements") {
                             await devtoolsController.inspectPath(elementXpath,element);
@@ -247,7 +247,7 @@ export default class TabStopHighlight {
                     let issue = this.getIssueByXpath(elementXpath,tabStopsErrors);
                     if (issue) {
                         let tabId = await getBGController().getTabId();
-                        let devtoolsController = getDevtoolsController(true, "remote", tabId);
+                        let devtoolsController = getDevtoolsController(tabId, true, "remote");
                         await devtoolsController.setSelectedIssue(issue);
                         if (await devtoolsController.getActivePanel() === "elements") {
                             await devtoolsController.inspectPath(elementXpath,element);
