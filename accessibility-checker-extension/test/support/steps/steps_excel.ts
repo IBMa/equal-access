@@ -13,6 +13,10 @@ Given("excel file {string}", async function(filename: string) {
 Then ("Excel Sheet {string} Cell {string} is {string}", async function(sheetStr: string, cellStr: string, txt: string) {
     let workbook: Workbook = this.excelFile;
     let sheet = workbook.getWorksheet(sheetStr);
-    let cell = sheet.getCell(cellStr);
-    assert.strictEqual(cell.text, txt);
+    if (!sheet) {
+        assert.fail("Sheet does not exist");
+    } else {
+        let cell = sheet.getCell(cellStr);
+        assert.strictEqual(cell.text, txt);
+    }
 });
