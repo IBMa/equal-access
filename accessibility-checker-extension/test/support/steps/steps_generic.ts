@@ -3,6 +3,8 @@ import {CustomWorld} from '../CustomWorld';
 import { BrowserWrapper } from '../BrowserWrapper';
 import { strict as assert } from "assert";
 import { PupUtil } from "../util/pup";
+import { existsSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 Given("{string} page {string} and panel {string}", async function(widthKey, pageKey, panelKey) {
     const browser : BrowserWrapper = this.browser;
@@ -10,6 +12,19 @@ Given("{string} page {string} and panel {string}", async function(widthKey, page
     const panelUrl = browser.panelKeyToURL(panelKey);
     await browser.openTab(widthKey, `${panelUrl}?index=${encodeURIComponent(index)}`);
     // assert.strictEqual(false, true, "Test");
+});
+
+Given("browser download folder {string}", async function(folder:string) {
+    const browser : BrowserWrapper = this.browser;
+    await PupUtil.setTempDownloadFolder(browser.page(), folder);
+});
+
+Then("downloaded file {string} exists", async function(file: string) {
+    let bExists = existsSync(join(PupUtil.getTempDownloadFolder(), file));
+    if (!bExists) {
+        console.info(readdirSync(PupUtil.getTempDownloadFolder()))
+    }
+    assert.strictEqual(bExists, true);
 });
 
 Then("Banner is loaded", function() {

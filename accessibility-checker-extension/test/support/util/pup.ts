@@ -2,6 +2,9 @@ import { Page, ElementHandle, KeyInput } from "puppeteer";
 import { strict as assert } from "assert";
 import { IBaselineReport, IBaselineResult } from "accessibility-checker/lib/common/engine/IReport";
 import { assertCompliance, getBaseline, getCompliance } from "accessibility-checker";
+import { join } from "path";
+import { tmpdir } from "os";
+import { mkdirSync } from "fs";
 
 
 export namespace PupUtil {
@@ -217,5 +220,25 @@ export namespace PupUtil {
         ${serialize(report.results)}`;
             assert(report.summary.counts.violation === (baseline ? baseline.summary.counts.violation : 0), message);
         }
+    }
+
+    let downloadFolder: string | null = null;
+
+    export function getTempDownloadFolder() {
+        if (!downloadFolder) throw new Error("Download folder not set");
+        return downloadFolder;
+    }
+
+    export async function setTempDownloadFolder(page: Page, folder: string) {
+        if (folder.includes("..")) throw new Error(".. not allowed in folder name");
+        downloadFolder = join(tmpdir(),folder);
+        mkdirSync(downloadFolder, { recursive: true });
+
+        const client = await page.target().createCDPSession()
+        await client.send('Browser.setDownloadBehavior', {
+            behavior: 'allow',
+            downloadPath: downloadFolder
+        })
+        console.log("Setting download folder", downloadFolder);
     }
 }

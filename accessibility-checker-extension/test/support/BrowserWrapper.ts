@@ -54,6 +54,13 @@ export class BrowserWrapper {
                 }
             }
             await new Promise(resolve => setTimeout(resolve, 3000));
+            const index = this.pageKeyToTabId("altoro")!;
+            const panelUrl = this.panelKeyToURL("assessment");
+            let p = await browser.newPage();
+            await p.goto(`${panelUrl}?index=${encodeURIComponent(index)}`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await p.close();
+
             return browser;
         })
     }
