@@ -38,7 +38,7 @@ export let element_accesskey_unique: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
         "num": ["HTML"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE

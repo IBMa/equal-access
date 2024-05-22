@@ -86,7 +86,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h1>User guide - IBM Accessibility Checker</h1>
                 <p>
                     The IBM Equal Access Toolkit: Accessibility Checker ("<strong>the Checker</strong>") tests web pages for accessibility issues with
-                    W3C Web Content Accessibility Guidelines (WCAG 2.2), IBM Accessibility requirements, and other standards.
+                    W3C Web Content Accessibility Guidelines (WCAG 2.x), IBM Accessibility requirements, and other standards.
                     The Checker is <Link 
                         href="https://www.ibm.com/able/toolkit/tools/#develop" target="_blank" rel="noopener noreferred" inline={true}
                         size="lg">also available as a Node package</Link> for automated testing within a continuous integration / continuous delivery (CI/CD) pipeline. 
@@ -972,6 +972,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                     <UnorderedList>
                         <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
+                        <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. This will be the default starting Oct 1, 2024.</ListItem>
                         <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>
                         <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
                         <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508</ListItem>

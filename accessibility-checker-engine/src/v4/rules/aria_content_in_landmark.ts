@@ -41,7 +41,7 @@ export let aria_content_in_landmark: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
         "num": ["2.4.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE

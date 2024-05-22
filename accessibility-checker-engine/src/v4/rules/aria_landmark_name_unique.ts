@@ -41,7 +41,7 @@ export let aria_landmark_name_unique: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
         "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE

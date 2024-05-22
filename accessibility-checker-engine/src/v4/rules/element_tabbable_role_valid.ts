@@ -37,7 +37,7 @@ export let element_tabbable_role_valid: Rule = {
         }
     },
     rulesets: [{
-            "id": ["IBM_Accessibility"],
+            "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
             "num": ["4.1.2"],
             "level": eRulePolicy.VIOLATION,
             "toolkitLevel": eToolkitLevel.LEVEL_ONE
