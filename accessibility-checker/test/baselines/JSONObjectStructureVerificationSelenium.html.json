@@ -98,8 +98,8 @@
             "pass": "Rule Passed"
         },
         "widget_tabbable_single": {
-            "0": "Certain components must have no more than one tabbable element",
-            "pass": "Rule Passed"
+            "0": "Components with a widget role must have no more than one tabbable element",
+            "pass": "Components with a widget role should have no more than one tabbable element"
         }
     },
     "numExecuted": 65,
@@ -1117,7 +1117,7 @@
                 "width": 999
             },
             "category": "Accessibility",
-            "message": "Rule Passed",
+            "message": "Components with a widget role should have no more than one tabbable element",
             "messageArgs": [],
             "path": {
                 "aria": "/document[1]/navigation[1]/link[1]",
@@ -1132,7 +1132,7 @@
             ],
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/widget_tabbable_single.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22widget_tabbable_single%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/widget_tabbable_single.html#%7B%22message%22%3A%22Components%20with%20a%20widget%20role%20should%20have%20no%20more%20than%20one%20tabbable%20element%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22widget_tabbable_single%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],
