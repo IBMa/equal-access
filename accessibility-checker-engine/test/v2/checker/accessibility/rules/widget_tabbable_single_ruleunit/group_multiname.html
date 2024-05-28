@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+<title>RPT Test Suite</title>
+
+</head>
+
+<body>
+
+<label>Main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h1>Display Radio Buttons</h1>
+
+<fieldset role="radiogroup" aria-labelledby="desc">
+  <legend id="desc">select your age and favorite pet</legend>
+  <input type="radio" id="age1" name="age" value="30">
+  <label for="age1">0 - 30</label><br>
+  <input type="radio" id="age2" name="age" value="60">
+  <label for="age2">31 - 60</label><br>  
+  <input type="radio" id="age3" name="age" value="100">
+  <label for="age3">61 - 100</label><br><br>
+
+  <input type="radio" id="pet1" name="pet" value="dog" >
+  <label for="pet1">Dog</label><br>
+  <input type="radio" id="pet2" name="pet" value="cat">
+  <label for="pet2">Cat</label><br>  
+  <input type="radio" id="pet3" name="pet" value="other" >
+  <label for="pet3">Other</label><br><br>
+
+  <input type="radio" id="fruit1" value="apple" >
+  <label for="fruit1">Apple</label><br>
+  <input type="radio" id="fruit2" value="pear" >
+  <label for="fruit2">Pear</label><br>  
+  <input type="radio" id="fruit3" value="banana" >
+  <label for="fruit3">Banana</label><br><br>
+</div>
+
+<script type="text/javascript">
+  UnitTest = {
+      ruleIds: ["widget_tabbable_single"],
+      results: [
+      {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]",
+              "aria": "/document[1]/radiogroup[1]"
+            },
+            "reasonId": "potential_multiple_tabbable",
+            "message": "Component with \"radiogroup\" role has more than one tabbable element",
+            "messageArgs": [
+              "radiogroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[1]",
+              "aria": "/document[1]/radiogroup[1]/radio[1]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[2]",
+              "aria": "/document[1]/radiogroup[1]/radio[2]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[3]",
+              "aria": "/document[1]/radiogroup[1]/radio[3]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[4]",
+              "aria": "/document[1]/radiogroup[1]/radio[4]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[5]",
+              "aria": "/document[1]/radiogroup[1]/radio[5]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[6]",
+              "aria": "/document[1]/radiogroup[1]/radio[6]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[7]",
+              "aria": "/document[1]/radiogroup[1]/radio[7]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[8]",
+              "aria": "/document[1]/radiogroup[1]/radio[8]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/fieldset[1]/input[9]",
+              "aria": "/document[1]/radiogroup[1]/radio[9]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  }
+</script></body>
+</html>
