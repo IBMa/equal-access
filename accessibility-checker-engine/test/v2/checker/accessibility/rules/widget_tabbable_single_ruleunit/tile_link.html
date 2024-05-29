@@ -33,6 +33,15 @@
                 <button type="button">Forward</button> 
                 <button type="button">Backward</button>     
             </a>
+
+            <button type="button" style="display:block; border:1px solid black;width:150px;margin-top: 85px;margin-left:15px; text-align: center;">Go!
+              <br>
+              <a target="_blank" href="https://ibm.com"> 
+                 IBM Store</a> <br>
+               
+              <a target="_blank" href="https://google.com">  
+                Google Store</a> 
+            </button>
         
 
         <script type="text/javascript">
@@ -82,6 +91,22 @@
             "path": {
               "dom": "/html[1]/body[1]/a[1]/button[2]",
               "aria": "/document[1]/link[1]/button[2]"
+            },
+            "reasonId": "pass",
+            "message": "Components with a widget role should have no more than one tabbable element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "widget_tabbable_single",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
             },
             "reasonId": "pass",
             "message": "Components with a widget role should have no more than one tabbable element",
