@@ -45,32 +45,34 @@
 
 ### Why is this important?
 
-    This rule assumes that the presence of one of the roles outlined in the applicability 
-    indicates the author’s intent to include the element in the accessibility tree 
-    and thus convey information to the user about that element.
-
 An SVG component with a graphics role can contain important information as well as multiple shapes.
 When viewed together, these elements give the impression of a single image.
 Providing a text alternative makes the equivalent information available through assistive technologies.    
 With the explicit use of roles, the author provides a clear indication that the content should convey meaning via the accessibility tree to assistive technology users.
 
-Note: Until browser support for SVG's implicit `graphics-document` role, `<title>`, and `<desc>` elements and the [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table) is more consistent, 
-it is recommended to explicitly remove _decorative_ SVG elements from the accessibility tree so the assistive technology user is not confused.
+Note: For _decorative_ SVG elements, 
+it is recommended to explicitly remove them from the accessibility tree so the assistive technology user is not confused
+until browser support for the implied `graphics-document` role, `<title>`, `<desc>` elements, and the [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table) is more consistent.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
-Ensure the _non-decorative_ element has an _accessible name_ that is not empty:
-* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label
-* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`
-* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
+Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty:
+* Add an explicit semantic graphics role, such as `img`, `graphics-document`, `graohics-object`, `graphics-symbol`, etc.
+* Add an `aria-labelledby` attribute to the element. It must point to visible text on the page that is meaningful as a label.
+* **Or**, add an `aria-label` attribute to the element.
+* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label.
 
 
 Example:
 
 ```
-<svg xmlns="http://www.w3.org/2000/svg"> ... <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow"></circle></svg>
+<p>How many circles are there?</p>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" aria-label="1 circle"></circle>
+    ...
+</svg>
 ```
 
 </script></mark-down>
@@ -86,7 +88,7 @@ Example:
 
 * [IBM 1.1.1 Non-text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
 * [ARIA Graphics Module](https://www.w3.org/TR/graphics-aria/)
-* [Accessible Name and Description Computation 1.2](https://w3c.github.io/accname/#computation-steps)
+* [Accessible Name and Description Computation](https://w3c.github.io/accname/#computation-steps)
 * [Graphics Accessibility API Mappings](https://w3c.github.io/graphics-aam/#mapping_role_table)     
 * [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table)
    
