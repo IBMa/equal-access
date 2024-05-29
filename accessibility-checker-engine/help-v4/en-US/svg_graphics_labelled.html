@@ -45,18 +45,27 @@
 
 ### Why is this important?
 
-A component with a graphics role can contain important information as well as multiple image files.
+    This rule assumes that the presence of one of the roles outlined in the applicability 
+    indicates the author’s intent to include the element in the accessibility tree 
+    and thus convey information to the user about that element.
+
+An SVG component with a graphics role can contain important information as well as multiple shapes.
 When viewed together, these elements give the impression of a single image.
-Providing a text alternative makes the same information accessible through audio or other channels.
+Providing a text alternative makes the equivalent information available through assistive technologies.    
+With the explicit use of roles, the author provides a clear indication that the content should convey meaning via the accessibility tree to assistive technology users.
+
+Note: Until browser support for SVG's implicit `graphics-document` role, `<title>`, and `<desc>` elements and the [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table) is more consistent, 
+it is recommended to explicitly remove _decorative_ SVG elements from the accessibility tree so the assistive technology user is not confused.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
-
+Ensure the _non-decorative_ element has an _accessible name_ that is not empty:
 * Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label
 * **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
+
 
 Example:
 
@@ -77,6 +86,10 @@ Example:
 
 * [IBM 1.1.1 Non-text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
 * [ARIA Graphics Module](https://www.w3.org/TR/graphics-aria/)
+* [Accessible Name and Description Computation 1.2](https://w3c.github.io/accname/#computation-steps)
+* [Graphics Accessibility API Mappings](https://w3c.github.io/graphics-aam/#mapping_role_table)     
+* [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table)
+   
 
 ### Who does this affect?
 
