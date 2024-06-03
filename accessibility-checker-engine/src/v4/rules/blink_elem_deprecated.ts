@@ -38,7 +38,7 @@ export let blink_elem_deprecated: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         num: "2.2.2", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO

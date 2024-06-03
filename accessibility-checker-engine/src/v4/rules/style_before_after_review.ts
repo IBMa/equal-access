@@ -46,7 +46,7 @@ export let style_before_after_review: Rule = {
     },
     rulesets: [{
         // Turn off the rule due to the obsolete requirement
-        //id: ["IBM_Accessibility", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
+        //id: ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         id: [],
         num: "1.3.1", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,

@@ -47,14 +47,14 @@
             }
         },
         rulesets: [{
-            id: ["WCAG_2_2"],
+            id: ["IBM_Accessibility_next", "WCAG_2_2"],
             num: ["2.5.8"],
             level: eRulePolicy.VIOLATION,
             toolkitLevel: eToolkitLevel.LEVEL_THREE,
             reasonCodes: ["pass_spacing","pass_sized", "pass_inline","pass_default", "violation_spacing", "potential_overlap"]
         },
         {
-            id: ["WCAG_2_2"],
+            id: ["IBM_Accessibility_next", "WCAG_2_2"],
             num: ["2.5.8"],
             level: eRulePolicy.RECOMMENDATION,
             toolkitLevel: eToolkitLevel.LEVEL_THREE,

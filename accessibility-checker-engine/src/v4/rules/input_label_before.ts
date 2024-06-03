@@ -41,7 +41,7 @@ export let input_label_before: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["3.3.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
