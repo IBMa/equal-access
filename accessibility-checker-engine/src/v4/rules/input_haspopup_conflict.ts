@@ -61,16 +61,14 @@ export let input_haspopup_conflict: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return null;
 
-        let roles = RPTUtil.getUserDefinedRoles(ruleContext);console.log("id="+ruleContext.getAttribute("id")+", roles="+roles);
-        // let "aria_role_invalid" to handle invalid role. Only allowed role is combobox which is implicit. 
+        let roles = RPTUtil.getUserDefinedRoles(ruleContext);
+        // let "aria_role_valid" to handle invalid role. Only allowed role is combobox which is implicit. 
         if (roles && roles.length > 0 && !roles.includes('combobox')) 
             return null;         
 
         //triggering input types: text, search, tel, url, email, or missing or invalid 
         let yesTypes = ["text", "search", "tel", "url", "email", "date", "month", "week", "time", "datetime-local", "number", "range", "color"];
-        let noTypes = ["file", "password", "checkbox", "radio", "submit", "reset",
-            "image", "hidden", "button"
-        ];
+        let noTypes = ["file", "password", "checkbox", "radio", "submit", "reset", "image", "hidden", "button"];
 
         let attrValue = ruleContext.getAttribute("type");
         //missing input type for list but with aria_has_popup

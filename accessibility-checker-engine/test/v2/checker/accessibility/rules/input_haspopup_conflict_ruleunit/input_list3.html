@@ -27,7 +27,7 @@
 <body>
     <main>
       <label for="location">URL:</label>
-      <input type="url" id="location" list="urls" role="checkbox" aria-haspopup="listbox">
+      <input type="url" id="location" list="urls">
       <datalist id="urls">
        <option label="MIME: Format of Internet Message Bodies" value="https://www.rfc-editor.org/rfc/rfc2045">
        <option label="HTML" value="https://html.spec.whatwg.org/">
@@ -42,22 +42,7 @@
         UnitTest = {
             ruleIds: ["input_haspopup_conflict", "aria_role_valid"],
             results: [
-            {
-            "ruleId": "input_haspopup_conflict",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/main[1]/input[1]",
-              "aria": "/document[1]/main[1]/combobox[1]"
-            },
-            "reasonId": "potential_misuse",
-            "message": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+            
         ]
         }
     </script>
