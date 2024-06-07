@@ -146,6 +146,8 @@ jobs:
     - run: npm install
       working-directory: accessibility-checker-extension
     - run: npm install
+      working-directory: accessibility-checker-extension/test
+    - run: npm install
       working-directory: rule-server
     - run: npm run build
       working-directory: rule-server
