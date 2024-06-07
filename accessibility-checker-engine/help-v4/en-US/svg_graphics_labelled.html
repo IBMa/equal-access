@@ -45,33 +45,45 @@
 
 ### Why is this important?
 
-An SVG component with a graphics role can contain important information as well as multiple shapes.
+An SVG component with a graphics role can contain essential information as well as multiple shapes.
 When viewed together, these elements give the impression of a single image.
-Providing a text alternative makes the equivalent information available through assistive technologies.    
-With the explicit use of roles, the author provides a clear indication that the content should convey meaning via the accessibility tree to assistive technology users.
-
-Note: For _decorative_ SVG elements, 
-it is recommended to explicitly remove them from the accessibility tree so the assistive technology user is not confused
-until browser support for the implied `graphics-document` role, `<title>`, `<desc>` elements, and the [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table) is more consistent.
+Providing a text alternative (accessible name and description) makes the equivalent information available through assistive technologies.
+With the explicit use of roles and attributes, the author provides a clear indication that the content should convey meaning via the accessibility name and description to assistive technology users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
     
-Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty:
-* Add an explicit semantic graphics role, such as `img`, `graphics-document`, `graohics-object`, `graphics-symbol`, etc.
-* Add an `aria-labelledby` attribute to the element. It must point to visible text on the page that is meaningful as a label.
+Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty, in the following priority:
+* Add an `aria-labelledby` attribute to the element that points to visible text on the page that is a meaningful label.
 * **Or**, add an `aria-label` attribute to the element.
+* **Or**, add a direct child `<title>` element.
+* **Or**, add an `xlink:title` attribute on a link.
+* **Or**, for text container elements, add the text content.
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label.
 
+As appropriate, ensure the _non-decorative_ SVG element has an _accessible description_ that is not empty, in the following priority:
+* Add an `aria-describedby` attribute to the element that points to visible text on the page that is a meaningful description.
+* **Or**, add a direct child `<desc>` element.
+* **Or**, for text container elements, add the text content.
+* **Or**, add a direct child `<title>` element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.
+* **Or**, add a `xlink:title` attribute on a link, if not used to provide the accessible name.
 
+Ensure the _decorative_ SVG element use `aria-hidden` or `role=’none | presentation’` to provides a clear indication that the element is not visible, 
+perceivable, or interactive to users.
+
+Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
+in order to concatenate one of the other text alternatives with text from a separate element.
+
+    
 Example:
 
 ```
 <p>How many circles are there?</p>
-<svg xmlns="http://www.w3.org/2000/svg">
-    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" aria-label="1 circle"></circle>
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="shapes from which to choose">
+    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" 
+    aria-label="1 circle"></circle>
     ...
 </svg>
 ```
