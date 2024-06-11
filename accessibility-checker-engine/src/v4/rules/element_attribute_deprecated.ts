@@ -123,7 +123,7 @@ export let element_attribute_deprecated: Rule = {
         }
     },
     rulesets: [{ 
-        "id": ["IBM_Accessibility"], 
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"], 
         "num": ["HTML"], 
         "level": eRulePolicy.RECOMMENDATION, 
         "toolkitLevel": eToolkitLevel.LEVEL_THREE 

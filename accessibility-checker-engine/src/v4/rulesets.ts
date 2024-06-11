@@ -126,6 +126,22 @@ export let a11yRulesets: Guideline[] = [
             }))
     },
     {
+        id: "IBM_Accessibility_next",
+        name: "IBM Accessibility 7.3",
+        category: eGuidelineCategory.ACCESSIBILITY,
+        description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
+        // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
+        checkpoints: SCs
+            .filter(sc => (sc.level === "A" || sc.level === "AA" || sc.level === "NA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "2.2" || sc.wcagType === "NA"))
+            .map(sc => ({
+                num: sc.num,
+                scId: sc.scId,
+                name: sc.handle,
+                wcagLevel: sc.level,
+                summary: summaries[sc.num]
+            }))
+    },
+    {
         id: "WCAG_2_2",
         name: "WCAG 2.2 (A, AA)",
         category: eGuidelineCategory.ACCESSIBILITY,
