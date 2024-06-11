@@ -2385,7 +2385,7 @@ export class ARIADefinitions {
             "checkbox-with-aria-pressed": {
                 implicitRole: ["checkbox"],
                 //roleCondition: " with type=checkbox and aria-pressed attribute is present",
-                validRoles: ["button"],
+                validRoles: ["menuitemcheckbox", "option", "switch", "button"],
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required"],
                 otherDisallowedAriaAttributes: ["aria-checked"]
