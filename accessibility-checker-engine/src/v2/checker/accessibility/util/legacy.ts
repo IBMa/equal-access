@@ -3215,12 +3215,17 @@ export class RPTUtil {
                 for (let i = 0; i < htmlAttrs.length; i++) { 
                     let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
                     if (index !== -1) { 
-                        if (htmlAttrValues === null
+                        /**if (htmlAttrValues === null
                             || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
                             || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
                                continue;
-                        } else 
+                        */
+                        let values = (htmlAttrValues===null || htmlAttrValues[index]===null) ? null : htmlAttrValues[index].split(",");
+                        if (values === null || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                           || (!values.includes(htmlAttrs[i]['value'] && (values.includes('null') && htmlAttrs[i]['value']!==null && htmlAttrs[i]['value'].trim()!==''))))
+                            examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});       
+                        else 
                             examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
                     }         
                 }

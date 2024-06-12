@@ -2751,7 +2751,7 @@ export class ARIADefinitions {
             conflict: {
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["hidden"],
-                htmlAttributeValues: null
+                htmlAttributeValues: ["hidden,until-found,null"]
             },
             overlapping: {    
                 ariaAttributeValue: "true",

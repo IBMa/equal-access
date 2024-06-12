@@ -30,7 +30,7 @@ export let aria_attribute_conflict: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Rule Passed",
+            "pass": "The ARIA attribute is not conflict with the corresponding HTML attribute",
             "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
             "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
         }
@@ -44,18 +44,18 @@ export let aria_attribute_conflict: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        
+        console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id'));
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        let invalidAttributes = getInvalidAriaAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", invalidAttributes="+invalidAttributes);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
         
         let ret = [];
-        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", ariaAttributes="+ariaAttributes);
         if (!ariaAttributes || ariaAttributes.length ===0)
             return null;
 
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", conflictAttributes="+conflictAttributes);
         for (let i = 0; i < conflictAttributes.length; i++) {
             ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
             if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
