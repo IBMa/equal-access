@@ -30,9 +30,9 @@ export let aria_attribute_redundant: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "The ARIA attribute is not used for the element with a corresponding HTML attribute",
+            "pass": "The ARIA attribute is not redundant with a corresponding HTML attribute",
             "fail_redundant": "The ARIA attribute \"{0}\" is redundant with the HTML attribute \"{1}\"",
-            "group": "An ARIA attribute should not be used when there is a corresponding HTML attribute"
+            "group": "An ARIA attribute should not be redundant with a corresponding HTML attribute"
         }
     },
     rulesets: [{

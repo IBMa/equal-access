@@ -44,26 +44,26 @@ export let aria_attribute_conflict: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id'));
+        
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", invalidAttributes="+invalidAttributes);
+        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
         
         let ret = [];
-        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", ariaAttributes="+ariaAttributes);
+        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
         if (!ariaAttributes || ariaAttributes.length ===0)
             return null;
 
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);console.log("node="+ruleContext.nodeName+",id="+ruleContext.getAttribute('id')+", conflictAttributes="+conflictAttributes);
+        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
         for (let i = 0; i < conflictAttributes.length; i++) {
             ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
             if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
                 RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
         }
 
-        for (let i = 0; i < ariaAttributes.length; i++)
-            ret.push(RulePass("pass"));
+        //for (let i = 0; i < ariaAttributes.length; i++)
+        //    ret.push(RulePass("pass"));
         
         if (ret.length > 0) 
             return ret;
