@@ -25,13 +25,33 @@
 </head>
 
 <body id="id-9" aria-atomic="true">
-  <p>How many circles are there?</p>
-<svg xmlns="http://www.w3.org/2000/svg" role="img" width="100" height="100">
-	<title>1 circle</title>
-	<circle cx="50" cy="50" r="40" fill="yellow"></circle>
-</svg>
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" fill="yellow"></circle>
+  </svg>
 
-    
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["svg_graphics_labelled"],
+            results: [
+            {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/svg[1]",
+              "aria": "/document[1]/generic[1]/graphics-document[1]"
+            },
+            "reasonId": "fail_acc_name",
+            "message": "The SVG element has no accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
 </body>
 
 </html>
