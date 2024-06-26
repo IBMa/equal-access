@@ -20,7 +20,7 @@ import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedB
 
 export let aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
+    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -48,8 +48,12 @@ export let aria_accessiblename_exists: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
+        let nodeName = ruleContext.nodeName.toLocaleLowerCase();
+        // svg element is handled in svg_graphics)labbelled rule
+        if (nodeName === 'svg') return;
+
         // when table element with a caption as first child
-        if (ruleContext.nodeName.toLocaleLowerCase() === 'table' 
+        if (nodeName === 'table' 
             && ruleContext.firstElementChild && ruleContext.firstElementChild.nodeName.toLowerCase() === 'caption'
             && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
             return RulePass("pass");
