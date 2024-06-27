@@ -65,8 +65,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/application[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "pass",
+            "message": "The required attributes for the element with the role are defined",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -81,9 +81,12 @@
               "dom": "/html[1]/body[1]/div[2]",
               "aria": "/document[1]/separator[3]"
             },
-            "reasonId": "Fail_1",
+            "reasonId": "fail_missing",
             "message": "An element with ARIA role 'separator' does not have the required ARIA attribute(s): 'aria-valuenow'",
-            "messageArgs": ["separator", "aria-valuenow"],
+            "messageArgs": [
+              "separator",
+              "aria-valuenow"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

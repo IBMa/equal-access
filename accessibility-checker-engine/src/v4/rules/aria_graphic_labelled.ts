@@ -45,12 +45,7 @@ export let aria_graphic_labelled: Rule = {
             "Fail_3": "Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'"
         }
     },
-    rulesets: [{
-        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["1.1.1"], /*Change mapping to 1.1.1 from 4.1.2 */
-        "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
-    }],
+    rulesets: [],
     act: [{
         "7d6734": {
             "Pass_0": "pass",

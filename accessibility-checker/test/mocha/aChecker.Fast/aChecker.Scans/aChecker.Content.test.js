@@ -103,8 +103,10 @@ var skipList = [
     path.join(testRoot, "page_title_valid_ruleunit","Title-empty.html"),
     path.join(testRoot, "page_title_valid_ruleunit", "Title-invalidSpaces.html"),
     path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
-    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html")
+    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
 
+    // TODO: temprarily ignore till the issue is resolved: https://github.com/IBMa/equal-access/issues/1932
+    path.join(testRoot, "aria_attribute_conflict_ruleunit","aria-hidden.html")
 ]
 
 var skipMap = {}

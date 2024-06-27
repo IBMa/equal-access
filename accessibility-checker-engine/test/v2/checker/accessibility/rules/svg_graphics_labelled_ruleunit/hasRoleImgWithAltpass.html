@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+
+<title>RPT Test g1128</title>
+</head>
+<body>
+
+<div role="main">
+
+<h2>Test case: The Dojo mobile widget with an image role must have a non empty alternate text. </h2>
+
+<!-- ################################################################### -->
+
+
+	<div class="mblRating" style="display: inline-block;" id="Rating2" widgetid="dojox_mobile_Rating_0" role="img" aria-label="rating is 5.5" >...</div>
+
+
+	<div id="ProgInd3" class="mblProgressIndicator" center="false" size="120" role="img" aria-label="Loading..." startspinning="true" data-dojo-type="dojox.mobile.ProgressIndicator" style="width: 120px; height: 120px;" widgetid="dojox_mobile_ProgressIndicator_0">...</div>
+
+  <script type="text/javascript">
+    UnitTest = {
+        ruleIds: ["svg_graphics_labelled"],
+        results: []
+    }
+</script>
+</div>
+</body>
+</html>

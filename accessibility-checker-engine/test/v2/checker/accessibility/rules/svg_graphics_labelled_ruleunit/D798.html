@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+
+<title>RPT Test g1128: Defect 798</title>
+<style>
+[role="img"] {
+	height: 40px;
+	width: 200px;
+	border: 2px solid black;
+	}
+</style>
+</head>
+<body>
+
+<div role="main">
+
+<h2>Test case: Defect 798. </h2>
+
+<!-- ################################################################### -->
+
+ <div role="img" id="TC2_1" class="bkg_img" aria-labelledby="Label2_1"> <span id="Label2_1"></span> TC2_1 </div>
+ <div role="img" id="TC2_2" class="bkg_img" aria-labelledby="Label2_2"> <span id="Label2_2.0"> TC2_2 </span>  </div>
+ <div role="img" id="TC2_3" class="bkg_img" aria-labelledby="   "> <span id="Label2_3"> TC2_3 </span>  </div>
+
+	<h2>this img has an aria-label and should not fail g1128</h2>
+	<div role="img" aria-label="My Image">
+		<div>image-related stuff goes here</div>
+	</div>
+
+	<h2 id="fail-message">this img has an aria-labelledby and should not g1128</h2>
+	<div role="img" aria-labelledby="fail-message">
+		<div>image-related stuff goes here</div>
+	</div>
+
+
+  <script type="text/javascript">
+    UnitTest = {
+        ruleIds: ["svg_graphics_labelled"],
+        results: []
+    }
+</script>
+</div>
+</body>
+</html>

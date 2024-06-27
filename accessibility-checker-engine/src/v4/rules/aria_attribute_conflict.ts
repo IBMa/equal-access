@@ -30,7 +30,7 @@ export let aria_attribute_conflict: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Rule Passed",
+            "pass": "The ARIA attribute is not conflict with the corresponding HTML attribute",
             "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
             "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
         }
@@ -62,8 +62,8 @@ export let aria_attribute_conflict: Rule = {
                 RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
         }
 
-        for (let i = 0; i < ariaAttributes.length; i++)
-            ret.push(RulePass("pass"));
+        //for (let i = 0; i < ariaAttributes.length; i++)
+        //    ret.push(RulePass("pass"));
         
         if (ret.length > 0) 
             return ret;
