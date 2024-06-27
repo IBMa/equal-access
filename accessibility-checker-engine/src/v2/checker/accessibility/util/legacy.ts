@@ -3212,41 +3212,61 @@ export class RPTUtil {
      *         or null where ariaAttr won't cause conflict
      */
     public static getConflictOrOverlappingHtmlAttribute(ariaAttr, htmlAttrs, type): any[] | null {
-        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']]; 
         if (exist) { 
+            if (!ariaAttr || ariaAttr.length ==0 || !htmlAttrs || htmlAttrs.length == 0) return [];
+
             let examinedHtmlAtrNames = [];
-            let ariaAttrValue = '';
+            let concernTypes = null;
             if (type === 'conflict') {
-                if (!exist.conflict) return null;
-                ariaAttrValue = exist.conflict.ariaAttributeValue;
+                if (!exist.conflict || Object.keys(exist.conflict).length === 0) return null;
+                concernTypes = exist.conflict;
             } else if (type === 'overlapping')  {
-                if (!exist.overlapping) return null;
-                ariaAttrValue = exist.overlapping.ariaAttributeValue; 
+                if (!exist.overlapping || Object.keys(exist.overlapping).length === 0) return null;
+                concernTypes = exist.overlapping; 
             } else
-                return null;    
-            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
-                let htmlAttrNames = [];
-                let htmlAttrValues = [];
-                if (type === 'conflict') {
-                     htmlAttrNames = exist.conflict.htmlAttributeNames;
-                     htmlAttrValues = exist.conflict.htmlAttributeValues;
-                }  else {
-                     htmlAttrNames = exist.overlapping.htmlAttributeNames;
-                     htmlAttrValues = exist.overlapping.htmlAttributeValues;
-                }    
+                return null;
+            
+            let applicable = false;
+            let fail = false;
+            for (let k=0; k < concernTypes.length; k++) {    
+                let concernAriaValue = concernTypes[k].ariaAttributeValue;
+                let concernHtmlNames = concernTypes[k].htmlAttributeNames;
+                let concernHtmlValues = concernTypes[k].htmlAttributeValues;
+                
                 for (let i = 0; i < htmlAttrs.length; i++) { 
-                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    let index = concernHtmlNames.indexOf(htmlAttrs[i]['name']); 
                     if (index !== -1) { 
-                        if (htmlAttrValues === null
-                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
-                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
-                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
-                               continue;
-                        } else 
-                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
-                    }         
-                }
+                        applicable = true;
+                        let htmlValuesInConcern = (concernHtmlValues===null || concernHtmlValues[index]===null) ? null : concernHtmlValues[index].split(",");
+                        
+                        if (concernAriaValue === null) {
+                            if (htmlValuesInConcern === null) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true; 
+                            } else if (htmlValuesInConcern.includes(htmlAttrs[i]['value'])) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true;
+                            }    
+                        } else if (htmlValuesInConcern === null) {
+                            if (concernAriaValue === ariaAttr['value']) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true;
+                            }    
+                        } else if (concernAriaValue === 'VALUE' && htmlValuesInConcern.includes('VALUE') && htmlValuesInConcern[0] !== ariaAttr['value']) {
+                            examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                            fail = true;
+                        } else if (concernAriaValue === ariaAttr['value'] && htmlValuesInConcern.includes(htmlAttrs[i]['value'])) {
+                            examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                            fail = true;
+                        }    
+                    }
+                }   
             }
+            
+            if (applicable && !fail)
+                examinedHtmlAtrNames.push({result: 'Pass', 'attr': ''});
+
             return examinedHtmlAtrNames;
         } else
             return null;
