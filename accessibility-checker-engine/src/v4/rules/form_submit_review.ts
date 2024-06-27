@@ -11,9 +11,8 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let form_submit_review: Rule = {
     id: "form_submit_review",
@@ -37,12 +36,15 @@ export let form_submit_review: Rule = {
             "group": "A form should not be submitted automatically without warning the user"
         }
     },
-    rulesets: [{
+    /**
+     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["3.2.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
-    }],
+    }],*/
+    //deprecate the rule on Jun 10, 2024
+    rulesets: [],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
