@@ -46,7 +46,6 @@
 
       <input list="listbox2" type='mytel' id="browser2" aria-haspopup="listbox">
 
-        <!-- not triggerred, no failure/pass case -->
         <input list="function-types" type='date' id="browser4" aria-haspopup="listbox">
         <datalist id="function-types">
           <option value="function">function</option>
@@ -71,8 +70,8 @@
               "dom": "/html[1]/body[1]/main[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
-            "reasonId": "Potential_1",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"search\"",
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"search\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [
               "search"
             ],
@@ -89,8 +88,8 @@
               "dom": "/html[1]/body[1]/main[1]/input[2]",
               "aria": "/document[1]/main[1]/combobox[2]"
             },
-            "reasonId": "Potential_1",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"email\"",
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"email\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [
               "email"
             ],
@@ -107,8 +106,8 @@
               "dom": "/html[1]/body[1]/main[1]/input[3]",
               "aria": "/document[1]/main[1]/combobox[3]"
             },
-            "reasonId": "Potential_1",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"tel\"",
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"tel\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [
               "tel"
             ],
@@ -125,9 +124,27 @@
               "dom": "/html[1]/body[1]/main[1]/input[4]",
               "aria": "/document[1]/main[1]/combobox[4]"
             },
-            "reasonId": "Potential_2",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with missing or invalid input type",
+            "reasonId": "potential_misuse",
+            "message": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[5]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"date\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
+            "messageArgs": [
+              "date"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }
