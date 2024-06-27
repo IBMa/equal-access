@@ -20,14 +20,7 @@
 <html lang="en">
 <head>
 
-<title>RPT Test g1128: Defect 798</title>
-<style>
-[role="img"] {
-	height: 40px;
-	width: 200px;
-	border: 2px solid black;
-	}
-</style>
+<title>RPT Test: svg xlink:title</title>
 </head>
 <body>
 
@@ -37,22 +30,36 @@
 
 <!-- ################################################################### -->
 
- <div role="img" id="TC2_1" class="bkg_img" aria-labelledby="Label2_1"> <span id="Label2_1"></span> TC2_1 </div>
- <div role="img" id="TC2_2" class="bkg_img" aria-labelledby="Label2_2"> <span id="Label2_2.0"> TC2_2 </span>  </div>
- <div role="img" id="TC2_3" class="bkg_img" aria-labelledby="   "> <span id="Label2_3"> TC2_3 </span>  </div>
+<svg xmlns="https://www.w3.org/2000/svg">
+  <a xlink:href= "http://example.com/link/" xlink:title="The link leads to an example page that is of little interest">
+       <text x="10" y="25" >An example link.</text>
+  </a>
+</svg>
+  
 
-	<h2>this img has an aria-label and should not fail g1128</h2>
-	<div role="img" aria-label="My Image">
-		<div>image-related stuff goes here</div>
-	</div>
-
-	<h2 id="fail-message">this img has an aria-labelledby and should not g1128</h2>
-	<div role="img" aria-labelledby="fail-message">
-		<div>image-related stuff goes here</div>
-	</div>
-
-
-
+  <script type="text/javascript">
+    UnitTest = {
+        ruleIds: ["svg_graphics_labelled"],
+        results: [
+        {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/svg[1]",
+              "aria": "/document[1]/main[1]/graphics-document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The SVG element has an accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    }
+  </script>
 </div>
 </body>
 </html>

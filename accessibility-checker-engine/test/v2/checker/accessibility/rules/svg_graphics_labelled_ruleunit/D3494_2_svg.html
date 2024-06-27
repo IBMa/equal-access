@@ -34,7 +34,45 @@
   </svg>  
     <p>Example 5: Linked Icon, with dynamic text</p>
   
-    
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["svg_graphics_labelled"],
+            results: [
+            {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/svg[1]",
+              "aria": "/document[1]/generic[1]/graphics-document[1]"
+            },
+            "reasonId": "fail_acc_name",
+            "message": "The SVG element has no accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/svg[2]",
+              "aria": "/document[1]/generic[1]/graphics-document[2]"
+            },
+            "reasonId": "fail_acc_name",
+            "message": "The SVG element has no accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
 </body>
 
 </html>
