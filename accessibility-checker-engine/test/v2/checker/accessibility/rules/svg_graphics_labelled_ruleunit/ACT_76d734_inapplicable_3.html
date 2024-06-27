@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+
+<head id="id-29">
+    <title id="id-36">svg</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body id="id-9" aria-atomic="true">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <circle role="graphics-object" cx="50" cy="50" r="40" fill="yellow"></circle>
+  </svg>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["svg_graphics_labelled"],
+            results: [
+            {
+            "ruleId": "svg_graphics_labelled",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/svg[1]",
+              "aria": "/document[1]/generic[1]/graphics-document[1]"
+            },
+            "reasonId": "fail_acc_name",
+            "message": "The SVG element has no accessible name",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
+    </script>
+</body>
+
+</html>

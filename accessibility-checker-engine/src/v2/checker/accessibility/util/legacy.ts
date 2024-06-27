@@ -2403,6 +2403,28 @@ export class RPTUtil {
         return "";
     }
 
+    public static getAriaDescription(ele) {
+        if (!ele) return "";
+        let normalizedLabel = "";
+        if (ele.hasAttribute("aria-describedby")) {
+            let labelIDs = ele.getAttribute("aria-labelledby").trim().split(" ");    
+            for (let j = 0, length = labelIDs.length; j < length; ++j) {
+                let labelID = labelIDs[j];
+                let labelNode = FragmentUtil.getById(ele, labelID);
+                let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? RPTUtil.getInnerText(labelNode) : "";
+                normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
+            }
+            if (normalizedLabel.trim().length > 0)
+                return normalizedLabel.trim();
+        }
+        if (ele.hasAttribute("aria-description")) {
+            normalizedLabel = ele.getAttribute("aria-description");
+            if (normalizedLabel.trim().length > 0)
+                return normalizedLabel.trim().toLowerCase();
+        }
+        return "";
+    }
+
     /**
      * @param element 
      * @param idStr 

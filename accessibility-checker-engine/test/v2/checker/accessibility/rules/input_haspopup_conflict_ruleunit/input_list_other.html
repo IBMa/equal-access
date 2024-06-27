@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Test of Input element with a list</title>
+</head>
+
+<body>
+    <main>
+      <input type="text" list="myurls" aria-haspopup="listbox">
+      <input type="text" list="urls" aria-haspopup="listbox">
+      <input type="text" list="function-types" aria-haspopup="listbox">
+
+      <select id="urls">
+       <option label="MIME: Format of Internet Message Bodies" value="https://www.rfc-editor.org/rfc/rfc2045">
+       <option label="HTML" value="https://html.spec.whatwg.org/">
+       <option label="DOM" value="https://dom.spec.whatwg.org/">
+       <option label="Fullscreen" value="https://fullscreen.spec.whatwg.org/">
+       <option label="Media Session" value="https://mediasession.spec.whatwg.org/">
+       <option label="The Single UNIX Specification, Version 3" value="http://www.unix.org/version3/">
+      </select>
+
+      <datalist id="function-types">
+          <option value="function">function</option>
+          <option value="=>">arrow function</option>
+          <option value="async =>">async arrow function</option>
+      </datalist>
+
+    </main>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["input_haspopup_conflict"],
+            results: [
+            {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[1]",
+              "aria": "/document[1]/main[1]/combobox[1]"
+            },
+            "reasonId": "potential_list_notexist",
+            "message": "The list attribute for the <input> element is invalid",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[2]",
+              "aria": "/document[1]/main[1]/combobox[2]"
+            },
+            "reasonId": "fail_invalid_list_elem",
+            "message": "The list attribute for the <input> element does not reference a datalist element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[3]",
+              "aria": "/document[1]/main[1]/combobox[3]"
+            },
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"text\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
+            "messageArgs": [
+              "text"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+</body>
+
+</html>
