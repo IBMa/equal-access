@@ -41,5 +41,19 @@
 <br>
 <div id="exchange">Enter your 3 digit phone exchange</div>
 <input type="text" placeholder="3 digit phone exchange" name="num2" aria-labelledby="exchange"/>
-</body>
+<script type="text/javascript">
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1145",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/input[1]",
+        "/html/body/input[2]"
+      ]
+    }
+  ];
+</script></body>
 </html>
