@@ -142,7 +142,7 @@ export function getConflictAriaAndHtmlAttributes(elem: Element) {
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Failed') //failed
                     ret.push({'ariaAttr': ariaAttrs[i]['name'], 'htmlAttr': item['attr']});
-            });    
+            });  
         }
     }
     return ret;

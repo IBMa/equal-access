@@ -26,51 +26,59 @@
 
 <body>
     <main>
-        <!-- fail case 1, no type specified-->
-        <input list="listbox1" id="browser1" aria-haspopup="listbox">
-        <datalist role="listbox" id="listbox1">
-            <option value="Zebra">Zebra</option>
-            <option value="Zoom" id="selected_option3">Zoom</option>
-        </datalist>
+      <input type="text" list="myurls" aria-haspopup="listbox">
+      <input type="text" list="urls" aria-haspopup="listbox">
+      <input type="text" list="function-types" aria-haspopup="listbox">
 
-        
-      <!-- fail case 2 with type='text' -->
-      <input list="listbox2" type='text' id="browser2" aria-haspopup="listbox">
-      <datalist role="listbox" id="listbox2">
-          <option value="English">English</option>
-          <option value="Spanish">Spanish</option>
-      </datalist>
+      <select id="urls">
+       <option label="MIME: Format of Internet Message Bodies" value="https://www.rfc-editor.org/rfc/rfc2045">
+       <option label="HTML" value="https://html.spec.whatwg.org/">
+       <option label="DOM" value="https://dom.spec.whatwg.org/">
+       <option label="Fullscreen" value="https://fullscreen.spec.whatwg.org/">
+       <option label="Media Session" value="https://mediasession.spec.whatwg.org/">
+       <option label="The Single UNIX Specification, Version 3" value="http://www.unix.org/version3/">
+      </select>
 
-        <!-- not triggerred, no failure/pass case, added no triggering explicit role-->
-        <input list="function-types" type='text' role='combobox' id="browser3" />
-        
-
-        <input list="function-types" type='number' role='combobox' id="browser4" aria-haspopup="listbox">
-        <datalist id="function-types">
+      <datalist id="function-types">
           <option value="function">function</option>
           <option value="=>">arrow function</option>
           <option value="async =>">async arrow function</option>
-        </datalist>
+      </datalist>
 
-        
     </main>
 
     <script>
         UnitTest = {
             ruleIds: ["input_haspopup_conflict"],
-            results: [  
+            results: [
             {
             "ruleId": "input_haspopup_conflict",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/main[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
-            "reasonId": "potential_misuse",
-            "message": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
+            "reasonId": "potential_list_notexist",
+            "message": "The list attribute for the <input> element is invalid",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[2]",
+              "aria": "/document[1]/main[1]/combobox[2]"
+            },
+            "reasonId": "fail_invalid_list_elem",
+            "message": "The list attribute for the <input> element does not reference a datalist element",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -82,31 +90,13 @@
               "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/input[2]",
-              "aria": "/document[1]/main[1]/combobox[2]"
+              "dom": "/html[1]/body[1]/main[1]/input[3]",
+              "aria": "/document[1]/main[1]/combobox[3]"
             },
             "reasonId": "potential_type_misuse",
             "message": "The <input> element with type \"text\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [
               "text"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "input_haspopup_conflict",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/main[1]/input[4]",
-              "aria": "/document[1]/main[1]/combobox[4]"
-            },
-            "reasonId": "potential_type_misuse",
-            "message": "The <input> element with type \"number\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
-            "messageArgs": [
-              "number"
             ],
             "apiArgs": [],
             "category": "Accessibility"

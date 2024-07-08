@@ -34,26 +34,16 @@
 
 	<hr>
 	
-	<hr tabindex = "0">
 	
-	
-    <!-- Missing required slider properties -->
-    <div id="id3" role="application slider" aria-labelledby="label2" aria-valuenow="5">
-    </div>
+	<input type='checkbox' role="switch" />
+	<input type='checkbox' role="switch"  aria-checked="true"/>
 
-	<div tabindex="0" role="separator">separator 1</div>
-	<hr tabindex="0" aria-valuemin=0 aria-valuenow=60 aria-valuemax="80"/>
-	
-	<div role="separator" style="display: none">separator 3</button>
-	<div role="separator" tabindex = "-1">separator 4</button>
-
-    <p id="label2">Label for application with id="id3"</p>
-
+    
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-          ruleIds: ["aria_attribute_required"],
+          ruleIds: ["aria_attribute_required", "aria_attribute_valid"],
           results: [
           {
             "ruleId": "aria_attribute_required",
@@ -62,8 +52,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/application[1]"
+              "dom": "/html[1]/body[1]/input[1]",
+              "aria": "/document[1]/switch[1]"
             },
             "reasonId": "pass",
             "message": "The required attributes for the element with the role are defined",
@@ -72,21 +62,38 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_attribute_required",
+            "ruleId": "aria_attribute_valid",
             "value": [
               "INFORMATION",
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]/separator[3]"
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/switch[2]"
             },
-            "reasonId": "fail_missing",
-            "message": "An element with ARIA role 'separator' does not have the required ARIA attribute(s): 'aria-valuenow'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"switch\"",
             "messageArgs": [
-              "separator",
-              "aria-valuenow"
+              "aria-checked",
+              "input",
+              "switch"
             ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_required",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/switch[2]"
+            },
+            "reasonId": "pass",
+            "message": "The required attributes for the element with the role are defined",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
