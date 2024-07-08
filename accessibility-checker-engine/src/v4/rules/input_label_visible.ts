@@ -94,8 +94,18 @@ export let input_label_visible: Rule = {
             }
         }
 
-        //let passed = false;
-        // first check visible label for input or button
+        // buttons are not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
+        let role = RPTUtil.getResolvedRole(ruleContext);
+        if (role && role === "button") {
+            //submit type of input has a visible label 'Submit' by default
+            if (nodeName === 'input' && ruleContext.hasAttribute("type") && ruleContext.getAttribute("type").toLowerCase() === 'submit')
+                return null;
+            // likely not associated with data entry
+            if (!RPTUtil.getAncestor(ruleContext, "form"))
+                return null;
+        }
+
+        // check visible label for input or button
         if (nodeName === "input" || nodeName === "button") {
             if (RPTUtil.hasImplicitLabel(ruleContext))
                 return RulePass("pass");
@@ -103,12 +113,6 @@ export let input_label_visible: Rule = {
             let label = RPTUtil.getLabelForElement(ruleContext);
             if (label && RPTUtil.hasInnerContentHidden(label))
                 return RulePass("pass");     
-        }
-
-        // buttons are not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
-        if (nodeName === "button" || (nodeName === "input" && ruleContext.hasAttribute("type") && ruleContext.getAttribute("type").toLowerCase() !== 'button')) {
-            if (!RPTUtil.getAncestor(ruleContext, "form"))
-                return null;
         }
 
         // check if an alternative tooltip exists that can be made visible through mouseover
@@ -135,8 +139,8 @@ export let input_label_visible: Rule = {
         
         // check if any visible text from the control. 
         // note that (1) the text doesn’t need to be associated with the control to form a relationship
-        //  and (2) the text doesn't need to follow accessible name requirement (e.g. name from)
-        if (RPTUtil.hasInnerContentHidden(ruleContext))
+        //  and (2) the text doesn't need to follow accessible name requirement (e.g. nameFrom)
+        if (!RPTUtil.isInnerTextEmpty(ruleContext))
             return RulePass("pass");
 
         // Determine if this is referenced by a combobox. If so, the label belongs to the combobox
