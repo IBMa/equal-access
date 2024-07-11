@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text with Purple and Pink Colors</title>
+    <title>Input with image child</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -237,6 +237,38 @@
             },
             "reasonId": "potential_placeholder_only",
             "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]/input[2]",
+              "aria": "/document[1]/form[2]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[9]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

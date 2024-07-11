@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>elements with image</title>
+  </head>
+  <body>
+    
+    <input id="input1" type="image" src="img_submit.gif" alt="Submit" width="48" height="48" /> 
+    <input id="input2" type="image" src="img_submit.gif" alt="" width="48" height="48" /> 
+
+    <input id="input3" type="reset" /> 
+
+    <button id="button1" name="rgb" type="button"><img src="red" alt="RGB"></button>
+    
+    <button id="button2" name="cmyk1" type="button" aria-label="button"><img src="magenta"></button>
+    <button id="button3" name="cmyk2" type="submit" aria-label="submit"></button>
+    <button id="button4" name="cmyk3" type="reset" aria-label="reset"></button>
+    <button id="button5" aria-label="button"></button>
+
+    <hr style="margin: 50px;">
+  </body>
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_visible"],
+      results: [
+      {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[3]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[6]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[7]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[5]",
+              "aria": "/document[1]/button[8]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</html>

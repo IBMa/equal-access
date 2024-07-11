@@ -21,7 +21,7 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 export let input_label_visible: Rule = {
     id: "input_label_visible",
     context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox",
-    dependencies: ["input_label_exists"],
+    dependencies: ["input_label_exists"], 
     refactor: {
         "WCAG20_Input_VisibleLabel": {
             "Pass_0": "pass",
@@ -55,7 +55,7 @@ export let input_label_visible: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
-
+        
         //ignore datalist element check since it will be part of a input element or hidden by default
         if (nodeName === 'datalist')
             return null;
@@ -94,30 +94,56 @@ export let input_label_visible: Rule = {
             }
         }
 
-        // buttons are not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
-        let role = RPTUtil.getResolvedRole(ruleContext);
-        if (role && role === "button") {
-            //submit type of input has a visible label 'Submit' by default
-            if (nodeName === 'input' && ruleContext.hasAttribute("type") && ruleContext.getAttribute("type").toLowerCase() === 'submit')
-                return null;
-            // likely not associated with data entry
-            if (!RPTUtil.getAncestor(ruleContext, "form"))
-                return null;
-        }
-
         // check visible label for input or button
-        if (nodeName === "input" || nodeName === "button") {
+        if (nodeName === 'input' || nodeName === 'button') {
+
             if (RPTUtil.hasImplicitLabel(ruleContext))
                 return RulePass("pass");
             
             let label = RPTUtil.getLabelForElement(ruleContext);
             if (label && RPTUtil.hasInnerContentHidden(label))
-                return RulePass("pass");     
+                return RulePass("pass");  
+
+            // special cases
+            let type = ruleContext.getAttribute("type");
+            if (nodeName === 'input' && type) {
+                type = type.toLowerCase();
+                //submit type of input has a visible label 'Submit' by default
+                if (type === 'submit' || type === 'reset')
+                    return RulePass("pass");
+                //image type of input requires a non-empty alt text
+                if (type === 'image' && RPTUtil.attributeNonEmpty(ruleContext, "alt"))
+                    return RulePass("pass");
+            }
         }
+
+        // custom widget submission is not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
+        let role = RPTUtil.getResolvedRole(ruleContext);
+        if (role && role === "button" && nodeName !== 'input' && nodeName !== 'button') {    
+            // likely a custom widget, skip if not associated with data entry
+            if (!RPTUtil.getAncestor(ruleContext, "form"))
+                return null;    
+        }
+
+        // check if any visible text from the control. 
+        // note that (1) the text doesn’t need to be associated with the control to form a relationship
+        //  and (2) the text doesn't need to follow accessible name requirement (e.g. nameFrom)
+        if (!RPTUtil.isInnerTextEmpty(ruleContext))
+            return RulePass("pass");
 
         // check if an alternative tooltip exists that can be made visible through mouseover
         if (RPTUtil.attributeNonEmpty(ruleContext, "title"))
             return RulePass("pass"); 
+
+        // check if any descendant with an alternative tooltip that can be made visible through mouseover
+        // only consider img and svg, and other text content of the descendant is covered in the isInnerText above  
+        let descendants = RPTUtil.getAllDescendantsWithRoles(ruleContext, ["img", "graphics-document", "graphics-object", "graphics-symbol"], false, true);
+        if (descendants && descendants.length > 0) {
+            for (let d=0; d < descendants.length; d++) {
+                if (RPTUtil.attributeNonEmpty(descendants[d], "title") || RPTUtil.attributeNonEmpty(descendants[d], "alt"))
+                    return RulePass("pass");
+            } 
+        }
         
         // check if there is a visible label pointed to by the aria-labelledby attribute.
         if (RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")) {
@@ -137,12 +163,6 @@ export let input_label_visible: Rule = {
         if (nodeName == "option" && (RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0))
             return RulePass("pass");
         
-        // check if any visible text from the control. 
-        // note that (1) the text doesn’t need to be associated with the control to form a relationship
-        //  and (2) the text doesn't need to follow accessible name requirement (e.g. nameFrom)
-        if (!RPTUtil.isInnerTextEmpty(ruleContext))
-            return RulePass("pass");
-
         // Determine if this is referenced by a combobox. If so, the label belongs to the combobox
         let id = ruleContext.getAttribute("id");
         if (id && id.trim().length > 0) {
