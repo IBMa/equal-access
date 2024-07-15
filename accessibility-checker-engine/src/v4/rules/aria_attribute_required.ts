@@ -12,9 +12,8 @@
  *****************************************************************************/
 
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let aria_attribute_required: Rule = {
@@ -23,22 +22,22 @@ export let aria_attribute_required: Rule = {
     dependencies: ["aria_role_allowed"],
     refactor: {
         "Rpt_Aria_RequiredProperties": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"
+            "Pass_0": "pass",
+            "Fail_1": "fail_missing"
         }
     },
     help: {
         "en-US": {
             "group": `aria_attribute_required.html`,
-            "Pass_0": `aria_attribute_required.html`,
-            "Fail_1": `aria_attribute_required.html`
+            "pass": `aria_attribute_required.html`,
+            "fail_missing": `aria_attribute_required.html`
         }
     },
     messages: {
         "en-US": {
-            "group": "When using an ARIA role on an element, the required attributes for that role must be defined",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
+            "group": "The required attributes for the element with a role must be defined",
+            "pass": "The required attributes for the element with the role are defined",
+            "fail_missing": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
         }
     },
     rulesets: [{
@@ -59,13 +58,16 @@ export let aria_attribute_required: Rule = {
         let hasAttribute = RPTUtil.hasAttribute;
         let testedRoles = 0;
 
+        let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         for (let j = 0, rolesLength = roles.length; j < rolesLength; ++j) {
             if (implicitRole.length > 0 && implicitRole.includes(roles[j])) continue;
             if (designPatterns[roles[j]] && RPTUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
                 let requiredRoleProps = RPTUtil.getRoleRequiredProperties(roles[j], ruleContext);
+                let allowedRoleProps = RPTUtil.getAllowedAriaAttributes(ruleContext, roles[j], tagProperty);
                 let roleMissingReqProp = false;
                 testedRoles++;
                 for (let i = 0, propertiesLength = requiredRoleProps.length; i < propertiesLength; i++) {
+                    if (!allowedRoleProps.includes(requiredRoleProps[i])) continue;
                     if (!hasAttribute(ruleContext, requiredRoleProps[i])) {
                         // If an aria-labelledby isn't present, an aria-label will meet the requirement.
                         if (requiredRoleProps[i] == "aria-labelledby") {
@@ -99,9 +101,9 @@ export let aria_attribute_required: Rule = {
         if (testedRoles === 0) {
             return null;
         } else if (!passed) {
-            return RuleFail("Fail_1", retToken);
+            return RuleFail("fail_missing", retToken);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }
