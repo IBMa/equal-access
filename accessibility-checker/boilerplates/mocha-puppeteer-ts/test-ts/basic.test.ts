@@ -29,7 +29,7 @@ after(async() => {
 describe("Hello World Basics", function () {
     it("HomePage", async () => {
         const sample = path.join(__dirname, "..", "sample", "Hello.html");
-        await page.goto(`file://${sample}`);
+        await page.goto(`file://${sample}`, { waitUntil: 'networkidle0' });
 
         const result = await getCompliance(page, "HOME");
         const report : ICheckerReport = result!.report as ICheckerReport;
