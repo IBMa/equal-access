@@ -44,7 +44,7 @@ const fs = require("fs");
                             let succeeded = false;
                             while (!succeeded) {
                                 try {
-                                    await pupPage.goto(testcase.url, { waitUntil: 'networkidle0' });
+                                    await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded' });
                                     await pupPage._client.send("Page.stopLoading");
                                     let win = await pupPage.evaluate("document");
                                     if (win) {
