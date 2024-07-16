@@ -145,7 +145,7 @@ describe("Rule Unit Tests As File URL", function () {
                     var actualMap = {};
                     let report = null;
                     let puppeteer = null;
-                    await page.goto(url);
+                    await page.goto(url, { waitUntil: 'networkidle0' });
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     return aChecker.getCompliance(page, "Puppeteer_" + url)

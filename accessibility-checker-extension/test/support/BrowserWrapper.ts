@@ -48,7 +48,7 @@ export class BrowserWrapper {
         }).then(async browser => {
             for (const key in PAGE_MAP) {
                 let p = await browser.newPage();
-                await p.goto(PAGE_MAP[key].url);
+                await p.goto(PAGE_MAP[key].url, { waitUntil: 'networkidle0' });
                 while (await p.evaluate(() => Promise.resolve(document.readyState)) !== "complete") {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
@@ -57,7 +57,7 @@ export class BrowserWrapper {
             const index = this.pageKeyToTabId("altoro")!;
             const panelUrl = this.panelKeyToURL("assessment");
             let p = await browser.newPage();
-            await p.goto(`${panelUrl}?index=${encodeURIComponent(index)}`);
+            await p.goto(`${panelUrl}?index=${encodeURIComponent(index)}`, { waitUntil: 'networkidle0' });
             await new Promise(resolve => setTimeout(resolve, 1000));
             await p.close();
 
@@ -113,7 +113,7 @@ export class BrowserWrapper {
             height: 1080
         })
         if (url) {
-            await tab.goto(url);
+            await tab.goto(url, { waitUntil: 'networkidle0' });
         }
         this.tabs.push(tab);
         return tab;
