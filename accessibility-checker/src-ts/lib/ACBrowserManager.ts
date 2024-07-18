@@ -94,11 +94,9 @@ export class ACBrowserManager {
                 if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
                     // await page.goto(`data:text/html,encodeURIComponent(${URLorLocalFileorContent})`, { waitUntil: 'networkidle0' });
                     let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
-                    //await availPage.goto(urlStr);
-                    await availPage.goto(urlStr, { waitUntil: 'networkidle0' });
+                    await availPage.goto(urlStr);
                 } else {
-                    //await availPage.goto(URLorLocalFileorContent);
-                    await availPage.goto(URLorLocalFileorContent, { waitUntil: 'networkidle0' });
+                    await availPage.goto(URLorLocalFileorContent);
                 }
             } catch (e) {
                 err = `${e.message} ${URLorLocalFileorContent}`;

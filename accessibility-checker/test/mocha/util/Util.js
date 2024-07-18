@@ -7,7 +7,7 @@ module.exports = {
         // return browser.executeScript(`document.open("text/html");document.write(${JSON.stringify(testContent)});document.close()`);
     },
     loadPuppeteerTestFile: (page, testFile) => {
-        return page.goto("file://" + testFile, { waitUntil: 'networkidle0' });
+        return page.goto("file://" + testFile);
 
         // let testContent = fs.readFileSync(testFile);
         // return page.evaluate((testContent) => {
