@@ -39,6 +39,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         // library: 'ace',
         libraryTarget: 'commonjs2'
+        //libraryTarget: 'umd'
     },
     watch: false
 };

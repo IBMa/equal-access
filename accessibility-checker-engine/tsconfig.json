@@ -2,20 +2,22 @@
     "compilerOptions": {
         "declaration": true,
         "allowJs": false,
-        "target": "ES5",
+        //"target": "ES5",
+        "target": "ESNext",
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,
         "moduleResolution": "node",
         "alwaysStrict": true,
         "experimentalDecorators": true,
-        "resolveJsonModule": true,
-        // "module": "commonjs",
+        "resolveJsonModule": true,  //comment out due to umd module
+        "module": "commonjs",
         "outDir": "dist",
         "emitDecoratorMetadata": true,
         "lib": [
             "dom",
-            "es7"
+            //"es7"
+            "ESNext"
          ]
     },
     "include": [

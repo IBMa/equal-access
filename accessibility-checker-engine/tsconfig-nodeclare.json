@@ -2,7 +2,8 @@
     "compilerOptions": {
         "declaration": false,
         "allowJs": false,
-        "target": "ES5",
+        //"target": "ES5",
+        "target": "ESNEXT",
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,
@@ -10,12 +11,13 @@
         "alwaysStrict": true,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
-        // "module": "commonjs",
+        "module": "commonjs",
         "outDir": "dist",
         "emitDecoratorMetadata": true,
         "lib": [
             "dom",
-            "es7"
+            //"es7"
+            "ESNext"
          ]
     },
     "include": [
