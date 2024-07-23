@@ -114,20 +114,10 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 //chrome.setDefaultService(service);
                 chrome.Driver.createSession(options, service);
             } catch (e) {}
-            
-
-            browser = new webdriver.Builder()
-                .withCapabilities(webdriver.Capabilities.chrome())
-                .setChromeOptions(options)
-                .build();
-
-            browser.manage().window().setRect({ x: 0, y: 0, width: 13666, height: 784 });
-            expect(typeof browser).to.not.equal("undefined");
-            done();
-        } catch (e) {
-            console.log(e);
-        }
-     */       
+        */    
+        this.timeout(10000);
+        (async () => {
+            try {
                 const chrome = await import('selenium-webdriver/chrome.js');
                 const chromedriver = await import('chromedriver');
                 let spath = chromedriver.path;
@@ -148,6 +138,33 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 options.addArguments("--headless=new");
                 options.addArguments('--ignore-certificate-errors')
 
+    /**     browser.manage().window().setRect({ x: 0, y: 0, width: 13666, height: 784 });
+            expect(typeof browser).to.not.equal("undefined");
+            done();
+        } catch (e) {
+            console.log(e);
+        }
+           
+                const chrome = await import('selenium-webdriver/chrome.js');
+                const chromedriver = await import('chromedriver');
+                let spath = chromedriver.path;
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "..");
+                spath = path.join(spath, "bin");
+                spath = path.join(spath, "chromedriver");
+
+                try {
+                    const service = new chrome.ServiceBuilder(spath).build();
+                    // setDefaultService function is removed since web-driver v4.3.1+
+                    //chrome.setDefaultService(service);
+                    chrome.Driver.createSession(options, service);
+                } catch (e) {}
+                const options = new chrome.Options();
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--headless=new");
+                options.addArguments('--ignore-certificate-errors')
+        */
                 browser = new Builder()
                     .withCapabilities(Capabilities.chrome())
                     .setChromeOptions(options)

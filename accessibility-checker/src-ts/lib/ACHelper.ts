@@ -15,6 +15,9 @@ import { ACConfigManager } from "./ACConfigManager.js";
 import { ACEngineManager } from "./ACEngineManager.js";
 import { ACReportManager } from "./ACReportManager.js";
 import { Report } from "./api/IEngine.js";
+
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
+import { dirname, join, resolve as pathResolve } from "path";
 */
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
 import { dirname, join, resolve as pathResolve } from "path";
@@ -103,17 +106,17 @@ try {
             .then(() => ACBrowserManager.close())
             .then(done);
     });*/
-    import("cucumber"!).then((module) => {
+    //import("cucumber"!).then((module) => {
 (async () => {
     try {
         // If cucumber is the platform...
         let module = (await import("cucumber"!));
-        if (module.default.AfterAll) {
+      /**  if (module.default.AfterAll) {
             module.default.AfterAll(function (done) {
                 const rulePack = `${Config.rulePack}`;
                 initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
             });        
-        }
+        }*/
   /**  })
 } catch (e) {
     if (typeof (after) !== "undefined") {
@@ -123,11 +126,15 @@ try {
                     this.timeout(300000);
                 }
                 // const rulePack = `${Config.rulePack}/ace`;
+        let {AfterAll} = require('cucumber');
+        if (module.default.AfterAll) {
+            module.default.AfterAll(function (done) {
+                // const rulePack = `${Config.rulePack}`;
                 initialize()
                     .then(() => ReporterManager.generateSummaries())
                     .then(() => ACBrowserManager.close())
                     .then(done);
-            } else {
+    /**    } else {
                 done && done();
             }
         });
@@ -140,12 +147,22 @@ try {
             }
         });
     */    
+            });
+        }
     } catch (e) {
         if (typeof (after) !== "undefined") {
             after(function (done) {
                 if (Config) {
-                    const rulePack = `${Config.rulePack}/ace`;
-                    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+                //    const rulePack = `${Config.rulePack}/ace`;
+                //    initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+                    if (this.timeout) {
+                        this.timeout(300000);
+                    }
+                    // const rulePack = `${Config.rulePack}/ace`;
+                    initialize()
+                        .then(() => ReporterManager.generateSummaries())
+                        .then(() => ACBrowserManager.close())
+                        .then(done);
                 } else {
                     done();
                 }
@@ -153,15 +170,17 @@ try {
         } else {
             process.on('beforeExit', async function () {
                 if (Config) {
-                    const rulePack = `${Config.rulePack}/ace`;
+        /**       const rulePack = `${Config.rulePack}/ace`;
                     initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
+                    initialize()
+                        .then(() => ReporterManager.generateSummaries())
+        */                
                     ACBrowserManager.close();
                 }
             });
         }
     }
 })();
-
 
 function areValidPolicy(valPolicies, curPol) {
     let isValPol = false;

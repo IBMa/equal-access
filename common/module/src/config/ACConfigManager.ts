@@ -30,8 +30,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { IConfig, IConfigInternal } from "./IConfig.js";
 import { fetch_get } from "../api-ext/Fetch.js";
 import { ReporterManager } from "../report/ReporterManager.js";
-import path from 'path';
+//import path from 'path';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
