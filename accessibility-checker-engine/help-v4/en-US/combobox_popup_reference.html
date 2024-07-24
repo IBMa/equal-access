@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,25 +45,21 @@
 
 ### Why is this important?
 
-A combobox combines a text input element and a popup element that helps the user set the value of the 
-input. The popup becomes visible when the combobox is in an expanded state and is controlled by using 
-an attribute `aria-controls` referencing its `id`. When the value of the `aria-controls` attribute of
-the expanded combobox does not reference a valid popup `id`, assistive 
-technologies may not be able to present and control the content correctly.
+A combobox combines a text input element and a popup element that helps the user set the value of the input.
+The popup becomes visible when the combobox is in an expanded state and is controlled by using an attribute `aria-controls` referencing its `id`.
+When the value of the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`, assistive technologies may not be able to present and control the content correctly.
 
 Additionally, when the element with `role="combobox"` has an `aria-expanded` attribute with value `true`,
-the related popup element must be visible so that the assistive technology is able to present the
-popup to the user.
+the related popup element must be visible so that the assistive technology can present the popup to the user.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-
- * Code the combobox as in the ARIA 1.2 example below;
- * **And**, set the value of the combobox `aria-controls` attribute to the `id` value of an element with `role="listbox"`;
- * **Or**, if using the ARIA 1.0 style of combobox, update the value of the `aria-owns` attribute of the combobox to reference the `id` value of the combobox popup element;
+ * Code the combobox as in the ARIA 1.2 example below
+ * **And**, set the value of the combobox `aria-controls` attribute to the `id` value of an element with `role="listbox"`
+ * **Or**, if using the ARIA 1.0 style of combobox, update the value of the `aria-owns` attribute of the combobox to reference the `id` value of the combobox popup element
 
 ```
 <label for="tag_combo">Tag</label>
@@ -76,7 +73,7 @@ popup to the user.
   </ul>
 ```
 
-Note, example code includes material copied from or derived from [W3C, ARIA Authoring Practices Guide (APG) ](https://www.w3.org/WAI/ARIA/apg/). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+Note: example code includes material copied from or derived from [W3C, ARIA Authoring Practices Guide (APG) ](https://www.w3.org/WAI/ARIA/apg/). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
 
 </script></mark-down>
 <!-- End main panel -->

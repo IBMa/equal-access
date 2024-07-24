@@ -1,24 +1,35 @@
 # equal-access
 
-This Git repository hosts tools and supporting components that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+This Git repository hosts tools and supporting components of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate these automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Overview
 
-This README covers topics for users who want to find the deployed tools as well as topics for developers who want to better understand the various components and build the tools.
+This README covers topics for users who want to find and install the deployed tools as well as topics for developers who want to better understand the various components and build the tools themselves.
 
 The [wiki](https://github.com/IBMa/equal-access/wiki) contains overview information, links to videos, and other resources.
+See the [Release Notes](https://github.com/IBMa/equal-access/releases) for the latest deployed changes in the tools, rules, and components.
 
 ## Usage
 
-The tools have been deployed to the various stores and NPM so they can be easily downloaded and installed:
+The tools have been deployed to the browser and NPM stores so they can be easily downloaded and installed.
 
-* [Chrome accessibility-checker-extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools
-* [Firefox accessibility-checker-extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools
-* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline such as Travis CI for Node-based test environments such as Selenium, Puppeteer, Playwright, and Zombie; the ability to validate results against baseline files, and scan local files
-* [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment
+#### Browser extensions
 
-## Requirements
+The browser extensions provide an integrated checking experience and visualizations to help users quickly identify the source of accessibility issues and try fixes:
+
+* [Chrome Web Store extension](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extension that integrates automated accessibility checking capabilities into the Chrome Developer Tools.
+* [Firefox Add-on extension](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extension that integrates automated accessibility checking capabilities into the Firefox Web Developer Tools.
+* [Edge Add-on extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
+
+#### Automated testing packages
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.
+* [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment.
+* [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment.
+
+## Requirements for building the tools
 
 * [Node Version 18](https://nodejs.org/en/download/).
 
@@ -83,7 +94,7 @@ $ npm run build
   * ace-node-debug.js: uncompressed javascript library to be used in a NodeJS environment for development
   * ace-node.js: compressed javascript library to be used in a NodeJS environment for production
 * In the equal-access/accessibility-checker/package directory
-  * java script source that can be installed or deployed as npm package that works with an HTML parsing engines such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
+  * JavaScript source that can be installed or deployed as npm package that works with an HTML parsing engines, such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
 * In the equal-access/karma-accessibility-checker/package directory
   * javascript source that can be used as a Karma plugin, see more [details](karma-accessibility-checker/README.md).
 
@@ -99,7 +110,7 @@ Please check the README for each individual tool for its build instructions:
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose). If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 

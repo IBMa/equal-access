@@ -37,21 +37,21 @@ export let imagebutton_alt_exists: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Image button provides alternative text using the 'alt' attribute",
-            "Pass_1": "Image button provides alternative text using a ARIA label",
+            "Pass_1": "Image button provides alternative text using an ARIA label",
             "Pass_2": "Image button provides alternative text using the 'title' attribute",
             "Fail": "The <input> element of type \"image\" has no text alternative",
             "group": "The <input> element of type \"image\" should have a text alternative"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: "59796f",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        // See https://www.w3.org/WAI/WCAG21/Techniques/failures/F65
+        // See https://www.w3.org/WAI/WCAG22/Techniques/failures/F65
         const ruleContext = context["dom"].node as Element;
         if (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() != "image") {
             return null;

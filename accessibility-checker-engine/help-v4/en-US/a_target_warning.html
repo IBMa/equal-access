@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,16 @@
 
 ### Why is this important?
 
-Changes in context can confuse or disorient users who cannot easily perceive the change. If activating a link opens a new popup or a window, informing the user in advance helps people who use assistive technologies be aware of the change in context.
+Changes in context can confuse or disorient users who cannot easily perceive the change. 
+If activating a link opens a new popup or a window, informing the user in advance helps people who use assistive technologies be aware of the change in context.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Include a warning in the label advising the user that the link opens in a new window;
-* **Or**, use CSS to provide a warning before opening a new window (see Example 2 in [WCAG technique G201](https://www.w3.org/WAI/WCAG21/Techniques/general/G201)).
+* Include a warning in the label advising the user that the link opens in a new window
+* **Or**, use CSS to provide a warning before opening a new window (see Example 2 in [WCAG technique G201](https://www.w3.org/WAI/WCAG22/Techniques/general/G201))
 
 </script></mark-down>
 <!-- End main panel -->
@@ -66,11 +68,11 @@ Changes in context can confuse or disorient users who cannot easily perceive the
 ### About this requirement
 
 * [IBM 3.2.2 On Input](https://www.ibm.com/able/requirements/requirements/#3_2_2)
-* [WCAG technique G201](https://www.w3.org/WAI/WCAG21/Techniques/general/G201)
+* [G201: Giving users advanced warning when opening a new window](https://www.w3.org/WAI/WCAG22/Techniques/general/G201)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision who use magnification
 * People with cognitive limitations
 

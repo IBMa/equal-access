@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,17 @@
 
 ### Why is this important?
 
-Using an appropriate autocomplete token for a form field that collects user information makes the input’s purpose programmatically determinable. This helps user agents and assistive technologies to present the programmatically determined purpose of the inputs to users in different modalities. The `autocomplete` attribute can also assist with pre-populating form fields with values the user has previously input.
+Using an appropriate autocomplete token for a form field that collects user information makes the input’s purpose programmatically determinable.
+This helps user agents and assistive technologies to present the programmatically determined purpose of the inputs to users in different modalities.
+The `autocomplete` attribute can also assist with pre-populating form fields with values the user has previously input.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If the `autocomplete` attribute is appropriate for this input element, correct the `autocomplete`’s token(s) to use the well-defined fixed values, in the correct order for the correct input purpose as described in the [HTML 5.2 specification section - Autofilling form controls: the autocomplete attribute](https://www.w3.org/TR/html52/sec-forms.html#autofilling-form-controls-the-autocomplete-attribute);
- * **Or**, if the `autocomplete` attribute is used to describe a "custom" taxonomy rather than the tokens described in the HTML 5.2 specification, manually validate the custom taxonomy.
+ * If the `autocomplete` attribute is appropriate for this input element, correct the `autocomplete`’s token(s) to use the well-defined fixed values, in the correct order for the correct input purpose as described in the [HTML - Autofilling form controls](https://html.spec.whatwg.org/multipage/forms.html#autofilling-form-controls-the-autocomplete-attribute)
+ * **Or**, if the `autocomplete` attribute is used to describe a "custom" taxonomy rather than the tokens described in the HTML specification, manually validate the custom taxonomy
 
 Correct example:
 
@@ -80,7 +83,7 @@ Correct example:
 </form>
 ```
 
-Example code includes material copied from or derived from [Using HTML5 Autocomplete attributes, technique H98](https://www.w3.org/WAI/WCAG21/Techniques/html/H98). Copyright © 2017-2018 W3C® (MIT, ERCIM, Keio, Beihang)
+Example code includes material copied from or derived from [H98: Using HTML 5.2 autocomplete attributes](https://www.w3.org/WAI/WCAG22/Techniques/html/H98). Copyright © 2017-2018 W3C® (MIT, ERCIM, Keio, Beihang)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -94,11 +97,12 @@ Example code includes material copied from or derived from [Using HTML5 Autocomp
 ### About this requirement
 
 * [IBM 1.3.5 Identify Input Purpose](https://www.ibm.com/able/requirements/requirements/#1_3_5)
+* [HTML - Autofilling form controls](https://html.spec.whatwg.org/multipage/forms.html#autofilling-form-controls-the-autocomplete-attribute)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People with tremor or other movement disorders
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People with tremors or other movement disorders
  * People with memory limitations
  * People with cognitive limitations
 

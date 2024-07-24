@@ -15,12 +15,13 @@
 *****************************************************************************/
 
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { IArchiveDefinition, IMessage, IReport, IRuleset, ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, IIssue, IMessage, IReport, IRuleset, ISessionState, ISettings } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
 import { UtilIssue } from "../util/UtilIssue";
+import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 export type TabChangeType = {
     tabId: number
@@ -29,6 +30,13 @@ export type TabChangeType = {
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
+
+export function issueBaselineMatch(baselineIssue: {ruleId: string, reasonId:string, path: { dom: string}, messageArgs: string[]}, issue: IIssue) {
+    return baselineIssue.ruleId === issue.ruleId
+        && baselineIssue.reasonId === issue.reasonId
+        && baselineIssue.path.dom === issue.path.dom
+        && JSON.stringify(baselineIssue.messageArgs) === JSON.stringify(issue.messageArgs);
+}
 
 class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
@@ -47,6 +55,7 @@ class BackgroundController extends Controller {
     }
     
     private sync = Promise.resolve();
+    private metrics = new ACMetricsLogger("ac-extension");
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -107,24 +116,28 @@ class BackgroundController extends Controller {
         this.addEventListener(listener, `BG_onTabUpdate`);
     }
 
-    public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
+    public async getTabInfo(tabId: number) : Promise<chrome.tabs.Tab & { canScan: boolean }> {
         return this.hook("getTabInfo", tabId, async () => {
-            return await new Promise((resolve, _reject) => {
-                chrome.tabs.get(tabId!, async function (tab: chrome.tabs.Tab) {
-                    //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-                    let canScan : boolean = await new Promise((resolve, _reject) => {
-                        if (typeof tab.id === "undefined" || tab.id < 0) return resolve(false);
-                        myExecuteScript({
-                            target: { tabId: tab.id, frameIds: [0] },
-                            func: () => (typeof (window as any).aceIBMa)
-                        }, function (res: any) {
-                            resolve(!!res);
-                        })
-                    });
-                    let retVal = { canScan, ...tab };
-                    resolve(retVal);
-                });
+            let tab = await new Promise<chrome.tabs.Tab>(async (resolve2) => {
+                let manifest = chrome.runtime.getManifest();
+                if (manifest.manifest_version === 3) {
+                    let retVal = await chrome.tabs.get(tabId!);
+                    resolve2(retVal);
+                } else {
+                    chrome.tabs.get(tabId!, resolve2);
+                }    
             });
+            let canScan : boolean = await new Promise((resolve2, _reject) => {
+                if (typeof tab.id === "undefined" || tab.id < 0) return resolve2(false);
+                myExecuteScript({
+                    target: { tabId: tab.id, frameIds: [0] },
+                    func: () => (typeof (window as any).aceIBMa)
+                }, function (res: any) {
+                    resolve2(!!res);
+                })
+            });
+            let retVal = { canScan, ...tab };
+            return retVal;
         });
     }
 
@@ -141,9 +154,59 @@ class BackgroundController extends Controller {
     }
 
     ///// Settings related functions /////////////////////////////////////////
+    /**
+     * Global state for the extension
+     */
+    public async getSessionState() : Promise<ISessionState> {
+        let retVal = (await this.hook("getSessionState", null, async () => {
+            let retVal = await new Promise<ISessionState>((resolve, _reject) => {
+                (chrome.storage as any).session.get("SESSION_STATE", async function (result: { SESSION_STATE?: ISessionState}) {
+                    result.SESSION_STATE = result.SESSION_STATE || {
+                        tabStoredCount: {}
+                    }
+                    result.SESSION_STATE.tabStoredCount = result.SESSION_STATE.tabStoredCount || {};
+                    resolve(result.SESSION_STATE as ISessionState);
+                });
+            })
+            return retVal;
+        }))!;
+        return retVal;
+    }
+
+    /**
+     * Set settings for the extension
+     */
+    public async setSessionState(sessionState: ISessionState) : Promise<ISessionState> {
+        return this.hook("setSessionState", sessionState, async () => {
+            await new Promise<ISessionState>((resolve, _reject) => {
+                (chrome.storage as any).session.set({ "SESSION_STATE": sessionState }, async function () {
+                    resolve(sessionState!);
+                });
+            });
+            this.notifyEventListeners("BG_onSessionState", -1, sessionState);
+            return sessionState;
+        });
+    }
+    
+
+    /**
+     * Set stored scan count
+     */
+    public async setStoredScanCount(info: { tabId: number, count: number }) : Promise<ISessionState> {
+        return this.hook("setStoredScanCount", info, async () => {
+            let { tabId, count }: {tabId: number, count: number } = info;
+            let sessionState = await this.getSessionState();
+            if (count === 0) {
+                delete sessionState.tabStoredCount[tabId];
+            } else {
+                sessionState.tabStoredCount[tabId] = count;
+            }
+            return await this.setSessionState(sessionState);
+        });
+    }
     
     /**
-     * Get settings for the extension
+     * Get option settings for the extension
      */
     public async getSettings() : Promise<ISettings> {
         let myThis = this;
@@ -160,7 +223,7 @@ class BackgroundController extends Controller {
     }
 
     /**
-     * Set settings for the extension
+     * Set option settings for the extension
      */
     public async setSettings(settings: ISettings) : Promise<ISettings> {
         return this.hook("setSettings", settings, async () => {
@@ -174,10 +237,23 @@ class BackgroundController extends Controller {
         });
     }
 
+    /**
+     * Listener for options settings
+     */
     public async addSettingsListener(listener: ListenerType<ISettings>) {
         this.addEventListener(listener, `BG_onSettings`);
     }
 
+    public async addIgnoreUpdateListener(listener: ListenerType<{url: string, issues: IIssue[]}>) {
+        this.addEventListener(listener, `BG_IgnoreUpdateListener`);
+    }
+
+    /**
+     * Listener for session state
+     */
+    public async addSessionStateListener(listener: ListenerType<ISessionState>) {
+        this.addEventListener(listener, `BG_onSessionState`);
+    }
     /**
      * Get the archive definitions
      */
@@ -188,14 +264,65 @@ class BackgroundController extends Controller {
     }
 
     /**
+     * Get ignore info
+     */
+    public async getIgnore(url: string) : Promise<IIssue[]> {
+        // let myThis = this;
+        let retVal = (await this.hook("getIgnore", url, async () => {
+            let retVal = await new Promise<IIssue[]>((resolve, _reject) => {
+                chrome.storage.local.get("IGNORE_LIST", async function (result: { IGNORE_LIST?: { [url: string]: IIssue[] }}) {
+                    resolve(result.IGNORE_LIST?.[url] || []);
+                });
+            })
+            return retVal || [];
+        }))!;
+        return retVal || [];
+    }
+
+    /**
+     * Toggle ignore
+     */
+    public async setIgnore(url: string, issues:IIssue[], bIgnore: boolean) : Promise<void> {
+        return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
+            let modifyList = await this.getIgnore(url);
+            for (const issue of issues) {
+                let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
+                if (bIgnore && idx === -1) {
+                    // We want to set it and it's not there, so add it
+                    modifyList.push(issue);
+                } else if (!bIgnore && idx !== -1) {
+                    // We want to clear it and it is there, so remove it
+                    modifyList.splice(idx, 1);
+                } // else, it's already in the right state, so skip
+            }
+            await new Promise<void>((resolve, _reject) => {
+                chrome.storage.local.get("IGNORE_LIST", async function (result: { IGNORE_LIST?: { [url: string]: IIssue[] }}) {
+                    let ignoreDict = (result.IGNORE_LIST || {});
+                    if (ignoreDict.length) {
+                        // Ignore list was created wrong, it should be an object, not an array
+                        ignoreDict = {};
+                    }
+                    ignoreDict[url] = modifyList;
+                    chrome.storage.local.set({ IGNORE_LIST: ignoreDict }, async function () {
+                        resolve();
+                    });
+                });
+            });
+            this.notifyEventListeners("BG_IgnoreUpdateListener", -1, { url, issues: modifyList });
+        });
+    }
+
+
+
+    /**
      * Get the rulesets for the currently loaded engine
      */
-    public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
-        return this.hook("getRulesets", senderTabId, async () => {
-            await this.initTab(senderTabId!);
+    public async getRulesets(contentTabId: number) : Promise<IRuleset[]> {
+        return this.hook("getRulesets", contentTabId, async () => {
+            await this.initTab(contentTabId!);
             // let isLoaded = await this.isEngineLoaded(senderTabId);
             // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
-            return await myExecuteScript2(senderTabId, () => {
+            return await myExecuteScript2(contentTabId, () => {
                 let checker = new (<any>window).aceIBMa.Checker();
                 return checker.rulesets;
             });
@@ -209,16 +336,16 @@ class BackgroundController extends Controller {
     }
     ///// Scan related functions /////////////////////////////////////////
 
-    public async requestScan(senderTabId: number) {
-        return this.hook("requestScan", senderTabId, async () => {
-            getDevtoolsController(false, "remote", senderTabId).setScanningState("initializing");
-            await this.initTab(senderTabId!);
+    public async requestScan(tabIds: {toolTabId: number, contentTabId: number}) {
+        return this.hook("requestScan", tabIds, async () => {
+            const { toolTabId, contentTabId } = tabIds;
+            getDevtoolsController(toolTabId, false, "remote").setScanningState("initializing");
+            await this.initTab(contentTabId!);
             // We want this to execute after the message returns
             (async () => {
                 let settings = await this.getSettings();
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("running");
-                console.info(`[INFO]: Scanning using archive ${settings.selected_archive.id} and guideline ${settings.selected_ruleset.id}`);
-                let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("running");
+                let report : IReport = await myExecuteScript2(contentTabId, (settings: ISettings) => {
                     let checker = new (<any>window).aceIBMa.Checker();
                     if (Object.keys(checker.engine.nlsMap).length === 0) {
                         // Some problem grabbing messages for given locale. Let's try to get en-US data out of the engine
@@ -274,8 +401,22 @@ class BackgroundController extends Controller {
                         }
                     });
                 }, [settings]);
+
+                // Remove issues that are essentially equivalent to the user (same path, rule, reason, and message)
+                for (let idx=0; idx<report.results.length; ++idx) {
+                    for (let checkIdx=0; checkIdx < idx; ++checkIdx) {
+                        if (issueBaselineMatch(report.results[idx], report.results[checkIdx])) {
+                            report.results.splice(idx--, 1);
+                            break;
+                        }
+                    }
+                }
+
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("processing");
+                let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                this.metrics.profileV2(report.totalTime, browser, settings.selected_ruleset.id);
+                this.metrics.sendLogsV2();
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("processing");
                 if (report) {
                     for (const result of report.results) {
                         if (result.ruleTime > 50) {
@@ -318,8 +459,9 @@ class BackgroundController extends Controller {
                     report.results = remainResults;
                     report.counts = counts;
                 }
-                getDevtoolsController(false, "remote", senderTabId).setReport(report);
-                getDevtoolsController(false, "remote", senderTabId).setScanningState("idle");
+
+                getDevtoolsController(toolTabId, false, "remote").setReport(report);
+                getDevtoolsController(toolTabId, false, "remote").setScanningState("idle");
             })();
             return {};
         });
@@ -337,8 +479,18 @@ class BackgroundController extends Controller {
             const listenMsgs : { 
                 [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
             }= {
+                "BG_getSessionState": async () => self.getSessionState(),
+                "BG_setSessionState": async (msgBody) => {
+                    return self.setSessionState(msgBody.content);
+                },
+                "BG_setStoredScanCount": async (msgBody) => {
+                    return self.setStoredScanCount(msgBody.content);
+                },
                 "BG_getSettings": async () => self.getSettings(),
                 "BG_getArchives": async () => self.getArchives(),
+                "BG_getIgnore": async (msgBody) => self.getIgnore(msgBody.content),
+                "BG_setIgnore": async (msgBody) => self.setIgnore(msgBody.content.url, msgBody.content.issues, msgBody.content.bIgnore),
+
                 "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),
                 "BG_getRulesets": async (msgBody) => self.getRulesets(msgBody.content),
                 "BG_requestScan": async (msgBody) => self.requestScan(msgBody.content),
@@ -392,6 +544,7 @@ class BackgroundController extends Controller {
         if (!("tabStopOutlines" in settings)) { (settings as ISettings).tabStopOutlines = false; }
         if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopAlerts = true; }
         if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopFirstTime = true; }
+        if (!("checkerViewAwareFirstTime" in settings)) { (settings as ISettings).checkerViewAwareFirstTime = true; }
 
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";

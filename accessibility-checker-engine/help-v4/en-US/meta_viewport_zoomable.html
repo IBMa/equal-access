@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -46,13 +47,11 @@
 
 Users who need magnification with older mobile browsers may not be able to zoom the content.
 Desktop browsers ignore the viewport meta element, 
-and most modern mobile browsers either ignore it by default or have an accessibility option which will allow zooming.
+and most modern mobile browsers either ignore it by default or have an accessibility option that will allow zooming.
 Only users with older mobile browsers can experience issues tested by this rule.
 
 This rule is designed specifically for testing [1.4.4 Resize text](https://www.ibm.com/able/requirements/requirements/#1_4_4), 
-which requires that text can be resized up to 200%. 
-Because text that cannot be resized up to 200% cannot fit in an area of 320 by 256 CSS pixels, 
-this rule maps to [1.4.10 Reflow](https://www.ibm.com/able/requirements/requirements/#1_4_10) as well. 
+which requires that text can be resized up to 200%.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -75,12 +74,11 @@ this rule maps to [1.4.10 Reflow](https://www.ibm.com/able/requirements/requirem
 ### About this requirement
 
 * [IBM 1.4.4 Resize text](https://www.ibm.com/able/requirements/requirements/#1_4_4)
-* [IBM 1.4.10 Reflow](https://www.ibm.com/able/requirements/requirements/#1_4_10)
 * [ACT rule: meta viewport allows for zoom](https://act-rules.github.io/rules/b4f0c3)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision using screen magnification
 * People with reading disabilities
 * Many older adults

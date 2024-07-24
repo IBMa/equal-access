@@ -37,15 +37,15 @@ export let img_alt_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Images has required 'alt' attribute, ARIA label or title if they convey meaning, or 'alt=\"\" if decorative",
+            "pass": "The image has an accessible name or is correctly marked as decorative or redundant",
             "fail_blank_alt": "Image 'alt' attribute value consists only of blank space(s)",
-            "fail_no_alt": "The image has neither an alt atttribute nor an ARIA label or title",
-            "fail_blank_title": "The image does not have an alt attribute or ARIA label and 'title' attribute value consists only of blank space(s)",
-            "group": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
+            "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant",
+            "fail_blank_title": "The image does not have an 'alt' attribute or ARIA label, and the 'title' attribute value consists only of blank space(s)",
+            "group": "Images must have accessible names unless they are decorative or redundant"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -57,43 +57,44 @@ export let img_alt_valid: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
         
-        //pass if images with a valid 'alt'    
-        let alt = ruleContext.getAttribute("alt");
-        if (alt !== null) {
-            if (alt.trim().length > 0)
-                return RulePass("pass");   
-            else { 
-                // alt.trim().length === 0
-                if (alt.length > 0) {
-                    // alt contains blank space only (alt=" ")
-                    return RuleFail("fail_blank_alt");  
-                } else {
-                    // alt.length === 0, presentational image, title is optional, handled by other rule(s)
-                    return  RulePass("pass");
+        if (RPTUtil.getAriaLabel(ruleContext).trim().length !== 0) {
+            // the img has non-empty aria label
+            return RulePass("pass");
+        }
+
+        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
+        
+        // check title attribute
+        if (alt === null) {
+            // the img has no alt or attribute, examine the title attribute
+            let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
+            if (title === null || title.length === 0) {
+                // no title or title is empty, examine alt further
+                if (alt === null) {
+                    let role = RPTUtil.getResolvedRole(ruleContext, false);
+                    if (role === 'presentation' || role === 'none')
+                        return RulePass("pass");
+                    
+                    return RuleFail("fail_no_alt");
+                }    
+                if (alt.length === 0)
+                    return RulePass("pass"); 
+            } else {
+                if (title.trim().length === 0) {
+                    // title contains blank space only (title="  ")
+                    return RuleFail("fail_blank_title"); 
                 }
+                // title contains some text (title="some text")
+                return RulePass("pass");
             }
         } else {
-            // no alt
-            let label = RPTUtil.getAriaLabel(ruleContext);
-            if (label && label.trim().length > 0)
-                return RulePass("pass");
-            else {
-                let title = ruleContext.getAttribute("title");
-                if (title) {
-                    if (title.trim().length > 0)
-                        return RulePass("pass");   
-                    else { 
-                        // title.trim().length === 0
-                        if (title.length > 0) {
-                            // title contains blank space only (title=" ")
-                            return RuleFail("fail_blank_title");  
-                        }    
-                    }
-                } else {
-                    // neither alt nor aria label or title 
-                    return RuleFail("fail_no_alt"); 
-                }  
-            } 
-        }
+            if (alt.length === 0 || alt.trim().length > 0) {
+                // the img has empty alt (alt="") or non-empty alt (alt="some text")
+                return RulePass("pass"); 
+            } else {
+                // alt contains blank space only (alt=" ")
+                return RuleFail("fail_blank_alt"); 
+            }    
+        }        
     }
 }

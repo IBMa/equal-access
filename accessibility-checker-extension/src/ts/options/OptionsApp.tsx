@@ -17,11 +17,10 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-
+import ReactDOM from 'react-dom';
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import { DocPage } from "../docs/components/DocPage";
-// import { BrowserDetection } from "../util/browserDetection";
 
 import {
     Button,
@@ -43,6 +42,7 @@ import {
 } from "@carbon/react/icons";
 
 import "./option.scss";
+import { getDevtoolsController } from "../devtools/devtoolsController";
 
 interface OptionsAppState {
     lastSettings?: ISettings
@@ -57,6 +57,11 @@ interface OptionsAppState {
     tabStopOutlines: boolean;
     tabStopAlerts: boolean;
     tabStopFirstTime: boolean;
+    // Change Ruleset while there are stored scans
+    storedScansExist: boolean;
+    modalDeploymentWithScans: boolean;
+    modalGuidelinesWithScans: boolean;
+    checkerViewAwareFirstTime: boolean;
     savePending: number;
 }
 
@@ -75,13 +80,17 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopOutlines: false,
         tabStopAlerts: true,
         tabStopFirstTime: true,
+        // Change Ruleset while there are stored scans
+        storedScansExist: false,
+        modalDeploymentWithScans: false,
+        modalGuidelinesWithScans: false,
+        checkerViewAwareFirstTime: true,
         savePending: 0
     };
 
     async componentDidMount() {
         let self = this;
         let settings = await bgController.getSettings();
-        // console.log("***", settings);
         let archives = await bgController.getArchives();
         let selected_archive: IArchiveDefinition | null = null;
         let rulesets: IPolicyDefinition[] | null = null;
@@ -90,8 +99,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         let tabStopLines: boolean = true;
         let tabStopOutlines: boolean = false;
         let tabStopAlerts: boolean = true;
-        let tabStopFirstTime: boolean = true;
+        let checkerViewAwareFirstTime: boolean = true;
 
+        let storedScansExist =  await this.existStoredScans();
 
         selected_archive = settings.selected_archive;
         rulesets = selected_archive.rulesets.default;
@@ -99,7 +109,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopLines = settings.tabStopLines;
         tabStopOutlines = settings.tabStopOutlines;
         tabStopAlerts = settings.tabStopAlerts;
-        tabStopFirstTime = settings.tabStopFirstTime;
+        checkerViewAwareFirstTime = settings.checkerViewAwareFirstTime;
         if (selected_archive) {
             if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id && archive.name === selected_archive.name))) {
                 // do nothing
@@ -125,8 +135,12 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             rulesets: rulesets,
             selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
-            tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+            tabStopAlerts: tabStopAlerts, checkerViewAwareFirstTime: checkerViewAwareFirstTime,
+            storedScansExist: storedScansExist,
         });
+
+        
+
         bgController.addSettingsListener(async (newSettings) => {
             let newState : any = {
                 lastSettings: newSettings
@@ -139,6 +153,35 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             }
             this.setState(newState);
         });
+    }
+
+    setModalDeploymentWithScans() {
+        this.setState({modalDeploymentWithScans: true});
+    }
+
+    setModalGuidelinesWithScans() {
+        this.setState({modalGuidelinesWithScans: true});
+    }
+
+    async existStoredScans() {
+        let tabStoredScans = (await getBGController().getSessionState()).tabStoredCount;
+        let existScans = false;
+        for (const tabId in tabStoredScans) {
+            if (tabStoredScans[tabId] > 0) {
+                existScans = true;
+            }
+        }
+        return existScans;
+    }
+
+    async clearStoredScans() {
+        let tabStoredScans = (await getBGController().getSessionState()).tabStoredCount;
+        for (const tabId in tabStoredScans) {
+            if (tabStoredScans[tabId] > 0) {
+                getDevtoolsController(parseInt(tabId), false, "remote").clearStoredReports();
+            }
+        }
+        this.setState({storedScansExist: false});
     }
 
     /**
@@ -205,7 +248,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         //            keep stored scans and don't update rulset (ali says don't give this choice)
 
         this.setState({ 
-            tabStopFirstTime: false,
+            checkerViewAwareFirstTime: false,
          })
          let newSettings: ISettings = this.settingsFromState()
          this.setState({ savePending: 1 });
@@ -231,7 +274,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         retVal.selected_ruleset = this.state.selected_ruleset!;
         retVal.tabStopLines = this.state.tabStopLines;
         retVal.tabStopAlerts = this.state.tabStopAlerts;
-        retVal.tabStopFirstTime = this.state.tabStopFirstTime;
+        retVal.checkerViewAwareFirstTime = this.state.checkerViewAwareFirstTime;
         retVal.tabStopOutlines = this.state.tabStopOutlines;
         return retVal;
     }
@@ -273,7 +316,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
-            tabStopFirstTime: false
+            checkerViewAwareFirstTime: false
         });
     };
 
@@ -292,28 +335,61 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         // reset with "Reset to defaults"
 
         let aside = (<>
-            <aside aria-label="About Accessibility Checker Options">
+            <aside aria-label="About Accessibility Checker Settings">
             <p>
                 By default, the Accessibility Checker uses a set of rules that correspond to 
-                the most recent WCAG standards plus some additional IBM requirements. Rule sets 
-                for specific WCAG versions are also available. The rule sets are updated regularly, 
+                the WCAG standards plus some additional IBM requirements. Guidelines 
+                are available for specific WCAG versions. The rules are updated regularly, 
                 and each update has a date of deployment. If you need to replicate an earlier test, 
-                choose the deployment date of the original test.
+                choose the deployment date of the original test. 
+            </p>
+            <p>    
+                See the <Link 
+                            inline={true} 
+                            size="lg"
+                            className="link" 
+                            href="https://www.ibm.com/able/requirements/requirements"
+                            target="_blank" rel="noopener noreferred"
+                            >IBM Accessibility requirements</Link> that need to be met to comply with standards and regulations.
+            </p>
+            <p> 
+                <strong>Rule updates</strong>: For details on rule changes at each deployment, 
+                see the <Link 
+                            inline={true} 
+                            size="lg" 
+                            className="link"
+                            href="https://github.com/IBMa/equal-access/releases"
+                            target="_blank" rel="noopener noreferred"
+                            // style={{ color: '#002D9C' }}
+                            >Release notes</Link>.
+            </p>
+            <p>
+                <strong>Rule sets</strong>: A packaged set for a guideline, 
+                each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                see the <Link
+                            inline={true}
+                            size="lg"
+                            className="link"
+                            href="https://www.ibm.com/able/requirements/checker-rule-sets"
+                            target="_blank" rel="noopener noreferred"
+                            // style={{ color: '#002D9C' }}
+                            >Checker rule sets</Link>.
             </p>
             <p>
                 For more in-depth guidance, see <Link 
                     size="lg"
                     inline={true}
+                    // should className="Link" be used?
                     href={chrome.runtime.getURL("usingAC.html")}
                     target="_blank"
                     rel="noopener noreferred"
-                >user guide</Link>.
+                >User guide</Link>.
             </p>
         </aside>
         </>)
         return (<DocPage aside={aside} sm={4} md={6} lg={6}>
             <main aria-labelledby="options">
-                <h1 id="options">IBM Accessibility Checker options</h1>
+                <h1 id="options">Settings - IBM Accessibility Checker</h1>
                 {!archives || !rulesets && <>
                     <InlineNotification
                         kind="error"
@@ -327,7 +403,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         target="_blank" 
                         rel="noopener noreferred"
                         inline={true}
-                        size="lg">User Guide</Link> to give the browser permission to run the Option page. </p>
+                        size="lg">User guide</Link> to give the browser permission to run the Settings page. </p>
                 </>}
                 { archives && rulesets && <>
                     <h2>Rule sets</h2>
@@ -350,6 +426,10 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             </Button>
                         </div>
 
+                        {/* JCH - Need to check if there are scans, storedReportsCount > 0 
+                            but we need to make a state and set it in componentDidMount
+                        */}
+
                         {!this.state.selected_archive && <DropdownSkeleton />}
                         {this.state.selected_archive && <>
                             <Dropdown
@@ -364,11 +444,16 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 titleText=""
                                 type="default"
                                 selectedItem={selected_archive}
-                                onChange={this.onSelectArchive.bind(this)}
+                                onChange={async (evt: any) => {
+                                    await this.onSelectArchive(evt);
+                                    if (this.state.storedScansExist) {
+                                        this.setModalDeploymentWithScans();
+                                    }
+                                }}
                             />
                         </>}
 
-                        <Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             aria-label="Version information"
                             modalHeading="Selecting a rule set deployment date"
                             passiveModal={true}
@@ -377,18 +462,42 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 this.setState({ modalRuleSet: false });
                             }).bind(this)}
                         >
-                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
-                                for consistent testing throughout a project to replicate an earlier test</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment</strong>: Use a rule set from a specific date
+                                for consistent testing throughout a project to replicate an earlier test.</p>
 
-                            <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Preview rules</strong>: Try an experimental preview of a possible future rule set.</p>
 
-                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link></p>
-                        </Modal>
+                            <p style={{ maxWidth: "100%" }}><strong>Rule updates</strong>: For details on rule changes at each deployment, 
+                                see the <Link inline={true} size="md" className="link" href="https://github.com/IBMa/equal-access/releases" target="_blank" style={{ color: '#002D9C' }}>Release notes</Link>.</p>
+
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
+                                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
+                        </Modal>, document.body)}
+
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                            modalHeading="Stored scans"
+                            size='sm'
+                            primaryButtonText="Change deployment dates" 
+                            secondaryButtonText="Cancel"
+                            open={this.state.modalDeploymentWithScans}
+                            onRequestClose={(() => {
+                                this.setState({ modalDeploymentWithScans: false });
+                                this.setState({ selected_archive: this.state.lastSettings?.selected_archive! });
+                            }).bind(this)}
+                            onRequestSubmit={(() => {
+                                this.clearStoredScans();
+                                this.setState({ modalDeploymentWithScans: false });
+                                }).bind(this)
+                            }
+                        >
+                            <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
+                        </Modal>, document.body)}
+
                     </div>
                     {/**** Select ruleset / policy  */}
                     <div>
                         <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
-                            Select accessibility guidelines
+                            Select an accessibility guideline
                             <Button
                                 renderIcon={Information}
                                 kind="ghost"
@@ -406,7 +515,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         {!this.state.selected_archive && <DropdownSkeleton />}
                         {this.state.selected_archive && <>
                             <Dropdown
-                                ariaLabel="Select accessibility guidelines"
+                                ariaLabel="Select an accessibility guideline"
                                 disabled={false}
                                 helperText={this.state.selected_ruleset && ("Currently active: " + this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!).name)}
                                 id="rulesetSelection"
@@ -417,24 +526,51 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 titleText=""
                                 type="default"
                                 selectedItem={selected_ruleset}
-                                onChange={this.onSelectGuideline.bind(this)}
+                                onChange={async (evt: any) => {
+                                    await this.onSelectGuideline(evt);
+                                    if (this.state.storedScansExist) {
+                                        this.setModalGuidelinesWithScans();
+                                    }
+                                }}
                             />
                         </>}
 
-                        <Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
                             aria-label="Guidelines information"
-                            modalHeading="Selecting accessibility guidelines"
+                            modalHeading="Selecting an accessibility guideline"
                             passiveModal={true}
                             open={this.state.modalGuidelines}
                             onRequestClose={(() => {
                                 this.setState({ modalGuidelines: false });
                             }).bind(this)}
                         >
-                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
-                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
-                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
-                        </Modal>
+                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility 7.2</strong>: Rules for WCAG 2.1 plus additional IBM requirements.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility 7.3</strong>: Rules for WCAG 2.2 plus additional IBM requirements. This will be the default starting Oct 1, 2024.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.2 (A, AA)</strong>: Rules for the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to 2.1 and 2.0.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA)</strong>: Content that conforms to WCAG 2.1 also conforms to WCAG 2.0. Referenced by EN 301 549 and other policies, but not the latest W3C specification.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specification.</p>
+                            <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
+                                see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
+                        </Modal>, document.body)}
                     </div>
+
+                    {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                        modalHeading="Stored scans"
+                        primaryButtonText="Change Guidelines" 
+                        secondaryButtonText="Cancel"
+                        open={this.state.modalGuidelinesWithScans}
+                        onRequestClose={(() => {
+                            this.setState({ modalGuidelinesWithScans: false });
+                            this.setState({ selected_ruleset: this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!) });
+                        }).bind(this)}
+                        onRequestSubmit={(() => {
+                            this.clearStoredScans();
+                            this.setState({ modalGuidelinesWithScans: false });
+                            }).bind(this)
+                        }
+                    >
+                        <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
+                    </Modal>, document.body)}
 
 
                     <h2>Keyboard checker mode</h2>
@@ -448,7 +584,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 checked={this.state.tabStopLines}
                                 //@ts-ignore
                                 onChange={(value: any, id: any) => {
-                                    // console.log("lines checkbox id.checked = ",id.checked);
                                     this.setState({ tabStopLines: id.checked });
                                 }} 
 
@@ -459,7 +594,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 checked={this.state.tabStopOutlines}
                                 //@ts-ignore
                                 onChange={(value: any, id: any) => {
-                                    // console.log("lines checkbox id.checked = ",id.checked);
                                     this.setState({ tabStopOutlines: id.checked });
                                 }} 
                             />

@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_keyboard_handler_exists: Rule = {
     id: "aria_keyboard_handler_exists",
@@ -40,7 +41,7 @@ export let aria_keyboard_handler_exists: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -49,11 +50,17 @@ export let aria_keyboard_handler_exists: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+
         let passed = true;
         let savedPassed = passed;
         let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        //let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        //only consider user specified role(s), rather than native containers
+        let roles = RPTUtil.getRoles(ruleContext, false);
         
         let nodeName = ruleContext.nodeName.toLowerCase();
         //if an explicit role is specified, the 'aria_role_redundant' rule should be triggered and addressed first,
@@ -61,9 +68,15 @@ export let aria_keyboard_handler_exists: Rule = {
         if (nodeName === 'datalist' && roles && roles.includes("listbox"))
             return null;
             
-        let hasAttribute = RPTUtil.hasAttribute;
         // Composite user interface widget roles. They act as containers that manage other, contained widgets.
         let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
+        for (const role of roleContainers) {
+            if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
+                // it's a descendant of a composite widget already examined
+                return null;
+        }
+        
+        let hasAttribute = RPTUtil.hasAttribute;
         
         let roleNameArr = new Array();
 
@@ -74,9 +87,9 @@ export let aria_keyboard_handler_exists: Rule = {
                 if (!disabled) {
 
                     // See if there is a keyboard event handler on the parent element.
-                    passed = (ruleContext.hasAttribute("onkeydown") || ruleContext.hasAttribute("onkeypress"));
+                    passed = (ruleContext.hasAttribute("onkeydown") || ruleContext.hasAttribute("onkeypress") || ruleContext.hasAttribute("onkeyup"));
 
-                    // No keyboard event handler found on parent.  See if keyboard event handlers are on required child elements.
+                    // No keyboard event handler found on parent. See if keyboard event handlers are on required child elements.
                     if (!passed) {
                         if (!hasAttribute(ruleContext, 'aria-activedescendant')) {
                             let reqChildren = ARIADefinitions.designPatterns[roles[j]].reqChildren;
@@ -90,7 +103,7 @@ export let aria_keyboard_handler_exists: Rule = {
                                         passed = (r.hasAttribute("onkeydown") || r.hasAttribute("onkeypress"));
                                         if (!passed) {
 
-                                            // Child did not have a key handler.  See if any of the grandchildren do.
+                                            // Child did not have a key handler. See if any of the grandchildren do.
                                             let xp2 = "descendant::*";
                                             let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                             let r2: Element = xpathResult2.iterateNext() as Element;

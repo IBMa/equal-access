@@ -18,6 +18,9 @@
     const path = require("path");
     let webpackConfig = require("./webpack-debug.config");
     delete webpackConfig.output;
+    webpackConfig.module.rules[0].options = {
+        configFile: "tsconfig-nodeclare.json"
+    }
     webpackConfig.module.rules.push({
         test: /\.ts$/,
         exclude: [path.resolve(__dirname, "test")],
@@ -53,7 +56,9 @@
             ],
             exclude: [
                 //Disable  - due to a defect that needs to be addressed regarding visibility.
-                'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html'
+                'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html',
+                // disable because the rule is turned off
+                'test/v2/checker/accessibility/rules/style_before_after_review_ruleunit/*'
             ],
     
             frameworks: ['jasmine'],

@@ -20,6 +20,8 @@ import TabStopLine from "./TabStopLine";
 import TabStopText from "./TabStopText";
 import NotificationDot from "./NotificationDot";
 
+const getScreenRect = DomPathUtils.getScreenRect;
+
 export default class TabChainCircles {
 
     // @ts-ignore
@@ -30,9 +32,8 @@ export default class TabChainCircles {
 
         setTimeout(() => { 
             let offset = 3;
-            let nodes = DomPathUtils.issuesToDomPaths(tabstops);
-            let nodeXpaths = nodes;
-            nodes = DomPathUtils.domPathsToElements(nodeXpaths); // tabstop HTML elements
+            let nodeXpaths = DomPathUtils.issuesToDomPaths(tabstops);
+            let nodes = DomPathUtils.domPathsToElements(nodeXpaths); // tabstop HTML elements
 
 
             /* ********************************************************
@@ -44,10 +45,9 @@ export default class TabChainCircles {
                     // console.log("Tabbable nodes[",i,"]   element exists");
                     if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
                         // console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
-                        if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                            // console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
-                        }
-                        else {
+                        if (getScreenRect(nodes[i]) !== null) {
+                            // console.log("Tabbable nodes[",i,"] has bounding rect", nodeRect.x,",",nodeRect.y);
+                        } else {
                             console.log("Tabbable nodes[",i,"] has NO bounding rect");
                         }
                     } else {
@@ -61,10 +61,9 @@ export default class TabChainCircles {
                     // console.log("Tabbable nodes[",i+1,"]   element exists");
                     if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
                         // console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
-                        if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
-                            // console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
-                        }
-                        else {
+                        if (getScreenRect(nodes[i+1]) !== null) {
+                            // console.log("Tabbable nodes[",i+1,"] has bounding rect", nextNodeRect.x,",",nextNodeRect.y);
+                        } else {
                             // console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
                         }
                     } else {
@@ -80,17 +79,17 @@ export default class TabChainCircles {
 
             for (let i = 0; i < nodes.length; i++) { // Make Circle (reg or error), lines between Circle
                                                      // and next Circle and outlines around Circle element
-                if (nodes[i] != null ) { // JCH - tabbable nodes
-
+                if (nodes[i] !== null && getScreenRect(nodes[i]) !== null) { // JCH - tabbable nodes
+                    let nodeRect = getScreenRect(nodes[i])!;
                     /*********** WHEN CURRENT CIRCLE IS ERROR CIRCLE ***********/ 
 
                     if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { 
                         // coords for nodes[i] and its bounding box if not in iframe or shadow dom
-                        let x = nodes[i].getBoundingClientRect().x;
-                        let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
+                        let x = nodeRect.x;
+                        let xPlusWidth = nodeRect.x + nodeRect.width;
 
-                        let y = nodes[i].getBoundingClientRect().y;
-                        let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
+                        let y = nodeRect.y;
+                        let yPlusHeight = nodeRect.y + nodeRect.height;
                         // console.log("-------------------------------------");
                         // console.log("Error circle node[",i,"] has coords x = ",x,"   y = ",y);
             
@@ -103,7 +102,7 @@ export default class TabChainCircles {
                             if (lastElement.includes("iframe")) { // this is for the iframe element
                                 // console.log("We Have an iframe, lastElement", lastElement);
                                 if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
-                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
+                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodeRect.x, y: nodeRect.y};
                                     iframes.push(iframe);
                                 }
                                 // no need to adjust coords as the iframe is an element on the main page
@@ -112,8 +111,8 @@ export default class TabChainCircles {
                                 let realIframeString = nodeXpaths[i].slice(0,nodeXpaths[i].indexOf('/html', nodeXpaths[i].indexOf('/html')+1));
                                 // find the iframe in iframes
                                 const iframesObj = iframes.find((e:any) => e.name === realIframeString);
-                                x = iframesObj.x + nodes[i].getBoundingClientRect().x;
-                                y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+                                x = iframesObj.x + nodeRect.x;
+                                y = iframesObj.y + nodeRect.y;
                             }
                         }
                         
@@ -134,7 +133,8 @@ export default class TabChainCircles {
                          */ 
 
                         if (i > 0) {
-                            if (x == nodes[i-1].getBoundingClientRect().x && y == nodes[i-1].getBoundingClientRect().y) {
+                            let prevRect = getScreenRect(nodes[i-1]);
+                            if (prevRect && x === prevRect.x && y == prevRect.y) {
                                 // console.log("Error Circle EXACT OVERLAP");
                                 x += 20;
                             }
@@ -151,60 +151,60 @@ export default class TabChainCircles {
                             }
                         }
                         
-                        if (lines) {
-                            if (i < nodes.length - 1) {
-                                let slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset);
-                                let x1, y1, x2, y2;
-                                x1 = x;
-                                y1 = y;
+                        if (i < (nodes.length - 1) && lines && nextTabbableElement && getScreenRect(nextTabbableElement) && getScreenRect(nodes[i+1])) {
+                            let nextTabbableRect = getScreenRect(nextTabbableElement)!;
+                            let nextNodeRect = getScreenRect(nodes[i+1])!;
+                            let slope = (nextTabbableRect.y - offset - nodeRect.y - offset) / (nextTabbableRect.x - offset - nodeRect.x - offset);
+                            let x1, y1, x2, y2;
+                            x1 = x;
+                            y1 = y;
 
-                                // coords for nodes[i+1] or nextTabbableElement if not in iframe or shadow dom
-                                x2 = nodes[i+1].getBoundingClientRect().x;
-                                y2 = nodes[i+1].getBoundingClientRect().y;
+                            // coords for nodes[i+1] or nextTabbableElement if not in iframe or shadow dom
+                            x2 = nextNodeRect.x;
+                            y2 = nextNodeRect.y;
 
-                                // let check if the next tabbable element is an iframe
-                                if (nodeXpaths[i+1].includes("iframe")) {
-                                    // find and store iframe
-                                    let lastElement = nodeXpaths[i+1].slice(nodeXpaths[i+1].lastIndexOf('/'));
-                                    if (lastElement.includes("iframe")) { // this is for the iframe element
-                                        if (!iframes.find((e:any) => e.name === nodeXpaths[i+1])) {  // already in iframes
-                                            const iframe = {element: nodes[i+1], name: nodeXpaths[i+1], x: nodes[i+1].getBoundingClientRect().x, y: nodes[i+1].getBoundingClientRect().y};
-                                            iframes.push(iframe);
-                                            x2 = nodes[i+1].getBoundingClientRect().x;
-                                            y2 = nodes[i+1].getBoundingClientRect().y;
-                                        }
-                                    } else { // this is for elements that are within an iframe
-                                        // get the iframe string iframe[n]
-                                        let realIframeString = nodeXpaths[i+1].slice(0,nodeXpaths[i+1].indexOf('/html', nodeXpaths[i+1].indexOf('/html')+1));
-                                        // find the iframe in iframes
-                                        const iframesObj = iframes.find((e:any) => e.name === realIframeString);
-                                        // adjust coords
-                                        x2 = iframesObj.x + nodes[i+1].getBoundingClientRect().x;
-                                        y2 = iframesObj.y + nodes[i+1].getBoundingClientRect().y;
+                            // let check if the next tabbable element is an iframe
+                            if (nodeXpaths[i+1].includes("iframe")) {
+                                // find and store iframe
+                                let lastElement = nodeXpaths[i+1].slice(nodeXpaths[i+1].lastIndexOf('/'));
+                                if (lastElement.includes("iframe")) { // this is for the iframe element
+                                    if (!iframes.find((e:any) => e.name === nodeXpaths[i+1])) {  // already in iframes
+                                        const iframe = {element: nodes[i+1], name: nodeXpaths[i+1], x: nextNodeRect.x, y: nextNodeRect.y};
+                                        iframes.push(iframe);
+                                        x2 = nextNodeRect.x;
+                                        y2 = nextNodeRect.y;
                                     }
-                                } 
-
-                                // If the if the 2nd circle is being drawn slighly off of the screen move it into the screen
-                                // Note: here we assume radius is 16
-                                if (x2 <= 18) {
-                                    x2 = 18;
+                                } else { // this is for elements that are within an iframe
+                                    // get the iframe string iframe[n]
+                                    let realIframeString = nodeXpaths[i+1].slice(0,nodeXpaths[i+1].indexOf('/html', nodeXpaths[i+1].indexOf('/html')+1));
+                                    // find the iframe in iframes
+                                    const iframesObj = iframes.find((e:any) => e.name === realIframeString);
+                                    // adjust coords
+                                    x2 = iframesObj.x + nextNodeRect.x;
+                                    y2 = iframesObj.y + nextNodeRect.y;
                                 }
-                                if (y2 <= 18) {
-                                    y2 = 18;
-                                }
+                            } 
 
-                                // console.log("Error Circle Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
-                                TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
+                            // If the if the 2nd circle is being drawn slighly off of the screen move it into the screen
+                            // Note: here we assume radius is 16
+                            if (x2 <= 18) {
+                                x2 = 18;
+                            }
+                            if (y2 <= 18) {
+                                y2 = 18;
+                            }
 
-                                // Create white outline
-                                if (Math.abs(slope) < 1) {  // Low slope move y
-                                    TabStopLine.makeLine(x1, y1 - 2, x2, y2 - 2, ["lineEmboss"]);
-                                    TabStopLine.makeLine(x1, y1 + 2, x2, y2 + 2, ["lineEmboss"]);
+                            // console.log("Error Circle Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
+                            TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
 
-                                } else { // high slope move x
-                                    TabStopLine.makeLine(x1 - 2, y1, x2 - 2, y2, ["lineEmboss"]);
-                                    TabStopLine.makeLine(x1 + 2, y1, x2 + 2, y2, ["lineEmboss"]);
-                                }
+                            // Create white outline
+                            if (Math.abs(slope) < 1) {  // Low slope move y
+                                TabStopLine.makeLine(x1, y1 - 2, x2, y2 - 2, ["lineEmboss"]);
+                                TabStopLine.makeLine(x1, y1 + 2, x2, y2 + 2, ["lineEmboss"]);
+
+                            } else { // high slope move x
+                                TabStopLine.makeLine(x1 - 2, y1, x2 - 2, y2, ["lineEmboss"]);
+                                TabStopLine.makeLine(x1 + 2, y1, x2 + 2, y2, ["lineEmboss"]);
                             }
                         }
 
@@ -239,12 +239,12 @@ export default class TabChainCircles {
 
                     } else { // This is the defalt case were we just draw a circle
                         // coords for nodes[i] and its bounding box if not in iframe or shadow dom
-                        let x = nodes[i].getBoundingClientRect().x;
-                        // console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
-                        let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
+                        let x = nodeRect.x;
+                        // console.log("nodeRect = ",nodeRect);
+                        let xPlusWidth = nodeRect.x + nodeRect.width;
 
-                        let y = nodes[i].getBoundingClientRect().y;
-                        let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
+                        let y = nodeRect.y;
+                        let yPlusHeight = nodeRect.y + nodeRect.height;
             
                         // adjustment for iframes
                         // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
@@ -255,7 +255,7 @@ export default class TabChainCircles {
                             if (lastElement.includes("iframe")) { // this is for the iframe element
                                 // console.log("We Have an iframe, lastElement", lastElement);
                                 if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
-                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
+                                    const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodeRect.x, y: nodeRect.y};
                                     iframes.push(iframe);
                                 }
                                 // no need to adjust coords as the iframe is an element on the main page
@@ -265,8 +265,8 @@ export default class TabChainCircles {
                                 // find the iframe in iframes
                                 const iframesObj = iframes.find((e:any) => e.name === realIframeString);
                                 // console.log("iframesObj = ",iframesObj);
-                                x = iframesObj.x + nodes[i].getBoundingClientRect().x;
-                                y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+                                x = iframesObj.x + nodeRect.x;
+                                y = iframesObj.y + nodeRect.y;
 
                             }
                         }
@@ -290,72 +290,73 @@ export default class TabChainCircles {
                             }
                         }
                         
-                        if (lines) {
-                            if (i < nodes.length - 1) {
-                                let slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset);
-                                let x1, y1, x2, y2;
-                                x1 = x;
-                                y1 = y;
+                        if (i < (nodes.length - 1) && lines && nextTabbableElement && getScreenRect(nextTabbableElement) && getScreenRect(nodes[i+1])) {
+                            let nextTabbableRect = getScreenRect(nextTabbableElement)!;
+                            let nextNodeRect = getScreenRect(nodes[i+1])!;
+                            let slope = (nextTabbableRect.y - offset - nodeRect.y - offset) / (nextTabbableRect.x - offset - nodeRect.x - offset);
+                            let x1, y1, x2, y2;
+                            x1 = x;
+                            y1 = y;
 
-                                // coords for nodes[i+1] or nextTabbableElement if not in iframe or shadow dom
-                                x2 = nodes[i+1].getBoundingClientRect().x;
-                                y2 = nodes[i+1].getBoundingClientRect().y;
+                            // coords for nodes[i+1] or nextTabbableElement if not in iframe or shadow dom
+                            x2 = nextNodeRect.x;
+                            y2 = nextNodeRect.y;
 
-                                // let check if the next tabbable element is an iframe
-                                if (nodeXpaths[i+1].includes("iframe")) {
-                                    // find and store iframe
-                                    let lastElement = nodeXpaths[i+1].slice(nodeXpaths[i+1].lastIndexOf('/'));
-                                    if (lastElement.includes("iframe")) { // this is for the iframe element
-                                        // console.log("We Have an iframe, lastElement", lastElement);
-                                        if (!iframes.find((e:any) => e.name === nodeXpaths[i+1])) {  // already in iframes
-                                            const iframe = {element: nodes[i+1], name: nodeXpaths[i+1], x: nodes[i+1].getBoundingClientRect().x, y: nodes[i+1].getBoundingClientRect().y};
-                                            iframes.push(iframe);
-                                            x2 = nodes[i+1].getBoundingClientRect().x;
-                                            y2 = nodes[i+1].getBoundingClientRect().y;
-                                        }
-                                    } else { // this is for elements that are within an iframe
-                                        // get the iframe string iframe[n]
-                                        let realIframeString = nodeXpaths[i+1].slice(0,nodeXpaths[i+1].indexOf('/html', nodeXpaths[i+1].indexOf('/html')+1));
-                                        // find the iframe in iframes
-                                        const iframesObj = iframes.find((e:any) => e.name === realIframeString);
-                                        // adjust coords
-                                        x2 = iframesObj.x + nodes[i+1].getBoundingClientRect().x;
-                                        y2 = iframesObj.y + nodes[i+1].getBoundingClientRect().y;
+                            // let check if the next tabbable element is an iframe
+                            if (nodeXpaths[i+1].includes("iframe")) {
+                                // find and store iframe
+                                let lastElement = nodeXpaths[i+1].slice(nodeXpaths[i+1].lastIndexOf('/'));
+                                if (lastElement.includes("iframe")) { // this is for the iframe element
+                                    // console.log("We Have an iframe, lastElement", lastElement);
+                                    if (!iframes.find((e:any) => e.name === nodeXpaths[i+1])) {  // already in iframes
+                                        const iframe = {element: nodes[i+1], name: nodeXpaths[i+1], x: nextNodeRect.x, y: nextNodeRect.y};
+                                        iframes.push(iframe);
+                                        x2 = nextNodeRect.x;
+                                        y2 = nextNodeRect.y;
                                     }
-                                } 
-
-                                // If the if the 2nd circle is being drawn slighly off of the screen move it into the screen
-                                // Note: here we assume radius is 13
-                                if (x2 <= 15) {
-                                    x2 = 15;
+                                } else { // this is for elements that are within an iframe
+                                    // get the iframe string iframe[n]
+                                    let realIframeString = nodeXpaths[i+1].slice(0,nodeXpaths[i+1].indexOf('/html', nodeXpaths[i+1].indexOf('/html')+1));
+                                    // find the iframe in iframes
+                                    const iframesObj = iframes.find((e:any) => e.name === realIframeString);
+                                    // adjust coords
+                                    x2 = iframesObj.x + nextNodeRect.x;
+                                    y2 = iframesObj.y + nextNodeRect.y;
                                 }
-                                if (y2 <= 15) {
-                                    y2 = 15;
+                            } 
+
+                            // If the if the 2nd circle is being drawn slighly off of the screen move it into the screen
+                            // Note: here we assume radius is 13
+                            if (x2 <= 15) {
+                                x2 = 15;
+                            }
+                            if (y2 <= 15) {
+                                y2 = 15;
+                            }
+
+                            /*
+                            * SPECIAL CASE: Exactly overlapping circles adjacent
+                            */ 
+
+                            if (i > 0) {
+                                let prevRect = getScreenRect(nodes[i-1]);
+                                if (prevRect && x === prevRect.x && y == prevRect.y) {
+                                    // console.log("Regular Circle EXACT OVERLAP");
+                                    x += 20;
                                 }
+                            }
 
-                                /*
-                                * SPECIAL CASE: Exactly overlapping circles adjacent
-                                */ 
+                            // console.log("Regular Circle node ",i," to ",i+1," Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
+                            TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
 
-                                if (i > 0) {
-                                    if (x == nodes[i-1].getBoundingClientRect().x && y == nodes[i-1].getBoundingClientRect().y) {
-                                        // console.log("Regular Circle EXACT OVERLAP");
-                                        x += 20;
-                                    }
-                                }
+                            // Create white outline
+                            if (Math.abs(slope) < 1) {  // Low slope move y
+                                TabStopLine.makeLine(x1, y1 - 2, x2, y2 - 2, ["lineEmboss"]);
+                                TabStopLine.makeLine(x1, y1 + 2, x2, y2 + 2, ["lineEmboss"]);
 
-                                // console.log("Regular Circle node ",i," to ",i+1," Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
-                                TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
-
-                                // Create white outline
-                                if (Math.abs(slope) < 1) {  // Low slope move y
-                                    TabStopLine.makeLine(x1, y1 - 2, x2, y2 - 2, ["lineEmboss"]);
-                                    TabStopLine.makeLine(x1, y1 + 2, x2, y2 + 2, ["lineEmboss"]);
-
-                                } else { // high slope move x
-                                    TabStopLine.makeLine(x1 - 2, y1, x2 - 2, y2, ["lineEmboss"]);
-                                    TabStopLine.makeLine(x1 + 2, y1, x2 + 2, y2, ["lineEmboss"]);
-                                }
+                            } else { // high slope move x
+                                TabStopLine.makeLine(x1 - 2, y1, x2 - 2, y2, ["lineEmboss"]);
+                                TabStopLine.makeLine(x1 + 2, y1, x2 + 2, y2, ["lineEmboss"]);
                             }
                         }
 
@@ -386,10 +387,8 @@ export default class TabChainCircles {
                             TabStopLine.makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                         }
                     }
-                } else {
-                    continue;
                 }
             }
-        }, 1);
+        }, 0);
     }
 }

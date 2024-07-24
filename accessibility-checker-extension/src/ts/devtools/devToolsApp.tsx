@@ -39,6 +39,10 @@ import StoredScreen from './components/storedScreen';
 import SummaryScreen from './components/summaryScreen';
 import KCMOverviewScreen from './components/kcmOverviewScreen';
 import { ePanel } from './devtoolsController';
+import CheckerViewAware from './components/checkerViewAware';
+import { getBGController } from "../background/backgroundController";
+import { ISettings } from '../interfaces/interfaces';
+
 
 interface DevToolsAppProps {
     panel: ePanel;
@@ -50,14 +54,25 @@ interface DevToolsAppState {
 }
 
 export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppState> {
-    devtoolsAppController = getDevtoolsAppController();
-
+    private bgController = getBGController();
+    private devtoolsAppController = getDevtoolsAppController();
+    
     state : DevToolsAppState = {
-        secondaryView: "splash",
-        secondaryOpen: false
+        secondaryView: "checkerViewAware",
+        secondaryOpen: true
     }
 
+    
+
     componentDidMount(): void {
+        this.bgController.getSettings().then((settings: ISettings) => {
+            if (this.props.panel === "main" && settings.checkerViewAwareFirstTime) {
+                this.setState({ secondaryView: "checkerViewAware" });
+            } else {
+                this.setState({ secondaryOpen: false});
+                this.setState({ secondaryView: "splash" });
+            }
+        });
         this.devtoolsAppController.addSecondaryOpenListener((open: boolean) => {
             this.setState({secondaryOpen: open});
         })
@@ -69,15 +84,27 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         }
     }
 
+    
+    displayVersion() {
+        let manifest = chrome.runtime.getManifest();
+        let extVersion = manifest.version;
+        if (extVersion.endsWith(".9999")) {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+        } else {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
+        }
+    }
+
     render() {
         
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
-            <ReportSection panel={this.props.panel} />
+            <ReportSection panel={this.props.panel}/>
         </div>
 
         let secondaryPanel = <>
+            {this.state.secondaryView === "checkerViewAware" && <CheckerViewAware />}
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
@@ -85,6 +112,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
         let secondaryPanelModal = <>
+            {this.state.secondaryView === "checkerViewAware" && <CheckerViewAware />}
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
@@ -113,7 +141,15 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                         <ComposedModal 
                             open={this.state.secondaryOpen} 
                             onClose={() => {
-                                this.devtoolsAppController.closeSecondary();
+                                let devtoolsAppController = getDevtoolsAppController();
+                                if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
+                                    devtoolsAppController.closeSecondary();
+                                    setTimeout(() => {
+                                        devtoolsAppController.setSecondaryView("splash");
+                                    }, 1500);
+                                } else {
+                                    this.devtoolsAppController.closeSecondary();
+                                }
                             }}
                             style={{height: "100%"}}
                             isFullWidth={true}
@@ -130,8 +166,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     document.body
                 )
             }
-        </Theme>   
+        </Theme>  
     }
-    
-    
 }

@@ -3,7 +3,7 @@
 
 name: All branch testing
 
-on: [ pull_request ]
+on: [ pull_request, merge_group ]
 
 jobs:
 ###############################################################################
@@ -40,6 +40,12 @@ jobs:
       working-directory: accessibility-checker-engine
     - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
+    - name: Upload rule listing
+      uses: actions/upload-artifact@v1
+      with:
+        name: Rule listing
+        path: accessibility-checker-engine/dist/help/rules.html
+
 
   act-results:
     runs-on: ubuntu-22.04
@@ -326,6 +332,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
+    - name: Latest Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: latest
+      id: setup-chrome
     - run: npm install
       working-directory: rule-server
     - run: npm run build
@@ -440,7 +451,7 @@ jobs:
         working-directory: cypress-accessibility-checker/test
 
 ###############################################################################
-# Extension Build verification
+# Extension Build verification and test
 ####
   extension-test:
     runs-on: ubuntu-22.04
@@ -462,6 +473,8 @@ jobs:
     - run: npm install
       working-directory: accessibility-checker-extension
     - run: npm install
+      working-directory: accessibility-checker-extension/test
+    - run: npm install
       working-directory: rule-server
     - run: npm run build
       working-directory: rule-server
@@ -473,6 +486,9 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
+    - name: UI Tests
+      run: npm test
+      working-directory: accessibility-checker-extension/test
     - name: Upload packed extension
       uses: actions/upload-artifact@v1
       with:

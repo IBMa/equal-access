@@ -14,11 +14,15 @@
   limitations under the License.
 *****************************************************************************/
 
+import { IReport, eFilterLevel } from "../interfaces/interfaces";
 import { getDevtoolsController } from "./devtoolsController";
 
-export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview";
+export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview" | "checkerViewAware";
 
-let devtoolsController = getDevtoolsController();
+
+export type LevelFilters = {
+    [key in eFilterLevel]: boolean
+}
 
 /**
  * Controller for the DevtoolsApp. 
@@ -28,20 +32,64 @@ let devtoolsController = getDevtoolsController();
  * and direct messages should be sent to the DevtoolsController
  */
 export class DevtoolsAppController {
-    secondaryView: eSecondaryView = "splash";
+    secondaryView: eSecondaryView = "checkerViewAware";
     secondaryOpen: boolean = false;
     secondaryCloseQuerySelect: string = "";
     secondaryViewListeners: Array<(view: eSecondaryView) => void> = [];
     secondaryOpenListeners: Array<(open: boolean) => void> = [];
-    constructor() {
-        getDevtoolsController().addSelectedIssueListener(async () => {
-            this.setSecondaryView("help");
+    levelFilterListeners: Array<() => void> = [];
+    checked: LevelFilters = {
+        "Violation": true,
+        "Needs review": true,
+        "Recommendation": true,
+        "Hidden": false
+    };
+
+    private devToolsController;
+
+    constructor(public toolTabId: number, public contentTabId: number) {
+        this.devToolsController = getDevtoolsController(toolTabId);
+        this.devToolsController.addSelectedIssueListener(async () => {
+            if (!this.secondaryOpen) {
+                this.setSecondaryView("help");
+            }
         });
+        this.devToolsController.addReportListener(async (report: IReport) => {
+            if (!report) {
+                this.setSecondaryView("splash");
+            }
+        })
     }
 
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+    public getLevelFilterKeys(): eFilterLevel[] {
+        return Object.keys(this.checked) as eFilterLevel[];
+    }
+
+    public getLevelFilters(): LevelFilters {
+        return JSON.parse(JSON.stringify(this.checked));
+    }
+
+    public getLevelFilter(key: eFilterLevel) {
+        return this.checked[key];
+    }
+
+    public setLevelFilters(val: LevelFilters) {
+        this.checked = JSON.parse(JSON.stringify(val));
+        this.fireLevelFilter();
+    }
+
+    public setLevelFilter(key: eFilterLevel, val: boolean) {
+        this.checked[key] = val;
+        this.fireLevelFilter();
+    }
+
+    public addLevelFilterListener(cb: () => void) {
+        this.levelFilterListeners.push(cb);
+    }
+
     public getSecondaryView() : eSecondaryView {
         return this.secondaryView;
     }
@@ -151,7 +199,7 @@ export class DevtoolsAppController {
                     console.error(err);
                 }
             })($0)`, async (result: string) => {
-                await devtoolsController.setSelectedElementPath(result, true);
+                await this.devToolsController.setSelectedElementPath(result, true);
             });
         });
         chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
@@ -171,12 +219,20 @@ export class DevtoolsAppController {
             listener(open);
         }
     }
+
+    private fireLevelFilter() {
+        for (const listener of this.levelFilterListeners) {
+            listener();
+        }
+    }
 }
 
 let singleton : DevtoolsAppController;
-export function getDevtoolsAppController() {
-    if (!singleton) {
-        singleton = new DevtoolsAppController();
+export function getDevtoolsAppController(toolTabId?: number, contentTabId?: number) {
+    if (!singleton && toolTabId && contentTabId) {
+        singleton = new DevtoolsAppController(toolTabId, contentTabId);
+    } else if (!singleton) {
+        throw new Error("Controller not initialized")
     }
     return singleton;
 }

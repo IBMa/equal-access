@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,17 @@
 
 ### Why is this important?
 
-Sometimes JavaScript event handlers are attached to page elements to emulate links, for example by placing an `"onclick"` on a <`span`> or <`div`>. When this is done, the element doesn’t provide link semantic information to assistive technologies and does not automatically provide the keyboard accessibility. User agents might not be able to identify this content as a link. Individuals will not be able to tab to the link using their keyboard. They might find it hard to determine that interactive controls are available or to understand what type of behavior to expect.
+Sometimes, JavaScript event handlers are added to page elements to simulate links, such as by using the `"onclick"` property on a `<span>` or `<div>`.
+However, this can make it difficult for user agents to recognize the content as a link.
+People may be unable to tab to the link using their keyboard, and it may be hard to understand what type of behavior to expect from the interactive controls.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Wherever possible, do not use scripts to emulate an HTML link. Use `<a href>` or `<area>` to implement links;
- * **Or**, if scripting must be used, add the attribute `role="link"` to the element and [implement keyboard accessibility](https://www.ibm.com/able/requirements/requirements/#2_1_1).
+ * Do not use scripts to emulate an HTML link wherever possible. Use `<a href>` or `<area>` to implement links.
+ * **Or**, if scripting must be used, add the attribute `role="link"` to the element and [implement keyboard accessibility](https://www.ibm.com/able/requirements/requirements/#2_1_1)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -67,12 +70,12 @@ Sometimes JavaScript event handlers are attached to page elements to emulate lin
 
 * [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
-* [WCAG technique F42](https://www.w3.org/WAI/WCAG21/Techniques/failures/F42)
+* [Failure F42: When emulating links](https://www.w3.org/WAI/WCAG22/Techniques/failures/F42)
 
 ### Who does this affect?
 
  * People who rely on keyboard control
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
 
 </script></mark-down>
 <!-- End side panel -->

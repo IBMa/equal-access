@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,17 @@
 
 ### Why is this important?
 
-A component with a graphics role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
+A component with a graphics role can contain important information as well as multiple image files.
+When viewed together, these elements give the impression of a single image.
+Providing a text alternative makes the same information accessible through audio or other channels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label;
-* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`;
+* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label
+* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:
@@ -77,7 +80,7 @@ Example:
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People who turn off image-loading on their web browsers
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 

@@ -14,17 +14,18 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal } from "../config/IConfig.js";
-import { CompressedReport, IBaselineReport, IRuleset } from "../engine/IReport.js";
-import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager.js";
-import { genReport } from "./genReport.js";
+import { IConfigInternal } from "../config/IConfig";
+import { Guideline } from "../engine/IGuideline";
+import { CompressedReport, IBaselineReport } from "../engine/IReport";
+import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
+import { genReport } from "./genReport";
 
 export class ACReporterHTML implements IReporter {
     public name(): string {
         return "html";
     }
 
-    public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
+    public generateReport(config: IConfigInternal, rulesets: Guideline[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
         let cloneReport : IBaselineReport= JSON.parse(JSON.stringify(storedReport.engineReport));
 
         let outReport = {
@@ -48,6 +49,6 @@ export class ACReporterHTML implements IReporter {
             report: genReport(outReport)
         };
     }
-    public async generateSummary(_config: IConfigInternal, rulesets: IRuleset[], _endReport: number, _summaryData: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(_config: IConfigInternal, rulesets: Guideline[], _endReport: number, _summaryData: CompressedReport[]): Promise<GenSummReturn> {
     }
 }

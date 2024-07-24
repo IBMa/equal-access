@@ -2,7 +2,10 @@
 
 ## Overview
 
-`accessibility-checker-engine` is a DOM, rule-based engine for detecting issues in web applications. The engine is used by the [IBM Equal Access Accessibility Checker](https://www.ibm.com/able/toolkit/tools#develop) suite of tools. The rules and engine are fully written in JavaScript and can be injected directly into web pages and applications.
+`accessibility-checker-engine` is a rules-based engine for detecting issues in the Document Object Model (DOM) of web applications and content.
+
+- The engine is used by the [IBM Equal Access Accessibility Checker](https://www.ibm.com/able/toolkit/tools#develop) suite of tools.
+- The rules and engine are written in JavaScript and can be injected directly into web pages and applications.
 
 ## Get the engine
 
@@ -43,9 +46,12 @@ checker.check(doc, ["IBM_Accessibility"])
 * `["IBM_Accessibility"]` - apply IBM accessibility ruleset.
 * `report` - accessibility results contains identified accessibility issues and their descriptions from the given `doc`, and a summary of the issues. The report is in JSON format (see [details](#report)).
 
-## Checklist and Rulesets
+## Rules and Rulesets
 
-The rule are based on the IBM [Checklist](https://www.ibm.com/able/guidelines/ci162/accessibility_checklist.html), which is a superset of WCAG 2.1 AA. We also provide a WCAG 2.0 AA rulesets. Mappings from the checklists to rules are defined in the [ruleset file](https://github.com/IBMa/equal-access/blob/master/accessibility-checker-engine/src/v2/checker/accessibility/rulesets/index.ts)
+* Rules are based on the [IBM Accessibility requirements](https://www.ibm.com/able/requirements/requirements/), which is a unified set of WCAG, EN 301 549, and US 508 standards.
+* Rules are harmonized with the open rules published by the [W3C ACT-Rules Community](https://www.w3.org/community/act-r/) group as reported in the [IBM Equal Access Accessibility Checker ACT implementation report](https://wai-wcag-act-rules.netlify.app/standards-guidelines/act/implementations/equal-access/).
+* Rule sets, such as `IBM Accessibility v7.2`, `WCAG 2.2 (A & AA)`, `WCAG 2.1 (A & AA)`, and `WCAG 2.0 (A & AA)`and mappings of the rules to the standards (Requirements), Rule IDs, the individual failure messages, and links to the Help files are published at [Checker rule sets](https://www.ibm.com/able/requirements/checker-rule-sets).
+* Mappings of the rules are defined in the [individual rule_ID_name.ts files](https://github.com/IBMa/equal-access/tree/master/accessibility-checker-engine/src/v4/rules).
 
 ## Report
 
@@ -202,7 +208,7 @@ The following code snippet demonstrates how to use ACE to test a web page for ac
 
 ### Browser extensions
 
-You can use the [accessibility-checker-extension](https://www.ibm.com/able/toolkit/tools/#develop) for Chrome or Firefox. The browser extensions integrate the accessibility web engine (ace.js) and formatted results into the browser developer tool to visually view the accessibility issues and the locations of violating components. For more information and instructions, please view [accessibility-checker-extensions](https://www.ibm.com/able/toolkit/tools/#develop).
+You can use the [accessibility-checker-extension](https://www.ibm.com/able/toolkit/tools/#develop) for Chrome, Edge, or Firefox. The browser extensions integrate the accessibility web engine (ace.js) and formatted results into the browser developer tool to view the accessibility issues and the locations of violating components. For more information and instructions, please view [accessibility-checker-extensions](https://www.ibm.com/able/toolkit/tools/#develop).
 
 ### Integration with test frameworks
 

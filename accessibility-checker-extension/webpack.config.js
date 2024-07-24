@@ -90,7 +90,7 @@ module.exports = {
             template: path.join(sourceRootPath, 'html', 'options.html'),
             inject: 'body',
             filename: 'options.html',
-            title: 'Accessibility Checker Extension - Options Page',
+            title: 'Settings - IBM Accessibility Checker',
             chunks: ['options']
         }),
         new HtmlWebpackPlugin({
@@ -132,14 +132,14 @@ module.exports = {
             template: path.join(sourceRootPath, 'html', 'usingAC.html'),
             inject: 'body',
             filename: 'usingAC.html',
-            title: 'Accessibility Checker Extension - User Guide',
+            title: 'User guide - IBM Accessibility Checker',
             chunks: ['usingAC']
         }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'quickGuideAC.html'),
             inject: 'body',
             filename: 'quickGuideAC.html',
-            title: 'Accessibility Checker Extension - Quick Guide',
+            title: 'Quick guide - IBM Accessibility Checker',
             chunks: ['quickGuideAC']
         }),
         new CopyWebpackPlugin({
@@ -163,7 +163,8 @@ module.exports = {
                 to: path.join(distRootPath, "archives"),
                 globOptions: {
                     ignore: [
-                        path.join("**", "ace-*.js")
+                        path.join("**", "ace-*.js"),
+                        path.join("**", "doc"),
                     ]
                 }
             }

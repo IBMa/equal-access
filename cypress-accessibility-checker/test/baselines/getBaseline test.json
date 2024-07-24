@@ -165,7 +165,7 @@
             "Pass_0": "Rule Passed"
         },
         "text_contrast_sufficient": {
-            "0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
+            "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
             "Pass_0": "Rule Passed"
         },
         "img_alt_misuse": {

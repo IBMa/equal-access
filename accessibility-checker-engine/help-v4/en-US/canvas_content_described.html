@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,19 +45,21 @@
 
 ### Why is this important?
 
-The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements. However, canvas content is not exposed to assistive technologies like semantic HTML. To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
+The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements.
+However, canvas content is not exposed to assistive technologies like semantic HTML.
+To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element;
- * **Or**, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
- * **Or**, if the `<canvas>` element is more complex such as a static chart, or an interactive drawing, provide an alternative accessible rendering;
- * **Or**, use canvas fallback content (between the `<canvas>` tags) with keyboard access.
+ * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element
+ * **Or**, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`)
+ * **Or**, if the `<canvas>` element is more complex, such as a static chart, or an interactive drawing, provide an alternative accessible rendering
+ * **Or**, use canvas fallback content (between the `<canvas>` tags) with keyboard access
 
-This example shows the use of the `<canvas>` element with its content exposed as an image with a ARIA `role` attribute, a label, and a description.
+This example shows the use of the `<canvas>` element with its content exposed as an image with an ARIA `role` attribute, a label, and a description:
 
 ```
 <!-- Canvas exposed as an image element. -->
@@ -94,7 +97,7 @@ This example shows an interactive `<canvas>` with equivalent accessible informat
 ### Who does this affect?
 
  * People who rely on keyboard control
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
 
 </script></mark-down>
 <!-- End side panel -->

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,17 +45,19 @@
 
 ### Why is this important?
 
-The label of an HTML element with an `accesskey` attribute allows the user agent to display a list of access keys with a name describing each access key’s function. It also allows voice control users to speak the label to activate its function.
+The label of an element with an `accesskey` attribute allows the user agent to display a list of access keys with a name describing each access key’s function.
+The label also allows voice control users to speak the label to activate its function.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Provide a label using a `title` attribute (e.g. `<a title="Activities" accesskey="A" href="/Consortium/activities">Activities</a>`);
- * **Or**, use `<label for="">` or `aria-labelledby` to designate visible text as the label;
- * **Or**, use an input embedded in a `<label>` (e.g. `<label><input type="checkbox" accesskey="A"/>foo</label>`);
- * **Or**, if the element does not have a visible label, provide a label using the `aria-label` attribute (e.g. `aria-label="Activities"`).
+Provide an accessible name for the element with the `accesskey` attribute using one of the following examples:
+ * `title` attribute (e.g., `<p title="Activity" accesskey="A" href="/Consortium/activity">Activity: This is a paragraph that users need to jump to.</a>`)
+ * `<label for="an id">` or `aria-labelledby` to designate visible text as the label
+ * `<input>` embedded in a `<label>` (e.g., `<label><input type="checkbox" accesskey="A"/>Activity</label>`)
+ * `aria-label` attribute if the element does not have a visible label (e.g., `aria-label="Activity"`)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -68,12 +71,16 @@ The label of an HTML element with an `accesskey` attribute allows the user agent
 ### About this requirement
 
 * [IBM 3.3.2 Labels and Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [WebAIM - The accesskey attribute](https://webaim.org/techniques/keyboard/accesskey/#spec)    
+* [ARIA practices - Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [ARIA practices - Providing Accessible Names and Descriptions](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/)
+    
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
  * People who physically cannot use a pointing device
- * People with dexterity impairment using voice control
+ * People with dexterity impairments using voice control
 
 </script></mark-down>
 <!-- End side panel -->

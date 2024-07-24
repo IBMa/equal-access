@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 *****************************************************************************/
+export type eFilterLevel = "Violation" | "Needs review" | "Recommendation" | "Hidden";
 
 export type eMessageSrcDst = "background" | "devtools" | "main" | "elements" | "options" | "popup" | "tab";
 
@@ -44,6 +45,13 @@ export interface ISettings {
     tabStopOutlines: boolean
     tabStopAlerts: boolean
     tabStopFirstTime: boolean
+    checkerViewAwareFirstTime: boolean
+}
+
+export interface ISessionState {
+    tabStoredCount: {
+        [tabId: number]: number
+    }
 }
 
 export type MsgDestType = {
@@ -96,6 +104,11 @@ export interface IIssue {
     help: string
 }
 
+export interface UIIssue extends IIssue {
+    checked?: boolean,  // Hide checkbox checked === true
+    ignored?: boolean   // Issue marked hidden
+}
+
 export interface IBasicTableRowRecord {
     id: string
     isSelected?: boolean
@@ -116,6 +129,7 @@ export type StoredScanData = [
     string, //item.snippet,
     string, //item.path.dom,
     string, //engine_end_point + '/tools/help/' + item.ruleId
+    boolean,//hidden if true
 ];
 
 export interface IStoredReportMeta extends IBasicTableRowRecord {
@@ -130,6 +144,7 @@ export interface IStoredReportMeta extends IBasicTableRowRecord {
         "Violation": number
         "Needs review": number
         "Recommendation": number
+        "Hidden" : number
         "Pass": number
         total: number
     }
@@ -197,7 +212,12 @@ export interface IRuleset {
         name: string,
         wcagLevel: string,
         summary: string,
-        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
+        rules?: Array<{ 
+            id: string, 
+            level: eRulePolicy, 
+            toolkitLevel: eToolkitLevel,
+            reasonCodes?: string[]
+        }>
     }>
 }
 

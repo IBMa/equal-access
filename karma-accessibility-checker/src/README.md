@@ -4,9 +4,14 @@
 
 `karma-accessibility-checker` is a Karma plugin that allows you to perform the following:
 
-- integrate accessibility testing within a continuous integration pipeline such as Travis CI.
+- integrate accessibility testing within a continuous integration pipeline, such as Travis CI.
 - scan HTML nodes/widgets, URLs, local files, HTML documents, and allows you to scan HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
+
+The Karma plugin is a component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate the automated testing tools into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ### Table of Contents
 
@@ -36,7 +41,7 @@
   - [Errors](#errors)
     - [Error: labelNotProvided](#error-labelnotprovided)
     - [Error: labelNotUnique](#error-labelnotunique)
-    - [Error: slackNotificationTargetIsNotValid](#error-slackNotificationTargetIsNotValid)
+    - [Error: slackNotificationTargetIsNotValid](#error-slacknotificationtargetisnotvalid)
     - [Error: SlackAPIError](#error-slackapierror)
     - [Error: SlackWebHookError](#error-slackwebhookerror)
     - [Error: LoadingConfigError](#error-loadingconfigerror)
@@ -127,7 +132,7 @@ module.exports = function (config) {
 
 #### Configuring `preprocessor`
 
-Use `aChecker` in `preprocessor` to process the baseline files and load them into memory. This saved copy of the files, can then be used for accessibility scan results comparison.
+Use `aChecker` in `preprocessor` to process the baseline files and load them into memory. This saved copy of the files can then be used for accessibility scan results comparison.
 
 ```js
 // karma.conf.js
@@ -152,13 +157,16 @@ module.exports = function (config) {
 
 ### Configuring the plugin
 
-Configuring the `karma-accessibility-checker` plugin involves constructing a `.achecker.yml` file in the project root. This file, will contain all of the configuration
+Configuring the `karma-accessibility-checker` plugin involves constructing a `.achecker.yml` file in the project root. This file will contain all of the configuration
 options for `karma-accessibility-checker`. This is the structure of the `.achecker.yml` file:
 
 ```yml
 # optional - Specify the rule archive
 # i.e. For march rule archive use ruleArchive: 2017MayDeploy
 # Default: latest
+# If "latest", will use the latest rule release
+# If "versioned" (supported in 3.1.61+), will use the latest rule release at
+# the time this version of the tool was released 
 # Refer to README.md FAQ section below to get the rule archive ID.
 ruleArchive: latest
 
@@ -193,7 +201,7 @@ reportLevels:
     - potentialrecommendation
     - manual
 
-# Optional - In what format types the results should be output in (json, html)
+# Optional - In what format types the results should be output (json, html)
 # Default: json
 outputFormat:
     - json
@@ -202,7 +210,7 @@ outputFormat:
 # Default: true
 outputFilenameTimestamp: true
 
-# Optional - Specify labels that you would like associated to your scan
+# Optional - Specify labels that you would like associated with your scan
 #
 # i.e.
 #   label: Firefox,master,V12,Linux
@@ -233,7 +241,7 @@ To perform an accessibility scan within your test cases and verify the scan resu
 ```javascript
 // Perform the accessibility scan using the aChecker.getCompliance API
 aChecker.getCompliance(testDataFileContent, testFile, function (results) {
-    // Call the aChecker.assertCompliance API which is used to compare the results with baseline object if we can find one that
+    // Call the aChecker.assertCompliance API which is used to compare the results with the baseline object if we can find one that
     // matches the same label which was provided.
     var returnCode = aChecker.assertCompliance(results);
 
@@ -358,11 +366,11 @@ Use a callback mechanism (`callback`) to extract the results and perform asserti
 }
 ```
 
-Refer to the `actualResults` parameter in aChecker.assertCompliance API for more details about the properties of results object.
+Refer to the `actualResults` parameter in aChecker.assertCompliance API for more details about the properties of the results object.
 
 ### aChecker.assertCompliance(`actualResults`)
 
-Assertion will be perform one of the following ways based on the condition that is met:
+Assertion will be performed one of the following ways based on the condition that is met:
 
 1. If a baseline file of scan results is available in memory, it will be compared to the `actualResults`. If the `actualResults` matches the baseline, it will return 0. If not, it will return 1. In this case, assertion is only run on the `XPath` and `ruleId`.
 
@@ -388,10 +396,10 @@ Assertion will be perform one of the following ways based on the condition that 
         - **policies**, (Array) policies used for the scan result.
         - **reportLevels**, (Array) list of violation levels to include in the report. (save to file).
         - **startScan**, (Int) start time of the scan in milliseconds since epoch, GMT.
-    - **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not support yet) Each array element is an object with these properties:
+    - **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not supported yet) Each array element is an object with these properties:
         - **frameIdx**, (Int) frame index in the page represented as an integer value.
         - **frameTitle**, (String) title of the frame on the page that was scanned.
-        - **issues**, (Array) detailed list of violations. Each array element is an objects with these properties:
+        - **issues**, (Array) detailed list of violations. Each array element is an object with these properties:
             - **severityCode**, (String) severity code of the violation.
             - **messageCode**, (String) message code of the violation. Used to map the localized message string.
             - **ruleId**, (String) rule ID of the violation.
@@ -409,7 +417,7 @@ Assertion will be perform one of the following ways based on the condition that 
 - Returns `0` if `actualResults` matches baseline or if no violations match the `failLevels`
 - Returns `1` if `actualResults` _do not_ match the baseline
 - Returns `2` if there is a failure based on `failLevels`
-- Returns `-1` if an exception has occurred during scanning and the results reflected that
+- Returns `-1` if an exception has occurred during scanning and the results reflect that
 
 ### aChecker.getDiffResults(`label`)
 
@@ -521,7 +529,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## Known Issues
 
-1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access document of generated iframe. This is due to cross domain frame access restrictions in browsers. On firefox there is no provided alternative, Chrome provides a way to override this by adding the following to karma.config.js:
+1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access the document of the generated iframe. This is due to cross domain frame access restrictions in browsers. On Firefox there is no provided alternative, Chrome provides a way to override this by adding the following to karma.config.js:
 
 ```javascript
  module.exports = function (config) {
@@ -539,7 +547,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 }
 ```
 
-2. Unable to scan local files when provided to `aChecker.getCompliance(...)` API as a local file URL. This is due to a limitation in Karma where it is not able to load local files using `file://` protocol. For scanning local file, there is a work around which can be used to scan them, following are the steps to update karma.config.js file with the following:
+2. Unable to scan local files when provided to `aChecker.getCompliance(...)` API as a local file URL. This is due to a limitation in Karma where it is not able to load local files using `file://` protocol. For scanning local files, there is a workaround that can be used to scan them, following are the steps to update karma.config.js file with the following:
 
 ````javascript
  module.exports = function (config) {

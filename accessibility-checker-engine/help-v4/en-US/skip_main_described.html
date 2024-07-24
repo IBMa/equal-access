@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,19 @@
 
 ### Why is this important?
 
-Navigating to the main content on a page without a pointing device is tedious when there is other information, such as banners, navigation and search bars that are in the tab order. Although screen reader users can jump between regions, headings and other element types, other keyboard-only users do not have access to this functionality. Having initial links on a page that any user can follow to get to the main content or to skip past repeated content makes keyboard navigation vastly more efficient for these users. These links must clearly state where they lead to.
+Navigating to the main content on a page without a pointing device is tedious when there is other information, such as banners,
+navigation, and search bars that are in the tab order.
+Although screen reader users can jump between regions, headings and other element types, keyboard-only users may not have access to this functionality.
+Having initial links on a page that any user can follow to get to the main content or to skip past repeated content makes keyboard navigation vastly more efficient.
+These skip links must clearly state where they lead to.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If this link skips content on the page, verify the link text communicates where it skips to (e.g. "Jump to site navigation");
- * **Or**, if this link goes to the main content on the page, set the link text to "Skip to main content".
+ * If this link skips content on the page, verify the link text communicates where it skips to (e.g., "Jump to site navigation")
+ * **Or**, if this link goes to the main content on the page, set the link text to "Skip to main content"
 
 For example:
 
@@ -72,7 +77,7 @@ For example:
 ### About this requirement
 
 * [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
-* [WCAG technique G1](https://www.w3.org/WAI/WCAG21/Techniques/general/G1)
+* [G1: Skip to main content link](https://www.w3.org/WAI/WCAG22/Techniques/general/G1)
 
 ### Who does this affect?
 

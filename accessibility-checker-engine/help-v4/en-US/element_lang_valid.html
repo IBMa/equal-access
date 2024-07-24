@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -45,19 +46,18 @@
 ### Why is this important?
 
 When the language attribute is used to identify the human language of specific content within a page, the attribute value must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). 
-This ensures that user agents and text-to-speech (TTS) synthesizers can correctly present the specific content using the correct presentation and in the appropriate accent with proper pronunciation for that language.
+This ensures that user agents and text-to-speech (TTS) synthesizers correctly present the specific content using the correct presentation and in the appropriate accent with proper pronunciation for that language.
 
-A valid language attribute also allows the following:
-- Braille translation software to substitute control codes for accented characters for example and prevent erroneous creation of Grade 2 braille contractions
-- Translate to a familiar language
-- Assist user agents in providing correct definitions using a dictionary
+A valid language attribute allows Braille translation software to substitute control codes for accented characters,
+preventing the erroneous creation of Grade 2 Braille contractions.
+It can also translate to a familiar language and assist user agents in providing correct definitions using a dictionary.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language
+* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to identify the language correctly 
 
 For example:
 
@@ -81,13 +81,13 @@ For example:
 ### About this requirement
 
 * [IBM 3.1.2 Language of parts](https://www.ibm.com/able/requirements/requirements/#3_1_2)
-* [WCAG technique H58](https://www.w3.org/WAI/WCAG21/Techniques/html/H58)
+* [H58: Language attributes to identify changes in the human language](https://www.w3.org/WAI/WCAG22/Techniques/html/H58)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision
-* People with dexterity impairment using voice control
+* People with dexterity impairments using voice control
 * People using text-to-speech (TTS) synthesizer technologies
 * People who find it difficult to read written material with fluency and accuracy, such as recognizing characters and alphabets, or decoding words
 * People with certain cognitive, language, and learning disabilities

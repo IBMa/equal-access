@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,14 +45,16 @@
 
 ### Why is this important?
 
-Server-side image maps are images in which regions of the image contain "hot-spots" where a user can click to follow a link. Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
+Server-side image maps are images in which regions of the image contain hotspots where a user can click to follow a link.
+Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Use the `<a>` element with `"href"` attribute to provide text links corresponding to all hot-spots for the server-side image map on the page.
+* Use the `<a>` element with the `"href"` attribute to provide text links corresponding to all hotspots for the server-side image map on the page
+* **Or**, use an accessible client-side image map
 
 </script></mark-down>
 <!-- End main panel -->
@@ -65,10 +68,13 @@ Server-side image maps are images in which regions of the image contain "hot-spo
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [H24: Text alternatives for image maps](https://www.w3.org/WAI/WCAG22/Techniques/html/H24)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People who physically cannot use a mouse, pen, or touch
+* People using voice control
 
 </script></mark-down>
 <!-- End side panel -->

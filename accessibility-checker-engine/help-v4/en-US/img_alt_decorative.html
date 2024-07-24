@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,14 +45,15 @@
 
 ### Why is this important?
 
-Roles of `presentation` and `none` on an image indicate the element is decorative and should be ignored by assistive technologies. Providing a non-null text alternative conflicts with that decorative designation.
+Roles of `presentation` and `none` on an image indicate the element is decorative and should be ignored by assistive technologies.
+Providing a non-null text alternative conflicts with that decorative designation.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Set the `alt` attribute to an empty (or null) string (i.e., `<img alt="">`) for images with `role="presentation"` or `role="none"`.
+* Set the `alt` attribute to an empty (or null) string (i.e., `<img alt="">`) for images with `role="presentation"` or `role="none"`.
 
 Example:
 
@@ -74,7 +76,7 @@ Example:
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 
 </script></mark-down>
 <!-- End side panel -->

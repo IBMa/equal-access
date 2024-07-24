@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,16 +45,20 @@
 
 ### Why is this important?
 
-If the content of a `<frame>` is not HTML, it may not be accessible. For example, if the source of the `<frame>` element is an image file, assistive technology cannot read the content because you cannot add `alt` text to the image in the `<frame>` source. The user opens the frame and hears nothing or perhaps the name of the image file. The `<frame>` element is obsolete and ideally should not be used. When used, the frame source must be accessible.
+If the content of a `<frame>` is not HTML, it may not be accessible.
+For example, if the source of the `<frame>` element is an image file, assistive technology cannot read the content because `alt` text cannot be added to the image in the `<frame>` source.
+The user opens the frame and hears nothing or perhaps the name of the image file.
+The `<frame>` element is obsolete and ideally should not be used.
+When used, the frame source must be accessible.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * HTML `<frame>` is obsolete, if possible avoid its use;
- * **Or**, verify that interactive content inside the frame is accessible by keyboard;
- * **And**, verify that content inside the frame can be accessed by assistive technologies such as a screen reader.
+ * HTML `<frame>` is obsolete, if possible avoid its use
+ * **Or**, verify that interactive content inside the frame is accessible by keyboard
+ * **And**, verify that content inside the frame can be accessed by assistive technologies, such as a screen reader
 
 </script></mark-down>
 <!-- End main panel -->
@@ -71,9 +76,9 @@ If the content of a `<frame>` is not HTML, it may not be accessible. For example
 ### Who does this affect?
 
  * People who rely on keyboard control
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
  * People with low vision using screen magnification
- * People with dexterity impairment
+ * People with dexterity impairments
 
 </script></mark-down>
 <!-- End side panel -->

@@ -79,20 +79,29 @@ export async function getTestcases() {
 async function getAssertion(ruleId, aceRules, result) {
     const ruleset = await rulesetP;
     let ruleTitle = "";
+    let scs = []
     for (let aceRule of aceRules) {
         if (aceRule.ruleId === ruleId) {
             ruleTitle = `${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`;
+            scs = scs.concat(ruleset.checkpoints
+                // Get checkpoints that have this rule
+                .filter(cp => (
+                    cp.rules 
+                    && cp.rules.filter(rule => (
+                        // Checkpoint refers to a rule mapping that has the ruleid
+                        rule.id === ruleId
+                        // and either maps to all reasons, or one the these reasons is selected
+                        && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code)))
+                    )).length > 0
+                // Replace with the scId
+                )).map(cp => cp.scId));            
         }
     }
     return {
         "@type": "Assertion",
         "test": { 
             "title": ruleTitle,
-            "isPartOf": ruleset.checkpoints
-                // Get checkpoints that have this rule
-                .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
-                // Replace with the scId
-                .map(cp => cp.scId)
+            "isPartOf": Array.from(new Set(scs))
         },
         "result": { "outcome": result }
     }

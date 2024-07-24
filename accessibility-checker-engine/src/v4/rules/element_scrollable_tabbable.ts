@@ -38,12 +38,12 @@ export let element_scrollable_tabbable: Rule = {
         }
     },
     rulesets: [{
-        id: ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        id: ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         num: ["2.1.1"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: ["ossw9k"],
+    act: ["0ssw9k"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled

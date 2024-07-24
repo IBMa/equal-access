@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,16 @@
 
 ### Why is this important?
 
-Elements with an `"application"` role structure must have a label specified with an accessible name. This information helps people using assistive technologies to find and navigate the content.
+Elements with an `"application"` role structure must have a label specified with an accessible name.
+This information helps people using assistive technologies to find and navigate the content.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
-* **Or**, use the `aria-label` attribute to add a label directly to the element with the `"application"` role.
+* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below)
+* **Or**, use the `aria-label` attribute to add a label directly to the element with the `"application"` role
 
 For example:
 
@@ -76,7 +78,7 @@ For example:
 ### About this requirement
 
 * [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
-* [ARIA practices - Providing Accessible Names and Descriptions](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/)
+* [ARIA practices - Accessible Names and Descriptions](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/)
 
 ### Who does this affect?
 

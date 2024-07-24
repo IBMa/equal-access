@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,15 @@
 
 ### Why is this important?
 
-When an image contains important information that is not available in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
+When an image contains important information unavailable in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If the image conveys meaning, the value of the `"alt"` attribute should be a short description that serves the same purpose as the image. Include any important words from the image in the short description (e.g. `<img alt="submit">`). Do not use a file name;
-* **Or**, if the image is decorative or the same information is also available in text, use the `"alt"` attribute with an empty string as its value (e.g.  `<img alt="">`).
+* If the image conveys meaning, the value of the `"alt"` attribute should be a short description that serves the same purpose as the image. Include any important words from the image in the short description (e.g., `<img alt="submit">`). Do not use a file name.
+* **Or**, if the image is decorative or the same information is also available in text, use the `"alt"` attribute with an empty string as its value (e.g., `<img alt="">`).
 
 </script></mark-down>
 <!-- End main panel -->
@@ -66,13 +67,13 @@ When an image contains important information that is not available in text on th
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique H37](https://www.w3.org/WAI/WCAG21/Techniques/html/H37)
+* [H37: Using alt attributes on img elements](https://www.w3.org/WAI/WCAG22/Techniques/html/H37)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
  * People who turn off image-loading on their web browsers
- * People using text only, monochrome or braille displays
+ * People using text-only, monochrome, or Braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>

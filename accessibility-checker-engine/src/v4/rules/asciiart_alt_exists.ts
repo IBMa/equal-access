@@ -37,12 +37,16 @@ export let asciiart_alt_exists: Rule = {
             "group": "ASCII art must have a text alternative"
         }
     },
+    /**
+     * Decision in planning 9/7/23 that this rule causes more reviews that we see actual problems in content, so turn these rules off
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
+    */
+    rulesets: [],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;

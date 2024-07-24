@@ -14,7 +14,12 @@
     limitations under the License.
  *****************************************************************************/
 
+import { eGuidelineCategory, eGuidelineType } from "./IGuideline";
 import { IMapResult } from "./IMapper";
+import { NlsMap as NlsMapNew, HelpMap as HelpMapNew, IEngine as IEngineNew } from "./IEngine";
+import { Report as ReportNew } from "./IReport";
+import { eToolkitLevel as eToolkitLevelNew } from "./IGuideline"
+import { Bounds } from "./IBounds";
 
 export enum eRuleConfidence {
     PASS = "PASS",
@@ -27,24 +32,6 @@ export enum eRulePolicy {
     VIOLATION = "VIOLATION",
     RECOMMENDATION = "RECOMMENDATION",
     INFORMATION = "INFORMATION"
-}
-
-export enum eToolkitLevel {
-    LEVEL_ONE = "1",
-    LEVEL_TWO = "2",
-    LEVEL_THREE = "3",
-    LEVEL_FOUR = "4"
-}
-
-export enum eRuleCategory {
-    ACCESSIBILITY = "Accessibility",
-    DESIGN = "Design",
-    OTHER = "Other"
-}
-
-export enum eRulesetType {
-    DEFAULT = "default",
-    EXTENSION = "extension"
 }
 
 export function RulePass(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
@@ -103,22 +90,17 @@ export type RuleResult = {
     apiArgs?: any[]
 }
 
-export type RuleDetails = RuleResult & {
+export type Issue = RuleResult & {
     ruleId: string,
 
     node: Node,
     // namespace: string,
-    category?: eRuleCategory,
+    category?: eGuidelineCategory,
     path: { [ns: string] : string },
 
     ruleTime: number,
     message: string,
-    bounds?: {
-        top: number,
-        left: number,
-        width: number,
-        height: number
-    },
+    bounds?: Bounds,
     snippet: string
 }
 
@@ -137,7 +119,10 @@ export type Rule = {
         id: string | string[]
         num: string | string[]
         level: eRulePolicy,
-        toolkitLevel: eToolkitLevel
+        toolkitLevel: eToolkitLevelNew,
+        // (optional) Reason codes that this ruleset mapping applies to, 
+        // or all if not specified
+        reasonCodes?: string[]
     }>
 
     refactor?: {
@@ -181,51 +166,42 @@ export type Rule = {
     enabled?: boolean
 }
 
+/**
+ * @deprecated
+ */
+export type RuleDetails = Issue;
 
-export type Report = {
-    results: RuleDetails[],
-    numExecuted: number,
-    ruleTime: number,
-    // This may be undefined for a filtered report
-    totalTime?: number,
-    nls?: {
-        [ruleId: string]: {
-            [reasonId: string]: string
-        }
-    }
-}
+/**
+ * @deprecated See IEngine
+ */
+export type Report = ReportNew;
 
-export type NlsMap = {
-    [key: string]: string[]
-}
+/**
+ * @deprecated See IEngine
+ */
+export type NlsMap = NlsMapNew;
 
-export type HelpMap = {
-    [key: string]: string[]
-}
+/**
+ * @deprecated See IEngine
+ */
+export type HelpMap = HelpMapNew;
 
-export interface IEngine {
-    /**
-     * Perform a scan on a document or subtree
-     * @param rulesetIds Array of ruleset ids of rulesets to use for this scan
-     * @param root Document or subtree to scan
-     */
-    run(root: Document | Node, options?: {}) : Promise<Report>;
+/**
+ * @deprecated See ./IEngine
+ */
+export type IEngine = IEngineNew;
 
-    enableRules(ruleIds: string[]);
+/**
+ * @deprecated See ./IGuideline
+ */
+export { eToolkitLevel } from "./IGuideline";
 
-    getRule(ruleId: string): Rule;
+/**
+ * @deprecated See ./IGuideline:eGuidelineCategory
+ */
+export { eGuidelineCategory as eRuleCategory } from "./IGuideline";
 
-    getRulesIds() : string[];
-
-    getMessage(ruleId: string, ruleIdx: number | string, msgArgs?: string[]): string;
-
-    getHelp(ruleId: string, ruleIdx: number | string): string;
-
-    addRules(rule: Rule[]);
-
-    addRule(rule: Rule);
-
-    addNlsMap(map: NlsMap);
-
-    addHelpMap(map: NlsMap);
-}
+/**
+ * @deprecated See ./IGuideline:eGuidelineType
+ */
+export { eGuidelineType as eRulesetType } from "./IGuideline";

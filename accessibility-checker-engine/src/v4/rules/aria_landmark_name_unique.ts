@@ -41,13 +41,13 @@ export let aria_landmark_name_unique: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
         "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     },
     {
-        "id": ["WCAG_2_1", "WCAG_2_0"],
+        "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.3.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
@@ -99,7 +99,7 @@ export let aria_landmark_name_unique: Rule = {
             let navigationNodesParents = [];
             let navigationNodesMatchFound : string[] = [];
 
-            // This block of code filters out any nav elements that are under an dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.    
+            // This block of code filters out any nav elements that are under a dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.
             let navigationNodesWithoutDialogs = [];
             for (let i = 0; i < navigationNodes.length; i++) {
                 let a = navigationNodes[i];
@@ -151,7 +151,7 @@ export let aria_landmark_name_unique: Rule = {
                             "navigation",
                             "region",
                             "search",
-                        ].includes(els[j].getAttribute("role")); // TODO we are not covering the case where a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
+                        ].includes(els[j].getAttribute("role")); // TODO we are not covering the case where a elemenent with multiple roles. e.g., role = "form banner". This is a improvment we might want to add in the future.
                     }
                     if (tagNameTrigger || roleNameTrigger) {
                         // Nearest parent-landmark found

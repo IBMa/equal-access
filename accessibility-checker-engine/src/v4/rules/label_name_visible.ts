@@ -43,7 +43,7 @@ export let label_name_visible: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_2"],
         "num": ["2.5.3"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
@@ -166,10 +166,10 @@ export let label_name_visible: Rule = {
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
             let normalizedLabel = RPTUtil.normalizeSpacing(theLabel).toLowerCase();
 
-            if (normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
+            if (normalizedText.length > 1) { // skip non-text content. e.g., <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);
 
-                // Avoid matching partial words.e.g. text "name" should not match 'surname' or 'names'
+                // Avoid matching partial words.e.g., text "name" should not match 'surname' or 'names'
                 if (location >= 0 && normalizedLabel.length > normalizedText.length) {
                     let letters = /^[0-9a-zA-Z]+$/;
                     if ((location + normalizedText.length) < normalizedLabel.length) {

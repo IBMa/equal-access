@@ -1,0 +1,208 @@
+{
+    "results": [
+        {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/a[1]",
+                "aria": "/document[1]/main[1]/link[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-disabled\" are not valid for the element <a> with implicit ARIA role \"link\"",
+            "messageArgs": [
+                "aria-disabled",
+                "a",
+                "link"
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 491,
+                "top": 86,
+                "height": 19,
+                "width": 94
+            },
+            "snippet": "<a aria-disabled=\"true\" id=\"totalIssuesCount\" href=\"#0\" class=\"cds--link darkLink totalCountDisable cds--link--inline\">",
+            "category": "Accessibility",
+            "ignored": true,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2024.02.02/doc/en-US/aria_attribute_valid.html#%7B%22message%22%3A%22The%20ARIA%20attributes%20%5C%22aria-disabled%5C%22%20are%20not%20valid%20for%20the%20element%20%3Ca%3E%20with%20implicit%20ARIA%20role%20%5C%22link%5C%22%22%2C%22snippet%22%3A%22%3Ca%20aria-disabled%3D%5C%22true%5C%22%20id%3D%5C%22totalIssuesCount%5C%22%20href%3D%5C%22%230%5C%22%20class%3D%5C%22cds--link%20darkLink%20totalCountDisable%20cds--link--inline%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_invalid_implicit_role_attr%22%2C%22ruleId%22%3A%22aria_attribute_valid%22%2C%22msgArgs%22%3A%5B%22aria-disabled%22%2C%22a%22%2C%22link%22%5D%7D"
+        },
+        {
+            "ruleId": "aria_attribute_valid",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "aria": "/document[1]/main[1]/generic[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-label\" are not valid for the element <div> with implicit ARIA role \"generic\"",
+            "messageArgs": [
+                "aria-label",
+                "div",
+                "generic"
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 34,
+                "top": 111,
+                "height": 32,
+                "width": 160
+            },
+            "snippet": "<div class=\"cds--dropdown cds--dropdown--disabled cds--dropdown--sm cds--list-box cds--list-box--sm\" id=\"reportView\" aria-label=\"Select report view\">",
+            "category": "Accessibility",
+            "ignored": true,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2024.02.02/doc/en-US/aria_attribute_valid.html#%7B%22message%22%3A%22The%20ARIA%20attributes%20%5C%22aria-label%5C%22%20are%20not%20valid%20for%20the%20element%20%3Cdiv%3E%20with%20implicit%20ARIA%20role%20%5C%22generic%5C%22%22%2C%22snippet%22%3A%22%3Cdiv%20class%3D%5C%22cds--dropdown%20cds--dropdown--disabled%20cds--dropdown--sm%20cds--list-box%20cds--list-box--sm%5C%22%20id%3D%5C%22reportView%5C%22%20aria-label%3D%5C%22Select%20report%20view%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_invalid_implicit_role_attr%22%2C%22ruleId%22%3A%22aria_attribute_valid%22%2C%22msgArgs%22%3A%5B%22aria-label%22%2C%22div%22%2C%22generic%22%5D%7D"
+        },
+        {
+            "ruleId": "aria_id_unique",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+                "aria": "/document[1]/main[1]/generic[1]/listbox[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "The 'id' \"downshift-3-label\" specified for the ARIA property 'aria-labelledby' value is not valid",
+            "messageArgs": [
+                "downshift-3-label",
+                "aria-labelledby",
+                "div"
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 35,
+                "top": 143,
+                "height": 0,
+                "width": 158
+            },
+            "snippet": "<div tabindex=\"-1\" aria-labelledby=\"downshift-3-label\" role=\"listbox\" class=\"cds--list-box__menu\" id=\"downshift-3-menu\">",
+            "category": "Accessibility",
+            "ignored": true,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2024.02.02/doc/en-US/aria_id_unique.html#%7B%22message%22%3A%22The%20'id'%20%5C%22downshift-3-label%5C%22%20specified%20for%20the%20ARIA%20property%20'aria-labelledby'%20value%20is%20not%20valid%22%2C%22snippet%22%3A%22%3Cdiv%20tabindex%3D%5C%22-1%5C%22%20aria-labelledby%3D%5C%22downshift-3-label%5C%22%20role%3D%5C%22listbox%5C%22%20class%3D%5C%22cds--list-box__menu%5C%22%20id%3D%5C%22downshift-3-menu%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22aria_id_unique%22%2C%22msgArgs%22%3A%5B%22downshift-3-label%22%2C%22aria-labelledby%22%2C%22div%22%5D%7D"
+        },
+        {
+            "ruleId": "input_label_exists",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[4]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+                "aria": "/document[1]/main[1]/generic[1]/listbox[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_2",
+            "message": "Form control with \"listbox\" role has no associated label",
+            "messageArgs": [
+                "listbox"
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 35,
+                "top": 143,
+                "height": 0,
+                "width": 158
+            },
+            "snippet": "<div tabindex=\"-1\" aria-labelledby=\"downshift-3-label\" role=\"listbox\" class=\"cds--list-box__menu\" id=\"downshift-3-menu\">",
+            "category": "Accessibility",
+            "ignored": true,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2024.02.02/doc/en-US/input_label_exists.html#%7B%22message%22%3A%22Form%20control%20with%20%5C%22listbox%5C%22%20role%20has%20no%20associated%20label%22%2C%22snippet%22%3A%22%3Cdiv%20tabindex%3D%5C%22-1%5C%22%20aria-labelledby%3D%5C%22downshift-3-label%5C%22%20role%3D%5C%22listbox%5C%22%20class%3D%5C%22cds--list-box__menu%5C%22%20id%3D%5C%22downshift-3-menu%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_2%22%2C%22ruleId%22%3A%22input_label_exists%22%2C%22msgArgs%22%3A%5B%22listbox%22%5D%7D"
+        },
+        {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/h2[1]/div[3]",
+                "aria": "/document[1]/main[1]/heading[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "Text contrast of 1.55 with its background is less than the WCAG AA minimum requirements for text of size 12px and weight of 400",
+            "messageArgs": [
+                "1.55",
+                12,
+                400,
+                "#c6c6c6",
+                "#f4f4f4",
+                false,
+                false
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 632,
+                "top": 116,
+                "height": 16,
+                "width": 252
+            },
+            "snippet": "<div class=\"version\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation",
+            "help": "https://able.ibm.com/rules/archives/2024.02.02/doc/en-US/text_contrast_sufficient.html#%7B%22message%22%3A%22Text%20contrast%20of%201.55%20with%20its%20background%20is%20less%20than%20the%20WCAG%20AA%20minimum%20requirements%20for%20text%20of%20size%2012px%20and%20weight%20of%20400%22%2C%22snippet%22%3A%22%3Cdiv%20class%3D%5C%22version%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22text_contrast_sufficient%22%2C%22msgArgs%22%3A%5B%221.55%22%2C12%2C400%2C%22%23c6c6c6%22%2C%22%23f4f4f4%22%2Cfalse%2Cfalse%5D%7D"
+        }
+    ],
+    "numExecuted": 1609,
+    "ruleTime": 548,
+    "nls": {
+        "text_contrast_sufficient": {
+            "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
+            "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}"
+        },
+        "aria_id_unique": {
+            "0": "The ARIA property must reference a non-empty unique id of an existing element that is visible",
+            "Fail_1": "The 'id' \"{0}\" specified for the ARIA property '{1}' value is not valid"
+        },
+        "aria_attribute_valid": {
+            "0": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
+            "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\""
+        },
+        "input_label_exists": {
+            "0": "Each form control must have an associated label",
+            "Fail_2": "Form control with \"{0}\" role has no associated label"
+        }
+    },
+    "summary": {
+        "counts": {
+            "violation": 1,
+            "potentialviolation": 14,
+            "recommendation": 2,
+            "potentialrecommendation": 5,
+            "manual": 1,
+            "pass": 1582,
+            "ignored": 4,
+            "elements": 173,
+            "elementsViolation": 1,
+            "elementsViolationReview": 15
+        },
+        "scanTime": 877,
+        "ruleArchive": "02 February 2024 Deployment (02February2024)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation"
+        ],
+        "startScan": 1715383969356,
+        "URL": "chrome-extension://ejlipppldaabbocmlfpncldampfmjdio/devtoolsMain.html?index=1"
+    },
+    "scanID": "36628b44-67df-4a34-9bac-dd54d58c4b4e",
+    "toolID": "accessibility-checker-v3.1.67",
+    "label": "Accessibility Assessment Panel default view is accessible"
+}

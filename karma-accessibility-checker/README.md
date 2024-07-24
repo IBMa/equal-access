@@ -1,8 +1,15 @@
 # karma-accessibility-checker
 
-Karma Plugin for Accessibility Testing
+Automated accessibility testing for the Karma environment.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+The deployed [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker) package is available from NPM.
+
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
+
+<!-- START doctoc generated TOC please keep comments here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
@@ -11,7 +18,6 @@ Karma Plugin for Accessibility Testing
   - [Requirements](#requirements)
   - [Running Locally](#running-locally)
   - [How to Debug](#how-to-debug)
-  - [How to publish to npm repository](#how-to-publish-to-npm-repository)
   - [How to write Karma Reporter:](#how-to-write-karma-reporter)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -22,7 +28,7 @@ All bugs or issues related to the karma-accessibility-checker code can be create
 
 ## Requirements
 
-* [Node Version 16](https://nodejs.org/en/download/).
+* [Node Version 18](https://nodejs.org/en/download/).
 
 ## Running Locally
 
@@ -54,10 +60,10 @@ $ karma start            # Start Karma and runs tests
 ## How to Debug
 1. Plugin:
     - Logging:
-        Karma plugin contains a full suite of logging for each of the functions created in the plugin, which makes it extremely help full to see exactly what it is doing.
+        The Karma plugin contains a full suite of logging for each of the functions created in the plugin, which makes it extremely helpful to see exactly what it is doing.
         To enable debugging simply: update the karma config "logLevel" to config.LOG_DEBUG
     - Node inspector:
-        Since Karma is a node module, it can be debugged with the node inspector to see a step by step debugging, this is more heavy weight as need to debug Karma itself and then break into plugin code, and then step over from there. Steps to achieve this can be found at:  https://github.com/node-inspector/node-inspector
+        Since Karma is a node module, it can be debugged with the node inspector to see a step by step debugging, this is more heavyweight as need to debug Karma itself and then break into plugin code, and then step over from there. Steps to achieve this can be found at:  https://github.com/node-inspector/node-inspector
         Refer to: https://github.com/avajs/ava/blob/master/docs/recipes/debugging-with-vscode.md for steps on how to do a step by step debugging of all of the karma code.
 
 2. HelperFunction:
@@ -65,24 +71,21 @@ $ karma start            # Start Karma and runs tests
         The helper function will all contain a console.log for all critical code.
         To enable debugging simply: update the karma config "logLevel" to config.LOG_DEBUG
     - Browser Debugging:
-        All helper functions are actually thrown into the browser, so you can use the browser debugger to debug this code. Use the normal steps to debug as you would when debugging rules during unit testing. Only difference is that, you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
+        All helper functions are actually thrown into the browser, so you can use the browser debugger to debug this code. Use the normal steps to debug as you would when debugging rules during unit testing. The only difference is that you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
 
 3. Engine:
     - Logging:
         The engine contains some console.log for debugging, it can be enabled with IBMa.Config.DEBUG = true, I have binded this to the following:
         To enable debugging simply: update the karma config "logLevel" to config.LOG_DEBUG
     - Browser Debugging:
-        Engine code is actually thrown into the browser, so you can use the browser debugger to debug this code. Use the normal steps to debug as you would when debugging rules during unit testing. Only difference is that, you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
+        Engine code is actually thrown into the browser, so you can use the browser debugger to debug this code. Use the normal steps to debug as you would when debugging rules during unit testing. The only difference is that you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
 
 4. Rules:
     - Logging:
-        Add console.log in the rules, where ever you want to print items in the rules.
+        Add console.log in the rules, wherever you want to print items in the rules.
     - Browser Debugging:
-        Since the rules are loaded into the browser, the rules can actually be debugged directly in the browsers debugged as ace.js is just loaded as a script in browser. Use the normal steps to debug as you would when debugging rules during unit testing. Only difference is that, you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
+        Since the rules are loaded into the browser, the rules can actually be debugged directly in the browsers debugged as ace.js is just loaded as a script in the browser. Use the normal steps to debug as you would when debugging rules during unit testing. The only difference is that you need to run Karma with either Firefox or Chrome, with autowatch enabled which will allow access to the browser and there will be a DEBUG option enabled.
 
-## How to publish to npm repository
-
-TBD
 
 ## How to write Karma Reporter:
 
@@ -97,9 +100,9 @@ The constructor takes in several arguments:
 
 **logger**: karma’s logger
 
-**emitter**: emitter needs to be included as an argument if the reporter needs to receive information from the test. In ACReporter it is used so scan results can be saved to files.
+**emitter**: The emitter needs to be included as an argument if the reporter needs to receive information from the test. In ACReporter it is used so scan results can be saved to files.
 
-The ```window.__karma__.info(object)``` function in ACHelper.js allows variables to be passed to the reporter, otherwise results passed back would only contain information about the test, and not include other information such as the information we want to write to the report.
+The ```window.__karma__.info(object)``` function in ACHelper.js allows variables to be passed to the reporter, otherwise, results passed back would only contain information about the test, and not include other information such as the information we want to write to the report.
 
 ![alt text](./windowinfokarma.png)
 
@@ -110,7 +113,7 @@ Other functions in ACReporter are triggered at different times, and you can edit
 
 **this.onRunStart**: triggered when browsers are ready and execution starts
 
-**this.onBrowserComplete**: triggered when tests are finished running on a browser, when browser disconnects or timeouts
+**this.onBrowserComplete**: triggered when tests are finished running on a browser when the browser disconnects or timeouts
 
 **this.onSpecComplete**: triggered when getting a result from a test(spec)
 

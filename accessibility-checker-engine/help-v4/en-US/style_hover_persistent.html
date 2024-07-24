@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,8 +45,9 @@
 
 ### Why is this important?
 
-When content displays on hover, the pointer should be able to move from the trigger to the new content. If the new content disappears when the pointer leaves the trigger element, users who significantly magnify their screen will never be able to bring the new content into view to read.
-
+When content displays on hover, the pointer should be able to move from the trigger to the new content.
+If the new content disappears when the pointer leaves the trigger element,
+users who significantly magnify their screen will never be able to bring the new content into view to read.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -53,15 +55,18 @@ When content displays on hover, the pointer should be able to move from the trig
 
 ### What to do
 
-* If using the css `hover` pseudo-class on one element in order to set a `display` style on another element, the displayed element must be a child of the trigger element;
-* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with its own `hover` set to `display`, and with no `margin` property set (since the margin separates the two elements and prevents the hover display from persisting).
+* If using the CSS `hover` pseudo-class on one element to set a `display` style on another element, the displayed element must be a child of the trigger
+* **Or**, the newly displayed element must be the adjacent sibling of the trigger,
+with its own `hover` set to `display` and no `margin` property set (since the margin separates the two elements and prevents the hover display from persisting)
 
-Note: Use of the `~` selector with the `display` style attribute can allow many siblings of the trigger element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the trigger towards the displayed content. 
+Note: The `~` selector with the `display` style attribute allows many siblings of the trigger element to be displayed on hover.
+However, only its adjacent sibling will persistently display when the pointer moves from the trigger towards the displayed content. 
 
 
-The recommended code example is:
+Code example:
 
 ```
+<!DOCTYPE html>
 <html lang="en-US">
   <head>
     <style>
@@ -89,14 +94,14 @@ The recommended code example is:
 ### About this requirement
   
 * [IBM 1.4.13 Content on Hover or Focus](https://www.ibm.com/able/requirements/requirements/#1_4_13)
-* [WCAG technique SCR39](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR39)
-* [WCAG technique F95](https://www.w3.org/WAI/WCAG21/Techniques/failures/F95)
+* [SCR39: Content on hover or focus is hoverable, dismissible, and persistent](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR39)
+* [Failure F95: Content shown not hoverable](https://www.w3.org/WAI/WCAG22/Techniques/failures/F95)
 
 ### Who does this affect?
 
 * People with low vision who use screen magnification
 * People with attention deficit disorders
-* People with tremor or other movement disorders
+* People with tremors or other movement disorders
    
 </script></mark-down>
 <!-- End side panel -->

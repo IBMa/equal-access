@@ -43,16 +43,18 @@ export default class SplashScreen extends React.Component<ISplashScreenProps, IS
                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
                     <h2>
                         <div className="title">IBM <span style={{ fontWeight: 600 }}>Accessibility</span></div>
-                        <div className="subtitle">Equal Access Accessibility Checker</div>
+                        <div className="subtitle">Equal Access Toolkit: Accessibility Checker</div>
                         <div className="version">Version {displayVersion()}</div>
                     </h2>
                     <div className="description">
                         This extension helps you identify accessibility issues and understand how to fix them. Use the <span style={{ fontWeight: 600 }}>'Accessibility Checker' tab in 
                         the {BrowserDetection.isChrome()?"Elements":"Inspector" } panel</span> to locate your issues in the code and on the page.<br /><br />
-                        These automated tests don't catch all issues. Complete your accessibility assessment with
-                        a <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick unit test for accessibility</a><span> </span>
-                        or follow the <a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">full accessibility test process</a>.<br /><br />
-                        Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.
+                        These automated tests don't catch all issues. Complete your accessibility assessment
+                        with <a className="link" href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank">developer unit testing</a><span> </span>
+                        and follow all the <a className="link" href="https://www.ibm.com/able/toolkit/verify/overview"target="_blank">steps in the Verify phase</a>.<br /><br />
+                        Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.<br /><br />
+                        For bite-sized guidance, see the <a className="link" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">Quick guide</a>.<br /><br />
+                        For more in-depth guidance, see the <a className="link" href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User guide</a>.
                     </div>
                 </Column>
                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>

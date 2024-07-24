@@ -24,26 +24,26 @@ export let widget_tabbable_single: Rule = {
     refactor: {
         "IBMA_Focus_MultiTab": {
             "pass": "pass",
-            "fail_multiple_tabbable": "fail_multiple_tabbable"
+            "potential_multiple_tabbable": "potential_multiple_tabbable"
         }
     },
     help: {
         "en-US": {
             "pass": "widget_tabbable_single.html",
-            "fail_multiple_tabbable": "widget_tabbable_single.html",
+            "potential_multiple_tabbable": "widget_tabbable_single.html",
             "group": "widget_tabbable_single.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Rule Passed",
-            "fail_multiple_tabbable": "Component with \"{0}\" role has more than one tabbable element",
-            "group": "Certain components must have no more than one tabbable element"
+            "pass": "Components with a widget role should have no more than one tabbable element",
+            "potential_multiple_tabbable": "Component with \"{0}\" role has more than one tabbable element",
+            "group": "Components with a widget role must have no more than one tabbable element"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["2.4.3"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["2.1.1", "2.4.3"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
@@ -66,17 +66,26 @@ export let widget_tabbable_single: Rule = {
         }
         // If node has children, look for tab stops in the children
         //skip the count if the element requires presentational children only
+        let name = [];
         if (count < 2 && !RPTUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
             let nw = new NodeWalker(ruleContext);
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
+                    // Radio inputs with the same name natively are only one tab stop
+                    if (nw.node.nodeName.toLowerCase() === 'input' && (nw.node as Element).getAttribute("type") === 'radio') {
+                        let curName = (nw.node as Element).getAttribute("name");
+                        if (name.includes(curName)) 
+                            continue;
+                        else
+                            name.push(curName);
+                    }
                     ++count;
                 }
             }
         }
         let passed = count < 2;
         if (!passed)
-            setCache(ruleContext, "widget_tabbable_single", "fail_multiple_tabbable");
-        return passed ? RulePass("pass") : RulePotential("fail_multiple_tabbable", [role]);
+            setCache(ruleContext, "widget_tabbable_single", "potential_multiple_tabbable");
+        return passed ? RulePass("pass") : RulePotential("potential_multiple_tabbable", [role]);
     }
 }

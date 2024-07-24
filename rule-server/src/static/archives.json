@@ -3,215 +3,281 @@
         "id": "latest",
         "name": "Latest Deployment",
         "path": "/archives/latest"
+    }, 
+    {
+        "id": "17June2024",
+        "name": "17 June 2024 Deployment (IBM 7.2, 7.3)",
+        "version": "3.1.73",
+        "path": "/archives/2024.06.17"
+    },
+    {
+        "id": "06June2024",
+        "name": "06 June 2024 Deployment (IBM 7.2)",
+        "version": "3.1.72",
+        "path": "/archives/2024.06.06"
+    },
+    {
+        "id": "09May2024",
+        "name": "09 May 2024 Deployment (IBM 7.2)",
+        "version": "3.1.71",
+        "path": "/archives/2024.05.09"
+    },
+    {
+        "id": "19April2024",
+        "name": "19 April 2024 Deployment (IBM 7.2)",
+        "version": "3.1.70",
+        "path": "/archives/2024.04.19"
+    },
+    {
+        "id": "18March2024",
+        "name": "18 March 2024 Deployment (IBM 7.2)",
+        "version": "3.1.68",
+        "path": "/archives/2024.03.18"
+    },
+    {
+        "id": "02February2024",
+        "name": "02 February 2024 Deployment (IBM 7.2)",
+        "version": "3.1.67",
+        "path": "/archives/2024.02.02"
+    },
+    {
+        "id": "24January2024",
+        "name": "24 January 2024 Deployment (IBM 7.2)",
+        "version": "3.1.66",
+        "path": "/archives/2024.01.24"
+    },
+    {
+        "id": "10November2023",
+        "name": "10 November 2023 Deployment (IBM 7.2)",
+        "version": "3.1.64",
+        "path": "/archives/2023.11.10"
+    },
+    {
+        "id": "12October2023",
+        "name": "12 October 2023 Deployment (IBM 7.2)",
+        "version": "3.1.62",
+        "path": "/archives/2023.10.12"
+    },
+    {
+        "id": "19September2023",
+        "name": "19 September 2023 Deployment (IBM 7.2)",
+        "version": "3.1.61",
+        "path": "/archives/2023.09.19"
+    },
+    {
+        "id": "30August2023",
+        "name": "30 August 2023 Deployment (IBM 7.2)",
+        "version": "3.1.60",
+        "path": "/archives/2023.08.30"
     },
     {
         "id": "09August2023",
-        "name": "09 August 2023 Deployment",
+        "name": "09 August 2023 Deployment (IBM 7.2)",
         "version": "3.1.59",
         "path": "/archives/2023.08.09"
     },
     {
         "id": "26July2023",
-        "name": "26 July 2023 Deployment",
+        "name": "26 July 2023 Deployment (IBM 7.2)",
         "version": "3.1.58",
         "path": "/archives/2023.07.26"
     },
     {
         "id": "01July2023",
-        "name": "01 July 2023 Deployment",
+        "name": "01 July 2023 Deployment (IBM 7.2)",
         "version": "3.1.51",
         "path": "/archives/2023.07.01"
     },
     {
         "id": "26May2023",
-        "name": "26 May 2023 Deployment",
+        "name": "26 May 2023 Deployment (IBM 7.2)",
         "version": "3.1.49",
         "path": "/archives/2023.05.26"
     },
     {
         "id": "15May2023",
-        "name": "15 May 2023 Deployment",
+        "name": "15 May 2023 Deployment (IBM 7.2)",
         "version": "3.1.48",
         "path": "/archives/2023.05.15"
     },
     {
         "id": "31March2023",
-        "name": "31 March 2023 Deployment",
+        "name": "31 March 2023 Deployment (IBM 7.2)",
         "version": "3.1.47",
         "path": "/archives/2023.03.31"
     },
     {
         "id": "09March2023",
-        "name": "09 March 2023 Deployment",
+        "name": "09 March 2023 Deployment (IBM 7.2)",
         "version": "3.1.46",
         "path": "/archives/2023.03.09"
     },
     {
         "id": "23February2023",
-        "name": "23 February 2023 Deployment",
+        "name": "23 February 2023 Deployment (IBM 7.2)",
         "version": "3.1.45",
         "path": "/archives/2023.02.23"
     },
     {
         "id": "27January2023",
-        "name": "27 January 2023 Deployment",
+        "name": "27 January 2023 Deployment (IBM 7.2)",
         "version": "3.1.43",
         "path": "/archives/2023.01.27"
     },
     {
         "id": "11January2023",
-        "name": "11 January 2023 Deployment",
+        "name": "11 January 2023 Deployment (IBM 7.2)",
         "version": "3.1.42",
         "path": "/archives/2023.01.11"
     },
     {
         "id": "08November2022",
-        "name": "08 November 2022 Deployment",
+        "name": "08 November 2022 Deployment (IBM 7.2)",
         "version": "3.1.41",
         "path": "/archives/2022.11.08"
     },
     {
         "id": "13October2022",
-        "name": "13 October 2022 Deployment",
+        "name": "13 October 2022 Deployment (IBM 7.2)",
         "version": "3.1.39",
         "path": "/archives/2022.10.13"
     },
     {
         "id": "21September2022",
-        "name": "21 September 2022 Deployment",
+        "name": "21 September 2022 Deployment (IBM 7.2)",
         "version": "3.1.38",
         "path": "/archives/2022.09.21"
     },
     {
         "id": "10August2022",
-        "name": "10 August 2022 Deployment",
+        "name": "10 August 2022 Deployment (IBM 7.2)",
         "version": "3.1.35",
         "path": "/archives/2022.08.10"
     },
     {
         "id": "06July2022",
-        "name": "06 July 2022 Deployment",
+        "name": "06 July 2022 Deployment (IBM 7.2)",
         "version": "3.1.33",
         "path": "/archives/2022.07.06"
     },
     {
         "id": "09June2022",
-        "name": "09 June 2022 Deployment",
+        "name": "09 June 2022 Deployment (IBM 7.2)",
         "version": "3.1.31",
         "path": "/archives/2022.06.09"
     },
     {
         "id": "04May2022",
-        "name": "04 May 2022 Deployment",
+        "name": "04 May 2022 Deployment (IBM 7.2)",
         "version": "3.1.29",
         "path": "/archives/2022.05.04"
     },
     {
         "id": "19April2022",
-        "name": "19 April 2022 Deployment",
+        "name": "19 April 2022 Deployment (IBM 7.2)",
         "version": "3.1.28",
         "path": "/archives/2022.04.19"
     },
     {
         "id": "18March2022",
-        "name": "18 March 2022 Deployment",
+        "name": "18 March 2022 Deployment (IBM 7.2)",
         "version": "3.1.24",
         "path": "/archives/2022.03.18"
     },
     {
         "id": "12March2022",
-        "name": "12 March 2022 Deployment",
+        "name": "12 March 2022 Deployment (IBM 7.2)",
         "version": "3.1.19",
         "path": "/archives/2022.03.12"
     },
     {
         "id": "03March2022",
-        "name": "03 March 2022 Deployment",
+        "name": "03 March 2022 Deployment (IBM 7.2)",
         "version": "3.1.18",
         "path": "/archives/2022.03.03"
     },
     {
         "id": "01February2022",
-        "name": "01 February 2022 Deployment",
+        "name": "01 February 2022 Deployment (IBM 7.2)",
         "version": "3.1.15",
         "path": "/archives/2022.02.01"
     },
     {
         "id": "17Nov2021",
-        "name": "17 November 2021 Deployment",
+        "name": "17 November 2021 Deployment (IBM 7.2)",
         "version": "3.1.12",
         "path": "/archives/2021.11.17"
         
     },
     {
         "id": "25Oct2021",
-        "name": "25 October 2021 Deployment",
+        "name": "25 October 2021 Deployment (IBM 7.2)",
         "version": "3.1.11",
         "path": "/archives/2021.10.25"
     },
     {
         "id": "27Aug2021",
-        "name": "27 August 2021 Deployment",
+        "name": "27 August 2021 Deployment (IBM 7.2)",
         "version": "3.1.10",
         "path": "/archives/2021.08.27"
     },
     {
         "id": "21July2021",
-        "name": "21 July 2021 Deployment",
+        "name": "21 July 2021 Deployment (IBM 7.2)",
         "version": "3.1.9",
         "path": "/archives/2021.07.21"
     },
     {
         "id": "16June2021",
-        "name": "16 June 2021 Deployment",
+        "name": "16 June 2021 Deployment (IBM 7.2)",
         "version": "3.1.8",
         "path": "/archives/2021.06.16"
     },
     {
         "id": "27April2021",
-        "name": "27 April 2021 Deployment",
+        "name": "27 April 2021 Deployment (IBM 7.2)",
         "version": "3.1.6",
         "path": "/archives/2021.04.27"
     },
     {
         "id": "10Feb2021",
-        "name": "10 February 2021 Deployment",
+        "name": "10 February 2021 Deployment (IBM 7.2)",
         "version": "3.1.2",
         "path": "/archives/2021.02.10"
     },
     {
         "id": "07Oct2020",
-        "name": "07 October 2020 Deployment",
+        "name": "07 October 2020 Deployment (IBM 7.2)",
         "version": "3.1.0",
         "path": "/archives/2020.10.07"
     },
     {
         "id": "12Aug2020",
-        "name": "12 August 2020 Deployment",
+        "name": "12 August 2020 Deployment (IBM 7.2)",
         "version": "3.0.8",
         "path": "/archives/2020.08.12"
     },
     {
         "id": "18June2020",
-        "name": "18 June 2020 Deployment",
+        "name": "18 June 2020 Deployment (IBM 7.2)",
         "version": "3.0.6",
         "path": "/archives/2020.06.18"
     },
     {
         "id": "03June2020",
-        "name": "03 June 2020 Deployment",
+        "name": "03 June 2020 Deployment (IBM 7.2)",
         "version": "3.0.5",
         "path": "/archives/2020.06.03"
     },
     {
         "id": "12May2020",
-        "name": "12 May 2020 Deployment",
+        "name": "12 May 2020 Deployment (IBM 7.2)",
         "version": "3.0.1",
         "path": "/archives/2020.05.12"
     },
     {
         "id": "2020AprilDeploy",
-        "name": "02 April 2020 Deployment",
+        "name": "02 April 2020 Deployment (IBM 7.2)",
         "version": "3.0.0",
         "path": "/archives/2020.04.02"
     },

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,16 +45,17 @@
 
 ### Why is this important?
 
-The 'skip to main' link or an element with the `"main"` role allow users to skip over content that is repeated on several pages. Bypassing repeated content such as banners and navigation menus allows people who use only a keyboard to quickly navigate to the main content.
+The 'skip to main' link or an element with a `"main"` role allows users to skip over content that is repeated on several pages.
+Bypassing repeated content, such as banners and navigation menus allows keyboard users to quickly navigate to the main content.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Enclose the main content in a `<main>` element;
- * **Or**, enclose the main content in an element with the `"main"` landmark role;
- * **Or**, have a first link on each page that skips to the main content.
+ * Enclose the main content in a `<main>` element
+ * **Or**, enclose the main content in an element with the `"main"` landmark role
+ * **Or**, have a first link on each page that skips to the main content
 
 Main landmark example:
 

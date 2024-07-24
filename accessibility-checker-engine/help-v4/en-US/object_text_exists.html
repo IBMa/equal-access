@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,7 +45,7 @@
 
 ### Why is this important?
 
-Alternative descriptions are important for users whose browsers do not support the `<object>` element or the media type of the object.
+Alternative descriptions are important for users whose browsers do not support the `<object>` element or the object's media type.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -57,9 +58,11 @@ Alternative descriptions are important for users whose browsers do not support t
 For example:
 
 ```
-<object classid="java:Press.class" width="500" height="500" title="Java applet: how temperature affects pressure.">
-<applet code="java:Press.class" width="500" height="500"> As temperature increases the velocity of the molecules in the balloon...
-</applet>
+<object classid="java:Press.class" width="500" height="500" 
+    title="Java applet: how temperature affects pressure">
+    <applet code="java:Press.class" width="500" height="500">
+        As temperature increases the velocity of the molecules in the balloon...
+    </applet>
 </object>
 ```
 
@@ -75,12 +78,12 @@ For example:
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique H53](https://www.w3.org/WAI/WCAG21/Techniques/html/H53)
+* [H53: Body of the object element](https://www.w3.org/WAI/WCAG22/Techniques/html/H53)
 * [Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.2/)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>

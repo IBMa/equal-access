@@ -41,7 +41,7 @@ export let aria_child_tabbable: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -125,7 +125,7 @@ export let aria_child_tabbable: Rule = {
 
                             passed = RPTUtil.isTabbable(r);
                            
-                            // Required child is not focusable via tabindex.  See if there is a grandchild that is focusable by default or by tabindex.
+                            // Required child is not focusable via tabindex. See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
                                 let xp2 = "descendant::*";
                                 let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);

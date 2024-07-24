@@ -55,12 +55,12 @@ export function getInvalidRoles(ruleContext: Element) {
 
     let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
     let allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
-    if (!allowedRoles && allowedRoles.length === 0)
+    if (!allowedRoles || allowedRoles.length === 0)
         return domRoles;
     
     let invalidRoles = [];
 
-    if (allowedRoles && allowedRoles.includes('any'))
+    if (allowedRoles.includes('any'))
         return [];
     
     for (let i = 0; i < domRoles.length; i++)
@@ -142,7 +142,7 @@ export function getConflictAriaAndHtmlAttributes(elem: Element) {
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Failed') //failed
                     ret.push({'ariaAttr': ariaAttrs[i]['name'], 'htmlAttr': item['attr']});
-            });    
+            });  
         }
     }
     return ret;
@@ -218,4 +218,21 @@ export function getDeprecatedAriaAttributes(element: Element) {
         }
     }
     return ret; 
+}
+
+/* 
+ * string contains CJK (chinese, japaneses, or korea)
+ * return: boolean
+*/
+export function containsCKJ(text: string) {
+    if (!text) return false;
+
+    // https://en.wikipedia.org/wiki/CJK_Unified_Ideographs  https://ayaka.shn.hk/hanregex/
+    let regex =/(?:[\u4e00-\u9fff\u3400-\u4dbf])+/g;
+    
+    const replaced = text.trim().replace(regex, '');
+    if (replaced.length === text.trim().length)
+        return false;
+    
+    return true;
 }

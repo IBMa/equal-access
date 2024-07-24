@@ -16,7 +16,7 @@
 
 import { IMessage, MsgDestType } from "../interfaces/interfaces";
 import Config from "../util/config";
-import { getTabId } from "../util/tabId";
+import { getTabIdAsync } from "../util/tabId";
 import { CommonMessaging } from "./commonMessaging";
 
 export type eControllerType = "local" | "remote";
@@ -61,7 +61,7 @@ export class Controller {
                     || (message.dest.type === "background" && this.ctrlDest.type === "background")) {
                     this.notifyEventListeners(msgId, this.ctrlDest.tabId, message.content);
                 }
-            }, [msgId], getTabId());
+            }, [msgId], await getTabIdAsync());
         }
     }
 
@@ -159,7 +159,7 @@ export class Controller {
     ) {
         CommonMessaging.addMsgListener((message: IMessage<InT>, senderTabId?: number) => {
             return func(message, senderTabId);
-        }, msgNames, getTabId());
+        }, msgNames, await getTabIdAsync());
     }
 }
 

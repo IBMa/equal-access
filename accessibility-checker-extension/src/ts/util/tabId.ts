@@ -14,10 +14,21 @@
   limitations under the License.
 *****************************************************************************/
 
-export function getTabId() {
+import { getBGController } from "../background/backgroundController";
+
+export function getTabIdSync() {
     if (chrome && chrome.devtools && chrome.devtools.inspectedWindow && chrome.devtools.inspectedWindow.tabId) {
         return chrome.devtools.inspectedWindow.tabId;
     } else {
         return undefined;
+    }
+}
+
+export async function getTabIdAsync() {
+    let tabId = getTabIdSync();
+    if (typeof tabId !== "undefined") {
+        return tabId;
+    } else {
+        return getBGController().getTabId();
     }
 }

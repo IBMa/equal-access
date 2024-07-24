@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,19 +45,21 @@
 
 ### Why is this important?
 
-Windows high contrast mode alters the way Web content is displayed by disabling certain CSS features. Applications that use CSS to include, position or alter non-decorative content may have issues including the disappearance of images or UI elements when Windows high contrast mode is enabled. Another example is the disappearance of visual focus indicators and visual alterations of UI elements with Windows high contrast mode enabled.
+Windows high contrast mode alters the way Web content is displayed by disabling certain CSS features.
+Applications that use CSS to include, position, or alter non-decorative content may have issues, such as the disappearance of images or UI elements when Windows high contrast mode is enabled.
+Another example is the disappearance of visual focus indicators and visual alterations of UI elements with Windows high contrast mode enabled.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * On a Windows machine, activate high contrast mode;
- * **And**, confirm all UI elements are visible and inherit the selected high contrast theme;
- * **And**, confirm that checkboxes, radio buttons and text entry field boundaries are visible with good contrast;
- * **And**, confirm the visual focus indicator is highly visible;
- * **And**, confirm that all images that convey information are visible, or a text alternative is displayed;
- * **And**, confirm that all decorative images are no longer visible.
+ * On a Windows machine, activate high contrast mode
+ * **And**, confirm all UI elements are visible and inherit the selected high contrast theme
+ * **And**, confirm that checkboxes, radio buttons and text entry field boundaries are visible with good contrast
+ * **And**, confirm the visual focus indicator is highly visible
+ * **And**, confirm that all images that convey information are visible, or a text alternative is displayed
+ * **And**, confirm that all decorative images are no longer visible
 
 </script></mark-down>
 <!-- End main panel -->
@@ -69,10 +72,10 @@ Windows high contrast mode alters the way Web content is displayed by disabling 
 
 ### About this requirement
 
-* [IBM 4.1.4 Accessibility-supported Technologies](https://www.ibm.com/able/requirements/requirements/#4_1_4)
-* [WCAG technique F1](https://www.w3.org/WAI/WCAG21/Techniques/failures/F1)
-* [WCAG technique F3](https://www.w3.org/WAI/WCAG21/Techniques/failures/F3)
-* [WCAG technique F78](https://www.w3.org/WAI/WCAG21/Techniques/failures/F78)
+* [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [Failure F1: CSS positioning that changes the meaning](https://www.w3.org/WAI/WCAG22/Techniques/failures/F1)
+* [Failure F3: CSS images that convey important information](https://www.w3.org/WAI/WCAG22/Techniques/failures/F3)
+* [Failure F78: Styling element that removes the visual focus](https://www.w3.org/WAI/WCAG22/Techniques/failures/F78)
 
 ### Who does this affect?
 

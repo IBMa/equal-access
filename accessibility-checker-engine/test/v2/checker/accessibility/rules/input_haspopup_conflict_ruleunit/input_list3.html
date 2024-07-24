@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+
+<head>
+    <meta content="text/html; charset=ISO-8859-1">
+    <title>Test of Input element with a list</title>
+</head>
+
+<body>
+    <main>
+      <label for="location">URL:</label>
+      <input type="url" id="location" list="urls">
+      <datalist id="urls">
+       <option label="MIME: Format of Internet Message Bodies" value="https://www.rfc-editor.org/rfc/rfc2045">
+       <option label="HTML" value="https://html.spec.whatwg.org/">
+       <option label="DOM" value="https://dom.spec.whatwg.org/">
+       <option label="Fullscreen" value="https://fullscreen.spec.whatwg.org/">
+       <option label="Media Session" value="https://mediasession.spec.whatwg.org/">
+       <option label="The Single UNIX Specification, Version 3" value="http://www.unix.org/version3/">
+      </datalist>
+    </main>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["input_haspopup_conflict", "aria_role_valid"],
+            results: [
+            
+        ]
+        }
+    </script>
+</body>
+
+</html>

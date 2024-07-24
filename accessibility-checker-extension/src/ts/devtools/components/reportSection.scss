@@ -15,10 +15,10 @@
 }
 
 .reportSection {
-    .reportSectionColumn {
-        border-top: solid $gray-40 1px;
-    }
-    margin-top: 1rem;
+    // .reportSectionColumn {
+    //     border-top: solid $gray-40 1px;
+    // }
+    //margin-top: 1rem;
     .cds--tab-content {
         padding: 0rem;
     }
@@ -32,14 +32,14 @@
 
     .totalCountDisable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: none;
         color: $text-disabled;
         text-align: right;
     }
     .totalCountEnable {
         @include type-style("label-02");
-        margin-top: 10px;
+        margin-top: 3px;
         pointer-events: auto;
         text-align: right;
     }
@@ -58,7 +58,17 @@
 }
 
 .reportFilterBorder {
-    border-top: solid $gray-40 1px;    
+    border-top: solid $gray-40 1px; 
+    margin-left: 1rem;
+}
+
+.viewMulti {
+    float:right;
+    width: 230px;
+    .cds--list-box {
+        max-height: 2rem;
+        border: solid $gray-40 1px;
+    }   
 }
 
 .reportFilterSection {

@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IReport, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
+import { IReport, IIssue, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
 
 
 const stringHash = require("string-hash");
@@ -22,6 +22,7 @@ const stringHash = require("string-hash");
 interface XLSXProps {
     settings: ISettings,
     report: IReport,
+    ignored: IIssue[],
     pageURL: string,
     pageTitle: string,
     timestamp: string,
@@ -30,7 +31,7 @@ interface XLSXProps {
 
 export default class MultiScanData { 
 
-    // this class barrows heavily from singlePageReport
+    // this class borrows heavily from singlePageReport
     // however, our purpose here is just to generate the data
     // needed for a multiScanReport which will replace singlePageReport
     // also when saving scans we will be saving a reduced set of the 
@@ -41,11 +42,14 @@ export default class MultiScanData {
     // sheet as all other data is either static or can be calculated
     // from the issue data
 
+    
+
     public static issues_sheet_rows(xlsx_props: XLSXProps) : StoredScanData[] {
 
         let ret: any[] = [];
 
         let report = xlsx_props.report;
+        let ignored = xlsx_props.ignored;
         let tab_url = xlsx_props.pageURL;
         let tab_title = xlsx_props.pageTitle;
         const rule_map = this.id_rule_map(xlsx_props);
@@ -80,6 +84,17 @@ export default class MultiScanData {
             if (item.value[1] === "PASS") {
                 continue;
             }
+        
+            // Calc hidden, add to end of row
+            let hidden = false;
+            for (const ignoredIssue of ignored) {
+                hidden = item.path.dom === ignoredIssue.path.dom
+                         && item.ruleId === ignoredIssue.ruleId
+                         && item.reasonId === ignoredIssue.reasonId;
+                if (hidden === true) {
+                    break;
+                }
+            }
 
             let row = [
                 tab_title,
@@ -88,14 +103,15 @@ export default class MultiScanData {
                 stringHash(item.ruleId + item.path.dom),
                 valueMap[item.value[0]][item.value[1]],
                 parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
-                this.checkpoints_string(rule_checkpoints_map, item.ruleId),
+                this.checkpoints_string(rule_checkpoints_map, item.ruleId, item.reasonId),
                 this.wcag_string(rule_checkpoints_map, item.ruleId),
                 item.ruleId,
                 item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                 this.get_element(item.snippet),
                 item.snippet,
                 item.path.dom,
-                item.help
+                item.help,
+                hidden
             ]
 
             ret.push(row);
@@ -104,13 +120,17 @@ export default class MultiScanData {
         return ret;
     }
 
-    public static checkpoints_string(rule_checkpoints_map: any, rule_id: string) {
+    public static checkpoints_string(rule_checkpoints_map: any, rule_id: string, reasonId: string) {
 
         let checkpoint_string = '';
 
         let checkpoint_array = rule_checkpoints_map.get(rule_id);
 
         for (let checkpoint of checkpoint_array) {
+            // console.log(checkpoint);
+            let ruleInfo = checkpoint.rules.find((rule: any) => rule.id === rule_id);
+            // console.log(ruleInfo);
+            if (ruleInfo.reasonCodes && !ruleInfo.reasonCodes.includes(reasonId)) continue;
             if (checkpoint_string.length > 1) {
                 checkpoint_string = checkpoint_string + '; ';
             }
@@ -175,14 +195,6 @@ export default class MultiScanData {
         let checkpoint_map = new Map();
 
         for (let checkpoint of checkpoints) {
-
-            let temp_checkpoint = {
-                name: checkpoint.name,
-                num: checkpoint.num,
-                summary: checkpoint.summary,
-                wcagLevel: checkpoint.wcagLevel
-            }
-
             let rules = checkpoint.rules;
 
             if (rules && rules.length > 0) {
@@ -190,10 +202,10 @@ export default class MultiScanData {
 
                     if (!checkpoint_map.get(rule.id)) {
 
-                        checkpoint_map.set(rule.id, [temp_checkpoint]);
+                        checkpoint_map.set(rule.id, [checkpoint]);
                     } else {
                         let checkpoint_array = checkpoint_map.get(rule.id);
-                        checkpoint_array.push(temp_checkpoint);
+                        checkpoint_array.push(checkpoint);
                         checkpoint_map.set(rule.id, checkpoint_array);
                     }
                 }

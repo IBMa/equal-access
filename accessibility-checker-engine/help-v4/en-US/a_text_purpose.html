@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -51,8 +52,9 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink
+* **Or**, if it’s not possible to use unique link text (e.g., multiple ‘Read more.’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.
+The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more.':
 
 ### Example
 
@@ -60,7 +62,7 @@ When the purpose of a link is clear users can easily navigate links on the page 
 <h2 id="topic1">Breaking News</h2>
 <p>
     The central bank cut interest rates by half a
-    percentage to protect economy.
+    percentage to protect the economy.
     <a
         id="p1"
         href="news.html"
@@ -82,12 +84,13 @@ When the purpose of a link is clear users can easily navigate links on the page 
 ### About this requirement
 
 * [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [H30: Link text that describes the purpose of a link](https://www.w3.org/WAI/WCAG22/Techniques/html/H30)
+* [ARIA7: aria-labelledby for link purpose](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA7)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision using screen magnification
 
 </script></mark-down>

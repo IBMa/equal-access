@@ -181,32 +181,38 @@ getInputFileList().then(async (rptInputFiles) => {
     let idx = 0;
     let failures = [];
     let errors = 0;
-    for (let f of rptInputFiles) {
-        let result;
-        let isFile = false;
-        try {
-            isFile = fs.lstatSync(f).isFile();
-            f = path.resolve(f);
-        } catch (e) {}
-        if (isFile) {
-            result = await aChecker.getCompliance("file://"+f, f.replace(/^file:\/\//,"").replace(/[:?&=]/g,"_"));
-        } else {
-            result = await aChecker.getCompliance(f, f.replace(/^(https?:|file:)\/\//,"").replace(/[:?&=]/g,"_"));
-        }
-        if (result) {
-            if (aChecker.assertCompliance(result.report) === 0) {
-                console.log("Passed:", f);
+    try {
+        for (let f of rptInputFiles) {
+            let result;
+            let isFile = false;
+            try {
+                isFile = fs.lstatSync(f).isFile();
+                f = path.resolve(f);
+            } catch (e) {}
+            if (isFile) {
+                result = await aChecker.getCompliance("file://"+f, f.replace(/^file:\/\//,"").replace(/[:?&=]/g,"_"));
             } else {
-                failures.push({
-                    file: f,
-                    report: result.report
-                });
-                console.log("Failed:", f);
+                result = await aChecker.getCompliance(f, f.replace(/^(https?:|file:)\/\//,"").replace(/[:?&=]/g,"_"));
             }
-        } else {
-            ++errors;
-            console.log("Error:", f);
+            if (result) {
+                if (aChecker.assertCompliance(result.report) === 0) {
+                    console.log("Passed:", f);
+                } else {
+                    failures.push({
+                        file: f,
+                        report: result.report
+                    });
+                    console.log("Failed:", f);
+                }
+            } else {
+                ++errors;
+                console.log("Error:", f);
+            }
         }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await aChecker.close();
     }
     if (failures.length > 0) {
         console.log();
@@ -218,7 +224,7 @@ getInputFileList().then(async (rptInputFiles) => {
     }
     console.log();
     console.log(`${rptInputFiles.length-failures.length-errors} of ${rptInputFiles.length} passed.`)
-    await aChecker.close();
+    //await aChecker.close();
     if (failures.length !== 0 || errors !== 0) {
         process.exitCode = 1;
     }

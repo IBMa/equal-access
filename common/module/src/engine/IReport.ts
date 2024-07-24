@@ -14,67 +14,48 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eRuleLevel } from "../config/IConfig.js"
+import { eRuleLevel } from "../config/IConfig"
+import { Guideline, eGuidelineCategory } from "./IGuideline";
+import { Issue, eRulePolicy as eRulePolicyNew, eRuleConfidence as eRuleConfidenceNew } from "./IRule"
+import { Bounds as BoundsNew } from "./IBounds";
 
+/**
+ * @deprecated See ./IRule
+ */
+export { eRuleConfidence } from "./IRule";
 
-export enum eRuleConfidence {
-    PASS = "PASS",
-    FAIL = "FAIL",
-    POTENTIAL = "POTENTIAL",
-    MANUAL = "MANUAL"
-}
+/**
+ * @deprecated See ./IRule
+ */
+export { eRulePolicy } from "./IRule";
 
-export enum eRulePolicy {
-    VIOLATION = "VIOLATION",
-    RECOMMENDATION = "RECOMMENDATION",
-    INFORMATION = "INFORMATION"
-}
+/**
+ * @deprecated See ./IGuideline
+ */
+export { eToolkitLevel } from "./IGuideline";
 
-export enum eToolkitLevel {
-    LEVEL_ONE = "1",
-    LEVEL_TWO = "2",
-    LEVEL_THREE = "3",
-    LEVEL_FOUR = "4"
-}
+/**
+ * @deprecated See ./IGuideline::eGuidelineCategory
+ */
+export { eGuidelineCategory as eRuleCategory } from "./IGuideline";
 
-export enum eRuleCategory {
-    ACCESSIBILITY = "Accessibility",
-    DESIGN = "Design",
-    OTHER = "Other"
-}
+/**
+ * @deprecated See ./IGuideline::eGuidelineType
+ */
+export { eGuidelineType as eRuleType } from "./IGuideline";
 
-export enum eRulesetType {
-    DEFAULT = "default",
-    EXTENSION = "extension"
-}
+/**
+ * @deprecated See ./IBounds
+ */
+export type Bounds = BoundsNew;
 
-export interface Bounds {
-    left: number
-    top: number
-    width: number
-    height: number
-}
+/**
+ * @deprecated See ./IGuidline
+ */
+export type IRuleset = Guideline;
 
-export interface IRuleset {
-    id: string,
-    name: string,
-    category: eRuleCategory,
-    description: string,
-    type?: eRulesetType,
-    checkpoints: Array<{
-        num: string,
-        // See https://github.com/act-rules/act-tools/blob/main/src/data/sc-urls.json
-        scId?: string,
-        // JCH: add name of checkpoint and summary description
-        name: string,
-        wcagLevel: string,
-        summary: string,
-        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
-    }>
-}
-
-export interface IEngineReport {
-    results: IEngineResult[],
+export type IEngineReport = {
+    results: Issue[],
     numExecuted: number,
     ruleTime: number,
     // This may be undefined for a filtered report
@@ -87,29 +68,15 @@ export interface IEngineReport {
     }
 }
 
-export interface IEngineResult {
-    category?: eRuleCategory,
-    ruleId: string,
-    value: [eRulePolicy, eRuleConfidence],
-    reasonId?: number | string,
-    messageArgs?: string[],
-    apiArgs?: any[]
-    node?: Node,
-    path: { [ns: string] : string },
-    ruleTime: number,
-    message: string,
-    bounds?: Bounds,
-    snippet: string,
-    help?: string
-}
+export type IEngineResult = Issue;
 
-export interface IBaselineResult extends IEngineResult {
+export type IBaselineResult = IEngineResult & {
     ignored: boolean
     help: string
     level: eRuleLevel
 }
 
-export interface IBaselineReport {
+export type IBaselineReport = {
     results: IBaselineResult[]
     numExecuted: number,
     nls: {
@@ -157,9 +124,9 @@ export type CompressedReport = [
 ]
 
 export type CompressedIssue = [ // results
-    eRuleCategory | undefined, //category?
+    eGuidelineCategory | undefined, //category?
     string, // ruleId
-    [eRulePolicy, eRuleConfidence], // value
+    [eRulePolicyNew, eRuleConfidenceNew], // value
     number | string | undefined, // reasonId
     string[], // messageArgs
     { [ns: string] : string }, // path

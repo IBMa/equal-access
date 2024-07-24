@@ -11,10 +11,9 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getCache } from "../util/CacheUtil";
 import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
 
 export let aria_attribute_redundant: Rule = {
@@ -31,13 +30,13 @@ export let aria_attribute_redundant: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Rule Passed",
+            "pass": "The ARIA attribute is not redundant with a corresponding HTML attribute",
             "fail_redundant": "The ARIA attribute \"{0}\" is redundant with the HTML attribute \"{1}\"",
-            "group": "An ARIA attribute should not be used when there is a corresponding HTML attribute"
+            "group": "An ARIA attribute should not be redundant with a corresponding HTML attribute"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE

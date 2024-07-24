@@ -11,42 +11,35 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let meta_viewport_zoomable: Rule = {
     id: "meta_viewport_zoomable",
     context: "dom:meta[name][content]",
     refactor: {
         "meta_viewport_zoom": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"
+            "Pass_0": "pass",
+            "Potential_1": "potential_zoomable"
         }
     },
     help: {
         "en-US": {
             "group": "meta_viewport_zoomable.html",
-            "Pass_0": "meta_viewport_zoomable.html",
-            "Potential_1": "meta_viewport_zoomable.html"
+            "pass": "meta_viewport_zoomable.html",
+            "potential_zoomable": "meta_viewport_zoomable.html"
         }
     },
     messages: {
         "en-US": {
             "group": "The 'meta[name=viewport]' should not prevent the browser zooming the content",
-            "Pass_0": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
-            "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
+            "pass": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
+            "potential_zoomable": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.4.4"],
-        "level": eRulePolicy.RECOMMENDATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_THREE
-    },
-    {
-        "id": ["IBM_Accessibility", "WCAG_2_1"],
-        "num": ["1.4.10"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
@@ -107,12 +100,12 @@ export let meta_viewport_zoomable: Rule = {
 
         // user-scalable is not set to 'yes', ignore maximum_scale
         if (user_scale_value !== 'yes') {
-            return RulePotential("Potential_1", [user_msg]);
+            return RulePotential("potential_zoomable", [user_msg]);
         }
         // user-scalable is 'yes', but maximum_scale is too small
         if (maximum_scale < 2.0) {
-            return RulePotential("Potential_1", [max_msg]);
+            return RulePotential("potential_zoomable", [max_msg]);
         }
-        return RulePass("Pass_0");
+        return RulePass("pass");
     }
 }

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,16 +45,17 @@
 
 ### Why is this important?
 
-A best practice is to avoid adding an ARIA explicit role to an HTML element whose implicit role has the identical semantic meaning. This will eliminate the extra browser processing to determine the role of the element to add to the DOM.
+A best practice is to avoid adding an ARIA explicit role to an HTML element whose implicit role has the identical semantic meaning.
+This will eliminate the extra browser processing to determine the role of the element to add to the DOM.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Remove the redundant ARIA role from the element.
+* Remove the redundant ARIA role from the element.
 
-Note the redundant ARIA and HTML roles shown in the following examples.
+Note the redundant ARIA and HTML roles shown in the following examples:
 
 ```
 <button type="button" role="button">Save</button>
@@ -69,6 +71,9 @@ In the following corrected examples, only an HTML role is used:
 <input type="button" value="Save">
 ```
 
+Note: The [4.1.1 Parsing](https://www.w3.org/WAI/WCAG21/Understanding/parsing.html) requirement was removed from WCAG.
+However, the Checker will report an issue against another accessibility requirement when it detects it causes an accessibility issue.
+
 </script></mark-down>
 <!-- End main panel -->
                 <!-- This is where the rule id is injected -->
@@ -80,7 +85,7 @@ In the following corrected examples, only an HTML role is used:
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, role, value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+<!-- Remove 4.1.1 * [IBM 4.1.2 Name, role, value](https://www.ibm.com/able/requirements/requirements/#4_1_2) -->
 * [ARIA in HTML - Avoid specifying redundant roles](https://www.w3.org/TR/html-aria/#avoid-specifying-redundant-roles)
 
 ### Who does this affect?

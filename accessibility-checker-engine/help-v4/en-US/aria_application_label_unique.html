@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -51,8 +52,8 @@ An element with an `"application"` role is a type of ARIA landmark region. When 
 
 ### What to do
 
- * For each element with `role="application"`, either set the value of the `aria-labelledby` attribute of each application to the `id` value of any visible text that appropriately and uniquely describes that application's purpose;
- * **Or**, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"application"` role.
+ * For each element with `role="application"`, either set the value of the `aria-labelledby` attribute of each application to the `id` value of any visible text that appropriately and uniquely describes that application's purpose
+ * **Or**, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"application"` role
 
 For example:
 
@@ -79,12 +80,12 @@ For example:
 ### About this requirement
 
 * [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
-* [WCAG technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
-* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+* [ARIA6: aria-label to label objects](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6)
+* [ARIA13: aria-labelledby to name regions and landmarks](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA13)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision, and neurodivergent people
 
 </script></mark-down>
 <!-- End side panel -->

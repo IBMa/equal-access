@@ -19,7 +19,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let widget_tabbable_exists: Rule = {
     id: "widget_tabbable_exists",
-    context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
+    context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:menubar, aria:grid, aria:treegrid, aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
     refactor: {
         "IBMA_Focus_Tabbable": {
             "pass": "pass",
@@ -40,8 +40,8 @@ export let widget_tabbable_exists: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["2.4.3"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["2.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
@@ -62,6 +62,13 @@ export let widget_tabbable_exists: Rule = {
         if (nodeName === 'datalist')
             return null;
             
+        // Composite user interface widget roles. They act as containers that manage other, contained widgets.
+        let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
+        for (const role of roleContainers) {
+            if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
+                // it's a descendant of a composite widget already examined
+                return null;
+        }    
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
         if (RPTUtil.isTabbable(ruleContext)) {

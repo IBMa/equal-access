@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+  <style>
+  button.overlay {   
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      color: white;
+      text-align: left;
+  }
+
+#first {
+  width: 105px;
+  height: 95px;
+  background-color: #FF5C35;
+  top: 10px;
+  left: 10px;
+}
+
+#second {
+  background-color: #192733;
+  top: 20px;
+  left: 35px;
+}
+
+button.overlay1 {   
+      position: absolute;
+      width: 85px;
+      height: 75px;
+      color: white;
+      text-align: left;
+  }
+
+#first1 {
+  width: 105px;
+  height: 95px;
+  background-color: #FF5C35;
+  top: 10px;
+  left: 220px;
+}
+
+#second1 {
+  background-color: #192733;
+  top: 20px;
+  left: 230px;
+}
+
+button.standalone1 {   
+      width: 24px;
+      height: 24px;
+      background-color: blue;
+      text-align: left;
+      margin-left: 15px;
+      color:white;
+  }
+
+  button.standalone2 {   
+      width: 14px;
+      height: 14px;
+      background-color: blue;
+      
+      text-align: left;
+      margin-left: 15px;
+      color:white;
+  }
+
+  button.standalone3 {   
+      width: 14px;
+      height: 14px;
+      background-color: blue;
+      text-align: left;
+      color:white;
+  }
+
+  </style>
+</head>
+
+<body>
+
+  
+  <button id="first" class="overlay">1</button>
+  <button id="second" class="overlay">2</button>
+
+  <button id="first1" class="overlay1">3</button>
+  <button id="second1" class="overlay1">4</button>
+
+  <button id="third"  class="standalone1" style='margin-top:200px'>5</button>
+  <button id="forth" class="standalone1" style='margin-left:-10px'>6</button>
+  
+<div>
+  <button id="fifth"  class="standalone2" style='margin-top:20px' >7</button>
+  <button id="sixth" class="standalone2" style='margin-top:10px' >8</button>
+</div>
+<div>
+  <button id="severth"  class="standalone3" style='margin-top:20px; margin-right:20px;'>9</button>
+  <button id="eighth" class="standalone3" style='margin-top:10px'>10</button>
+</div>
+<div>
+  <button id="nineth"  class="standalone3" style='margin-top:20px; margin-left:20px;'>11</button>
+  <button id="tenth" class="standalone3" style='margin-left:-1px;'>12</button>
+</div>
+<script>
+  UnitTest = {
+    ruleIds: ["target_spacing_sufficient"],
+    results: [
+    {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"button\" meets a minimum target size or has sufficient spacing from the overlapping target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"button\" meets a minimum target size or has sufficient spacing from the overlapping target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[4]",
+              "aria": "/document[1]/button[4]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[5]",
+              "aria": "/document[1]/button[5]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"button\" meets a minimum target size or has sufficient spacing from the overlapping target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[6]",
+              "aria": "/document[1]/button[6]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"button\" meets a minimum target size or has sufficient spacing from the overlapping target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[1]",
+              "aria": "/document[1]/button[7]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/button[2]",
+              "aria": "/document[1]/button[8]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[1]",
+              "aria": "/document[1]/button[9]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/button[2]",
+              "aria": "/document[1]/button[10]"
+            },
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/button[1]",
+              "aria": "/document[1]/button[11]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"button\" does not have sufficient spacing of 12 CSS pixels from another target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/button[2]",
+              "aria": "/document[1]/button[12]"
+            },
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"button\" does not have sufficient spacing of 12 CSS pixels from another target \"button\"",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+  </script>
+</body>
+
+</html>

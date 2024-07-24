@@ -301,7 +301,7 @@ cb(e);
 
 
 async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<ICheckerResult> {
-    try { 
+    try {
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
@@ -416,7 +416,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
     try {
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
-        ACEngineManager.customRulesets.forEach((rs) => checker.addRuleset(rs));
+        ACEngineManager.customRulesets.forEach((rs) => checker.addGuideline(rs));
         let report : IEngineReport = await checker.check(parsed, Config.policies)
             .then(function (report) {
                 for (const result of report.results) {
@@ -426,7 +426,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             })
 
         if (curPol != null && !checkPolicy) {
-            let valPolicies = checker.rulesetIds;
+            let valPolicies = checker.getGuidelineIds();
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }

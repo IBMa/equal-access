@@ -21,8 +21,8 @@ import { UtilIssue } from '../../../util/UtilIssue';
 
 import "../reportSection.scss";
 import { getBGController } from '../../../background/backgroundController';
-import { getTabId } from '../../../util/tabId';
 import { ePanel } from '../../devtoolsController';
+import { getDevtoolsAppController } from '../../devtoolsAppController';
 
 interface ReportProps {
     unfilteredCount: number
@@ -35,7 +35,8 @@ interface ReportProps {
     }
     selectedPath: string | null;
     canScan: boolean;
-    onResetFilters: () => void
+    onResetFilters: () => void;
+    onFilterToolbar: (val : boolean) => void;
 }
 
 interface ReportState {
@@ -48,8 +49,9 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
 
     async componentDidMount(): Promise<void> {
         let bgController = getBGController();
+        let appController = getDevtoolsAppController();
         let settings = await bgController.getSettings();
-        let rulesets = await bgController.getRulesets(getTabId()!);
+        let rulesets = await bgController.getRulesets(appController.contentTabId!);
         let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
         if (ruleset) {
             this.setState({ ruleset });
@@ -65,13 +67,20 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     id: string
                     label: string
                     children: IIssue[]
+                    checked: "all" | "some" | "none",
+                    ignored: boolean
                 } = {
                     id: ReportTreeGrid.cleanId(checkpoint.num),
                     label: `${checkpoint.num} ${checkpoint.name}`,
-                    children: []
+                    children: [],
+                    checked: "none",
+                    ignored: false
                 };
                 for (const result of this.props.issues) {
-                    if (checkpoint.rules?.find(rule => rule.id === result.ruleId)) {
+                    if (checkpoint.rules?.find(rule => (
+                        rule.id === result.ruleId
+                        && (!rule.reasonCodes || rule.reasonCodes.includes(result.reasonId))
+                    ))) {
                         curGroup.children.push(result);
                     }
                 }
@@ -94,6 +103,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
             rowData={rowData}
             selectedPath={this.props.selectedPath}
             onResetFilters={this.props.onResetFilters}
+            onFilterToolbar={this.props.onFilterToolbar}
         />
     }
 }

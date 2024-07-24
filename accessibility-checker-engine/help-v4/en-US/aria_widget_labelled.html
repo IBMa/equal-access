@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -43,17 +44,20 @@
 <mark-down><script type="text/plain">
 
 ### Why is this important?
-Interactive UI components with certain implicit or explicit ARIA roles require an [accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name). Without proper labels or the programmatically associated name, assistive technologies may not be able to accurately present the component's name and purpose to the user. This affects the user’s navigation and ability to interact with the content.
+
+Interactive UI components with certain implicit or explicit ARIA roles require an [accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name).
+Without proper labels or the programmatically associated name, assistive technologies may not be able to accurately present the component's name and purpose to the user.
+This affects the user’s navigation and ability to interact with the content.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Use the `aria-labelledby` attribute to reference existing visible text on the page that can clearly identify the purpose of the component;
-* **Or**, use the `aria-label` attribute with a short description as its value that can clearly identify the purpose of the component when a visual label is not available;
-* **Or**, use the `title` attribute to provide a name when the design cannot accommodate a visual label;
-* **Or**, if the element's role allows it to derive a label from its content, provide the label text as the inner content of the element (e.g. `<button type="submit">Search</button>`).
+* Use the `aria-labelledby` attribute to reference existing visible text on the page that can clearly identify the purpose of the component
+* **Or**, use the `aria-label` attribute with a short description as its value that can clearly identify the purpose of the component when a visual label is not available
+* **Or**, use the `title` attribute to provide a name when the design cannot accommodate a visual label
+* **Or**, if the element's role allows it to derive a label from its content, provide the label text as the inner content of the element (e.g., `<button type="submit">Search</button>`)
 
 The following code snippet shows a tree widget labelled with an `aria-labelledby` attribute to reference the heading text:
 
@@ -81,7 +85,7 @@ The following code snippet shows a tree widget labelled with an `aria-labelledby
 
 * People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision using screen magnification
-* People with dexterity impairment using voice control
+* People with dexterity impairments using voice control
 
 </script></mark-down>
 <!-- End side panel -->

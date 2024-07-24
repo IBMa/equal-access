@@ -32,14 +32,14 @@ export let aria_child_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "An element with a ARIA role must own a required child",
-            "Pass": "An element with a ARIA role owns a required child",
+            "group": "An element with an ARIA role must own a required child",
+            "Pass": "An element with an ARIA role owns a required child",
             "Fail_no_child": "The element with role \"{0}\" does not own any child element with any of the following role(s): \"{1}\"",
             "Fail_invalid_child": "The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -123,7 +123,7 @@ export let aria_child_valid: Rule = {
                 /**
                  * when multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
                  * the specification does not require an instance of each of the listed owned roles.
-                 * therefore, the requirement is met if it has any one of the required roles.   
+                 * therefore, the requirement is met if it has any one of the required roles.
                  */    
                 const found = childRoles.some(r=> requiredChildRoles.includes(r));
                 if (!found) 

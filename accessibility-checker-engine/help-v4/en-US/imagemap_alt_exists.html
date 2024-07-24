@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,14 +45,15 @@
 
 ### Why is this important?
 
-An image map is an image divided into selectable regions defined by area elements. When the image map contains important information, providing a text alternative for the map makes the same information accessible through audio or other channels.
+An image map is divided into selectable regions defined by `<area>` elements.
+When the image map contains important information, providing a text alternative for the map makes the same information accessible.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Add an `alt` attribute to the image that uses a non-empty `usemap` attribute to provide a short description that serves the same purpose.
+* Add an `alt` attribute to the image that uses a non-empty `usemap` attribute to provide a short description that serves the same purpose.
 
 For example:
 
@@ -76,11 +78,11 @@ For example:
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique H24](https://www.w3.org/WAI/WCAG21/Techniques/html/H24)
+* [H24: Text alternatives for image maps](https://www.w3.org/WAI/WCAG22/Techniques/html/H24)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People who turn off image-loading on their web browsers
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 

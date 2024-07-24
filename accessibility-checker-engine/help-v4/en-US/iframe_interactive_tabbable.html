@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -59,7 +60,7 @@ the `button` is removed from the tab-order and effectively is keyboard inaccessi
 ### What to do
 
 * Ensure visible interactive elements are not excluded from the tab-order by adding a `tabindex` attribute value greater than or equal to `"0"` to  the `<iframe>` element
-* **Or**, if not intended to be interactable, remove or hide the content from within the `<iframe>` element
+* **Or**, if not intended to be operable, remove or hide the content from within the `<iframe>` element
 
 Example of a tabbable `<iframe>`:
 ```
@@ -79,15 +80,15 @@ Example of a tabbable `<iframe>`:
 
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
 * [ARIA practices - Developing a keyboard interface]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
-* [ARIA practices - The tab sequence]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#keyboardnavigationbetweencomponents(thetabsequence))
-* [HTML - The tabindex attribute]( https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
-* [Verify phase – Test with a keyboard](https://www.ibm.com/able/toolkit/verify/manual/#test-with-a-keyboard)
+* [ARIA practices - Tab sequence]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#keyboardnavigationbetweencomponents(thetabsequence))
+* [HTML - Tabindex attribute]( https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
+* [Verify phase - Test with a keyboard](https://www.ibm.com/able/toolkit/verify/manual/#test-with-a-keyboard)
 
 ### Who does this affect?
 
 * People who physically cannot use a pointing device
 * People using a screen reader, including blind, low vision, and neurodivergent people
-* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software and on-screen keyboards
+* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators, like speech input software and on-screen keyboards
 
 </script></mark-down>
 <!-- End side panel -->

@@ -33,12 +33,12 @@ export let blockquote_cite_exists: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Potential_1": "Verify that <blockquote> should not be used only for quotations, not indentation",
+            "Potential_1": "Verify that <blockquote> should have a 'cite' attribute and not be used for indentation only",
             "group": "Use <blockquote> only for quotations, not indentation"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE

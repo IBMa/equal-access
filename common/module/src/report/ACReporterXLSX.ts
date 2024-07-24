@@ -14,15 +14,16 @@
     limitations under the License.
   *****************************************************************************/
 
-import { IConfigInternal, eRuleLevel } from "../config/IConfig.js";
-import { CompressedReport, IRuleset, eRuleConfidence, eToolkitLevel } from "../engine/IReport.js";
-import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
+import { IConfigInternal, eRuleLevel } from "../config/IConfig";
+import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline";
+import { CompressedReport } from "../engine/IReport";
+import { eRuleConfidence } from "../engine/IRule";
+import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager";
 import * as ExcelJS from "exceljs";
 
 type PolicyInfo = {
     tkLevels: eToolkitLevel[]
-    wcagLevels: string[]
-    cps: string[]
+    cps: Checkpoint[]
 };
 
 function dropDupes<T>(arr: T[]): T[] {
@@ -43,7 +44,7 @@ export class ACReporterXLSX implements IReporter {
     public generateReport(_reportData): { reportPath: string, report: string } | void {
     }
 
-    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(config: IConfigInternal, rulesets: Guideline[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
         let storedReport = ReporterManager.uncompressReport(summaryData[0])
         let cfgRulesets = rulesets.filter(rs => config.policies.includes(rs.id));
         let policyInfo: {
@@ -54,27 +55,21 @@ export class ACReporterXLSX implements IReporter {
                 for (const rule of cp.rules) {
                     policyInfo[rule.id] = policyInfo[rule.id] || {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                     policyInfo[rule.id].tkLevels.push(rule.toolkitLevel);
-                    policyInfo[rule.id].wcagLevels.push(cp.wcagLevel);
-                    policyInfo[rule.id].cps.push(`${cp.num}`);
+                    policyInfo[rule.id].cps.push(cp);
                 }
             }
         }
         for (const ruleId in policyInfo) {
             policyInfo[ruleId].tkLevels = dropDupes(policyInfo[ruleId].tkLevels);
-            policyInfo[ruleId].cps = dropDupes(policyInfo[ruleId].cps);
-            policyInfo[ruleId].wcagLevels = dropDupes(policyInfo[ruleId].wcagLevels);
             policyInfo[ruleId].tkLevels.sort();
-            policyInfo[ruleId].cps.sort();
-            policyInfo[ruleId].wcagLevels.sort();
         }
 
         // const buffer: any = await workbook.xlsx.writeBuffer();
         let startScan = new Date(storedReport.engineReport.summary.startScan);
-        let reportFilename = `results_${startScan.toISOString()}.xlsx`;
+        let reportFilename = `results_${startScan.toISOString().replace(/:/g,"-")}.xlsx`;
         if (config.outputFilenameTimestamp === false) {
             reportFilename = `results.xlsx`;
         }
@@ -484,7 +479,6 @@ export class ACReporterXLSX implements IReporter {
                 if (!(issue.ruleId in policyInfo)) {
                     policyInfo[issue.ruleId] = {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                 }
@@ -700,19 +694,27 @@ export class ACReporterXLSX implements IReporter {
                 if (!(item.ruleId in policyInfo)) {
                     policyInfo[item.ruleId] = {
                         tkLevels: [],
-                        wcagLevels: [],
                         cps: []
                     }
                 }
+                let polInfo = policyInfo[item.ruleId];
+                let cps = polInfo.cps.filter(cp => {
+                    let ruleInfo = cp.rules.find(ruleInfo => ruleInfo.id === item.ruleId && (!ruleInfo.reasonCodes || ruleInfo.reasonCodes.includes(""+item.reasonId)));
+                    return !!ruleInfo;
+                })
+                let wcagLevels = dropDupes(cps.map(cp => cp.wcagLevel));
+                wcagLevels.sort();
+                let cpStrs = dropDupes(cps.map(cp => `${cp.num} ${cp.name}`));
+                cpStrs.sort();
                 let row = [
                     storedScan.pageTitle,
                     storedScan.engineReport.summary.URL,
                     storedScan.label,
                     this.stringHash(item.ruleId + item.path.dom),
                     `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,
-                    policyInfo[item.ruleId].tkLevels.join(", "),
-                    policyInfo[item.ruleId].cps.join(", "),
-                    policyInfo[item.ruleId].wcagLevels.join(", "),
+                    polInfo.tkLevels.join(", "),
+                    cpStrs.join("; "),
+                    wcagLevels.join(", "),
                     item.ruleId,
                     item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                     this.get_element(item.snippet),
@@ -931,7 +933,7 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
             { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
             { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
-            { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details.' }
+            { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
         ];
 
         for (let i = 5; i < rowData.length + 5; i++) {
@@ -984,7 +986,7 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
             { key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. ' },
             { key1: 'Issue type', key2: 'Violation, needs review, or recommendation' },
-            { key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details' },
+            { key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details' },
             { key1: 'Checkpoint', key2: 'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.' },
             { key1: 'WCAG level', key2: 'A, AA or AAA. WCAG level for this issue.' },
             { key1: 'Rule', key2: 'Name of the accessibility test rule that detected this issue.' },

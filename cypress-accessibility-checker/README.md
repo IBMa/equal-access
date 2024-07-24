@@ -1,13 +1,23 @@
 # cypress-accessibility-checker
 
-Cypress plugin for automated accessibility testing. This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker). 
+Cypress plugin for automated accessibility testing.
 
-The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next generation front end testing tool built for the modern web and scanning the page in context. Please see the `Usage` section in this README for more details.
+The [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker) is a wrapper of the `accessibility-checker` in the Cypress environment.
+The deployed package can be downloaded and installed from NPM.
+
+This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker).
+The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next-generation front-end testing tool built for the modern web and scanning the page in context. 
+Please see the `Usage` section below for more details.
+
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Requirements
 
 * [Node Version 18](https://nodejs.org/en/download/)
-* Cypress 12
+* Cypress 13 from [cypress.io](https://www.cypress.io/)
 
 ## Installation
 
@@ -27,28 +37,35 @@ There are two setup steps you must complete in order for the Cypress tests to be
 
 ### 1. Add plugin
 
-In the `cypress/plugins/index.js` file located in your project, require the plugin and then register it with Cypress.
+In the Cypress config for your project, require the plugin and then register it with Cypress.
 
 ```js
-const aCheckerTasks = require('cypress-accessibility-checker/plugin');
-module.exports = (on, config) => {
-  on('task', {
-    accessibilityChecker: aCheckerTasks
-  });
-};
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+        on('task', {
+            accessibilityChecker: require('cypress-accessibility-checker/plugin')
+        });
+    }
+  }
+})
 ```
 
 ### 2. Import commands
 
-In the `cypress/support/index.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
+In the `cypress/support/e2e.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
 
 ```js
 import 'cypress-accessibility-checker';
 ```
 
+If you do not want to include `cypress-accessibility-checker` globally, you may instead add this import statement to every test file in which it is used.
+
 ## Usage
 
-The commands maps directly to the description of the APIs located [in the accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
+The commands map directly to the description of the APIs located [in the accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
 The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration that is defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
 
@@ -58,7 +75,7 @@ The typical use case will be to get the accessibility compliance of a document a
 cy.getCompliance('my scan').assertCompliance()
 ```
 
-Examples on how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/integration/achecker.js).
+Examples of how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/integration/achecker.js).
 
 - `cy.getCompliance(label)`
   - Similar to `getCompliance()` in the reference API above.
@@ -67,7 +84,7 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
   - Similar to `getCompliance()` in the reference API above, using the passed cy object (typically obtained via `cy.document`).
   - Returned data ([defined here](https://www.npmjs.com/package/accessibility-checker#async-acheckergetcompliance-content--label--string)) will only contain the `report` object.
 - `cy.assertCompliance(failOnError?: boolean)`
-  - If `failOnError` is set to false, this will not fail your test. This is useful for testing what needs to be fixed without failing the test. By default this command will fail your test unless you specify `false` here.
+  - If `failOnError` is set to false, this will not fail your test. This is useful for testing what needs to be fixed without failing the test. By default, this command will fail your test unless you specify `false` here.
 - `cy.getDiffResults(label)`
 - `cy.getBaseline(label)`
 - `cy.diffResultsWithExpected(actual, expected, clean)`
@@ -93,7 +110,7 @@ There is a suite of tests located in the `test/` directory which execute each of
 
 ### Building
 
-The plugin does not really need to be built to be used. However there is a package script to group things for NPM.
+The plugin does not need to be built to be used. However, there is a package script to group things for NPM.
 
 ```bash
 npm install

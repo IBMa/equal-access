@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -48,7 +49,7 @@ The [accessible name](https://www.w3.org/TR/accname-1.2/#dfn-accessible-name) he
 Most assistive technologies expect elements with certain ARIA roles to have an accessible name per the ARIA specification.
 The browser provides the accessible name property to the assistive technologies. 
 The value of the accessible name is derived via one of the following means:
-- **author**: name comes from values provided by the author in explicit markup such as the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest precedence
+- **author**: name comes from values provided by the author in explicit markup, such as the [aria-labelledby](https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby) attribute, the [aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label) attribute, or the [title](https://html.spec.whatwg.org/multipage/dom.html#attr-title) attribute on native HTML elements having the lowest precedence
 - **contents**: name comes from the text content of the element
 - **required**: names are required for certain roles
 - **allowed**: names are supported for certain roles 
@@ -92,7 +93,7 @@ If the element supports a role with a required or allowed accessible name:
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision, and neurodivergent people
-* People with dexterity impairment using voice control
+* People with dexterity impairments using voice control
 * People with low vision using screen magnification
 * People using other assistive technologies that expose accessibility information
     

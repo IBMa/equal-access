@@ -38,7 +38,7 @@ export let aria_activedescendant_tabindex_valid: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -54,16 +54,17 @@ export let aria_activedescendant_tabindex_valid: Rule = {
             return null;
         }
 
-        // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
+        // Handle the case where the element is hidden by a disabled HTML5 attribute or aria-disabled:
         //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
-        //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
+        //  2. In the case that this element has an aria-disabled attribute then, we mark this rule as passed.
         // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
         if (RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
 
-        //check if the attribute 'aria-activedescendant' is valid for the role of the element
-        
+        //ignore if the attribute 'aria-activedescendant' is blank
+        if (ruleContext.getAttribute("aria-activedescendant").trim().length === 0)
+            return;
 
         // If the tabindex attribute is provided then verify that it is 0 or -1
         passed = RPTUtil.isTabbable(ruleContext);

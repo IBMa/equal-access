@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
@@ -21,25 +21,25 @@ export let label_ref_valid: Rule = {
     context: "dom:label[for]",
     refactor: {
         "WCAG20_Label_RefValid": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"}
+            "Pass_0": "pass",
+            "Fail_1": "fail_invalid"}
     },
     help: {
         "en-US": {
-            "Pass_0": "label_ref_valid.html",
-            "Fail_1": "label_ref_valid.html",
+            "pass": "label_ref_valid.html",
+            "fail_invalid": "label_ref_valid.html",
             "group": "label_ref_valid.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid <input> element",
-            "group": "The 'for' attribute must reference a non-empty, unique 'id' attribute of an <input> element"
+            "pass": "The 'for' attribute for a label referencea a unique non-empty 'id' attribute of an <input> element",
+            "fail_invalid": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid <input> element",
+            "group": "The 'for' attribute for a label must reference a non-empty, unique 'id' attribute of an <input> element"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -73,7 +73,7 @@ export let label_ref_valid: Rule = {
                         type == "hidden" || type == "search" || type == "tel" || type == "url" || type == "email" ||  //HTML 5
                         type == "date" || type == "number" || type == "range" || type == "image" || //HTML 5
                         type == "time" || type == "color" ||  // HTML 5
-                        type == "datetime" || type == "month" || type == "week"; //HTML5.1
+                        type == "datetime-local" || type == "month" || type == "week"; //HTML5.1
                 }
             }
 
@@ -89,9 +89,9 @@ export let label_ref_valid: Rule = {
         }
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [retToken]);
         if (!passed) {
-            return RuleFail("Fail_1", retToken);
+            return RuleFail("fail_invalid", retToken);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }

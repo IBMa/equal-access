@@ -14,10 +14,11 @@
     limitations under the License.
  *****************************************************************************/
 
-import { fetch_get } from "../api-ext/Fetch.js";
-import { IConfigInternal } from "../config/IConfig.js";
-import { CompressedReport, IRuleset } from "../engine/IReport.js";
-import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager.js";
+import { fetch_get } from "../api-ext/Fetch";
+import { IConfigInternal } from "../config/IConfig";
+import { Guideline } from "../engine/IGuideline";
+import { CompressedReport } from "../engine/IReport";
+import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager";
 
 /*******************************************************************************
  * NAME: ACMetricsLogger.js
@@ -72,7 +73,7 @@ export class ACReporterMetrics implements IReporter {
      *
      * @memberOf this
      */
-    public generateReport(config: IConfigInternal, rulesets: IRuleset[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
+    public generateReport(config: IConfigInternal, rulesets: Guideline[], storedReport: IReporterStored): { reportPath: string, report: string } | void {
         if (!config.label || !config.label.includes("IBMa-Node-TeSt")) {
             // URI encode the profile text provided
             let profile = encodeURIComponent(storedReport.scanProfile);
@@ -93,7 +94,7 @@ export class ACReporterMetrics implements IReporter {
      *
      * @memberOf this
      */
-    public async generateSummary(config: IConfigInternal, rulesets: IRuleset[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
+    public async generateSummary(config: IConfigInternal, rulesets: Guideline[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn> {
         try {
             // Variable Decleration
             let numProfiles = 0;

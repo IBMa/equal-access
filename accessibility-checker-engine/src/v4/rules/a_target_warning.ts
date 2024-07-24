@@ -21,26 +21,26 @@ export let a_target_warning: Rule = {
     context: "dom:a[target],dom:area[target],dom:base[target]",
     refactor: {
         "WCAG20_A_TargetAndText": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"
+            "Pass_0": "pass",
+            "Potential_1": "potential_warn"
         }
     },
     help: {
         "en-US": {
             "group": `a_target_warning.html`,
-            "Pass_0": `a_target_warning.html`,
-            "Potential_1": `a_target_warning.html`
+            "pass": `a_target_warning.html`,
+            "potential_warn": `a_target_warning.html`
         }
     },
     messages: {
         "en-US": {
-            "group": "Users should be warned in advance if their input action will open a new window or otherwise change their context",
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Inform the user when their input action will open a new window or otherwise change their context"
+            "group": "Users should be warned in advance if their input action will open a new window",
+            "pass": "The user is warned in advance that the input action opens a new window",
+            "potential_warn": "Inform the user when their input action will open a new window"
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
         num: "3.2.2", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.RECOMMENDATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -68,6 +68,6 @@ export let a_target_warning: Rule = {
             for (let i = 0; !passed && i < params.paramWinText.value.length; ++i)
                 if (textStr.indexOf(params.paramWinText.value[i]) != -1) passed = true;
         }
-        return passed ? RulePass("Pass_0") : RulePotential("Potential_1");
+        return passed ? RulePass("pass") : RulePotential("potential_warn");
     }
 }

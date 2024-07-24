@@ -17,7 +17,7 @@
 import React from "react";
 import "./report.scss";
 
-import { IReport, IReportItem, valueMap, IRuleset } from "../IReport";
+import { IReport, IReportItem, valueMap, IRuleset, ICheckpoint } from "../IReport";
 import ReportRow from "./ReportRow";
 import { Grid, Column } from "@carbon/react";
 
@@ -37,6 +37,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         let ruleToGroups: {
             [key: string]: {
                 title: string,
+                checkpoint: ICheckpoint,
                 counts: { [key: string]: number }
                 items: IReportItem[]
             }[]
@@ -66,8 +67,14 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             if (item.ruleId in ruleToGroups) {
                 let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
                 for (const group of ruleToGroups[item.ruleId]) {
-                    group.items.push(item);
-                    group.counts[val] = (group.counts[val] || 0) + 1;
+                    let ruleInfo = group.checkpoint.rules.find(rule => rule.id === item.ruleId);
+                    if (ruleInfo?.reasonCodes) {
+                        console.log(ruleInfo, item);
+                    }
+                    if (!ruleInfo?.reasonCodes || ruleInfo.reasonCodes.includes(""+item.reasonId!)) {
+                        group.items.push(item);
+                        group.counts[val] = (group.counts[val] || 0) + 1;
+                    }
                 }
             }
         }

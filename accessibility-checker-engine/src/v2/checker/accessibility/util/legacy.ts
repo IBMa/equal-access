@@ -20,8 +20,9 @@ import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { DOMWalker } from "../../../dom/DOMWalker";
 import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
-import { getDefinedStyles } from "../../../../v4/util/CSSUtil";
+import { getDefinedStyles, getComputedStyle } from "../../../../v4/util/CSSUtil";
 import { DOMUtil } from "../../../dom/DOMUtil";
+import { DOMMapper } from "../../../dom/DOMMapper";
 
 export class RPTUtil {
 
@@ -396,8 +397,8 @@ export class RPTUtil {
 
     /**
      * Note that this only detects if the element itself is in the tab order.
-     * However, this element may delegate focus to another element via aria-activedescendant
-     * Also, focus varies by browser...  sticking to things that are focusable on chrome and firefox
+     * However, this element may delegate focus to another element via aria-activedescendant.
+     * Also, focus varies by browser... sticking to things that are focusable on Chrome and Firefox.
      */
     public static isTabbable(element) {
         // Using https://allyjs.io/data-tables/focusable.html
@@ -417,6 +418,165 @@ export class RPTUtil {
         } else {
             return false;
         }
+    }
+
+    /**
+     * a target is en element that accept a pointer action (click or touch)
+     * 
+     */
+    public static isTarget(element) {
+        if (!element) return false;
+        
+        if (element.hasAttribute("tabindex") || RPTUtil.isTabbable(element)) return true;
+        
+        const roles = RPTUtil.getRoles(element, true); 
+        if (!roles && roles.length === 0)
+            return false;
+
+        let tagProperty = RPTUtil.getElementAriaProperty(element);
+        let allowedRoles = RPTUtil.getAllowedAriaRoles(element, tagProperty);
+        if (!allowedRoles || allowedRoles.length === 0)
+            return false;
+    
+        let parent = element.parentElement;
+        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
+        while (parent && roles.some(role => role === 'group'))
+            parent = parent.parentElement;
+         
+        if (parent && (parent.hasAttribute("tabindex") || RPTUtil.isTabbable(parent))) {
+            const target_roles =["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * a target is en element that accept a pointer action (click or touch)
+     * a target is a browser default if it's a native widget (no user defined role) without user style  
+     */
+    public static isTargetBrowserDefault(element) {
+        if (!element) return false;
+        
+        // user defained widget
+        const roles = RPTUtil.getRoles(element, false); 
+        if (roles && roles.length > 0)
+            return false;
+
+        // no user style to space control size, including use of font    
+        const styles = getDefinedStyles(element);
+        if (styles['line-height'] || styles['height'] || styles['width'] || styles['min-height'] || styles['min-width'] 
+           || styles['font-size'] || styles['margin-top'] || styles['margin-bottom'] || styles['margin-left'] || styles['margin-right']) 
+            return false;
+            
+        return true;
+    }
+
+    /**
+     * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
+     * some element has default inline property, such as <span>, <a>
+     * most formatting elements inherent inline property, such as <em>, <strong>, <i>, <small> 
+     * other inline elements: <abbr> <acronym> <b> <bdo> <big> <br> <cite> <code> <dfn> <em> <i> <input> <kbd> <label> 
+     * <map> <object> <output> <q> <samp> <script> <select> <small> <span> <strong> <sub> <sup> <textarea> <time> <tt> <var>
+     * an "inline-block" element still place element in the same line without breaking the line, but the element's width and height are applied.
+     * inline-block elements: img, button, select, meter, progress, marguee, also in Chrome: textarea, input 
+     * A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+     * block-level elements: <address> <article> <aside> <blockquote> <canvas> <dd> <div> <dl> <dt> <fieldset> <figcaption> <figure> <footer> <form>
+     * <h1>-<h6> <header> <hr> <li> <main> <nav> <noscript> <ol> <p> <pre> <section> <table> <tfoot> <ul> <video>
+     * 
+     * return: if it's inline element and { inline: true | false, text: true | false, violation: null | {node} } 
+     */
+    public static getInlineStatus(element) {
+        if (!element) return null;
+        
+        const style =  getComputedStyle(element);
+        if (!style) return null;
+
+        let status = { "inline": false, "text": false, "violation": null }; 
+        const udisplay = style.getPropertyValue("display");  
+        // inline element only
+        if (udisplay !== 'inline')
+            return status;
+
+        status.inline = true;    
+        const parent = element.parentElement;
+        if (parent) {
+            const mapper : DOMMapper = new DOMMapper();
+            const bounds = mapper.getUnadjustedBounds(element);
+            const style = getComputedStyle(parent);
+            const display = style.getPropertyValue("display");    
+            // an inline element is inside a block. note <body> is a block element too
+            if (display === 'block' || display === 'inline-block') {
+                let containText = false;
+                // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
+                let walkNode = element.nextSibling;
+                let last = true;
+                while (walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (status.violation === null && walkNode.nodeName.toLowerCase() !== 'br') {
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");
+                            if (cDisplay === 'inline')  { 
+                                last = false;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
+                                    if (Math.round(bounds.width/2) + bnds.left - (bounds.left + bounds.width) < 24)
+                                        status.violation = walkNode.nodeName.toLowerCase();
+                                }
+                            } else
+                                break;
+                        }   
+                    }
+                    walkNode = walkNode.nextSibling;    
+                }
+                
+                walkNode = element.previousSibling;
+                let first = true;
+                let checked = false;
+                while (walkNode) {
+                    // note browsers insert Text nodes to represent whitespaces.
+                    if (!containText && walkNode.nodeType === Node.TEXT_NODE && walkNode.nodeValue && walkNode.nodeValue.trim().length > 0) {
+                        containText = true;
+                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                        // special case: <br> is styled 'inline' by default, but change the line
+                        if (!checked && walkNode.nodeName.toLowerCase() !== 'br') {
+                            const cStyle = getComputedStyle(walkNode);
+                            const cDisplay = cStyle.getPropertyValue("display");    
+                            if (cDisplay === 'inline')  {
+                                first = false;
+                                checked = true;
+                                if (RPTUtil.isTarget(walkNode) && bounds.width < 24) {
+                                    // check if the horizontal spacing is sufficient
+                                    const bnds = mapper.getUnadjustedBounds(walkNode);
+                                    if (Math.round(bounds.width/2) + bounds.left - (bnds.left + bnds.width)  < 24) {
+                                        status.violation = status.violation === null ? walkNode.nodeName.toLowerCase() : status.violation + ", " + walkNode.nodeName.toLowerCase();
+                                    }    
+                                }
+                            } else
+                                break;
+                        }    
+                    }
+                    walkNode = walkNode.previousSibling;    
+                }
+                
+                // one or more inline elements are in the same line with text 
+                if (containText)
+                    status.text = true;
+                
+                return status;
+            } else {
+                //parent is inline element
+                if (!RPTUtil.isInnerTextOnlyEmpty(parent))
+                    status.text = true;
+            }
+        }
+        // all other cases    
+        return status;
     }
 
     public static tabIndexLEZero(elem) {
@@ -448,7 +608,7 @@ export class RPTUtil {
     }
 
     //TODO: function does not handle equivalents for roles: row, link, header, button
-    // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
+    // But it may not have to. Bug reports have been about radio buttons and checkboxes.
     public static isHtmlEquiv(node, htmlEquiv) {
         let retVal = false;
         if (node) {
@@ -745,6 +905,44 @@ export class RPTUtil {
         }
 
         return retVal;
+    }
+
+    /**
+     * WAI-ARIA’s role attribute may have a list of values, but only the first valid and supported WAI-ARIA role is used
+     * https://www.w3.org/TR/wai-aria-implementation/#mapping_role_table
+     * This function is responsible for retrieving the resoled role for an element.
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return string - resolved role for the element:
+     *       explicit role: resoled from the list of values
+     *       implicit role: if not explicitely specified, or none of the specified role values is allowed for the element
+     *       null: if none of the specified role values is allowed for the element, neither implicit role exists
+     *       
+     * @memberOf RPTUtil
+     */
+    public static getResolvedRole(elem: Element, considerImplicitRoles: boolean = true) : string {
+        if (!elem) return null;
+        let role = getCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", null);
+        if (role === null) {
+            const roles = RPTUtil.getUserDefinedRoles(elem);
+            let tagProperty = RPTUtil.getElementAriaProperty(elem);
+            let allowedRoles = RPTUtil.getAllowedAriaRoles(elem, tagProperty);
+            if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
+                for (let i=0; i < roles.length; i++) {
+                    if (allowedRoles.includes(roles[i])) {
+                        role = roles[i];
+                        break;
+                    }    
+                } 
+            }
+            
+            if (role === null && considerImplicitRoles) {
+                const implicitRole = RPTUtil.getImplicitRole(elem);
+                role = implicitRole && implicitRole.length > 0 ? implicitRole[0] : undefined;
+            }
+            setCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", role);
+        }   
+        return role !== undefined ? role : null;
     }
 
     /**
@@ -1097,7 +1295,7 @@ export class RPTUtil {
             }
             if (!isComplexTable && trNodeCount !== 0) {
                 // a table with headers not located in the first row or first column
-                isComplexTable = thNodeCount > 0 && !RPTUtil.isTableHeaderInFirstRowOrColumn(table);
+                isComplexTable = thNodeCount > 0 && !RPTUtil.tableHeaderExists(table);
             }
         }
         table.RPTUtil_isComplexDataTable = isComplexTable;
@@ -1105,42 +1303,108 @@ export class RPTUtil {
         return isComplexTable;
     }
 
-    // Return true if a table's header is in the first row or column
-    public static isTableHeaderInFirstRowOrColumn(ruleContext) {
+    // Return true if a table cell is hidden or contain no data: <td></td>
+    public static isTableCellEmpty(cell) {
+        if (!cell || !VisUtil.isNodeVisible(cell) || cell.innerHTML.replace(/&nbsp;/g,' ').trim().length === 0)
+            return true;
+           
+        return false;
+    }
 
-        let passed = false;
-        let rows = ruleContext.rows;
-        // Check if the first row is all TH's
-        if (rows != null && rows.length > 0) {
-            let firstRow = rows[0];
-            passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0;
-            // If the first row isn't a header row, try the first column
-            if (!passed) {
-                // Assume that the first column has all TH's unless we find a TD in the first column.
-                passed = true;
-                for (let i = 0; passed && i < rows.length; ++i) {
-                    // If no cells in this row, that's okay too.
-                    passed = !rows[i].cells ||
-                        rows[i].cells.length === 0 ||
-                        rows[i].cells[0].nodeName.toLowerCase() != "td";
-                }
-            }
-            if (!passed) {
-                // Special case - both first row and first column are headers, but they did not use
-                // a th for the upper-left cell
-                passed = true;
-                for (let i = 1; passed && i < firstRow.cells.length; ++i) {
-                    passed = firstRow.cells[i].nodeName.toLowerCase() != "td";
-                }
-                for (let i = 1; passed && i < rows.length; ++i) {
-                    // If no cells in this row, that's okay too.
-                    passed = !rows[i].cells ||
-                        rows[i].cells.length === 0 ||
-                        rows[i].cells[0].nodeName.toLowerCase() != "td";
-                }
-            }
+    // Return true if a table row is hidden or contain no data: <tr /> or <tr><td></td><td></td></tr> 
+    public static isTableRowEmpty(row) {
+        if (!row || !row.cells || row.cells.length === 0 || !VisUtil.isNodeVisible(row))
+            return true;
+           
+        let passed = true; //empty
+        for (let c=0; passed && c < row.cells.length; c++) {
+            let cell = row.cells[c];
+            passed = RPTUtil.isTableCellEmpty(cell);          
         }
+        
         return passed;
+    }
+
+    // Return true if a table's header is in the first row or column
+    public static tableHeaderExists(ruleContext) {
+
+        let rows = ruleContext.rows;
+        if (!rows || rows.length === 0)
+            return null;
+
+        // note that table.rows return all all the rows in the table, 
+        // including the rows contained within <thead>, <tfoot>, and <tbody> elements. 
+        
+        //case 1: headers are in the very first row with data in tbody or thead, but not in tfoot   
+        //get the first row with data, ignoring the rows with no data
+        let passed = true;
+        let firstRow = rows[0];
+        for (let r=0; passed && r < rows.length; r++) {
+            firstRow = rows[r];
+            // ignore the rows from tfoot
+            if (firstRow.parentNode && firstRow.parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+            
+            passed = RPTUtil.isTableRowEmpty(firstRow);          
+        }
+        
+        //table contain no data:  <table><tr><td></td><td></td></tr></table> 
+        if (passed)
+            return null;
+        
+        // Check if the cells with data in the first data row are all TH's
+        passed = true;
+        for (let r=0; passed && r < firstRow.cells.length; r++) {
+            let cell = firstRow.cells[r];
+            passed = RPTUtil.isTableCellEmpty(cell) || cell.nodeName.toLowerCase() === 'th';          
+        }
+        
+        if (passed)
+            return true;
+
+        // Case 2: headers are in the first column with data
+        // Assume that the first column has all TH's or a TD without data in the first column.
+        passed = true;
+        for (let i = 0; passed && i < rows.length; ++i) {
+            // ignore the rows from tfoot
+            if (rows[i].parentNode && rows[i].parentNode.nodeName.toLowerCase() === 'tfoot') continue;
+
+            // If no cells in this row, or no data at all, that's okay too.
+            passed = !rows[i].cells ||
+                rows[i].cells.length === 0 ||
+                rows[i].cells[0].innerHTML.trim().length === 0 ||
+                rows[i].cells[0].nodeName.toLowerCase() != "td";
+        }
+        
+        if (passed)
+            return true;
+            
+        //case 3: all td data cells have headers attributes that point to the id of a th element in the same table. 
+        // https://html.spec.whatwg.org/multipage/tables.html#attributes-common-to-td-and-th-elements
+        passed = true; 
+        let thIds = [];
+        let tdHeaders = [];
+        for (let r=0; passed && r < rows.length; r++) {
+            let row = rows[r]; 
+            // Check if the cells with data in the last data row are all TH's
+            for (let c=0; c < row.cells.length; c++) {
+                let cell = row.cells[c];
+                if (RPTUtil.isTableCellEmpty(cell)) continue; 
+                if (cell.nodeName.toLowerCase() === 'td') {
+                    if (!cell.getAttribute('headers') || cell.getAttribute('headers').trim().length === 0)
+                        passed = false;
+                    else
+                        RPTUtil.concatUniqueArrayItemList(cell.getAttribute('headers').trim().split(" "), tdHeaders);
+                } else if (cell.nodeName.toLowerCase() === 'th' && cell.getAttribute('id') && cell.getAttribute('id').trim().length > 0)
+                        RPTUtil.concatUniqueArrayItem(cell.getAttribute('id').trim(), thIds);    
+            }      
+        }
+        
+        if (passed) { // all td elements have headers, to exam if the headers point to a th id
+            if (thIds.length > 0 && tdHeaders.every(header => thIds.includes(header)))
+                return true; 
+        }
+        
+        return false;
     }
 
     public static isNodeInGrid(node) {
@@ -1345,7 +1609,56 @@ export class RPTUtil {
             walkNode = DOMWalker.parentNode(walkNode);
         }
         return walkNode;
-    }   
+    } 
+    
+    /**
+     * return the ancestor of the given element and roles.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {array} roles - the role names to search for
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} walkNode - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAncestorWithRoles(element, roleNames) {
+        if (!element || !roleNames || !roleNames.length || roleNames.length === 0) return null;
+        let walkNode = element;
+        while (walkNode !== null) {
+            let role = RPTUtil.getResolvedRole(walkNode);
+            if (role !== null && roleNames.includes(role))
+                return walkNode;
+            walkNode = DOMWalker.parentNode(walkNode);
+        }
+        return null;
+    } 
+
+    /**
+     * return the roles with given role type.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {array} roleTyples - role types, such as 'widget', 'structure' etc.
+     *
+     * @return {array} roles - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getRolesWithTypes(element, types: string[]) {
+        if (!element || !types || !types.length || types.length ===0) return null;
+        
+        let roles = getCache(element.ownerDocument, "roles_with_given_types", null);
+        if (!roles || roles.length === 0) {
+            roles = [];
+            Object.entries(ARIADefinitions.designPatterns).forEach(([key, value]) => {
+                if (types.includes(value.roleType))
+                    roles.push(key);   
+            });
+            setCache(element.ownerDocument, "roles_with_given_types", roles);
+        } 
+        return roles;
+    } 
+
     /**
      * return the ancestor with the given style properties.
      *
@@ -1559,7 +1872,7 @@ export class RPTUtil {
      * Note: This is a wrapper function to: RPTUtil.getDescendantWithRoleHidden
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      *
      * @return {node} - The descendant element that matches the role specified (only one)
      *
@@ -1574,7 +1887,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1621,7 +1934,7 @@ export class RPTUtil {
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
-     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {string} roleName - The role to look for on the descendant's elements
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1962,6 +2275,7 @@ export class RPTUtil {
         // Test  a) if the parent is a label which is the implicit label
         //       b) if the form element is the first child of the label
         //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
+        //       d) form elements which may have a label: button
         // form elements that do not require implicit or explicit label element are:
         // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
 
@@ -2085,6 +2399,28 @@ export class RPTUtil {
             const label = RPTUtil.getLabelForElementHidden(ele, true);
             if (!label) return "";
             return (RPTUtil.getAriaLabel(label) || label.innerText || "").trim();
+        }
+        return "";
+    }
+
+    public static getAriaDescription(ele) {
+        if (!ele) return "";
+        let normalizedLabel = "";
+        if (ele.hasAttribute("aria-describedby")) {
+            let labelIDs = ele.getAttribute("aria-labelledby").trim().split(" ");    
+            for (let j = 0, length = labelIDs.length; j < length; ++j) {
+                let labelID = labelIDs[j];
+                let labelNode = FragmentUtil.getById(ele, labelID);
+                let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? RPTUtil.getInnerText(labelNode) : "";
+                normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
+            }
+            if (normalizedLabel.trim().length > 0)
+                return normalizedLabel.trim();
+        }
+        if (ele.hasAttribute("aria-description")) {
+            normalizedLabel = ele.getAttribute("aria-description");
+            if (normalizedLabel.trim().length > 0)
+                return normalizedLabel.trim().toLowerCase();
         }
         return "";
     }
@@ -2295,13 +2631,14 @@ export class RPTUtil {
     public static isInnerTextOnlyEmpty(element) {
         // Get the innerText of the element
         let text = element.innerText;
-
-        if (text === undefined && element.textContent !== undefined) {
-            // In headless mode,  innerText is sometimes 'undefined'
+        
+        if ((text === undefined || text === null || text.trim().length === 0) && element.nodeName.toLowerCase() !== 'slot' && element.textContent !== undefined) {
+            //ignore slot because its text will be filled by the corresponding content in the light DOM 
+            // innerText is sometimes 'undefined' in headless mode, or null if the element is invisible or not erxpanded 
             // so we try textContent as a workaround
             text = element.textContent
         }
-
+        
         let retVal = !(text !== null && text.trim().length > 0);
         if (element.nodeType === 1 && element.nodeName.toLowerCase() === "slot") {
             //TODO: need to conside its own content, a slot may have its own content or assigned content
@@ -2317,7 +2654,7 @@ export class RPTUtil {
     /* Return the inner text of the given element */
     public static getInnerText(element) {
         let retVal = element.innerText;
-        if (retVal === undefined || retVal.trim() === "")
+        if (retVal === undefined || retVal === null || retVal.trim() === "")
             retVal = element.textContent;
         return retVal;
     }
@@ -2416,7 +2753,7 @@ export class RPTUtil {
                     node.nodeName.toLowerCase() === "svg"
                     && RPTUtil.svgHasName(node as any)
                 );
-
+                
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && VisUtil.isNodeVisible(node)) {
                     // Check if the innerText of the element is empty or not
@@ -2553,11 +2890,20 @@ export class RPTUtil {
                             tagProperty = specialTagProperties["other"];   
                         break;
                     case "img":
-                        if (ruleContext.hasAttribute("alt")) {
-                            ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
+                        let alt = ruleContext.hasAttribute("alt") ? ruleContext.getAttribute("alt") : null;
+                        let title = ruleContext.hasAttribute("title") ? ruleContext.getAttribute("title") : null;
+                        if ( RPTUtil.getAriaLabel(ruleContext).trim().length !== 0 || (alt !== null && alt.length > 0) || (title !== null && title.length > 0)) {
+                            // If the img has non-empty alt (alt="some text" or alt="  ") or an accessible name is provided
+                            tagProperty = specialTagProperties["img-with-accname"];
                         } else {
-                            RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
-                        }
+                            if (alt !== null) {
+                                // If the img has an empty alt (alt="") 
+                                tagProperty = specialTagProperties["img-without-accname-empty-alt"];
+                            } else {
+                                // If the img lacks an alt attribute 
+                                tagProperty = specialTagProperties["img-without-accname-no-alt"];
+                            }  
+                        }    
                         break;
                     case "input":
                         if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
@@ -2866,41 +3212,61 @@ export class RPTUtil {
      *         or null where ariaAttr won't cause conflict
      */
     public static getConflictOrOverlappingHtmlAttribute(ariaAttr, htmlAttrs, type): any[] | null {
-        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']]; 
         if (exist) { 
+            if (!ariaAttr || ariaAttr.length ==0 || !htmlAttrs || htmlAttrs.length == 0) return [];
+
             let examinedHtmlAtrNames = [];
-            let ariaAttrValue = '';
+            let concernTypes = null;
             if (type === 'conflict') {
-                if (!exist.conflict) return null;
-                ariaAttrValue = exist.conflict.ariaAttributeValue;
+                if (!exist.conflict || Object.keys(exist.conflict).length === 0) return null;
+                concernTypes = exist.conflict;
             } else if (type === 'overlapping')  {
-                if (!exist.overlapping) return null;
-                ariaAttrValue = exist.overlapping.ariaAttributeValue; 
+                if (!exist.overlapping || Object.keys(exist.overlapping).length === 0) return null;
+                concernTypes = exist.overlapping; 
             } else
-                return null;    
-            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
-                let htmlAttrNames = [];
-                let htmlAttrValues = [];
-                if (type === 'conflict') {
-                     htmlAttrNames = exist.conflict.htmlAttributeNames;
-                     htmlAttrValues = exist.conflict.htmlAttributeValues;
-                }  else {
-                     htmlAttrNames = exist.overlapping.htmlAttributeNames;
-                     htmlAttrValues = exist.overlapping.htmlAttributeValues;
-                }    
+                return null;
+            
+            let applicable = false;
+            let fail = false;
+            for (let k=0; k < concernTypes.length; k++) {    
+                let concernAriaValue = concernTypes[k].ariaAttributeValue;
+                let concernHtmlNames = concernTypes[k].htmlAttributeNames;
+                let concernHtmlValues = concernTypes[k].htmlAttributeValues;
+                
                 for (let i = 0; i < htmlAttrs.length; i++) { 
-                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    let index = concernHtmlNames.indexOf(htmlAttrs[i]['name']); 
                     if (index !== -1) { 
-                        if (htmlAttrValues === null
-                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
-                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
-                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
-                               continue;
-                        } else 
-                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
-                    }         
-                }
+                        applicable = true;
+                        let htmlValuesInConcern = (concernHtmlValues===null || concernHtmlValues[index]===null) ? null : concernHtmlValues[index].split(",");
+                        
+                        if (concernAriaValue === null) {
+                            if (htmlValuesInConcern === null) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true; 
+                            } else if (htmlValuesInConcern.includes(htmlAttrs[i]['value'])) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true;
+                            }    
+                        } else if (htmlValuesInConcern === null) {
+                            if (concernAriaValue === ariaAttr['value']) {
+                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                                fail = true;
+                            }    
+                        } else if (concernAriaValue === 'VALUE' && htmlValuesInConcern.includes('VALUE') && htmlValuesInConcern[0] !== ariaAttr['value']) {
+                            examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                            fail = true;
+                        } else if (concernAriaValue === ariaAttr['value'] && htmlValuesInConcern.includes(htmlAttrs[i]['value'])) {
+                            examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                            fail = true;
+                        }    
+                    }
+                }   
             }
+            
+            if (applicable && !fail)
+                examinedHtmlAtrNames.push({result: 'Pass', 'attr': ''});
+
             return examinedHtmlAtrNames;
         } else
             return null;

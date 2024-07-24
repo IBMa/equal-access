@@ -12,7 +12,7 @@
  *****************************************************************************/
 
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
@@ -23,27 +23,27 @@ export let a_text_purpose: Rule = {
     context: "aria:link,aria:doc-biblioref",
     refactor: {
         "WCAG20_A_HasText": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"
+            "Pass_0": "pass",
+            "Fail_1": "fail_acc_name"
         }
     },
     help: {
         "en-US": {
             "group": `a_text_purpose.html`,
-            "Pass_0": `a_text_purpose.html`,
-            "Fail_1": `a_text_purpose.html`
+            "pass": `a_text_purpose.html`,
+            "fail_acc_name": `a_text_purpose.html`
         }
     },
     messages: {
         "en-US": {
-            "group": "Hyperlinks must have a text description of their purpose",
-            "Pass_0": "Hyperlink has a description of its purpose",
-            "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
+            "group": "Hyperlinks must have an accessible name for their purpose",
+            "pass": "Hyperlink has a description of its purpose",
+            "fail_acc_name": "Hyperlink has no link text, label or image with a text alternative"
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
-        num: "2.4.4", // num: [ "2.4.4", "x.y.z" ] also allowed
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
+        num: ["2.4.4", "4.1.2"], // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
     }],
@@ -62,9 +62,9 @@ export let a_text_purpose: Rule = {
             ARIAMapper.computeName(ruleContext).trim().length > 0
             || RPTUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_acc_name");
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }

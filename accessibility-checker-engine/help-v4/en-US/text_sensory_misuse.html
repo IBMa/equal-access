@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,20 @@
 
 ### Why is this important?
 
-Instructions that use shape or location to describe elements (e.g. “select the button on the right”) can help many users understand content. However, sensory characteristics should not be the only means of conveying information when giving instructions. It is not meaningful to users who cannot see the object or the page layout. Adding a label to clarify sensory language will allow all users to better understand the instructions.
+Instructions that use shape or location to describe elements (e.g., “select the button on the right”)
+can be helpful for many users to comprehend the content.
+However, relying solely on sensory characteristics to convey information
+can be problematic for users who cannot see the object or its location.
+Therefore, adding a label to clarify sensory characteristics will make the instructions more accessible to all users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If this word is used in instructions to reference a page element or area, make sure there is also a visible text label for the element or area referenced in the instructions (e.g. "the ‘Delete’ button on the right");
-* **Or**, if the word if not used in instructions, or does not convey sensory meaning (e.g. "the moon above the clouds"), no action is needed.
+* If this word is used in instructions to reference an element's shape or location,
+make sure there is also a visible text label for the element or area referenced (e.g., "the ‘Delete’ button on the right")
+* **Or**, if the word is not used in instructions, or does not require sensory perception (e.g., "the moon above the clouds"), no action is needed
 
 </script></mark-down>
 <!-- End main panel -->
@@ -66,12 +72,12 @@ Instructions that use shape or location to describe elements (e.g. “select the
 ### About this requirement
 
 * [IBM Checkpoint 1.3.3 Sensory Characteristics ](https://www.ibm.com/able/requirements/requirements/#1_3_3)
-* [WCAG technique G96](https://www.w3.org/WAI/WCAG21/Techniques/general/G96.html)
-* [WCAG technique F14](https://www.w3.org/WAI/WCAG21/Techniques/failures/F14)
+* [G96: Identification that does not rely solely on sensory information](https://www.w3.org/WAI/WCAG22/Techniques/general/G96.html)
+* [Failure F14: Content identified only by its sensory characteristics](https://www.w3.org/WAI/WCAG22/Techniques/failures/F14)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People with low vision using screen magnification
 * People with cognitive differences who view interfaces using an adapted layout
 

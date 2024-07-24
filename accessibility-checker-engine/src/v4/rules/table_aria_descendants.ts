@@ -28,11 +28,11 @@ export let table_aria_descendants: Rule = {
     messages: {
         "en-US": {
             "group": "Table structure elements cannot specify an explicit 'role' within table containers",
-            "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within a ARIA role '{1}' per the ARIA in HTML specification"
+            "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within an ARIA role '{1}' per the ARIA in HTML specification"
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE

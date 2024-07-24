@@ -1,0 +1,18 @@
+{
+    "include": [
+      "support/**/*.ts"
+    ],
+    "exclude": [
+      "node_modules"
+    ],
+    "compilerOptions": {
+      "target": "es2017",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "noEmit": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true
+    }
+  }

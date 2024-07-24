@@ -37,6 +37,7 @@ export interface IReport {
 
 export interface IReportItem {
     ruleId: string,
+    reasonId?: number | string,
     path: {
         aria: string,
         dom: string
@@ -51,7 +52,15 @@ export interface ICheckpoint {
     num: string,
     name: string,
     summary: string,
-    rules: { id: string, level: string }[]
+    rules: Array<{ 
+        id: string, 
+        // (optional) Reason codes that this ruleset mapping applies to, 
+        // or all if not specified
+        reasonCodes?: string[],
+        level: string, 
+        toolkitLevel: string,
+        enabled?: boolean
+    }>
 }
 
 export interface IRuleset {

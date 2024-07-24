@@ -18,7 +18,7 @@
 // all references to WAI-ARIA specification is the WAI-ARIA 1.2
 // https://www.w3.org/TR/wai-aria-1.2/
 
-export interface IDocumentConformanceRequirement {
+export type IDocumentConformanceRequirement = {
     implicitRole: string[],
     validRoles: string[],
     globalAriaAttributesValid: boolean,
@@ -1754,7 +1754,7 @@ export class ARIADefinitions {
         },
         "aside": {
             implicitRole: ["complementary"],
-            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
+            validRoles: ["doc-dedication", "doc-example", "doc-footnote", "doc-glossary", "doc-pullquote", "doc-tip", "feed", "none", "note", "presentation", "region", "search"],
             globalAriaAttributesValid: true
         },
         "audio": {
@@ -2120,10 +2120,10 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "s": {
-            implicitRole: null,
+            implicitRole: ["deletion"],
             validRoles: ["any"],
             globalAriaAttributesValid: true,
-            prohibitedAriaAttributesWhenNoImplicitRole: ["aria-label", "aria-labelledby"]
+            otherDisallowedAriaAttributes: ["aria-label", "aria-labelledby"]
         },
         "samp": {
             implicitRole: ["generic"],
@@ -2355,23 +2355,23 @@ export class ARIADefinitions {
 
         },
         "img": {
-            "img-with-alt-text": {
+            "img-with-accname": {
                 implicitRole: ["img"],
-                //roleCondition: " when alt attribute has text (is not empty)",
-                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "radio", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
+                //roleCondition: "when accessible name presents",
+                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "meter", "option", "progressbar", "radio", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
-            "img-with-empty-alt": {
-                implicitRole: ["presentation"],
-                //roleCondition: " when alt attribute is empty",
+            "img-without-accname-empty-alt": {
+                implicitRole: ["presentation", "none"],
+                //roleCondition: "when no accessible name presents and alt=''",
                 validRoles: null,
                 globalAriaAttributesValid: false, 
                 otherAllowedAriaAttributes: ["aria-hidden=true"]
             },
-            "img-without-alt": {
+            "img-without-accname-no-alt": {
                 implicitRole: ["img"],
-                //roleCondition: " when alt attribute, aria-label, or aria-labelledby are not present",
-                validRoles: null,
+                //roleCondition: "when neither accessible name no alt presents",
+                validRoles: ["presentation", "none"],
                 globalAriaAttributesValid: false, 
                 otherAllowedAriaAttributes: ["aria-hidden=true"]
             }
@@ -2385,7 +2385,7 @@ export class ARIADefinitions {
             "checkbox-with-aria-pressed": {
                 implicitRole: ["checkbox"],
                 //roleCondition: " with type=checkbox and aria-pressed attribute is present",
-                validRoles: ["button"],
+                validRoles: ["menuitemcheckbox", "option", "switch", "button"],
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required"],
                 otherDisallowedAriaAttributes: ["aria-checked"]
@@ -2715,132 +2715,137 @@ export class ARIADefinitions {
                 ariaAttributeValue: string | null,
                 htmlAttributeNames: string[],
                 htmlAttributeValues: string[] | null
-            },
+            }[],
             overlapping?: {    
                 ariaAttributeValue: string | null,
                 htmlAttributeNames: string[],
                 htmlAttributeValues: string[] | null
-            }
+            }[]
         } 
     } =  {
         "aria-checked": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["checked"],
                 htmlAttributeValues: null
-            },
-            overlapping: {    
+            }],
+            overlapping: [{    
                 ariaAttributeValue: "true",
                 htmlAttributeNames: ["checked"],
                 htmlAttributeValues: null
-            }
+            }]
         },    
         "aria-disabled": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["disabled"],
                 htmlAttributeValues: null
-            },
-            overlapping: {    
+            }],
+            overlapping: [{    
                 ariaAttributeValue: "true",
                 htmlAttributeNames: ["disabled"],
                 htmlAttributeValues: null
-            }
+            }]
         },
         "aria-hidden": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["hidden"],
-                htmlAttributeValues: null
+                htmlAttributeValues: ["hidden,null"]
             },
-            overlapping: {    
+            {
                 ariaAttributeValue: "true",
                 htmlAttributeNames: ["hidden"],
-                htmlAttributeValues: null
-            }
+                htmlAttributeValues: ["until-found"]
+            }],
+            overlapping: [{    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: ["hidden,null"]
+            }]
         },    
         "aria-placeholder": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["placeholder"],
                 htmlAttributeValues: null
-            }
+            }]
         },    
         "aria-valuemax": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["max"],
                 htmlAttributeValues: null
-            }
+            }]
             //overlap case covered in the role definition: Authors SHOULD NOT use aria-valuemax on any element which allows the max attribute. Use the max attribute instead. 
         },    
         "aria-valuemin": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["min"],
                 htmlAttributeValues: null
-            }
+            }]
             ////overlap case covered in the role definition:Authors SHOULD NOT use aria-valuemin on any element which allows the min attribute. Use the min attribute instead.
         },    
         "aria-readonly": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
                 htmlAttributeValues: [null, "false", "false"]
-            },
-            overlapping: {    
+            }],
+            overlapping: [{    
                 ariaAttributeValue: "true",
                 htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
                 htmlAttributeValues: [null, "true", "true"]
-            }
+            }]
         },
         "aria-required": {
-            conflict: {
+            conflict: [{
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["required"],
                 htmlAttributeValues: null
-            },
-            overlapping: {    
+            }],
+            overlapping: [{    
                 ariaAttributeValue: "true",
                 htmlAttributeNames: ["required"],
                 htmlAttributeValues: null
-            }
+            }]
         },        
         "aria-colspan": {
-            conflict: {
+            conflict: [{
                 // conflict occurs if both values are different
                 ariaAttributeValue: "VALUE",
                 htmlAttributeNames: ["colspan"],
                 htmlAttributeValues: ["VALUE"]
-            },
-            overlapping: {    
+            }],
+            overlapping: [{    
                 // overlap occurs if both exists
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["colspan"],
                 htmlAttributeValues: null
-            }
+            }]
         },
         "aria-rowspan": {
-            conflict: {
+            conflict: [{
                 // conflict occurs if both values are different
                 ariaAttributeValue: "VALUE",
                 htmlAttributeNames: ["rowspan"],
                 htmlAttributeValues: ["VALUE"]
-            },
-            overlapping: {   
+            }],
+            overlapping: [{   
                 // overlap occurs if both exists 
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["rowspan"],
                 htmlAttributeValues: null
-            }
+            }]
         },
         "aria-autocomplete": {
-            conflict: {
-                // conflict occurs if both values are conflict
-                ariaAttributeValue: "none",
+            conflict: [{
+                // conflict occurs if both exists, aria value is only for custom widget, rather than native
+                ariaAttributeValue: null,
                 htmlAttributeNames: ["autocomplete"],
-                htmlAttributeValues: ["on"]
-            }
+                htmlAttributeValues: null
+            }]
         }  
     }
 

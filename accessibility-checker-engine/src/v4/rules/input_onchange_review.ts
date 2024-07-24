@@ -11,34 +11,33 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let input_onchange_review: Rule = {
     id: "input_onchange_review",
-    context: "dom:input, dom:textarea, dom:select",
+    context: "dom:input[onchange], dom:textarea[onchange], dom:select[onchange]",
     refactor: {
         "WCAG20_Input_HasOnchange": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"}
+            "Pass_0": "pass",
+            "Potential_1": "potential_warning"}
     },
     help: {
         "en-US": {
-            "Pass_0": "input_onchange_review.html",
-            "Potential_1": "input_onchange_review.html",
+            "pass": "input_onchange_review.html",
+            "potential_warning": "input_onchange_review.html",
             "group": "input_onchange_review.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Verify that any changes of context are explained in advance to the user",
-            "group": "Verify that any changes of context are explained in advance to the user"
+            "group": "Users must be advised if, due to a change of element value, a form automatically submits, a new window opens, or a change in focus occurs",
+            "pass": "The user is advised of the automatic form submission, new window opening, or focus change",
+            "potential_warning": "Confirm that the user is advised if, due to a change of element value, a form automatically submits, a new window opens, or a change in focus occurs"    
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["3.2.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
@@ -48,13 +47,11 @@ export let input_onchange_review: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (ruleContext.nodeName.toLowerCase() == "input" && ruleContext.hasAttribute("type")) {
             let type = ruleContext.getAttribute("type").toLowerCase();
-            if (type != "text" && type != "file" && type != "password" && type != "checkbox" && type != "radio")
-                return RulePass("Pass_0");
+            if (type === "hidden" || type === "submit" || type === "image" || type === "button" || type === "reset")
+                return null;
         }
 
-        let passed = !ruleContext.hasAttribute("onchange");
-        if (passed) return RulePass("Pass_0");
-        if (!passed) return RulePotential("Potential_1");
+        return RulePotential("potential_warning");
 
     }
 }

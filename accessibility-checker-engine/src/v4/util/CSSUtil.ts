@@ -49,6 +49,7 @@ export function selectorMatchesElem(element, selector) {
  * @param elem 
  */
 export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
+    if (!elem) return null;
     const doc = elem.ownerDocument;
     const win = doc.defaultView;
     return win.getComputedStyle(elem, pseudoElt);
@@ -65,15 +66,20 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * for example, for 'transform: rotate(2.5deg);', the computed style returns 'matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0)' 
  *  and the defined style returns 'rotate(2.5deg)'  
  * 
+ * change the type of the parameter pseudoClass from PseudoClass to string to include both pseudo classes (e.g., :focus, :checked) 
+ * and pseudo elements (e.g., ::before, ::after).  
+ * 
  * @param {HTMLElement} elem 
  * @param {string} [pseudoClass] If specified, will return values that are different
  * than when the pseudoClass does not match.
  */
-export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
+export function getDefinedStyles(elem: HTMLElement, pseudoClass?: string ) {
     // console.log("Function: getDefinedStyles");
+    if (!elem) return null;
+
     let definedStyles = {};
     let definedStylePseudo = {};
-    
+
     function fillStyle(maps, style) {
         for (let sIndex=0; sIndex < style.length; ++sIndex) {
             if (style[sIndex] === "all" && style[style[sIndex]]) {
@@ -355,6 +361,7 @@ export function getRotationDegree(rotation_transform) {
     if (!value) return 0;
     const regex = /(-?[\d.]+)([a-z%]*)/;
     let parsed = value.trim().match(regex);
+    if (parsed === null) return 0;
     if (parsed[2] === '' || parsed[1] === 0) 
        //no zero value without unit which is considered as error, so implicable
        return 0;

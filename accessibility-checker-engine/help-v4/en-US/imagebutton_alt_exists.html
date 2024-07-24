@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -42,12 +43,18 @@
 <!-- Start main panel -->
 <mark-down><script type="text/plain">
 
+### Why is this important?
+
+The `alt` attribute provides a functional label for `<input>` elements of type `image`.
+This label indicates the button's function but should not attempt to describe the image.
+The label is especially important if multiple submit buttons on the page lead to different results.
+
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Use the `alt` attribute on the `<input>` element to provide a short text that describes the input element’s function.(e.g. `<input type="image" alt="submit">`)
+* Use the `alt` attribute on the `<input>` element to provide a short text that describes the input element’s function (e.g., `<input type="image" alt="submit">`).
 
 </script></mark-down>
 <!-- End main panel -->
@@ -61,11 +68,11 @@
 ### About this requirement
 
 * [IBM 1.1.1 Non-text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique H36](https://www.w3.org/WAI/WCAG21/Techniques/html/H36)
+* [H36: Alt attributes on image submit buttons](https://www.w3.org/WAI/WCAG22/Techniques/html/H36)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+* People using a screen reader, including blind, low vision, and neurodivergent people
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>

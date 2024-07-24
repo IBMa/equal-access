@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 export interface IArchive {
-    id: "latest" | "preview" | string
+    id: "latest" | "preview" | "versioned" | string
     name: string
     path: string
     policies: Array<{

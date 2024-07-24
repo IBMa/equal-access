@@ -18,9 +18,26 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { DevToolsApp } from './devToolsApp';
 import { getDevtoolsAppController } from './devtoolsAppController';
+import { getDevtoolsController } from './devtoolsController';
+import { getTabIdAsync } from '../util/tabId';
 
-getDevtoolsAppController();
+(async () => {
+    if (document?.location?.protocol === "chrome-extension:" && document?.location?.search.startsWith("?index=")) {
+        let index = parseInt(decodeURIComponent(document.location.search.substring("?index=".length)));
+        let tabRef = (await chrome.tabs.query({ index }))[0];
+        let contentTabId = tabRef.id;
+        let toolTabId = await getTabIdAsync();
+        let dtc = getDevtoolsController(toolTabId, false, "local", contentTabId);
+        getDevtoolsAppController(toolTabId, contentTabId);
+        await dtc.awaitConnection();
+    } else {
+        let toolTabId = await getTabIdAsync();
+        let dtc = getDevtoolsController(toolTabId, false, "remote", toolTabId)
+        getDevtoolsAppController(toolTabId, toolTabId);
+        await dtc.awaitConnection();
+    }
 
-ReactDOM.render(<DevToolsApp panel="elements" />
-    , document.getElementById('pageapp-root'));
+    ReactDOM.render(<DevToolsApp panel="elements"/>
+        , document.getElementById('pageapp-root'));
+})();
     

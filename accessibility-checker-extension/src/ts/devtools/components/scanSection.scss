@@ -1,5 +1,6 @@
 @use '@carbon/styles/scss/type'as *;
 @use '@carbon/styles/scss/theme'as *;
+@use '@carbon/styles/scss/colors' as *;
 
 
 
@@ -83,7 +84,83 @@
     .inlineLoading {
         background-color: $layer;
     }
+    .totalCountDisable {
+        @include type-style("label-02");
+        margin-top: 3px;
+        pointer-events: none;
+        
+        text-align: right;
+        .darkLink {
+            color: $text-disabled;
+            &:hover {
+                color: $gray-20;
+                cursor: not-allowed;
+            }
+        }    
+    }
+    .totalCountEnable {
+        @include type-style("label-02");
+        margin-top: 3px;
+        pointer-events: auto;
+        text-align: right;
+        .darkLink {
+            color: $text-primary;
+            &:hover {
+                color: $gray-80;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.scanFilterSection {
+    margin: 0rem;
+    padding: .125rem 0rem .25rem 0rem;
+
+    .countCol {
+        @media (max-width:400px) {
+            // position: absolute;
+            // top: 1.5rem;
+            // left: 0rem;
+        }
+        white-space: nowrap;
+    }
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
     
+    .reportSecCounts {
+        font-weight: 600;
+    }
+    .summaryBarLabels {
+        @include type-style("label-02");
+        font-weight: 600;
+        display:none;
+        @media (min-width:780px) {
+            display:inline;
+        }
+        @media (min-width:1056px) {
+            display:none;
+        }
+        @media (min-width:1500px) {
+            display:inline;
+        }
+    }
+    .countCol {
+        @media (max-width:400px) {
+            // position: absolute;
+            // top: 1.5rem;
+            // left: 0rem;
+        }
+        white-space: nowrap;
+    }
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
+    
+    .reportSecCounts {
+        font-weight: 600;
+    }
 }
 
 

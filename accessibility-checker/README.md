@@ -2,14 +2,19 @@
 
 Automated accessibility testing for Node-based test environments.
 
-To get started using the deployed packages, review [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) on NPM.
+To get started using the deployed packages, download the [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) from NPM.
+
+This tool is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
 ## Features
 
 - Scan single or multiple files, directories, or URLs
-- Output scan results in JSON, CSV, HTML or XLSX formats
-- Automate accessibility testing within a continuous integration pipeline such as Travis CI
-- Integrate with Node-based test environments such as Selenium, Puppeteer, Playwright, Jest, and Zombie
+- Output scan results in JSON, CSV, HTML, or XLSX formats
+- Automate accessibility testing within a continuous integration pipeline, such as Travis CI
+- Integrate with Node-based test environments, such as Selenium, Puppeteer, Playwright, Jest, and Zombie
 - Validate test results against baselines
 - Set a target rule archive
 - Configure policies (rule sets) to scan
@@ -21,7 +26,7 @@ To get started using the deployed packages, review [Node accessibility-checker](
 This module provides some basic command-line utilities that will allow scanning files, directories, and URLs:
 
 - Create a .txt file with path(s) to files, directories, or a list of URLs to be scanned
-- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`)
+- Provide the `npx achecker` the full path of the .txt file to start the scan (e.g., `npx achecker path/to/your/file.txt`)
 - Run `npx achecker`
 
 Review the [accessibility-checker/src/README](src/README.md) for more information.
@@ -58,7 +63,7 @@ Review the examples of validating automated accessibility testing results agains
 
 ### Requirements
 
-- [Node Version 16](https://nodejs.org/en/download/)
+- [Node Version 18](https://nodejs.org/en/download/)
 
 ### Install
 
@@ -93,7 +98,7 @@ $ npm test
 
 ## Feedback and reporting bugs
 
-If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues?q=is%3Aopen+is%3Aissue+label%3Anode-accessibility-checker), tagged with `node-accessibility-checker`.
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `node-accessibility-checker`.
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 

@@ -45,7 +45,6 @@
         <input list="function-types" type='text' role='combobox' id="browser3" />
         
 
-        <!-- not triggerred, no failure/pass case, added no triggering explicit role -->
         <input list="function-types" type='number' role='combobox' id="browser4" aria-haspopup="listbox">
         <datalist id="function-types">
           <option value="function">function</option>
@@ -60,7 +59,7 @@
         UnitTest = {
             ruleIds: ["input_haspopup_conflict"],
             results: [  
-          {
+            {
             "ruleId": "input_haspopup_conflict",
             "value": [
               "INFORMATION",
@@ -70,8 +69,8 @@
               "dom": "/html[1]/body[1]/main[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
-            "reasonId": "Potential_2",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with missing or invalid input type",
+            "reasonId": "potential_misuse",
+            "message": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -86,10 +85,28 @@
               "dom": "/html[1]/body[1]/main[1]/input[2]",
               "aria": "/document[1]/main[1]/combobox[2]"
             },
-            "reasonId": "Potential_1",
-            "message": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"text\"",
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"text\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "messageArgs": [
               "text"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_haspopup_conflict",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/input[4]",
+              "aria": "/document[1]/main[1]/combobox[4]"
+            },
+            "reasonId": "potential_type_misuse",
+            "message": "The <input> element with type \"number\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
+            "messageArgs": [
+              "number"
             ],
             "apiArgs": [],
             "category": "Accessibility"

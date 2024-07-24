@@ -47,7 +47,7 @@ export let input_label_exists: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"], /* remove 1.1.1 mapping, keep 4.1.2 */
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
@@ -95,8 +95,8 @@ export let input_label_exists: Rule = {
         ]
         let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
         if (textTypes.indexOf(type) !== -1) { // If type is in the list
-            // Get only the non-hidden labels for element, in the case that an label is hidden then it is a violation
-            // Note: label[for] does not work for ARIA-defined inputs
+            // Get only the non-hidden labels for elements, in the case that a label is hidden then it is a violation
+            // Note: label[for] does not work for ARIA defined inputs
             let labelElem = ruleContext.hasAttribute("role") ? null : RPTUtil.getLabelForElementHidden(ruleContext, true);
             let hasLabelElemContent = false;
             if (labelElem) {
@@ -140,6 +140,17 @@ export let input_label_exists: Rule = {
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
         }
 
+        //check if a native button is labelled
+        if (!passed && nodeName == "button") {
+             if (RPTUtil.hasImplicitLabel(ruleContext))
+                passed = true;
+             else {
+                let label = RPTUtil.getLabelForElement(ruleContext);
+                if (label && RPTUtil.hasInnerContentHidden(label))
+                    passed = true;    
+             }    
+        }
+
         // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
         if (!passed && (buttonTypes.indexOf(type) !== -1)) {
             if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMWalker.parentElement(ruleContext).hasAttribute("widgetid")) {
@@ -163,23 +174,7 @@ export let input_label_exists: Rule = {
             passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
         } 
-        /**if (!passed) {
-            // check aria role
-            //any more roles for input? 
-            const nameFromBoth = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                || RPTUtil.hasRoleInSemantics(ruleContext, "radio") || RPTUtil.hasRoleInSemantics(ruleContext, "checkbox");
-            const nameFromAuthorOnly = RPTUtil.hasRoleInSemantics(ruleContext, "listbox") || RPTUtil.hasRoleInSemantics(ruleContext, "searchbox") 
-                || RPTUtil.hasRoleInSemantics(ruleContext, "textbox") || RPTUtil.hasRoleInSemantics(ruleContext, "combobox")
-                || !RPTUtil.hasAnyRole(ruleContext, true);   
-            
-            if (nameFromBoth)
-                passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
-            
-            if (!passed) {
-                if (nameFromBoth || nameFromAuthorOnly)
-                passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
-            } 
-        }*/
+        
         if (!passed)
             passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
                 

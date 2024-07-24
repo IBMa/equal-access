@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <!--
@@ -19,8 +20,8 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
@@ -44,15 +45,16 @@
 
 ### Why is this important?
 
-Text alternatives provide important information that cannot be visually perceived by some people. When a short description is not sufficient, the `"longdesc"` attribute can link to a URL containing a longer description of the image.
+Text alternatives provide important information that some people cannot be visually perceive.
+When a short description is insufficient, the `longdesc` attribute can link to a URL containing a longer image description.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * The `longdesc` attribute is inconsistently implemented across browsers.  Where possible, it is preferable to provide a longer image description [using the `aria-describedby` attribute](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA15);
- * **Or**, verify the `longdesc` attribute value is a valid URL of an HTML page with a text description of the image.
+ * The `longdesc` attribute is inconsistently implemented across browsers. Where possible, it is preferable to provide a longer image description [using the `aria-describedby` attribute](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA15)
+ * **Or**, verify the `longdesc` attribute value is a valid URL of an HTML page with a text description of the image
 
 For example:
 
@@ -72,12 +74,12 @@ For example:
 ### About this requirement
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-* [WCAG technique H45](https://www.w3.org/WAI/WCAG21/Techniques/html/H45)
+* [H45: Using longdesc](https://www.w3.org/WAI/WCAG22/Techniques/html/H45)
 
 ### Who does this affect?
 
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People using text only, monochrome or braille displays
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People using text-only, monochrome, or Braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
  * People who turn off image-loading on their web browsers
 

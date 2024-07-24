@@ -38,13 +38,13 @@ export let style_highcontrast_visible: Rule = {
         }
     },
     rulesets: [{
-        "id": ["IBM_Accessibility"],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     },
     {
-        "id": ["WCAG_2_1", "WCAG_2_0"],
+        "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
