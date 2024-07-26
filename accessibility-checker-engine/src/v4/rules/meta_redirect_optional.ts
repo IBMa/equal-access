@@ -48,8 +48,7 @@ export let meta_redirect_optional: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: [ "bisz58", 
-        { 
+    act: [{ 
             "bc659a" : {
                 "pass": "pass",
                 "fail": "fail",
