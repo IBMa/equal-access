@@ -254,7 +254,7 @@ function initializeDefaults(config: IConfigInternal) {
         packageDir = __dirname;
     } catch (err) {
         // This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
-        const __filename = fileURLToPath(import.meta.url);
+        // const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
         packageDir = __dirname;
     }
