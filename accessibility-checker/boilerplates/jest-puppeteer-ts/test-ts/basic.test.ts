@@ -6,7 +6,7 @@ import { Browser, Page, launch } from 'puppeteer';
 let browser: Browser;
 beforeAll(async () => {
     try {
-        browser = await launch({ headless: "new"});
+        browser = await launch({ headless: "shell"});
     } catch (e) {
         console.log(e);
     }

@@ -157,7 +157,7 @@ export type IConfigInternal = IConfig & {
     /**
      * (optional) If the tool allows, should we run headless
      */
-    headless?: "new" | boolean
+    headless?: "shell" | boolean
 
     /**
      * (optional) If the tool allows, set the maximum number of tabs to open

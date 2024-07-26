@@ -9,7 +9,7 @@ import * as fs from "fs";
         "@graph": []
     }
     let ruleTestInfo = await getTestcases();
-    let browser = await puppeteer.launch({ headless: 'new', ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true });
     let pupPage = await browser.newPage();
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {

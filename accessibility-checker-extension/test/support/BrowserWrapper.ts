@@ -38,7 +38,7 @@ export class BrowserWrapper {
     constructor() {
         this.homepage = `chrome-extension://${EXTENSION_ID}`;
         this.browser = launch({ 
-            headless: process.env.TRAVIS === "true" ? "new" : "new", 
+            headless: process.env.TRAVIS === "true" ? "shell" : "shell", 
             ignoreHTTPSErrors: true,
             args: [
                 `--disable-extensions-except=${EXTENSION_PATH}`,

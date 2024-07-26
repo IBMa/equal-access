@@ -15,7 +15,7 @@ let page: Puppeteer.Page;
 
 before(async () => {
     try {
-        browser = await Puppeteer.launch({ headless: "new"});
+        browser = await Puppeteer.launch({ headless: "shell"});
         page = await browser.newPage();
     } catch (e) {
         console.log(e);
