@@ -1,11 +1,11 @@
 **/node_modules
-package
+# package
 package-external
 dist
 dependencies
 npm-debug.log
 results
-package-lock.json
+# package-lock.json
 src/**/*.js
 src/**/*.map
 src/**/*.d.ts
