@@ -24,6 +24,7 @@ import { fetch_get } from "../api-ext/Fetch";
 import { ReporterManager } from "../report/ReporterManager";
 import path from 'path';
 import { IArchive } from "./IArchive";
+// This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
 // import { fileURLToPath } from 'url';
 
 /**
