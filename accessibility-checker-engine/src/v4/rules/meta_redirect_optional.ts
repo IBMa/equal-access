@@ -48,14 +48,14 @@ export let meta_redirect_optional: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
+    // Removed ACT bisz58 AAA
     act: [{ 
-            "bc659a" : {
-                "pass": "pass",
-                "fail": "fail",
-                "fail_longrefresh": "pass"
-            }
+        "bc659a" : {
+            "pass": "pass",
+            "fail": "fail",
+            "fail_longrefresh": "pass"
         }
-    ],
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context
