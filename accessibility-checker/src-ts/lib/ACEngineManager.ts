@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
+import { createRequire as topRequire } from "module";
 
 let ace;
 
@@ -269,7 +270,8 @@ export class ACEngineManager {
 
                 const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
                 if (fs.existsSync(`${nodePath}.js`)) {
-                    const ace_ibma = require(nodePath);
+                    //const ace_ibma = require(nodePath);
+                    const ace_ibma = await import(nodePath); 
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
