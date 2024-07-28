@@ -9,7 +9,7 @@
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,
-        "alwaysStrict": true,
+        //"alwaysStrict": true,
         "esModuleInterop": true,
     },
     "include": [
