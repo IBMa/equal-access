@@ -1,13 +1,17 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "module": "commonjs",
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        //"module": "commonjs",
+        "module": "ESNext",
         "types": [
             "node",
             "@wdio/globals/types",
             "expect-webdriverio",
             "@wdio/mocha-framework"
         ],
-        "target": "es2022"
+        //"target": "es2022"
+        "target": "ESNext"
     }
 }
