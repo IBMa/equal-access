@@ -269,8 +269,8 @@ export class ACEngineManager {
 
                 const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
                 if (fs.existsSync(`${nodePath}.js`)) {
-                    //const ace_ibma = require(nodePath);
-                    const ace_ibma = await import(nodePath); 
+                    const ace_ibma = require(nodePath);
+                    //const ace_ibma = await import(nodePath); 
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
@@ -280,8 +280,8 @@ export class ACEngineManager {
                             reject(err);
                         } else {
                             try {
-                                //const ace_ibma = require(nodePath);
-                                const ace_ibma = await import(nodePath);
+                                const ace_ibma = require(nodePath);
+                                //const ace_ibma = await import(nodePath);
                                 checker = new ace_ibma.Checker();
                                 resolve();
                             } catch (e) {
