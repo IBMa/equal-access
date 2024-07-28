@@ -4,6 +4,10 @@ import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
 
+// The following two lines will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
+// import { createRequire } from "module"; 
+// const require = createRequire(import.meta.url);
+
 let ace;
 
 let checker: IChecker;
@@ -270,7 +274,6 @@ export class ACEngineManager {
                 const nodePath = path.join(engineDir, `ace-node-${fileSuffix}`);
                 if (fs.existsSync(`${nodePath}.js`)) {
                     const ace_ibma = require(nodePath);
-                    //const ace_ibma = await import(nodePath); 
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
@@ -281,7 +284,6 @@ export class ACEngineManager {
                         } else {
                             try {
                                 const ace_ibma = require(nodePath);
-                                //const ace_ibma = await import(nodePath);
                                 checker = new ace_ibma.Checker();
                                 resolve();
                             } catch (e) {
