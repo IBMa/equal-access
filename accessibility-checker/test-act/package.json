@@ -2,7 +2,8 @@
   "name": "test-act",
   "version": "1.0.0",
   "description": "Run ACT testcases",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Results output to testOutput.txt\" && node main.mjs > testOutput.txt"
+    "test": "export NODE_OPTIONS='--experimental-specifier-resolution=node' && echo \"Results output to testOutput.txt\" && node main.mjs > testOutput.txt"
   }
 }
