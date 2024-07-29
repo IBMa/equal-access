@@ -3,15 +3,13 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "experimentalDecorators": true,
-        //"module": "commonjs",
-        "module": "ESNext",
+        "module": "commonjs",
         "types": [
             "node",
             "@wdio/globals/types",
             "expect-webdriverio",
             "@wdio/mocha-framework"
         ],
-        //"target": "es2022"
-        "target": "ESNext"
+        "target": "ES2015"
     }
 }

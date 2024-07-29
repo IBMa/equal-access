@@ -1,9 +1,7 @@
 import * as fs from "fs"; // file system
 import * as path from "path";
-import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/mjs/index";
+import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/cjs/index";
 //import * as ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
-import { createRequire } from "module"; 
-const mock_require = createRequire(import.meta.url);
 
 const unitTestcaseHTML = {};
 const testRootDir = path.join(process.cwd(), "..", "..", "..", "accessibility-checker-engine","test","v2","checker","accessibility","rules");
@@ -24,7 +22,7 @@ for (const key in mapRuleToG) {
 // Determine which rules are in policy
 let validList = {};
 let policyMap = {};
-let ace = mock_require("../../../../../accessibility-checker-engine/dist/ace-node.js");
+let ace = require("../../../../../accessibility-checker-engine/dist/ace-node.js");
 
 const checker = new ace.Checker();
 before(async function () {

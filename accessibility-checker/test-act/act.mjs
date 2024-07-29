@@ -7,7 +7,7 @@
 
 'use strict';
 
-import * as aChecker from "../src/mjs/index.js";
+import * as aChecker from "../src/cjs/index.js";
  
 async function getAceMapping() {
     let rules = await aChecker.getRules();
