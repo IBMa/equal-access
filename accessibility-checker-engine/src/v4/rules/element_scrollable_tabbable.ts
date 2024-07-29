@@ -76,8 +76,8 @@ export let element_scrollable_tabbable: Rule = {
             && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ padding_y)
             return null;
         
-        // pass iframe element has a tabindex attribute value that is not negative
-        if (ruleContext.hasAttribute("tabindex") && parseInt(ruleContext.getAttribute("tabindex")) >= 0)
+        // pass if element is tabbable
+        if (RPTUtil.isTabbable(ruleContext))
             return RulePass("pass_tabbable");
 
         // check if element content is tabbable
