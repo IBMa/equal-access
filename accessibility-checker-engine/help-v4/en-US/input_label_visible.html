@@ -45,24 +45,45 @@
 
 ### Why is this important?
 
-Visible labels are essential so that people using voice control know what to say.
-This allows them to easily navigate to interactive elements on the screen.
+Visible labels are essential, so every user can know what information to enter:
+- People with cognitive, language, and learning disabilities, older adults, and all users will easily learn what information is expected.
+- People using voice control will see what to speak. This allows them to easily jump to interactive elements and form fields.
+
+Placeholder labels when used as the only visible label can reduce the accessibility for a wide range of users. Avoid placeholder labels for the following reasons:
+- May not be persistent: the placeholder label disappears when the user starts typing in the input field
+- Can be mistaken for a pre-filled value: this can be more of an issue in AI applications
+- Hard to see: the text color commonly fails a minimum contrast ratio of 4.5 to 1
+- May be too small: the lack of a label reduces the hit region for setting focus on the input field in touch devices
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If there is already a visible label for the `<input>` element, use the `for` attribute on the label to reference the `<input>` element's `id` value
- * **Or**, add a visible label, with the `for` attribute linking it to the `<input>`
+The intent of labels, including expected formats and required fields, 
+on interactive elements is not to clutter the page with unnecessary information but to provide important cues that will benefit all users. 
+Too much information can be just as harmful as too little.
 
-For example:
+**If** there is already a visible label for the element, use an attribute on the label to reference the element's id
+- **Or**, add a visible label with an attribute or coding construct associating it to the element.
+    
+**If** using the placeholder attribute, ensure it is a short hint to aid the user with data entry,
+- **And**, use a valid label method that is both visible and programmatically determined.
+    
+**If** a visible label cannot be added,
+- **Either**, make a label or instructions available to users when the individual control has focus (both keyboard and pointer),
+- **Or**, verify the input field and interactive element is understood within the context or instructions.
+    
+Examples:
 
 ```
 <label for="test1">License Number:</label>
-<input type="text" id="test1" aria-label="Enter driver license number"/>
+    <input type="text" id="test1" aria-label="Enter driver license number"/>
 <label for="test2">First name:</label>
-<input type="text" id="test2"/>
+    <input type="text" id="test2"/>
+<label>Email Address: 
+    <input type="email" name="address1" placeholder="john@example.net">
+</label>
 ```
 
 </script></mark-down>
@@ -77,13 +98,20 @@ For example:
 ### About this requirement
 
 * [IBM 3.3.2 Label or Instruction](https://www.ibm.com/able/requirements/requirements/#3_3_2)
-* [IBM 2.5.3 Label in Name](https://www.ibm.com/able/requirements/requirements/#2_5_3)
 * [H44: Associate text labels with form controls](https://www.w3.org/WAI/WCAG22/Techniques/html/H44)
+* [ARIA1: Use aria-describedby to label a user interface control](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)
+* [ARIA9: Use aria-labelledby to concatenate several text nodes](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA9)
+* [W3C Placeholder Research](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Placeholder_Research)
 
 ### Who does this affect?
-
+ 
+ * People with cognitive, language, and learning disabilities
  * People with dexterity impairments using voice control
-
+ * People with low vision using screen magnification
+ * People with vision impairments needing contrast enhancement
+ * People with tremors or other movement disorders using touch devices
+ * Many older adults
+    
 </script></mark-down>
 <!-- End side panel -->
             </div>
