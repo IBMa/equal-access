@@ -1929,6 +1929,33 @@ export class RPTUtil {
 
         return descendant;
     }
+
+    /**
+     * This function is responsible for getting All descendant elements with the specified roles, under
+     * the element that was provided. This function aslo finds elements with implicit roles.
+     *
+     * @parm {element} element - parent element for which we will be checking descendants for
+     * @parm {string[]} roleNames - The roles to look for on the descendant's elements
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node[]} - all descendant elements that match the roles specified
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAllDescendantsWithRoles(element, roleNames:string[], considerHiddenSetting, considerImplicitRoles) {
+        if (!roleNames || roleNames.length ===0) return;
+        // Variable Decleration
+        let descendants = [];
+
+        roleNames.forEach(roleName => {
+            let kids = RPTUtil.getAllDescendantsWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles);
+            if (kids && kids.length > 0)
+                descendants = descendants.concat(kids);    
+        });
+        return descendants;
+    }
+
     /**
      * This function is responsible for getting All descendant elements with the specified role, under
      * the element that was provided. This function aslo finds elements with implicit roles.
@@ -1938,11 +1965,11 @@ export class RPTUtil {
      * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
-     * @return {node} - The descendant element that matches the role specified (only one)
+     * @return {node[]} - The descendant elements that match the role specified
      *
      * @memberOf RPTUtil
      */
-    public static getAllDescendantsWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles) {
+    public static getAllDescendantsWithRoleHidden(element, roleName:string, considerHiddenSetting, considerImplicitRoles) {
         // Variable Decleration
         let descendants = [];
         let nw = new NodeWalker(element);

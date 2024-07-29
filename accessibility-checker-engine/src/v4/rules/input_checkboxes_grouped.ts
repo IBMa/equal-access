@@ -20,46 +20,46 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let input_checkboxes_grouped: Rule = {
     id: "input_checkboxes_grouped",
-    context: "dom:input",
+    context: "dom:input[type=radio], dom:input[type=checkbox]",
     refactor: {
         "WCAG20_Input_RadioChkInFieldSet": {
-            "Pass_LoneNogroup": "Pass_LoneNogroup",
-            "Pass_Grouped": "Pass_Grouped",
-            "Pass_RadioNoName": "Pass_RadioNoName",
-            "Fail_ControlNameMismatch": "Fail_ControlNameMismatch",
-            "Fail_NotGroupedOtherGrouped": "Fail_NotGroupedOtherGrouped",
-            "Fail_NotGroupedOtherNotGrouped": "Fail_NotGroupedOtherNotGrouped",
-            "Fail_NotSameGroup": "Fail_NotSameGroup",
-            "Potential_LoneCheckbox": "Potential_LoneCheckbox",
-            "Potential_UnnamedCheckbox": "Potential_UnnamedCheckbox"
+            "Pass_LoneNogroup": "pass_lonenogroup",
+            "Pass_Grouped": "pass_grouped",
+            "Pass_RadioNoName": "pass_radioNoName",
+            "Fail_ControlNameMismatch": "fail_controlnamemismatch",
+            "Fail_NotGroupedOtherGrouped": "fail_notgroupedothergrouped",
+            "Fail_NotGroupedOtherNotGrouped": "fail_notgroupedothernotgrouped",
+            "Fail_NotSameGroup": "fail_notsamegroup",
+            "Potential_LoneCheckbox": "potential_lonecheckbox",
+            "Potential_UnnamedCheckbox": "potential_unnamedcheckbox"
         }
     },
     help: {
         "en-US": {
             "group": "input_checkboxes_grouped.html",
-            "Pass_LoneNogroup": "input_checkboxes_grouped.html",
-            "Pass_Grouped": "input_checkboxes_grouped.html",
-            "Pass_RadioNoName": "input_checkboxes_grouped.html",
-            "Fail_ControlNameMismatch": "input_checkboxes_grouped.html",
-            "Fail_NotGroupedOtherGrouped": "input_checkboxes_grouped.html",
-            "Fail_NotGroupedOtherNotGrouped": "input_checkboxes_grouped.html",
-            "Fail_NotSameGroup": "input_checkboxes_grouped.html",
-            "Potential_LoneCheckbox": "input_checkboxes_grouped.html",
-            "Potential_UnnamedCheckbox": "input_checkboxes_grouped.html"
+            "pass_lonenogroup": "input_checkboxes_grouped.html",
+            "pass_grouped": "input_checkboxes_grouped.html",
+            "pass_radiononame": "input_checkboxes_grouped.html",
+            "fail_controlnamemismatch": "input_checkboxes_grouped.html",
+            "fail_notgroupedothergrouped": "input_checkboxes_grouped.html",
+            "fail_notgroupedothernotgrouped": "input_checkboxes_grouped.html",
+            "fail_notsamegroup": "input_checkboxes_grouped.html",
+            "potential_lonecheckbox": "input_checkboxes_grouped.html",
+            "potential_unnamedcheckbox": "input_checkboxes_grouped.html"
         }
     },
     messages: {
         "en-US": {
             "group": "Related sets of radio buttons or checkboxes should be programmatically grouped",
-            "Pass_LoneNogroup": "{0} grouping not required for a control of this type",
-            "Pass_Grouped": "{0} input is grouped with other related controls with the same name",
-            "Pass_RadioNoName": "Radio input is not grouped, but passes because it has no name to group with other radio inputs",
-            "Fail_ControlNameMismatch": "{0} input found that has the same name, \"{2}\" as a {1} input",
-            "Fail_NotGroupedOtherGrouped": "{0} input is not in the group with another {0} with the name \"{1}\"",
-            "Fail_NotGroupedOtherNotGrouped": "{0} input and others with the name \"{1}\" are not grouped together",
-            "Fail_NotSameGroup": "{0} input is in a different group than another {0} with the name \"{1}\"",
-            "Potential_LoneCheckbox": "Verify that this ungrouped checkbox input is not related to other checkboxes",
-            "Potential_UnnamedCheckbox": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes"
+            "pass_lonenogroup": "{0} grouping not required for a control of this type",
+            "pass_grouped": "{0} input is grouped with other related controls with the same name",
+            "pass_radiononame": "Radio input is not grouped, but passes because it has no name to group with other radio inputs",
+            "fail_controlnamemismatch": "{0} input found that has the same name, \"{2}\" as a {1} input",
+            "fail_notgroupedothergrouped": "{0} input is not in the group with another {0} with the name \"{1}\"",
+            "fail_notgroupedothernotgrouped": "{0} input and others with the name \"{1}\" are not grouped together",
+            "fail_notsamegroup": "{0} input is in a different group than another {0} with the name \"{1}\"",
+            "potential_lonecheckbox": "Verify that this ungrouped checkbox input is not related to other checkboxes",
+            "potential_unnamedcheckbox": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes"
         }
     },
     rulesets: [{
@@ -71,7 +71,9 @@ export let input_checkboxes_grouped: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (context["aria"].role === 'none' || context["aria"].role === 'presentation') return null;
+        
+        //skip the rule
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         const getGroup = (e: Element) => {
             let retVal = RPTUtil.getAncestor(e, "fieldset")
@@ -89,11 +91,8 @@ export let input_checkboxes_grouped: Rule = {
         }
 
         // Only radio buttons and checkboxes are in scope
-        let ctxType = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").toLowerCase() : "text";
-        if (ctxType !== "checkbox" && ctxType !== "radio") {
-            return null;
-        }
-
+        let ctxType = ruleContext.getAttribute("type").toLowerCase();
+        
         // Determine which form we're in (if any) to determine our scope
         let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form")
             || RPTUtil.getAncestor(ruleContext, "html")
@@ -172,20 +171,20 @@ export let input_checkboxes_grouped: Rule = {
             if (ctxType === "Radio") {
                 // Radios without names don't act like groups, so don't enforce grouping
                 if (ctxGroup === null) {
-                    return RulePass("Pass_RadioNoName", [ctxType]);
+                    return RulePass("pass_radiononame", [ctxType]);
                 } else {
-                    return RulePass("Pass_Grouped", [ctxType]);
+                    return RulePass("pass_grouped", [ctxType]);
                 }
             } else {
                 // Must be an unnamed checkbox
                 if (ctxGroup === null) {
                     if ((formCache.checkboxByName[""] || []).length > 1) {
-                        return RulePotential("Potential_UnnamedCheckbox", [ctxType]);
+                        return RulePotential("potential_unnamedcheckbox", [ctxType]);
                     } else {
-                        return RulePass("Pass_LoneNogroup", [ctxType]);
+                        return RulePass("pass_lonenogroup", [ctxType]);
                     }
                 } else {
-                    return RulePass("Pass_Grouped", [ctxType]);
+                    return RulePass("pass_grouped", [ctxType]);
                 }
             }
         } else {
@@ -195,40 +194,40 @@ export let input_checkboxes_grouped: Rule = {
             // Capitalize the input type for messages
             if (numRadiosWithName > 0 && numCheckboxesWithName > 0) {
                 // We have a naming mismatch between different controls
-                return RuleFail("Fail_ControlNameMismatch", [ctxType, ctxType === "checkbox" ? "radio" : "checkbox", ctxName]);
+                return RuleFail("fail_controlnamemismatch", [ctxType, ctxType === "checkbox" ? "radio" : "checkbox", ctxName]);
             } else if (ctxType === "Radio" && (formCache.numRadios === 1 || numRadiosWithName === 1)
                 || ctxType === "Checkbox" && formCache.numCheckboxes === 1) {
                 // This is a lone control (either only control of this type on the page, or a radio button without any others by that name)
                 // We pass this control in all cases
                 if (ctxGroup === null) {
-                    return RulePass("Pass_LoneNogroup", [ctxType]);
+                    return RulePass("pass_lonenogroup", [ctxType]);
                 } else {
-                    return RulePass("Pass_Grouped", [ctxType]);
+                    return RulePass("pass_grouped", [ctxType]);
                 }
             } else if (ctxType === "Checkbox" && formCache.numCheckboxes > 1 && numCheckboxesWithName === 1) {
                 // We have only one checkbox with this name, but there are other checkboxes in the form.
                 // If we're not grouped, ask them to examine it
                 if (ctxGroup === null) {
-                    return RulePotential("Potential_LoneCheckbox", [ctxType]);
+                    return RulePotential("potential_lonecheckbox", [ctxType]);
                 } else {
-                    return RulePass("Pass_Grouped", [ctxType]);
+                    return RulePass("pass_grouped", [ctxType]);
                 }
             } else {
                 // We share a name with another similar control. Are we grouped together?
                 if (ctxGroup === null) {
                     if (formCache.nameToGroup[ctxName] !== null) {
                         // We're not grouped, but some control with the same name is in a group
-                        return RuleFail("Fail_NotGroupedOtherGrouped", [ctxType, ctxName]);
+                        return RuleFail("fail_notgroupedothergrouped", [ctxType, ctxName]);
                     } else {
                         // None of us are grouped
-                        return RuleFail("Fail_NotGroupedOtherNotGrouped", [ctxType, ctxName])
+                        return RuleFail("fail_notgroupedothernotgrouped", [ctxType, ctxName])
                     }
                 } else if (formCache.nameToGroup[ctxName] !== ctxGroup) {
                     // We're not in the main group with the others
-                    return RuleFail("Fail_NotSameGroup", [ctxType, ctxName]);
+                    return RuleFail("fail_notsamegroup", [ctxType, ctxName]);
                 } else {
                     // We're all grouped up!
-                    return RulePass("Pass_Grouped", [ctxType]);
+                    return RulePass("pass_grouped", [ctxType]);
                 }
             }
         }

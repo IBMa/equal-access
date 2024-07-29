@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text with Purple and Pink Colors</title>
+  </head>
+  <body>
+  
+    <fieldset>
+      <legend> fieldset for checkboxes with same name (preferred for form submission)</legend>
+        <p><label> <input type=checkbox name="topping" value="bacon"> Bacon </label></p>
+        <p><label> <input type=checkbox name="topping" value="cheese"> Extra Cheese </label></p>
+        <p><label> <input type=checkbox name="topping" value="onion"> Onion </label></p>
+        <p><label> <input type=checkbox name="topping" value="mushroom"> Mushroom </label></p>
+    </fieldset>
+
+    <fieldset>
+      <legend> fieldset for checkboxes with different names </legend>
+        <p><label> <input type=checkbox name="bacon" value="bacon"> Bacon </label></p>
+        <p><label> <input type=checkbox name="cheese" value="cheese"> Extra Cheese </label></p>
+        <p><label> <input type=checkbox name="onion" value="onion"> Onion </label></p>
+        <p><label> <input type=checkbox name="mushroom" value="mushroom"> Mushroom </label></p>
+    </fieldset>
+
+    <fieldset>
+      <legend> fieldset for checkboxes with no name (Carbon pattern)</legend>
+        <p><label> <input type=checkbox value="apple"> Apple </label></p>
+        <p><label> <input type=checkbox value="pear"> Pear </label></p>
+        <p><label> <input type=checkbox value="strawberry"> Strawberry </label></p>
+    </fieldset>
+
+    <div id="desc2">group for checkboxes with no name </div>
+    <div role='group' aria-labelledby="desc2">
+        <p><label> <input type=checkbox value="apple"> Apple </label></p>
+        <p><label> <input type=checkbox value="pear"> Pear </label></p>
+        <p><label> <input type=checkbox value="strawberry"> Strawberry </label></p>
+    </div>
+
+    <div id="desc3">list for checkboxes with the same name </div>
+    <ul aria-labelledby="desc3">
+        <li> <input type=checkbox name='fruit' value="apple"> Apple </li>
+        <li> <input type=checkbox name='fruit' value="pear"> Pear </li>
+        <li><input type=checkbox name='fruit' value="strawberry"> Strawberry </li>
+    </ul>
+
+    <div id="desc4">list for checkboxes with different names </div>
+    <ul aria-labelledby="desc4">
+        <li> <input type=checkbox name='apple' value="apple"> Apple </li>
+        <li> <input type=checkbox name='pear' value="pear"> Pear </li>
+        <li><input type=checkbox name='strawberry' value="strawberry"> Strawberry </li>
+    </ul>
+
+    <div id="desc5">list for checkboxes with no name (IBM cloud pattern)</div>
+    <ul aria-labelledby="desc5">
+        <li> <input type=checkbox value="apple"> Apple </li>
+        <li> <input type=checkbox value="pear"> Pear </li>
+        <li><input type=checkbox value="strawberry"> Strawberry </li>
+    </ul>
+
+  </body>
+  <script>
+    UnitTest = {
+      ruleIds: ["input_checkboxes_grouped"],
+      results: [
+      {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]/p[1]/label[1]/input[1]",
+              "aria": "/document[1]/group[1]/paragraph[1]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]/p[2]/label[1]/input[1]",
+              "aria": "/document[1]/group[1]/paragraph[2]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]/p[3]/label[1]/input[1]",
+              "aria": "/document[1]/group[1]/paragraph[3]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[1]/p[4]/label[1]/input[1]",
+              "aria": "/document[1]/group[1]/paragraph[4]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[2]/p[1]/label[1]/input[1]",
+              "aria": "/document[1]/group[2]/paragraph[1]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[2]/p[2]/label[1]/input[1]",
+              "aria": "/document[1]/group[2]/paragraph[2]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[2]/p[3]/label[1]/input[1]",
+              "aria": "/document[1]/group[2]/paragraph[3]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[2]/p[4]/label[1]/input[1]",
+              "aria": "/document[1]/group[2]/paragraph[4]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[3]/p[1]/label[1]/input[1]",
+              "aria": "/document[1]/group[3]/paragraph[1]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[3]/p[2]/label[1]/input[1]",
+              "aria": "/document[1]/group[3]/paragraph[2]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/fieldset[3]/p[3]/label[1]/input[1]",
+              "aria": "/document[1]/group[3]/paragraph[3]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/p[1]/label[1]/input[1]",
+              "aria": "/document[1]/group[4]/paragraph[1]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/p[2]/label[1]/input[1]",
+              "aria": "/document[1]/group[4]/paragraph[2]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]/p[3]/label[1]/input[1]",
+              "aria": "/document[1]/group[4]/paragraph[3]/checkbox[1]"
+            },
+            "reasonId": "pass_grouped",
+            "message": "Checkbox input is grouped with other related controls with the same name",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[1]/input[1]",
+              "aria": "/document[1]/list[1]/listitem[1]/checkbox[1]"
+            },
+            "reasonId": "fail_notgroupedothernotgrouped",
+            "message": "Checkbox input and others with the name \"fruit\" are not grouped together",
+            "messageArgs": [
+              "Checkbox",
+              "fruit"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[2]/input[1]",
+              "aria": "/document[1]/list[1]/listitem[2]/checkbox[1]"
+            },
+            "reasonId": "fail_notgroupedothernotgrouped",
+            "message": "Checkbox input and others with the name \"fruit\" are not grouped together",
+            "messageArgs": [
+              "Checkbox",
+              "fruit"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[3]/input[1]",
+              "aria": "/document[1]/list[1]/listitem[3]/checkbox[1]"
+            },
+            "reasonId": "fail_notgroupedothernotgrouped",
+            "message": "Checkbox input and others with the name \"fruit\" are not grouped together",
+            "messageArgs": [
+              "Checkbox",
+              "fruit"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[2]/li[1]/input[1]",
+              "aria": "/document[1]/list[2]/listitem[1]/checkbox[1]"
+            },
+            "reasonId": "potential_lonecheckbox",
+            "message": "Verify that this ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[2]/li[2]/input[1]",
+              "aria": "/document[1]/list[2]/listitem[2]/checkbox[1]"
+            },
+            "reasonId": "potential_lonecheckbox",
+            "message": "Verify that this ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[2]/li[3]/input[1]",
+              "aria": "/document[1]/list[2]/listitem[3]/checkbox[1]"
+            },
+            "reasonId": "potential_lonecheckbox",
+            "message": "Verify that this ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[3]/li[1]/input[1]",
+              "aria": "/document[1]/list[3]/listitem[1]/checkbox[1]"
+            },
+            "reasonId": "potential_unnamedcheckbox",
+            "message": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[3]/li[2]/input[1]",
+              "aria": "/document[1]/list[3]/listitem[2]/checkbox[1]"
+            },
+            "reasonId": "potential_unnamedcheckbox",
+            "message": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_checkboxes_grouped",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[3]/li[3]/input[1]",
+              "aria": "/document[1]/list[3]/listitem[3]/checkbox[1]"
+            },
+            "reasonId": "potential_unnamedcheckbox",
+            "message": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes",
+            "messageArgs": [
+              "Checkbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</html>
