@@ -4,6 +4,6 @@
   "description": "Run ACT testcases",
   "type": "module",
   "scripts": {
-    "test": "export NODE_OPTIONS='--experimental-specifier-resolution=node' && echo \"Results output to testOutput.txt\" && node main.mjs > testOutput.txt"
+    "test": "echo \"Results output to testOutput.txt\" && node --experimental-specifier-resolution=node main.mjs > testOutput.txt"
   }
 }
