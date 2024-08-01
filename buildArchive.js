@@ -43,7 +43,7 @@ const monthStr = monthNames[now.getMonth()];
 const archiveDir = `${now.getFullYear()}.${(""+(now.getMonth()+1)).padStart(2,'0')}.${paddedDate}`;
 const archiveId = `${paddedDate}${monthStr}${now.getFullYear()}`;
 (async () => {
-    // Ensure latest
+    // **Pull from Git**: Ensure we have the latest from Git
     await myExec("git pull");
     // **Install**: In `accessibility-checker-engine` and `rule-server` run `npm install`
     await myExec("pushd accessibility-checker-engine && npm install && popd");
