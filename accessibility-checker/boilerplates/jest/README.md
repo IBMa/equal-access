@@ -2,7 +2,7 @@
 
 This folder covers "baseline basics".
 
-We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json` and one that does not).
+We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json`) and one that does not.
 
 A scan was run previously that detected an issue. That scan was saved as a baseline. The checker will ignore issues stored in the baseline. This feature allows a team to snapshot where they're at to prevent new issues from being introduced. This also allows a team to fail on potential violations, but then store items in the baseline that they've assessed and determined were being addressed in some way.
 
