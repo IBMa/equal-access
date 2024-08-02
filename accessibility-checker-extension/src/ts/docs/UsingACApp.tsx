@@ -899,7 +899,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <h2 id="t_select_settings">5. Settings</h2>
                 <p>
                     By default, the Checker uses the latest deployment of a set of rules that correspond to the WCAG standard, plus additional IBM requirements. 
-                    Use the 'Settings' page to change the default rule set for a supported guideline (standard) and the 'Keyboard Checker Mode' settings.
+                    Use the 'Settings' page to change the default rule set for a supported guideline (standard) and the 'Keyboard checker mode' settings.
                 </p>
                 <p>
                     There are two methods to open the Settings page, the browser toolbar and the settings gear icon:
@@ -939,24 +939,32 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     In the Checker panel itself, select the Settings gear icon to open the settings page.
                 </p>
+                
+                <h3 id="rule_deploy">Rule set settings</h3>
+                <p>
+                    Rule sets are a packaged set of rules that are mapped to an accessibility guideline.
+                    The rules in the sets are updated regularly and each update has a date of deployment. 
+                    For details on rule changes at each deployment, see the <Link href="https://github.com/IBMa/equal-access/releases" target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg">IBMa/equal-access Release Notes</Link> in GitHub.
+                    For details on which rules are mapped to which accessibility requirement, see the <Link href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg">Checker rule sets</Link> listed in the IBM Accessibility Requirements.
+                </p>
+                <p>    
+                    The <strong>Latest Deployment</strong> rule set setting is the default. 
+                    For consistent testing throughout a project, choose a specific deployment date. 
+                    To replicate an earlier test, choose the deployment date of the original test.
+                </p>
                 <p>
                     <img
                         src="assets/img/2_8_SettingsRulesets.png"
                         alt="Rule set options"
                     />
                 </p>
-                <h3 id="rule_deploy">Rule set settings</h3>
-                <p>
-                    Rule sets with rules that map to a specific WCAG version are available. 
-                    The rule sets are updated regularly and each update has a date of deployment. 
-                    For consistent testing throughout a project, choose a specific date of deployment. 
-                    To replicate an earlier test, choose the deployment date of the original test.
-                </p>
                 <p>
                     Select one of the following:
                 </p>
                 <UnorderedList>
-                    <ListItem><strong>Latest deployment</strong> - the latest rule set of the selected accessibility guideline (default)</ListItem>
+                    <ListItem><strong>Latest Deployment</strong> - the latest rule set of the selected accessibility guideline (default)</ListItem>
                     <ListItem><strong>&lt;date&gt; Deployment</strong> - replicate an earlier test by choosing the deployment date of the original test</ListItem>
                     <ListItem><strong>Preview Rules</strong> - experiment with a possible future rule set</ListItem>
                 </UnorderedList>
@@ -967,20 +975,27 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
                 </p>
                 <p>
-                    Rule sets for a specific accessibility guideline or version of the IBM Accessibility requirements are available to check against an established policy. 
+                    The rule sets for a specific WCAG version or version of the <Link href="https://www.ibm.com/able/requirements/requirements" target="_blank" rel="noopener noreferred"
+                    inline={true} size="lg">IBM Accessibility Requirements</Link> are available to check against an established policy. 
                     Select one of the following options from the 'Select accessibility guidelines' dropdown:
                 </p>
                     <UnorderedList>
-                        <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
+                        <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements.</ListItem>
                         <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. This will be the default starting Oct 1, 2024.</ListItem>
-                        <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>
-                        <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
-                        <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508</ListItem>
+                        <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification with no additional IBM requirements. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0.</ListItem>
+                        <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by earlier versions of EN 301 549 and other policies, but not the latest W3C specification. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.</ListItem>
+                        <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508.</ListItem>
                     </UnorderedList>
 
                 <h3 id="keyboard_checker_settings">Keyboard checker mode settings</h3>
-                <p></p>
-                <UnorderedList>
+                <p>
+                    <img
+                        src="assets/img/2_8_SettingsKeyboardChecker.png"
+                        alt="Keyboard checker mode options"
+                    />
+                </p>
+                <p>This section contains the settings for the visualizations and notifications:</p>
+                    <UnorderedList>
                         <ListItem><strong>Lines connecting tab stops</strong>: by default, the 'Lines connecting tab stops' checkbox is selected.
                             Without this setting, only the numbered tab stop icons would be visible on the page.
                         </ListItem>
@@ -989,10 +1004,21 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </ListItem>
                         <ListItem><strong>Alert notifications</strong>: toggles on and off the panel notification that appears every time the keyboard checker mode is selected. 
                             This setting is equivalent to selecting the ‘Do not show this again’ checkbox in the notification panel. 
-                        </ListItem>
-                        <ListItem><strong>Keyboard tab stops</strong>: explanation panel can be displayed at any time by selecting the ‘More Info’ icon next to the ‘Keyboard tab stops’ heading above the list issues. 
                         </ListItem>    
-                </UnorderedList>
+                    </UnorderedList>
+                <p>
+                    <img
+                        src="assets/img/2_8_SettingsKeyboardVisualizationGuide.png"
+                        alt="Keyboard tab stops - Visualization guide"
+                    />
+                </p>
+                <p>The Keyboard tap stops visualization guide notification panel is displayed each time the mode is turned on:</p>
+                    <UnorderedList>
+                        <ListItem><strong>Do not show this again</strong>: checkbox can be selected to avoid displaying the notification panel. 
+                        </ListItem> 
+                        <ListItem><strong>Keyboard tab stops- Visualization guide</strong>: notification panel can be displayed at any time by selecting the ‘More Info’ icon next to the ‘Keyboard tab stops’ heading above the list issues. 
+                        </ListItem>    
+                    </UnorderedList>
 
                 <h2 id="the_report">6. Checker reports</h2>
                 <p>

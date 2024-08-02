@@ -445,6 +445,8 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             alt="settings gear icon highlighted"
                         />
                     </p>
+
+                    <h3 id="rule_deploy">Rule set settings</h3>
                     <p>
                         <img
                             src="assets/img/2_8_SettingsRulesets.png"
@@ -466,7 +468,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             alt="Accessibility guidelines options"
                         />
                     </p>
-                    <p>Rule sets for a specific accessibility guideline or version of the IBM Accessibility requirements are available to check against an established policy. 
+                    <p>Rule sets for a specific version of the WCAG accessibility guideline or version of the IBM Accessibility requirements are available to check against an established policy. 
                         Select one of the following:</p>
                         <UnorderedList>
                             <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
@@ -475,6 +477,26 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                             <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
                             <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508</ListItem>
                         </UnorderedList>
+                
+                <h3 id="keyboard_checker_settings">Keyboard checker mode settings</h3>
+                    <p>
+                        <img
+                        src="assets/img/2_8_SettingsKeyboardChecker.png"
+                        alt="Keyboard checker mode options"
+                        />
+                    </p>
+                    <p>This section contains the settings for the visualizations and notifications:</p>
+                        <UnorderedList>
+                        <ListItem><strong>Lines connecting tab stops</strong>: by default, the 'Lines connecting tab stops' checkbox is selected.
+                            Without this setting, only the numbered tab stop icons would be visible on the page.
+                        </ListItem>
+                        <ListItem><strong>Element outlines</strong>: by default, the bounding boxes do not display.
+                            Select the 'Element outlines' checkbox to see light bounding boxes for each interactive element in the tab order.
+                        </ListItem>
+                        <ListItem><strong>Alert notifications</strong>: toggles on and off the panel notification that appears every time the keyboard checker mode is selected. 
+                            This setting is equivalent to selecting the ‘Do not show this again’ checkbox in the notification panel. 
+                        </ListItem>    
+                    </UnorderedList>
                     <p>
                         For more in-depth guidance, 
                         view <Link href={chrome.runtime.getURL("usingAC.html#t_select_settings")} target="_blank" rel="noopener noreferred"
