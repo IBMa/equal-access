@@ -39,13 +39,13 @@ export let style_highcontrast_visible: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
-        "num": ["1.1.1"],
+        "num": ["1.1.1", "1.3.2", "1.4.11"],  //other "style" rules for focus, hover, and color
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     },
     {
         "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["1.1.1"],
+        "num": ["1.1.1", "1.3.2", "1.4.11"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],

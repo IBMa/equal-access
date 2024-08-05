@@ -38,7 +38,7 @@ export let caption_track_exists: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["1.2.1", "1.2.2", "1.2.4"],
+        "num": ["1.2.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],

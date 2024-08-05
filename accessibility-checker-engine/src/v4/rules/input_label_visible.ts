@@ -47,7 +47,7 @@ export let input_label_visible: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["3.3.2"],
+        "num": ["2.5.3", "3.3.2"], //map to both requirements in help
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
