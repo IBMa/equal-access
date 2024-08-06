@@ -40,7 +40,7 @@ export let script_onclick_avoid: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["1.3.1"],
+        "num": ["2.1.1"], //help and match mapping to 2.1.1 only 
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_FOUR
     }],

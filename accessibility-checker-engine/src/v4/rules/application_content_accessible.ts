@@ -42,7 +42,7 @@ export let application_content_accessible: Rule = {
     },
     rulesets: [{
         id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
-        num: "2.1.1", // num: [ "2.4.4", "x.y.z" ] also allowed
+        num: ["1.1.1", "2.1.1"], //match listing in help
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
