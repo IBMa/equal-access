@@ -16,6 +16,21 @@
 package com.ibm.able.config;
 
 public class Config {
+    Config() {}
+
+    Config(Config other) {
+        this.ruleArchive = other.ruleArchive;
+        this.policies = other.policies.clone();
+        this.failLevels = other.failLevels.clone();
+        this.reportLevels = other.reportLevels.clone();
+        this.outputFormat = other.outputFormat.clone();
+        this.label = other.label.clone();
+        this.outputFolder = other.outputFolder;
+        this.outputFilenameTimestamp = other.outputFilenameTimestamp;
+        this.baselineFolder = other.baselineFolder;
+        this.cacheFolder = other.cacheFolder;
+        this.extensions = other.extensions;
+    }
     /**
      * (optional) Specify the rule archive
      *
@@ -61,13 +76,13 @@ public class Config {
      * (optional) Specify any labels that you would like associated to your scan
      * Default: []
      */
-    public String[] label;
+    public String[] label = null;
 
     /**
      * (optional) Where the scan results should be saved.
      * Default: "results"
      */
-    public String outputFolder;
+    public String outputFolder = null;
 
     /**
      * (optional) Should the timestamp be included in the filename of the reports?
