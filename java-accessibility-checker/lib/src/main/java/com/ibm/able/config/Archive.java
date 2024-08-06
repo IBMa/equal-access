@@ -29,7 +29,7 @@ public class Archive {
     public String name;
     public String path;
     public Ruleset[] policies;
-    public Map<String, Ruleset> rulesets = new HashMap<String, Ruleset>();
+    public Map<String, Ruleset[]> rulesets = new HashMap<String, Ruleset[]>();
 
     public String version;
     public boolean latest;

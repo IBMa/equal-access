@@ -36,7 +36,8 @@ public class LibraryTest {
     @Test public void someLibraryMethodReturnsTrue() {
         LibraryTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
         String pageTitle = driver.getTitle();
-        System.out.println("Page Title: " + pageTitle);        
+        System.out.println("Page Title: " + pageTitle);
+        System.out.println(System.getProperty("user.dir"));
         Library classUnderTest = new Library();
         assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
     }

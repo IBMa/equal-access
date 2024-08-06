@@ -22,12 +22,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.ibm.able.config.Archive;
 import com.ibm.able.util.Fetch;
 import com.ibm.able.util.Misc;
 
@@ -49,8 +47,8 @@ public class ACConfigManager {
      * @param versionA 
      * @param versionB 
      */
-    private static int compareVersions(String versionA, String versionB) {
-        Pattern versionRE = Pattern.compile("[0-9.]+(-rc.[0-9]+)?");
+    public static int compareVersions(String versionA, String versionB) {
+        Pattern versionRE = Pattern.compile("[0-9.]+(-rc\\.[0-9]+)?");
         versionA = versionA.trim();
         versionB = versionB.trim();
         if (!versionRE.matcher(versionA).matches()) throw new ConfigError("Invalid version");
@@ -58,15 +56,16 @@ public class ACConfigManager {
         if (versionA.equals(versionB)) return 0;
         // Get x.y.z-rc.a into [x.y.z, a]
         // Get x.y.z into [x.y.z]
-        String[] split1A = versionA.split("-rc.");
-        String[] split1B = versionB.split("-rc.");
+        String[] split1A = versionA.split("-rc\\.");
+        String[] split1B = versionB.split("-rc\\.");
         // Get x.y.z into [x,y,z]
-        String[] split2A = split1A[0].split(".");
-        String[] split2B = split1B[0].split(".");
+        String[] split2A = split1A[0].split("\\.");
+        String[] split2B = split1B[0].split("\\.");
+
         // For the components of the shortest version - can only compare numbers we have
         int minLength = Math.min(split2A.length, split2B.length);
         for (int idx=0; idx<minLength; ++idx) {
-            if (split2A[idx] != split2B[idx]) {
+            if (!split2A[idx].equals(split2B[idx])) {
                 return Integer.parseInt(split2A[idx])-Integer.parseInt(split2B[idx]);
             }
         }
@@ -77,6 +76,9 @@ public class ACConfigManager {
         // Handle 4.0.0 vs 4.0.0-rc.x (shorter string is later)
         if (split1A.length != split1B.length) {
             return split1B.length-split1A.length;
+        }
+        if (split1A.length <= 1) {
+            return 0;
         }
         return Integer.parseInt(split1A[1])-Integer.parseInt(split1B[1]);
     }
@@ -121,6 +123,7 @@ public class ACConfigManager {
 
         // Get and parse the rule archive.
         String ruleArchiveFile = String.format("%s%s/archives.json",ruleServer,ruleServer.contains("jsdelivr.net")?"@next":"");
+        
         Archive[] ruleArchiveParse;
         try {
             // if (ACConfig.ignoreHTTPSErrors) {
@@ -128,7 +131,9 @@ public class ACConfigManager {
             // }
             ruleArchiveParse = Fetch.getJSONArr(ruleArchiveFile, Archive[].class);
         } catch (Error err) {
+            System.err.println(ruleArchiveFile);
             System.err.println(err.toString());
+            err.printStackTrace();
             throw err;
         }
         String ruleArchivePath = null;
@@ -216,9 +221,9 @@ public class ACConfigManager {
         config.captureScreenshots = Misc.firstNotNull(config.captureScreenshots, ACConstants.captureScreenshots);
 
         // Build the toolID based on name and version
-        config.toolID = "java-accessibility-checker-v1.0.0";
+        config.toolID = "java-accessibility-checker-v3.1.70";
         config.toolName = "java-accessibility-checker";
-        config.toolVersion = "1.0.0";
+        config.toolVersion = "3.1.70";
 
         // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
         // are done for a single run of karma.
@@ -226,7 +231,9 @@ public class ACConfigManager {
 
         for (Field field : ACConstants.getClass().getDeclaredFields()) {
             try {
-                field.set(config, field.get(ACConstants));
+                if (field.get(config) == null) {
+                    field.set(config, field.get(ACConstants));
+                }
             } catch (IllegalArgumentException e) {
             } catch (IllegalAccessException e) {
             }
@@ -250,7 +257,7 @@ public class ACConfigManager {
         // Use an unpopulated config as the default values
         ConfigInternal ACConstants = new ConfigInternal();
 
-        if (ACConstants.DEBUG) System.out.println("START 'loadConfigFromYAMLorJSONFile' function");
+        if (ACConstants.DEBUG) System.out.println("START 'loadConfigFromJSONFile' function");
 
         // Get the current working directory, where we will look for the yaml, yml or json file
         String workingDir = System.getProperty("user.dir");
@@ -264,14 +271,12 @@ public class ACConfigManager {
             // Get the full path to the config file we are going to check
             String fileToCheck = Paths.get(workingDir, configFile).toString();
 
-            if (ACConstants.DEBUG) System.out.println("Checking file: " + fileToCheck);
-
             // Get the extension of the file we are about to scan
             String fileExtension = fileToCheck.substring(fileToCheck.lastIndexOf('.') + 1);
 
             // If this is a yml or yaml file verify that the file exists and then load as such.
             if ("json".equals(fileExtension)) {
-                if (ACConstants.DEBUG) System.out.println("Trying to load as json or js.");
+                if (ACConstants.DEBUG) System.out.println(fileToCheck+": Trying to load as json or js.");
 
                 // Need to use try/catch mech so that in the case the require throws an exception, we can
                 // catch this and discatd the error, as in the case there is no config file provided then
@@ -280,14 +285,15 @@ public class ACConfigManager {
                     Gson gson = new Gson();
                     JsonReader reader = new JsonReader(new FileReader(fileToCheck));
                     config = gson.fromJson(reader, ConfigInternal.class);
+                    if (ACConstants.DEBUG) System.out.println(fileToCheck+": LOADED");
+                    return config;
                 } catch (FileNotFoundException e) {
-                    if (ACConstants.DEBUG) System.out.println("JSON or JS file ("+fileToCheck+") does not exists, will load default config.");
+                    if (ACConstants.DEBUG) System.out.println(fileToCheck+": Skipping, JSON file does not exist.");
                 }
             }
         }
 
-        if (ACConstants.DEBUG) System.out.println("END 'loadConfigFromYAMLorJSONFile' function");
-
+        if (ACConstants.DEBUG) System.out.println("END 'loadConfigFromJSONFile' function");
         return config;
     }
 
@@ -318,19 +324,20 @@ public class ACConfigManager {
 
         // Read in the .yaml (.yml) or .json file to load in the configuration
         configFromFile = loadConfigFromJSONFile();
-
-        if (ACConstants.DEBUG) System.out.println("Loaded config from file: ");
-        if (ACConstants.DEBUG) System.out.println(configFromFile);
+        if (ACConstants.DEBUG && configFromFile == null) System.out.println("No config from file");
+        if (ACConstants.DEBUG && configFromFile != null) System.out.println("Loaded config from file: ");
+        if (ACConstants.DEBUG && configFromFile != null) System.out.println(configFromFile);
 
         // In the case configuration was provided in a yaml, yml or json file, then set this as the configuration
         // otherwise load them from the Karma configuration.
         if (configFromFile != null) {
             if (ACConstants.DEBUG) System.out.println("Using config which was loaded from config file.");
-
             ACConfig = configFromFile;
         } else if (config != null) {
+            if (ACConstants.DEBUG) System.out.println("Using config as parameter.");
             ACConfig = new ConfigInternal(config);
         } else {
+            if (ACConstants.DEBUG) System.out.println("Using default config.");
             ACConfig = new ConfigInternal();
         }
 
@@ -339,13 +346,13 @@ public class ACConfigManager {
         // wrapper scripts that there was nothing defined at all, and at the same time to make sure that this
         // code was actually executed.
         initializeDefaults(ACConfig);
-
         // Now we process the final accessibility-checker config object that is build to make sure it is valid, also need to perform some
         // mapping for provided paremeters to actualy read by the engine.
         try {
             ACConfig = processACConfig(ACConfig);
         } catch (IOException e) {
             System.err.println(e);
+            e.printStackTrace();
         }
 
         // In the case the Karma config is set to config.LOG_DEBUG then also enable the accessibility-checker debuging
@@ -371,5 +378,9 @@ public class ACConfigManager {
             ACConfigManager.setConfig(null);
         }
         return config;
+    }
+
+    static void resetConfig() {
+        config = null;
     }
 }
