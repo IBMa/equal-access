@@ -637,6 +637,7 @@ export class RPTUtil {
     }
 
     public static normalizeSpacing(s) {
+        if (!s) return '';
         return s.trim().replace(/\s+/g, ' ');
     };
 
@@ -2684,6 +2685,39 @@ export class RPTUtil {
         if (retVal === undefined || retVal === null || retVal.trim() === "")
             retVal = element.textContent;
         return retVal;
+    }
+
+    /**
+     * return onscreen innerText.
+     * This function should return the same result as innerText if no offscreen content exists
+     *
+     * @parm {element} node The node which should be checked it has inner text or not.
+     * @return {null | string} null if element has empty inner text, text otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static getOnScreenInnerText(element) {
+        if (!element) return null;
+        if (element.nodeType === 3) return element.nodeValue();
+
+        let text = "";
+        let nw = new NodeWalker(element);
+
+        // Loop over all the childrens of the element to get the text
+        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
+            if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node))) {
+                if (nw.node.nextSibling) {
+                    if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
+                        text += nw.node.nextSibling.nodeValue; 
+                    nw.node = nw.node.nextSibling;
+                    continue;
+                } else
+                    break;
+            }
+            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null)
+                text += nw.node.nodeValue; 
+        }
+        return text.trim();
     }
 
     /** Return the text content of the given node 

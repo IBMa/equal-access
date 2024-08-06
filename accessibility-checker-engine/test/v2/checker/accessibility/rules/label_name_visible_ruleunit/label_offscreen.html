@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>test case</title>
+    </head>
+    <body>
+      <button id='button1' aria-label="Visible label">
+        <span style="position:absolute;left:-1000px">Offscreen content</span>
+        Visible label
+      </button>
+
+      <button id='button2' aria-label="Another visible label">
+        <span> Another Offscreen content</span>
+        Another Visible label
+      </button>
+      <div> another line </div>
+    <script>
+        UnitTest = {
+            ruleIds: ["label_name_visible"],
+            results: [  
+            {
+            "ruleId": "label_name_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Accessible name matches or contains the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "label_name_visible",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Accessible name does not match or contain the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+</body>
+
+</html>   
