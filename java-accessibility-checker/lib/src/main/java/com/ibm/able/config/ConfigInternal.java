@@ -18,6 +18,14 @@ package com.ibm.able.config;
 import java.nio.file.Paths;
 
 public class ConfigInternal extends Config {
+    ConfigInternal() {
+        super();
+    }
+
+    ConfigInternal(Config config) {
+        super(config);
+    }
+
     /**
      * Run in debug mode
      */
@@ -26,12 +34,12 @@ public class ConfigInternal extends Config {
     /**
      * Spot to store parsed archive file
      */
-    // ruleArchiveSet?: IArchive[]
+    public Archive[] ruleArchiveSet = null;
 
     /**
      * Label to expose to reports
      */
-    public String ruleArchiveLabel;
+    public String ruleArchiveLabel = null;
 
     /**
      * (optional) Rule server to pull the rules from and to use for help
@@ -42,22 +50,22 @@ public class ConfigInternal extends Config {
     /**
      * Path to the rule pack
      */
-    public String rulePack;
+    public String rulePack = null;
 
     /**
      * Path within the archive
      */
-    public String ruleArchivePath;
+    public String ruleArchivePath = null;
 
     /**
      * Version number of the selected archive
      */
-    public String ruleArchiveVersion;
+    public String ruleArchiveVersion = null;
 
     /**
      * (optional) If the tool allows, should we capture screenshots
      */
-    public boolean captureScreenshots = false;
+    public Boolean captureScreenshots = false;
 
     /**
      * (optional) If the tool allows, should we run headless
@@ -79,11 +87,11 @@ public class ConfigInternal extends Config {
         Paths.get(".config", "aceconfig.json").toString()
     };
 
-    public String toolID;
-    public String toolName;
-    public String toolVersion;
+    public String toolID = null;
+    public String toolName = null;
+    public String toolVersion = null;
 
-    public String scanID;
+    public String scanID = null;
 
     public boolean ignoreHTTPSErrors = false;
 
