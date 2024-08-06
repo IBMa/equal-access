@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input with image child</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  </head>
+  <body>
+  
+    <table aria-label="Example table">
+      <tr>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Years Worked</th>
+      </tr>
+      <tr>
+        <td><input type="text" placeholder="Enter your age" /></td>
+        <td>
+          <select>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" placeholder="Enter number of years worked" />
+        </td>
+      </tr>
+    </table>
+
+    <hr style="margin: 20px;">
+    <div>progress doesn't take user input</div>
+    <label>implicit Role: progressbar</label>
+    <progress id="file" value="32" max="100"> 32% </progress>   
+
+    <hr style="margin: 20px;">
+    <label for="1">File upload:</label>
+    <input type="file" id="1" name="myfile">
+
+    <hr style="margin: 20px;">
+    <div>output elelement doesn't take user input</div>
+    <label for="2">Number a:</label>
+    <input type="number" id="2" value="50">
+    <label for="3">Number b:</label>
+    +<input type="number" id="3" value="25">
+    =<output id='output' name="x" for="a b">{Updated value here as output}</output>
+
+    
+    <hr style="margin: 20px;">
+     <div id="label">Pass: visible label is from aria-labelledby element</div>
+     <input id='4' type="text" name="input" aria-labelledby="label" placeholder="type a text">
+    
+
+    <hr style="margin: 20px;">
+    <div>The placeholder is the only visible label and the aria-labelledby pointing to itself</div>
+    <input type="text" name="input" id='5' aria-labelledby="5" placeholder="type a text">
+    
+    <hr style="margin: 20px;">
+    <div>The placeholder is the only visible label and the aria-labelledby element is hidden</div>
+    <div id="ainput" hidden>The hidden content</div>
+    <input type="text" name="input" id='6' aria-labelledby="ainput" placeholder="type a text">
+
+    <hr style="margin: 20px;">
+    <div>The placeholder is the only visible label and the aria-labelledby doesn't exist</div>
+    <input type="text" name="input" id='7' aria-labelledby="cinput" placeholder="type a text">
+   
+    <hr style="margin: 20px;">
+    <form method="post"> 
+        <div>The placeholder is the only visible label</div>
+        <input type="text" placeholder="Email address" name="email">
+
+        <button type="button" aria-label="submit"></button>
+    </form>
+
+    <hr style="margin: 20px;">
+    <form method="post">
+        <div>The placeholder is the only visible label</div>
+        <input type="text" placeholder="Email address" aria-label='email address' name="email">
+
+        <hr style="margin: 10px;">
+        <input type="submit" />
+    </form>
+
+    <hr style="margin: 20px;">
+    <input id='8' type="button" />
+
+    <hr style="margin: 20px;">
+    <input id='9' type="submit" />
+
+    <hr style="margin: 50px;">
+  </body>
+  <script>
+    UnitTest = {
+      ruleIds: ["input_label_visible"],
+      results: [
+      {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[2]",
+              "aria": "/document[1]/spinbutton[1]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[3]",
+              "aria": "/document[1]/spinbutton[2]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[4]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[5]",
+              "aria": "/document[1]/textbox[2]"
+            },
+            "reasonId": "potential_placeholder_only",
+            "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[6]",
+              "aria": "/document[1]/textbox[3]"
+            },
+            "reasonId": "potential_placeholder_only",
+            "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[7]",
+              "aria": "/document[1]/textbox[4]"
+            },
+            "reasonId": "potential_placeholder_only",
+            "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/input[1]",
+              "aria": "/document[1]/form[1]/textbox[1]"
+            },
+            "reasonId": "potential_placeholder_only",
+            "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/button[1]",
+              "aria": "/document[1]/form[1]/button[1]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]/input[1]",
+              "aria": "/document[1]/form[2]/textbox[1]"
+            },
+            "reasonId": "potential_placeholder_only",
+            "message": "The ‘placeholder’ is the only visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[2]/input[2]",
+              "aria": "/document[1]/form[2]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/input[9]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</html>

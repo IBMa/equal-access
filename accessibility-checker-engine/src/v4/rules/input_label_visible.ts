@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
@@ -20,30 +20,34 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let input_label_visible: Rule = {
     id: "input_label_visible",
-    context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output",
-    dependencies: ["input_label_exists"],
+    context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox",
+    dependencies: ["input_label_exists"], 
     refactor: {
         "WCAG20_Input_VisibleLabel": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"}
+            "Pass_0": "pass",
+            "Potential_1": "potential_no_label",
+            "potential_placeholder_only": "potential_placeholder_only"
+        }
     },
     help: {
         "en-US": {
-            "Pass_0": "input_label_visible.html",
-            "Potential_1": "input_label_visible.html",
+            "pass": "input_label_visible.html",
+            "potential_placeholder_only": "input_label_visible.html",
+            "potential_no_label": "input_label_visible.html",
             "group": "input_label_visible.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "The input element does not have an associated visible label",
+            "pass": "The input element has an associated visible label",
+            "potential_placeholder_only": "The ‘placeholder’ is the only visible label",
+            "potential_no_label": "The input element does not have an associated visible label",
             "group": "An input element must have an associated visible label"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["3.3.2"],
+        "num": ["2.5.3", "3.3.2"], //map to both requirements in help
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
@@ -51,15 +55,17 @@ export let input_label_visible: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
-
+        
         //ignore datalist element check since it will be part of a input element or hidden by default
         if (nodeName === 'datalist')
             return null;
 
-        if (!VisUtil.isNodeVisible(ruleContext) ||
-            RPTUtil.isNodeDisabled(ruleContext)) {
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return null;
-        }
+        
+        // if a control is in a table cell, the col headers can act as visible label, which is checked in table heading rule
+        if (RPTUtil.getAncestor(ruleContext, "table"))
+            return null;
 
         // when in a combobox, only look at the input textbox.
         if (RPTUtil.getAncestorWithRole(ruleContext, "combobox") &&
@@ -88,74 +94,75 @@ export let input_label_visible: Rule = {
             }
         }
 
-        // Determine the input type
-        let passed = true;
+        // check visible label for input or button
+        if (nodeName === 'input' || nodeName === 'button') {
 
-        let type = "text";
-        if (nodeName == "input" && ruleContext.hasAttribute("type")) {
-            type = ruleContext.getAttribute("type").toLowerCase();
-        } else if (nodeName === "button" || RPTUtil.hasRoleInSemantics(ruleContext, "button")) {
-            type = "buttonelem";
-        }
-        if (nodeName == "input" && type == "") {
-            type = "text";
-        }
+            if (RPTUtil.hasImplicitLabel(ruleContext))
+                return RulePass("pass");
+            
+            let label = RPTUtil.getLabelForElement(ruleContext);
+            if (label && RPTUtil.hasInnerContentHidden(label))
+                return RulePass("pass");  
 
-        let textTypes = ["text", "file", "password",
-            "checkbox", "radio",
-            "search", "tel", "url", "email",
-            "date", "number", "range",
-            "time", "color",
-            "month", "week", "datetime-local"];
-        let buttonTypes = ["button", "reset", "submit"];
-        let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
-        if (textTypes.indexOf(type) !== -1) { // If type is in the list
-            // Get only the non-hidden labels for element, in the case that an label is hidden then it is a violation
-            let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
-            passed = (labelElem != null && RPTUtil.hasInnerContentHidden(labelElem)) ||
-                RPTUtil.hasImplicitLabel(ruleContext) ||
-                type === "file"; // input type=file has a visible default.
-        } else if (buttonTypes.indexOf(type) !== -1 || type == "buttonelem") {
-            // Buttons are not in scope for this success criteria (IBMa/equal-access#204)
-            return null;
+            // special cases
+            let type = ruleContext.getAttribute("type");
+            if (nodeName === 'input' && type) {
+                type = type.toLowerCase();
+                //submit type of input has a visible label 'Submit' by default
+                if (type === 'submit' || type === 'reset')
+                    return RulePass("pass");
+                //image type of input requires a non-empty alt text
+                if (type === 'image' && RPTUtil.attributeNonEmpty(ruleContext, "alt"))
+                    return RulePass("pass");
+            }
         }
 
+        // custom widget submission is not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
+        let role = RPTUtil.getResolvedRole(ruleContext);
+        if (role && role === "button" && nodeName !== 'input' && nodeName !== 'button') {    
+            // likely a custom widget, skip if not associated with data entry
+            if (!RPTUtil.getAncestor(ruleContext, "form"))
+                return null;    
+        }
+
+        // check if any visible text from the control. 
+        // note that (1) the text doesn’t need to be associated with the control to form a relationship
+        //  and (2) the text doesn't need to follow accessible name requirement (e.g. nameFrom)
+        if (!RPTUtil.isInnerTextEmpty(ruleContext))
+            return RulePass("pass");
+
+        // check if an alternative tooltip exists that can be made visible through mouseover
+        if (RPTUtil.attributeNonEmpty(ruleContext, "title"))
+            return RulePass("pass"); 
+
+        // check if any descendant with an alternative tooltip that can be made visible through mouseover
+        // only consider img and svg, and other text content of the descendant is covered in the isInnerText above  
+        let descendants = RPTUtil.getAllDescendantsWithRoles(ruleContext, ["img", "graphics-document", "graphics-object", "graphics-symbol"], false, true);
+        if (descendants && descendants.length > 0) {
+            for (let d=0; d < descendants.length; d++) {
+                if (RPTUtil.attributeNonEmpty(descendants[d], "title") || RPTUtil.attributeNonEmpty(descendants[d], "alt"))
+                    return RulePass("pass");
+            } 
+        }
+        
         // check if there is a visible label pointed to by the aria-labelledby attribute.
-        if (!passed && RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")) {
+        if (RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")) {
             let theLabel = ruleContext.getAttribute("aria-labelledby");
             let labelValues = theLabel.split(/\s+/);
             for (let j = 0; j < labelValues.length; ++j) {
                 let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
                 if (elementById && !DOMUtil.sameNode(elementById, ruleContext) && VisUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
-                    passed = true;
-                    break;
+                    return RulePass("pass"); 
                 }
             }
         }
 
-        if (!passed && nodeName == "optgroup") {
-            passed = RPTUtil.attributeNonEmpty(ruleContext, "label");
-        }
-        if (!passed && nodeName == "option") {
-            passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
-        }
-
-        // One last check for roles that support name from content
-        if (!passed) {
-            // list from https://www.w3.org/TR/wai-aria-1.1/#namefromcontent
-            let rolesWithNameFromContent = ["button", "cell", "checkbox", "columnheader", "gridcell", "heading", "link",
-                "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "row",
-                "rowgroup", "rowheader", "switch", "tab", "tooltip",/*"tree",*/"treeitem"];
-            //get attribute roles as well as implicit roles.
-            let roles = RPTUtil.getRoles(ruleContext, true);
-            for (let i = 0; i < roles.length; i++) {
-                if (rolesWithNameFromContent.indexOf(roles[i]) !== -1) {
-                    passed = RPTUtil.hasInnerContentHidden(ruleContext);
-                    break;
-                }
-            }
-        }
-
+        if (nodeName === "optgroup" && RPTUtil.attributeNonEmpty(ruleContext, "label"))
+            return RulePass("pass");
+        
+        if (nodeName == "option" && (RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0))
+            return RulePass("pass");
+        
         // Determine if this is referenced by a combobox. If so, the label belongs to the combobox
         let id = ruleContext.getAttribute("id");
         if (id && id.trim().length > 0) {
@@ -164,10 +171,10 @@ export let input_label_visible: Rule = {
             }
         }
 
-        if (passed) {
-            return RulePass("Pass_0");
-        } else {
-            return RulePotential("Potential_1");
-        }
+        // check if a placeholder exists even though a placeholder text is not sufficient as a visible text
+        if (RPTUtil.attributeNonEmpty(ruleContext, "placeholder"))
+            return RulePotential("potential_placeholder_only");
+
+        return RulePotential("potential_no_label");
     }
 }
