@@ -82,7 +82,7 @@ public class Config {
      * (optional) Where the scan results should be saved.
      * Default: "results"
      */
-    public String outputFolder = null;
+    public String outputFolder = "results";
 
     /**
      * (optional) Should the timestamp be included in the filename of the reports?

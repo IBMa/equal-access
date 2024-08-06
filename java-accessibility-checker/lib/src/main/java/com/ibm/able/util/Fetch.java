@@ -15,8 +15,9 @@
  *****************************************************************************/
 package com.ibm.able.util;
 
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.google.gson.Gson;
@@ -28,37 +29,22 @@ public class Fetch {
     
     public static String get(String urlStr) throws IOException {
         URL url = new URL(urlStr);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.flush();
-        out.close();
-        return out.toString();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+        StringBuilder sb = new StringBuilder();
+        String output;
+        while ((output = br.readLine()) != null) {
+            sb.append(output);
+        }
+        return sb.toString();
     }
 
     public static <T> T[] getJSONArr(String urlStr, Class<T[]> clazz) throws IOException {
-        URL url = new URL(urlStr);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.flush();
-        out.close();
-        return gson.fromJson(out.toString(), clazz);
+        return gson.fromJson(Fetch.get(urlStr), clazz);
     }
 
     public static <T> T getJSONObj(String urlStr, Class<T> clazz) throws IOException {
-        URL url = new URL(urlStr);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.flush();
-        out.close();
-        return gson.fromJson(out.toString(), clazz);
+        return gson.fromJson(Fetch.get(urlStr), clazz);
     }
 }
