@@ -13,25 +13,35 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.util;
 
-public class Misc {
-    private Misc() {}
+package com.ibm.able.engine;
+import java.util.Map;
 
-    public static <T> T firstNotNull(T ... args) {
-        for (T x : args) {
-            if (x != null) return x;
-        }
-        return null;
+public class ACReport {
+    public static class Bounds {
+        int top;
+        int left;
+        int height;
+        int width;
+    }
+
+    public static class Result {
+        public Object[] apiArgs;
+        public Bounds bounds;
+        public String category;
+        public String message;
+        public String[] messageArgs;
+        public Map<String, String> path;
+        public String reasonId;
+        public String ruleId;
+        public int ruleTime;
+        public String snippet;
+        public String[] value;
     }
     
-    public static boolean classIsAvailable(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (Throwable ex) {
-            // Class or one of its dependencies is not present...
-            return false;
-        }
-    }
+    public int numExecuted;
+    public int ruleTime;
+    public int totalTime;
+    public Map<String, Map<String, String>> nls;
+    public Result[] results;
 }

@@ -13,25 +13,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.util;
+package com.ibm.able;
 
-public class Misc {
-    private Misc() {}
+import java.io.IOException;
 
-    public static <T> T firstNotNull(T ... args) {
-        for (T x : args) {
-            if (x != null) return x;
-        }
-        return null;
-    }
-    
-    public static boolean classIsAvailable(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (Throwable ex) {
-            // Class or one of its dependencies is not present...
-            return false;
-        }
-    }
+import com.ibm.able.engine.ACReport;
+
+public interface IEngineContext {
+    void loadEngine() throws IOException;
+
+    ACReport getCompliance(String label);
 }
