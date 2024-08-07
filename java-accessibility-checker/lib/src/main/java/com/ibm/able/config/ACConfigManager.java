@@ -363,24 +363,24 @@ public class ACConfigManager {
     }
 
     private static ConfigInternal config = null;
-    static void setConfig(Config inConfig) {
+    public static void setConfig(Config inConfig) {
         config = ACConfigManager.processConfiguration(inConfig);
         // TODO:
         // ReporterManager.setConfig(config);
     }
 
-    static Config getConfig() {
+    public static Config getConfig() {
         return ACConfigManager.getConfigUnsupported();
     }
 
-    static ConfigInternal getConfigUnsupported() {
+    public static ConfigInternal getConfigUnsupported() {
         if (ACConfigManager.config == null) {
             ACConfigManager.setConfig(null);
         }
         return config;
     }
 
-    static void resetConfig() {
+    public static void resetConfig() {
         config = null;
     }
 }
