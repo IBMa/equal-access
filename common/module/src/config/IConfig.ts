@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IArchive } from "./IArchive"
+import { IArchive } from "./IArchive.js"
 
 export enum eAssertResult {
     ERROR = -1,
@@ -157,7 +157,7 @@ export type IConfigInternal = IConfig & {
     /**
      * (optional) If the tool allows, should we run headless
      */
-    headless?: boolean
+    headless?: "shell" | boolean
 
     /**
      * (optional) If the tool allows, set the maximum number of tabs to open
@@ -180,5 +180,4 @@ export type IConfigInternal = IConfig & {
     perfMetrics: boolean
 
     engineMode: "DEFAULT" | "REMOTE" | "INJECT"
-
 }

@@ -1,29 +1,8 @@
 {
+    "extends": "./tsconfig-base.json",
     "compilerOptions": {
-        "declaration": true,
-        "allowJs": true,
-        "target": "ES5",
-        "removeComments": false,
-        "noEmitOnError": true,
-        "sourceMap": true,
-        "moduleResolution": "node",
-        "alwaysStrict": true,
-        "experimentalDecorators": true,
-        // "module": "commonjs",
-        "outDir": "src",
-        "emitDecoratorMetadata": true,
-        "lib": [
-            "dom",
-            "es7"
-         ]
-    },
-    "include": [
-        "src-ts/**/*.ts",
-        "src-ts/**/*.js"
-    ],
-    "exclude": [
-        "node_modules",
-        "coverage",
-        ".nyc_output"
-    ]
+        "module": "esnext",
+        "outDir": "src/mjs",
+        "target": "esnext"
+    }
 }

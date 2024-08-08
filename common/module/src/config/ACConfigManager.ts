@@ -22,7 +22,10 @@ import * as crypto from 'crypto';
 import { IConfig, IConfigInternal } from "./IConfig";
 import { fetch_get } from "../api-ext/Fetch";
 import { ReporterManager } from "../report/ReporterManager";
+import path from 'path';
 import { IArchive } from "./IArchive";
+// This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
+// import { fileURLToPath } from 'url';
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -247,7 +250,15 @@ function initializeDefaults(config: IConfigInternal) {
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    let packageDir = __dirname;
+    let packageDir = "";
+    try {
+        packageDir = __dirname;
+    } catch (err) {
+        // This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
+        // const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        packageDir = __dirname;
+    }
     while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
         packageDir = pathLib.join(packageDir, "..");
     }

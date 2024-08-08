@@ -25,11 +25,11 @@ function getBrowserChrome() {
 
     const options = new chrome.Options();
     options.addArguments("--disable-dev-shm-usage");
-    options.addArguments("--headless");
+    options.addArguments("--headless=new");
     options.addArguments('--ignore-certificate-errors')
 
     let service = new chrome.ServiceBuilder(spath).build();
-    chrome.setDefaultService(service);
+    chrome.Driver.createSession(options, service);
 
     return new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
@@ -59,7 +59,6 @@ const {BeforeAll, AfterAll, Before} = require("cucumber");
 
     BeforeAll(function() {
         driver = getBrowser();
-
         /*
         return new Promise(function(resolve, reject) {
             aChecker.onRunComplete(resolve);
