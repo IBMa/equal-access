@@ -13,14 +13,13 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able;
+package com.ibm.able.abs;
 
 import java.io.IOException;
 
 import com.ibm.able.engine.ACReport;
 
-public interface IEngineContext {
-    void loadEngine() throws IOException;
-
-    ACReport getCompliance(String label);
+public interface IAbstractAPI {
+    public ACReport loadBaseline(String scanLabel);
+    public void writeFile(String path, Object contents) throws IOException;
 }

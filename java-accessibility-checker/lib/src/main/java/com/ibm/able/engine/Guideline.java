@@ -15,9 +15,25 @@
  *****************************************************************************/
 package com.ibm.able.engine;
 
-public class ACError extends Error {
-    public ACError(String msg) {
-        super(msg);
+public class Guideline {
+    public static class Rule {
+        public String id;
+        public String level;
+        public String toolkitLevel;
     }
-    
+
+    public static class Checkpoint {
+        public String num;
+        public String name;
+        // public String scId;
+        public String summary;
+        public String wcagLevel;
+        public Rule[] rules;
+    }
+
+    public String id;
+    public String name;
+    public String description;
+    public String category;
+    public Checkpoint[] checkpoints;
 }

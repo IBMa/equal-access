@@ -15,9 +15,24 @@
  *****************************************************************************/
 package com.ibm.able.engine;
 
-public class ACError extends Error {
-    public ACError(String msg) {
-        super(msg);
+public enum eRuleConfidence {
+    PASS("PASS"),
+    FAIL("FAIL"),
+    POTENTIAL("POTENTIAL"),
+    MANUAL("MANUAL")
+    ;
+
+    private final String text;
+
+    eRuleConfidence(final String text) {
+        this.text = text;
     }
-    
+
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
+     */
+    @Override
+    public String toString() {
+        return text;
+    }
 }

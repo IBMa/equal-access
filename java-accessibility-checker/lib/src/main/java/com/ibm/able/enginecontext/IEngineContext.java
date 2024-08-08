@@ -13,11 +13,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.engine;
+package com.ibm.able.enginecontext;
 
-public class ACError extends Error {
-    public ACError(String msg) {
-        super(msg);
-    }
-    
+import java.io.IOException;
+
+import com.ibm.able.engine.ACEReport;
+import com.ibm.able.engine.Guideline;
+
+public interface IEngineContext {
+    public void loadEngine() throws IOException;
+
+    public ACEReport getCompliance(String label);
+    public String getUrl();
+    public String getTitle();
+    public Guideline[] getGuidelines();
 }

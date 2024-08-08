@@ -13,18 +13,30 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able;
+package com.ibm.able.engine;
 
-import org.openqa.selenium.WebDriver;
+public enum eRuleLevel {
+    violation("violation"),
+    potentialviolation("potentialviolation"),
+    recommendation("recommendation"),
+    potentialrecommendation("potentialrecommendation"),
+    manual("manual"),
+    pass("pass"),
+    ignored("ignored"),
+    undefined("undefined")
+    ;
 
-import com.ibm.able.selenium.EngineContextSelenium;
-import com.ibm.able.util.Misc;
+    private final String text;
 
-public class EngineContextManager {
-    public static IEngineContext getEngineContext(Object contentContext) {
-        if (Misc.classIsAvailable("org.openqa.selenium.WebDriver") && contentContext instanceof org.openqa.selenium.WebDriver) {
-            return new EngineContextSelenium((WebDriver) contentContext);
-        }
-        return null;
+    eRuleLevel(final String text) {
+        this.text = text;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
+     */
+    @Override
+    public String toString() {
+        return text;
     }
 }
