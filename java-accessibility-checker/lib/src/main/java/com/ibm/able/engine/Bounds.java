@@ -15,9 +15,9 @@
  *****************************************************************************/
 package com.ibm.able.engine;
 
-public class ACError extends Error {
-    public ACError(String msg) {
-        super(msg);
-    }
-    
+public class Bounds {
+    int top;
+    int left;
+    int height;
+    int width;
 }

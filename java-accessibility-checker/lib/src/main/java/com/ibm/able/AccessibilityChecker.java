@@ -16,11 +16,24 @@
 package com.ibm.able;
 
 import java.io.IOException;
+import java.util.Date;
+
 import com.ibm.able.config.ACConfigManager;
 import com.ibm.able.config.Config;
+import com.ibm.able.config.ConfigInternal;
+import com.ibm.able.engine.ACEReport;
 import com.ibm.able.engine.ACReport;
+import com.ibm.able.enginecontext.EngineContextManager;
+import com.ibm.able.enginecontext.IEngineContext;
+import com.ibm.able.report.ReporterManager;
+import com.ibm.able.abs.IAbstractAPI;
+import com.ibm.able.abs.MyFS;
 
 public class AccessibilityChecker {
+    private static boolean initialized = false;
+    private static IAbstractAPI myFS = new MyFS();
+    private static IEngineContext localEngine;
+
     /**
      * This function is responsible performing a scan based on the context that is provided, following are
      * the supported context type:
@@ -47,32 +60,30 @@ public class AccessibilityChecker {
         AccessibilityChecker.initialize();
 
         IEngineContext engineContext = EngineContextManager.getEngineContext(content);
-        try {
-            engineContext.loadEngine();
-        } catch (IOException e) {
-            System.err.println("aChecker: Unable to load engine due to IOException: "+e.toString());
-            e.printStackTrace();
-        }
 
         // Get the Data when the scan is started
         // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        return engineContext.getCompliance(label);
+        long startScan = new Date().getTime();
+        ACEReport origReport = engineContext.getCompliance(label);
+        String url = engineContext.getUrl();
+        String title = engineContext.getTitle();
+        ACReport finalReport = ReporterManager.get().addEngineReport("Selenium", startScan, url, title, label, origReport);
+        return finalReport;
     }
 
     public static Config getConfig() {
         return ACConfigManager.getConfig();
     }
 
-    public static Config getConfigUnsupported() {
+    public static ConfigInternal getConfigUnsupported() {
         return ACConfigManager.getConfigUnsupported();
     }
 
     private static void initialize() {
+        if (initialized) return;
+        initialized = true;
+        localEngine = EngineContextManager.getEngineContext(null);
         // TODO:
-        // if (Config) return;
-        // Config = await ACConfigManager.getConfigUnsupported();
-        // await ACEngineManager.loadEngineLocal();
-        // let absAPI = new MyFS();
         // let refactorMap : RefactorMap = {}
         // let rules = ACEngineManager.getRulesSync();
         // for (const rule of rules) {
@@ -82,7 +93,7 @@ public class AccessibilityChecker {
         //         }
         //     }
         // }
-        // ReporterManager.initialize(Config, absAPI, await ACEngineManager.getRulesets());
+        ReporterManager.initialize(getConfigUnsupported(), myFS, localEngine.getGuidelines());
         // BaselineManager.initialize(Config, absAPI, refactorMap);
     }
 

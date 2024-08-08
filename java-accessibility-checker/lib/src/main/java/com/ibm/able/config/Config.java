@@ -107,4 +107,9 @@ public class Config {
      * Default: ["html", "htm", "svg"]
      */
     public String[] extensions = { "html", "htm", "svg" };
+
+    /**
+     * (optional) If the tool allows, should we capture screenshots
+     */
+    public Boolean captureScreenshots = false;
 }

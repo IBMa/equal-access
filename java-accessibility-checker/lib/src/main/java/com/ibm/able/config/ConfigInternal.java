@@ -63,11 +63,6 @@ public class ConfigInternal extends Config {
     public String ruleArchiveVersion = null;
 
     /**
-     * (optional) If the tool allows, should we capture screenshots
-     */
-    public Boolean captureScreenshots = false;
-
-    /**
      * (optional) If the tool allows, should we run headless
      */
     public boolean headless = true;

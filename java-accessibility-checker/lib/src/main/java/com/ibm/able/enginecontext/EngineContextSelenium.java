@@ -13,25 +13,28 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.selenium;
+package com.ibm.able.enginecontext;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Date;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import com.google.gson.Gson;
-import com.ibm.able.IEngineContext;
 import com.ibm.able.config.ACConfigManager;
 import com.ibm.able.config.Config;
 import com.ibm.able.config.ConfigInternal;
 import com.ibm.able.engine.ACError;
-import com.ibm.able.engine.ACReport;
+import com.ibm.able.engine.Guideline;
+import com.ibm.able.engine.ACEReport;
 import com.ibm.able.util.Fetch;
 
 public class EngineContextSelenium implements IEngineContext { 
+    private static Gson gson = new Gson();
     private WebDriver driver = null;
     private String engineContent = null;
 
@@ -39,6 +42,7 @@ public class EngineContextSelenium implements IEngineContext {
         this.driver = driver;
     }   
 
+    @Override
     public void loadEngine() throws IOException {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
         String engineLoadMode = config.engineMode;
@@ -85,7 +89,6 @@ try {
 }
 """, config.rulePack);
             } else if ("INJECT".equals(engineLoadMode)) {
-                Gson gson = new Gson();
                 // Selenium
                 scriptStr = String.format("""
 let cb = arguments[arguments.length - 1];
@@ -117,20 +120,16 @@ try {
 
             this.driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(60));
 
-            Object result = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr);
-            if (result != null) {
-                System.err.println(result);
-            }
+            ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr);
         } catch (Error e) {
             System.err.println(e);
         }
     }
 
-    public ACReport getCompliance(String label) {
+    @Override
+    public ACEReport getCompliance(String label) {
         Config config = ACConfigManager.getConfig();
-        Gson gson = new Gson();
         try {
-            Date startScan = new Date();
             String scriptStr = String.format("""
 let cb = arguments[arguments.length - 1];
 try {
@@ -154,10 +153,11 @@ try {
             this.driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(60));
     
             String jsonReport = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
+            ACEReport report;
             if (!jsonReport.startsWith("{\"results\":[")) {
                 throw new ACError(jsonReport);
             } else {
-                return gson.fromJson(jsonReport, ACReport.class);
+                report = gson.fromJson(jsonReport, ACEReport.class);
             }
             // TODO:
             // String getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
@@ -167,27 +167,45 @@ try {
             //     areValidPolicy(valPolicies, curPol);
             // }
     
-            // // If there is something to report...
-            // let finalReport : IBaselineReport;
-            // if (report.results) {
-            //     // Add URL to the result object
-            //     const url = await browser.getCurrentUrl();
-            //     const title = await browser.getTitle();
-            //     let origReport : IEngineReport = JSON.parse(JSON.stringify(report));
-            //     if (Config.captureScreenshots && browser.takeScreenshot) {
-            //         const image = await browser.takeScreenshot();
-            //         origReport.screenshot = image;
-            //     }
-            //     finalReport = ReporterManager.addEngineReport("Selenium", startScan, url, title, label, origReport);
-            // }
-            // return {
-            //     "report": finalReport,
-            //     "webdriver": parsed
-            // }
+            // If there is something to report...
+            if (report.results != null) {
+                if (config.captureScreenshots) {
+                    String image = ((TakesScreenshot)this.driver).getScreenshotAs(OutputType.BASE64);
+                    report.screenshot = image;
+                }
+            }
+            return report;
         } catch (Error err) {
             System.err.println(err);
             throw err;
         }
+    }
+
+    @Override
+    public String getUrl() {
+        return this.driver.getCurrentUrl();
+    }
+
+    @Override
+    public String getTitle() {
+        return this.driver.getTitle();
+    }
+
+    @Override
+    public Guideline[] getGuidelines() {
+        String scriptStr = String.format("""
+let cb = arguments[arguments.length - 1];
+try {            
+    let checker = new window.ace_ibma.Checker();
+    let customRulesets = [];
+    customRulesets.forEach((rs) => checker.addRuleset(rs));
+    cb(JSON.stringify(checker.getGuidelines()));
+} catch (e) {
+    cb(e);
+}            
+""");
+        String jsonGuidelines = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
+        return gson.fromJson(jsonGuidelines, Guideline[].class);
     }
 
 }
