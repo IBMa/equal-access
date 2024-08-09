@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import com.ibm.able.engine.ACEReport;
 import com.ibm.able.engine.Guideline;
+import com.ibm.able.engine.Rule;
 
 public interface IEngineContext {
     public void loadEngine() throws IOException;
@@ -27,4 +28,5 @@ public interface IEngineContext {
     public String getUrl();
     public String getTitle();
     public Guideline[] getGuidelines();
+    public Rule[] getRules();
 }

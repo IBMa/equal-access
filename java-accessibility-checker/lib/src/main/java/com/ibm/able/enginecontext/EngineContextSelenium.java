@@ -30,6 +30,7 @@ import com.ibm.able.config.Config;
 import com.ibm.able.config.ConfigInternal;
 import com.ibm.able.engine.ACError;
 import com.ibm.able.engine.Guideline;
+import com.ibm.able.engine.Rule;
 import com.ibm.able.engine.ACEReport;
 import com.ibm.able.util.Fetch;
 
@@ -208,4 +209,18 @@ try {
         return gson.fromJson(jsonGuidelines, Guideline[].class);
     }
 
+    @Override
+    public Rule[] getRules() {
+        String scriptStr = String.format("""
+let cb = arguments[arguments.length - 1];
+try {            
+    let checker = new window.ace_ibma.Checker();
+    cb(JSON.stringify(checker.getRules()));
+} catch (e) {
+    cb(e);
+}            
+""");
+        String jsonGuidelines = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
+        return gson.fromJson(jsonGuidelines, Rule[].class);
+    }
 }

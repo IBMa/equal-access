@@ -21,6 +21,7 @@ import com.ibm.able.config.ACConfigManager;
 import com.ibm.able.config.ConfigInternal;
 import com.ibm.able.engine.ACEReport;
 import com.ibm.able.engine.Guideline;
+import com.ibm.able.engine.Rule;
 import com.ibm.able.util.Fetch;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -33,7 +34,7 @@ public class EngineContextLocal implements IEngineContext {
     @Override
     public void loadEngine() throws IOException {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
-        String engineContent = Fetch.get(config.rulePack+"/ace.js");
+        String engineContent = Fetch.get(config.rulePack+"/ace.js")+";var ace_checker = new ace.Checker();";
         
         // Creates and enters a Context. The Context stores information
         // about the execution environment of a script.
@@ -68,9 +69,16 @@ public class EngineContextLocal implements IEngineContext {
 
     @Override
     public Guideline[] getGuidelines() {
-        String scriptStr = "JSON.stringify(new ace.Checker().getGuidelines())";
+        String scriptStr = "JSON.stringify(ace_checker.getGuidelines())";
         String jsonGuidelines = engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
         return gson.fromJson(jsonGuidelines, Guideline[].class);
+    }
+
+    @Override
+    public Rule[] getRules() {
+        String scriptStr = "JSON.stringify(Object.keys(ace_checker.engine.ruleMap).map(key => ace_checker.engine.ruleMap[key]))";
+        String jsonGuidelines = engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
+        return gson.fromJson(jsonGuidelines, Rule[].class);
     } 
     
 }
