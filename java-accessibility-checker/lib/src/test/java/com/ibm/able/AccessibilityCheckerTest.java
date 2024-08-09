@@ -48,6 +48,7 @@ public class AccessibilityCheckerTest {
      */
     @AfterClass public static void teardown() {
         AccessibilityCheckerTest.driver.close();
+        AccessibilityChecker.close();
     }
 
     @Test public void getCompliance() {

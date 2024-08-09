@@ -120,7 +120,7 @@ public class CompressedReport {
             );
         }
         engineReport.updateSummaryCounts();
-        return new ReporterStored(data[2].toString(), data[4].toString(), null);
+        return new ReporterStored(data[2].toString(), data[4].toString(), engineReport);
     }
 
     public long getStartScan() {

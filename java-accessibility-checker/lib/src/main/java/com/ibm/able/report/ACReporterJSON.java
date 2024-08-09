@@ -3,6 +3,7 @@ package com.ibm.able.report;
 import java.util.Date;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ibm.able.config.ConfigInternal;
 import com.ibm.able.engine.ACReport;
 import com.ibm.able.engine.ACReportSummary;
@@ -10,7 +11,7 @@ import com.ibm.able.engine.Guideline;
 import com.ibm.able.util.Misc;
 
 public class ACReporterJSON implements IReporter {
-    private static Gson gson = new Gson();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public String name() {
@@ -27,7 +28,7 @@ public class ACReporterJSON implements IReporter {
     }
 
     @Override
-    public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, int endReport,
+    public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport,
             CompressedReport[] compressedReports) 
     {
         if (compressedReports != null && compressedReports.length > 0) {

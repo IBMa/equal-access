@@ -53,7 +53,7 @@ public class ACReportSummary {
     public String[] labels = {};
     public String[] failLevels = {};
     public String scanID = "";
-    public PageSummary[] pageScanSummery = new PageSummary[0];
+    public PageSummary[] pageScanSummary = new PageSummary[0];
 
     public ACReportSummary() {}
     public ACReportSummary(ConfigInternal config, long endReport, CompressedReport[] compressedReports) {
@@ -65,11 +65,12 @@ public class ACReportSummary {
         this.labels = config.label;
         this.failLevels = config.failLevels;
         this.scanID = config.scanID;
-        this.pageScanSummery = new PageSummary[compressedReports.length];
+        this.pageScanSummary = new PageSummary[compressedReports.length];
         for (int idx=0; idx<compressedReports.length; ++idx) {
+            this.pageScanSummary[idx] = new PageSummary();
             ReporterStored curReport = compressedReports[idx].uncompress();
-            this.pageScanSummery[idx].label = curReport.engineReport.label;
-            ACReport.SummaryCounts curCounts = this.pageScanSummery[idx].counts = curReport.engineReport.summary.counts;
+            this.pageScanSummary[idx].label = compressedReports[idx].getLabel();
+            ACReport.SummaryCounts curCounts = this.pageScanSummary[idx].counts = curReport.engineReport.summary.counts;
 
             this.counts.violation += curCounts.violation;
             this.counts.potentialviolation += curCounts.potentialviolation;

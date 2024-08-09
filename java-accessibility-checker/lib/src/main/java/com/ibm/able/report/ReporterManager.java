@@ -18,6 +18,7 @@ package com.ibm.able.report;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,6 @@ public class ReporterManager {
     private List<IReporter> reporters = new ArrayList<>();
     private List<CompressedReport> reports = new ArrayList<>();
     private IReporter returnReporter = new ACReporterJSON();
-
 
     private ReporterManager(ConfigInternal config, IAbstractAPI absAPI, Guideline[] rulesets) {
         this.config = config;
@@ -215,5 +215,23 @@ public class ReporterManager {
         //     msgArgs: issue.messageArgs
         // };
         // return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
+    }
+
+    public void generateSummaries() {
+        long endReport = new Date().getTime();
+        // If no scans, don't generate summaries
+        if (reports.isEmpty()) return;
+        for (IReporter reporter: reporters) {
+            CompressedReport[] cReports = reports.toArray(new CompressedReport[reports.size()]);
+            ReporterFile summaryInfo = reporter.generateSummary(config, rulesets, endReport, cReports);
+            if (summaryInfo != null) {
+                try {
+                    absAPI.writeFile(summaryInfo.path, summaryInfo.contents);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        reports.clear();
     }
 }
