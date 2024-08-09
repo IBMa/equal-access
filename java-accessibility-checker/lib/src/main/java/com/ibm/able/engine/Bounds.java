@@ -15,9 +15,18 @@
  *****************************************************************************/
 package com.ibm.able.engine;
 
-public class Bounds {
-    int top;
-    int left;
-    int height;
-    int width;
+public class Bounds implements Cloneable {
+    int top = -1;
+    int left = -1;
+    int height = -1;
+    int width = -1;
+
+    public Object clone() { 
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.err.println(ex);
+            throw new RuntimeException();
+        }
+    }
 }

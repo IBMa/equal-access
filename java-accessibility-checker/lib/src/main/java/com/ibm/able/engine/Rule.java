@@ -13,23 +13,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.util;
+package com.ibm.able.engine;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.Map;
 
-import java.io.IOException;
-
-import com.ibm.able.util.Fetch;
-
-public class FetchTest {
-    @Test public void getArr() {
-        String s = null;
-        try {
-            s = Fetch.get("https://cdn.jsdelivr.net/npm/accessibility-checker-engine@next/archives.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assertEquals(String.class, s.getClass());
-    }
+public class Rule {
+    public String id;
+    public Map<String, Map<String, String>> refactor = null;
 }

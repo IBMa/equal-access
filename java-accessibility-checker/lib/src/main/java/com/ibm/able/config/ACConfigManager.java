@@ -106,7 +106,7 @@ public class ACConfigManager {
      * information which matches what the engine reads.
      *
      * i.e.
-     *  Need to change reportLevels and failLevels to match with level declerations in the engine.
+     *  Need to change reportLevels and failLevels to match with level Declarations in the engine.
      *      replace violation with level.violation
      *  Need to change array of policies into a string
      *      ["CI162_5_2_DCP070116","CI162_5_2_DCP070116"] to "CI162_5_2_DCP070116,CI162_5_2_DCP070116"
@@ -318,7 +318,7 @@ public class ACConfigManager {
         ConfigInternal ACConstants = new ConfigInternal();
         if (ACConstants.DEBUG) System.out.println("START 'processConfiguration' function");
 
-        // Variable Decleration
+        // Variable Declaration
         ConfigInternal ACConfig = null;
         ConfigInternal configFromFile = null;
 

@@ -19,11 +19,11 @@ import java.util.Map;
 
 public class ACEReport {
 
-    public static class Result {
+    public static class Result implements Cloneable {
         public Result() {}
         public Result(Result o) {
             apiArgs = o.apiArgs;
-            bounds = o.bounds;
+            bounds = (Bounds) o.bounds.clone();
             category = o.category;
             message = o.message;
             messageArgs = o.messageArgs.clone();
@@ -34,8 +34,8 @@ public class ACEReport {
             snippet = o.snippet;
             value = o.value.clone();            
         }
-        public Object[] apiArgs;
-        public Bounds bounds;
+        public Object[] apiArgs = new Object[]{};
+        public Bounds bounds = new Bounds();
         public String category;
         public String message;
         public String[] messageArgs;
@@ -45,6 +45,20 @@ public class ACEReport {
         public int ruleTime;
         public String snippet;
         public String[] value;
+
+        @Override
+        public Object clone() { 
+            // Shallow copy
+            Result ret = null;
+            try {
+                ret = (Result)super.clone();
+            } catch (CloneNotSupportedException ex) {
+                System.err.println(ex);
+                throw new RuntimeException();
+            }
+            ret.bounds = (Bounds) bounds.clone();
+            return ret;
+        } 
     }
     
     public int numExecuted;

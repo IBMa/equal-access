@@ -22,12 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
-import java.util.Map.Entry;
 
 import com.ibm.able.config.ConfigInternal;
 
-public class ACReport {
-    public static class SummaryCounts {
+public class ACReport implements Cloneable {
+    public static class SummaryCounts implements Cloneable {
         public int violation = 0;
         public int potentialviolation = 0;
         public int recommendation = 0;
@@ -38,8 +37,17 @@ public class ACReport {
         public int elements = 0;
         public int elementsViolation = 0;
         public int elementsViolationReview = 0;
+
+        public Object clone() { 
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException ex) {
+                System.err.println(ex);
+                throw new RuntimeException();
+            }
+        }
     }
-    public static class Summary {
+    public static class Summary implements Cloneable {
         public SummaryCounts counts = new SummaryCounts();
         public long scanTime = 0;
         public String ruleArchive = "";
@@ -47,8 +55,20 @@ public class ACReport {
         public String[] reportLevels = {};
         public long startScan = 0;
         public String URL = "";
+
+        public Object clone() { 
+            Summary ret = null;
+            try {
+                ret = (Summary) super.clone();
+            } catch (CloneNotSupportedException ex) {
+                System.err.println(ex);
+                throw new RuntimeException();
+            }
+            ret.counts = (SummaryCounts)counts.clone();
+            return ret;
+        } 
     }
-    public static class Result extends ACEReport.Result {
+    public static class Result extends ACEReport.Result implements Cloneable {
         public boolean ignored = false;
         public String help = "";
         public eRuleLevel level;
@@ -56,6 +76,10 @@ public class ACReport {
         public Result() {}
         public Result(ACEReport.Result engineResult) {
             super(engineResult);
+        }
+
+        public Object clone() { 
+            return super.clone();
         }
     }
     public Result[] results = new Result[0];
@@ -172,4 +196,31 @@ public class ACReport {
             }
         }
     }
+    public void sortResults() { 
+        Arrays.sort(this.results, (a, b) -> {
+            int cc = b.category.compareTo(a.category);
+            if (cc != 0) return cc;
+            int pc = b.path.get("dom").compareTo(a.path.get("dom"));
+            if (pc != 0) return pc;
+            return b.ruleId.compareTo(a.ruleId);
+        });
+    }
+
+    @Override
+    public Object clone() { 
+        // Shallow copy
+        ACReport ret = null;
+        try {
+            ret = (ACReport)super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.err.println(ex);
+            throw new RuntimeException();
+        }
+        ret.summary = (Summary)summary.clone();
+        ret.results = new ACReport.Result[results.length];
+        for (int idx=0; idx<results.length; ++idx) {
+            ret.results[idx] = (ACReport.Result) results[idx].clone();
+        }
+        return ret;
+    } 
 }
