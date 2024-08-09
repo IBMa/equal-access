@@ -9,5 +9,5 @@ public interface IReporter {
      * @return [ reportPath: string, report: string ]
      */
     ReporterFile generateReport(ConfigInternal config, Guideline[] rulesets, ReporterStored reportData);
-    ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, int endReport, CompressedReport[] summaryData);
+    ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport, CompressedReport[] summaryData);
 };

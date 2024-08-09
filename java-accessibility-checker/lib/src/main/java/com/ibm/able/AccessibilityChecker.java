@@ -101,6 +101,8 @@ public class AccessibilityChecker {
         ConfigInternal config = getConfigUnsupported();
         ReporterManager.initialize(config, myFS, localEngine.getGuidelines());
         BaselineManager.initialize(config, myFS, refactorMap);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> AccessibilityChecker.close() ));
     }
 
     /**
@@ -136,9 +138,9 @@ public class AccessibilityChecker {
 // return ReporterManager.stringifyResults(report)
 // }
 
-// export function close() {
-// return ACBrowserManager.close();
-// }
+    public static void close() {
+        ReporterManager.get().generateSummaries();
+    }
 
     /**
      * This function is responsible for getting the diff results based on label for a scan that was already performed.
