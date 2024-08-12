@@ -53,8 +53,8 @@ If invalid ARIA attributes are used, assistive technologies may not be able to i
 
 ### What to do
 
-* Remove ARIA state or property attributes that are not valid for the element role;
-* **Or**, change the `role` value to a role that supports the intended behavior of the element, using the ARIA specification as a guide.
+* Remove ARIA state or property attributes that are not valid for the element role
+* **Or**, change to a role that supports the intended behavior of the element, using the ARIA specification as a guide
 
 In the following example, the element references only valid ARIA attributes for an element with the role of `"tree"`, a global `aria-labelledby` property, and an `aria-expanded` state:
 
@@ -72,12 +72,15 @@ In the following example, the element references only valid ARIA attributes for 
             </div>
             <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
 <!-- Start side panel -->
+<!-- remove 4.1.2 from reference, but include ARIA spec reference --> 
+<!-- rule maps to ACT, so add references if missing -->
 <mark-down><script type="text/plain">
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
 * [ARIA specification - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
+* [ACT rule - ARIA state or property is permitted](https://www.w3.org/WAI/standards-guidelines/act/rules/5c01ea/)
+* [ACT rule - Element marked as decorative is not exposed](https://www.w3.org/WAI/standards-guidelines/act/rules/46ca7f/)
 
 ### Who does this affect?
 

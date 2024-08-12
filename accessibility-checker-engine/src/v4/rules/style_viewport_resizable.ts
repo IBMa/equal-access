@@ -43,7 +43,7 @@ export let style_viewport_resizable: Rule = {
     },
     rulesets: [{
         id: ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
-        num: "1.4.4", // num: [ "2.4.4", "x.y.z" ] also allowed
+        num: ["1.4.4", "1.4.10"], // match help for both 
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
     }],
