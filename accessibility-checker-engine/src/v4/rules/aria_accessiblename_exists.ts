@@ -18,7 +18,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
 
-export let aria_accessiblename_exists: Rule = {
+export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
     context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
@@ -51,7 +51,9 @@ export let aria_accessiblename_exists: Rule = {
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
         // svg element is handled in svg_graphics)labbelled rule
         if (nodeName === 'svg') return;
-
+        // img element handled in img_alt_valid
+        if (nodeName === "img" && ruleContext.hasAttribute("alt")) return RulePass("pass");
+        
         // when table element with a caption as first child
         if (nodeName === 'table' 
             && ruleContext.firstElementChild && ruleContext.firstElementChild.nodeName.toLowerCase() === 'caption'
