@@ -80,7 +80,9 @@ public class AccessibilityCheckerTest {
         System.out.println("Chrome driver: "+chromeDriverDir);
         System.setProperty("webdriver.chrome.driver", chromeDriverDir);
         ChromeOptions options = new ChromeOptions();  
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
+        options.addArguments("--headless=new");
+        // options.setImplicitWaitTimeout
+        // options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
         AccessibilityCheckerTest.driver = new ChromeDriver(options);
     }
 
