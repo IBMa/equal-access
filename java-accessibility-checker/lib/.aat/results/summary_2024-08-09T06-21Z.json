@@ -1,0 +1,76 @@
+{
+  "counts": {
+    "violation": 42,
+    "potentialviolation": 93,
+    "recommendation": 0,
+    "potentialrecommendation": 0,
+    "manual": 0,
+    "pass": 0,
+    "ignored": 0,
+    "elements": 111,
+    "elementsViolation": 36,
+    "elementsViolationReview": 111
+  },
+  "startReport": 1723184507952,
+  "endReport": 1723184511909,
+  "toolID": "java-accessibility-checker-v3.1.70",
+  "policies": [
+    "IBM_Accessibility"
+  ],
+  "reportLevels": [
+    "violation",
+    "potentialviolation"
+  ],
+  "failLevels": [
+    "violation",
+    "potentialviolation"
+  ],
+  "scanID": "e999410c-02f4-4dfc-9994-35cfb9fba938",
+  "pageScanSummary": [
+    {
+      "label": "getComplianceTest2",
+      "counts": {
+        "violation": 14,
+        "potentialviolation": 31,
+        "recommendation": 0,
+        "potentialrecommendation": 0,
+        "manual": 0,
+        "pass": 0,
+        "ignored": 0,
+        "elements": 37,
+        "elementsViolation": 12,
+        "elementsViolationReview": 37
+      }
+    },
+    {
+      "label": "getComplianceTest3",
+      "counts": {
+        "violation": 14,
+        "potentialviolation": 31,
+        "recommendation": 0,
+        "potentialrecommendation": 0,
+        "manual": 0,
+        "pass": 0,
+        "ignored": 0,
+        "elements": 37,
+        "elementsViolation": 12,
+        "elementsViolationReview": 37
+      }
+    },
+    {
+      "label": "getComplianceTest",
+      "counts": {
+        "violation": 14,
+        "potentialviolation": 31,
+        "recommendation": 0,
+        "potentialrecommendation": 0,
+        "manual": 0,
+        "pass": 0,
+        "ignored": 0,
+        "elements": 37,
+        "elementsViolation": 12,
+        "elementsViolationReview": 37
+      }
+    }
+  ]
+}
