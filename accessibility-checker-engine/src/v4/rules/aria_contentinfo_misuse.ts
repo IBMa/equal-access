@@ -35,7 +35,7 @@ export let aria_contentinfo_misuse: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Fail_1": "Element with \"contentinfo\" role is present without an element with \"main\" role",
-            "group": "Each element with \"contentinfo\" role is only permitted within an element with \"main\" role"
+            "group": "Each element with \"contentinfo\" role is only permitted with an element with \"main\" role"
         }
     },
     rulesets: [{

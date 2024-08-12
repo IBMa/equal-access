@@ -34,8 +34,8 @@ export let aria_toolbar_label_unique: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple toolbar components do not have unique labels",
-            "group": "All toolbar components on a page must have unique labels specified"
+            "Fail_1": "Multiple elements with \"toolbar\" roles do not have unique labels",
+            "group": "Each element with \"toolbar\" role must have a unique label that describes its purpose"
         }
     },
     rulesets: [{
