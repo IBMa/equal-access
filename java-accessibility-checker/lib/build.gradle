@@ -30,7 +30,7 @@ dependencies {
     implementation libs.guava
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-    implementation 'org.seleniumhq.selenium:selenium-java:4.16.1'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     implementation 'com.google.code.gson:gson:2.11.0'
     // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
     implementation 'org.mozilla:rhino:1.7.14'
