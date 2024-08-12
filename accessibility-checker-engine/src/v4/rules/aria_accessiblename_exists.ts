@@ -51,6 +51,8 @@ export let aria_accessiblename_exists: Rule = {
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
         // svg element is handled in svg_graphics)labbelled rule
         if (nodeName === 'svg') return;
+        // img element handled in img_alt_valid
+        if (nodeName === "img") return;
 
         // when table element with a caption as first child
         if (nodeName === 'table' 
