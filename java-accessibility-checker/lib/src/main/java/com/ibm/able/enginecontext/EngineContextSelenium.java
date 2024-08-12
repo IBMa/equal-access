@@ -17,11 +17,11 @@ package com.ibm.able.enginecontext;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Date;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 
 import com.google.gson.Gson;
@@ -51,7 +51,7 @@ public class EngineContextSelenium implements IEngineContext {
             engineLoadMode = "INJECT";
         }
         if ("INJECT".equals(engineLoadMode) && engineContent == null) {
-            engineContent = Fetch.get(config.rulePack+"/ace.js");
+            engineContent = Fetch.get(config.rulePack+"/ace.js", config.ignoreHTTPSErrors);
         }
 
         if (config.DEBUG) System.out.println("[INFO] aChecker.loadEngine detected Selenium");
@@ -151,15 +151,21 @@ try {
     cb(e);
 }            
             """, gson.toJson(config.policies) /* TODO: ${JSON.stringify(ACEngineManager.customRulesets)}; */);
-            this.driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(60));
-    
-            String jsonReport = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
             ACEReport report;
-            if (!jsonReport.startsWith("{\"results\":[")) {
-                throw new ACError(jsonReport);
-            } else {
-                report = gson.fromJson(jsonReport, ACEReport.class);
+            try {
+                this.driver.manage().timeouts().scriptTimeout(Duration.ofMinutes(60));
+                this.driver.manage().timeouts().setScriptTimeout(Duration.ofMinutes(60));    
+                String jsonReport = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
+                if (!jsonReport.startsWith("{\"results\":[")) {
+                    throw new ACError(jsonReport);
+                } else {
+                    report = gson.fromJson(jsonReport, ACEReport.class);
+                }
+            } catch (TimeoutException err) {
+                System.err.println("TIMEOUT?!");
+                throw err;
             }
+    
             // TODO:
             // String getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
             // if (curPol != null && !checkPolicy) {

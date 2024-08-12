@@ -126,10 +126,7 @@ public class ACConfigManager {
         
         Archive[] ruleArchiveParse;
         try {
-            // if (ACConfig.ignoreHTTPSErrors) {
-            //     process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
-            // }
-            ruleArchiveParse = Fetch.getJSONArr(ruleArchiveFile, Archive[].class);
+            ruleArchiveParse = Fetch.getJSONArr(ruleArchiveFile, Archive[].class, ACConfig.ignoreHTTPSErrors);
         } catch (Error err) {
             System.err.println(ruleArchiveFile);
             System.err.println(err.toString());

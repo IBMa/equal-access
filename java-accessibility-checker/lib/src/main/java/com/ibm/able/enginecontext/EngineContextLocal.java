@@ -34,7 +34,7 @@ public class EngineContextLocal implements IEngineContext {
     @Override
     public void loadEngine() throws IOException {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
-        String engineContent = Fetch.get(config.rulePack+"/ace.js")+";var ace_checker = new ace.Checker();";
+        String engineContent = Fetch.get(config.rulePack+"/ace.js", config.ignoreHTTPSErrors)+";var ace_checker = new ace.Checker();";
         
         // Creates and enters a Context. The Context stores information
         // about the execution environment of a script.

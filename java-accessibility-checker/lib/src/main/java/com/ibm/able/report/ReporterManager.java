@@ -40,7 +40,7 @@ public class ReporterManager {
     private static Gson gson = new Gson();
     private static ReporterManager singleton = null;
     public static ReporterManager get() {
-        if (singleton == null) throw new ACError("RepoterManager not intialized");
+        if (singleton == null) throw new ACError("ReporterManager not intialized");
         return singleton;
     }
     public static ReporterManager initialize(ConfigInternal config, IAbstractAPI absAPI, Guideline[] rulesets) {
