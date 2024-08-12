@@ -73,7 +73,10 @@ public class AccessibilityCheckerTest {
      */
     @BeforeClass public static void setup() {
         String workingDir = System.getProperty("user.dir");
-        String chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
+        String chromeDriverDir = System.getenv("chromedriver-path");
+        if (chromeDriverDir == null) {
+            chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
+        }
         System.setProperty("webdriver.chrome.driver", chromeDriverDir);
         ChromeOptions options = new ChromeOptions();  
         options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
