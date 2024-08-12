@@ -400,6 +400,8 @@ jobs:
 
     - run: ./gradlew test
       working-directory: java-accessibility-checker
+      env: 
+        chromedriver-path: ${{ steps.setup-chrome.outputs.chromedriver-path }}
 
 ###############################################################################
 # Karma Tests
