@@ -77,6 +77,7 @@ public class AccessibilityCheckerTest {
         if (chromeDriverDir == null) {
             chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
         }
+        System.out.println("Chrome driver: "+chromeDriverDir);
         System.setProperty("webdriver.chrome.driver", chromeDriverDir);
         ChromeOptions options = new ChromeOptions();  
         options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
