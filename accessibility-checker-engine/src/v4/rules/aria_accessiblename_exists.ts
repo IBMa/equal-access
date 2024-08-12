@@ -18,7 +18,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
 
-export let aria_accessiblename_exists: Rule = {
+export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
     context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
