@@ -33,6 +33,7 @@ import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -74,7 +75,9 @@ public class AccessibilityCheckerTest {
         String workingDir = System.getProperty("user.dir");
         String chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
         System.setProperty("webdriver.chrome.driver", chromeDriverDir);
-        AccessibilityCheckerTest.driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();  
+        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
+        AccessibilityCheckerTest.driver = new ChromeDriver(options);
     }
 
     /**
