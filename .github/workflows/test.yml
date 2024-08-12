@@ -397,10 +397,8 @@ jobs:
     - run: sleep 10
       working-directory: rule-server/dist
 
-    - run: |
-      echo "${{ steps.setup-chrome.outputs.chrome-version }}"
-    - run: |
-      echo "${{ steps.setup-chrome.outputs.chromedriver-version }}"
+    - run: echo "${{ steps.setup-chrome.outputs.chrome-version }}"
+    - run: echo "${{ steps.setup-chrome.outputs.chromedriver-version }}"
     - run: ./gradlew test
       working-directory: java-accessibility-checker
       env: 
