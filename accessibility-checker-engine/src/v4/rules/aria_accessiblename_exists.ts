@@ -52,7 +52,7 @@ export let aria_accessiblename_exists: Rule = {
         // svg element is handled in svg_graphics)labbelled rule
         if (nodeName === 'svg') return;
         // img element handled in img_alt_valid
-        if (nodeName === "img") return;
+        if (nodeName === "img" && ruleContext.hasAttribute("alt")) return RulePass("pass");
 
         // when table element with a caption as first child
         if (nodeName === 'table' 
