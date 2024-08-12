@@ -73,7 +73,7 @@ public class AccessibilityCheckerTest {
      */
     @BeforeClass public static void setup() {
         String workingDir = System.getProperty("user.dir");
-        String chromeDriverDir = System.getenv("chromedriver-path");
+        String chromeDriverDir = System.getenv("chromedriverpath");
         if (chromeDriverDir == null) {
             chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
         }
