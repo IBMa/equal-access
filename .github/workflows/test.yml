@@ -402,7 +402,8 @@ jobs:
 ####
   java-accessibility-checker-buildtest:
     runs-on: ubuntu-22.04
-
+    permissions:
+      packages: write
     strategy:
       matrix:
         node-version: [18.x]
@@ -414,8 +415,6 @@ jobs:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
     - run: ./gradlew jar
-      working-directory: java-accessibility-checker
-    - run: ./gradlew generatePomFileForMavenJavaPublication
       working-directory: java-accessibility-checker
     - name: Publish to GitHub Packages
       run: gradle publish
