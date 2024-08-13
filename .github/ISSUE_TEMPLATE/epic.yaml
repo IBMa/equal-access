@@ -73,7 +73,7 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: >
+      value: |
         ## Definition of Done
         - [ ] Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
         - [ ] All content has been reviewed for grammar, spelling, style and technical accuracy
