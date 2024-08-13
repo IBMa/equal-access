@@ -5,7 +5,7 @@ labels: 'type: epic'
 body:
   - type: markdown
     attributes:
-      value: ## Epic Details
+      value: '## Epic Details'
   - type: textarea
     id: hill
     attributes:
