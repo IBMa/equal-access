@@ -69,8 +69,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/IBMa/equal-access")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                username = project.findProperty("githubJava.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("githubJava.key") ?: System.getenv("TOKEN")
             }
         }
     }
