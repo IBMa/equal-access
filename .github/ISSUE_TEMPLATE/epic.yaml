@@ -50,7 +50,7 @@ body:
         - 'other'
     validations:
       required: true
-  - type: textarea
+  - type: markdown
     id: tasks
     attributes:
       label: Tasks
