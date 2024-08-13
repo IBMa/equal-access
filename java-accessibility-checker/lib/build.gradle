@@ -8,10 +8,12 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id 'maven-publish'
+    // id 'signing'
 }
 
 group 'com.ibm.able'
-version '1.0.0-beta-1'
+version '1.0.0-beta-2'
 archivesBaseName = 'accessibility-checker'
 
 repositories {
@@ -60,3 +62,43 @@ jar {
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE 
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/IBMa/equal-access")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        githubJava(MavenPublication) {
+            from components.java
+            artifactId = 'accessibility-checker'
+
+            pom {
+                name = 'accessibility-checker'
+                description = 'A module that allows you to perform integrated accessibility testing for environments such as JUnit and Selenium'
+                url = 'https://www.ibm.com/able/toolkit/tools/'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/IBMa/equal-access.git'
+                    developerConnection = 'scm:git:ssh://github.com/IBMa/equal-access.git'
+                    url = 'https://github.com/IBMa/equal-access'
+                }
+            }
+        }
+    }
+}
+
+// signing {
+//     sign publishing.publications.githubJava
+// }

@@ -19,3 +19,8 @@ Generate javadoc
 ```
 ./gradlew javadoc
 ```
+
+Create maven POM file:
+```
+./gradlew generatePomFileForMavenJavaPublication
+```
