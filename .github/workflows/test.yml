@@ -419,8 +419,8 @@ jobs:
       run: gradle publish
       working-directory: java-accessibility-checker
       env:
-        USERNAME: ${{ github.actor }}
-        PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        USERNAME: ${{ secrets.MVN_GITHUB_USER }}
+        PASSWORD: ${{ secrets.MVN_GITHUB_TOKEN }}
 
 ###############################################################################
 # Karma Tests
