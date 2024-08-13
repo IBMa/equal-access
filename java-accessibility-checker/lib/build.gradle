@@ -13,7 +13,7 @@ plugins {
 }
 
 group 'com.ibm.able'
-version '1.0.0-beta-2'
+version '1.0.0-beta-3'
 archivesBaseName = 'accessibility-checker'
 
 repositories {
