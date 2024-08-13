@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able;
+package com.foo;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,9 +24,9 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import com.ibm.able.engine.ACReport;
-import com.ibm.able.engine.ACReport.Result;
-import com.ibm.able.report.BaselineManager.eAssertResult;
+import com.ibm.able.equalaccess.engine.ACReport;
+import com.ibm.able.equalaccess.engine.ACReport.Result;
+import com.ibm.able.equalaccess.report.BaselineManager.eAssertResult;
 
 public class SomeClassTest {
     private static ChromeDriver driver;

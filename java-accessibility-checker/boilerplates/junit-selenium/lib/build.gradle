@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
     // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
     implementation 'org.mozilla:rhino:1.7.14'
-    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-2'
+    implementation 'com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
