@@ -111,11 +111,9 @@ public class ACConfigManager {
      *  Need to change array of policies into a string
      *      ["CI162_5_2_DCP070116","CI162_5_2_DCP070116"] to "CI162_5_2_DCP070116,CI162_5_2_DCP070116"
      *
-     * @param {Object} ACConfig - Provide the config object in which needs to be processed.
+     * @param ACConfig Provide the config object in which needs to be processed.
      *
-     * @return {Object} ACConfig - return the config object which has been made engine readable
-     *
-     * @memberOf this
+     * @return ConfigInternal - return the config object which has been made engine readable
      */
     private static ConfigInternal processACConfig(ConfigInternal ACConfig) throws IOException {
         String[] validArchiveKeywords = { "latest", "preview", "versioned" };
@@ -197,12 +195,7 @@ public class ACConfigManager {
      * This function is responsible initializing all the default values for the configurations, in the case any
      * of the config options are missing.
      *
-     * @param {Object} config - Provide the config object in which we need to initialize the default values.
-     *
-     * @return {Object} config - return the config object which has all the default values, in the case
-     *                           some of the options are null or undefined.
-     *
-     * @memberOf this
+     * @param config Provide the config object in which we need to initialize the default values.
      */
     private static void initializeDefaults(ConfigInternal config) {
         // Use an unpopulated config as the default values
@@ -247,8 +240,6 @@ public class ACConfigManager {
      *
      * @return {Object} config - return the config object that was read in, refer to function initializeDefaults
      *                           to view how the object is to be constructed.
-     *
-     * @memberOf this
      */
     private static ConfigInternal loadConfigFromJSONFile() {
         // Use an unpopulated config as the default values
@@ -300,15 +291,13 @@ public class ACConfigManager {
      * function and then the config variables will be assoiciated to the global space so that
      * they can be accessed from window.__karma__.config
      *
-     * @param {Object} config - All the Karma configuration, we will extract what we need from this over
+     * @param config All the Karma configuration, we will extract what we need from this over
      *                          all object, we need the entire object so that we can reasign some config
      *                          variables to global scope so that all karma testscases/scripts can access
      *                          them.
      *
-     * @return - N/A - Object will be processed and all the params that are needed for this module will
-     *                 be extracted and then the entire object will be added to global space.
-     *
-     * @memberOf this
+     * @return Object will be processed and all the params that are needed for this module will
+     *                 be extracted
      */
     private static ConfigInternal processConfiguration(Config config) {
         // Use an unpopulated config as the default values

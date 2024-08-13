@@ -112,17 +112,13 @@ public class BaselineManager {
      * be used to perform the check, in the case no baseline is provided then we comply with only failing if
      * there is a sinble violation which falls into failLevels.
      *
-     * @param {Object} actual - the actual results object provided by the user, this object should follow the
+     * @param actualResults the actual results object provided by the user, this object should follow the
      *                          same format as outlined in the return of aChecker.buildReport function.
      *
-     * @return {int} - return 0 in the case actual matches baseline or no violations fall into failsLevels,
+     * @return return 0 in the case actual matches baseline or no violations fall into failsLevels,
      *                 return 1 in the case actual results does not match baseline results,
      *                 return 2 in the case that there is a failure based on failLevels (this means no baseline found).
      *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
-     *
-     * PUBLIC API
-     *
-     * @memberOf this
      */
     public static eAssertResult assertCompliance(ACReport actualResults) {
         // Get the label directly from the results object, the same label has to match
@@ -181,13 +177,10 @@ public class BaselineManager {
     /**
      * This function is responsible for comparing actual with expected and returning all the differences as an array.
      *
-     * @param {Object} actual - Provide the actual object to be used for compare
-     * @param {Object} expected - Provide the expected object to be used for compare
-     * @param {boolean} clean - Provide a boolean if both the actual and expected objects need to be cleaned
-     *                          cleaning refers to converting the objects to match with a basic compliance
-     *                          compare of xpath and ruleId.
+     * @param actual Provide the actual object to be used for compare
+     * @param expected Provide the expected object to be used for compare
      *
-     * @return {Object} differences - return an array of diff objects that were found, following is the format of the object:
+     * @return differences - return an array of diff objects that were found, following is the format of the object:
      * [
      *     {
      *         "kind": "E",
@@ -210,10 +203,6 @@ public class BaselineManager {
      *         "rhs": "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html",
      *     }
      * ]
-     *
-     * PUBLIC API
-     *
-     * @memberOf this
      */
     public static DiffResult[] diffResultsWithExpected(ACReport actual, ACReport expected) {
         // Run Deep diff function to compare the actual and expected values.
@@ -236,15 +225,11 @@ public class BaselineManager {
      * This function is responsible for checking if any of the issues reported have any level that falls
      * into the failsLevel array.
      *
-     * @param {Object} results - Provide the scan results, object which would be in the
+     * @param report Provide the scan results, object which would be in the
      *                           the same format as outlined in the return of aChecker.buildReport function.
      *
-     * @return {int} - return 1 in the case a single issue was found which is in the failsLevel array.
+     * @return return 1 in the case a single issue was found which is in the failsLevel array.
      *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
-     *
-     * PRIVATE METHOD
-     *
-     * @memberOf this
      */
     public static int compareBasedOnFailLevels(ACReport report) {
         // Variable Declaration
@@ -269,14 +254,10 @@ public class BaselineManager {
     /**
      * This function is responsible for getting the diff results based on label for a scan that was already performed.
      *
-     * @param {String} label - Provide a lable for which to get the diff results for.
+     * @param label Provide a label for which to get the diff results for.
      *
-     * @return {Object} - return the diff results object from global space based on label provided, the object will be
+     * @return return the diff results object from global space based on label provided, the object will be
      *                    in the same format as outlined in the return of aChecker.diffResultsWithExpected function.
-     *
-     * PUBLIC API
-     *
-     * @memberOf this
      */
     public static DiffResult[] getDiffResults(String label) {
         return diffResults.get(label);

@@ -50,22 +50,6 @@ public class ACReporterMetrics implements IReporter {
         return "metrics";
     }
 
-    /**
-     * This function is responsible for profiling the testcases and adding the scan time to the global
-     * array which will be sent to the metrics server to log the number of scans that were performed.
-     * This function profiles scanTimes for the V2 metric server:
-     *  https://aat.w3ibm.mybluemix.net
-     *
-     * In the case that user provides any url that is https://aat* it will upload based on accountId
-     *
-     * @param {String} scanTime - Provide the time it took for the testcase to run
-     * @param {String} profile - The type of profile the scan time is for:
-     *                             i.e. browser information, features, etc...
-     *
-     * @return N/A - Global scanTimesV2 object is updated with the time
-     *
-     * @memberOf this
-     */
     @Override
     public ReporterFile generateReport(ConfigInternal config, Guideline[] rulesets, ReporterStored storedReport) {
         if (config.label == null || !Arrays.asList(config.label).contains("IBMa-Java-TeSt")) {
@@ -80,16 +64,6 @@ public class ACReporterMetrics implements IReporter {
         return null;
     };
 
-    /**
-     * This function is responsible for uploading scan results to the metrics server:
-     * https://aat.w3ibm.mybluemix.net
-     *
-     * @param {Function} done - The browser on which the testcases were run on
-     *
-     * @return N/A - performs the upload of the metrics to the server
-     *
-     * @memberOf this
-     */
     @Override
     public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport,
             CompressedReport[] compressedReports) 
