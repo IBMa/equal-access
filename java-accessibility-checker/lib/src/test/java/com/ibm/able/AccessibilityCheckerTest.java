@@ -163,7 +163,7 @@ public class AccessibilityCheckerTest {
     ],
     "outputFormat": [ "json" ],
     "label": [
-        "IBMa-Node-TeSt"
+        "IBMa-Java-TeSt2"
     ]
 }                
 """);

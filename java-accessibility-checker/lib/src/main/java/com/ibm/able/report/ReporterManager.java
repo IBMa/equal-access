@@ -59,8 +59,7 @@ public class ReporterManager {
         this.absAPI = absAPI;
         this.rulesets = rulesets;
         if (config.perfMetrics) {
-            // TODO:
-            // reporters.add(new ACReporterMetrics(config.toolName, config.policies));
+            reporters.add(new ACReporterMetrics(config.toolName, config.policies));
         }
 
         if (!Arrays.asList(config.outputFormat).contains("disable")) {

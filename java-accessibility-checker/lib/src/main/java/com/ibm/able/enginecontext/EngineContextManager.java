@@ -23,6 +23,10 @@ import com.ibm.able.util.Misc;
 
 public class EngineContextManager {
     private EngineContextManager() {}
+
+    public static String encodeURIComponent(String s) {
+        return new EngineContextLocal().encodeURIComponent(s);
+    }
     
     public static IEngineContext getEngineContext(Object contentContext) {
         IEngineContext engineContext = null;

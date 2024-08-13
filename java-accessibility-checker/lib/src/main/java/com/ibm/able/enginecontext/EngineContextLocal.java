@@ -81,4 +81,19 @@ public class EngineContextLocal implements IEngineContext {
         return gson.fromJson(jsonGuidelines, Rule[].class);
     } 
     
+    public String encodeURIComponent(String s) {
+        if (engine == null) {
+            // Creates and enters a Context. The Context stores information
+            // about the execution environment of a script.
+            engine = Context.enter();
+
+            // Initialize the standard objects (Object, Function, etc.)
+            // This must be done before scripts can be executed. Returns
+            // a scope object that we use in later calls.
+            engineScope = engine.initStandardObjects();
+        }
+        String scriptStr = String.format("encodeURIComponent(`%s`)", s);
+        String result = engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
+        return result;
+    }
 }
