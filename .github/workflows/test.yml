@@ -418,7 +418,7 @@ jobs:
     - run: ./gradlew generatePomFileForGithubJavaPublication
       working-directory: java-accessibility-checker
     - name: Publish to GitHub Packages
-      run: gradle publish
+      run: ./gradlew publish
       working-directory: java-accessibility-checker
       env:
         USERNAME: ${{ secrets.MVN_GITHUB_USER }}
