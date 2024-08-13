@@ -404,7 +404,7 @@ jobs:
       working-directory: java-accessibility-checker
       env: 
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
-
+        chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
 ###############################################################################
 # Karma Tests
 ####
