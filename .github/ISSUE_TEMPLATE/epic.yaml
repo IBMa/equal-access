@@ -1,0 +1,62 @@
+name: 'EPIC template for Releases / Point Releases'
+description: This is a template for epics
+title: '[EPIC]: '
+labels: 'type: epic'
+body:
+  - type: markdown
+    attributes:
+      value: >
+        <!-- Complete Epic Details section for the first sprint review of the release. Complete the Definition of Done section before the last sprint of the release. Definitions are in Italics -->
+        ## Epic Details
+          - **Hill**: _what does the user need – include some sort of WOW element_
+          - **Playback Demonstration**: _what will you be able to show at the end of the release / point release to demonstrate how you accomplished your user story. If possible, list what you target to demonstrate for each sprint_ 
+          - **Metric**: _how can we measure the impact of this change_
+          - **Comms**: _when completed who should you communicate this change to, what will you tell them (concisely), and where?_
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: What project are working with? 
+      multiple: true
+      options: 
+        - 'able site'
+        - 'accessibility-checker-engine'
+        - 'extension-checker'
+        - 'accessibility-checker for Node'
+        - 'cypress-accessibility-checker'
+        - 'karma-accessibility-checker'
+        - 'other'
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description:
+        "Tell us more about the issue that you're experiencing"
+      placeholder: What did you expect to happen? What happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description:
+        'How do we reproduce the issue you described using the?'
+    validations:
+      required: true
+    - type: markdown
+    attributes:
+      value: >
+        ## Definition of Done
+        - [ ] Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
+        - [ ] All content has been reviewed for grammar, spelling, style and technical accuracy
+        - [ ] All code committed to main branch
+        - [ ] All unit tests pass (including accessibility)
+        - [ ] Demo works in staging environment
+        - [ ] At least one performance metric / monitor constructed
+
+
+
+
