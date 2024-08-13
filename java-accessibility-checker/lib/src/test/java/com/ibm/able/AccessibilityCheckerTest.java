@@ -103,6 +103,7 @@ public class AccessibilityCheckerTest {
     }
 
     @Test public void getCompliance() {
+        ACConfigManager.getConfig().label = new String[] { "IBMa-Java-TeSt" };
         AccessibilityCheckerTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
         ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest");
         assertNotNull(report);
@@ -163,7 +164,7 @@ public class AccessibilityCheckerTest {
     ],
     "outputFormat": [ "json" ],
     "label": [
-        "IBMa-Java-TeSt2"
+        "IBMa-Java-TeSt"
     ]
 }                
 """);
