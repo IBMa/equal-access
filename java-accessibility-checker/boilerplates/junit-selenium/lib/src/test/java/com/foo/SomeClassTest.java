@@ -24,6 +24,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import com.ibm.able.equalaccess.AccessibilityChecker;
 import com.ibm.able.equalaccess.engine.ACReport;
 import com.ibm.able.equalaccess.engine.ACReport.Result;
 import com.ibm.able.equalaccess.report.BaselineManager.eAssertResult;
@@ -67,6 +68,6 @@ public class SomeClassTest {
 
         ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest");
         eAssertResult resultCode = AccessibilityChecker.assertCompliance(report);
-        assertEquals(resultCode, eAssertResult.PASS);
+        assertEquals(eAssertResult.PASS, resultCode);
     }
 }
