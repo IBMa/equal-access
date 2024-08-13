@@ -225,6 +225,7 @@ public class AccessibilityCheckerTest {
             System.out.println();
         } finally {
             configFile.delete();
+            ACConfigManager.resetConfig();
         }
     }
 
