@@ -415,6 +415,8 @@ jobs:
         java-version: '17'
     - run: ./gradlew jar
       working-directory: java-accessibility-checker
+    - run: ./gradlew generatePomFileForGithubJavaPublication
+      working-directory: java-accessibility-checker
     - name: Publish to GitHub Packages
       run: gradle publish
       working-directory: java-accessibility-checker
