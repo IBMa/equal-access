@@ -50,7 +50,7 @@ body:
         - 'other'
     validations:
       required: true
-  - type: markdown
+  - type: checkboxes
     id: tasks
     attributes:
       label: Tasks
