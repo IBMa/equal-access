@@ -201,10 +201,11 @@ public class AccessibilityCheckerTest {
                 ACReport report = AccessibilityChecker.getCompliance(driver, testFile.getAbsolutePath().substring(testRootDir.getAbsolutePath().length()));
                 String unitTestInfoStr = AccessibilityCheckerTest.driver.executeScript("return JSON.stringify((typeof (window.UnitTest) !== 'undefined' && window.UnitTest))").toString();
                 if (!"false".equals(unitTestInfoStr)) {
-                    System.out.print(".");
                     UnitTestInfo expectedInfo = gson.fromJson(unitTestInfoStr, UnitTestInfo.class);
                     List<String> coveredRuleIds = Arrays.asList(expectedInfo.ruleIds);
                     if (expectedInfo != null && expectedInfo.ruleIds != null && expectedInfo.ruleIds.length > 0) {
+                        System.out.println(testFile.getAbsolutePath());
+                        System.out.flush();
                         List<Result> actualIssues = new LinkedList<>(Arrays.stream(report.results).filter(actualIssue -> coveredRuleIds.contains(actualIssue.ruleId)).toList());
                         List<UnitTestInfoResult> expectedIssues = new LinkedList<>(Arrays.asList(expectedInfo.results));
                         for (int idxActual=0; idxActual<actualIssues.size(); ++idxActual) {
