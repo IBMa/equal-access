@@ -12,7 +12,7 @@ plugins {
     // id 'signing'
 }
 
-group 'com.ibm.able'
+group 'com.ibm.able.equalaccess'
 version '1.0.0-beta-3'
 archivesBaseName = 'accessibility-checker'
 

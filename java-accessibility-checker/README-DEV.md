@@ -2,7 +2,7 @@
 
 Run a specific testcase:
 ```
-./gradlew test --tests com.ibm.able.AccessibilityCheckerTest
+./gradlew test --tests com.ibm.able.equalaccess.AccessibilityCheckerTest
 ```
 
 Run all tests:
