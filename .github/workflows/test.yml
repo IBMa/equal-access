@@ -419,10 +419,10 @@ jobs:
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
         chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
     - name: Publish to GitHub Packages
-        run: gradle publish
-        env:
-          USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      run: gradle publish
+      env:
+        USERNAME: ${{ github.actor }}
+        PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
 ###############################################################################
 # Karma Tests
