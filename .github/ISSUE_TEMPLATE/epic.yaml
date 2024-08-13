@@ -1,6 +1,6 @@
-name: 'EPIC template for Releases / Point Releases'
+name: EPIC template for Releases / Point Releases
 description: This is a template for epics
-title: '[EPIC]: '
+title: '[EPIC]:'
 labels: 'type: epic'
 body:
   - type: markdown
@@ -11,7 +11,7 @@ body:
     attributes:
       label: Hill
       description:
-        'What does the user need – include some sort of WOW element'
+        "What does the user need – include some sort of WOW element"
     validations:
       required: true
   - type: textarea
@@ -19,7 +19,7 @@ body:
     attributes:
       label: Playback Demonstration
       description:
-        'What will you be able to show at the end of the release / point release to demonstrate how you accomplished your user story. If possible, list what you target to demonstrate for each sprint'
+        "What will you be able to show at the end of the release / point release to demonstrate how you accomplished your user story. If possible, list what you target to demonstrate for each sprint"
     validations:
       required: true
   - type: textarea
@@ -27,7 +27,7 @@ body:
     attributes:
       label: Metric
       description:
-        'How can we measure the impact of this chang'
+        "How can we measure the impact of this chang"
     validations:
       required: true
   - type: textarea
@@ -35,8 +35,7 @@ body:
     attributes:
       label: Comms
       description:
-        'When completed who should you communicate this change to, what will you tell them (concisely), and where?'
-    validations:
+        "When completed who should you communicate this change to, what will you tell them (concisely), and where?"    validations:
       required: true
   - type: dropdown
     id: project
