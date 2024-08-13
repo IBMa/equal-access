@@ -36,7 +36,7 @@ body:
       label: Comms
       description:
         "When completed who should you communicate this change to, what will you tell them (concisely), and where?"    
-        validations:
+    validations:
       required: true
   - type: dropdown
     id: project
