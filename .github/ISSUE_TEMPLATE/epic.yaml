@@ -59,17 +59,12 @@ body:
     attributes:
       label: Tasks
       value: |
-          ```[tasklist]
-          ## (Definition of Done)
-           - [ ] Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
-           - [ ] All content has been reviewed for grammar, spelling, style and technical accuracy
-           - [ ] All code committed to main branch
-           - [ ] All unit tests pass (including accessibility)
-            - [ ] Demo works in staging environment
-           - [ ] At least one performance metric / monitor constructed
-
-          ```    
-
-
-
+        [tasklist]
+        ## (Definition of Done)
+        - [ ] Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
+        - [ ] All content has been reviewed for grammar, spelling, style, and technical accuracy
+        - [ ] All code committed to the main branch
+        - [ ] All unit tests pass (including accessibility)
+        - [ ] Demo works in the staging environment
+        - [ ] At least one performance metric/monitor constructed
 
