@@ -10,39 +10,35 @@ body:
     id: hill
     attributes:
       label: Hill
-      description:
-        "What does the user need – include some sort of WOW element"
+      description: "What does the user need – include some sort of WOW element"
     validations:
       required: true
   - type: textarea
     id: playback
     attributes:
       label: Playback Demonstration
-      description:
-        "What will you be able to show at the end of the release / point release to demonstrate how you accomplished your user story. If possible, list what you target to demonstrate for each sprint"
+      description: "What will you be able to show at the end of the release / point release to demonstrate how you accomplished your user story? If possible, list what you target to demonstrate for each sprint."
     validations:
       required: true
   - type: textarea
     id: metric
     attributes:
       label: Metric
-      description:
-        "How can we measure the impact of this chang"
+      description: "How can we measure the impact of this change?"
     validations:
       required: true
   - type: textarea
     id: comms
     attributes:
       label: Comms
-      description:
-        "When completed who should you communicate this change to, what will you tell them (concisely), and where?"    
+      description: "When completed, who should you communicate this change to, what will you tell them (concisely), and where?"
     validations:
       required: true
   - type: dropdown
     id: project
     attributes:
       label: Project
-      description: What project are working with? 
+      description: "What project are you working with?" 
       multiple: true
       options: 
         - 'able site'
@@ -67,4 +63,3 @@ body:
         - [ ] All unit tests pass (including accessibility)
         - [ ] Demo works in the staging environment
         - [ ] At least one performance metric/monitor constructed
-
