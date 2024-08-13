@@ -204,7 +204,7 @@ public class AccessibilityCheckerTest {
                     UnitTestInfo expectedInfo = gson.fromJson(unitTestInfoStr, UnitTestInfo.class);
                     List<String> coveredRuleIds = Arrays.asList(expectedInfo.ruleIds);
                     if (expectedInfo != null && expectedInfo.ruleIds != null && expectedInfo.ruleIds.length > 0) {
-                        System.out.println(testFile.getAbsolutePath());
+                        System.out.println(testFile.getCanonicalPath());
                         System.out.flush();
                         List<Result> actualIssues = new LinkedList<>(Arrays.stream(report.results).filter(actualIssue -> coveredRuleIds.contains(actualIssue.ruleId)).toList());
                         List<UnitTestInfoResult> expectedIssues = new LinkedList<>(Arrays.asList(expectedInfo.results));
