@@ -40,23 +40,13 @@ public class AccessibilityChecker {
     private static IAbstractAPI myFS = new MyFS();
     private static IEngineContext localEngine;
 
-    /**
-     * This function is responsible performing a scan based on the context that is provided, following are
-     * the supported context type:
-     *    Single node (HTMLElement)
-     *    Local file path (String)
-     *    URL (String)
-     *    document node
-     *    data stream for html content (String)
-     *
-     *  Future Items
-     *    Multiple node (Array of HTMLElements) ---> FUTURE
-     *
-     * @param {(Webdriver|Puppeteer Page |)} content - Provide the context to scan, which includes the items from above.
-     * @param {String} label - Provide a label for the scan that is being performed
-     * @param {Function} callback - (optional) Provide callback function which will be executed once the results are extracted.
-     * @return Promise with the ICheckerResult
-     */
+     /**
+      * This function is responsible performing a scan based on the context that is provided, following are
+      * the supported context type: WebDriver
+      * @param content The WebDriver with the content to scan
+      * @param label Provide a label for the scan that is being performed
+      * @return Resulting report
+      */
     public static ACReport getCompliance(Object content, String label) {
         if (content == null) {
             System.err.println("aChecker: Unable to get compliance of null or undefined object");
@@ -111,14 +101,27 @@ public class AccessibilityChecker {
      * be used to perform the check, in the case no baseline is provided then we comply with only failing if
      * there is a sinble violation which falls into failLevels.
      *
-     * @param {ReportResult} actual - the actual results object provided by the user, this object should follow the
+     * @param actual the actual results object provided by the user, this object should follow the
      *                          same format as outlined in the return of aChecker.buildReport function.
      *
-     * @return {int} - return 0 in the case actual matches baseline or no violations fall into failsLevels,
+     * @return return 0 in the case actual matches baseline or no violations fall into failsLevels,
      *                 return 1 in the case actual results does not match baseline results,
      *                 return 2 in the case that there is a failure based on failLevels (this means no baseline found).
      *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
      */
+
+     /**
+      * This function is responsible for comparing the scan results with baseline or checking that there are
+      * no violations which fall into the failsLevels levels. In the case a baseline is found then baseline will
+      * be used to perform the check, in the case no baseline is provided then we comply with only failing if
+      * there is a sinble violation which falls into failLevels.
+      * @param report the actual results object provided by the user, this object should follow the
+      *                          same format as outlined in the return of aChecker.buildReport function.
+      * @return return 0 in the case actual matches baseline or no violations fall into failsLevels,
+      *                 return 1 in the case actual results does not match baseline results,
+      *                 return 2 in the case that there is a failure based on failLevels (this means no baseline found).
+      *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
+      */
     public static eAssertResult assertCompliance(ACReport report) {
         return BaselineManager.assertCompliance(report);
     }
@@ -129,10 +132,6 @@ public class AccessibilityChecker {
 // * @param {Object} results - Provide the results from the scan.
 // *
 // * @return {String} resultsString - String representation of the results/violations.
-// *
-// * PUBLIC API
-// *
-// * @memberOf this
 // */
 // export function stringifyResults(report: ICheckerReport) : string {
 // return ReporterManager.stringifyResults(report)
@@ -145,9 +144,9 @@ public class AccessibilityChecker {
     /**
      * This function is responsible for getting the diff results based on label for a scan that was already performed.
      *
-     * @param {String} label - Provide a lable for which to get the diff results for.
+     * @param label Provide a label for which to get the diff results for.
      *
-     * @return {Object} - return the diff results object from global space based on label provided, the object will be
+     * @return return the diff results object from global space based on label provided, the object will be
      *                    in the same format as outlined in the return of aChecker.diffResultsWithExpected function.
      */
     public static DiffResult[] getDiffResults(String label) {
@@ -157,9 +156,9 @@ public class AccessibilityChecker {
     /**
      * This function is responsible for getting the baseline object for a label that was provided.
      *
-     * @param {String} label - Provide a lable for which to get the baseline for.
+     * @param label Provide a label for which to get the baseline for.
      *
-     * @return {Object} - return the baseline object from global space based on label provided, the object will be
+     * @return return the baseline object from global space based on label provided, the object will be
      *                    in the same format as outlined in the return of aChecker.buildReport function.
      */
     public static ACReport getBaseline(String label) {
@@ -169,13 +168,10 @@ public class AccessibilityChecker {
     /**
      * This function is responsible for comparing actual with expected and returning all the differences as an array.
      *
-     * @param {Object} actual - Provide the actual object to be used for compare
-     * @param {Object} expected - Provide the expected object to be used for compare
-     * @param {boolean} clean - Provide a boolean if both the actual and expected objects need to be cleaned
-     *                          cleaning refers to converting the objects to match with a basic compliance
-     *                          compare of xpath and ruleId.
+     * @param actual Provide the actual object to be used for compare
+     * @param expected Provide the expected object to be used for compare
      *
-     * @return {Object} differences - return an array of diff objects that were found, following is the format of the object:
+     * @return differences - return an array of diff objects that were found, following is the format of the object:
      * [
      *     {
      *         "kind": "E",
