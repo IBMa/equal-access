@@ -54,23 +54,6 @@ body:
         - 'other'
     validations:
       required: true
-  - type: textarea
-    id: description
-    attributes:
-      label: Description
-      description:
-        "Tell us more about the issue that you're experiencing"
-      placeholder: What did you expect to happen? What happened instead?
-    validations:
-      required: true
-  - type: textarea
-    id: reproduce
-    attributes:
-      label: Steps to reproduce
-      description:
-        'How do we reproduce the issue you described using the?'
-    validations:
-      required: true
   - type: markdown
     attributes:
       value: |
