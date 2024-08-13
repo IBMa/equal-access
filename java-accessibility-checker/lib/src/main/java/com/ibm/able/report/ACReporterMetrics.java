@@ -88,7 +88,6 @@ public class ACReporterMetrics implements IReporter {
 
                             // Dispatch the call to the metrics server
                             try {
-                                System.out.println(this.metricsURLV2 + "/api/pub/meter/v2" + qs.toString());
                                 Fetch.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs.toString());
                             } catch (Throwable t) {
                                 System.err.println(t);
