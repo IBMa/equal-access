@@ -36,9 +36,9 @@ export let aria_parent_required: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "An element with an implicit or explicit role must be contained within a valid element",
+            "group": "Each element with an implicit or explicit role must be contained within a valid element",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\""
+            "Fail_1": "Element with \"{0}\" role is not contained in or owned by an element with one of the following roles: \"{1}\""
         }
     },
     rulesets: [{

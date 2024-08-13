@@ -35,7 +35,7 @@ export let aria_region_label_unique: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Fail_1": "Multiple elements with \"region\" role do not have unique labels",
-            "group": "Each element with a \"region\" role must have a unique label"
+            "group": "Each element with a \"region\" role must have a unique label that describes its purpose"
         }
     },
     rulesets: [{

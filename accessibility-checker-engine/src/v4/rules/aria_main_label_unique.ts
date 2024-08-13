@@ -34,7 +34,7 @@ export let aria_main_label_unique: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Fail_1": "Multiple elements with \"main\" role do not have unique labels",
-            "group": "Elements with \"main\" role must have unique labels"
+            "group": "Each element with \"main\" role must have unique label that describes its purposes"
         }
     },
     rulesets: [{

@@ -34,8 +34,8 @@ export let aria_document_label_unique: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple elements with a \"document\" role do not have unique labels",
-            "group": "All elements with a \"document\" role must have unique labels"
+            "Fail_1": "Multiple elements with \"document\" roles do not have unique labels",
+            "group": "Each element with \"document\" role must have a unique label that describes its purpose"
         }
     },
     rulesets: [{
