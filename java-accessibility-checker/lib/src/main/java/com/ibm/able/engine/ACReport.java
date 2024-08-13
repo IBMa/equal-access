@@ -69,8 +69,11 @@ public class ACReport implements Cloneable {
         } 
     }
     public static class Result extends ACEReport.Result implements Cloneable {
+        /** Did this issue match a baseline */
         public boolean ignored = false;
+        /** Help url for this item */
         public String help = "";
+        /** Level of the issue (violation, potentialviolation, etc) */
         public eRuleLevel level;
 
         public Result() {}
@@ -82,14 +85,23 @@ public class ACReport implements Cloneable {
             return super.clone();
         }
     }
+    /** List of items detected by the getCompliance scan */
     public Result[] results = new Result[0];
+    /** Number of rules executed */
     public int numExecuted = 0;
+    /** Mapping of ruleId to reasonId to a parameterized message */
     public Map<String, Map<String, String>> nls = new HashMap<>();
+    /** Summary of the scan */
     public Summary summary = new Summary();
+    /** Identifier of the scan (same id used for each scan of the session) */
     public String scanID = "";
+    /** Identifier for the accessibility-checker tool used to perform the scan */
     public String toolID = "";
+    /** Label as specified in the getCompliance call that generated the report  */
     public String label = "";
+    /** base64 screenshot, if one was taken */
     public String screenshot=null;
+    /** Amount of time in ms that rules were running */
     public int ruleTime = 0;
 
     public ACReport() {}
@@ -107,6 +119,9 @@ public class ACReport implements Cloneable {
         this.label = label;
     }
 
+    /**
+     * Update the summary counts to match the included results
+     */
     public void updateSummaryCounts() {
         SummaryCounts counts = summary.counts;
         counts.violation = 0;

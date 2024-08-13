@@ -35,15 +35,25 @@ public class ACEReport {
             value = o.value.clone();            
         }
         public Object[] apiArgs = new Object[]{};
+        /** Bounds of the result as would be found in the viewport */
         public Bounds bounds = new Bounds();
+        /** Category of the result (e.g., accessibility) */
         public String category;
+        /** Result message describing what was found */
         public String message;
+        /** Parameter parts used to construct the message */
         public String[] messageArgs;
+        /** Mapping of "dom", "aria", etc to identify the location of the result */
         public Map<String, String> path;
-        public String reasonId;
+        /** Identifier of the rule that triggered the result */
         public String ruleId;
+        /** Identifier indicating the specific reason this issue triggered within the rule */
+        public String reasonId;
+        /** How long this rule took to run */
         public int ruleTime;
+        /** HTML snippet that this result triggered on */
         public String snippet;
+        /** Combination of the level of the result (e.g., ["VIOLATION", "FAIL"]) */
         public String[] value;
 
         @Override
