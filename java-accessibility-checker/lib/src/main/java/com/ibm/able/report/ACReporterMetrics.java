@@ -68,7 +68,7 @@ public class ACReporterMetrics implements IReporter {
      */
     @Override
     public ReporterFile generateReport(ConfigInternal config, Guideline[] rulesets, ReporterStored storedReport) {
-        if (config.label == null || Arrays.asList(config.label).contains("IBMa-Java-TeSt")) {
+        if (config.label == null || !Arrays.asList(config.label).contains("IBMa-Java-TeSt")) {
             // URI encode the profile text provided
             String profile = EngineContextManager.encodeURIComponent(storedReport.scanProfile);
             if (!scanTimesV2.containsKey(profile)) {
