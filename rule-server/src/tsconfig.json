@@ -4,7 +4,8 @@
         "outDir": "../dist",
         "baseUrl": "",
         "module": "commonjs",
-        "allowJs": true
+        "allowJs": true,
+        "target": "ES6"
     },
     "include": ["./**/*"],
     "exclude": ["./static"]

@@ -32,6 +32,7 @@ jobs:
       working-directory: rule-server/dist
     - run: sleep 10
       working-directory: rule-server/dist
+    - run: curl --insecure https://localhost:9445/tools/api/pub/meter/v2
       
     - run: google-chrome --version
     - run: npm install
