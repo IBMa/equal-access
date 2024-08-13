@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -82,7 +83,13 @@ public class AccessibilityCheckerTest {
         options.addArguments("--headless=new");
         // options.setImplicitWaitTimeout
         // options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
-        AccessibilityCheckerTest.driver = new ChromeDriver(options);
+        try {
+            AccessibilityCheckerTest.driver = new ChromeDriver(options);
+        } catch (SessionNotCreatedException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getAdditionalInformation());
+            throw e;
+        }
     }
 
     /**
