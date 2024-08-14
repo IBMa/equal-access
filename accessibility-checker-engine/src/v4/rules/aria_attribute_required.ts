@@ -37,7 +37,7 @@ export let aria_attribute_required: Rule = {
         "en-US": {
             "group": "The required attributes for the element with a role must be defined",
             "pass": "The required attributes for the element with the role are defined",
-            "fail_missing": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
+            "fail_missing": "Element with '{0}' role does not have the required ARIA attribute(s): '{1}'"
         }
     },
     rulesets: [{
