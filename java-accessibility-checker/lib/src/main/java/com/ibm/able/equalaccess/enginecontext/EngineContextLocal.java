@@ -51,20 +51,20 @@ public class EngineContextLocal implements IEngineContext {
 
     @Override
     public ACEReport getCompliance(String label) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCompliance'");
+        // Can't getCompliance with no content model
+        throw new UnsupportedOperationException("Cannot 'getCompliance' with EngineContextLocal");
     }
 
     @Override
     public String getUrl() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUrl'");
+        // Can't getUrl with no content model
+        throw new UnsupportedOperationException("Cannot 'getUrl' with EngineContextLocal");
     }
 
     @Override
     public String getTitle() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTitle'");
+        // Can't getTitle with no content model
+        throw new UnsupportedOperationException("Cannot 'getTitle' with EngineContextLocal");
     }
 
     @Override
@@ -93,7 +93,17 @@ public class EngineContextLocal implements IEngineContext {
             engineScope = engine.initStandardObjects();
         }
         String scriptStr = String.format("encodeURIComponent(`%s`)", s);
-        String result = engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
-        return result;
+        return engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
+    }
+
+    @Override
+    public String getProfile() {
+        return "Local";
+    }
+
+    @Override
+    public String getHelp(String ruleId, String reasonId, String helpRoot) {
+        String scriptStr = String.format("ace_checker.engine.getHelp(`%s`,`%s`,`%s`)", ruleId, reasonId, helpRoot);
+        return engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
     }
 }

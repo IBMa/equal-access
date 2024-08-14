@@ -30,6 +30,12 @@ import com.ibm.able.equalaccess.util.Fetch;
 import com.ibm.able.equalaccess.util.Misc;
 
 public class ACConfigManager {
+    public static final String ARCHIVE_LATEST = "latest";
+    public static final String ARCHIVE_PREVIEW = "preview";
+    public static final String ARCHIVE_VERSIONED = "versioned";
+
+    private ACConfigManager() {}
+
     private static class ConfigError extends Error {
         ConfigError(String message) {
             super(message);
@@ -37,18 +43,13 @@ public class ACConfigManager {
 
     }
 
-    private static String[] covertPolicies(String policies) {
-        return policies.split(",");
-    }
-
-
     /**
      * negative if versionA is less than versionB, positive if versionA is greater than versionB, and zero if they are equal. NaN is treated as 0.
      * @param versionA 
      * @param versionB 
      */
     public static int compareVersions(String versionA, String versionB) {
-        Pattern versionRE = Pattern.compile("[0-9.]+(-rc\\.[0-9]+)?");
+        Pattern versionRE = Pattern.compile("[0-9.]+(-rc\\.[\\d]+)?");
         versionA = versionA.trim();
         versionB = versionB.trim();
         if (!versionRE.matcher(versionA).matches()) throw new ConfigError("Invalid version");
@@ -89,7 +90,7 @@ public class ACConfigManager {
      * @param toolVersion 
      */
     private static String findLatestArchiveId(Archive[] archives, String toolVersion) {
-        String[] validArchiveKeywords = { "latest", "preview", "versioned" };
+        String[] validArchiveKeywords = { ARCHIVE_LATEST, ARCHIVE_PREVIEW, ARCHIVE_VERSIONED };
         for (Archive archive : archives) {
             if (Arrays.asList(validArchiveKeywords).contains(archive.id)) continue;
             // If the toolVersion is greater than or equal to the archive version we've found it
@@ -98,7 +99,7 @@ public class ACConfigManager {
             }
         }
         // Something wrong, go with the latest
-        return "latest";
+        return ARCHIVE_LATEST;
     }
 
     /**
@@ -111,20 +112,20 @@ public class ACConfigManager {
      *  Need to change array of policies into a string
      *      ["CI162_5_2_DCP070116","CI162_5_2_DCP070116"] to "CI162_5_2_DCP070116,CI162_5_2_DCP070116"
      *
-     * @param ACConfig Provide the config object in which needs to be processed.
+     * @param acConfig Provide the config object in which needs to be processed.
      *
      * @return ConfigInternal - return the config object which has been made engine readable
      */
-    private static ConfigInternal processACConfig(ConfigInternal ACConfig) throws IOException {
-        String[] validArchiveKeywords = { "latest", "preview", "versioned" };
-        String ruleServer = ACConfig.ruleServer;
+    private static ConfigInternal processACConfig(ConfigInternal acConfig) throws IOException {
+        String[] validArchiveKeywords = { ARCHIVE_LATEST, ARCHIVE_PREVIEW, ARCHIVE_VERSIONED };
+        String ruleServer = acConfig.ruleServer;
 
         // Get and parse the rule archive.
         String ruleArchiveFile = String.format("%s%s/archives.json",ruleServer,ruleServer.contains("jsdelivr.net")?"@next":"");
         
         Archive[] ruleArchiveParse;
         try {
-            ruleArchiveParse = Fetch.getJSONArr(ruleArchiveFile, Archive[].class, ACConfig.ignoreHTTPSErrors);
+            ruleArchiveParse = Fetch.getJSONArr(ruleArchiveFile, Archive[].class, acConfig.ignoreHTTPSErrors);
         } catch (Error err) {
             System.err.println(ruleArchiveFile);
             System.err.println(err.toString());
@@ -133,40 +134,39 @@ public class ACConfigManager {
         }
         String ruleArchivePath = null;
         if (ruleArchiveParse.length > 0) {
-            if (ACConfig.DEBUG) System.out.println("Found archiveFile: " + ruleArchiveFile);
-            ACConfig.ruleArchiveSet = ruleArchiveParse;
-            String ruleArchive = ACConfig.ruleArchive;
+            if (acConfig.DEBUG) System.out.println("Found archiveFile: " + ruleArchiveFile);
+            acConfig.ruleArchiveSet = ruleArchiveParse;
+            String ruleArchive = acConfig.ruleArchive;
             // If the user asked us to sync the rule version with the tool version, we need to figure out what the last rule version was
-            if ("versioned".equals(ruleArchive)) {
-                if (ACConfig.toolVersion == null) {
-                    ruleArchive = "latest";
+            if (ARCHIVE_VERSIONED.equals(ruleArchive)) {
+                if (acConfig.toolVersion == null) {
+                    ruleArchive = ARCHIVE_LATEST;
                 } else {
-                    ruleArchive = findLatestArchiveId(ACConfig.ruleArchiveSet, ACConfig.toolVersion);
+                    ruleArchive = findLatestArchiveId(acConfig.ruleArchiveSet, acConfig.toolVersion);
                 }
             }
-            ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
-            for (int i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-                if (ruleArchive.equals(ACConfig.ruleArchiveSet[i].id) && !ACConfig.ruleArchiveSet[i].sunset) {
-                    ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                    ACConfig.ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
-                    ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
+            acConfig.ruleArchiveLabel = acConfig.ruleArchive;
+            for (int i = 0; i < acConfig.ruleArchiveSet.length; i++) {
+                if (ruleArchive.equals(acConfig.ruleArchiveSet[i].id) && !acConfig.ruleArchiveSet[i].sunset) {
+                    ruleArchivePath = acConfig.ruleArchiveSet[i].path;
+                    acConfig.ruleArchiveVersion = acConfig.ruleArchiveSet[i].version;
+                    acConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                     break;
                 }
             }
-            if (ruleArchivePath == null || ACConfig.ruleArchiveVersion == null) {
+            if (ruleArchivePath == null || acConfig.ruleArchiveVersion == null) {
                 String errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
                 System.err.println(errStr);
                 throw new ConfigError(errStr);
             }
-            for (int i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-                if (ACConfig.ruleArchiveVersion.equals(ACConfig.ruleArchiveSet[i].version) 
-                    && !Arrays.asList(validArchiveKeywords).contains(ACConfig.ruleArchiveSet[i].id)) 
+            for (int i = 0; i < acConfig.ruleArchiveSet.length; i++) {
+                if (acConfig.ruleArchiveVersion.equals(acConfig.ruleArchiveSet[i].version) 
+                    && !Arrays.asList(validArchiveKeywords).contains(acConfig.ruleArchiveSet[i].id)) 
                 {
-                    ACConfig.ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                    acConfig.ruleArchivePath = acConfig.ruleArchiveSet[i].path;
                     break;
                 }
             }
-            //}
         } else {
             String errStr = "[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.";
             System.err.println(errStr);
@@ -174,21 +174,21 @@ public class ACConfigManager {
     }
 
         // Build the new rulePack based of the baseA11yServerURL
-        if (ACConfig.rulePack == null || "".equals(ACConfig.rulePack)) {
+        if (acConfig.rulePack == null || "".equals(acConfig.rulePack)) {
             if (ruleServer.contains("jsdelivr.net")) {
-                ACConfig.rulePack = String.format("%s@%s", ruleServer, ACConfig.ruleArchiveVersion);
+                acConfig.rulePack = String.format("%s@%s", ruleServer, acConfig.ruleArchiveVersion);
             } else {
-                ACConfig.rulePack = String.format("%s%s/js", ruleServer, ruleArchivePath);
+                acConfig.rulePack = String.format("%s%s/js", ruleServer, ruleArchivePath);
             }
         }
-        ACConfig.ruleServer = ruleServer;
+        acConfig.ruleServer = ruleServer;
 
-        if (ACConfig.DEBUG) System.err.println("Built new rulePack: " + ACConfig.rulePack);
+        if (acConfig.DEBUG) System.err.println("Built new rulePack: " + acConfig.rulePack);
 
-        if (ACConfig.DEBUG) System.err.println("END 'processACConfig' function");
+        if (acConfig.DEBUG) System.err.println("END 'processACConfig' function");
 
         // Return the updated ACConfig object
-        return ACConfig;
+        return acConfig;
     }
 
     /**
@@ -199,7 +199,7 @@ public class ACConfigManager {
      */
     private static void initializeDefaults(ConfigInternal config) {
         // Use an unpopulated config as the default values
-        ConfigInternal ACConstants = new ConfigInternal();
+        ConfigInternal acConstants = new ConfigInternal();
         if (config.DEBUG) System.out.println("START 'initializeDefaults' function");
 
         if (config.DEBUG) System.out.println("Config before initialization: ");
@@ -208,7 +208,7 @@ public class ACConfigManager {
         config.ruleArchiveLabel = Misc.firstNotNull(config.ruleArchiveLabel, config.ruleArchive);
         // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
         // boolean which causes it to always comply with the default value and not user provided option
-        config.captureScreenshots = Misc.firstNotNull(config.captureScreenshots, ACConstants.captureScreenshots);
+        config.captureScreenshots = Misc.firstNotNull(config.captureScreenshots, acConstants.captureScreenshots);
 
         // Build the toolID based on name and version
         config.toolID = "java-accessibility-checker-v3.1.70";
@@ -219,13 +219,13 @@ public class ACConfigManager {
         // are done for a single run of karma.
         config.scanID = java.util.UUID.randomUUID().toString();
 
-        for (Field field : ACConstants.getClass().getDeclaredFields()) {
+        for (Field field : acConstants.getClass().getDeclaredFields()) {
             try {
                 if (field.get(config) == null) {
-                    field.set(config, field.get(ACConstants));
+                    field.set(config, field.get(acConstants));
                 }
-            } catch (IllegalArgumentException e) {
-            } catch (IllegalAccessException e) {
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                // Skip if we can't access the field
             }
         }
 
@@ -243,15 +243,15 @@ public class ACConfigManager {
      */
     private static ConfigInternal loadConfigFromJSONFile() {
         // Use an unpopulated config as the default values
-        ConfigInternal ACConstants = new ConfigInternal();
+        ConfigInternal acConstants = new ConfigInternal();
 
-        if (ACConstants.DEBUG) System.out.println("START 'loadConfigFromJSONFile' function");
+        if (acConstants.DEBUG) System.out.println("START 'loadConfigFromJSONFile' function");
 
         // Get the current working directory, where we will look for the yaml, yml or json file
         String workingDir = System.getProperty("user.dir");
-        if (ACConstants.DEBUG) System.out.println("Working directory set to: " + workingDir);
+        if (acConstants.DEBUG) System.out.println("Working directory set to: " + workingDir);
 
-        String[] configFiles = ACConstants.configFiles;
+        String[] configFiles = acConstants.configFiles;
 
         ConfigInternal config = null;
         // Loop over all the possible location where the config file can reside, if one is found load it and break out.
@@ -264,7 +264,7 @@ public class ACConfigManager {
 
             // If this is a yml or yaml file verify that the file exists and then load as such.
             if ("json".equals(fileExtension)) {
-                if (ACConstants.DEBUG) System.out.println(fileToCheck+": Trying to load as json or js.");
+                if (acConstants.DEBUG) System.out.println(fileToCheck+": Trying to load as json or js.");
 
                 // Need to use try/catch mech so that in the case the require throws an exception, we can
                 // catch this and discatd the error, as in the case there is no config file provided then
@@ -273,15 +273,15 @@ public class ACConfigManager {
                     Gson gson = new Gson();
                     JsonReader reader = new JsonReader(new FileReader(fileToCheck));
                     config = gson.fromJson(reader, ConfigInternal.class);
-                    if (ACConstants.DEBUG) System.out.println(fileToCheck+": LOADED");
+                    if (acConstants.DEBUG) System.out.println(fileToCheck+": LOADED");
                     return config;
                 } catch (FileNotFoundException e) {
-                    if (ACConstants.DEBUG) System.out.println(fileToCheck+": Skipping, JSON file does not exist.");
+                    if (acConstants.DEBUG) System.out.println(fileToCheck+": Skipping, JSON file does not exist.");
                 }
             }
         }
 
-        if (ACConstants.DEBUG) System.out.println("END 'loadConfigFromJSONFile' function");
+        if (acConstants.DEBUG) System.out.println("END 'loadConfigFromJSONFile' function");
         return config;
     }
 

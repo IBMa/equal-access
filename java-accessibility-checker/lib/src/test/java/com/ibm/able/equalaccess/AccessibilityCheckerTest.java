@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -73,6 +74,11 @@ public class AccessibilityCheckerTest {
      * Setup a Selenium Chrome environment before tests
      */
     @BeforeClass public static void setup() {
+        // Make sure we're starting with a clean config
+        File configFile = new File("achecker.json");
+        configFile.delete();
+        ACConfigManager.resetConfig();
+
         String workingDir = System.getProperty("user.dir");
         String chromeDriverDir = System.getenv("chromedriverpath");
         ChromeOptions options = new ChromeOptions();  

@@ -36,11 +36,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
-    implementation 'com.google.code.gson:gson:2.11.0'
-    // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
-    implementation 'org.mozilla:rhino:1.7.14'
     implementation 'com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-3'
-}
+    implementation('com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-3') {
+        capabilities {
+            requireCapability("com.ibm.able.equalaccess:selenium")
+        }
+    }}
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {

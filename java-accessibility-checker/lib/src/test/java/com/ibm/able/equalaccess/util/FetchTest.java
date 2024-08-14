@@ -20,8 +20,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import com.ibm.able.equalaccess.util.Fetch;
-
 public class FetchTest {
     @Test public void getArr() {
         String s = null;
