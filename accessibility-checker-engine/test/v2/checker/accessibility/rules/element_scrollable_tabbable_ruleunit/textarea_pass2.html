@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>test case</title>
+    </head>
+    <body>
+      <textarea id="story" name="story" rows="1" cols="33">
+        It was a dark and stormy night...
+        It was a dark and stormy night...
+        It was a dark and stormy night...
+        It was a dark and stormy night...
+      </textarea>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["element_scrollable_tabbable"],
+            results: [  
+            {
+            "ruleId": "element_scrollable_tabbable",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/textarea[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "pass_tabbable",
+            "message": "The scrollable element is tabbable",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+</body>
+
+</html>   

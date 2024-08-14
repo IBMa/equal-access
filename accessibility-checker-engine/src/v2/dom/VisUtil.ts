@@ -14,6 +14,7 @@
 import { getCache, setCache } from "../../v4/util/CacheUtil";
 import { DOMUtil } from "./DOMUtil";
 import { DOMWalker } from "./DOMWalker";
+import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -246,6 +247,25 @@ export class VisUtil {
             return false;
 
         return true;
+    }
+
+    /**
+     * return true if the node is offscreen by CSS position
+     * @param node
+     */
+    public static isElementOffscreen(node: Node) : boolean {
+        if (!node) return false;
+
+        const mapper : DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(node);;    
+        
+        if (!bounds) 
+            return false;
+
+        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0)
+            return true;
+         
+        return false;
     }
 
     /**
