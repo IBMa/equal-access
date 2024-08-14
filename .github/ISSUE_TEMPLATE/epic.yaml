@@ -50,17 +50,23 @@ body:
         - 'other'
     validations:
       required: true
-  - type: textarea
-    id: tasks
+
+  - type: checkboxes
+    id: task
     attributes:
       label: Tasks
-      value: |
-          ```[tasklist]
-          ## Definition of Done
-          - [ ] Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
-          - [ ] All content has been reviewed for grammar, spelling, style and technical accuracy
-          - [ ] All code committed to main branch
-          - [ ] All unit tests pass (including accessibility)
-          - [ ] Demo works in staging environment
-          - [ ] At least one performance metric / monitor constructed
-          ```
+      description:  Definition of Done
+      options:
+        - label:
+            Results are added to the Release Mural with a description of what was accomplished, KPIs, etc
+          required: true
+        - label:
+            All content has been reviewed for grammar, spelling, style and technical accuracy
+        - label:
+            All code committed to main branch
+        - label:
+            All unit tests pass (including accessibility)
+        - label:
+            Demo works in staging environment
+        - label:
+            At least one performance metric / monitor constructed
