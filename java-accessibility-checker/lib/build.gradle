@@ -16,6 +16,31 @@ group 'com.ibm.able.equalaccess'
 version '1.0.0-beta-3'
 archivesBaseName = 'accessibility-checker'
 
+sourceSets {
+    selenium {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+    main {
+        java {
+            srcDir 'src/main/java'
+            exclude '**/enginecontext/selenium/**'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+java {
+    registerFeature('selenium') {
+        usingSourceSet(sourceSets.selenium)
+    }
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -31,11 +56,14 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation libs.guava
 
-    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-    implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     implementation 'com.google.code.gson:gson:2.11.0'
     // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
     implementation 'org.mozilla:rhino:1.7.14'
+
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    seleniumImplementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
+    // implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -48,6 +76,7 @@ java {
 test {
     testLogging {
         showStandardStreams = true
+        showStackTraces = true
     }
 }
 

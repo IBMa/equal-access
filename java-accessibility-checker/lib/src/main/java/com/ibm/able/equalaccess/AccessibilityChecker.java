@@ -76,7 +76,7 @@ public class AccessibilityChecker {
         ACEReport origReport = engineContext.getCompliance(label);
         String url = engineContext.getUrl();
         String title = engineContext.getTitle();
-        ACReport finalReport = ReporterManager.get().addEngineReport("Selenium", startScan, url, title, label, origReport);
+        ACReport finalReport = ReporterManager.get().addEngineReport(engineContext.getProfile(), startScan, url, title, label, origReport);
         return finalReport;
     }
 

@@ -68,7 +68,7 @@ public class ACReport implements Cloneable {
             return ret;
         } 
     }
-    public static class Result extends ACEReport.Result implements Cloneable {
+    public static class Result extends ACEReport.Result {
         /** Did this issue match a baseline */
         public boolean ignored = false;
         /** Help url for this item */
@@ -81,6 +81,7 @@ public class ACReport implements Cloneable {
             super(engineResult);
         }
 
+        @Override
         public Object clone() { 
             return super.clone();
         }

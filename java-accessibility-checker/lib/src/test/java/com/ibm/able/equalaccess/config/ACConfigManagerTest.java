@@ -26,9 +26,17 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ACConfigManagerTest {
+    @Before public void setup() throws IOException {
+        // Make sure we're starting with a clean slate
+        File configFile = new File("achecker.json");
+        configFile.delete();
+        ACConfigManager.resetConfig();
+    }
+
     @Test public void getConfigWithNoConfigFile() {
         Config config = ACConfigManager.getConfig();
 
@@ -76,10 +84,10 @@ public class ACConfigManagerTest {
     }
 
     @Test public void getConfigWithConfigFile() throws IOException {
-        ACConfigManager.resetConfig();
         File configFile = new File("achecker.json");
         try {
             configFile.delete();
+            ACConfigManager.resetConfig();
             FileWriter myWriter = new FileWriter("achecker.json");
             myWriter.write(""" 
 {
@@ -149,14 +157,15 @@ public class ACConfigManagerTest {
             assertEquals("DEFAULT", configInternal.engineMode);
         } finally {
             configFile.delete();
+            ACConfigManager.resetConfig();
         }
     }
 
     @Test public void getConfigWithConfigFileVersioned() throws IOException {
-        ACConfigManager.resetConfig();
         File configFile = new File("achecker.json");
         try {
             configFile.delete();
+            ACConfigManager.resetConfig();
             FileWriter myWriter = new FileWriter("achecker.json");
             myWriter.write(""" 
 {
@@ -226,6 +235,7 @@ public class ACConfigManagerTest {
             assertEquals("DEFAULT", configInternal.engineMode);
         } finally {
             configFile.delete();
+            ACConfigManager.resetConfig();
         }
     }
 

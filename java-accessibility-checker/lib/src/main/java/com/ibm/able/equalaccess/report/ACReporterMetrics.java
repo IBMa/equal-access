@@ -18,7 +18,6 @@ package com.ibm.able.equalaccess.report;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -62,7 +61,7 @@ public class ACReporterMetrics implements IReporter {
             scanTimesV2.get(profile).add(""+storedReport.engineReport.summary.scanTime);
         }
         return null;
-    };
+    }
 
     @Override
     public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport,
@@ -88,7 +87,7 @@ public class ACReporterMetrics implements IReporter {
 
                             // Dispatch the call to the metrics server
                             try {
-                                Fetch.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs.toString());
+                                Fetch.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs);
                             } catch (Throwable t) {
                                 System.err.println(t);
                             }        
@@ -100,8 +99,7 @@ public class ACReporterMetrics implements IReporter {
 
                         // Dispatch the call to the metrics server
                         try {
-                            System.out.println(this.metricsURLV2 + "/api/pub/meter/v2" + qs.toString());
-                            Fetch.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs.toString());
+                            Fetch.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs);
                         } catch (Throwable t) {
                             System.err.println(t);
                         }        

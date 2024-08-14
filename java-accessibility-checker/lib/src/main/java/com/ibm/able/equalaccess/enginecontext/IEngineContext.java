@@ -29,4 +29,11 @@ public interface IEngineContext {
     public String getTitle();
     public Guideline[] getGuidelines();
     public Rule[] getRules();
+    public String getHelp(String ruleId, String reasonId, String helpRoot);
+    public String encodeURIComponent(String s);
+    /**
+     * The profile to use in metrics for this engine context
+     * @return profile string (e.g., Selenium)
+     */
+    public String getProfile();
 }

@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-package com.ibm.able.equalaccess.enginecontext;
+package com.ibm.able.equalaccess.enginecontext.selenium;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -31,6 +31,7 @@ import com.ibm.able.equalaccess.config.ConfigInternal;
 import com.ibm.able.equalaccess.engine.ACError;
 import com.ibm.able.equalaccess.engine.Guideline;
 import com.ibm.able.equalaccess.engine.Rule;
+import com.ibm.able.equalaccess.enginecontext.IEngineContext;
 import com.ibm.able.equalaccess.engine.ACEReport;
 import com.ibm.able.equalaccess.util.Fetch;
 
@@ -154,7 +155,6 @@ try {
             ACEReport report;
             try {
                 this.driver.manage().timeouts().scriptTimeout(Duration.ofMinutes(60));
-                this.driver.manage().timeouts().setScriptTimeout(Duration.ofMinutes(60));    
                 String jsonReport = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
                 if (!jsonReport.startsWith("{\"results\":[")) {
                     throw new ACError(jsonReport);
@@ -228,5 +228,22 @@ try {
 """);
         String jsonGuidelines = ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr).toString();
         return gson.fromJson(jsonGuidelines, Rule[].class);
+    }
+
+    @Override
+    public String getProfile() {
+        return "Selenium";
+    }
+
+    @Override
+    public String getHelp(String ruleId, String reasonId, String helpRoot) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHelp'");
+    }
+
+    @Override
+    public String encodeURIComponent(String s) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'encodeURIComponent'");
     }
 }

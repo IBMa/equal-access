@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 import com.ibm.able.equalaccess.abs.IAbstractAPI;
+import com.ibm.able.equalaccess.config.ACConfigManager;
 import com.ibm.able.equalaccess.config.ConfigInternal;
 import com.ibm.able.equalaccess.engine.ACEReport;
 import com.ibm.able.equalaccess.engine.ACError;
@@ -35,6 +36,8 @@ import com.ibm.able.equalaccess.engine.Guideline;
 import com.ibm.able.equalaccess.engine.eRuleConfidence;
 import com.ibm.able.equalaccess.engine.eRuleLevel;
 import com.ibm.able.equalaccess.engine.ACReport.Result;
+import com.ibm.able.equalaccess.enginecontext.EngineContextManager;
+import com.ibm.able.equalaccess.enginecontext.IEngineContext;
 
 public class ReporterManager {
     private static Gson gson = new Gson();
@@ -199,9 +202,11 @@ public class ReporterManager {
         return reportLevel;
     }
 
+    private static final IEngineContext engine = EngineContextManager.getEngineContext(null);
     private String getHelpUrl(ACReport.Result issue) {
         if (issue.help != null && issue.help.length() > 0) return issue.help;
-        return "";
+        ConfigInternal config = ACConfigManager.getConfigUnsupported();
+        String helpUrl = engine.getHelp(issue.ruleId, issue.reasonId, config.ruleArchivePath == null ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
         // TODO:
         // let config = ReporterManager.config;
         // let helpUrl = ReporterManager.absAPI.getChecker().engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
@@ -213,7 +218,7 @@ public class ReporterManager {
         //     ruleId: issue.ruleId,
         //     msgArgs: issue.messageArgs
         // };
-        // return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
+        return helpUrl+"#";//+encodeURIComponent(JSON.stringify(minIssue))}`
     }
 
     public void generateSummaries() {
