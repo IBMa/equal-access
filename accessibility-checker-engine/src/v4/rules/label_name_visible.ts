@@ -139,8 +139,8 @@ export let label_name_visible: Rule = {
                 if (!labelElem && elementsToSkipContentCheck.indexOf(nodeName) !== -1) {
                     text = ""; // skip content check for some elements
                 } else {
-                    // get the visible text
-                    text = RPTUtil.getInnerText(element);
+                    // get the visible text only
+                    text = RPTUtil.getOnScreenInnerText(element);
                 }
 
                 /* Note: Disable this alt check in images for now until we get confirmation
