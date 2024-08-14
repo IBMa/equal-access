@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>test case</title>
+    </head>
+    <body>
+      <div role="button" id='button1' aria-label="Visible label">
+        <span style="position:absolute;left:-1000px">1st label</span>
+        2nd label
+        <span style="position:absolute;left:-1000px">3rd label</span>
+        4th label
+        <span>5th label</span>6th label
+        <span style="position:absolute;left:-1000px">7th label</span>
+        8th label
+      </div>
+
+      <div> another line </div>
+    <script>
+        UnitTest = {
+            ruleIds: ["label_name_visible"],
+            results: [  
+            {
+            "ruleId": "label_name_visible",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Accessible name does not match or contain the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+</body>
+
+</html>   
