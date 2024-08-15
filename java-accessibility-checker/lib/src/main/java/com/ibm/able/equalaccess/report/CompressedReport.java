@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ibm.able.equalaccess.engine.ACReport;
+import com.ibm.able.equalaccess.engine.eRuleLevel;
 
 public class CompressedReport {
     public static String scanID;
@@ -129,5 +130,34 @@ public class CompressedReport {
 
     public String getLabel() {
         return (String)data[3];
+    }
+
+    public int issuesLength() {
+        return ((Object[][])data[10]).length;
+    }
+
+    public eRuleLevel issueLevel(int idx) {
+        Object[] issue = ((Object[][])data[10])[idx];
+        return ReporterManager.valueToLevel((String[])issue[2]);
+    }
+
+    public String issueRuleId(int idx) {
+        Object[] issue = ((Object[][])data[10])[idx];
+        return (String)issue[1];
+    }
+
+    public String issueMessage(int idx) {
+        Object[] issue = ((Object[][])data[10])[idx];
+        return (String)issue[10];
+    }
+
+    public String issuePathDom(int idx) {
+        Object[] issue = ((Object[][])data[10])[idx];
+        return ((Map<String, String>)issue[5]).get("dom");
+    }
+
+    public String issueHelp(int idx) {
+        Object[] issue = ((Object[][])data[10])[idx];
+        return (String)issue[8];
     }
 }

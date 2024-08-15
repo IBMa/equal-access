@@ -15,6 +15,8 @@
  *****************************************************************************/
 package com.ibm.able.equalaccess.report;
 
+import java.util.List;
+
 import com.ibm.able.equalaccess.config.ConfigInternal;
 import com.ibm.able.equalaccess.engine.Guideline;
 
@@ -24,5 +26,5 @@ public interface IReporter {
      * @return [ reportPath: string, report: string ]
      */
     ReporterFile generateReport(ConfigInternal config, Guideline[] rulesets, ReporterStored reportData);
-    ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport, CompressedReport[] summaryData);
+    ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport, List<CompressedReport> summaryData);
 };

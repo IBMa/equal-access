@@ -15,11 +15,13 @@
  *****************************************************************************/
 package com.ibm.able.equalaccess.abs;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.ibm.able.equalaccess.engine.ACReport;
 
 public interface IAbstractAPI {
     public ACReport loadBaseline(String scanLabel);
+    public File prepFile(String filePath);
     public void writeFile(String path, Object contents) throws IOException;
 }
