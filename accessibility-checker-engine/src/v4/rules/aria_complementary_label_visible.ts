@@ -34,7 +34,7 @@ export let aria_complementary_label_visible: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "The element with \"complementary\" role does not have a visible label",
+            "Fail_1": "Element with \"complementary\" role does not have a visible label",
             "group": "Each element with \"complementary\" role should have a visible label that describes its purpose"
         }
     },

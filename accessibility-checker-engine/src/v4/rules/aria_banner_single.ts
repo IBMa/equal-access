@@ -33,8 +33,8 @@ export let aria_banner_single: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "There is more than one element with \"banner\" role on the page",
-            "group": "There must be only one element with \"banner\" role on the page"
+            "Fail_1": "Multiple elements with \"banner\" role found on the page",
+            "group": "A page, document, or application should only have one element with \"banner\" role"
         }
     },
     rulesets: [{
