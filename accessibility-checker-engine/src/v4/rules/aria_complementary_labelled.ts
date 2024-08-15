@@ -34,8 +34,8 @@ export let aria_complementary_labelled: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "The element with \"complementary\" role does not have an accessible name",
-            "group": "An element with \"complementary\" role must have an accessible name"
+            "Fail_1": "Element with \"complementary\" role does not have a label",
+            "group": "Each element with \"complementary\" role must have a label that describes its purpose"
         }
     },
     rulesets: [{
