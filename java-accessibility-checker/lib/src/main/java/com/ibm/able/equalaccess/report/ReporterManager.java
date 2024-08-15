@@ -206,18 +206,7 @@ public class ReporterManager {
         if (issue.help != null && issue.help.length() > 0) return issue.help;
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
         String helpUrl = engine.getHelp(issue.ruleId, issue.reasonId, config.ruleArchivePath == null ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
-        // TODO:
-        // let config = ReporterManager.config;
-        // let helpUrl = ReporterManager.absAPI.getChecker().engine.getHelp(issue.ruleId, issue.reasonId, !config.ruleArchivePath ? config.ruleArchive : config.ruleArchivePath.substring(config.ruleArchivePath.lastIndexOf("/")+1));
-        // let minIssue = {
-        //     message: issue.message,
-        //     snippet: issue.snippet,
-        //     value: issue.value,
-        //     reasonId: issue.reasonId,
-        //     ruleId: issue.ruleId,
-        //     msgArgs: issue.messageArgs
-        // };
-        return helpUrl+"#";//+encodeURIComponent(JSON.stringify(minIssue))}`
+        return helpUrl+"#"+engine.encodeURIComponent(issue.toHelpData());
     }
 
     public void generateSummaries() {

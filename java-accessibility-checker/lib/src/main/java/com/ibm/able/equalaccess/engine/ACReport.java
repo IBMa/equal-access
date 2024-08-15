@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 package com.ibm.able.equalaccess.engine;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.ibm.able.equalaccess.config.ConfigInternal;
 
 public class ACReport implements Cloneable {
@@ -85,6 +93,34 @@ public class ACReport implements Cloneable {
         public Object clone() { 
             return super.clone();
         }
+
+        public String toHelpData() {
+            return gsonMinimal.toJson(this);
+        }
+
+        public static Gson gsonMinimal = new GsonBuilder()
+        .registerTypeAdapter(Result.class, new JsonSerializer<Result>() {
+            @Override
+            public JsonElement serialize(Result issue, Type typeOfSrc, JsonSerializationContext context) {
+                JsonObject jObject = new JsonObject();
+                jObject.addProperty("ruleId", issue.ruleId);
+                jObject.addProperty("reasonId", issue.reasonId);
+                jObject.addProperty("message", issue.message);
+                jObject.addProperty("snippet", issue.snippet);
+                JsonArray buildValue = new JsonArray();
+                for (String s: issue.value) {
+                    buildValue.add(s);
+                }
+                jObject.add("value", buildValue);
+                JsonArray buildMsgArgs = new JsonArray();
+                for (String s : issue.messageArgs) {
+                    buildMsgArgs.add(s);
+                }
+                jObject.add("msgArgs", buildMsgArgs);
+                return jObject;
+            }
+        })
+        .create();
     }
     /** List of items detected by the getCompliance scan */
     public Result[] results = new Result[0];
@@ -238,5 +274,5 @@ public class ACReport implements Cloneable {
             ret.results[idx] = (ACReport.Result) results[idx].clone();
         }
         return ret;
-    } 
+    }
 }
