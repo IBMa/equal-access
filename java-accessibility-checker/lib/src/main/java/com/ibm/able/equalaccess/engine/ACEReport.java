@@ -17,6 +17,8 @@
 package com.ibm.able.equalaccess.engine;
 import java.util.Map;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ACEReport {
 
     public static class Result implements Cloneable {
@@ -42,6 +44,7 @@ public class ACEReport {
         /** Result message describing what was found */
         public String message;
         /** Parameter parts used to construct the message */
+        @SerializedName(value = "messageArgs", alternate = "msgArgs")
         public String[] messageArgs;
         /** Mapping of "dom", "aria", etc to identify the location of the result */
         public Map<String, String> path;
@@ -68,7 +71,7 @@ public class ACEReport {
             }
             ret.bounds = (Bounds) bounds.clone();
             return ret;
-        } 
+        }
     }
     
     public int numExecuted;

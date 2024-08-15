@@ -92,7 +92,7 @@ public class EngineContextLocal implements IEngineContext {
             // a scope object that we use in later calls.
             engineScope = engine.initStandardObjects();
         }
-        String scriptStr = String.format("encodeURIComponent(`%s`)", s);
+        String scriptStr = String.format("encodeURIComponent(`%s`)", s.replace("\"", "\\\""));
         return engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
     }
 
