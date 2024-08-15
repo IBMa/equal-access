@@ -16,6 +16,8 @@
 
 package com.ibm.able.equalaccess.engine;
 
+import java.util.List;
+
 import com.ibm.able.equalaccess.config.ConfigInternal;
 import com.ibm.able.equalaccess.report.CompressedReport;
 import com.ibm.able.equalaccess.report.ReporterStored;
@@ -50,8 +52,8 @@ public class ACReportSummary {
     public PageSummary[] pageScanSummary = new PageSummary[0];
 
     public ACReportSummary() {}
-    public ACReportSummary(ConfigInternal config, long endReport, CompressedReport[] compressedReports) {
-        this.startReport = compressedReports[0].getStartScan();
+    public ACReportSummary(ConfigInternal config, long endReport, List<CompressedReport> compressedReports) {
+        this.startReport = compressedReports.get(0).getStartScan();
         this.endReport = endReport;
         this.toolID = config.toolID;
         this.policies = config.policies;
@@ -59,11 +61,11 @@ public class ACReportSummary {
         this.labels = config.label;
         this.failLevels = config.failLevels;
         this.scanID = config.scanID;
-        this.pageScanSummary = new PageSummary[compressedReports.length];
-        for (int idx=0; idx<compressedReports.length; ++idx) {
+        this.pageScanSummary = new PageSummary[compressedReports.size()];
+        for (int idx=0; idx<compressedReports.size(); ++idx) {
             this.pageScanSummary[idx] = new PageSummary();
-            ReporterStored curReport = compressedReports[idx].uncompress();
-            this.pageScanSummary[idx].label = compressedReports[idx].getLabel();
+            ReporterStored curReport = compressedReports.get(idx).uncompress();
+            this.pageScanSummary[idx].label = compressedReports.get(idx).getLabel();
             ACReport.SummaryCounts curCounts = this.pageScanSummary[idx].counts = curReport.engineReport.summary.counts;
 
             this.counts.violation += curCounts.violation;

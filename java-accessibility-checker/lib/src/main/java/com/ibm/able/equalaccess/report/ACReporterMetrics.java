@@ -17,6 +17,7 @@ package com.ibm.able.equalaccess.report;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -65,7 +66,7 @@ public class ACReporterMetrics implements IReporter {
 
     @Override
     public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport,
-            CompressedReport[] compressedReports) 
+            List<CompressedReport> compressedReports) 
     {
         try {
             // Variable Declaration

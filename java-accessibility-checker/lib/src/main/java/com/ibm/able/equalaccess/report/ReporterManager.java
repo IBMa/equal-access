@@ -74,8 +74,7 @@ public class ReporterManager {
                 // reporters.push(new ACReporterHTML())
             }
             if (Arrays.asList(config.outputFormat).contains("csv")) {
-                // TODO:
-                // reporters.add(new ACReporterCSV());
+                reporters.add(new ACReporterCSV(absAPI));
             }
             if (Arrays.asList(config.outputFormat).contains("xlsx")) {
                 // TODO:
@@ -226,8 +225,7 @@ public class ReporterManager {
         // If no scans, don't generate summaries
         if (reports.isEmpty()) return;
         for (IReporter reporter: reporters) {
-            CompressedReport[] cReports = reports.toArray(new CompressedReport[reports.size()]);
-            ReporterFile summaryInfo = reporter.generateSummary(config, rulesets, endReport, cReports);
+            ReporterFile summaryInfo = reporter.generateSummary(config, rulesets, endReport, reports);
             if (summaryInfo != null) {
                 try {
                     absAPI.writeFile(summaryInfo.path, summaryInfo.contents);

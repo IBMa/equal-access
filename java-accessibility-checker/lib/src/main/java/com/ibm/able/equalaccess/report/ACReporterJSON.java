@@ -16,6 +16,7 @@
 package com.ibm.able.equalaccess.report;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,12 +45,12 @@ public class ACReporterJSON implements IReporter {
 
     @Override
     public ReporterFile generateSummary(ConfigInternal config, Guideline[] rulesets, long endReport,
-            CompressedReport[] compressedReports) 
+            List<CompressedReport> compressedReports) 
     {
-        if (compressedReports != null && compressedReports.length > 0) {
+        if (compressedReports != null && compressedReports.size() > 0) {
             ACReportSummary summReport = new ACReportSummary(config, endReport, compressedReports);
             if (summReport != null) {
-                Date startScan = new Date(compressedReports[0].getStartScan());
+                Date startScan = new Date(compressedReports.get(0).getStartScan());
                 String reportFilename = "summary_"+Misc.toISOString(startScan).replaceAll(":","-")+".json";
                 if (!config.outputFilenameTimestamp) {
                     reportFilename = "summary.json";

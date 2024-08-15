@@ -35,13 +35,14 @@ public class MyFS implements IAbstractAPI {
 
     @Override
     public void writeFile(String filePath, Object contents) throws IOException {
-        File outFile = this.prepFileSync(filePath);
+        File outFile = this.prepFile(filePath);
         FileWriter myWriter = new FileWriter(outFile);
         myWriter.write(contents.toString());
         myWriter.close();
     }
 
-    private File prepFileSync(String filePath) {
+    @Override
+    public File prepFile(String filePath) {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
         Path outFile = Paths.get(System.getProperty("user.dir"), config.outputFolder, filePath);
         File f = outFile.toFile();
