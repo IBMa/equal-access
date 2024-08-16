@@ -28,20 +28,10 @@ dependencies {
     // Use JUnit test framework.
     testImplementation libs.junit
 
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api libs.commons.math3
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation libs.guava
-
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
-    implementation 'com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-3'
-    implementation('com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-3') {
-        capabilities {
-            requireCapability("com.ibm.able.equalaccess:selenium")
-        }
-    }}
+    implementation 'com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-5:selenium'
+}
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
