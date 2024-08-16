@@ -68,6 +68,6 @@ public class SomeClassTest {
 
         ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest");
         eAssertResult resultCode = AccessibilityChecker.assertCompliance(report);
-        assertEquals(eAssertResult.PASS, resultCode);
+        assertEquals("Scan resulted in "+resultCode.toString(), eAssertResult.PASS, resultCode);
     }
 }
