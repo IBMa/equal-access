@@ -57,12 +57,7 @@ public class EngineContextManager {
             }
         }
         if (engineContext != null) {
-            try {
-                engineContext.loadEngine();
-            } catch (IOException e) {
-                System.err.println("aChecker: Unable to load engine due to IOException: "+e.toString());
-                e.printStackTrace();
-            }
+            engineContext.loadEngine();
         } else {
             System.err.println("Unable to load engine context for "+contentContext.getClass().getName());
             throw new ACError("Unable to load engine context for "+contentContext.getClass().getName());

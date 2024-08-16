@@ -15,14 +15,12 @@
  *****************************************************************************/
 package com.ibm.able.equalaccess.enginecontext;
 
-import java.io.IOException;
-
 import com.ibm.able.equalaccess.engine.ACEReport;
 import com.ibm.able.equalaccess.engine.Guideline;
 import com.ibm.able.equalaccess.engine.Rule;
 
 public interface IEngineContext {
-    public void loadEngine() throws IOException;
+    public void loadEngine();
 
     public ACEReport getCompliance(String label);
     public String getUrl();

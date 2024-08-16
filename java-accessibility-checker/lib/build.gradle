@@ -47,22 +47,27 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation libs.junit
-
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api libs.commons.math3
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation libs.guava
-
     implementation 'com.google.code.gson:gson:2.11.0'
     // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
     implementation 'org.mozilla:rhino:1.7.14'
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     seleniumImplementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
+    seleniumImplementation 'com.google.code.gson:gson:2.11.0'
+    // https://mavenlibs.com/maven/dependency/org.mozilla/rhino
+    seleniumImplementation 'org.mozilla:rhino:1.7.14'
+
+    // Use JUnit test framework.
+    testImplementation libs.junit
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
+
+    // This dependency is exported to consumers, that is to say found on their compile classpath.
+    // api libs.commons.math3
+
+    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+    // implementation libs.guava
+
+
     // implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
 }
 
