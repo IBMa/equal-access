@@ -45,18 +45,19 @@ public class EngineContextSelenium implements IEngineContext {
     }   
 
     @Override
-    public void loadEngine() throws IOException {
+    public void loadEngine() {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
+        String engineUrl = config.rulePack+"/ace.js";
         String engineLoadMode = config.engineMode;
         if ("DEFAULT".equals(engineLoadMode)) {
             engineLoadMode = "INJECT";
         }
-        if ("INJECT".equals(engineLoadMode) && engineContent == null) {
-            engineContent = Fetch.get(config.rulePack+"/ace.js", config.ignoreHTTPSErrors);
-        }
-
-        if (config.DEBUG) System.out.println("[INFO] aChecker.loadEngine detected Selenium");
         try {
+            if ("INJECT".equals(engineLoadMode) && engineContent == null) {
+                engineContent = Fetch.get(engineUrl, config.ignoreHTTPSErrors);
+            }
+
+            if (config.DEBUG) System.out.println("[INFO] aChecker.loadEngine detected Selenium");
             String scriptStr;
             if ("REMOTE".equals(engineLoadMode)) {
                 scriptStr = String.format("""
@@ -125,6 +126,9 @@ try {
             ((JavascriptExecutor)this.driver).executeAsyncScript(scriptStr);
         } catch (Error e) {
             System.err.println(e);
+        } catch (IOException e) {
+            System.err.println("aChecker: Unable to load engine from "+engineUrl+" due to IOException: "+e.toString());
+            e.printStackTrace();
         }
     }
 

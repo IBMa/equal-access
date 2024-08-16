@@ -32,21 +32,27 @@ public class EngineContextLocal implements IEngineContext {
     private Scriptable engineScope = null;
 
     @Override
-    public void loadEngine() throws IOException {
+    public void loadEngine() {
         ConfigInternal config = ACConfigManager.getConfigUnsupported();
-        String engineContent = Fetch.get(config.rulePack+"/ace.js", config.ignoreHTTPSErrors)+";var ace_checker = new ace.Checker();";
-        
-        // Creates and enters a Context. The Context stores information
-        // about the execution environment of a script.
-        engine = Context.enter();
+        String engineUrl = config.rulePack+"/ace.js";
+        try {
+            String engineContent = Fetch.get(engineUrl, config.ignoreHTTPSErrors)+";var ace_checker = new ace.Checker();";
+            
+            // Creates and enters a Context. The Context stores information
+            // about the execution environment of a script.
+            engine = Context.enter();
 
-        // Initialize the standard objects (Object, Function, etc.)
-        // This must be done before scripts can be executed. Returns
-        // a scope object that we use in later calls.
-        engineScope = engine.initStandardObjects();
+            // Initialize the standard objects (Object, Function, etc.)
+            // This must be done before scripts can be executed. Returns
+            // a scope object that we use in later calls.
+            engineScope = engine.initStandardObjects();
 
-        // Now evaluate the string we've colected.
-        engine.evaluateString(engineScope, engineContent, "<cmd>", 1, null);
+            // Now evaluate the string we've colected.
+            engine.evaluateString(engineScope, engineContent, "<cmd>", 1, null);
+        } catch (IOException e) {
+            System.err.println("aChecker: Unable to load engine fromm "+engineUrl+" due to IOException: "+e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override
