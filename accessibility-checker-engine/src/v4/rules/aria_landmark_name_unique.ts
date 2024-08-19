@@ -35,20 +35,20 @@ export let aria_landmark_name_unique: Rule = {
     },
     messages: {
         "en-US": {
-            "Pass_0": "Multiple \"{0}\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
-            "Fail_0": "Multiple \"{0}\" landmarks with the same parent region are not distinguished from one another because they have the same \"{1}\" label",
-            "group": "Multiple landmarks should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent regions"
+            "Pass_0": "Multiple elements with \"{0}\" landmarks within the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+            "Fail_0": "Multiple elements with \"{0}\" landmarks within the same parent region are not distinguished from one another because they have the same \"{1}\" label",
+            "group": "Each landmark should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent region"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
-        "num": ["1.3.1"],
+        "num": ["2.4.1"], //remapped to 2.4.1 to be consistent with all landmark region rules
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     },
     {
         "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["1.3.1"],
+        "num": ["2.4.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],

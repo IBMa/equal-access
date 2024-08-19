@@ -36,9 +36,9 @@ export let aria_region_labelled: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Element with a \"region\" role does not have an accessible name",
-            "Fail_2": "The element with \"region\" role is not labeled with an 'aria-label' or 'aria-labelledby'",
-            "group": "Each element with \"region\" role must have an accessible name that describes its purpose"
+            "Fail_1": "Element with \"region\" role does not have a label",
+            "Fail_2": "Element with \"region\" role is not labeled with 'aria-label' or 'aria-labelledby'",
+            "group": "Each element with \"region\" role must have a label that describes its purpose"
         }
     },
     rulesets: [{

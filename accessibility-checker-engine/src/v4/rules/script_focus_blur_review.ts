@@ -39,7 +39,7 @@ export let script_focus_blur_review: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.4.7", "3.2.1"],
+        "num": ["2.1.1", "2.4.7", "3.2.1"], //match requirements listed in help
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],

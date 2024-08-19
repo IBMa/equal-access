@@ -33,8 +33,8 @@ export let aria_contentinfo_single: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple elements with \"contentinfo\" role found on a page",
-            "group": "A page, document or application should only have one element with \"contentinfo\" role"
+            "Fail_1": "Multiple elements with \"contentinfo\" role found on the page",
+            "group": "A page, document, or application should only have one element with \"contentinfo\" role"
         }
     },
     rulesets: [{

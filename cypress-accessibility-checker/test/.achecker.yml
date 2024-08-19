@@ -1,7 +1,11 @@
-# optional - Specify the rule archive
+# Custom Internal settings for testing purposes only
+
+# optional - Specify one rule archive which consist diffrent type of policies.
 # Default: latest
-# Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
-ruleArchive : latest
+customRuleServer: true
+rulePack: https://localhost:9445/rules/archives/preview/js
+ruleArchive: preview
+ignoreHTTPSErrors: true
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility
