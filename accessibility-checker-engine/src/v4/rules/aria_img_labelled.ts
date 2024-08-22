@@ -11,14 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_img_labelled: Rule = {
     id: "aria_img_labelled",
-    context: "aria:img",
+    context: "aria:img, aria:image",
     refactor: {
         "HAAC_Aria_ImgAlt": {
             "Pass_0": "Pass_0",

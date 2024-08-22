@@ -1,0 +1,42 @@
+<html lang="en">
+	<head>
+		<title>Page with some content</title>
+		<style>
+			@media (orientation: portrait) {
+				html {
+					rotate: 90deg;
+					width: min(100vw, 100vh);
+					height: min(100vw, 100vh);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		Page Content
+        <script>
+            UnitTest = {
+              ruleIds: ["element_orientation_unlocked"],
+              results: [
+			  {
+            "ruleId": "element_orientation_unlocked",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_locked",
+            "message": "The element <body> is restricted to either landscape or portrait orientation using CSS transform property",
+            "messageArgs": [
+              "body"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+              ]
+        }
+        </script>
+	</body>
+</html>
