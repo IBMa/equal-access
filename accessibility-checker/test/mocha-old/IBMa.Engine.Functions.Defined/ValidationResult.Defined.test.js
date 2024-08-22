@@ -14,9 +14,9 @@
     limitations under the License.
   *****************************************************************************/
 
-var expect = require('chai').expect;
-var aChecker = require("../../../src/");
-
+import * as aChecker from "../../../src/mjs/index.js";
+import { expect } from "chai";
+    
 describe("ValidationResult", function () {
     it("Should be defined", function() {
         expect(typeof ValidationResult).not.toBe("undefined");

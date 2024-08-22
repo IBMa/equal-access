@@ -7,8 +7,7 @@
 
 'use strict';
 
-const aChecker = require("../src/index");
-const request = require("request");
+import * as aChecker from "../src/mjs/index.js";
  
 async function getAceMapping() {
     let rules = await aChecker.getRules();
@@ -58,28 +57,25 @@ async function getAceMapping() {
     return retVal;
 }
 
-async function getTestcases() {
+export async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
-    return await new Promise((resolve, reject) => {
-        request("https://act-rules.github.io/testcases.json", (err, req, body) => {
-            let testcaseInfo = JSON.parse(body);
-            for (const testcase of testcaseInfo.testcases) {
-                if (testcase.ruleId in aceMapping) {
-                    ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
-                        aceRules: aceMapping[testcase.ruleId],
-                        label: testcase.ruleName,
-                        testcases: []
-                    }
-                    ruleTestInfo[testcase.ruleId].testcases.push(testcase);
-                }
+    let resp = await fetch("https://act-rules.github.io/testcases.json");
+    let testcaseInfo = await resp.json();
+    for (const testcase of testcaseInfo.testcases) {
+        if (testcase.ruleId in aceMapping) {
+            ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
+                aceRules: aceMapping[testcase.ruleId],
+                label: testcase.ruleName,
+                testcases: []
             }
-            resolve(ruleTestInfo);
-        });
-    });
+            ruleTestInfo[testcase.ruleId].testcases.push(testcase);
+        }
+    }
+    return ruleTestInfo;
 }
 
-async function getResult(page, testcaseId, aceRules, bSkip) {
+export async function getResult(page, testcaseId, aceRules, bSkip) {
     if (aceRules.length === 0) {
         return {
             title: "",
@@ -155,5 +151,3 @@ async function getResult(page, testcaseId, aceRules, bSkip) {
         issuesAll: issues2
     }
 }
-
-module.exports = { getTestcases, getResult }
