@@ -193,18 +193,18 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: string ) {
  */
 export function getMediaOrientationTransform(doc: Document) {
     let orientationTransforms = {}
-    
+    console.log("stylesheet="+JSON.stringify(doc.styleSheets));
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
-        const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet;
+        const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet; 
         try {
             if (sheet && sheet.cssRules) {
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
-                    const sheetRule = sheet.cssRules[rIndex];
+                    const sheetRule = sheet.cssRules[rIndex]; 
                     if (4 /* CSSRule.MEDIA_RULE */ === sheetRule.MEDIA_RULE) { 
                         const rule = sheetRule as CSSMediaRule;
                         if (rule && rule.media) {
-                            const mediaList = rule.media;
+                            const mediaList = rule.media; 
                             for (let i = 0; i < mediaList.length; i++) {
                                 let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
                                 if (!elem_transforms) elem_transforms = {};

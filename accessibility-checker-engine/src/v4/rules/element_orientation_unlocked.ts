@@ -63,7 +63,7 @@ export let element_orientation_unlocked: Rule = {
             orientationTransforms = getMediaOrientationTransform(doc);
             setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
         } 
-        
+        console.log("node="+nodeName +", orientationTransforms="+JSON.stringify(orientationTransforms));
         // find if the element matches orientation selector(s)
         let media_transforms = [];
         Object.keys(orientationTransforms).forEach(key => {
@@ -72,7 +72,7 @@ export let element_orientation_unlocked: Rule = {
                     media_transforms.push(orientationTransforms[key][tag].transform);    
             });
         });
-
+        console.log("node="+nodeName +", media_transforms="+JSON.stringify(media_transforms));
         // no match, the element is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
