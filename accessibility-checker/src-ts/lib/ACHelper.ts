@@ -287,6 +287,70 @@ const getCounts = (engineReport) => {
 }
 
 
+
+const valueToLevel = (reportValue) => {
+    let reportLevel;
+    if (reportValue[1] === "PASS") {
+        reportLevel = "pass";
+    }
+    else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
+        reportLevel = "manual";
+    }
+    else if (reportValue[0] === "VIOLATION") {
+        if (reportValue[1] === "FAIL") {
+            reportLevel = "violation";
+        }
+        else if (reportValue[1] === "POTENTIAL") {
+            reportLevel = "potentialviolation";
+        }
+    }
+    else if (reportValue[0] === "RECOMMENDATION") {
+        if (reportValue[1] === "FAIL") {
+            reportLevel = "recommendation";
+        }
+        else if (reportValue[1] === "POTENTIAL") {
+            reportLevel = "potentialrecommendation";
+        }
+    }
+    return reportLevel;
+}
+
+const getCounts = (engineReport) => {
+    let counts = {
+        violation: 0,
+        potentialviolation: 0,
+        recommendation: 0,
+        potentialrecommendation: 0,
+        manual: 0,
+        pass: 0,
+        ignored: 0,
+        elements: 0,
+        elementsViolation: 0,
+        elementsViolationReview: 0
+    }
+    let elementSet = new Set();
+    let elementViolationSet = new Set();
+    let elementViolationReviewSet = new Set();
+    for (const issue of engineReport.results) {
+        elementSet.add(issue.path.dom);
+        if (issue.ignored) {
+            ++counts.ignored;
+        } else {
+            ++counts[issue.level];
+            if (issue.level === "violation") {
+                elementViolationSet.add(issue.path.dom);
+                elementViolationReviewSet.add(issue.path.dom);
+            } else if (issue.level === "potentialviolation" || issue.level === "manual") {
+                elementViolationReviewSet.add(issue.path.dom);
+            }
+        }
+    }
+    counts.elements = elementSet.size;
+    counts.elementsViolation = elementViolationSet.size;
+    counts.elementsViolationReview = elementViolationReviewSet.size
+    return counts;
+}
+
 let policies = ${JSON.stringify(Config.policies)};
 
 let checker = new window.ace_ibma.Checker();

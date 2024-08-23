@@ -105,7 +105,8 @@ export class ReporterManager {
             report.engineReport.summary.ruleArchive, // 7
             report.engineReport.summary.policies, // 8
             report.engineReport.summary.reportLevels, // 9
-            compressedResults // 10
+            compressedResults, // 10
+            report.engineReport.summary.counts // 11
         ]
         for (let idx=0; idx<retVal.length; ++idx) {
             if (typeof retVal[idx] === "string" && (retVal[idx] as string).length > 32000) {
@@ -151,18 +152,7 @@ export class ReporterManager {
             numExecuted: report[5],
             nls,
             summary: {
-                counts: {
-                    violation: 0,
-                    potentialviolation: 0,
-                    recommendation: 0,
-                    potentialrecommendation: 0,
-                    manual: 0,
-                    pass: 0,
-                    ignored: 0,
-                    elements: 0,
-                    elementsViolation: 0,
-                    elementsViolationReview: 0
-                },
+                counts: report[11],
                 scanTime: report[6],
                 ruleArchive: report[7],
                 policies: report[8],
@@ -174,7 +164,6 @@ export class ReporterManager {
             toolID: ReporterManager.toolID,
             label: report[3]
         }
-        engineReport.summary.counts = ReporterManager.getCounts(engineReport);
         return {
             startScan: report[0],
             url: report[1],
@@ -390,7 +379,7 @@ export class ReporterManager {
         });
 
         (retVal as any).summary = {};
-        retVal.summary.counts = ReporterManager.getCounts(retVal);
+        retVal.summary.counts = engineResult.summary.counts || ReporterManager.getCounts(engineResult as any);
 
         retVal.results = retVal.results.filter(pageResult => {
             if (ReporterManager.config.reportLevels.includes(pageResult.level)) {
@@ -460,6 +449,7 @@ export class ReporterManager {
         counts.elements = elementSet.size;
         counts.elementsViolation = elementViolationSet.size;
         counts.elementsViolationReview = elementViolationReviewSet.size
+        console.log(counts.pass);
         return counts;
     }
 
