@@ -142,7 +142,7 @@ class ReporterManager {
         });
 
         retVal.summary = {};
-        retVal.summary.counts = ReporterManager.getCounts(retVal);
+        retVal.summary.counts = ReporterManager.addCounts(retVal);
 
         retVal.results = retVal.results.filter(pageResult => {
             if (ReporterManager.config.reportLevels.includes(pageResult.level)) {
@@ -179,18 +179,13 @@ class ReporterManager {
         return retVal;
     }
 
-    static getCounts(engineReport) {
+    static addCounts(engineReport) {
         let counts = {
-            violation: 0,
-            potentialviolation: 0,
-            recommendation: 0,
-            potentialrecommendation: 0,
-            manual: 0,
-            pass: 0,
             ignored: 0,
             elements: 0,
             elementsViolation: 0,
-            elementsViolationReview: 0
+            elementsViolationReview: 0,
+            ...engineReport.summary.counts
         }
         let elementSet = new Set();
         let elementViolationSet = new Set();
@@ -199,8 +194,8 @@ class ReporterManager {
             elementSet.add(issue.path.dom);
             if (issue.ignored) {
                 ++counts.ignored;
+                --counts[issue.level.toString()];
             } else {
-                ++counts[issue.level.toString()];
                 if (issue.level === eRuleLevel.violation) {
                     elementViolationSet.add(issue.path.dom);
                     elementViolationReviewSet.add(issue.path.dom);

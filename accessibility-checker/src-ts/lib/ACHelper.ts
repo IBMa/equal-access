@@ -322,15 +322,8 @@ const getCounts = (engineReport) => {
         recommendation: 0,
         potentialrecommendation: 0,
         manual: 0,
-        pass: 0,
-        ignored: 0,
-        elements: 0,
-        elementsViolation: 0,
-        elementsViolationReview: 0
+        pass: 0
     }
-    let elementSet = new Set();
-    let elementViolationSet = new Set();
-    let elementViolationReviewSet = new Set();
     for (const issue of engineReport.results) {
         elementSet.add(issue.path.dom);
         if (issue.ignored) {
@@ -350,6 +343,7 @@ const getCounts = (engineReport) => {
     counts.elementsViolationReview = elementViolationReviewSet.size
     return counts;
 }
+
 
 let policies = ${JSON.stringify(Config.policies)};
 
