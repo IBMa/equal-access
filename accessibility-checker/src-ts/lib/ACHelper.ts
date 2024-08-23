@@ -6,7 +6,7 @@ import { IConfigInternal } from "./common/config/IConfig";
 import { ReporterManager } from "./common/report/ReporterManager";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
-import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport";
 import { dirname, join, resolve as pathResolve } from "path";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
 
@@ -372,7 +372,7 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
             }
 
             const getCounts = (engineReport) => {
-                let counts = {
+                let counts: EngineSummaryCounts = {
                     violation: 0,
                     potentialviolation: 0,
                     recommendation: 0,
@@ -475,7 +475,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
             }
 
             const getCounts = (engineReport) => {
-                let counts = {
+                let counts: EngineSummaryCounts = {
                     violation: 0,
                     potentialviolation: 0,
                     recommendation: 0,
@@ -573,7 +573,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
         }
 
         const getCounts = (engineReport) => {
-            let counts = {
+            let counts: EngineSummaryCounts = {
                 violation: 0,
                 potentialviolation: 0,
                 recommendation: 0,

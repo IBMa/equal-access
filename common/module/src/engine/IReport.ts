@@ -67,7 +67,7 @@ export type IEngineReport = {
         }
     },
     summary?: {
-        counts?: SummaryCounts
+        counts?: EngineSummaryCounts
     }
 }
 
@@ -77,6 +77,15 @@ export type IBaselineResult = IEngineResult & {
     ignored: boolean
     help: string
     level: eRuleLevel
+}
+
+export type EngineSummaryCounts = {
+    violation: number,
+    potentialviolation: number,
+    recommendation: number,
+    potentialrecommendation: number,
+    manual: number,
+    pass: number
 }
 
 export type SummaryCounts = {
