@@ -313,11 +313,11 @@ let aChecker = {
                 result.level = valueToLevel(result.value)
             }
             let reportLevels = (aChecker.Config.reportLevels || []).concat(aChecker.Config.failLevels || []).map(lvl => lvl.toString());
-            report.summary ||= {};
-            report.summary.counts ||= getCounts(report);
+            engineReport.summary ||= {};
+            engineReport.summary.counts ||= getCounts(engineReport);
             // Filter out pass results unless they asked for them in reports
             // We don't want to mess with baseline functions, but pass results can break the response object
-            report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");            
+            engineReport.results = engineReport.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");            
 
             ReporterManager.config = BaselineManager.config = aChecker.Config;
 
