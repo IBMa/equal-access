@@ -141,7 +141,9 @@ class ReporterManager {
             }
         });
 
-        retVal.summary = {};
+        retVal.summary = {
+            counts: retVal.summary.counts
+        };
         retVal.summary.counts = ReporterManager.addCounts(retVal);
 
         retVal.results = retVal.results.filter(pageResult => {
