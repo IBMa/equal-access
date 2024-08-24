@@ -54,6 +54,18 @@ public class ACReport implements Cloneable {
                 throw new RuntimeException();
             }
         }
+
+        public SummaryCounts() {
+        }
+
+        public SummaryCounts(ACEReport.SummaryCounts rhs) {
+            violation = rhs.violation;
+            potentialviolation = rhs.potentialviolation;
+            recommendation = rhs.recommendation;
+            potentialrecommendation = rhs.potentialrecommendation;
+            manual = rhs.manual;
+            pass = rhs.pass;
+        }
     }
     public static class Summary implements Cloneable {
         public SummaryCounts counts = new SummaryCounts();
@@ -167,6 +179,25 @@ public class ACReport implements Cloneable {
         counts.potentialrecommendation = 0;
         counts.manual = 0;
         counts.pass = 0;
+        for (Result issue: results) {
+            if (eRuleLevel.violation.equals(issue.level)) {
+                ++counts.violation;
+            } else if (eRuleLevel.potentialviolation.equals(issue.level)) {
+                ++counts.potentialviolation;
+            } else if (eRuleLevel.recommendation.equals(issue.level)) {
+                ++counts.recommendation;
+            } else if (eRuleLevel.potentialrecommendation.equals(issue.level)) {
+                ++counts.potentialrecommendation;
+            } else if (eRuleLevel.manual.equals(issue.level)) {
+                ++counts.manual;
+            } else if (eRuleLevel.pass.equals(issue.level)) {
+                ++counts.pass;
+            }
+        }
+    }
+
+    public void addCounts(ACEReport.SummaryCounts summaryCounts) {
+        SummaryCounts counts = this.summary.counts = new SummaryCounts(summaryCounts);
         counts.ignored = 0;
         counts.elements = 0;
         counts.elementsViolation = 0;
@@ -178,22 +209,20 @@ public class ACReport implements Cloneable {
             elementSet.add(issue.path.get("dom"));
             if (issue.ignored) {
                 ++counts.ignored;
-            } else {
                 if (eRuleLevel.violation.equals(issue.level)) {
-                    ++counts.violation;
+                    --counts.violation;
                 } else if (eRuleLevel.potentialviolation.equals(issue.level)) {
-                    ++counts.potentialviolation;
+                    --counts.potentialviolation;
                 } else if (eRuleLevel.recommendation.equals(issue.level)) {
-                    ++counts.recommendation;
+                    --counts.recommendation;
                 } else if (eRuleLevel.potentialrecommendation.equals(issue.level)) {
-                    ++counts.potentialrecommendation;
+                    --counts.potentialrecommendation;
                 } else if (eRuleLevel.manual.equals(issue.level)) {
-                    ++counts.manual;
+                    --counts.manual;
                 } else if (eRuleLevel.pass.equals(issue.level)) {
-                    ++counts.pass;
-                } else if (eRuleLevel.ignored.equals(issue.level)) {
-                    ++counts.ignored;
-                }
+                    --counts.pass;
+                }                
+            } else {
                 if (eRuleLevel.violation.equals(issue.level)) {
                     elementViolationSet.add(issue.path.get("dom"));
                     elementViolationReviewSet.add(issue.path.get("dom"));

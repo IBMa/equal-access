@@ -44,7 +44,8 @@ public class CompressedReport {
             summary.ruleArchive, // ruleArchive (7)
             summary.policies, // policies (8) 
             summary.reportLevels, // reportLevels (9)
-            new Object[report.results.length][] // (10)
+            new Object[report.results.length][], // (10)
+            summary.counts
         };
         for (int idx=0; idx<report.results.length; ++idx) {
             ACReport.Result result = report.results[idx];
@@ -91,6 +92,7 @@ public class CompressedReport {
         summary.reportLevels = (String[])data[9];
         summary.startScan = (Long)data[0];
         summary.URL = (String)data[1];
+        summary.counts = (ACReport.SummaryCounts)data[11];
         engineReport.results = new ACReport.Result[((Object[])data[10]).length];
         for (int idx=0; idx<((Object[][])data[10]).length; ++idx) {
             Object[] issue = ((Object[][])data[10])[idx];
@@ -120,7 +122,6 @@ public class CompressedReport {
                 )
             );
         }
-        engineReport.updateSummaryCounts();
         return new ReporterStored(data[2].toString(), data[4].toString(), engineReport);
     }
 

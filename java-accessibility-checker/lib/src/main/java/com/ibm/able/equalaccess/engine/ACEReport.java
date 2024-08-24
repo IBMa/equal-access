@@ -20,6 +20,38 @@ import java.util.Map;
 import com.google.gson.annotations.SerializedName;
 
 public class ACEReport {
+    public static class SummaryCounts implements Cloneable {
+        public int violation = 0;
+        public int potentialviolation = 0;
+        public int recommendation = 0;
+        public int potentialrecommendation = 0;
+        public int manual = 0;
+        public int pass = 0;
+
+        public Object clone() { 
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException ex) {
+                System.err.println(ex);
+                throw new RuntimeException();
+            }
+        }
+    }
+    public static class Summary implements Cloneable {
+        public SummaryCounts counts = new SummaryCounts();
+
+        public Object clone() { 
+            Summary ret = null;
+            try {
+                ret = (Summary) super.clone();
+            } catch (CloneNotSupportedException ex) {
+                System.err.println(ex);
+                throw new RuntimeException();
+            }
+            ret.counts = (SummaryCounts)counts.clone();
+            return ret;
+        } 
+    }
 
     public static class Result implements Cloneable {
         public Result() {}
@@ -80,4 +112,5 @@ public class ACEReport {
     public Map<String, Map<String, String>> nls;
     public Result[] results;
     public String screenshot=null;
+    public Summary summary;
 }

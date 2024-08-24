@@ -17,6 +17,9 @@ package com.ibm.able.equalaccess.enginecontext.selenium;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -136,10 +139,54 @@ try {
     public ACEReport getCompliance(String label) {
         Config config = ACConfigManager.getConfig();
         try {
+            List<String> resultList = new ArrayList<>(config.reportLevels.length + config.failLevels.length);
+            Collections.addAll(resultList, config.reportLevels);
+            Collections.addAll(resultList, config.failLevels);
             String scriptStr = String.format("""
 let cb = arguments[arguments.length - 1];
 try {
+    const valueToLevel = (reportValue) => {
+        let reportLevel;
+        if (reportValue[1] === "PASS") {
+            reportLevel = "pass";
+        }
+        else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
+            reportLevel = "manual";
+        }
+        else if (reportValue[0] === "VIOLATION") {
+            if (reportValue[1] === "FAIL") {
+                reportLevel = "violation";
+            }
+            else if (reportValue[1] === "POTENTIAL") {
+                reportLevel = "potentialviolation";
+            }
+        }
+        else if (reportValue[0] === "RECOMMENDATION") {
+            if (reportValue[1] === "FAIL") {
+                reportLevel = "recommendation";
+            }
+            else if (reportValue[1] === "POTENTIAL") {
+                reportLevel = "potentialrecommendation";
+            }
+        }
+        return reportLevel;
+    }
+    const getCounts = (engineReport) => {
+        let counts = {
+            violation: 0,
+            potentialviolation: 0,
+            recommendation: 0,
+            potentialrecommendation: 0,
+            manual: 0,
+            pass: 0
+        }
+        for (const issue of engineReport.results) {
+            ++counts[issue.level];
+        }
+        return counts;
+    }
     let policies = %s;
+    let reportLevels = %s;
 
     let checker = new window.ace_ibma.Checker();
     let customRulesets = [];
@@ -148,14 +195,19 @@ try {
         checker.check(document, policies).then(function(report) {
             for (const result of report.results) {
                 delete result.node;
+                result.level = valueToLevel(result.value)
             }
-            cb(JSON.stringify(report));
+            report.summary ||= {};
+            report.summary.counts ||= getCounts(report);
+            // Filter out pass results unless they asked for them in reports
+            // We don't want to mess with baseline functions, but pass results can break the response object
+            report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");            cb(JSON.stringify(report));
         })
     },0)
 } catch (e) {
     cb(e);
 }            
-            """, gson.toJson(config.policies) /* TODO: ${JSON.stringify(ACEngineManager.customRulesets)}; */);
+            """, gson.toJson(config.policies), gson.toJson(resultList.toArray()) /* TODO: ${JSON.stringify(ACEngineManager.customRulesets)}; */);
             ACEReport report;
             try {
                 this.driver.manage().timeouts().scriptTimeout(Duration.ofMinutes(60));
