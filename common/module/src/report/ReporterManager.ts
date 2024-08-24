@@ -378,8 +378,10 @@ export class ReporterManager {
             }
         });
 
-        (retVal as any).summary = {};
-        retVal.summary.counts = ReporterManager.addCounts(engineResult as any);
+        (retVal as any).summary = {
+            counts: engineResult.summary.counts
+        };
+        retVal.summary.counts = ReporterManager.addCounts(retVal);
 
         retVal.results = retVal.results.filter(pageResult => {
             if (ReporterManager.config.reportLevels.includes(pageResult.level)) {
