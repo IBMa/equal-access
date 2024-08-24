@@ -52,7 +52,7 @@ function getCounts(engineReport) {
         manual: 0
     }
     for (const issue of engineReport.results) {
-        elementSet.add(issue.path.dom);
+        ++counts[issue.level];
     }
     return counts;
 }
