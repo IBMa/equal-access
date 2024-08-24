@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Arrays;
@@ -35,7 +36,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.http.ClientConfig;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -92,7 +95,8 @@ public class AccessibilityCheckerTest {
         // options.setImplicitWaitTimeout
         // options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
         try {
-            AccessibilityCheckerTest.driver = new ChromeDriver(options);
+            ClientConfig timeoutConfig = ClientConfig.defaultConfig().readTimeout(Duration.ofMinutes(60));
+            AccessibilityCheckerTest.driver = new ChromeDriver(ChromeDriverService.createDefaultService(), options, timeoutConfig);
         } catch (SessionNotCreatedException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getAdditionalInformation());

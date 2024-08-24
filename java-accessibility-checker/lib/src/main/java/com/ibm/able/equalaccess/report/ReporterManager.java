@@ -173,7 +173,7 @@ public class ReporterManager {
             pageResult.level = reportLevel;
         }
 
-        retVal.updateSummaryCounts();
+        retVal.addCounts(engineResult.summary.counts);
         retVal.filter(config.reportLevels);
 
         return retVal;
