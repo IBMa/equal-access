@@ -229,8 +229,8 @@ public class AccessibilityCheckerTest {
                                 }
                             }
                         }
-                        assertEquals("Issue triggered was not expected", 0, actualIssues.size());
-                        assertEquals("Expected issue was not triggered ("+testFile.getAbsolutePath()+")\n---\n"+gson.toJson(report.results)+"\n---\n"+gson.toJson(expectedIssues), 0, expectedIssues.size());
+                        assertEquals(testFile.toString()+": Issue triggered was not expected", 0, actualIssues.size());
+                        assertEquals(testFile.toString()+": Expected issue was not triggered ("+testFile.getAbsolutePath()+")\n---\n"+gson.toJson(report.results)+"\n---\n"+gson.toJson(expectedIssues), 0, expectedIssues.size());
                     }
                 }
             }
