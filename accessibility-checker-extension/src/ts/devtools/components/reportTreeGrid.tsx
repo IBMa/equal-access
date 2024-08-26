@@ -837,6 +837,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                             role="link"
                                             href="#0"
+                                            id={rowId}
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
                                                 this.onRow(group, thisIssue);
