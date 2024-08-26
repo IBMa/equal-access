@@ -193,7 +193,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: string ) {
  */
 export function getMediaOrientationTransform(doc: Document) {
     let orientationTransforms = {}
-    console.log("stylesheet="+JSON.stringify(doc.styleSheets));
+    
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
         const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet; 
@@ -225,6 +225,8 @@ export function getMediaOrientationTransform(doc: Document) {
                                                     } else {
                                                         transforms[key] = styles[key];
                                                     }
+                                                } else if (key.toLocaleLowerCase() === "rotate") {
+                                                    transforms[key] = styles[key];
                                                 }
                                             }
                                             elem_transforms[selector] = transforms;
