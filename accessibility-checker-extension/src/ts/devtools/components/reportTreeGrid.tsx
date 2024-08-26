@@ -840,6 +840,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             id={rowId}
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
+                                                evt.stopPropagation();
                                                 this.onRow(group, thisIssue);
                                                 this.devtoolsAppController.setSecondaryView("help");
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
