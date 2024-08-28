@@ -17,7 +17,7 @@ import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { getCache, setCache } from "../util/CacheUtil";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let fieldset_label_valid: Rule = {
     id: "fieldset_label_valid",

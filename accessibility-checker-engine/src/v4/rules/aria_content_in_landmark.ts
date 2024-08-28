@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let aria_content_in_landmark: Rule = {
     id: "aria_content_in_landmark",

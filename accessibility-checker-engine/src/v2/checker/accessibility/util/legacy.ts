@@ -18,9 +18,9 @@ import { getCache, setCache } from "../../../../v4/util/CacheUtil";
 import { ARIADefinitions, IDocumentConformanceRequirement } from "../../../aria/ARIADefinitions";
 import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { DOMWalker } from "../../../dom/DOMWalker";
-import { VisUtil } from "../../../dom/VisUtil";
+import { VisUtil } from "../../../../v4/util/VisUtil";
 import { FragmentUtil } from "./fragment";
-import { getDefinedStyles, getComputedStyle } from "../../../../v4/util/CSSUtil";
+import { CSSUtil } from "../../../../v4/util/CSSUtil";
 import { DOMUtil } from "../../../dom/DOMUtil";
 import { DOMMapper } from "../../../dom/DOMMapper";
 
@@ -455,7 +455,7 @@ export class RPTUtil {
      * a target is en element that accept a pointer action (click or touch)
      * a target is a browser default if it's a native widget (no user defined role) without user style  
      */
-    public static isTargetBrowserDefault(element) {
+    /**public static isTargetBrowserDefault(element) {
         if (!element) return false;
         
         // user defained widget
@@ -470,7 +470,7 @@ export class RPTUtil {
             return false;
             
         return true;
-    }
+    }*/
 
     /**
      * an "inline" CSS display property tells the element to fit itself on the same line. An 'inline' element's width and height are ignored. 
@@ -486,7 +486,7 @@ export class RPTUtil {
      * 
      * return: if it's inline element and { inline: true | false, text: true | false, violation: null | {node} } 
      */
-    public static getInlineStatus(element) {
+    /**public static getInlineStatus(element) {
         if (!element) return null;
         
         const style =  getComputedStyle(element);
@@ -577,7 +577,7 @@ export class RPTUtil {
         }
         // all other cases    
         return status;
-    }
+    }*/
 
     public static tabIndexLEZero(elem) {
         if (RPTUtil.hasAttribute(elem, "tabindex")) {
@@ -1677,7 +1677,7 @@ export class RPTUtil {
             const node = getCache(walkNode, "RPTUtil_AncestorWithStyles", null);
             if (node !== null) return node;
 
-            const styles = getDefinedStyles(walkNode);
+            const styles = CSSUtil.getDefinedStyles(walkNode);
             for (const style in styleProps) {
                 let value = styles[style];
                 if (value) {

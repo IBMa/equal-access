@@ -14,9 +14,9 @@
     import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
     import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-    import { VisUtil } from "../../v2/dom/VisUtil";
+    import { VisUtil } from "../util/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { getComputedStyle } from "../util/CSSUtil";
+    import { CSSUtil } from "../util/CSSUtil";
     
     export let target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
@@ -74,7 +74,7 @@
                 return null;
 
             // check inline element: without text in the same line
-            const status = RPTUtil.getInlineStatus(ruleContext);
+            const status = CSSUtil.getInlineStatus(ruleContext);
             if (status === null) return null;
             if (status.inline) {
                 if (status.text) {
@@ -86,7 +86,7 @@
                 }    
             } else {
                 // ignore browser default
-                if (RPTUtil.isTargetBrowserDefault(ruleContext)) 
+                if (CSSUtil.isTargetBrowserDefault(ruleContext)) 
                     return RulePass("pass_default");
             }
 

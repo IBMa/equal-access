@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { getCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let combobox_popup_reference: Rule = {
     id: "combobox_popup_reference",

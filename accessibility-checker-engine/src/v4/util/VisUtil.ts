@@ -11,9 +11,9 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getCache, setCache } from "../../v4/util/CacheUtil";
-import { DOMUtil } from "./DOMUtil";
-import { DOMWalker } from "./DOMWalker";
+import { getCache, setCache } from "./CacheUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
 export class VisUtil {

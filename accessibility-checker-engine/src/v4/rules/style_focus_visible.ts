@@ -14,8 +14,8 @@
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, getPixelsFromStyle } from "../util/CSSUtil";
-import { ColorUtil } from "../../v2/dom/ColorUtil";
+import { CSSUtil } from "../util/CSSUtil";
+import { ColorUtil } from "../util/ColorUtil";
 
 export let style_focus_visible: Rule = {
     id: "style_focus_visible",
@@ -65,11 +65,11 @@ export let style_focus_visible: Rule = {
         if (!RPTUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
-        let normalStyles = getDefinedStyles(ruleContext); // consider noth user-defined and browser default
+        let normalStyles = CSSUtil.getDefinedStyles(ruleContext); // consider noth user-defined and browser default
         let focusStyles = []
-        focusStyles.push(getDefinedStyles(ruleContext, ":focus"));
-        focusStyles.push(getDefinedStyles(ruleContext, ":focus-visible"));
-        focusStyles.push(getDefinedStyles(ruleContext, ":focus-within"));
+        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus"));
+        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus-visible"));
+        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus-within"));
         
         // if focus style is defined
         let styleObj = focusStyles[0];
@@ -117,8 +117,8 @@ export let style_focus_visible: Rule = {
                             else if (normalStyleValue === 'medium') normalStyleValue = '2px';
                             else if (normalStyleValue === 'thick') normalStyleValue = '3px';  
                         }
-                        focusStyleValue = getPixelsFromStyle(focusStyleValue, ruleContext);
-                        normalStyleValue = getPixelsFromStyle(normalStyleValue, ruleContext);
+                        focusStyleValue = CSSUtil.getPixelsFromStyle(focusStyleValue, ruleContext);
+                        normalStyleValue = CSSUtil.getPixelsFromStyle(normalStyleValue, ruleContext);
                         if (focusStyleValue == 0 || focusStyleValue <= normalStyleValue)
                             return RulePotential("potential_focus_not_visible");
                     

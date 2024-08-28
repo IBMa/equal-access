@@ -14,7 +14,7 @@
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let a_text_purpose: Rule = {

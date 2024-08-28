@@ -14,8 +14,8 @@
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { getComputedStyle, getPixelsFromStyle } from "..//util/CSSUtil";
+import { VisUtil } from "../util/VisUtil";
+import { CSSUtil } from "..//util/CSSUtil";
 
 export let element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
@@ -70,8 +70,8 @@ export let element_scrollable_tabbable: Rule = {
            return null; 
 
         // ignore if both x and y scroll distances < element's horizontal/vertical padding
-        const padding_x = getPixelsFromStyle(styles.paddingLeft, ruleContext) + getPixelsFromStyle(styles.paddingRight, ruleContext);
-        const padding_y = getPixelsFromStyle(styles.paddingTop, ruleContext) + getPixelsFromStyle(styles.paddingBottom, ruleContext);
+        const padding_x = CSSUtil.getPixelsFromStyle(styles.paddingLeft, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingRight, ruleContext);
+        const padding_y = CSSUtil.getPixelsFromStyle(styles.paddingTop, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingBottom, ruleContext);
         if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + padding_x 
             && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ padding_y)
             return null;

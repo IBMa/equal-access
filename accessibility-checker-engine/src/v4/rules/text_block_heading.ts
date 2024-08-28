@@ -15,8 +15,8 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { getComputedStyle, getPixelsFromStyle } from "../util/CSSUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CSSUtil } from "../util/CSSUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let text_block_heading: Rule = {
     id: "text_block_heading",
@@ -68,7 +68,7 @@ export let text_block_heading: Rule = {
         let body = ruleContext.ownerDocument.getElementsByTagName("body");
         if (body != null) {
             let bodyStyle = getComputedStyle(body[0]);
-            if (bodyStyle) bodyFont = getPixelsFromStyle(bodyStyle['font-size'], body);
+            if (bodyStyle) bodyFont = CSSUtil.getPixelsFromStyle(bodyStyle['font-size'], body);
         }
         let numWords = validateParams.numWords.value;
         let wordsSeen = 0;
@@ -94,7 +94,7 @@ export let text_block_heading: Rule = {
                     let style = getComputedStyle(nw.node.parentElement);
                     if (style && (style['font-weight'] === 'bold' || style['font-weight'] >= 700
                         ||  (style['font-size'] && style['font-size'].includes("large")) 
-                        || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
+                        || (style['font-size'] && bodyFont !== 0 && CSSUtil.getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
                         let nextStr = nw.node.nodeValue.trim();
                         
                         let wc = RPTUtil.wordCount(nextStr);

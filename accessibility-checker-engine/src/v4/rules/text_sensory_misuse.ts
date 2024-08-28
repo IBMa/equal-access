@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let text_sensory_misuse: Rule = {

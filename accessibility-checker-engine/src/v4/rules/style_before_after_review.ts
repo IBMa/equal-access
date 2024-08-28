@@ -15,7 +15,7 @@
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getCSSStyle } from "../util/CSSUtil";
+import { CSSUtil } from "../util/CSSUtil";
 
 /**
  * Description: Trigger if :before and :after are used in CSS (Internal and External) with content
@@ -58,7 +58,7 @@ export let style_before_after_review: Rule = {
         let passed = true;
         //check Internal styles        
         if (ruleContext.nodeName.toLowerCase() === "style") {
-            let css = getCSSStyle(ruleContext);
+            let css = CSSUtil.getCSSStyle(ruleContext);
             for (let i = 0; passed && i < css.length; ++i) {
                 // Guard against bad CSS
                 if (css[i].selector) {

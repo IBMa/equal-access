@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
 export let table_headers_ref_valid: Rule = {

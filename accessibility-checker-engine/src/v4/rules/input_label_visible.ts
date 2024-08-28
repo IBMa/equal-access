@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHier
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let input_label_visible: Rule = {

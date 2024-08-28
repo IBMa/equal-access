@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { getCache, setCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let input_checkboxes_grouped: Rule = {
     id: "input_checkboxes_grouped",

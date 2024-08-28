@@ -13,8 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, selectorMatchesElem, getMediaOrientationTransform, getRotationDegree} from "../util/CSSUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CSSUtil } from "../util/CSSUtil";
+import { VisUtil } from "../util/VisUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
@@ -60,7 +60,7 @@ export let element_orientation_unlocked: Rule = {
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
         let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
-            orientationTransforms = getMediaOrientationTransform(doc);
+            orientationTransforms = CSSUtil.getMediaOrientationTransform(doc);
             setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
         } 
         
@@ -68,7 +68,7 @@ export let element_orientation_unlocked: Rule = {
         let media_transforms = [];
         Object.keys(orientationTransforms).forEach(key => {
             Object.keys(orientationTransforms[key]).forEach(tag => {
-                if (Object.keys(orientationTransforms[key][tag]).length > 0 && selectorMatchesElem(ruleContext, tag))
+                if (Object.keys(orientationTransforms[key][tag]).length > 0 && CSSUtil.selectorMatchesElem(ruleContext, tag))
                     media_transforms.push(orientationTransforms[key][tag].transform);    
             });
         });
@@ -86,7 +86,7 @@ export let element_orientation_unlocked: Rule = {
             // no rotation transform, skip
             if (!containsRotation) continue;
 
-            let degree = getRotationDegree(media_transform);
+            let degree = CSSUtil.getRotationDegree(media_transform);
             
             // no or 360n degree rotation 
             if (degree === 0) { 
@@ -97,13 +97,13 @@ export let element_orientation_unlocked: Rule = {
              * calculate the original page rotation transformation, example
              *  html { transform: rotate(2.5deg); }
             */
-            const definedStyle = getDefinedStyles(ruleContext);
+            const definedStyle = CSSUtil.getDefinedStyles(ruleContext);
             
             /** 
              * compensate the media orientation with the page orientation
              */
             if (definedStyle['transform']) {
-                const page_degree = getRotationDegree(definedStyle['transform']);
+                const page_degree = CSSUtil.getRotationDegree(definedStyle['transform']);
                 degree -= page_degree;
             }    
             

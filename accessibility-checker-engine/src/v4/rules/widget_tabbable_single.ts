@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { setCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let widget_tabbable_single: Rule = {
     id: "widget_tabbable_single",

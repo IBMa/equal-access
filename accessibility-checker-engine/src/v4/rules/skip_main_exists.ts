@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { AncestorUtil } from "../../v2/checker/accessibility/util/ancestor";
 import { getCache, setCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let skip_main_exists: Rule = {
     id: "skip_main_exists",

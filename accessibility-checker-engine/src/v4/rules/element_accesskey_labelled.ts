@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 

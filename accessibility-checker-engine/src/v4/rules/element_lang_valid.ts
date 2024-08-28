@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { LangUtil } from "../../v2/checker/accessibility/util/lang";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 

@@ -15,9 +15,9 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { getDefinedStyles } from "../util/CSSUtil";
+import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let element_tabbable_role_valid: Rule = {
     id: "element_tabbable_role_valid",
@@ -69,7 +69,7 @@ export let element_tabbable_role_valid: Rule = {
             return null;
         
         // ignore elements with CSS overflow: scroll or auto
-        let styles = getDefinedStyles(ruleContext);
+        let styles = CSSUtil.getDefinedStyles(ruleContext);
         if (styles['overflow-x'] === 'scroll' || styles['overflow-y'] === 'scroll' 
             || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
             return null;

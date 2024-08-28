@@ -15,10 +15,9 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { isMaterialIconFont } from "../util/CSSUtil";
+import { VisUtil } from "../util/VisUtil";
+import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let label_name_visible: Rule = {
     id: "label_name_visible",
@@ -59,7 +58,7 @@ export let label_name_visible: Rule = {
         }
 
         // pass if the visible text uses Material Icon font
-        if (isMaterialIconFont(ruleContext)) 
+        if (CSSUtil.isMaterialIconFont(ruleContext)) 
             return RulePass("Pass_0");
 
         let passed = true;

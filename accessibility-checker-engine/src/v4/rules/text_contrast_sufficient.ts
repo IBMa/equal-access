@@ -12,12 +12,12 @@
  *****************************************************************************/
 
 import { RPTUtil} from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { ColorUtil } from "../../v2/dom/ColorUtil";
+import { VisUtil } from "../util/VisUtil";
+import { ColorUtil } from "../util/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 //import { setCache } from "../util/CacheUtil";
-import { getWeightNumber, getFontInPixels} from "../util/CSSUtil";
+import { CSSUtil } from "../util/CSSUtil";
 import { containsCKJ } from "../util/CommonUtil";
 
 export let text_contrast_sufficient: Rule = {
@@ -251,8 +251,8 @@ export let text_contrast_sufficient: Rule = {
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        let weight = getWeightNumber(style.fontWeight);
-        let size = getFontInPixels(style.fontSize, elem);
+        let weight = CSSUtil.getWeightNumber(style.fontWeight);
+        let size = CSSUtil.getFontInPixels(style.fontSize, elem);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         
         if (containsCKJ(childStr)) {

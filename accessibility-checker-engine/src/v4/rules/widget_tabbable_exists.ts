@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHier
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export let widget_tabbable_exists: Rule = {
     id: "widget_tabbable_exists",
