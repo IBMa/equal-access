@@ -28,7 +28,7 @@ export let img_alt_null: Rule = {
         "en-US": {
             "pass": "img_alt_null.html",
             "fail_decorative": "img_alt_null.html",
-            "fail_aria_override": "img_alt_null.html",
+            "potential_aria_override": "img_alt_null.html",
             "group": "img_alt_null.html"
         }
     },
