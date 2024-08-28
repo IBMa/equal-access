@@ -15,13 +15,14 @@ import {RuleContextHierarchy } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
+export class CommonUtil {
 /* 
  * check if any explicit role specified for the element is a valid ARIA role
  * return: null if no explicit role is defined, 
  *         true if the role(s) are defined in ARIA
  *         false if any role is not defined in ARIA
 */
-export function areRolesDefined(roles: string[]) {
+public static areRolesDefined(roles: string[]) {
     if (!roles || roles.length ===0) return null;
     
     let designPatterns = ARIADefinitions.designPatterns;
@@ -38,7 +39,7 @@ export function areRolesDefined(roles: string[]) {
  *         true if the role(s) are defined in ARIA
  *         false if any role is not defined in ARIA
 */
-export function getInvalidRoles(ruleContext: Element) {
+public static  getInvalidRoles(ruleContext: Element) {
     let domRoles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
     
     if (!domRoles || domRoles.length === 0)
@@ -74,7 +75,7 @@ export function getInvalidRoles(ruleContext: Element) {
  * check if any explicit role specified for the element is not defined in ARIA
  * return: list of specified roles not defined in ARIA
 */
-export function getRolesUndefinedByAria(element: Element) {
+public static getRolesUndefinedByAria(element: Element) {
     if (!element) return null;
 
     const roles = RPTUtil.getRoles(element, false);
@@ -96,12 +97,12 @@ export function getRolesUndefinedByAria(element: Element) {
  *         a list of invalid attributes
  *         empty list if all attributes are valid, or no aria attributes are specified
  */
-export function getInvalidAriaAttributes(ruleContext: Element): string[] {
+public static getInvalidAriaAttributes(ruleContext: Element): string[] {
     let roles = RPTUtil.getUserDefinedRoles(ruleContext);
     
     // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
     // for mutiple roles, skip if any role is invalid
-    let defined = areRolesDefined(roles);
+    let defined = CommonUtil.areRolesDefined(roles);
     if (defined !==null && !defined) 
         return null;
     
@@ -129,7 +130,7 @@ export function getInvalidAriaAttributes(ruleContext: Element): string[] {
  * get conflict Aria and Html attributes
  * return: a list of Aria and Html attribute pairs that are conflict
 */
-export function getConflictAriaAndHtmlAttributes(elem: Element) {
+public static getConflictAriaAndHtmlAttributes(elem: Element) {
     
     let ariaAttrs = RPTUtil.getUserDefinedAriaAttributeNameValuePairs(elem);
     let htmlAttrs = RPTUtil.getUserDefinedHtmlAttributeNameValuePairs(elem);
@@ -152,7 +153,7 @@ export function getConflictAriaAndHtmlAttributes(elem: Element) {
  * get conflict Aria and Html attributes
  * return: a list of Aria and Html attribute pairs that are conflict
 */
-export function isTableDescendant(contextHierarchies?: RuleContextHierarchy) {
+public static isTableDescendant(contextHierarchies?: RuleContextHierarchy) {
     if (!contextHierarchies) return null;
     
     return contextHierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
@@ -162,7 +163,7 @@ export function isTableDescendant(contextHierarchies?: RuleContextHierarchy) {
  * get deprecated Aria roles
  * return: a list of deprecated Aria roles
 */
-export function getDeprecatedAriaRoles(element: Element) {
+public static getDeprecatedAriaRoles(element: Element) {
     if (!element) return null;
 
     const roles = RPTUtil.getRoles(element, false);
@@ -182,7 +183,7 @@ export function getDeprecatedAriaRoles(element: Element) {
  * return: a list of deprecated Aria role-attributes paris
  *         for global the role is marked as 'any'
 */
-export function getDeprecatedAriaAttributes(element: Element) {
+public static getDeprecatedAriaAttributes(element: Element) {
     if (!element) return null;
 
     let domAttributes = element.attributes;
@@ -219,20 +220,4 @@ export function getDeprecatedAriaAttributes(element: Element) {
     }
     return ret; 
 }
-
-/* 
- * string contains CJK (chinese, japaneses, or korea)
- * return: boolean
-*/
-export function containsCKJ(text: string) {
-    if (!text) return false;
-
-    // https://en.wikipedia.org/wiki/CJK_Unified_Ideographs  https://ayaka.shn.hk/hanregex/
-    let regex =/(?:[\u4e00-\u9fff\u3400-\u4dbf])+/g;
-    
-    const replaced = text.trim().replace(regex, '');
-    if (replaced.length === text.trim().length)
-        return false;
-    
-    return true;
 }

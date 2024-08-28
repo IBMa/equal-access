@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_attribute_deprecated: Rule = {
     id: "aria_attribute_deprecated",
@@ -47,13 +47,13 @@ export let aria_attribute_deprecated: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         let ret = [];
-        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = CommonUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) {
             for (let i = 0; i < deprecatedRoles.length; i++)
                 ret.push(RuleFail('fail_aria_role', [deprecatedRoles[i]]));     
         }
 
-        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = CommonUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) {
             for (let i = 0; i < deprecatedAttributes.length; i++) {
                 // "role":"any", "attribute":ariaAttrs[i]}

@@ -14,7 +14,7 @@
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getRolesUndefinedByAria } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_role_allowed: Rule = {
     id: "aria_role_allowed",
@@ -60,7 +60,7 @@ export let aria_role_allowed: Rule = {
             return null;
         }
 
-        let invalidRoles = getRolesUndefinedByAria(ruleContext);
+        let invalidRoles = CommonUtil.getRolesUndefinedByAria(ruleContext);
 
         if (!invalidRoles || invalidRoles.length === 0)
             return RulePass("Pass_0");

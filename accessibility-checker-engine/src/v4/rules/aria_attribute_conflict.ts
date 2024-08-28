@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
@@ -46,7 +46,7 @@ export let aria_attribute_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        let invalidAttributes = CommonUtil.getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
         
@@ -55,16 +55,13 @@ export let aria_attribute_conflict: Rule = {
         if (!ariaAttributes || ariaAttributes.length ===0)
             return null;
 
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        let conflictAttributes = CommonUtil.getConflictAriaAndHtmlAttributes(ruleContext);
         for (let i = 0; i < conflictAttributes.length; i++) {
             ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
             if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
                 RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
         }
 
-        //for (let i = 0; i < ariaAttributes.length; i++)
-        //    ret.push(RulePass("pass"));
-        
         if (ret.length > 0) 
             return ret;
 

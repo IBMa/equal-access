@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant, getInvalidRoles, getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_role_valid: Rule = {
     id: "aria_role_valid",
@@ -59,16 +59,16 @@ export let aria_role_valid: Rule = {
 
         //skip the rule
         // the invalid role case: handled by aria_role_allowed. Ignore to avoid duplicated report
-        const undefinedRoles = getRolesUndefinedByAria(ruleContext);
+        const undefinedRoles = CommonUtil.getRolesUndefinedByAria(ruleContext);
         if (undefinedRoles && undefinedRoles.length > 0) return null;
-        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = CommonUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) return null;
-        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = CommonUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
         // dependency check: if it's already failed, then skip
         if (["td", "th", "tr"].includes(tagName)) {
-            let parentRole = isTableDescendant(contextHierarchies);
+            let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
             if (parentRole !== null && parentRole.length > 0)
                 return null;
         }
@@ -81,7 +81,7 @@ export let aria_role_valid: Rule = {
         if (domRoles.includes('generic'))
             return RuleFail("Fail_1", ["generic", tagName]);
         
-        let invalidRoles = getInvalidRoles(ruleContext);
+        let invalidRoles = CommonUtil.getInvalidRoles(ruleContext);
         if (invalidRoles === null || invalidRoles.length ===0)
             return RulePass("Pass_0", [domRoles.join(", "), tagName]);
 
@@ -151,7 +151,7 @@ export let aria_attribute_valid: Rule = {
         let explicit = true;
         if (roles && roles.length > 0) {
             // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-            if (!areRolesDefined(roles))
+            if (!CommonUtil.areRolesDefined(roles))
                 return null;
         } else {
             //no explicit role defined
@@ -160,7 +160,7 @@ export let aria_attribute_valid: Rule = {
         }
         
         let tagName = ruleContext.tagName.toLowerCase();
-        let failedAttributes = getInvalidAriaAttributes(ruleContext);
+        let failedAttributes = CommonUtil.getInvalidAriaAttributes(ruleContext);
         if (!failedAttributes || failedAttributes.length === 0)
             return RulePass("Pass", [ariaAttributes.join(", "), tagName, roles.join(", ")]);
 

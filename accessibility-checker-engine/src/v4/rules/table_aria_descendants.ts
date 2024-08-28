@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { setCache } from "../util/CacheUtil";
-import { isTableDescendant } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let table_aria_descendants: Rule = {
     id: "table_aria_descendants",
@@ -40,7 +40,7 @@ export let table_aria_descendants: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element; 
-        let parentRole = isTableDescendant(contextHierarchies);
+        let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
         // cache the result
         if (parentRole === null || parentRole.length === 0)
             return;

@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
@@ -60,11 +60,11 @@ export const aria_accessiblename_exists: Rule = {
             && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
             return RulePass("pass");
 
-        const invalidRoles = getRolesUndefinedByAria(ruleContext);
+        const invalidRoles = CommonUtil.getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
-        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = CommonUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) return null;
-        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = CommonUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
         if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {

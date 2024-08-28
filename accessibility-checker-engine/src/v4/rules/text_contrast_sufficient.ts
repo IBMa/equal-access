@@ -18,7 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleC
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 //import { setCache } from "../util/CacheUtil";
 import { CSSUtil } from "../util/CSSUtil";
-import { containsCKJ } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let text_contrast_sufficient: Rule = {
     id: "text_contrast_sufficient",
@@ -255,7 +255,7 @@ export let text_contrast_sufficient: Rule = {
         let size = CSSUtil.getFontInPixels(style.fontSize, elem);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         
-        if (containsCKJ(childStr)) {
+        if (CSSUtil.containsCKJ(childStr)) {
             // https://github.com/act-rules/act-rules.github.io/pull/2121/files
             // for CJK, 22 pt or 18 pt with font-weight >= 700, 1pt = 1.333 px
             isLargeScale = size >= 29.3 || size >= 24 && weight >= 700;

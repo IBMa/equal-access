@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_attribute_redundant: Rule = {
     id: "aria_attribute_redundant",
@@ -46,12 +46,12 @@ export let aria_attribute_redundant: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        let invalidAttributes = CommonUtil.getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
 
         // if conflict already reported, ignore reporting overlap
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        let conflictAttributes = CommonUtil.getConflictAriaAndHtmlAttributes(ruleContext);
         if (conflictAttributes && conflictAttributes.length > 0)
             return null;
 
