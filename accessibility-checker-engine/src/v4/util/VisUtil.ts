@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getCache, setCache } from "./CacheUtil";
+import { CacheUtil } from "./CacheUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
@@ -76,7 +76,7 @@ export class VisUtil {
         // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
         // true when we detect that the node is hidden. We have to set it to false so that we know
         // the rules has already been checked.
-        setCache(node, "PT_NODE_HIDDEN", getCache(node, "PT_NODE_HIDDEN", false));
+        CacheUtil.setCache(node, "PT_NODE_HIDDEN", CacheUtil.getCache(node, "PT_NODE_HIDDEN", false));
 
         // We should only allow nodeType element, and TextNode all other nodesTypes
         // we can return the visibility as visible.
@@ -142,7 +142,7 @@ export class VisUtil {
 
             // Get the hidden element property and hidden attribute
             let hiddenAttribute = node.getAttribute("hidden");
-            let hiddenPropertyCustom = getCache(node, "PT_NODE_HIDDEN", undefined);
+            let hiddenPropertyCustom = CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
             // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
             // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
@@ -170,20 +170,20 @@ export class VisUtil {
             //  node custom hidden property ser (node.PT_NODE_HIDDEN)
             // If any of the above conditions are true then we return false as this element is not visible
             if ((compStyle !== null && ((compStyle.getPropertyValue('display') === 'none' ||
-                (!getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
+                (!CacheUtil.getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
                 (compStyle.getPropertyValue('display') !== 'block'  && (hiddenProperty || hiddenAttribute != null || hiddenPropertyCustom)))) {
                 // Set a custom expandos property on the the node to identify that it is hidden, so that we can uses
                 // use this in the rules to determine if the node is hidden or not, if we need to.
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
                 // properties is a lot faster performance whise. For Hash map we need to store based on xpath, and to calculate
                 // xpath it is more performance impact.
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
             }
 
             // check content-visibility: if the content-visibility is hiddenthen, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
             }
         }
@@ -202,7 +202,7 @@ export class VisUtil {
             // so that in the function we can skip checking visibility: hidden for parent elements since visibility: hidden
             // is inherited, which allows a child to have a different setting then the child. This property only needs to be checked
             // once for the first element that is passed down and that is all. Ignore it for all the parents that we iterate over.
-            setCache(parentElement as Element, "Visibility_Check_Parent", true);
+            CacheUtil.setCache(parentElement as Element, "Visibility_Check_Parent", true);
 
             // Check upwards recursively, and save the results in an variable
             let nodeVisible = VisUtil.isNodeVisible(parentElement);
@@ -210,7 +210,7 @@ export class VisUtil {
             // If the node is found to not be visible then add the custom PT_NODE_HIDDEN to true.
             // so that we can use this in the rules.
             if (!nodeVisible) {
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
             }
 
             // Check upwards recursively

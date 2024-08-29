@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 
 export let table_caption_nested: Rule = {
     id: "table_caption_nested",
@@ -46,7 +46,7 @@ export let table_caption_nested: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = RPTUtil.getAncestor(ruleContext, "table") != null;
+        let passed = AriaUtil.getAncestor(ruleContext, "table") != null;
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

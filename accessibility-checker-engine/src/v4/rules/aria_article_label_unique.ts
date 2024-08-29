@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 
 export let aria_article_label_unique: Rule = {
@@ -49,7 +50,7 @@ export let aria_article_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Consider the Check Hidden Content setting that is set by the rules
         // Also, consider Implicit role checking.
-        let landmarks = RPTUtil.getElementsByRoleHidden(
+        let landmarks = CommonUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
             "article",
             true,
@@ -65,14 +66,14 @@ export let aria_article_label_unique: Rule = {
             null
         );
         if (!dupes) {
-            dupes = RPTUtil.findAriaLabelDupes(landmarks);
+            dupes = AriaUtil.findAriaLabelDupes(landmarks);
             setCache(
                 ruleContext.ownerDocument,
                 "aria_article_label_unique",
                 dupes
             );
         }
-        let myLabel = RPTUtil.getAriaLabel(ruleContext);
+        let myLabel = AriaUtil.getAriaLabel(ruleContext);
         let passed =
             myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
 

@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { NodeWalker, RPTUtil } from "../util/AriaUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { getCache } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";

@@ -14,9 +14,11 @@
     limitations under the License.
  *****************************************************************************/
 
-import { getCache, setCache } from "./CacheUtil";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CacheUtil } from "./CacheUtil";
+import { CommonUtil } from "./CommonUtil";
+import { AriaUtil } from "./AriaUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 type PseudoClass =
     | ":hover"
@@ -124,7 +126,7 @@ export class CSSUtil {
             }
         }
 
-        let storedStyles = getCache(elem, "RPTUtil_DefinedStyles", null);
+        let storedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
         if (!pseudoClass && storedStyles !== null) {
             definedStyles = storedStyles["definedStyles"];
             definedStylePseudo = storedStyles["definedStylePseudo"];
@@ -204,7 +206,7 @@ export class CSSUtil {
 
             // Handled the stylesheets, now handle the element defined styles
             fillStyle([definedStyles, definedStylePseudo], elem.style);
-            setCache(elem, "RPTUtil_DefinedStyles", {
+            CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", {
                 definedStyles,
                 definedStylePseudo,
             });
@@ -266,9 +268,9 @@ export class CSSUtil {
                                 for (let i = 0; i < mediaList.length; i++) {
                                     let elem_transforms =
                                         orientationTransforms[
-                                            mediaList
-                                                .item(i)
-                                                .toLocaleLowerCase()
+                                        mediaList
+                                            .item(i)
+                                            .toLocaleLowerCase()
                                         ];
                                     if (!elem_transforms) elem_transforms = {};
                                     let styleRules = rule.cssRules;
@@ -753,7 +755,7 @@ export class CSSUtil {
                             if (cDisplay === "inline") {
                                 last = false;
                                 if (
-                                    RPTUtil.isTarget(walkNode) &&
+                                    CommonUtil.isTarget(walkNode) &&
                                     bounds.width < 24
                                 ) {
                                     // check if the horizontal spacing is sufficient
@@ -761,8 +763,8 @@ export class CSSUtil {
                                         mapper.getUnadjustedBounds(walkNode);
                                     if (
                                         Math.round(bounds.width / 2) +
-                                            bnds.left -
-                                            (bounds.left + bounds.width) <
+                                        bnds.left -
+                                        (bounds.left + bounds.width) <
                                         24
                                     )
                                         status.violation =
@@ -798,7 +800,7 @@ export class CSSUtil {
                                 first = false;
                                 checked = true;
                                 if (
-                                    RPTUtil.isTarget(walkNode) &&
+                                    CommonUtil.isTarget(walkNode) &&
                                     bounds.width < 24
                                 ) {
                                     // check if the horizontal spacing is sufficient
@@ -806,16 +808,16 @@ export class CSSUtil {
                                         mapper.getUnadjustedBounds(walkNode);
                                     if (
                                         Math.round(bounds.width / 2) +
-                                            bounds.left -
-                                            (bnds.left + bnds.width) <
+                                        bounds.left -
+                                        (bnds.left + bnds.width) <
                                         24
                                     ) {
                                         status.violation =
                                             status.violation === null
                                                 ? walkNode.nodeName.toLowerCase()
                                                 : status.violation +
-                                                  ", " +
-                                                  walkNode.nodeName.toLowerCase();
+                                                ", " +
+                                                walkNode.nodeName.toLowerCase();
                                     }
                                 }
                             } else break;
@@ -830,7 +832,7 @@ export class CSSUtil {
                 return status;
             } else {
                 //parent is inline element
-                if (!RPTUtil.isInnerTextOnlyEmpty(parent)) status.text = true;
+                if (!CommonUtil.isInnerTextOnlyEmpty(parent)) status.text = true;
             }
         }
         // all other cases
@@ -844,8 +846,8 @@ export class CSSUtil {
     public static isTargetBrowserDefault(element) {
         if (!element) return false;
 
-        // user defained widget
-        const roles = RPTUtil.getRoles(element, false);
+        // user defined widget
+        const roles = AriaUtil.getRoles(element, false);
         if (roles && roles.length > 0) return false;
 
         // no user style to space control size, including use of font
@@ -882,4 +884,44 @@ export class CSSUtil {
 
         return true;
     }
+
+    /**
+     * return the ancestor with the given style properties.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {[string]} styleProps - The style properties and values of the parent to search for.
+     *         such as {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll']}
+     *          or {"overflow":['*'], "overflow-x":['*']}, The '*' for any value to check the existence of the style prop.
+     * @parm {bool} excludedValues - style values that should be ignored.
+     * @return {node} walkNode - A parent node of the element, which has the style properties
+     * @memberOf AriaUtil
+     */
+    public static getAncestorWithStyles(elem, styleProps, excludedValues = []) {
+        let walkNode = elem;
+        while (walkNode !== null) {
+            const node = CacheUtil.getCache(walkNode, "AriaUtil_AncestorWithStyles", null);
+            if (node !== null) return node;
+
+            const styles = CSSUtil.getDefinedStyles(walkNode);
+            for (const style in styleProps) {
+                let value = styles[style];
+                if (value) {
+                    value = value.split(" ")[0]; //get rid of !important
+                    if (!excludedValues.includes(value)) {
+                        if (styleProps[style].includes('*')) {
+                            CacheUtil.setCache(walkNode, "AriaUtil_AncestorWithStyles", walkNode);
+                            return walkNode;
+                        } else if (styleProps[style].includes(value)) {
+                            CacheUtil.setCache(walkNode, "AriaUtil_AncestorWithStyles", walkNode);
+                            return walkNode;
+                        }
+                    }
+                }
+            }
+            walkNode = DOMWalker.parentElement(walkNode);
+        }
+        CacheUtil.setCache(elem, "AriaUtil_AncestorWithStyles", undefined);
+        return null;
+    }
+
 }

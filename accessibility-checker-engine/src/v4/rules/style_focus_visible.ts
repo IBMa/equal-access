@@ -11,7 +11,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CSSUtil } from "../util/CSSUtil";
@@ -62,7 +62,7 @@ export let style_focus_visible: Rule = {
             }
         }
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!RPTUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
+        if (!AriaUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
         let normalStyles = CSSUtil.getDefinedStyles(ruleContext); // consider noth user-defined and browser default

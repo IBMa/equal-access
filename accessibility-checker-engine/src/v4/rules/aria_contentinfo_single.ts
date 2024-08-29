@@ -11,9 +11,9 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 
 export let aria_contentinfo_single: Rule = {
     id: "aria_contentinfo_single",
@@ -47,11 +47,11 @@ export let aria_contentinfo_single: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //find out if <footer> element has siblings as <footer> has implicit contentinfo role
-        if (!RPTUtil.hasRoleInSemantics(ruleContext, "contentinfo")) {
+        if (!AriaUtil.hasRoleInSemantics(ruleContext, "contentinfo")) {
             return null;
         }
 
-        let passed = !RPTUtil.getSiblingWithRoleHidden(
+        let passed = !AriaUtil.getSiblingWithRoleHidden(
             ruleContext,
             "contentinfo",
             true,

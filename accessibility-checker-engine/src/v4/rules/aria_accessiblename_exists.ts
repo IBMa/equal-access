@@ -13,10 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { CommonUtil } from "../util/CommonUtil";
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
@@ -60,20 +60,20 @@ export const aria_accessiblename_exists: Rule = {
             && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
             return RulePass("pass");
 
-        const invalidRoles = CommonUtil.getRolesUndefinedByAria(ruleContext);
+        const invalidRoles = AriaUtil.getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
-        const deprecatedRoles = CommonUtil.getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = AriaUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) return null;
-        const deprecatedAttributes = CommonUtil.getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = AriaUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
-        if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {
-            let roles = RPTUtil.getRoles(ruleContext, true);
+        if ( AriaUtil.getAriaLabel(ruleContext).trim().length === 0 && !CommonUtil.attributeNonEmpty(ruleContext, "title")) {
+            let roles = AriaUtil.getRoles(ruleContext, true);
             //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
             if (roles && roles.length > 0 && ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents")) {
                 //if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
                 //exclude the hidden text?
-                if (!RPTUtil.hasInnerContentHidden(ruleContext))
+                if (!CommonUtil.hasInnerContentHidden(ruleContext))
                     return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);  
             } else 
                 return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);   

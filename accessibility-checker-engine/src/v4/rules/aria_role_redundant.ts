@@ -13,9 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 import { getCache } from "../util/CacheUtil";
-import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_role_redundant: Rule = {
     id: "aria_role_redundant",
@@ -45,22 +44,22 @@ export let aria_role_redundant: Rule = {
         const ruleContext = context["dom"].node as Element;
         let elemName = ruleContext.tagName.toLowerCase();
         
-        let ariaRoles = RPTUtil.getRoles(ruleContext, false);
+        let ariaRoles = AriaUtil.getRoles(ruleContext, false);
         if (!ariaRoles || ariaRoles.length === 0) return;
 
         // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        let role_defined = CommonUtil.areRolesDefined(ariaRoles);
+        let role_defined = AriaUtil.areRolesDefined(ariaRoles);
         if (!role_defined)
             return null;
 
         // dependency check: if it's already failed in the parent relation, then skip this check
         if (["td", "th", "tr"].includes(elemName)) {
-            let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
+            let parentRole = AriaUtil.isTableDescendant(contextHierarchies);
             if (parentRole !== null && parentRole.length > 0)
                 return null;
         }
 
-        let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
+        let implicitRoles = AriaUtil.getImplicitRole(ruleContext);
         if (!implicitRoles || implicitRoles.length === 0)
              return RulePass("pass");
 

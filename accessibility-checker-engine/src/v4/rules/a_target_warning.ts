@@ -11,9 +11,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let a_target_warning: Rule = {
@@ -49,7 +50,7 @@ export let a_target_warning: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // skip the rule if it's AT hidden and not tabbable
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) && !RPTUtil.isTabbable(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) && !CommonUtil.isTabbable(ruleContext)) return null;
         const params = {
             paramWinText: {
                 value: ["new window", "new tab"],
@@ -58,11 +59,11 @@ export let a_target_warning: Rule = {
         }
 
         let tStr = ruleContext.getAttribute("target");
-        let passed = tStr == "_parent" || tStr == "_self" || tStr == "_top" || RPTUtil.getFrameByName(ruleContext,tStr) != null;
+        let passed = tStr == "_parent" || tStr == "_self" || tStr == "_top" || CommonUtil.getFrameByName(ruleContext,tStr) != null;
         if (!passed) {
             // Name is not part of this frameset – must have potential to create new window?
             // See if a new window is mentioned
-            let textStr = RPTUtil.getInnerText(ruleContext);
+            let textStr = CommonUtil.getInnerText(ruleContext);
             if (ruleContext.hasAttribute("title"))
                 textStr += " " + ruleContext.getAttribute("title");
             for (let i = 0; !passed && i < params.paramWinText.value.length; ++i)

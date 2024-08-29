@@ -12,7 +12,8 @@
  *****************************************************************************/
 
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
@@ -54,16 +55,16 @@ export let aria_attribute_required: Rule = {
         let designPatterns = ARIADefinitions.designPatterns;
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         //let implicitRole = ARIAMapper.elemToImplicitRole(ruleContext);
-        let implicitRole = RPTUtil.getImplicitRole(ruleContext);
-        let hasAttribute = RPTUtil.hasAttribute;
+        let implicitRole = AriaUtil.getImplicitRole(ruleContext);
+        let hasAttribute = CommonUtil.hasAttribute;
         let testedRoles = 0;
 
-        let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+        let tagProperty = AriaUtil.getElementAriaProperty(ruleContext);
         for (let j = 0, rolesLength = roles.length; j < rolesLength; ++j) {
             if (implicitRole.length > 0 && implicitRole.includes(roles[j])) continue;
-            if (designPatterns[roles[j]] && RPTUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
-                let requiredRoleProps = RPTUtil.getRoleRequiredProperties(roles[j], ruleContext);
-                let allowedRoleProps = RPTUtil.getAllowedAriaAttributes(ruleContext, roles[j], tagProperty);
+            if (designPatterns[roles[j]] && AriaUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
+                let requiredRoleProps = AriaUtil.getRoleRequiredProperties(roles[j], ruleContext);
+                let allowedRoleProps = AriaUtil.getAllowedAriaAttributes(ruleContext, roles[j], tagProperty);
                 let roleMissingReqProp = false;
                 testedRoles++;
                 for (let i = 0, propertiesLength = requiredRoleProps.length; i < propertiesLength; i++) {

@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { RPTUtil } from "../util/AriaUtil";
 
 export let figure_label_exists: Rule = {
     id: "figure_label_exists",

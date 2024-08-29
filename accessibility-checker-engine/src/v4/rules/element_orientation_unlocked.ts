@@ -17,7 +17,7 @@ import { CSSUtil } from "../util/CSSUtil";
 import { VisUtil } from "../util/VisUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 
 export let element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
@@ -51,7 +51,7 @@ export let element_orientation_unlocked: Rule = {
             return null;
         
         //skip elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
+        if (AriaUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
         const nodeName = ruleContext.nodeName.toLowerCase();    

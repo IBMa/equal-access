@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { NodeWalker, AriaUtil } from "../util/AriaUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CSSUtil } from "../util/CSSUtil";
 import { VisUtil } from "../util/VisUtil";
@@ -50,11 +50,11 @@ export let text_block_heading: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (RPTUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+        if (AriaUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
             return null;
 
         // Don't trigger if we're not in the body or if we're in a script
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
+        if (AriaUtil.getAncestor(ruleContext, ["body"]) === null || AriaUtil.getAncestor(ruleContext, ["script"]) !== null) 
             return null;
 
         const validateParams = {
@@ -83,7 +83,7 @@ export let text_block_heading: Rule = {
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
-            if (RPTUtil.shouldNodeBeSkippedHidden(nw.node))
+            if (AriaUtil.shouldNodeBeSkippedHidden(nw.node))
                 continue;
 
             let nwName = nw.node.nodeName.toLowerCase();
@@ -97,7 +97,7 @@ export let text_block_heading: Rule = {
                         || (style['font-size'] && bodyFont !== 0 && CSSUtil.getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
                         let nextStr = nw.node.nodeValue.trim();
                         
-                        let wc = RPTUtil.wordCount(nextStr);
+                        let wc = AriaUtil.wordCount(nextStr);
                         if (wc > 0) {
                             wordStr.push(nextStr);
                             emphasizedText = true;
@@ -115,9 +115,9 @@ export let text_block_heading: Rule = {
                 // for element child
                 if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
                     // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
-                    let nextStr = RPTUtil.getInnerText(nw.node);
+                    let nextStr = AriaUtil.getInnerText(nw.node);
                     
-                    let wc = RPTUtil.wordCount(nextStr);
+                    let wc = AriaUtil.wordCount(nextStr);
                     if (wc > 0) {
                         wordStr.push(nextStr);
                         emphasizedText = true;
@@ -129,7 +129,7 @@ export let text_block_heading: Rule = {
                 } else {
                     // ignore the element which has a role except 'generic', 'paragraph' or 'strong'
                     // ignore applet element that is deprecated anyway
-                    let role = RPTUtil.getResolvedRole(nw.node as HTMLElement);
+                    let role = AriaUtil.getResolvedRole(nw.node as HTMLElement);
                     passed = (role !== null && role !== 'generic' && role !== 'paragraph' && role !== 'strong') || nwName === "applet";
                 }
             }

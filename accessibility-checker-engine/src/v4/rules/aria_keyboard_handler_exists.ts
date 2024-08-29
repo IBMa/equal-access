@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { VisUtil } from "../util/VisUtil";
 
@@ -51,7 +52,7 @@ export let aria_keyboard_handler_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
 
         let passed = true;
@@ -60,7 +61,7 @@ export let aria_keyboard_handler_exists: Rule = {
         let designPatterns = ARIADefinitions.designPatterns;
         //let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         //only consider user specified role(s), rather than native containers
-        let roles = RPTUtil.getRoles(ruleContext, false);
+        let roles = AriaUtil.getRoles(ruleContext, false);
         
         let nodeName = ruleContext.nodeName.toLowerCase();
         //if an explicit role is specified, the 'aria_role_redundant' rule should be triggered and addressed first,
@@ -71,12 +72,12 @@ export let aria_keyboard_handler_exists: Rule = {
         // Composite user interface widget roles. They act as containers that manage other, contained widgets.
         let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
         for (const role of roleContainers) {
-            if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
+            if (AriaUtil.getAncestorWithRole(ruleContext, role, true) != null) 
                 // it's a descendant of a composite widget already examined
                 return null;
         }
         
-        let hasAttribute = RPTUtil.hasAttribute;
+        let hasAttribute = CommonUtil.hasAttribute;
         
         let roleNameArr = new Array();
 
@@ -96,7 +97,7 @@ export let aria_keyboard_handler_exists: Rule = {
                             if (reqChildren) { /* SMF TODO menubar does not have any reqChildren */
                                 for (let i = 0, requiredChildrenLength = reqChildren.length; i < requiredChildrenLength; i++) {
                                     let xp = "*[contains(@role,'" + reqChildren[i] + "')]";
-                                    let xpathResult = doc.evaluate(xp, ruleContext, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                                    let xpathResult = doc.evaluate(xp, ruleContext, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                     let r = xpathResult.iterateNext() as Element;
                                     while (r) {
 
@@ -105,7 +106,7 @@ export let aria_keyboard_handler_exists: Rule = {
 
                                             // Child did not have a key handler. See if any of the grandchildren do.
                                             let xp2 = "descendant::*";
-                                            let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                                            let xpathResult2 = doc.evaluate(xp2, r, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                             let r2: Element = xpathResult2.iterateNext() as Element;
                                             while (r2 && !passed) {
                                                 // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
@@ -116,12 +117,12 @@ export let aria_keyboard_handler_exists: Rule = {
                                                 //
                                                 // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
                                                 //       so on and so forth.
-                                                if (RPTUtil.shouldNodeBeSkippedHidden(r2)) {
+                                                if (CommonUtil.shouldNodeBeSkippedHidden(r2)) {
                                                     r2 = xpathResult2.iterateNext() as Element;
                                                     continue;
                                                 }
 
-                                                passed = RPTUtil.isTabbable(r2) &&
+                                                passed = CommonUtil.isTabbable(r2) &&
                                                     (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                                 if (!passed) {
@@ -149,7 +150,7 @@ export let aria_keyboard_handler_exists: Rule = {
                                 // The current element failed the keydown/keypress, and it does not have required children, such as menubar.
                                 // Let's check its descendants.
                                 let xp2 = "descendant::*";
-                                let xpathResult2 = doc.evaluate(xp2, ruleContext, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                                let xpathResult2 = doc.evaluate(xp2, ruleContext, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                 let r2 = xpathResult2.iterateNext() as Element;
                                 while (r2 && !passed) {
                                     // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
@@ -160,12 +161,12 @@ export let aria_keyboard_handler_exists: Rule = {
                                     //
                                     // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
                                     //       so on and so forth.
-                                    if (RPTUtil.shouldNodeBeSkippedHidden(r2)) {
+                                    if (CommonUtil.shouldNodeBeSkippedHidden(r2)) {
                                         r2 = xpathResult2.iterateNext() as Element;
                                         continue;
                                     }
 
-                                    passed = RPTUtil.isTabbable(r2) &&
+                                    passed = CommonUtil.isTabbable(r2) &&
                                         (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                     if (!passed) {

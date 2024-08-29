@@ -11,7 +11,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
@@ -47,15 +47,15 @@ export let element_scrollable_tabbable: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || AriaUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip elements
-        if (RPTUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
+        if (AriaUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
             return null;
 
         //skip if no visible content
-        if (!RPTUtil.hasInnerContent(ruleContext))
+        if (!AriaUtil.hasInnerContent(ruleContext))
             return null;
             
         const nodeName = ruleContext.nodeName.toLowerCase();
@@ -77,11 +77,11 @@ export let element_scrollable_tabbable: Rule = {
             return null;
         
         // pass if element is tabbable
-        if (RPTUtil.isTabbable(ruleContext))
+        if (AriaUtil.isTabbable(ruleContext))
             return RulePass("pass_tabbable");
 
         // check if element content is tabbable
-        const count = RPTUtil.getTabbableChildren(ruleContext);
+        const count = AriaUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RulePass("pass_interactive");
 

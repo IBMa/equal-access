@@ -17,7 +17,7 @@
 import { ARIADefinitions } from "./ARIADefinitions";
 import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { RPTUtil } from "../checker/accessibility/util/legacy"
+import { RPTUtil } from "../../v4/util/AriaUtil"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";

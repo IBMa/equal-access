@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { VisUtil } from "../util/VisUtil";
 
@@ -51,15 +52,15 @@ export let aria_child_tabbable: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element requires presentational children only
-        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
+        if (AriaUtil.containsPresentationalChildrenOnly(ruleContext) || AriaUtil.shouldBePresentationalChild(ruleContext))
             return;
 
         // An ARIA list is not interactive
-        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true, "grid": true })) {
+        if (AriaUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true, "grid": true })) {
             return null;
         }
 
@@ -83,13 +84,13 @@ export let aria_child_tabbable: Rule = {
             */
             const elem = ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][aria-haspopup='true'], *[aria-controls='${id}'][aria-expanded='true']`);
             const containers = ['combobox', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
-            if (elem && RPTUtil.isTabbable(elem) && roles && roles.length >0 && roles.some(r=>containers.includes(r)))
+            if (elem && CommonUtil.isTabbable(elem) && roles && roles.length >0 && roles.some(r=>containers.includes(r)))
                 return null;
         }
 
         let passed = true;
         let doc = ruleContext.ownerDocument;
-        let hasAttribute = RPTUtil.hasAttribute;
+        let hasAttribute = CommonUtil.hasAttribute;
         let roleNameArr = new Array();
         let nodeName = "";
         let inScope = false;
@@ -97,7 +98,7 @@ export let aria_child_tabbable: Rule = {
         for (let j = 0; j < roles.length; ++j) {
             if (ARIADefinitions.containers.includes(roles[j])) {
                 let disabled = hasAttribute(ruleContext, 'aria-disabled') ? ruleContext.getAttribute("aria-disabled") : '';
-                if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant') && !RPTUtil.isTabbable(ruleContext)) {
+                if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant') && !CommonUtil.isTabbable(ruleContext)) {
                     let reqChildren = ARIADefinitions.designPatterns[roles[j]].reqChildren;
                     if (reqChildren) {
                         inScope = true;
@@ -107,7 +108,7 @@ export let aria_child_tabbable: Rule = {
                             xp += "@role='" + reqChildren[i] + "' or ";
                         }
                         xp = xp.substring(0, xp.length - 4) + ']';
-                        let xpathResult = doc.evaluate(xp, ruleContext, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                        let xpathResult = doc.evaluate(xp, ruleContext, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                         let r: Element = xpathResult.iterateNext() as Element;
                         while (r && !passed) {
                             // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
@@ -118,17 +119,17 @@ export let aria_child_tabbable: Rule = {
                             //
                             // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
                             //       so on and so forth.
-                            if (RPTUtil.shouldNodeBeSkippedHidden(r)) {
+                            if (CommonUtil.shouldNodeBeSkippedHidden(r)) {
                                 r = xpathResult.iterateNext() as Element;
                                 continue;
                             }
 
-                            passed = RPTUtil.isTabbable(r);
+                            passed = CommonUtil.isTabbable(r);
                            
                             // Required child is not focusable via tabindex. See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
                                 let xp2 = "descendant::*";
-                                let xpathResult2 = doc.evaluate(xp2, r, RPTUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                                let xpathResult2 = doc.evaluate(xp2, r, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
                                 let r2 = xpathResult2.iterateNext();
                                 while (r2 && !passed) {
                                     // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
@@ -139,11 +140,11 @@ export let aria_child_tabbable: Rule = {
                                     //
                                     // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
                                     //       so on and so forth.
-                                    if (RPTUtil.shouldNodeBeSkippedHidden(r2)) {
+                                    if (CommonUtil.shouldNodeBeSkippedHidden(r2)) {
                                         r2 = xpathResult2.iterateNext();
                                         continue;
                                     }
-                                    passed = RPTUtil.isTabbable(r);
+                                    passed = CommonUtil.isTabbable(r);
                                     r2 = xpathResult2.iterateNext();
                                 }
                             }

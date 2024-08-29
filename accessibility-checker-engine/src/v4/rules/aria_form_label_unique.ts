@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getCache, setCache } from "../util/CacheUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
 
 export let aria_form_label_unique: Rule = {
     id: "aria_form_label_unique",
@@ -58,7 +59,7 @@ export let aria_form_label_unique: Rule = {
         ) {
             // Consider the Check Hidden Content setting that is set by the rules
             // Also, consider Implicit role checking.
-            let landmarks = RPTUtil.getElementsByRoleHidden(
+            let landmarks = CommonUtil.getElementsByRoleHidden(
                 ruleContext.ownerDocument,
                 "form",
                 true,
@@ -68,20 +69,20 @@ export let aria_form_label_unique: Rule = {
                 return null;
             }
 
-            let dupes = getCache(
+            let dupes = CacheUtil.getCache(
                 ruleContext.ownerDocument,
                 "aria_form_label_unique",
                 null
             );
             if (!dupes) {
-                dupes = RPTUtil.findAriaLabelDupes(landmarks);
-                setCache(
+                dupes = AriaUtil.findAriaLabelDupes(landmarks);
+                CacheUtil.setCache(
                     ruleContext.ownerDocument,
                     "aria_form_label_unique",
                     dupes
                 );
             }
-            let myLabel = RPTUtil.getAriaLabel(ruleContext);
+            let myLabel = AriaUtil.getAriaLabel(ruleContext);
             let passed =
                 myLabel !== "" &&
                 (!(myLabel in dupes) || dupes[myLabel] <= 1);

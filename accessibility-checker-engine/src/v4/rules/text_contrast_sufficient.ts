@@ -11,14 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil} from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil} from "../util/AriaUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ColorUtil } from "../util/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-//import { setCache } from "../util/CacheUtil";
 import { CSSUtil } from "../util/CSSUtil";
-import { CommonUtil } from "../util/CommonUtil";
 
 export let text_contrast_sufficient: Rule = {
     id: "text_contrast_sufficient",
@@ -74,11 +72,11 @@ export let text_contrast_sufficient: Rule = {
         
         //TODO ? should only consider native disabled, ignore aria-disabled
         //skip disabled element
-        if (RPTUtil.isNodeDisabled(ruleContext))
+        if (AriaUtil.isNodeDisabled(ruleContext))
             return null;
 
         //skip elements
-        if (RPTUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
+        if (AriaUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
             return null;
 
         let doc = ruleContext.ownerDocument;
@@ -92,9 +90,9 @@ export let text_contrast_sufficient: Rule = {
         }
 
         // Ensure that this element has children with actual text.
-        let childStr = RPTUtil.getNodeText(ruleContext);
+        let childStr = AriaUtil.getNodeText(ruleContext);
         
-        if (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')) {
+        if (!AriaUtil.isShadowHostElement(ruleContext) || (AriaUtil.isShadowHostElement(ruleContext) && AriaUtil.getNodeText(ruleContext.shadowRoot) === '')) {
             if (childStr.trim().length == 0 )
                 return null;
             
@@ -115,7 +113,7 @@ export let text_contrast_sufficient: Rule = {
         let elem = ruleContext;
         // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
         // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
-        if (RPTUtil.isShadowHostElement(ruleContext)) {
+        if (AriaUtil.isShadowHostElement(ruleContext)) {
             // if it's direct text of a shadow host
             if (ruleContext.shadowRoot) {
                 for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
@@ -263,19 +261,19 @@ export let text_contrast_sufficient: Rule = {
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
         let textShadow = colorCombo.textShadow;
-        let isDisabled = RPTUtil.isNodeDisabled(elem);
+        let isDisabled = AriaUtil.isNodeDisabled(elem);
         if (!isDisabled) {
-            let control = RPTUtil.getControlOfLabel(elem);
+            let control = AriaUtil.getControlOfLabel(elem);
             if (control) {
-                isDisabled = RPTUtil.isNodeDisabled(control);
+                isDisabled = AriaUtil.isNodeDisabled(control);
             }
         }
         
-        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
+        if (!isDisabled && nodeName === 'label' && AriaUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
 
-        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(elem)) {
+        if (!isDisabled && ruleContext.hasAttribute("id") && AriaUtil.isDisabledByReferringElement(elem)) {
             isDisabled = true;
         }
 

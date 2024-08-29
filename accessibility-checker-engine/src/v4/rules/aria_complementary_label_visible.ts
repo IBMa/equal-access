@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 export let aria_complementary_label_visible: Rule = {
     id: "aria_complementary_label_visible",
@@ -47,11 +48,11 @@ export let aria_complementary_label_visible: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.hasRoleInSemantics(ruleContext, "complementary")) {
+        if (!AriaUtil.hasRoleInSemantics(ruleContext, "complementary")) {
             return null;
         }
 
-        let passed = RPTUtil.attributeNonEmpty(
+        let passed = CommonUtil.attributeNonEmpty(
             ruleContext,
             "aria-labelledby"
         );
