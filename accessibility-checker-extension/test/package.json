@@ -6,7 +6,9 @@
     "test": "npm run test:e2e",
     "test:all": "./node_modules/.bin/cucumber-js features/**/*.feature --format @cucumber/pretty-formatter",
     "test:e2e": "./node_modules/.bin/cucumber-js features/**/*.feature --format @cucumber/pretty-formatter --tags @e2e",
-    "test:debug": "./node_modules/.bin/cucumber-js features/**/*.feature --format @cucumber/pretty-formatter --tags @debug"
+    "test:debug": "./node_modules/.bin/cucumber-js features/**/*.feature --format @cucumber/pretty-formatter --tags @debug",
+    "test:qa": "./node_modules/.bin/cucumber-js features/**/*.feature --format @cucumber/pretty-formatter --tags @qa"
+
   },
   "license": "See LICENCSE.md",
   "devDependencies": {

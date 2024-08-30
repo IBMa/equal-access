@@ -3,6 +3,7 @@ import { PupUtil } from "./pup";
 
 let UI_MODE: "mouse" | "keyboard" | "touch" = (process.env.UI_MODE || "mouse") as "mouse" | "keyboard" | "touch";
 
+
 export namespace CarbonUtil {
     export namespace UIShell {
         export async function header_name_equals(page: Page, txt: string) {
@@ -64,6 +65,14 @@ export namespace CarbonUtil {
 
         export async function exists_not(page: Page, txt: string) {
             await PupUtil.elemNotVisible(page, `//a[@href][.='${txt}']`);
+        }
+    }
+
+    export namespace Dropdown {
+        export async function isEnabled(page: Page, label: string) {
+            // Assuming the dropdown has a specific label associated with it
+            const selector = `//div[label[contains(text(), '${label}')]]//button[not(contains(@class, 'cds--btn--disabled'))]`;
+            await PupUtil.elemVisible(page, selector);
         }
     }
 

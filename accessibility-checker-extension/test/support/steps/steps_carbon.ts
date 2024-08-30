@@ -66,6 +66,11 @@ When(`user activates Dropdown {string} {string}`, async function(label: string, 
     await CarbonUtil.Dropdown.activate(page, label, txt);
 })
 
+Then(`Dropdown {string} is enabled`, async function (dropdownLabel: string) {
+    const page = (this as CustomWorld).browser.page();
+    await CarbonUtil.Dropdown.isEnabled(page, dropdownLabel);
+})
+
 ///////////////////////////////////////////////////////////////////////////////
 // Link
 ////
