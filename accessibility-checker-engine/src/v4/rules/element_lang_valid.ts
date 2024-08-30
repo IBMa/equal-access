@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { LangUtil } from "../../v2/checker/accessibility/util/lang";
 import { VisUtil } from "../util/VisUtil";
@@ -50,7 +50,7 @@ const validateLang = (context: RuleContext): number => {
     return 0;
 }
 
-export let html_lang_valid: Rule = {
+export const html_lang_valid: Rule = {
     id: "html_lang_valid",
     context: "dom:html[lang], dom:html[xml:lang]",
     help: {
@@ -117,7 +117,7 @@ export let html_lang_valid: Rule = {
     }
 }
 
-export let element_lang_valid: Rule = {
+export const element_lang_valid: Rule = {
     id: "element_lang_valid",
     context: "dom:*[lang], dom:*[xml:lang]",
     help: {

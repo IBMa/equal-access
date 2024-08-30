@@ -11,11 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
 
-export let element_mouseevent_keyboard: Rule = {
+export const element_mouseevent_keyboard: Rule = {
     id: "element_mouseevent_keyboard",
     context: "dom:*[ondblclick], dom:*[onmousemove], dom:*[onmousedown], dom:*[onmouseup], dom:*[onmouseover], dom:*[onmouseout], dom:*[onclick]",
     refactor: {

@@ -17,7 +17,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let aria_attribute_required: Rule = {
+export const aria_attribute_required: Rule = {
     id: "aria_attribute_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],

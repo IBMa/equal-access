@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_eventhandler_role_valid: Rule = {
+export const aria_eventhandler_role_valid: Rule = {
     id: "aria_eventhandler_role_valid",
     context: "dom:*[onclick],dom:*[onblur], dom:*[ondblclick], dom:*[onfocus], dom:*[onkeydown],dom:*[onkeypress], dom:*[onkeyup], dom:*[onmousedown], dom:*[onmouseup], dom:*[onmousemove], dom:*[onmouseout], dom:*[onmouseover], dom:*[onresize], dom:*[onchange]",
     refactor: {

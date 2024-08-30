@@ -11,10 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let input_onchange_review: Rule = {
+export const input_onchange_review: Rule = {
     id: "input_onchange_review",
     context: "dom:input[onchange], dom:textarea[onchange], dom:select[onchange]",
     refactor: {

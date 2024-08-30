@@ -17,7 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_descendant_valid: Rule = {
+export const aria_descendant_valid: Rule = {
     id: "aria_descendant_valid",
     context: "dom:*",
     dependencies: ["aria_role_valid"],

@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let table_caption_nested: Rule = {
+export const table_caption_nested: Rule = {
     id: "table_caption_nested",
     context: "dom:caption",
     refactor: {
@@ -46,7 +46,7 @@ export let table_caption_nested: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = AriaUtil.getAncestor(ruleContext, "table") != null;
+        let passed = CommonUtil.getAncestor(ruleContext, "table") != null;
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

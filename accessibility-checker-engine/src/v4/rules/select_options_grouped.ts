@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let select_options_grouped: Rule = {
+export const select_options_grouped: Rule = {
     id: "select_options_grouped",
     context: "dom:select",
     refactor: {
@@ -54,8 +54,8 @@ export let select_options_grouped: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Handle the cases where optgroup is hidden, which should trigger a violations
         // but in the case that Check hidden option is set then should not trigger a violation.
-        let passed = RPTUtil.getChildByTagHidden(ruleContext, "optgroup", false, true).length > 0 ||
-            RPTUtil.getChildByTagHidden(ruleContext, "option", false, true).length <=
+        let passed = CommonUtil.getChildByTagHidden(ruleContext, "optgroup", false, true).length > 0 ||
+            CommonUtil.getChildByTagHidden(ruleContext, "option", false, true).length <=
             validateParams.paramNumOptions.value;
         if (passed) return RulePass("Pass_0");
         if (!passed) return RulePotential("Potential_1");

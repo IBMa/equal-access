@@ -11,16 +11,17 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
-export let input_label_exists: Rule = {
+export const input_label_exists: Rule = {
     id: "input_label_exists",
     context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox,aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton,aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]",
     //dependencies: ["aria_role_redundant", "aria_role_valid"],
@@ -71,7 +72,7 @@ export let input_label_exists: Rule = {
         let type = "text";
         if (nodeName == "input" && ruleContext.hasAttribute("type")) {
             type = ruleContext.getAttribute("type").toLowerCase();
-        } else if (nodeName === "button" || RPTUtil.hasRoleInSemantics(ruleContext, "button")) {
+        } else if (nodeName === "button" || AriaUtil.hasRoleInSemantics(ruleContext, "button")) {
             type = "buttonelem";
         }
         if (nodeName == "input" && type == "") {
@@ -97,23 +98,23 @@ export let input_label_exists: Rule = {
         if (textTypes.indexOf(type) !== -1) { // If type is in the list
             // Get only the non-hidden labels for elements, in the case that a label is hidden then it is a violation
             // Note: label[for] does not work for ARIA defined inputs
-            let labelElem = ruleContext.hasAttribute("role") ? null : RPTUtil.getLabelForElementHidden(ruleContext, true);
+            let labelElem = ruleContext.hasAttribute("role") ? null : CommonUtil.getLabelForElementHidden(ruleContext, true);
             let hasLabelElemContent = false;
             if (labelElem) {
-                if (RPTUtil.hasInnerContentHidden(labelElem)) {
+                if (CommonUtil.hasInnerContentHidden(labelElem)) {
                     hasLabelElemContent = true;
                 } else if ((labelElem.getAttribute("aria-label") || "").trim().length > 0) {
                     hasLabelElemContent = true;
                 } else if (labelElem.hasAttribute("aria-labelledby")) {
                     let labelledByElem = FragmentUtil.getById(labelElem, labelElem.getAttribute('aria-labelledby'));
-                    if (labelledByElem && !DOMUtil.sameNode(labelledByElem, labelElem) && RPTUtil.hasInnerContent(labelledByElem)) {
+                    if (labelledByElem && !DOMUtil.sameNode(labelledByElem, labelElem) && CommonUtil.hasInnerContent(labelledByElem)) {
                         hasLabelElemContent = true;
                     }
                 }
             }
             passed = (!!labelElem && hasLabelElemContent) ||
-                (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
-                RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
+                (!labelElem && CommonUtil.attributeNonEmpty(ruleContext, "title") || CommonUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
+                AriaUtil.getAriaLabel(ruleContext).trim().length > 0 || CommonUtil.hasImplicitLabel(ruleContext);
             if (!passed) POF = 2 + textTypes.indexOf(type);
             
         } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
@@ -121,7 +122,7 @@ export let input_label_exists: Rule = {
                 // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
                 passed = true;
             } else {
-                passed = RPTUtil.attributeNonEmpty(ruleContext, "value") || RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
+                passed = CommonUtil.attributeNonEmpty(ruleContext, "value") || AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.indexOf(type);
             }
         } else if (type == "buttonelem") {
@@ -135,18 +136,18 @@ export let input_label_exists: Rule = {
                     bAlt = true;
                 }
             };
-            passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext) || bAlt || RPTUtil.attributeNonEmpty(ruleContext, "title");
+            passed = CommonUtil.hasInnerContentHidden(ruleContext) || AriaUtil.hasAriaLabel(ruleContext) || bAlt || CommonUtil.attributeNonEmpty(ruleContext, "title");
 
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
         }
 
         //check if a native button is labelled
         if (!passed && nodeName == "button") {
-             if (RPTUtil.hasImplicitLabel(ruleContext))
+             if (CommonUtil.hasImplicitLabel(ruleContext))
                 passed = true;
              else {
-                let label = RPTUtil.getLabelForElement(ruleContext);
-                if (label && RPTUtil.hasInnerContentHidden(label))
+                let label = CommonUtil.getLabelForElement(ruleContext);
+                if (label && CommonUtil.hasInnerContentHidden(label))
                     passed = true;    
              }    
         }
@@ -158,7 +159,7 @@ export let input_label_exists: Rule = {
                 let labelId = DOMWalker.parentElement(ruleContext).getAttribute("widgetid") + "_label";
                 let label = FragmentUtil.getById(ruleContext, labelId);
                 if (label != null) {
-                    passed = RPTUtil.hasInnerContentHidden(label);
+                    passed = CommonUtil.hasInnerContentHidden(label);
                     // This means I failed above also
                     if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 4 + buttonTypes.indexOf(type);
                 }
@@ -166,24 +167,24 @@ export let input_label_exists: Rule = {
         }
 
         if (!passed && nodeName == "optgroup") {
-            passed = RPTUtil.attributeNonEmpty(ruleContext, "label");
+            passed = CommonUtil.attributeNonEmpty(ruleContext, "label");
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 2;
         }
         if (!passed && nodeName == "option") {
             // Is a non-empty value attribute also enough for an option element?
-            passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
+            passed = CommonUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
             if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
         } 
         
         if (!passed)
-            passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
+            passed = AriaUtil.getAriaLabel(ruleContext).trim().length > 0 || CommonUtil.attributeNonEmpty(ruleContext, "title");
                 
         if (!passed) {
             // check aria role to figure out if the accessible name can be from content 
-            const roles = RPTUtil.getRoles(ruleContext, true);
+            const roles = AriaUtil.getRoles(ruleContext, true);
             //when multiple roles specified, only the first valid role (guaranteed by dependencies) is applied, and the others just as fallbacks
             if (ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents"))
-                passed = RPTUtil.hasInnerContentHidden(ruleContext);
+                passed = CommonUtil.hasInnerContentHidden(ruleContext);
         }
 
         if (passed) {

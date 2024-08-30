@@ -12,8 +12,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../util/AriaUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CSSUtil } from "../util/CSSUtil";
 
@@ -21,7 +20,7 @@ import { CSSUtil } from "../util/CSSUtil";
  * Description: Trigger if :before and :after are used in CSS (Internal and External) with content
  * Origin: WCAG 2.0 F87
  */
-export let style_before_after_review: Rule = {
+export const style_before_after_review: Rule = {
     id: "style_before_after_review",
     context: "dom:style, dom:link",
     refactor: {

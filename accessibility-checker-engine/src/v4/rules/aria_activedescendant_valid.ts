@@ -19,7 +19,7 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../util/VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export let aria_activedescendant_valid: Rule = {
+export const aria_activedescendant_valid: Rule = {
     id: "aria_activedescendant_valid",
     context: "dom:*[aria-activedescendant]",
     refactor: {

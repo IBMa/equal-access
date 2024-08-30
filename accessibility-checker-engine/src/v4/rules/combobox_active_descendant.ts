@@ -11,14 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let combobox_active_descendant: Rule = {
+export const combobox_active_descendant: Rule = {
     id: "combobox_active_descendant",
     context: "aria:combobox",
     dependencies: ["combobox_popup_reference"],
@@ -51,7 +51,7 @@ export let combobox_active_descendant: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
+        let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupElement, popupId } = cachedElem;
@@ -88,7 +88,7 @@ export let combobox_active_descendant: Rule = {
             retVal.push(RulePass("Fail_not_in_popup", [activeId, popupId]));
         }
 
-        let activeRoles = RPTUtil.getRoles(activeElem, true);
+        let activeRoles = AriaUtil.getRoles(activeElem, true);
         let validRoles = ["option", "gridcell", "row", "treeitem"].filter((validRole) => activeRoles.includes(validRole));
         if (validRoles.length === 0) {
             retVal.push(RuleFail("Fail_active_role_invalid", [activeId, activeRoles.join(",")]));

@@ -11,15 +11,16 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
-export let label_name_visible: Rule = {
+export const label_name_visible: Rule = {
     id: "label_name_visible",
     context: "aria:button,aria:checkbox,aria:gridcell,aria:link,aria:menuitem,aria:menuitemcheckbox,aria:menuitemradio,aria:option,aria:radio,aria:switch,aria:tab,aria:treeitem,dom:input,dom:textarea,dom:select,dom:output,dom:meter",
     refactor: {
@@ -53,7 +54,7 @@ export let label_name_visible: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         if (!VisUtil.isNodeVisible(ruleContext) ||
-            AriaUtil.isNodeDisabled(ruleContext)) {
+            CommonUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
 
@@ -76,16 +77,16 @@ export let label_name_visible: Rule = {
         }
 
         let theLabelBy = AriaUtil.getAriaAttribute(ruleContext, "aria-labelledby");
-        if (theLabelBy && !AriaUtil.isIdReferToSelf(ruleContext, theLabelBy) && !isInputButton) {
+        if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy) && !isInputButton) {
             // skip the checks if it has an aria-labelledby since it takes precedence.
         } else {
             let theLabel = null;
-            if (theLabelBy && !AriaUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
+            if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
                 let labelValues = theLabelBy.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
                     let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
                     if (elementById) {
-                        theLabel = AriaUtil.getInnerText(elementById);
+                        theLabel = CommonUtil.getInnerText(elementById);
                         break;
                     }
                 }
@@ -122,13 +123,13 @@ export let label_name_visible: Rule = {
 
             if (!text) {
                 // look for a <label> element
-                let labelElem = AriaUtil.getLabelForElementHidden(ruleContext, true);
+                let labelElem = CommonUtil.getLabelForElementHidden(ruleContext, true);
                 if (!labelElem) {
                     let parentNode = DOMWalker.parentNode(ruleContext);
                     if (parentNode.nodeName.toLowerCase() === "label" /*&& RPTUtil.isFirstFormElement(parentNode, ruleContext)*/) {
                         let parentClone = parentNode.cloneNode(true);
                         // exclude all form elements from the label since they might also have inner content
-                        labelElem = AriaUtil.removeAllFormElementsFromLabel(parentClone);
+                        labelElem = CommonUtil.removeAllFormElementsFromLabel(parentClone);
                     }
                 }
 
@@ -139,7 +140,7 @@ export let label_name_visible: Rule = {
                     text = ""; // skip content check for some elements
                 } else {
                     // get the visible text only
-                    text = AriaUtil.getOnScreenInnerText(element);
+                    text = CommonUtil.getOnScreenInnerText(element);
                 }
 
                 /* Note: Disable this alt check in images for now until we get confirmation
@@ -160,10 +161,10 @@ export let label_name_visible: Rule = {
             let nonalphanumeric = /[^a-zA-Z0-9]/g;
 
             text = text.replace(nonalphanumeric, " "); // only consider alphanumeric characters
-            let normalizedText = AriaUtil.normalizeSpacing(text).toLowerCase(); // Leading and trailing whitespace and difference in case sensitivity should be ignored.
+            let normalizedText = CommonUtil.normalizeSpacing(text).toLowerCase(); // Leading and trailing whitespace and difference in case sensitivity should be ignored.
 
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
-            let normalizedLabel = AriaUtil.normalizeSpacing(theLabel).toLowerCase();
+            let normalizedLabel = CommonUtil.normalizeSpacing(theLabel).toLowerCase();
 
             if (normalizedText.length > 1) { // skip non-text content. e.g., <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);

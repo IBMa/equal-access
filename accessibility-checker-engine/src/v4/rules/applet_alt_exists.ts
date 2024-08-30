@@ -16,7 +16,7 @@ import { VisUtil } from "../util/VisUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let applet_alt_exists: Rule = {
+export const applet_alt_exists: Rule = {
     id: "applet_alt_exists",
     context: "dom:applet",
     refactor: {

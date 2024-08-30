@@ -13,9 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let table_aria_descendants: Rule = {
+export const table_aria_descendants: Rule = {
     id: "table_aria_descendants",
     context: "aria:table dom:tr[role], aria:table dom:th[role], aria:table dom:td[role], aria:grid dom:tr[role], aria:grid dom:th[role], aria:grid dom:td[role], aria:treegrid dom:tr[role], aria:treegrid dom:th[role], aria:treegrid dom:td[role]",
     help: {
@@ -39,7 +39,7 @@ export let table_aria_descendants: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element; 
-        let parentRole = AriaUtil.isTableDescendant(contextHierarchies);
+        let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
         // cache the result
         if (parentRole === null || parentRole.length === 0)
             return;

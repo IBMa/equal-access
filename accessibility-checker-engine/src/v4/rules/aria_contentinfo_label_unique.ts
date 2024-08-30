@@ -17,7 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { CacheUtil } from "../util/CacheUtil";
 
-export let aria_contentinfo_label_unique: Rule = {
+export const aria_contentinfo_label_unique: Rule = {
     id: "aria_contentinfo_label_unique",
     context: "aria:contentinfo",
     refactor: {

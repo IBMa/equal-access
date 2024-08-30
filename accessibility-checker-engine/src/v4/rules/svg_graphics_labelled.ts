@@ -13,10 +13,11 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let svg_graphics_labelled: Rule = {
+export const svg_graphics_labelled: Rule = {
     id: "svg_graphics_labelled",
     context: "dom:svg",
     help: {
@@ -52,13 +53,13 @@ export let svg_graphics_labelled: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         // 1. aria-labelledby or aria-label 
-        let label = RPTUtil.getAriaLabel(ruleContext);
+        let label = AriaUtil.getAriaLabel(ruleContext);
         if (label && label.length > 0)
             return RulePass("pass");
         
         // 2. a direct child title element 
         let svgTitle = ruleContext.querySelector(":scope > title");
-        if (svgTitle && RPTUtil.hasInnerContent(svgTitle))
+        if (svgTitle && CommonUtil.hasInnerContent(svgTitle))
             return RulePass("pass");
 
         // 3. xlink:title attribute on a link
@@ -74,20 +75,20 @@ export let svg_graphics_labelled: Rule = {
          */ 
         let text = "";
         ruleContext.querySelectorAll(":scope > *").forEach((element) => {
-            if (element.nodeName.toLowerCase() !== 'svg' && RPTUtil.hasInnerContent(element))
-                text += RPTUtil.getInnerText(element);
+            if (element.nodeName.toLowerCase() !== 'svg' && CommonUtil.hasInnerContent(element))
+                text += CommonUtil.getInnerText(element);
         });
         if (text !== '')
             return RulePass("pass");
 
         // 5. aria-describedby or aria-description 
-        let descby = RPTUtil.getAriaDescription(ruleContext);
+        let descby = AriaUtil.getAriaDescription(ruleContext);
         if (descby && descby.length > 0)
             return RulePass("pass");
 
         // 6. a direct child desc element
         let desc = ruleContext.querySelector(":scope > desc");
-        if (desc && RPTUtil.hasInnerContent(desc))
+        if (desc && CommonUtil.hasInnerContent(desc))
             return RulePass("pass");
         
         // 7. title attribue that provides a tooltip 

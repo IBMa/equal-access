@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../util/VisUtil";
 
-export let label_ref_valid: Rule = {
+export const label_ref_valid: Rule = {
     id: "label_ref_valid",
     context: "dom:label[for]",
     refactor: {

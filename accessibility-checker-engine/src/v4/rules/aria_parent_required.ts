@@ -14,10 +14,11 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_parent_required: Rule = {
+export const aria_parent_required: Rule = {
     id: "aria_parent_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
@@ -53,11 +54,11 @@ export let aria_parent_required: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element should be a presentational child of an element
-        if (RPTUtil.shouldBePresentationalChild(ruleContext))
+        if (AriaUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);

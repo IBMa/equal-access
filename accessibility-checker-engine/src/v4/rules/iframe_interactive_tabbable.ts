@@ -11,13 +11,14 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export let iframe_interactive_tabbable: Rule = {
+export const iframe_interactive_tabbable: Rule = {
     id: "iframe_interactive_tabbable",
     context: "dom:iframe",
     dependencies: [],
@@ -45,7 +46,7 @@ export let iframe_interactive_tabbable: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         const mapper : DOMMapper = new DOMMapper();
@@ -66,7 +67,7 @@ export let iframe_interactive_tabbable: Rule = {
         if (!iframElem || !iframElem.contentDocument || !iframElem.contentDocument.documentElement)
             return null;
 
-        const count = RPTUtil.getTabbableChildren(ruleContext);
+        const count = CommonUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RuleFail("fail_invalid");
 

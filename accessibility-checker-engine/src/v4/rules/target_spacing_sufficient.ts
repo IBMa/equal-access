@@ -11,14 +11,14 @@
     limitations under the License.
  *****************************************************************************/
 
-    import { RPTUtil } from "../util/AriaUtil";
+    import { CommonUtil } from "../util/CommonUtil";
     import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
     import { VisUtil } from "../util/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
     import { CSSUtil } from "../util/CSSUtil";
     
-    export let target_spacing_sufficient: Rule = {
+    export const target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
         context: "dom:*",
         dependencies: [],
@@ -65,12 +65,12 @@
             const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
             //ignore certain elements
-            if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
+            if (CommonUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
                 || nodeName === "body" || nodeName === "html" )
                 return null;
             
             // ignore hidden, non-target, or inline element without text in the same line
-            if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
+            if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTarget(ruleContext))
                 return null;
 
             // check inline element: without text in the same line
@@ -131,7 +131,7 @@
                     before = false;
                     continue;
                 }    
-                if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext) 
+                if (!VisUtil.isNodeVisible(elem) || !CommonUtil.isTarget(elem) || elem.contains(ruleContext) 
                    || checked.some(item => item.contains(elem))) continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);

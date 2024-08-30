@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let frame_title_exists: Rule = {
+export const frame_title_exists: Rule = {
     id: "frame_title_exists",
     context: "dom:frame, dom:iframe",
     refactor: {
@@ -57,7 +57,7 @@ export let frame_title_exists: Rule = {
             return null;
         }
 
-        if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+        if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");

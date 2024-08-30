@@ -18,7 +18,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_child_tabbable: Rule = {
+export const aria_child_tabbable: Rule = {
     id: "aria_child_tabbable",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],

@@ -15,9 +15,9 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 
-export let aria_application_label_unique: Rule = {
+export const aria_application_label_unique: Rule = {
     id: "aria_application_label_unique",
     context: "aria:application",
     refactor: {
@@ -60,14 +60,14 @@ export let aria_application_label_unique: Rule = {
             return null;
         }
 
-        let dupes = getCache(
+        let dupes = CacheUtil.getCache(
             ruleContext.ownerDocument,
             "aria_application_label_unique",
             null
         );
         if (!dupes) {
             dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            setCache(
+            CacheUtil.setCache(
                 ruleContext.ownerDocument,
                 "aria_application_label_unique",
                 dupes

@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_contentinfo_single: Rule = {
+export const aria_contentinfo_single: Rule = {
     id: "aria_contentinfo_single",
     context: "dom:*[role], dom:footer, dom:address",
     refactor: {

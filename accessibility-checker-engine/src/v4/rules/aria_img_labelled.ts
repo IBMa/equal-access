@@ -16,7 +16,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_img_labelled: Rule = {
+export const aria_img_labelled: Rule = {
     id: "aria_img_labelled",
     context: "aria:img",
     refactor: {

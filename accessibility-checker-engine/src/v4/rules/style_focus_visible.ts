@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CSSUtil } from "../util/CSSUtil";
 import { ColorUtil } from "../util/ColorUtil";
 
-export let style_focus_visible: Rule = {
+export const style_focus_visible: Rule = {
     id: "style_focus_visible",
     context: "dom:*",
     refactor: {
@@ -62,7 +62,7 @@ export let style_focus_visible: Rule = {
             }
         }
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!AriaUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
+        if (!CommonUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
         let normalStyles = CSSUtil.getDefinedStyles(ruleContext); // consider noth user-defined and browser default

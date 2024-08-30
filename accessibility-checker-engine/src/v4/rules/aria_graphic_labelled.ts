@@ -16,7 +16,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_graphic_labelled: Rule = {
+export const aria_graphic_labelled: Rule = {
     id: "aria_graphic_labelled",
     context: "aria:graphics-document,aria:graphics-symbol",
     refactor: {

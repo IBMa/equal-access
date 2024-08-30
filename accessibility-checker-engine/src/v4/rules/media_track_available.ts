@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let media_track_available: Rule = {
+export const media_track_available: Rule = {
     id: "media_track_available",
     context: "dom:a[href], dom:area[href], dom:applet, dom:embed, dom:object",
     refactor: {
@@ -55,7 +55,7 @@ export let media_track_available: Rule = {
         if (nodeName == "applet") {
             passed = false;
         } else {
-            passed = !RPTUtil.isVideoObjEmbedLink(ruleContext);
+            passed = !CommonUtil.isVideoObjEmbedLink(ruleContext);
         }
 
         if (passed) return null;

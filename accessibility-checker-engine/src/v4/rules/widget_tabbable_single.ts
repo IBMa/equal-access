@@ -13,12 +13,13 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { setCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let widget_tabbable_single: Rule = {
+export const widget_tabbable_single: Rule = {
     id: "widget_tabbable_single",
     context: "aria:button,aria:link,aria:menuitem,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:checkbox,aria:option,aria:radio,aria:slider,aria:spinbutton,aria:textbox,aria:columnheader,aria:rowheader,aria:slider,aria:tab",
     refactor: {
@@ -52,25 +53,25 @@ export let widget_tabbable_single: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
         
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element should be a presentational child of an element
-        if (RPTUtil.shouldBePresentationalChild(ruleContext))
+        if (AriaUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
-        if (RPTUtil.isTabbable(ruleContext)) {
+        if (CommonUtil.isTabbable(ruleContext)) {
             ++count;
         }
         // If node has children, look for tab stops in the children
         //skip the count if the element requires presentational children only
         let name = [];
-        if (count < 2 && !RPTUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
+        if (count < 2 && !AriaUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
             let nw = new NodeWalker(ruleContext);
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
-                if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
+                if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {
                     // Radio inputs with the same name natively are only one tab stop
                     if (nw.node.nodeName.toLowerCase() === 'input' && (nw.node as Element).getAttribute("type") === 'radio') {
                         let curName = (nw.node as Element).getAttribute("name");
@@ -85,7 +86,7 @@ export let widget_tabbable_single: Rule = {
         }
         let passed = count < 2;
         if (!passed)
-            setCache(ruleContext, "widget_tabbable_single", "potential_multiple_tabbable");
+            CacheUtil.setCache(ruleContext, "widget_tabbable_single", "potential_multiple_tabbable");
         return passed ? RulePass("pass") : RulePotential("potential_multiple_tabbable", [role]);
     }
 }

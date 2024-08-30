@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
 
-export let draggable_alternative_exists: Rule = {
+export const draggable_alternative_exists: Rule = {
     id: "draggable_alternative_exists",
     context: "dom:*[draggable]",
     dependencies: [],
@@ -51,7 +51,7 @@ export let draggable_alternative_exists: Rule = {
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
           
         //ignore certain elements
-        if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
+        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
             || nodeName === "body" || nodeName === "html" )
             return null;
         

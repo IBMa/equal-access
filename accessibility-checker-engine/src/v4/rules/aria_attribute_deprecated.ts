@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from ".
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_attribute_deprecated: Rule = {
+export const aria_attribute_deprecated: Rule = {
     id: "aria_attribute_deprecated",
     context: "dom:*",
     help: {

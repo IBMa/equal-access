@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_activedescendant_tabindex_valid: Rule = {
+export const aria_activedescendant_tabindex_valid: Rule = {
     id: "aria_activedescendant_tabindex_valid",
     context: "dom:*[aria-activedescendant]",
     refactor: {

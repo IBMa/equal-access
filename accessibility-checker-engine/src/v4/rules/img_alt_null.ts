@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let img_alt_null: Rule = {
+export const img_alt_null: Rule = {
     id: "img_alt_null",
     context: "dom:img[alt]",
     refactor: {
@@ -53,7 +53,7 @@ export let img_alt_null: Rule = {
             return null;
         }
         // We have a title, but alt is empty
-        if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+        if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
             return RuleFail("Fail_1");
         } else {
             return RulePass("Pass_0");

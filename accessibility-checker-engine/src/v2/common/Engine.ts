@@ -19,7 +19,7 @@ import { Context, PartInfo, AttrInfo } from "./Context";
 import { Config } from "../config/Config";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { clearCaches } from "../../v4/util/CacheUtil";
+import { CacheUtil } from "../../v4/util/CacheUtil";
 import { Issue, Rule, RuleContext, RuleContextHierarchy, RuleResult, eRuleConfidence } from "../../v4/api/IRule";
 import { HelpMap, IEngine, NlsMap } from "../../v4/api/IEngine";
 import { IMapper } from "../../v4/api/IMapper";
@@ -161,7 +161,7 @@ export class Engine implements IEngine {
             root = (root as Document).documentElement;
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
-        clearCaches(root);
+        CacheUtil.clearCaches(root);
         const walker = new DOMWalker(root);
         const retVal : Report = {
             results: [],
@@ -244,7 +244,7 @@ export class Engine implements IEngine {
                 }
             }
         } while (walker.nextNode());
-        clearCaches(root);
+        CacheUtil.clearCaches(root);
         retVal.totalTime = new Date().getTime()-start;
         return Promise.resolve(retVal);
     }

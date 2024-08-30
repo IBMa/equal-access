@@ -16,7 +16,7 @@ import { VisUtil } from "../util/VisUtil";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let application_content_accessible: Rule = {
+export const application_content_accessible: Rule = {
     id: "application_content_accessible",
     context: "aria:application",
     refactor: {

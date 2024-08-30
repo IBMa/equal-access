@@ -14,9 +14,9 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { getCache } from "../util/CacheUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let aria_role_redundant: Rule = {
+export const aria_role_redundant: Rule = {
     id: "aria_role_redundant",
     context: "dom:*[role]",
     help: {
@@ -54,7 +54,7 @@ export let aria_role_redundant: Rule = {
 
         // dependency check: if it's already failed in the parent relation, then skip this check
         if (["td", "th", "tr"].includes(elemName)) {
-            let parentRole = AriaUtil.isTableDescendant(contextHierarchies);
+            let parentRole = TableUtil.isTableDescendant(contextHierarchies);
             if (parentRole !== null && parentRole.length > 0)
                 return null;
         }

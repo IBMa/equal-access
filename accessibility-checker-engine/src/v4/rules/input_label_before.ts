@@ -13,9 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let input_label_before: Rule = {
+export const input_label_before: Rule = {
     id: "input_label_before",
     context: "dom:input, dom:textarea, dom:select",
     refactor: {
@@ -57,18 +58,18 @@ export let input_label_before: Rule = {
         }
 
         // Get only the non-hidden labels for element
-        let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
+        let labelElem = CommonUtil.getLabelForElementHidden(ruleContext, true);
         
-        if (labelElem == null || !RPTUtil.hasInnerContentHidden(labelElem)) {
+        if (labelElem == null || !CommonUtil.hasInnerContentHidden(labelElem)) {
             // Due to dependency, label must be done via title - this rule doesn't apply
             return null;
         }
 
-        let value = RPTUtil.compareNodeOrder(labelElem, ruleContext);
+        let value = CommonUtil.compareNodeOrder(labelElem, ruleContext);
         if (value === -2) {
             // ignore if no label or the content for the label is only from the nested input control 
-            let text = RPTUtil.getInnerText(ruleContext);
-            if (text && text.trim().length > 0 && RPTUtil.getInnerText(ruleContext).trim() === text.trim()) {
+            let text = CommonUtil.getInnerText(ruleContext);
+            if (text && text.trim().length > 0 && CommonUtil.getInnerText(ruleContext).trim() === text.trim()) {
                 // Due to dependency, label must be done via title - this rule doesn't apply
                 return null;
             }

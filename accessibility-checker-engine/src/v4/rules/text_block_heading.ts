@@ -13,12 +13,13 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, AriaUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CSSUtil } from "../util/CSSUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let text_block_heading: Rule = {
+export const text_block_heading: Rule = {
     id: "text_block_heading",
     context: "dom:p, dom:div, dom:br",
     refactor: {
@@ -50,11 +51,11 @@ export let text_block_heading: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (AriaUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+        if (CommonUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
             return null;
 
         // Don't trigger if we're not in the body or if we're in a script
-        if (AriaUtil.getAncestor(ruleContext, ["body"]) === null || AriaUtil.getAncestor(ruleContext, ["script"]) !== null) 
+        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null || CommonUtil.getAncestor(ruleContext, ["script"]) !== null) 
             return null;
 
         const validateParams = {
@@ -83,7 +84,7 @@ export let text_block_heading: Rule = {
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
-            if (AriaUtil.shouldNodeBeSkippedHidden(nw.node))
+            if (CommonUtil.shouldNodeBeSkippedHidden(nw.node))
                 continue;
 
             let nwName = nw.node.nodeName.toLowerCase();
@@ -97,7 +98,7 @@ export let text_block_heading: Rule = {
                         || (style['font-size'] && bodyFont !== 0 && CSSUtil.getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
                         let nextStr = nw.node.nodeValue.trim();
                         
-                        let wc = AriaUtil.wordCount(nextStr);
+                        let wc = CommonUtil.wordCount(nextStr);
                         if (wc > 0) {
                             wordStr.push(nextStr);
                             emphasizedText = true;
@@ -115,9 +116,9 @@ export let text_block_heading: Rule = {
                 // for element child
                 if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
                     // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
-                    let nextStr = AriaUtil.getInnerText(nw.node);
+                    let nextStr = CommonUtil.getInnerText(nw.node);
                     
-                    let wc = AriaUtil.wordCount(nextStr);
+                    let wc = CommonUtil.wordCount(nextStr);
                     if (wc > 0) {
                         wordStr.push(nextStr);
                         emphasizedText = true;

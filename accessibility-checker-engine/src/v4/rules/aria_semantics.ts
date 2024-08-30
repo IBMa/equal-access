@@ -14,8 +14,9 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_role_valid: Rule = {
+export const aria_role_valid: Rule = {
     id: "aria_role_valid",
     context: "dom:*",
     dependencies: ["aria_attribute_allowed"],
@@ -67,7 +68,7 @@ export let aria_role_valid: Rule = {
 
         // dependency check: if it's already failed, then skip
         if (["td", "th", "tr"].includes(tagName)) {
-            let parentRole = AriaUtil.isTableDescendant(contextHierarchies);
+            let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
             if (parentRole !== null && parentRole.length > 0)
                 return null;
         }
@@ -84,7 +85,7 @@ export let aria_role_valid: Rule = {
         if (invalidRoles === null || invalidRoles.length ===0)
             return RulePass("Pass_0", [domRoles.join(", "), tagName]);
 
-        if (invalidRoles.includes("presentation") || invalidRoles.includes("none") && AriaUtil.isTabbable(ruleContext))
+        if (invalidRoles.includes("presentation") || invalidRoles.includes("none") && CommonUtil.isTabbable(ruleContext))
             return RuleFail("Fail_2", [invalidRoles.join(", "), tagName]);
         
         if (invalidRoles.length > 0)
@@ -100,7 +101,7 @@ export let aria_role_valid: Rule = {
 // This rule is in the same file because there is a dependency that aria_role_valid runs first,
 // and the info is passed by cache, but there isn't a dependency in the Fail_2 scenario, so regular
 // dependency cannot be used
-export let aria_attribute_valid: Rule = {
+export const aria_attribute_valid: Rule = {
     id: "aria_attribute_valid",
     context: "dom:*",
     // The the ARIA role is completely invalid, skip this check

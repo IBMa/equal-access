@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
-export let list_children_valid: Rule = {
+export const list_children_valid: Rule = {
     id: "list_children_valid",
     context: "aria:group",
     refactor: {
@@ -48,14 +49,14 @@ export let list_children_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let parent = DOMWalker.parentElement(ruleContext);
-        if (!RPTUtil.hasRoleInSemantics(parent, "list")) {
+        if (!AriaUtil.hasRoleInSemantics(parent, "list")) {
             return null;
         }
 
         let passed = true;
         let children = ruleContext.children;
         for (let i = 0; passed && i < children.length; i++) {
-            passed = RPTUtil.hasRoleInSemantics(children[i], "listitem");
+            passed = AriaUtil.hasRoleInSemantics(children[i], "listitem");
         }
         if (!passed) {
             return RuleFail("Fail_1");

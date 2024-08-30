@@ -11,13 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../util/AriaUtil";
-import { getCache } from "../util/CacheUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let combobox_focusable_elements: Rule = {
+export const combobox_focusable_elements: Rule = {
     id: "combobox_focusable_elements",
     context: "aria:combobox",
     dependencies: ["combobox_popup_reference"],
@@ -46,7 +47,7 @@ export let combobox_focusable_elements: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
+        let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupElement, expanded } = cachedElem;
@@ -54,10 +55,10 @@ export let combobox_focusable_elements: Rule = {
         // detected in combobox_popup_reference
         if (!popupElement) return null;
 
-        const popupRole = RPTUtil.getRoles(popupElement, true)[0];
+        const popupRole = AriaUtil.getRoles(popupElement, true)[0];
 
         let retVal = []
-        if (!RPTUtil.isTabbable(ruleContext)) {
+        if (!CommonUtil.isTabbable(ruleContext)) {
             retVal.push(RuleFail("Fail_not_tabbable"));
         }
 
@@ -72,14 +73,14 @@ export let combobox_focusable_elements: Rule = {
         // examine the children
         if (popupElement  && VisUtil.isNodeVisible(popupElement)) {
             // if popupElement itself has "aria-activedescendant"
-            passed = !RPTUtil.isTabbable(popupElement) && !RPTUtil.getAriaAttribute(popupElement, "aria-activedescendant");;
+            passed = !CommonUtil.isTabbable(popupElement) && !AriaUtil.getAriaAttribute(popupElement, "aria-activedescendant");;
             // if any child of popupElement has "aria-autocomplete"
             if (passed && popupElement.children && popupElement.children.length > 0) {
                 let nw = new NodeWalker(popupElement);
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
-                        passed = !RPTUtil.isTabbable(nw.node) &&
-                            !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
+                        passed = !CommonUtil.isTabbable(nw.node) &&
+                            !CommonUtil.getAriaAttribute(nw.node, "aria-activedescendant");
                         if (nw.bEndTag && nw.node === popupElement.lastElementChild) break;    
                     }
                 }

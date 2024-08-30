@@ -13,11 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { VisUtil } from "../util/VisUtil";
 
-export let object_text_exists: Rule = {
+export const object_text_exists: Rule = {
     id: "object_text_exists",
     context: "dom:object",
     refactor: {

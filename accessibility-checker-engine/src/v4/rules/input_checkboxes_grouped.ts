@@ -11,14 +11,16 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let input_checkboxes_grouped: Rule = {
+export const input_checkboxes_grouped: Rule = {
     id: "input_checkboxes_grouped",
     context: "dom:input[type=radio], dom:input[type=checkbox]",
     refactor: {
@@ -76,14 +78,14 @@ export let input_checkboxes_grouped: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         const getGroup = (e: Element) => {
-            let retVal = RPTUtil.getAncestor(e, "fieldset")
-                || RPTUtil.getAncestorWithRole(e, "radiogroup")
-                || RPTUtil.getAncestorWithRole(e, "group")
-                || RPTUtil.getAncestorWithRole(e, "grid")
-                || RPTUtil.getAncestorWithRole(e, "table");
+            let retVal = CommonUtil.getAncestor(e, "fieldset")
+                || AriaUtil.getAncestorWithRole(e, "radiogroup")
+                || AriaUtil.getAncestorWithRole(e, "group")
+                || AriaUtil.getAncestorWithRole(e, "grid")
+                || AriaUtil.getAncestorWithRole(e, "table");
             if (!retVal) {
-                retVal = RPTUtil.getAncestor(e, "table");
-                if (retVal && !RPTUtil.isDataTable(retVal)) {
+                retVal = CommonUtil.getAncestor(e, "table");
+                if (retVal && !TableUtil.isDataTable(retVal)) {
                     retVal = null;
                 }
             }
@@ -94,13 +96,13 @@ export let input_checkboxes_grouped: Rule = {
         let ctxType = ruleContext.getAttribute("type").toLowerCase();
         
         // Determine which form we're in (if any) to determine our scope
-        let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form")
-            || RPTUtil.getAncestor(ruleContext, "html")
+        let ctxForm = AriaUtil.getAncestorWithRole(ruleContext, "form")
+            || CommonUtil.getAncestor(ruleContext, "html")
             || ruleContext.ownerDocument.documentElement;
 
         // Get data about all of the visible checkboxes and radios in the scope of this form
         // and cache it for all of the other inputs in this scope
-        let formCache = getCache(ctxForm, "input_checkboxes_grouped", null);
+        let formCache = CacheUtil.getCache(ctxForm, "input_checkboxes_grouped", null);
         if (!formCache) {
             formCache = {
                 checkboxByName: {},
@@ -132,10 +134,10 @@ export let input_checkboxes_grouped: Rule = {
             // let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
             for (let idx = 0; idx < checkboxQ.length; ++idx) {
                 const cb = checkboxQ[idx];
-                if ((RPTUtil.getAncestorWithRole(cb, "form")
-                    || RPTUtil.getAncestor(ruleContext, "html")
+                if ((AriaUtil.getAncestorWithRole(cb, "form")
+                    || CommonUtil.getAncestor(ruleContext, "html")
                     || ruleContext.ownerDocument.documentElement) === ctxForm
-                    && !RPTUtil.shouldNodeBeSkippedHidden(cb)) {
+                    && !CommonUtil.shouldNodeBeSkippedHidden(cb)) {
                     const name = cb.getAttribute("name") || "";
                     (formCache.checkboxByName[name] = formCache.checkboxByName[name] || []).push(cb);
                     formCache.nameToGroup[name] = formCache.nameToGroup[name] || getGroup(cb);
@@ -146,18 +148,18 @@ export let input_checkboxes_grouped: Rule = {
             // let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
             for (let idx = 0; idx < radiosQ.length; ++idx) {
                 const r = radiosQ[idx];
-                const radCtx = (RPTUtil.getAncestorWithRole(r, "form")
-                    || RPTUtil.getAncestor(ruleContext, "html")
+                const radCtx = (AriaUtil.getAncestorWithRole(r, "form")
+                    || CommonUtil.getAncestor(ruleContext, "html")
                     || ruleContext.ownerDocument.documentElement);
                 if (radCtx === ctxForm
-                    && !RPTUtil.shouldNodeBeSkippedHidden(r)) {
+                    && !CommonUtil.shouldNodeBeSkippedHidden(r)) {
                     const name = r.getAttribute("name") || "";
                     (formCache.radiosByName[name] = formCache.radiosByName[name] || []).push(r);
                     formCache.nameToGroup[name] = formCache.nameToGroup[name] || getGroup(r);
                     ++formCache.numRadios;
                 }
             }
-            setCache(ctxForm, "input_checkboxes_grouped", formCache);
+            CacheUtil.setCache(ctxForm, "input_checkboxes_grouped", formCache);
         }
 
         ///////////// Calculated everything, now check the various cases

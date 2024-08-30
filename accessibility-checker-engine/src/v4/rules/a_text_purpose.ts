@@ -17,7 +17,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let a_text_purpose: Rule = {
+export const a_text_purpose: Rule = {
     id: "a_text_purpose",
     // doc-biblioref is a link
     context: "aria:link,aria:doc-biblioref",

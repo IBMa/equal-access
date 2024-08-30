@@ -20,7 +20,7 @@ import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
 import { TableUtil } from "../util/TableUtil";
 
-export let aria_content_in_landmark: Rule = {
+export const aria_content_in_landmark: Rule = {
     id: "aria_content_in_landmark",
     context: "dom:*",
     refactor: {

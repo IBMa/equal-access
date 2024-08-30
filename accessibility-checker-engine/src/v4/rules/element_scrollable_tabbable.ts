@@ -12,12 +12,13 @@
  *****************************************************************************/
 
 import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "..//util/CSSUtil";
 
-export let element_scrollable_tabbable: Rule = {
+export const element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
     context: "dom:*",
     dependencies: [],
@@ -47,15 +48,15 @@ export let element_scrollable_tabbable: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || AriaUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip elements
-        if (AriaUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
+        if (CommonUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
             return null;
 
         //skip if no visible content
-        if (!AriaUtil.hasInnerContent(ruleContext))
+        if (!CommonUtil.hasInnerContent(ruleContext))
             return null;
             
         const nodeName = ruleContext.nodeName.toLowerCase();
@@ -77,11 +78,11 @@ export let element_scrollable_tabbable: Rule = {
             return null;
         
         // pass if element is tabbable
-        if (AriaUtil.isTabbable(ruleContext))
+        if (CommonUtil.isTabbable(ruleContext))
             return RulePass("pass_tabbable");
 
         // check if element content is tabbable
-        const count = AriaUtil.getTabbableChildren(ruleContext);
+        const count = CommonUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RulePass("pass_interactive");
 

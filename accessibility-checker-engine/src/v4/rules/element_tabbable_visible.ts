@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { CSSUtil } from "../util/CSSUtil";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export let element_tabbable_visible: Rule = {
+export const element_tabbable_visible: Rule = {
     id: "element_tabbable_visible",
     context: "dom:*",
     dependencies: [],
@@ -44,7 +44,7 @@ export let element_tabbable_visible: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!RPTUtil.isTabbable(ruleContext))
+        if (!CommonUtil.isTabbable(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
@@ -70,8 +70,8 @@ export let element_tabbable_visible: Rule = {
              * which likely incurs the changes of the label style.   
              */ 
             if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
-                const label = RPTUtil.getLabelForElement(ruleContext);
-                if (label && !RPTUtil.isInnerTextEmpty(label)) {
+                const label = CommonUtil.getLabelForElement(ruleContext);
+                if (label && !CommonUtil.isInnerTextEmpty(label)) {
                     const focus_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus");
                     const focus_visible_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-visible");
                     const focus_within_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-within");

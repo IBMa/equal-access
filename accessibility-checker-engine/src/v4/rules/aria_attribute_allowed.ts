@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_attribute_allowed: Rule = {
+export const aria_attribute_allowed: Rule = {
     id: "aria_attribute_allowed",
     context: "dom:*",
     refactor: {

@@ -17,7 +17,7 @@ import { VisUtil } from "../util/VisUtil";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let a_target_warning: Rule = {
+export const a_target_warning: Rule = {
     id: "a_target_warning",
     context: "dom:a[target],dom:area[target],dom:base[target]",
     refactor: {

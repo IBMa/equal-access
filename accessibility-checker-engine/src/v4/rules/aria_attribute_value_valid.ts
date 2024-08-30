@@ -17,7 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
-export let aria_attribute_value_valid: Rule = {
+export const aria_attribute_value_valid: Rule = {
     id: "aria_attribute_value_valid",
     context: "dom:*",
     dependencies: ["aria_attribute_allowed"],

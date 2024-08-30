@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let input_haspopup_conflict: Rule = {
+export const input_haspopup_conflict: Rule = {
     id: "input_haspopup_conflict",
     context: "dom:input[list][aria-haspopup]",
     refactor: {
@@ -58,10 +59,10 @@ export let input_haspopup_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip if the fieldset is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return null;
 
-        let roles = RPTUtil.getUserDefinedRoles(ruleContext);
+        let roles = AriaUtil.getUserDefinedRoles(ruleContext);
         // let "aria_role_valid" to handle invalid role. Only allowed role is combobox which is implicit. 
         if (roles && roles.length > 0 && !roles.includes('combobox')) 
             return null;         

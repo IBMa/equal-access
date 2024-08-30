@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_contentinfo_misuse: Rule = {
+export const aria_contentinfo_misuse: Rule = {
     id: "aria_contentinfo_misuse",
     context: "dom:*[role], dom:footer, dom:address",
     refactor: {

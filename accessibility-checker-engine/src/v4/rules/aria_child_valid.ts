@@ -17,7 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_child_valid: Rule = {
+export const aria_child_valid: Rule = {
     id: "aria_child_valid",
     //context: "dom:*[role]",
     //dependencies: ["Rpt_Aria_ValidRole"],

@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let table_headers_exists: Rule = {
+export const table_headers_exists: Rule = {
     id: "table_headers_exists",
     context: "dom:table",
     refactor: {
@@ -48,10 +48,10 @@ export let table_headers_exists: Rule = {
         const ruleContext = context["dom"].node as HTMLTableElement;
         // If this is a layout table or there are no rows, the rule does not apply.
         let rows = ruleContext.rows;
-        if (!RPTUtil.isDataTable(ruleContext) || rows === null || rows.length === 0)
+        if (!TableUtil.isDataTable(ruleContext) || rows === null || rows.length === 0)
             return null;
 
-        let passed = RPTUtil.tableHeaderExists(ruleContext);
+        let passed = TableUtil.tableHeaderExists(ruleContext);
         if (passed === null)
             return;
             

@@ -15,11 +15,11 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache, setCache } from "../util/CacheUtil";
-import { RPTUtil } from "../util/AriaUtil";
+import { CacheUtil } from "../util/CacheUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let fieldset_label_valid: Rule = {
+export const fieldset_label_valid: Rule = {
     id: "fieldset_label_valid",
     context: "aria:group",
     refactor: {
@@ -55,11 +55,11 @@ export let fieldset_label_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
 
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
-        let formCache = getCache(
+        let formCache = CacheUtil.getCache(
             ruleContext.ownerDocument,
             "landmark_group_input",
             null
@@ -92,7 +92,7 @@ export let fieldset_label_valid: Rule = {
             formCache.groupsWithInputsComputedLabels =
                 groupsWithInputsComputedLabels;
 
-            setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
+            CacheUtil.setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
         }
         // formCache.groupsWithInputs.forEach(element => {
         //     console.log("formCache.groupsWithInputs: " +element.id)

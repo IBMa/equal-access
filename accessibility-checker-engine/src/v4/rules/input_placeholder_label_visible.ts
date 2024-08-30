@@ -11,10 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let input_placeholder_label_visible: Rule = {
+export const input_placeholder_label_visible: Rule = {
     id: "input_placeholder_label_visible",
     context: "dom:input[placeholder], dom:textarea[placeholder]",
     refactor: {

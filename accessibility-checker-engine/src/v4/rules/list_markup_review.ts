@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let list_markup_review: Rule = {
+export const list_markup_review: Rule = {
     id: "list_markup_review",
     context: "dom:*",
     refactor: {
@@ -52,22 +53,22 @@ export let list_markup_review: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
 
         //skip the check if the element is hidden or disabled
-        if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
+        if (CommonUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
             return null;
 
         // Don't trigger if we're not in the body or if we're in a script
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) 
+        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null) 
             return null;
 
         // ignore script, label and their child elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
+        if (CommonUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
             return null;
 
         // ignore all widgets and their children, and certain structure roles
-        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget"]);
+        let roles = AriaUtil.getRolesWithTypes(ruleContext, ["widget"]);
         // add some structure roles
-        RPTUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
-        if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+        CommonUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
+        if (AriaUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
             return null;
 
         let passed = true;

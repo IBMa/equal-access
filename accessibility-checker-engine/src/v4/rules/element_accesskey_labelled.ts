@@ -13,12 +13,13 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
-export let element_accesskey_labelled: Rule = {
+export const element_accesskey_labelled: Rule = {
     id: "element_accesskey_labelled",
     context: "dom:*[accesskey]",
     refactor: {
@@ -50,14 +51,14 @@ export let element_accesskey_labelled: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
 
         //skip if the element is tabbable, it's covered by other rules
-        if (RPTUtil.isTabbable(ruleContext))
+        if (CommonUtil.isTabbable(ruleContext))
             return;
 
-        let roles = RPTUtil.getRoles(ruleContext, true);
+        let roles = AriaUtil.getRoles(ruleContext, true);
         //skip the native element, mostly text elements
         if (!roles || roles.length === 0) return;
 

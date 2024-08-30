@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let table_headers_related: Rule = {
+export const table_headers_related: Rule = {
     id: "table_headers_related",
     context: "dom:td, dom:th",
     refactor: {
@@ -47,13 +48,13 @@ export let table_headers_related: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+        let parentTable = CommonUtil.getAncestor(ruleContext, "table");
         // If this is a layout table or a simple table the rule does not apply.
-        if (parentTable == null || !RPTUtil.isComplexDataTable(parentTable))
+        if (parentTable == null || !TableUtil.isComplexDataTable(parentTable))
             return null;
 
         // If this table hasn't been preprocessed, process it.
-        if (getCache(ruleContext, "table_headers_related", null) === null) {
+        if (CacheUtil.getCache(ruleContext, "table_headers_related", null) === null) {
             // Build a grid that's actually usable (rowspan and colspan elements are duplicated)
             // This builds a real 2d table array.
             let grid = [];
@@ -62,7 +63,7 @@ export let table_headers_related: Rule = {
                 if (!grid[i]) grid[i] = [];
                 for (let j = 0; j < row.cells.length; ++j) {
                     let cell = row.cells[j];
-                    setCache(cell, "table_headers_related", i + ":" + j);
+                    CacheUtil.setCache(cell, "table_headers_related", i + ":" + j);
                     let width = parseInt(cell.getAttribute("colspan"));
                     if (!width) width = 1;
                     let height = parseInt(cell.getAttribute("rowspan"));
@@ -93,50 +94,50 @@ export let table_headers_related: Rule = {
                             rowScoped = true;
                             // If there's an axis attribute, it must be referred to by headers,
                             // scope is not enough.
-                            if (!RPTUtil.attributeNonEmpty(gridCell, "axis"))
-                                lookup[getCache(gridCell, "table_headers_related", null)] = true;
+                            if (!CommonUtil.attributeNonEmpty(gridCell, "axis"))
+                                lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
                         } else if (gridCell.getAttribute("scope") == "col") {
                             scopedCols[j] = true;
                             // If there's an axis attribute, it must be referred to by headers,
                             // scope is not enough.
-                            if (!RPTUtil.attributeNonEmpty(gridCell, "axis"))
-                                lookup[getCache(gridCell, "table_headers_related", null)] = true;
+                            if (!CommonUtil.attributeNonEmpty(gridCell, "axis"))
+                                lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
                         }
                         // Headers can refer to other headers
-                        if (RPTUtil.attributeNonEmpty(gridCell, "headers")) {
+                        if (CommonUtil.attributeNonEmpty(gridCell, "headers")) {
                             let hdrs = gridCell.getAttribute("headers").split(" ");
                             for (let k = 0; k < hdrs.length; ++k) {
                                 let headElem = doc.getElementById(hdrs[k].trim());
-                                if (headElem && RPTUtil.getAncestor(headElem, "table") == parentTable) {
-                                    lookup[getCache(headElem, "table_headers_related", null)] = true;
+                                if (headElem && CommonUtil.getAncestor(headElem, "table") == parentTable) {
+                                    lookup[CacheUtil.getCache(headElem, "table_headers_related", null)] = true;
                                 }
                             }
                         }
                     } else if (gridNodeName == "td") {
                         if (rowScoped || scopedCols[j]) {
-                            lookup[getCache(gridCell, "table_headers_related", null)] = true;
-                        } else if (RPTUtil.attributeNonEmpty(gridCell, "headers")) {
+                            lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
+                        } else if (CommonUtil.attributeNonEmpty(gridCell, "headers")) {
                             let hdrs = gridCell.getAttribute("headers").split(" ");
                             for (let k = 0; k < hdrs.length; ++k) {
                                 let headElem = doc.getElementById(hdrs[k].trim());
-                                if (headElem && RPTUtil.getAncestor(headElem, "table") == parentTable) {
-                                    lookup[getCache(gridCell, "table_headers_related", null)] = true;
-                                    lookup[getCache(headElem, "table_headers_related", null)] = true;
+                                if (headElem && CommonUtil.getAncestor(headElem, "table") == parentTable) {
+                                    lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
+                                    lookup[CacheUtil.getCache(headElem, "table_headers_related", null)] = true;
                                 }
                             }
                         }
                     }
                 }
             }
-            setCache(parentTable, "table_headers_related", lookup);
+            CacheUtil.setCache(parentTable, "table_headers_related", lookup);
         }
 
-        let rcInfo = getCache(ruleContext, "table_headers_related", null);
-        let tInfo = getCache(parentTable, "table_headers_related", null);
+        let rcInfo = CacheUtil.getCache(ruleContext, "table_headers_related", null);
+        let tInfo = CacheUtil.getCache(parentTable, "table_headers_related", null);
         let passed = rcInfo !== null && tInfo !== null && rcInfo in tInfo;
 
         if (!passed && rcInfo === "0:0" &&
-            RPTUtil.getInnerText(ruleContext).trim().length == 0) {
+            CommonUtil.getInnerText(ruleContext).trim().length == 0) {
             // We don't test if it's the upper-left cell and it's empty
             return null;
         }
@@ -145,10 +146,10 @@ export let table_headers_related: Rule = {
         // table, which introduces a lot of noise.  In that case, only trigger this error
         // once per table.
         if (!passed && parentTable.getElementsByTagName("th").length == 0) {
-            if (getCache(parentTable, "table_headers_related_TrigOnce", false) === true) {
+            if (CacheUtil.getCache(parentTable, "table_headers_related_TrigOnce", false) === true) {
                 passed = true;
             } else {
-                setCache(parentTable, "table_headers_related_TrigOnce", true);
+                CacheUtil.setCache(parentTable, "table_headers_related_TrigOnce", true);
             }
         }
 

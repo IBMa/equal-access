@@ -17,7 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_complementary_labelled: Rule = {
+export const aria_complementary_labelled: Rule = {
     id: "aria_complementary_labelled",
     context: "aria:complementary",
     refactor: {

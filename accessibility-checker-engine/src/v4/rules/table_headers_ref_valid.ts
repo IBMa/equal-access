@@ -11,14 +11,15 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
-export let table_headers_ref_valid: Rule = {
+export const table_headers_ref_valid: Rule = {
     id: "table_headers_ref_valid",
     context: "dom:td[headers], dom:th[headers]",
     help: {
@@ -50,7 +51,7 @@ export let table_headers_ref_valid: Rule = {
     act: ["a25f45"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+        let parentTable = CommonUtil.getAncestor(ruleContext, "table");
         let parentRole = ARIAMapper.nodeToRole(parentTable);
         // If this is a layout table or a simple table the rule does not apply.
         if (parentTable == null || !VisUtil.isNodeVisible(parentTable) || !["table", "grid"].includes(parentRole))
@@ -78,7 +79,7 @@ export let table_headers_ref_valid: Rule = {
             else {
                 let elemName = elem.nodeName.toLowerCase();
                 if (elemName !== 'th') {
-                    const roles = RPTUtil.getRoles(elem, true);
+                    const roles = AriaUtil.getRoles(elem, true);
                     if (!roles.includes('columnheader') && !roles.includes('rowheader'))
                         invalidElemHeaderValues.push(id);
                 }

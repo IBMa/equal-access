@@ -13,10 +13,11 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
 
-export let aria_search_label_unique: Rule = {
+export const aria_search_label_unique: Rule = {
     id: "aria_search_label_unique",
     context: "aria:search",
     refactor: {
@@ -49,7 +50,7 @@ export let aria_search_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         // Consider the Check Hidden Content setting that is set by the rules
-        let landmarks = RPTUtil.getElementsByRoleHidden(
+        let landmarks = CommonUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
             "search",
             true,
@@ -59,20 +60,20 @@ export let aria_search_label_unique: Rule = {
             return null;
         }
 
-        let dupes = getCache(
+        let dupes = CacheUtil.getCache(
             ruleContext.ownerDocument,
             "aria_search_label_unique",
             null
         );
         if (!dupes) {
-            dupes = RPTUtil.findAriaLabelDupes(landmarks);
-            setCache(
+            dupes = AriaUtil.findAriaLabelDupes(landmarks);
+            CacheUtil.setCache(
                 ruleContext.ownerDocument,
                 "aria_search_label_unique",
                 dupes
             );
         }
-        let myLabel = RPTUtil.getAriaLabel(ruleContext);
+        let myLabel = AriaUtil.getAriaLabel(ruleContext);
         let passed =
             myLabel !== "" && (!(myLabel in dupes) || dupes[myLabel] <= 1);
 

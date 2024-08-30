@@ -11,13 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
-export let combobox_popup_reference: Rule = {
+export const combobox_popup_reference: Rule = {
     id: "combobox_popup_reference",
     context: "aria:combobox",
     dependencies: ["combobox_design_valid"],
@@ -73,7 +73,7 @@ export let combobox_popup_reference: Rule = {
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        const cache = getCache(ruleContext.ownerDocument, "combobox", {});
+        const cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;

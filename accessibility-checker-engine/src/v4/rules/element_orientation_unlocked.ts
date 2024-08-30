@@ -15,11 +15,11 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CSSUtil } from "../util/CSSUtil";
 import { VisUtil } from "../util/VisUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let element_orientation_unlocked: Rule = {
+export const element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
     context: "dom:*",
     help: {
@@ -51,17 +51,17 @@ export let element_orientation_unlocked: Rule = {
             return null;
         
         //skip elements
-        if (AriaUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
+        if (CommonUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
         const nodeName = ruleContext.nodeName.toLowerCase();    
         
         // cache the orientation result for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
-        let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
+        let orientationTransforms = CacheUtil.getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
             orientationTransforms = CSSUtil.getMediaOrientationTransform(doc);
-            setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
+            CacheUtil.setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
         } 
         
         // find if the element matches orientation selector(s)

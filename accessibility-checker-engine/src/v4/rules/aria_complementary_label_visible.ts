@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_complementary_label_visible: Rule = {
+export const aria_complementary_label_visible: Rule = {
     id: "aria_complementary_label_visible",
     context: "dom:*[role], dom:aside",
     dependencies: ["aria_complementary_labelled"],

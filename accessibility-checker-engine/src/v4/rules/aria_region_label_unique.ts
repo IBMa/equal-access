@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
 
-export let aria_region_label_unique: Rule = {
+export const aria_region_label_unique: Rule = {
     id: "aria_region_label_unique",
     context: "aria:region",
     refactor: {
@@ -52,12 +53,12 @@ export let aria_region_label_unique: Rule = {
         if (
             ruleContext.getAttribute("role") === "region" ||
             ruleContext.hasAttribute("aria-label") ||
-            (ruleContext.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"))) ||
+            (ruleContext.hasAttribute("aria-labelledby") && !CommonUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"))) ||
             ruleContext.hasAttribute("title")
         ) {
             // Consider the Check Hidden Content setting that is set by the rules
             // Also, consider Implicit role checking.
-            let landmarks = RPTUtil.getElementsByRoleHidden(
+            let landmarks = CommonUtil.getElementsByRoleHidden(
                 ruleContext.ownerDocument,
                 "region",
                 true,
@@ -67,20 +68,20 @@ export let aria_region_label_unique: Rule = {
                 return null;
             }
 
-            let dupes = getCache(
+            let dupes = CacheUtil.getCache(
                 ruleContext.ownerDocument,
                 "aria_region_label_unique",
                 null
             );
             if (!dupes) {
-                dupes = RPTUtil.findAriaLabelDupes(landmarks);
-                setCache(
+                dupes = AriaUtil.findAriaLabelDupes(landmarks);
+                CacheUtil.setCache(
                     ruleContext.ownerDocument,
                     "aria_region_label_unique",
                     dupes
                 );
             }
-            let myLabel = RPTUtil.getAriaLabel(ruleContext);
+            let myLabel = AriaUtil.getAriaLabel(ruleContext);
             let passed =
                 myLabel !== "" &&
                 (!(myLabel in dupes) || dupes[myLabel] <= 1);

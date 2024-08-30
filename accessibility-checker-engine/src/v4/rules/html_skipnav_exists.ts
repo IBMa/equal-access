@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
     
-export let html_skipnav_exists: Rule = {
+export const html_skipnav_exists: Rule = {
     id: "html_skipnav_exists",
     context: "dom:html",
     refactor: {
@@ -49,15 +49,15 @@ export let html_skipnav_exists: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = false;
-        let frames = RPTUtil.getDocElementsByTag(ruleContext, "frame");
-        let headers = RPTUtil.getDocElementsByTag(ruleContext, "h1");
+        let frames = CommonUtil.getDocElementsByTag(ruleContext, "frame");
+        let headers = CommonUtil.getDocElementsByTag(ruleContext, "h1");
 
         if ((frames != null && frames.length > 0) || (headers != null && headers.length > 0)) {
             // If frames or headings are used, pass
             passed = true;
         } else {
             // Look for skip anchors
-            let anchors = RPTUtil.getDocElementsByTag(ruleContext, "a");
+            let anchors = CommonUtil.getDocElementsByTag(ruleContext, "a");
             let targets = {};
             for (let idx = 0; !passed && idx < anchors.length; ++idx) {
                 if (anchors[idx].hasAttribute("href")) {
@@ -84,7 +84,7 @@ export let html_skipnav_exists: Rule = {
                     if (docHref.startsWith("file:///")) docHref = "file:/" + docHref.substring("file:///".length);
 
                     if (href.charAt(0) == "#" || href.startsWith(docHref + "#")) {
-                        let target = RPTUtil.getFileAnchor(href);
+                        let target = CommonUtil.getFileAnchor(href);
                         if (FragmentUtil.getById(ruleContext, target) != null)
                             passed = true;
                         else
@@ -94,7 +94,7 @@ export let html_skipnav_exists: Rule = {
                     // Assume forward jumping targets
                     let name = anchors[idx].getAttribute("name");
                     if (name.indexOf("#") != -1)
-                        name = RPTUtil.getFileAnchor(name);
+                        name = CommonUtil.getFileAnchor(name);
                     passed = name in targets;
                 }
             }

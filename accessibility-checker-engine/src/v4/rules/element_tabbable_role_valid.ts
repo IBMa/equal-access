@@ -13,13 +13,14 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
 
-export let element_tabbable_role_valid: Rule = {
+export const element_tabbable_role_valid: Rule = {
     id: "element_tabbable_role_valid",
     context:"dom:*",
     help: {
@@ -52,12 +53,12 @@ export let element_tabbable_role_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         
-        if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (CommonUtil.isNodeDisabled(ruleContext) || VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
         const nodeName = ruleContext.nodeName.toLowerCase();
         // if the element is tabbable by default with or without tabindex, let the other rules (such as widget_tabbable_single) to handle it
-        if (nodeName in RPTUtil.tabTagMap ) {
-            let value = RPTUtil.tabTagMap[nodeName];
+        if (nodeName in CommonUtil.tabTagMap ) {
+            let value = CommonUtil.tabTagMap[nodeName];
             if (typeof (value) === "function") {
                 value = value(ruleContext);
             } 
@@ -74,7 +75,7 @@ export let element_tabbable_role_valid: Rule = {
             || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
             return null;
 
-        let roles = RPTUtil.getRoles(ruleContext, false);
+        let roles = AriaUtil.getRoles(ruleContext, false);
         // ignore 'application' role that contains one or more focusable elements that do not follow a standard interaction pattern supported by a widget role:https://www.w3.org/TR/2023/PR-WAI-ARIA-1.2-20230328/#application 
         if (roles && roles.includes("application"))
             return null;
@@ -85,10 +86,10 @@ export let element_tabbable_role_valid: Rule = {
                                "option", "radio", "switch", "tab"];
 
         if (!roles || roles.length === 0) {
-            roles = RPTUtil.getImplicitRole(ruleContext);
+            roles = AriaUtil.getImplicitRole(ruleContext);
         }
         const parent = DOMWalker.parentNode(ruleContext);
-        const parent_roles = RPTUtil.getRoles(parent as Element, true);
+        const parent_roles = AriaUtil.getRoles(parent as Element, true);
         
         // ignore if one of the parent roles is in roles_no_interactive_child
         for (let i=0; i < parent_roles.length; i++) {

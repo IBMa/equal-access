@@ -13,12 +13,12 @@
 
 import { Rule, RuleResult, RuleContext, RulePass, RuleFail, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "../util/CSSUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export let text_spacing_valid: Rule = {
+export const text_spacing_valid: Rule = {
     id: "text_spacing_valid",
     context: "dom:*",
     help: {
@@ -51,7 +51,7 @@ export let text_spacing_valid: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return null;
 
         //skip the check if the element is off screen
@@ -63,7 +63,7 @@ export let text_spacing_valid: Rule = {
             return null;
 
         //skip no-html element
-        if (RPTUtil.getAncestor(ruleContext, "svg"))
+        if (CommonUtil.getAncestor(ruleContext, "svg"))
             return null;
 
         // Ensure that this element has children with actual text.
@@ -93,7 +93,7 @@ export let text_spacing_valid: Rule = {
         if (word_style) {
             if (word_style.startsWith('inherit') || word_style.startsWith('unset')) {
                 //get closet ancestor's word-spacing
-                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"word-spacing": ["*"]}, ['inherit', 'unset']);
+                let ancestor = CSSUtil.getAncestorWithStyles(ruleContext.parentElement, {"word-spacing": ["*"]}, ['inherit', 'unset']);
                 if (ancestor !== null) {
                     word_style = CSSUtil.getDefinedStyles(ancestor)['word-spacing'];  
                 } else if (word_style.startsWith('unset')) {
@@ -128,7 +128,7 @@ export let text_spacing_valid: Rule = {
         if (letter_style) {
             if (letter_style.startsWith('inherit') || letter_style.startsWith('unset')) {
                 //get closet ancestor's word-spacing
-                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"letter-spacing": ["*"]}, ['inherit', 'unset']);
+                let ancestor = CSSUtil.getAncestorWithStyles(ruleContext.parentElement, {"letter-spacing": ["*"]}, ['inherit', 'unset']);
                 if (ancestor !== null) {
                     letter_style = CSSUtil.getDefinedStyles(ancestor)['letter-spacing'];  
                 } else if (letter_style.startsWith('unset')) {
@@ -161,10 +161,10 @@ export let text_spacing_valid: Rule = {
 
         let line_style = styles['line-height'];
         let overflow = {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll'], "overflow-y":['auto', 'scroll']};
-        if (line_style && RPTUtil.getAncestorWithStyles(ruleContext, overflow) === null) {
+        if (line_style && CSSUtil.getAncestorWithStyles(ruleContext, overflow) === null) {
             if (line_style.startsWith('inherit') || line_style.startsWith('unset')) {
                 //get closet ancestor's word-spacing
-                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"line-height": ["*"]}, ['inherit', 'unset']);
+                let ancestor = CSSUtil.getAncestorWithStyles(ruleContext.parentElement, {"line-height": ["*"]}, ['inherit', 'unset']);
                 if (ancestor !== null) {
                     line_style = CSSUtil.getDefinedStyles(ancestor)['line-height'];  
                 } else if (line_style.startsWith('unset')) {

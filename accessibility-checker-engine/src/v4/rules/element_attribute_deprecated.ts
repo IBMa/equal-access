@@ -11,9 +11,8 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
 
 const DEPRECATED_ELEMENTS = [
     /** original */
@@ -101,7 +100,7 @@ function objToContextStr(obj, type: string) {
     return str;
 }
 
-export let element_attribute_deprecated: Rule = {
+export const element_attribute_deprecated: Rule = {
     id: "element_attribute_deprecated",
     context: "dom:applet, dom:basefont, dom:center, dom:dir, dom:font, dom:isindex, dom:listing, dom:menu, dom:plaintext, dom:spacer, dom:s, dom:strike, dom:u, dom:xmp, dom:acronym, dom:frame, dom:frameset, dom:noframes, dom:noembed, dom:big, dom:blink, dom:marquee, dom:ttNaNdom:*[align], dom:*[link], dom:*[archive], dom:*[background], dom:*[bgcolor], dom:*[clear], dom:*[code], dom:*[color], dom:*[compact], dom:*[face], dom:*[hspace], dom:*[language], dom:*[link], dom:*[noshade], dom:*[nowrap], dom:*[object], dom:*[prompt], dom:*[start], dom:*[text], dom:*[version], dom:*[vlink], dom:*[vspace]NaNdom:td[height], dom:td[width], dom:td[abbr], dom:td[axis], dom:td[char], dom:td[charoff], dom:td[height], dom:td[nowrap], dom:td[valign], dom:td[width], dom:td[align], dom:td[bgcolor], dom:th[height], dom:th[width], dom:th[abbr], dom:th[axis], dom:th[charoff], dom:th[height], dom:th[bgcolor], dom:th[align], dom:th[nowrap], dom:th[char], dom:th[valign], dom:th[width], dom:li[type], dom:li[value], dom:li[type], dom:ul[type], dom:ul[compact], dom:pre[width], dom:meta[http-equiv], dom:a[charset], dom:a[coords], dom:a[shape], dom:a[rev], dom:a[scheme], dom:link[rev], dom:link[charset], dom:link[target], dom:img[name], dom:img[longdesc], dom:img[align], dom:img[hspace], dom:img[vspace], dom:img[border], dom:area[nohref], dom:head[profile], dom:html[version], dom:iframe[longdesc], dom:iframe[align], dom:iframe[frameborder], dom:iframe[marginheight], dom:iframe[marginwidth], dom:iframe[scrolling], dom:object[archive], dom:object[code], dom:object[codebase], dom:object[codetype], dom:object[declare], dom:object[standby], dom:object[align], dom:object[hspace], dom:object[vspace], dom:object[border], dom:param[type], dom:param[valuetype], dom:script[language], dom:body[alink], dom:body[background], dom:body[bgcolor], dom:body[link], dom:body[text], dom:body[vlink], dom:br[clear], dom:caption[align], dom:col[align], dom:col[char], dom:col[charoff], dom:col[valign], dom:col[width], dom:div[align], dom:dl[compact], dom:hr[align], dom:hr[noshade], dom:hr[size], dom:hr[width], dom:hr[align], dom:h2[align], dom:h3[align], dom:h4[align], dom:h5[align], dom:h6[align], dom:input[align], dom:input[usemap], dom:legend[align], dom:menu[compact], dom:ol[compact], dom:ol[type], dom:ol[type], dom:p[align], dom:table[bgcolor], dom:table[cellpadding], dom:table[cellspacing], dom:table[frame], dom:table[rules], dom:table[width], dom:table[align], dom:tbody[align], dom:tbody[char], dom:tbody[valign], dom:tbody[charoff], dom:tfoot[align], dom:tfoot[charoff], dom:tfoot[char], dom:tfoot[valign], dom:thead[char], dom:thead[charoff], dom:thead[valign], dom:thead[align], dom:tr[align], dom:tr[bgcolor], dom:tr[char], dom:tr[charoff], dom:tr[valign]",
     help: {

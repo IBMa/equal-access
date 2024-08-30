@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
-export let element_id_unique: Rule = {
+export const element_id_unique: Rule = {
     id: "element_id_unique",
     context: "dom:*[id]",
     refactor: {
@@ -57,7 +56,7 @@ export let element_id_unique: Rule = {
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // JCH - NO OUT OF SCOPE hidden in context
+        
         let id = ruleContext.getAttribute("id");
 
         // In the case that id is empty we should trigger a violation right away with out checking 

@@ -11,11 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let list_structure_proper: Rule = {
+export const list_structure_proper: Rule = {
     id: "list_structure_proper",
     context: "dom:dl, dom:ul, dom:ol, dom:dir, dom:menu, dom:li, dom:dd, dom:dt",
     refactor: {
@@ -72,7 +73,7 @@ export let list_structure_proper: Rule = {
                         // presentational element we move to the next element as presentational
                         // elements are allowed under list elements as they are only for
                         // formatting text nodes.
-                        if (RPTUtil.isPresentationalElement(walkChildren)) {
+                        if (AriaUtil.isPresentationalElement(walkChildren)) {
                             presentationalFound = true;
                             walkChildren = walkChildren.nextSibling;
                             continue;
@@ -95,9 +96,9 @@ export let list_structure_proper: Rule = {
                 passed = (passed && first == "dt" && last == "dd") || (passed && presentationalFound);
             }
         } else if (nodeName == "li") {
-            passed = RPTUtil.getAncestor(ruleContext, ["ul", "ol", "dir", "menu"]) != null;
+            passed = CommonUtil.getAncestor(ruleContext, ["ul", "ol", "dir", "menu"]) != null;
         } else if (nodeName == "dd" || nodeName == "dt") {
-            passed = RPTUtil.getAncestor(ruleContext, "dl") != null;
+            passed = CommonUtil.getAncestor(ruleContext, "dl") != null;
         } else {
             let walkChildren = ruleContext.firstChild as Node;
             // Zero or more li elements are permitted inside of <ol>, <ul> or <menu> elements now as per the html5 spec. This handles the case
@@ -113,7 +114,7 @@ export let list_structure_proper: Rule = {
                     // presentational element we skip checking as presentational
                     // elements are allowed under list elements as they are only for
                     // formatting text.
-                    if (RPTUtil.isPresentationalElement(walkChildren)) {
+                    if (AriaUtil.isPresentationalElement(walkChildren)) {
                         presentationalFound = true;
                         walkChildren = walkChildren.nextSibling;
                         continue;

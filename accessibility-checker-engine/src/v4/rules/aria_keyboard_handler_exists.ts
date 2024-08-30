@@ -18,7 +18,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { VisUtil } from "../util/VisUtil";
 
-export let aria_keyboard_handler_exists: Rule = {
+export const aria_keyboard_handler_exists: Rule = {
     id: "aria_keyboard_handler_exists",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],

@@ -13,11 +13,12 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export let label_content_exists: Rule = {
+export const label_content_exists: Rule = {
     id: "label_content_exists",
     context: "dom:label",
     refactor: {
@@ -55,14 +56,14 @@ export let label_content_exists: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (RPTUtil.hasInnerContentHidden(ruleContext)) {
+        if (CommonUtil.hasInnerContentHidden(ruleContext)) {
             return RulePass("Pass_Regular");
 
         } else if ((ruleContext.getAttribute("aria-label") || "").trim().length > 0) {
             return RulePass("Pass_AriaLabel");
         } else if (ruleContext.hasAttribute("aria-labelledby")) {
             let labelElem = FragmentUtil.getById(ruleContext, ruleContext.getAttribute('aria-labelledby'));
-            if (labelElem && !DOMUtil.sameNode(labelElem, ruleContext) && RPTUtil.hasInnerContent(labelElem)) {
+            if (labelElem && !DOMUtil.sameNode(labelElem, ruleContext) && CommonUtil.hasInnerContent(labelElem)) {
                 return RulePass("Pass_LabelledBy");
             }
         }

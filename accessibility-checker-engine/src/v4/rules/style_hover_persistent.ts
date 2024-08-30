@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let style_hover_persistent: Rule = {
+export const style_hover_persistent: Rule = {
     id: "style_hover_persistent",
     context: "dom:style, dom:*[style], dom:*",
     help: {
@@ -60,7 +60,7 @@ export let style_hover_persistent: Rule = {
         let styleText = "";
         if (nodeName === "style") {
             // console.log("RULE RUN ******************");
-            styleText = RPTUtil.getInnerText(ruleContext).toLowerCase();
+            styleText = CommonUtil.getInnerText(ruleContext).toLowerCase();
             // check import
             // console.log("ruleContext.ownerDocument.styleSheets.length = "+ruleContext.ownerDocument.styleSheets.length);
             for (let sIndex = 0; sIndex < ruleContext.ownerDocument.styleSheets.length; ++sIndex) {

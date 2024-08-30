@@ -16,7 +16,7 @@ import { VisUtil } from "../util/VisUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let area_alt_exists: Rule = {
+export const area_alt_exists: Rule = {
     id: "area_alt_exists",
     context: "dom:area",
     refactor: {
