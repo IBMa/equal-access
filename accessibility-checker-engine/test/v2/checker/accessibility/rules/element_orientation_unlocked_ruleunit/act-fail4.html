@@ -1,22 +1,23 @@
-<html id='html' lang="en">
+<html id='html1' lang="en">
 	<head>
 		<title>Page with some content</title>
 		<style>
 			@media (orientation: portrait) {
 				html {
-					transform: rotate(1.5708rad);
+					rotate: 180deg;
+					width: min(100vw, 100vh);
+					height: min(100vw, 100vh);
 				}
 			}
 		</style>
 	</head>
-	<body>
-		Page Content
-
+	<body><div style="font-size:28;">
+		Page Content</div>
         <script>
             UnitTest = {
               ruleIds: ["element_orientation_unlocked"],
               results: [
-			  {
+              {
             "ruleId": "element_orientation_unlocked",
             "value": [
               "INFORMATION",
@@ -34,8 +35,8 @@
             "apiArgs": [],
             "category": "Accessibility"
           }
-              ]
-            }
-        </script>    
+        ]
+        }
+        </script>
 	</body>
 </html>
