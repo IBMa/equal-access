@@ -18,7 +18,7 @@ import "./ScoreCard.scss";
 
 interface ScoreCardProps {
     title: string
-    icon?: ReactNode
+    icon?: string
     count?: number
     children?: any
 }
@@ -27,7 +27,7 @@ export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
 
     render() {
         return <div className="scoreCard">
-            <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"top",float:"right"}}>{this.props.icon}</span></div>
+            <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"middle"}}>&nbsp;<img src={this.props.icon} style={{ verticalAlign: "top" }} alt={this.props.title}/></span></div>
             <div className="score">{this.props.count}</div>
             <div className="description">{this.props.children}</div>
         </div>
