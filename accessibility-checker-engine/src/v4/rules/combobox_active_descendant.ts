@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
@@ -74,7 +75,8 @@ export const combobox_active_descendant: Rule = {
 
         // examine the children
         if (popupElement) {
-            let nw = new NodeWalker(popupElement);
+            //let nw = new NodeWalker(popupElement);
+            let nw = new DOMWalker(popupElement);
             while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                 if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                     found = nw.elem().getAttribute("id") === activeId;

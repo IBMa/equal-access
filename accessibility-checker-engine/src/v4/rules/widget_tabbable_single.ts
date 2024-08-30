@@ -13,9 +13,11 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+
 import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
@@ -69,7 +71,8 @@ export const widget_tabbable_single: Rule = {
         //skip the count if the element requires presentational children only
         let name = [];
         if (count < 2 && !AriaUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
-            let nw = new NodeWalker(ruleContext);
+            //let nw = new NodeWalker(ruleContext);
+            let nw = new DOMWalker(ruleContext);
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {
                     // Radio inputs with the same name natively are only one tab stop

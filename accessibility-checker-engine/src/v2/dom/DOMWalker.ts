@@ -30,6 +30,10 @@ export class DOMWalker {
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
     }
 
+    elem() : HTMLElement | null {
+        return this.node.nodeType === 1 && this.node as HTMLElement || null;
+    }
+    
     static parentNode(node: Node) : Node | null {
         if (node === null) return null;
         let p : Node = node.parentNode;

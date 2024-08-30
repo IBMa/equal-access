@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export const form_submit_button_exists: Rule = {
     id: "form_submit_button_exists",
@@ -49,7 +50,8 @@ export const form_submit_button_exists: Rule = {
         let passed = false;
         if (ruleContext.firstChild) {
             // submit buttons are usually at the bottom - walk backwards
-            let nw = new NodeWalker(ruleContext, true);
+            //let nw = new NodeWalker(ruleContext, true);
+            let nw = new DOMWalker(ruleContext, true);
             while (!passed && nw.prevNode() && nw.node != ruleContext) {
                 if (!nw.bEndTag) {
                     let nodeName = nw.node.nodeName.toLowerCase();

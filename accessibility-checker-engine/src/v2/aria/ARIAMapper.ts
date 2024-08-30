@@ -17,11 +17,12 @@
 import { ARIADefinitions } from "./ARIADefinitions";
 import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { RPTUtil } from "../../v4/util/AriaUtil"
+import { CommonUtil } from "../../v4/util/CommonUtil";
+import { AriaUtil } from "../../v4/util/AriaUtil";
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
-import { getCache, setCache } from "../../v4/util/CacheUtil";
+import { CacheUtil } from "../../v4/util/CacheUtil";
 import { DOMWalker } from "../dom/DOMWalker";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
@@ -84,7 +85,7 @@ export class ARIAMapper extends CommonMapper {
 
     static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
         const doc = FragmentUtil.getOwnerFragment(elem);
-        if (!getCache(doc, "ARIAMapper::precalcOwned", false)) {
+        if (!CacheUtil.getCache(doc, "ARIAMapper::precalcOwned", false)) {
             const owners = doc.querySelectorAll("[aria-owns]");
             for (let iOwner = 0; iOwner < owners.length; ++iOwner) {
                 const owner = owners[iOwner];
@@ -93,13 +94,13 @@ export class ARIAMapper extends CommonMapper {
                     const owned = doc.getElementById(ownIds[iId]);
                     //ignore if the aria-owns point to the element itself
                     if (owned && !DOMUtil.sameNode(owner, owned)) {
-                        setCache(owned, "aria-owned", owner);
+                        CacheUtil.setCache(owned, "aria-owned", owner);
                     }
                 }
             }
-            setCache(doc, "ARIAMapper::precalcOwned", true);
+            CacheUtil.setCache(doc, "ARIAMapper::precalcOwned", true);
         }
-        return getCache(elem, "aria-owned", null);
+        return CacheUtil.getCache(elem, "aria-owned", null);
     }
 
     private getNodeHierarchy(node: Node) {
@@ -137,7 +138,7 @@ export class ARIAMapper extends CommonMapper {
                     [role: string]: number
                 }
                 childrenCanHaveRole: boolean
-            }> = getCache(elem, "ARIAMapper::getNodeHierarchy", null);
+            }> = CacheUtil.getCache(elem, "ARIAMapper::getNodeHierarchy", null);
             if (!nodeHierarchy) {
                 // This element hasn't been processed yet - but ::reset processes them all in the right order
 
@@ -210,7 +211,7 @@ export class ARIAMapper extends CommonMapper {
                     nodeHierarchy.push(item);
                 }
                 nodeHierarchy.push(nodeInfo);
-                setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
+                CacheUtil.setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
             }
             return nodeHierarchy;
         }
@@ -279,7 +280,7 @@ export class ARIAMapper extends CommonMapper {
         if (retVal.length > 0) {
             retVal[retVal.length-1].role = "/"+retVal[retVal.length-1].role
             let parent = DOMWalker.parentElement(node);
-            this.hierarchyResults = parent ? getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
+            this.hierarchyResults = parent ? CacheUtil.getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
         }
         return retVal;
     }
@@ -413,8 +414,8 @@ export class ARIAMapper extends CommonMapper {
 
         const elem = cur as Element;
         // We've been here before - prevent recursion
-        if (getCache(elem, "data-namewalk", null) === ""+walkId) return "";
-        setCache(elem, "data-namewalk", ""+walkId);
+        if (CacheUtil.getCache(elem, "data-namewalk", null) === ""+walkId) return "";
+        CacheUtil.setCache(elem, "data-namewalk", ""+walkId);
         // See https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-search-input-type-tel-input-type-url-and-textarea-element
 
         // 2a. Only show hidden content if it's referenced by a labelledby
@@ -477,7 +478,7 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
+                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !CommonUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
                         return this.computeNameHelp(walkId, label, false, false);
                     } else {
                         return label.textContent;
@@ -567,7 +568,7 @@ export class ARIAMapper extends CommonMapper {
             if (elem.nodeName.toUpperCase() === "SLOT") {
                 //if no assignedNode, check its own text 
                 if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                    let innerText = RPTUtil.getInnerText(elem);
+                    let innerText = CommonUtil.getInnerText(elem);
                     if (innerText && innerText !== null && innerText.trim().length > 0)
                         accumulated +=  " " + innerText;
                 } else {    
@@ -655,7 +656,7 @@ export class ARIAMapper extends CommonMapper {
             for (const role of roles) {
                 if (role === "presentation" || role === "none") {
                     // If element is focusable, then presentation roles are to be ignored
-                    if (!RPTUtil.isFocusable(elem)) {
+                    if (!CommonUtil.isFocusable(elem)) {
                         return null;
                     }
                 } else if (role in ARIADefinitions.designPatterns) {
@@ -664,7 +665,7 @@ export class ARIAMapper extends CommonMapper {
             }
         }
         //return this.elemToImplicitRole(elem);
-        const roles = RPTUtil.getImplicitRole(elem);
+        const roles = AriaUtil.getImplicitRole(elem);
         return !roles || roles.length ===0 ? null : roles[0];
     }
     /**

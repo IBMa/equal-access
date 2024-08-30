@@ -17,6 +17,7 @@ import { VisUtil } from "../util/VisUtil";
 import { ColorUtil } from "../util/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CSSUtil } from "../util/CSSUtil";
 
 export const text_contrast_sufficient: Rule = {
@@ -93,7 +94,7 @@ export const text_contrast_sufficient: Rule = {
         // Ensure that this element has children with actual text.
         let childStr = CommonUtil.getNodeText(ruleContext);
         
-        if (!CommonUtil.isShadowHostElement(ruleContext) || (CommonUtil.isShadowHostElement(ruleContext) && AriaUtil.getNodeText(ruleContext.shadowRoot) === '')) {
+        if (!CommonUtil.isShadowHostElement(ruleContext) || (CommonUtil.isShadowHostElement(ruleContext) && CommonUtil.getNodeText(ruleContext.shadowRoot) === '')) {
             if (childStr.trim().length == 0 )
                 return null;
             

@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
 
 export const list_markup_review: Rule = {
@@ -87,7 +88,8 @@ export const list_markup_review: Rule = {
                 if (!passed) {
                     // Ensure that there's some sort of block level element before this
                     // Avoid failures due to things like <i>Some sentence</i>. New sentence.
-                    let nw = new NodeWalker(walkNode);
+                    //let nw = new NodeWalker(walkNode);
+                    let nw = new DOMWalker(walkNode);
                     while (!passed && nw.prevNode()) {
                         let nodeName = nw.node.nodeName.toLowerCase();
                         if (["blockquote", "center", "dir", "div", "form", "h1",

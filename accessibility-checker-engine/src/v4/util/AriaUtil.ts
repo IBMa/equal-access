@@ -888,8 +888,8 @@ export class AriaUtil {
     public static getDescendantWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles?) {
         // Variable Decleration
         let descendant = null;
-        let nw = new NodeWalker(element);
-
+        //let nw = new NodeWalker(element);
+        let nw = new DOMWalker(element);
         // Loop over all the childrens of the element provided and check if the rolename provided exists
         while (nw.nextNode() && nw.node != element && nw.node != element.nextSibling) {
 
@@ -962,8 +962,8 @@ export class AriaUtil {
     public static getAllDescendantsWithRoleHidden(element, roleName: string, considerHiddenSetting, considerImplicitRoles) {
         // Variable Decleration
         let descendants = [];
-        let nw = new NodeWalker(element);
-
+        //let nw = new NodeWalker(element);
+        let nw = new DOMWalker(element);
         // Loop over all the childrens of the element provided and check if the rolename provided exists
         while (nw.nextNode() && nw.node != element && nw.node != element.nextSibling) {
             if (nw.bEndTag) {

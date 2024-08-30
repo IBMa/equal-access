@@ -13,6 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { CacheUtil } from "../util/CacheUtil";
@@ -76,11 +77,12 @@ export const combobox_focusable_elements: Rule = {
             passed = !CommonUtil.isTabbable(popupElement) && !AriaUtil.getAriaAttribute(popupElement, "aria-activedescendant");;
             // if any child of popupElement has "aria-autocomplete"
             if (passed && popupElement.children && popupElement.children.length > 0) {
-                let nw = new NodeWalker(popupElement);
+                //let nw = new NodeWalker(popupElement);
+                let nw = new DOMWalker(popupElement);
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                         passed = !CommonUtil.isTabbable(nw.node) &&
-                            !CommonUtil.getAriaAttribute(nw.node, "aria-activedescendant");
+                            !AriaUtil.getAriaAttribute(nw.node, "aria-activedescendant");
                         if (nw.bEndTag && nw.node === popupElement.lastElementChild) break;    
                     }
                 }

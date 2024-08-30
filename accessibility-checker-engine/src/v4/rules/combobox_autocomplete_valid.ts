@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-//import { NodeWalker } from "../util/AriaUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
@@ -68,7 +68,8 @@ export const combobox_autocomplete_valid: Rule = {
             passed = !popupElement.hasAttribute("aria-autocomplete");
             // if any child of popupElement has "aria-autocomplete"
             if (passed && popupElement.children && popupElement.children.length > 0) {
-                let nw = new NodeWalker(popupElement);
+                //let nw = new NodeWalker(popupElement);
+                let nw = new DOMWalker(popupElement);
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                         passed = !nw.elem().hasAttribute("aria-autocomplete");

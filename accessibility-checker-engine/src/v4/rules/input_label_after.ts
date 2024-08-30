@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CommonUtil } from "../util/CommonUtil";
 
 export const input_label_after: Rule = {
@@ -68,7 +68,8 @@ export const input_label_after: Rule = {
         if (value === -2) {
             // input nested in label
             passed = false;
-            let walkNode = new NodeWalker(labelElem);
+            //let walkNode = new NodeWalker(labelElem);
+            let walkNode = new DOMWalker(labelElem);
             walkNode.node = ruleContext;
             while (!passed && walkNode.nextNode()) {
                 passed = ((walkNode.node.nodeName.toLowerCase() === "#text" && walkNode.node.nodeValue.trim().length > 0)

@@ -14,6 +14,7 @@
 import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { CacheUtil } from "../util/CacheUtil";
 
 export const style_color_misuse: Rule = {
@@ -114,7 +115,8 @@ export const style_color_misuse: Rule = {
             passed = nodeName in goodTagNames ||
                 CommonUtil.getAncestor(ruleContext, goodTagNames) !== null;
             if (!passed && ruleContext.hasChildNodes()) {
-                let nw = new NodeWalker(ruleContext);
+                //let nw = new NodeWalker(ruleContext);
+                let nw = new DOMWalker(ruleContext);
                 while (!passed && nw.nextNode() && nw.node !== ruleContext) {
                     passed = nw.node.nodeName.toLowerCase() in goodTagNames;
                 }

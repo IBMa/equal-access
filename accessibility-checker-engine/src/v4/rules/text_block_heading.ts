@@ -75,8 +75,8 @@ export const text_block_heading: Rule = {
         let wordsSeen = 0;
         let wordStr: string[] = [];
         let emphasizedText = false;
-        let nw = new NodeWalker(ruleContext);
-
+        //let nw = new NodeWalker(ruleContext);
+        let nw = new DOMWalker(ruleContext);
         let passed = false;
         while (!passed &&
             nw.nextNode() && 
