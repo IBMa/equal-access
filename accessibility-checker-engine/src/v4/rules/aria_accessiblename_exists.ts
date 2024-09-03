@@ -20,7 +20,7 @@ import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedB
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
+    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -51,8 +51,6 @@ export const aria_accessiblename_exists: Rule = {
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
         // svg element is handled in svg_graphics)labbelled rule
         if (nodeName === 'svg') return;
-        // img element handled in img_alt_valid
-        if (nodeName === "img" && ruleContext.hasAttribute("alt")) return RulePass("pass");
         
         // when table element with a caption as first child
         if (nodeName === 'table' 
