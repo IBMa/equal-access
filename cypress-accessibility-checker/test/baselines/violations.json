@@ -107,39 +107,9 @@
             "ignored": true,
             "level": "violation",
             "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_accessiblename_exists",
-            "value": [
-                "RECOMMENDATION",
-                "FAIL"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "fail_no_accessible_name",
-            "message": "Element <img> with \"img\" role has no accessible name",
-            "messageArgs": [
-                "img",
-                "img"
-            ],
-            "apiArgs": [],
-            "bounds": {
-                "left": 16,
-                "top": 133,
-                "height": 32,
-                "width": 32
-            },
-            "snippet": "<img src=\"missing-alt.jpg\">",
-            "category": "Accessibility",
-            "ignored": true,
-            "level": "recommendation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/aria_accessiblename_exists.html#%7B%22message%22%3A%22Element%20%3Cimg%3E%20with%20%5C%22img%5C%22%20role%20has%20no%20accessible%20name%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_accessible_name%22%2C%22ruleId%22%3A%22aria_accessiblename_exists%22%2C%22msgArgs%22%3A%5B%22img%22%2C%22img%22%5D%7D"
         }
     ],
-    "numExecuted": 31,
+    "numExecuted": 30,
     "ruleTime": 0,
     "nls": {
         "html_lang_exists": {
@@ -154,10 +124,6 @@
             "0": "Pages must provide a way to skip directly to the main content",
             "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
         },
-        "aria_accessiblename_exists": {
-            "0": "Elements with certain roles should have accessible names",
-            "fail_no_accessible_name": "Element <{0}> with \"{1}\" role has no accessible name"
-        },
         "img_alt_valid": {
             "0": "Images must have accessible names unless they are decorative or redundant",
             "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant"
@@ -171,7 +137,7 @@
             "potentialrecommendation": 0,
             "manual": 0,
             "pass": 26,
-            "ignored": 5,
+            "ignored": 4,
             "elements": 7,
             "elementsViolation": 0,
             "elementsViolationReview": 0
@@ -188,10 +154,10 @@
             "potentialrecommendation",
             "manual"
         ],
-        "startScan": 1723480681453,
+        "startScan": 1724696836617,
         "URL": "http://localhost:8080/test/sample-html/violations.html"
     },
-    "scanID": "03c0fc62-453a-4b6c-a2b2-869c2818e5ea",
+    "scanID": "3287e266-6c7a-41d9-8e27-62d66146ad2b",
     "toolID": "cypress-accessibility-checker-v3.0.0",
     "label": "violations"
 }
