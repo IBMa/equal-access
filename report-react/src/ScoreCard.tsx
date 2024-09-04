@@ -15,7 +15,7 @@
   *****************************************************************************/
 import React, { ReactNode } from "react";
 import {  SelectableTile } from '@carbon/react';
-import { filterController } from "./FilterController";
+// import { filterController } from "./FilterController";
 import "./ScoreCard.scss";
 
 interface ScoreCardProps {
@@ -26,26 +26,27 @@ interface ScoreCardProps {
 }
 
 export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
-    handleTileClick = () => {
-        const filters = filterController.getFilters();
+    // handleTileClick = () => {
+    //     const filters = filterController.getFilters();
     
-        const updatedFilters = filters.map(filter => {
-          if (filter.text === this.props.title) {
-            return { ...filter, checked: !filter.checked };
-          }
-          return filter;
-        });
+    //     const updatedFilters = filters.map(filter => {
+    //       if (filter.text === this.props.title) {
+    //         return { ...filter, checked: !filter.checked };
+    //       }
+    //       return filter;
+    //     });
     
-        filterController.setFilters(updatedFilters);
+    //     filterController.setFilters(updatedFilters);
   
-      };
+    //   };
 
     render() {
         return <div >
-            <SelectableTile className="scoreCard" selected={filterController.getFilters().some(
-      filter => filter.text ===this.props.title  && filter.checked
-    )}
-    onChange={this.handleTileClick}
+            <SelectableTile className="scoreCard" 
+    //         selected={filterController.getFilters().some(
+    //   filter => filter.text ===this.props.title  && filter.checked
+    // )}
+    // onChange={this.handleTileClick}
     >
             <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"middle"}}>&nbsp;{this.props.icon}</span></div>
             <div className="score">{this.props.count}</div>

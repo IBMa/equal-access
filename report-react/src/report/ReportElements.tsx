@@ -59,6 +59,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.items.push(item);
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
+            
         }
 
         return <div className="report" role="rowgroup">

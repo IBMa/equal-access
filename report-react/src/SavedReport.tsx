@@ -22,8 +22,8 @@ import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
 import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme, Tabs, TabList, TabPanel, Tab, TabPanels ,Dropdown,MultiSelect} from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
-import { filterController } from "./FilterController";
 import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilIssueReact";
+import ReportElements from "./report/ReportElements";
 
 
 interface SavedReportProps {
@@ -33,7 +33,7 @@ interface SavedReportProps {
 interface SavedReportState {
     selectedItem: IReportItem | null;
     reportViewState:'Requirements'|'Rules'|'Element roles';
-    selectedItems: Array<{ id: string; text: string; checked: boolean }>; 
+    selectedItems: Array<{ id: string; text: string }>; 
 
 }
 const filterItems = [
@@ -49,7 +49,7 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
     state: SavedReportState = {
         selectedItem: null,
         reportViewState: "Element roles",
-        selectedItems: filterController.getFilters().filter(item => item.id!=='3'), 
+        selectedItems: filterItems.filter(item => item.id!=='3'), 
 
     }
 
@@ -63,15 +63,8 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
     }
   
     handleFilterChange = (selectedItems: Array<{ id: string; text: string }>) => {
-        const updatedFilters = filterController.getFilters().map(filter => ({
-          ...filter,
-          checked: selectedItems.some(selected => selected.id === filter.id),
-        }));
-        filterController.setFilters(updatedFilters);
-
-        this.setState({
-          selectedItems: updatedFilters.filter(item => item.checked),
-        });
+       this.setState({selectedItems})
+       
       };
     render() {
        
@@ -171,11 +164,10 @@ console.log("data",this.props.reportData)
                                     }
                                     light={false}
                                     type="default"
-                                    selectedItems={filterController.getFilters()}
-                                    initialSelectedItems={filterController.getFilters()}
-                                    onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) =>
-                                      this.handleFilterChange(event.selectedItems)
-                                    }
+                                    selectedItems={this.state.selectedItems}
+                                    initialSelectedItems={this.state.selectedItems}
+                                    onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
+
                                 />
                                 <Dropdown
                                     className="viewMulti"
@@ -194,14 +186,19 @@ console.log("data",this.props.reportData)
                                     }}
                                 />
                                 </div>
+                                {this.state.reportViewState === "Element roles" && <>
+                                        <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Element roles">
+                                                    <ReportElements selectItem={this.selectItem.bind(this)} report={this.props.reportData.report}  />
+                                                </div>
+                                    </>}
                        
                                     {this.state.reportViewState === "Requirements" && <>
-                                        <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by checkpoint">
+                                        <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Requirements">
                                                     <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
                                                 </div>
                                     </>}
                                     {this.state.reportViewState === "Rules" && <>
-                                        <div  style={{marginTop:"4rem"}} role="table" aria-label="Issues grouped by checkpoint">
+                                        <div  style={{marginTop:"4rem"}} role="table" aria-label="Issues grouped by Rules">
                                                     <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
                                                 </div>
                                     </>}
