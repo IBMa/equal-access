@@ -418,6 +418,14 @@ jobs:
         server-id: ossrh
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
+    - uses: s4u/maven-settings-action@v3.0.0
+      with:
+        servers: |
+          [{
+            "id": "central",
+            "username": "${{ secrets.MVN_GITHUB_USER }}",
+            "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
+          }]
     - name: Latest Chrome
       uses: browser-actions/setup-chrome@v1
       with:
@@ -436,8 +444,6 @@ jobs:
       run: mvn --batch-mode deploy
       working-directory: java-accessibility-checker
       env:
-        MAVEN_USERNAME: ${{ secrets.MVN_GITHUB_USER }}
-        MAVEN_PASSWORD: ${{ secrets.MVN_GITHUB_TOKEN }}
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
         chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
 

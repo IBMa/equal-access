@@ -1,3 +1,4 @@
 .mvn
 results
 target
+settings.xml
