@@ -182,7 +182,7 @@ public class AccessibilityCheckerTest {
             ACConfigManager.getConfig();
 
             Gson gson = new Gson();
-            File testRootDir = Paths.get(System.getProperty("user.dir"), "..","..","accessibility-checker-engine","test","v2","checker","accessibility","rules").toFile();
+            File testRootDir = Paths.get(System.getProperty("user.dir"), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules").toFile();
             ArrayList<File> testFiles = new ArrayList<>();
             listFiles(testRootDir, testFiles);
 
