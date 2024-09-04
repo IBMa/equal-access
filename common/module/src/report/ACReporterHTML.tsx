@@ -18,7 +18,7 @@ import { IConfigInternal } from "../config/IConfig";
 import { Guideline } from "../engine/IGuideline";
 import { CompressedReport, IBaselineReport } from "../engine/IReport";
 import { GenSummReturn, IReporter, IReporterStored, ReporterManager } from "./ReporterManager";
-import { genReport } from "./genReport";
+import { genReport } from "../../../../accessibility-checker-extension/src/ts/util/htmlReport/genReport";
 
 export class ACReporterHTML implements IReporter {
     public name(): string {
