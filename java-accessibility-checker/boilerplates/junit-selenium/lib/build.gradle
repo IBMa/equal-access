@@ -30,7 +30,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
-    implementation 'com.ibm.able.equalaccess:accessibility-checker:1.0.0-beta-5:selenium'
+    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-5:selenium'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
