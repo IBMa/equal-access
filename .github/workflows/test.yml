@@ -391,7 +391,8 @@ jobs:
       working-directory: rule-server/dist
     - run: sleep 10
       working-directory: rule-server/dist
-    - run: ./gradlew test
+    - name: Publish package
+      run: mvn --batch-mode test
       working-directory: java-accessibility-checker
       env: 
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
@@ -423,6 +424,8 @@ jobs:
       env:
         MAVEN_USERNAME: ${{ secrets.MVN_GITHUB_USER }}
         MAVEN_PASSWORD: ${{ secrets.MVN_GITHUB_TOKEN }}
+        chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
+        chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
 
 ###############################################################################
 # Karma Tests
