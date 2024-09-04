@@ -391,7 +391,7 @@ jobs:
       working-directory: rule-server/dist
     - run: sleep 10
       working-directory: rule-server/dist
-    - name: Publish package
+    - name: Test package
       run: mvn --batch-mode test
       working-directory: java-accessibility-checker
       env: 
@@ -424,6 +424,14 @@ jobs:
         chrome-version: latest
         install-chromedriver: true
       id: setup-chrome
+    - run: npm install
+      working-directory: rule-server
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
     - name: Publish package
       run: mvn --batch-mode deploy
       working-directory: java-accessibility-checker
