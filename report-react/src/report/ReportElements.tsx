@@ -20,6 +20,8 @@ import "./report.scss";
 import { IReport, IReportItem, valueMap } from "../IReport";
 import ReportRow from "./ReportRow";
 import { Grid, Column } from "@carbon/react";
+import { UtilIssue } from "../util/UtilIssue";
+import { IssueValue } from "../util/UtilIssueReact";
 
 interface IReportElementsState {
 }
@@ -49,7 +51,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             let thisGroup = groupMap[item.path.aria];
             if (!thisGroup) {
                 thisGroup = {
-                    title: item.path.aria,
+                    title: (item.path.aria).trim().replace(/ /g, "").replace(/[[\]]/g, "").replace(/\//g, ":").replace(/[^A-Za-z0-9\-_:.]/g, "_"),
                     counts: {},
                     items: []
                 }
@@ -61,6 +63,11 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
             
         }
+        groups.sort((groupA, groupB) => groupA.title.localeCompare(groupB.title));
+        for (const group of groups) {
+            group.items.sort((a, b) => UtilIssue.valueToOrder(a.value as  IssueValue)-UtilIssue.valueToOrder(b.value as  IssueValue));
+        }
+
 
         return <div className="report" role="rowgroup">
             <Grid className="reportHeader">

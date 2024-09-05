@@ -15,7 +15,6 @@
   *****************************************************************************/
 import React, { ReactNode } from "react";
 import {  SelectableTile } from '@carbon/react';
-// import { filterController } from "./FilterController";
 import "./ScoreCard.scss";
 
 interface ScoreCardProps {
@@ -23,30 +22,17 @@ interface ScoreCardProps {
     icon?: ReactNode
     count?: number
     children?: any
+    checked?:Boolean
+    handleCardClick?:(item:string)=>void
 }
 
 export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
-    // handleTileClick = () => {
-    //     const filters = filterController.getFilters();
-    
-    //     const updatedFilters = filters.map(filter => {
-    //       if (filter.text === this.props.title) {
-    //         return { ...filter, checked: !filter.checked };
-    //       }
-    //       return filter;
-    //     });
-    
-    //     filterController.setFilters(updatedFilters);
-  
-    //   };
-
+   
     render() {
         return <div >
             <SelectableTile className="scoreCard" 
-    //         selected={filterController.getFilters().some(
-    //   filter => filter.text ===this.props.title  && filter.checked
-    // )}
-    // onChange={this.handleTileClick}
+   selected={this.props.checked}   onClick={() => this.props.handleCardClick && this.props.handleCardClick(this.props.title)} 
+
     >
             <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"middle"}}>&nbsp;{this.props.icon}</span></div>
             <div className="score">{this.props.count}</div>
