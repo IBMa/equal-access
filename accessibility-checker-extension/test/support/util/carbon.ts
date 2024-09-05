@@ -46,6 +46,270 @@ export namespace CarbonUtil {
         }
     }
 
+    export namespace Breadcrumb {
+        export async function navigateTo(page: Page, txt: string) {
+            let selector = `//a[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//a[text()='${txt}']`);
+        }
+    }
+    
+    export namespace CodeSnippet {
+        export async function copyCode(page: Page, txt: string) {
+            let selector = `//button[contains(@class, 'cds--snippet-button') and @aria-label='Copy code']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//pre[contains(@class, 'cds--snippet')]`);
+        }
+    }
+    
+    export namespace ContainedList {
+        export async function expandItem(page: Page, txt: string) {
+            let selector = `//button[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[text()='${txt}']`);
+        }
+    }
+    
+    export namespace ContentSwitcher {
+        export async function switchTo(page: Page, txt: string) {
+            let selector = `//button[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[text()='${txt}']`);
+        }
+    }
+    
+    export namespace ContentSwitcher {
+        export async function switchTo(page: Page, txt: string) {
+            let selector = `//button[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[text()='${txt}']`);
+        }
+    }
+    
+    export namespace DatePicker {
+        export async function selectDate(page: Page, date: string) {
+            let selector = `//input[@type='text' and @placeholder='mm/dd/yyyy']`;
+            await PupUtil.elemType(page, selector, date);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//input[@type='text' and @placeholder='mm/dd/yyyy']`);
+        }
+    }
+    
+    export namespace FileUploader {
+        export async function uploadFile(page: Page, filePath: string) {
+            let selector = `//input[@type='file']`;
+            await page.setInputFiles(selector, filePath);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//input[@type='file']`);
+        }
+    }
+    
+    export namespace Form {
+        export async function submit(page: Page, formId: string) {
+            let selector = `//form[@id='${formId}']//button[@type='submit']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, formId: string) {
+            await PupUtil.elemVisible(page, `//form[@id='${formId}']`);
+        }
+    }
+    
+    export namespace Form {
+        export async function submit(page: Page, formId: string) {
+            let selector = `//form[@id='${formId}']//button[@type='submit']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, formId: string) {
+            await PupUtil.elemVisible(page, `//form[@id='${formId}']`);
+        }
+    }
+    
+    export namespace InlineLoading {
+        export async function waitForCompletion(page: Page) {
+            let selector = `//div[contains(@class, 'cds--inline-loading__text')]`;
+            await PupUtil.elemInvisible(page, selector);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//div[contains(@class, 'cds--inline-loading')]`);
+        }
+    }
+    
+    export namespace List {
+        export async function selectItem(page: Page, txt: string) {
+            let selector = `//li[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//li[text()='${txt}']`);
+        }
+    }
+    
+    export namespace Loading {
+        export async function waitForLoading(page: Page) {
+            let selector = `//div[contains(@class, 'cds--loading')]`;
+            await PupUtil.elemInvisible(page, selector);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//div[contains(@class, 'cds--loading')]`);
+        }
+    }
+    
+    export namespace MenuButtons {
+        export async function openMenu(page: Page, txt: string) {
+            let selector = `//button[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[text()='${txt}']`);
+        }
+    }
+    
+    export namespace NumberInput {
+        export async function setNumber(page: Page, value: number) {
+            let selector = `//input[@type='number']`;
+            await PupUtil.elemType(page, selector, value.toString());
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//input[@type='number']`);
+        }
+    }
+    
+    export namespace Pagination {
+        export async function goToPage(page: Page, pageNumber: string) {
+            let selector = `//button[text()='${pageNumber}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//div[contains(@class, 'cds--pagination')]`);
+        }
+    }
+    
+    export namespace Popover {
+        export async function openPopover(page: Page, txt: string) {
+            let selector = `//button[@aria-label='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[@aria-label='${txt}']`);
+        }
+    }
+    
+    export namespace ProgressBar {
+        export async function waitForCompletion(page: Page) {
+            let selector = `//div[contains(@class, 'cds--progress-bar')]`;
+            await PupUtil.elemInvisible(page, selector);
+        }
+    
+        export async function exists(page: Page) {
+            await PupUtil.elemVisible(page, `//div[contains(@class, 'cds--progress-bar')]`);
+        }
+    }
+    
+    export namespace Tag {
+        export async function closeTag(page: Page, txt: string) {
+            let selector = `//span[text()='${txt}']/following-sibling::button`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//span[text()='${txt}']`);
+        }
+    }
+    
+    export namespace Tile {
+        export async function selectTile(page: Page, txt: string) {
+            let selector = `//span[text()='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//span[text()='${txt}']`);
+        }
+    }
+    
+    export namespace Toggle {
+        export async function toggle(page: Page, txt: string) {
+            let selector = `//label[@for='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//label[@for='${txt}']`);
+        }
+    }
+    
+    export namespace Toggletip {
+        export async function openTip(page: Page, txt: string) {
+            let selector = `//button[@aria-label='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[@aria-label='${txt}']`);
+        }
+    }
+    
+    export namespace Tooltip {
+        export async function showTooltip(page: Page, txt: string) {
+            let selector = `//button[@aria-label='${txt}']`;
+            await PupUtil.elemHover(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[@aria-label='${txt}']`);
+        }
+    }
+    
+    export namespace Treeview {
+        export async function expandNode(page: Page, txt: string) {
+            let selector = `//span[text()='${txt}']/ancestor::button`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//span[text()='${txt}']`);
+        }
+    }
+    
+    export namespace UIShell {
+        export async function openMenu(page: Page, txt: string) {
+            let selector = `//button[@aria-label='${txt}']`;
+            await PupUtil.elemClick(page, selector);
+        }
+    
+        export async function exists(page: Page, txt: string) {
+            await PupUtil.elemVisible(page, `//button[@aria-label='${txt}']`);
+        }
+    }
+    
     export namespace Dropdown {
         export async function activate(scope: Page | ElementHandle<Node>, label: string, value: string) {
             await PupUtil.elemClick(scope, `//div[label[contains(text(), '${label}')]]/label|//button[@role='combobox'][.//*[@class='cds--list-box__label'][.='${label}']]`);
@@ -67,7 +331,7 @@ export namespace CarbonUtil {
             await PupUtil.elemNotVisible(page, `//a[@href][.='${txt}']`);
         }
     }
-
+    // Dropdown 2 with label
     export namespace Dropdown {
         export async function isEnabled(page: Page, label: string) {
             // Assuming the dropdown has a specific label associated with it
@@ -158,6 +422,49 @@ export namespace CarbonUtil {
         }
     }
 
+    export namespace Checkbox {
+        export async function set(page: Page, label: string, setChecked: boolean) {
+            let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
+            let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
+            let labelSelector = `//div[label/span[${labelTextSelector}]]/label`;
+            
+            const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
+            if (isChecked !== setChecked) {
+                // Toggle if the values don't match
+                await PupUtil.elemClick(page, labelSelector);
+            }
+
+            await Checkbox.checked_state_is(page, label, setChecked);
+        }
+
+        export async function checked_state_is(page: Page, label: string, checkVal: boolean) {
+            let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
+            let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
+            await PupUtil.waitState(async () => {
+                const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
+                return isChecked === checkVal;
+            })
+        }
+    }
+
+    export namespace Multiselect {
+        export async function activate(page: Page, label: string, values: string[]) {
+            let msLabel = `//div[label[contains(text(), '${label}')]]/label|//button[@role='combobox'][.//*[@class='cds--list-box__label'][.='${label}']]`;
+            await PupUtil.elemClick(page, msLabel);
+            await PupUtil.evalScript(page, msLabel, (elem) => {
+                let selectedItems = elem.querySelectorAll("li[aria-selected='true']");
+                for (const selectedItem of selectedItems) {
+                    (selectedItem as any).click();
+                }
+            })
+            for (const value of values) {
+                await PupUtil.elemClick(page, `//div[label[contains(text(), '${label}')]]//li[.='${value}']`);
+            }
+            await PupUtil.elemPress(page, msLabel, "Escape");
+        }
+    }
+
+    
     export namespace Tab {
         export async function select(page: Page, label: string) {
             await PupUtil.elemClick(page, `//button[@role='tab'][.='${label}']`);

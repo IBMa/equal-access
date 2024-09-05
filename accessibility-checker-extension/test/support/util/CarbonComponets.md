@@ -4,41 +4,42 @@ List of carbon components
 |--------------------|-------------|-------|
 | Accordion          |             |       |
 | Breadcrumb         |             |       |
-| Button             |             |       |
-| Checkbox           |             |       |
+| Button             |      Y      |       |
+| Checkbox           |      y      |       |
 | Code Snippet       |             |       |
 | Contained List     |             |       |
 | Content Switcher   |             |       |
-| Data Table         |             |       |
+| Data Table         |     y       |       |
 | Date Picker        |             |       |
-| Dropdown           |             |       |
+| Dropdown           |     y       |       |
 | File Uploader      |             |       |
 | Form               |             |       |
 | Inline Loading     |             |       |
-| Link               |             |       |
+| Link               |     y       |       |
 | List               |             |       |
 | Loading            |             |       |
-| Menu               |             |       |
+| Menu               |     y       |       |
 | Menu Buttons       |             |       |
-| Modal              |             |       |
-| Multiselect        |             |       |
-| Notification       |             |       |
+| Modal              |     y       |       |
+| Multiselect        |     y       |       |
+| Notification       |     y       |       |
 | Number Input       |             |       |
 | Pagination         |             |       |
 | Popover            |             |       |
 | Progress Bar       |             |       |
 | Progress Indicator |             |       |
-| Radio Button       |             |       |
+| Radio Button       |     y       |       |
 | Search             |             |       |
 | Select             |             |       |
 | Slider             |             |       |
 | Structured List    |             |       |
-| Tabs               |             |       |
+| Tabs               |     y       |       |
 | Tag                |             |       |
-| Text Input         |             |       |
+| Text Input         |     y       |       |
 | Tile               |             |       |
 | Toggle             |             |       |
 | Toggletip          |             |       |
 | Tooltip            |             |       |
 | Treeview           |             |       |
 | UI Shell           |             |       |
+| TextArea           |             | Under ACS but not under carbon, review with ACS team |
