@@ -1,26 +1,33 @@
-## Example gradle commands
-
-Run a specific testcase:
-```
-./gradlew test --tests com.ibm.able.equalaccess.AccessibilityCheckerTest
-```
+## Example maven commands
 
 Run all tests:
 ```
-./gradlew test
+mvn test
 ```
 
-Create jar (result in lib/build/libs):
+Deploy
 ```
-./gradlew jar
-```
-
-Generate javadoc
-```
-./gradlew javadoc
+mvn -s ./settings.xml clean deploy -Dgpg.passphrase=yourpassphrase
 ```
 
-Create maven POM file:
+## PGP Key Management
+
+Generate PGP key:
 ```
-./gradlew generatePomFileForMavenJavaPublication
+gpg --gen-key
+> Real name: IBM Accessibility
+> Email address: eatools@us.ibm.com
+gpg --armor --output public-key.gpg --export eatools@us.ibm.com
 ```
+Go to https://keyserver.ubuntu.com/, Click `Submit Key`, and paste in public-key.gpg
+
+Export private key:
+```
+gpg --export-secret-keys 7A58C8C58C35FF078630FA3615954E19FBC774C4  | base64
+```
+
+Verify Key:
+```
+gpg --list-signatures
+```
+Go to https://keyserver.ubuntu.com/pks/lookup?search=7A58C8C58C35FF078630FA3615954E19FBC774C4&fingerprint=on&op=index and replace `7A58C8C58C35FF078630FA3615954E19FBC774C4` with the key signature

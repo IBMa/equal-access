@@ -426,6 +426,11 @@ jobs:
             "username": "${{ secrets.MVN_GITHUB_USER }}",
             "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
           }]
+    - name: Configure GPG Key
+      run: |
+        echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+      env:
+        GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
     - name: Latest Chrome
       uses: browser-actions/setup-chrome@v1
       with:
@@ -441,7 +446,7 @@ jobs:
     - run: sleep 10
       working-directory: rule-server/dist
     - name: Publish package
-      run: mvn --batch-mode deploy
+      run: mvn --batch-mode deploy -Dgpg.passphrase=${{ secrets.GPG_SIGNING_KEY_PASS }}
       working-directory: java-accessibility-checker
       env:
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
