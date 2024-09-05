@@ -20,7 +20,7 @@ import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
-import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme, Tabs, TabList, TabPanel, Tab, TabPanels ,Dropdown,MultiSelect} from '@carbon/react';
+import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect} from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
 import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilIssueReact";
 import ReportElements from "./report/ReportElements";
@@ -66,9 +66,17 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
        this.setState({selectedItems})
        
       };
+      handleCardClick=(filterItem:string)=>{
+        if(this.state.selectedItems.some((item)=>item.text===filterItem)){
+            let updatedFilter=this.state.selectedItems.filter((item)=>item.text!==filterItem);
+            this.setState({selectedItems:updatedFilter});
+        }else{
+            let updatedFilter=filterItems.filter((item)=>item.text===filterItem)[0]
+            this.setState({selectedItems:[...this.state.selectedItems,updatedFilter]})
+        }
+      }
     render() {
        
-console.log("data",this.props.reportData)
         if (!this.props.reportData) {
             return <React.Fragment>Report Error</React.Fragment>
         }
@@ -90,6 +98,24 @@ console.log("data",this.props.reportData)
                 ++recommendation;
             }
         }
+        const selectedFilters = this.state.selectedItems.map(item => item.text);
+
+        const filteredReport = {
+            ...this.props.reportData.report,
+            results: this.props.reportData.report.results.filter(issue => {
+                if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL") {
+                    return true;
+                }
+                if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL")) {
+                    return true;
+                }
+                if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION") {
+                    return true;
+                }
+                return false; 
+            })
+        };
+        
         return <div
             role="main"
             id="main-content"
@@ -118,17 +144,18 @@ console.log("data",this.props.reportData)
                                 <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={violations} title="Violations" icon={Violation16}>
+                                <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.selectedItems.some((item)=>item.text==="Violations")}
+                                    handleCardClick={this.handleCardClick}>
                                     Accessibility failures that need to be corrected
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16}>
+                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16} checked={this.state.selectedItems.some((item)=>item.text==="Needs review")}  handleCardClick={this.handleCardClick}>
                                     Issues that may not be a violation; manual review is needed
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16}>
+                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16} checked={this.state.selectedItems.some((item)=>item.text==="Recommendations")}  handleCardClick={this.handleCardClick}>
                                     Opportunities to apply best practices to further improve accessibility
                                 </ScoreCard>
                             </Column>
@@ -139,13 +166,30 @@ console.log("data",this.props.reportData)
                             <Column sm={4} md={8} lg={{offset: 4, span: 12}}>
                                 <div className="summReport">
                                     <div style={{display:"flex",float:"right",gap:"1rem"}}>
+                                    <div style={{flex: "1 1 0", marginRight: "0px", margin: "-1px 0px" }}>
+                                    <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
+                                </div>
+                                <div style={{flex: "1 1 0", margin: "-1px 0px",minWidth:"230px"}}>
                                 <MultiSelect
                                     className="viewMulti"
                                     ariaLabel="Issue type filter"
                                     label="Filter"
                                     size="sm" 
                                     hideLabel={true}
-                                    // disabled={totalCount === 0}
                                     id="filterSelection"
                                     items={filterItems}
                                     itemToString={(item:any) => (item ? item.text : '')}
@@ -169,57 +213,30 @@ console.log("data",this.props.reportData)
                                     onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
 
                                 />
-                                <Dropdown
-                                    className="viewMulti"
-                                    ariaLabel="Select report view"
-                                    // disabled={totalCount === 0}
-                                    id="reportView"
-                                    size="sm" 
-                                    items={viewItems}
-                                    light={false}
-                                    type="default"
-                                    style={{width:"160px", float: "right"}}
-                                    selectedItem={this.state.reportViewState}
-                                    onChange={async (evt: any) => {
-                                        // set state
-                                        this.setState({ reportViewState: evt.selectedItem });
-                                    }}
-                                />
                                 </div>
+                            
+                                </div>
+                                {filteredReport.results.length>0 && <>
                                 {this.state.reportViewState === "Element roles" && <>
                                         <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Element roles">
-                                                    <ReportElements selectItem={this.selectItem.bind(this)} report={this.props.reportData.report}  />
+                                                    <ReportElements selectItem={this.selectItem.bind(this)} report={filteredReport}  />
                                                 </div>
                                     </>}
                        
                                     {this.state.reportViewState === "Requirements" && <>
                                         <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Requirements">
-                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
+                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={filteredReport} ruleset={rs} />
                                                 </div>
                                     </>}
                                     {this.state.reportViewState === "Rules" && <>
                                         <div  style={{marginTop:"4rem"}} role="table" aria-label="Issues grouped by Rules">
-                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
+                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={filteredReport} />
                                                 </div>
                                     </>}
-                                    {/* <Tabs>
-                                        <TabList aria-label="Report details">
-                                            <Tab>Requirements</Tab>
-                                            <Tab>Rules</Tab>
-                                        </TabList>
-                                        <TabPanels>
-                                            <TabPanel>
-                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
-                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
-                                                </div>
-                                            </TabPanel>
-                                            <TabPanel>
-                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
-                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
-                                                </div>
-                                            </TabPanel>
-                                        </TabPanels>
-                                    </Tabs> */}
+                                    </>}
+                                    {filteredReport.results.length===0 &&
+                                    <div className="reportTreeGridEmptyText">No issues detected for the chosen filter criteria. To see all issues, select all issue types, and do not filter hidden issues.</div>}
+                             
                                 </div>
                             </Column>
                         </Grid>
