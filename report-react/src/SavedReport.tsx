@@ -40,7 +40,7 @@ const filterItems = [
     { id: '0', text: 'Violations' },
     { id: '1', text: 'Needs review' },
     { id: '2', text: 'Recommendations' },
-    { id: '3', text: 'Hidden' },
+    // { id: '3', text: 'Hidden' },
 ]
 const viewItems = ["Element roles", "Requirements","Rules"];
 
