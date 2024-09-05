@@ -399,48 +399,6 @@ jobs:
         chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
 
 ###############################################################################
-# Java test
-####
-  java-accessibility-checker-buildtest:
-    runs-on: ubuntu-22.04
-    permissions:
-      packages: write
-    strategy:
-      matrix:
-        node-version: [18.x]
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-java@v4
-      with:
-        distribution: 'semeru' # See 'Supported distributions' for available options
-        java-version: '17'
-        server-id: central
-        server-username: ${{ secrets.MVN_GITHUB_USER }}
-        server-password: ${{ secrets.MVN_GITHUB_TOKEN }}
-    - uses: s4u/maven-settings-action@v3.0.0
-      with:
-        servers: |
-          [{
-            "id": "central",
-            "username": "${{ secrets.MVN_GITHUB_USER }}",
-            "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
-          }]
-    - name: Configure GPG Key
-      run: echo "$GPG_SIGNING_KEY" >private.key
-      env:
-        GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-    - name: Import GPG Key
-      run: gpg --pinentry-mode=loopback --passphrase "$GPG_SIGNING_KEY_PASS" --import private.key
-      env:
-        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
-    - name: Publish package
-      run: mvn --batch-mode deploy -DskipTests -Dgpg.passphrase=$GPG_SIGNING_KEY_PASS
-      working-directory: java-accessibility-checker
-      env:
-        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
-
-###############################################################################
 # Karma Tests
 ####
   karma-accessibility-checker-test:
