@@ -427,9 +427,11 @@ jobs:
             "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
           }]
     - name: Configure GPG Key
-      run: echo "$GPG_SIGNING_KEY" | gpg --import
+      run: echo "$GPG_SIGNING_KEY" >private.key
       env:
         GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+    - name: Import GPG Key
+      run: gpg --import private.key
     - name: Latest Chrome
       uses: browser-actions/setup-chrome@v1
       with:
