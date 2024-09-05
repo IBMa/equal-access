@@ -15,13 +15,6 @@ version '1.0.0'
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
-    maven {
-        url = uri("https://maven.pkg.github.com/IBMa/equal-access")
-        credentials {
-            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-        }
-    }
 }
 
 dependencies {
@@ -30,7 +23,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
-    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-5:selenium'
+    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
