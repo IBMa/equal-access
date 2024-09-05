@@ -1,3 +1,5 @@
+Deployments found at https://central.sonatype.com/publishing/deployments
+
 ## Example maven commands
 
 Run all tests:
