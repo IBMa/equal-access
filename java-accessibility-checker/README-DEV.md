@@ -23,7 +23,7 @@ Go to https://keyserver.ubuntu.com/, Click `Submit Key`, and paste in public-key
 
 Export private key:
 ```
-gpg --export-secret-keys 7A58C8C58C35FF078630FA3615954E19FBC774C4  | base64
+gpg --export-secret-keys -a 7A58C8C58C35FF078630FA3615954E19FBC774C4
 ```
 
 Verify Key:
