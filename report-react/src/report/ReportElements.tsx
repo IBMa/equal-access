@@ -51,7 +51,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             let thisGroup = groupMap[item.path.aria];
             if (!thisGroup) {
                 thisGroup = {
-                    title: (item.path.aria).trim().replace(/ /g, "").replace(/[[\]]/g, "").replace(/\//g, ":").replace(/[^A-Za-z0-9\-_:.]/g, "_"),
+                    title: (item.path.aria),
                     counts: {},
                     items: []
                 }
