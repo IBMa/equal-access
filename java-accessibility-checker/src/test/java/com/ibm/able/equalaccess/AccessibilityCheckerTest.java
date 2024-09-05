@@ -150,7 +150,7 @@ public class AccessibilityCheckerTest {
         }
 
     }
-    public void getComplianceTestsuite() throws IOException {
+    @Test public void getComplianceTestsuite() throws IOException {
         ACConfigManager.resetConfig();
         File configFile = new File("achecker.json");
         try {

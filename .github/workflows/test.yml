@@ -426,11 +426,6 @@ jobs:
             "username": "${{ secrets.MVN_GITHUB_USER }}",
             "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
           }]
-    - name: Configure GPG Key
-      run: |
-        export GPG_TTY=$(tty) echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-      env:
-        GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
     - name: Latest Chrome
       uses: browser-actions/setup-chrome@v1
       with:
@@ -451,6 +446,8 @@ jobs:
       env:
         chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
         chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SIGNING_KEY_PASS }}
+        MAVEN_GPG_KEY: ${{ secrets.GPG_SIGNING_KEY }}
 
 ###############################################################################
 # Karma Tests
