@@ -21,7 +21,7 @@ import Popup from "@carbon/icons-react/lib/Popup";
 import ChevronUp from "@carbon/icons-react/lib/ChevronUp";
 import ChevronDown from "@carbon/icons-react/lib/ChevronDown";
 import { Grid, Column } from "@carbon/react";
-import { Violation16,NeedsReview16,Recommendation16 } from "../util/UtilIssueReact";
+import { Violation16,NeedsReview16,Recommendation16 } from "../util/UtilImages";
 
 
 

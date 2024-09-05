@@ -22,7 +22,7 @@ import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
 import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect} from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
-import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilIssueReact";
+import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilImages";
 import ReportElements from "./report/ReportElements";
 
 
