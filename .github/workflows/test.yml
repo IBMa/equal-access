@@ -431,7 +431,7 @@ jobs:
       env:
         GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
     - name: Import GPG Key
-      run: gpg --import private.key --pinentry-mode=loopback --passphrase "$GPG_SIGNING_KEY_PASS"
+      run: gpg --pinentry-mode=loopback --passphrase "$GPG_SIGNING_KEY_PASS" --import private.key
       env:
         GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
     - name: Publish package
