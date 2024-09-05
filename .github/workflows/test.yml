@@ -415,9 +415,9 @@ jobs:
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-        server-id: ossrh
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
+        server-id: central
+        server-username: ${{ secrets.MVN_GITHUB_USER }}
+        server-password: ${{ secrets.MVN_GITHUB_TOKEN }}
     - uses: s4u/maven-settings-action@v3.0.0
       with:
         servers: |
@@ -431,29 +431,14 @@ jobs:
       env:
         GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
     - name: Import GPG Key
-      run: gpg --import private.key
-    - name: Latest Chrome
-      uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: latest
-        install-chromedriver: true
-      id: setup-chrome
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+      run: gpg --import private.key --pinentry-mode=loopback --passphrase "$GPG_SIGNING_KEY_PASS"
+      env:
+        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
     - name: Publish package
-      run: mvn --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.GPG_SIGNING_KEY_PASS }}
+      run: mvn --batch-mode deploy -DskipTests -Dgpg.passphrase=$GPG_SIGNING_KEY_PASS
       working-directory: java-accessibility-checker
       env:
-        chromedriverpath: ${{ steps.setup-chrome.outputs.chromedriver-path }}
-        chromebinpath: ${{ steps.setup-chrome.outputs.chrome-path }}
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SIGNING_KEY_PASS }}
-        MAVEN_GPG_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
 
 ###############################################################################
 # Karma Tests
