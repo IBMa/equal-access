@@ -110,17 +110,6 @@ public class AccessibilityChecker {
     }
 
     /**
-     * Provides a string representation of a report that can be output to console
-     *
-     * @param report Report from a getCompliance scan
-     * @return String representation of the results/violations.
-     */
-    // public static String stringifyResults(ACReport report) {
-        // TODO:
-        // return ReporterManager.stringifyResults(report);
-    // }
-
-    /**
      * This function is responsible for getting the diff results based on label for a scan that was already performed.
      *
      * @param label Provide a label for which to get the diff results for.

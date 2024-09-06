@@ -166,8 +166,11 @@ public class ACReport implements Cloneable {
     /** Amount of time in ms that was spent executing rule functions (as opposed to walking the tree) */
     public int ruleTime = 0;
 
+    private ConfigInternal config;
+
     public ACReport() {}
     public ACReport(ConfigInternal config, ACEReport engineReport, String label) {
+        this.config = config;
         numExecuted = engineReport.numExecuted;
         nls = engineReport.nls;
         screenshot = engineReport.screenshot;
@@ -296,5 +299,29 @@ public class ACReport implements Cloneable {
             ret.results[idx] = (ACReport.Result) results[idx].clone();
         }
         return ret;
+    }
+
+    public String toString() {
+        if (results == null) {
+            return "ERROR: results null";
+        }
+
+        StringBuilder resultsString = new StringBuilder();
+        resultsString.append("Scan: "+label+"\n");
+        List<String> reportLevelsList = Arrays.asList(config.reportLevels);
+
+        for (Result issue: results) {
+            if (reportLevelsList.contains(issue.level.toString())) {
+                // Build string of the issues with only level, messageCode, xpath and snippet.
+                resultsString.append("- Message: " + issue.message +
+                    "\n  Level: " + issue.level +
+                    "\n  XPath: " + issue.path.get("dom") +
+                    "\n  Snippet: " + issue.snippet +
+                    "\n  Help: " + issue.help +
+                    "\n");
+            }
+        }
+
+        return resultsString.toString();
     }
 }
