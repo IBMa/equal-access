@@ -34,6 +34,10 @@ import com.google.gson.JsonSerializer;
 import com.ibm.able.equalaccess.config.ConfigInternal;
 
 public class ACReport implements Cloneable {
+
+    /**
+     * Summary of counts from the scan
+     */
     public static class SummaryCounts implements Cloneable {
         public int violation = 0;
         public int potentialviolation = 0;
@@ -67,6 +71,10 @@ public class ACReport implements Cloneable {
             pass = rhs.pass;
         }
     }
+
+    /**
+     * Scan summary information
+     */
     public static class Summary implements Cloneable {
         public SummaryCounts counts = new SummaryCounts();
         public long scanTime = 0;
@@ -88,6 +96,10 @@ public class ACReport implements Cloneable {
             return ret;
         } 
     }
+
+    /**
+     * An individual issue identified by a rule
+     */
     public static class Result extends ACEReport.Result {
         /** Did this issue match a baseline */
         public boolean ignored = false;
@@ -111,32 +123,33 @@ public class ACReport implements Cloneable {
         }
 
         public static Gson gsonMinimal = new GsonBuilder()
-        .registerTypeAdapter(Result.class, new JsonSerializer<Result>() {
-            @Override
-            public JsonElement serialize(Result issue, Type typeOfSrc, JsonSerializationContext context) {
-                JsonObject jObject = new JsonObject();
-                jObject.addProperty("ruleId", issue.ruleId);
-                jObject.addProperty("reasonId", issue.reasonId);
-                jObject.addProperty("message", issue.message);
-                jObject.addProperty("snippet", issue.snippet);
-                JsonArray buildValue = new JsonArray();
-                for (String s: issue.value) {
-                    buildValue.add(s);
+            .registerTypeAdapter(Result.class, new JsonSerializer<Result>() {
+                @Override
+                public JsonElement serialize(Result issue, Type typeOfSrc, JsonSerializationContext context) {
+                    JsonObject jObject = new JsonObject();
+                    jObject.addProperty("ruleId", issue.ruleId);
+                    jObject.addProperty("reasonId", issue.reasonId);
+                    jObject.addProperty("message", issue.message);
+                    jObject.addProperty("snippet", issue.snippet);
+                    JsonArray buildValue = new JsonArray();
+                    for (String s: issue.value) {
+                        buildValue.add(s);
+                    }
+                    jObject.add("value", buildValue);
+                    JsonArray buildMsgArgs = new JsonArray();
+                    for (String s : issue.messageArgs) {
+                        buildMsgArgs.add(s);
+                    }
+                    jObject.add("msgArgs", buildMsgArgs);
+                    return jObject;
                 }
-                jObject.add("value", buildValue);
-                JsonArray buildMsgArgs = new JsonArray();
-                for (String s : issue.messageArgs) {
-                    buildMsgArgs.add(s);
-                }
-                jObject.add("msgArgs", buildMsgArgs);
-                return jObject;
-            }
-        })
-        .create();
+            })
+            .create();
     }
-    /** List of items detected by the getCompliance scan */
+
+    /** Array of items detected by the getCompliance scan */
     public Result[] results = new Result[0];
-    /** Number of rules executed */
+    /** Number of rules executed as part of the scan */
     public int numExecuted = 0;
     /** Mapping of ruleId to reasonId to a parameterized message */
     public Map<String, Map<String, String>> nls = new HashMap<>();
@@ -150,7 +163,7 @@ public class ACReport implements Cloneable {
     public String label = "";
     /** base64 screenshot, if one was taken */
     public String screenshot=null;
-    /** Amount of time in ms that rules were running */
+    /** Amount of time in ms that was spent executing rule functions (as opposed to walking the tree) */
     public int ruleTime = 0;
 
     public ACReport() {}
@@ -169,33 +182,9 @@ public class ACReport implements Cloneable {
     }
 
     /**
-     * Update the summary counts to match the included results
+     * Ignore: To be used by the ReporterManager
+     * @param summaryCounts
      */
-    public void updateSummaryCounts() {
-        SummaryCounts counts = summary.counts;
-        counts.violation = 0;
-        counts.potentialviolation = 0;
-        counts.recommendation = 0;
-        counts.potentialrecommendation = 0;
-        counts.manual = 0;
-        counts.pass = 0;
-        for (Result issue: results) {
-            if (eRuleLevel.violation.equals(issue.level)) {
-                ++counts.violation;
-            } else if (eRuleLevel.potentialviolation.equals(issue.level)) {
-                ++counts.potentialviolation;
-            } else if (eRuleLevel.recommendation.equals(issue.level)) {
-                ++counts.recommendation;
-            } else if (eRuleLevel.potentialrecommendation.equals(issue.level)) {
-                ++counts.potentialrecommendation;
-            } else if (eRuleLevel.manual.equals(issue.level)) {
-                ++counts.manual;
-            } else if (eRuleLevel.pass.equals(issue.level)) {
-                ++counts.pass;
-            }
-        }
-    }
-
     public void addCounts(ACEReport.SummaryCounts summaryCounts) {
         SummaryCounts counts = this.summary.counts = new SummaryCounts(summaryCounts);
         counts.ignored = 0;
@@ -236,6 +225,10 @@ public class ACReport implements Cloneable {
         counts.elementsViolationReview = elementViolationReviewSet.size();
     }
 
+    /**
+     * Filters the report using the specified reportLevels
+     * @param reportLevels
+     */
     public void filter(String[] reportLevels) {
         Map<String, Set<String>> keepNlsKeys = new HashMap<>();
         List<String> reportLevelsList = Arrays.asList(reportLevels);
