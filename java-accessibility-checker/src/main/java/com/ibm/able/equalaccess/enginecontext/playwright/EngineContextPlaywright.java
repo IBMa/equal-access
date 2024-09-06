@@ -231,12 +231,9 @@ public class EngineContextPlaywright implements IEngineContext {
             // }
     
             // If there is something to report...
-            if (report.results != null) {
-                if (config.captureScreenshots) {
-                    // TODO: Screenshot?
-                    // String image = ((TakesScreenshot)this.driver).getScreenshotAs(OutputType.BASE64);
-                    // report.screenshot = image;
-                }
+            if (report.results != null && config.captureScreenshots) {
+                byte[] image = this.driver.screenshot();
+                report.screenshot = new String(image);
             }
             return report;
         } catch (Error err) {
