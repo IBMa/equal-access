@@ -15,7 +15,7 @@
  *****************************************************************************/
 package com.foo;
 
-public class SomeClass {
+public class SomeClassPlaywright {
 
     public boolean someFunction() {
         return true;
