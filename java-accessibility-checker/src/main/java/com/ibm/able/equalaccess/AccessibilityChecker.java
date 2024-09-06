@@ -35,6 +35,9 @@ import com.ibm.able.equalaccess.report.BaselineManager.eAssertResult;
 import com.ibm.able.equalaccess.abs.IAbstractAPI;
 import com.ibm.able.equalaccess.abs.MyFS;
 
+/**
+ * The main checker object. See the .jar overview for usage information.
+ */
 public class AccessibilityChecker {
     private AccessibilityChecker() {}
 
@@ -44,7 +47,7 @@ public class AccessibilityChecker {
 
     /**
      * Get the processed configuration object
-     * @return
+     * @return Current configuration set for the checker
      */
     public static Config getConfig() {
         return ACConfigManager.getConfig();
