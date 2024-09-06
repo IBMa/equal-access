@@ -14,6 +14,11 @@ mvn -s ./settings.xml clean deploy -Dgpg.passphrase=yourpassphrase
 
 Deployments show up on https://central.sonatype.com/publishing/deployments and then they can be Dropped or Published. Once Published, they cannot be Dropped.
 
+Generate javadoc for local review (files in target/site/apidocs/)
+```
+mvn javadoc:javadoc
+```
+
 ## PGP Key Management
 
 Generate PGP key:
