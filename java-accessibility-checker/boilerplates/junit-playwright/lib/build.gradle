@@ -22,7 +22,7 @@ dependencies {
     testImplementation libs.junit
 
     implementation 'com.microsoft.playwright:playwright:1.46.0'
-    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-3'
+    implementation 'com.ibm.able:accessibility-checker:1.0.0-beta-4'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

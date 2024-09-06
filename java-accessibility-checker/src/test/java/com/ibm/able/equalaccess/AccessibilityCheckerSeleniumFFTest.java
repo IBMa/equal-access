@@ -173,19 +173,38 @@ public class AccessibilityCheckerSeleniumFFTest {
                 // Firefox
                 Paths.get(testRootDir.getAbsolutePath(), "aria_role_redundant_ruleunit", "Fail.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(), "style_focus_visible_ruleunit", "CSS-used.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "object_text_exists_ruleunit", "act_fail_3.html").toFile()
+                Paths.get(testRootDir.getAbsolutePath(), "object_text_exists_ruleunit", "act_fail_3.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_conflict_ruleunit", "aria-hidden.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "ValidRoleSpecified.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "ValidAttribute.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "ValidRoleSpecifiedValidAttribute.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "InvalidAttribute.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "InValidRoleInvalidAttribute.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "InValidRoleSpecified.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "ValidRoleSpecifiedInvalidAttribute.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "ValidRoleSpecifiedMultiple.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "InValidRoleSpecifiedMultiple.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "area_element_test.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_attribute_valid_ruleunit", "elementsWithSupportingAttributes.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_role_valid_ruleunit", "area_no_href.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_fail2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "textarea_pass2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_fail1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "fieldset_label_valid_ruleunit", "FieldSet-hasarialabel.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "fieldset_label_valid_ruleunit", "FieldSet-nested.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "fieldset_label_valid_ruleunit", "test_mixed_1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "a_text_purpose_ruleunit", "A-nonTabable.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "a_text_purpose_ruleunit", "A-slot-text-error2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "a_text_purpose_ruleunit", "A-slot-text-error1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit", "link_in_text.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit", "block_element_inline.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_landmark_name_unique_ruleunit", "example_0_fail.html").toFile()
 
                 // Misc
                 // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
             }));
 
             for (File testFile: testFiles) {
-                if (testFile.getAbsolutePath().contains("aria_attribute_valid_ruleunit")) continue;
-                if (testFile.getAbsolutePath().contains("target_spacing_sufficient_ruleunit")) continue;
-                if (testFile.getAbsolutePath().contains("aria_role_valid_ruleunit")) continue;
-                if (testFile.getAbsolutePath().contains("element_scrollable_tabbable_ruleunit")) continue;
-                if (testFile.getAbsolutePath().contains("fieldset_label_valid_ruleunit")) continue;
-                if (testFile.getAbsolutePath().contains("a_text_purpose_ruleunit")) continue;
                 if (skipList.contains(testFile)) continue;
                 AccessibilityCheckerSeleniumFFTest.driver.get("file://"+testFile.getAbsolutePath());
                 ACReport report = AccessibilityChecker.getCompliance(driver, "Selenium_"+testFile.getAbsolutePath().substring(testRootDir.getAbsolutePath().length()));
@@ -208,6 +227,9 @@ public class AccessibilityCheckerSeleniumFFTest {
                                 }
                             }
                         }
+                        // if (actualIssues.size() != 0 || expectedIssues.size () != 0) {
+                        //     System.err.println("XXXX: "+testFile.toString());
+                        // }
                         assertEquals(testFile.toString()+": Issue triggered was not expected", 0, actualIssues.size());
                         assertEquals(testFile.toString()+": Expected issue was not triggered ("+testFile.getAbsolutePath()+")\n---\n"+gson.toJson(report.results)+"\n---\n"+gson.toJson(expectedIssues)+"\n"+testFile.toString(), 0, expectedIssues.size());
                     }
