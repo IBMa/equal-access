@@ -34,11 +34,6 @@ import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.openqa.selenium.SessionNotCreatedException;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.http.ClientConfig;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -46,8 +41,9 @@ import com.ibm.able.equalaccess.config.ACConfigManager;
 import com.ibm.able.equalaccess.engine.ACReport;
 import com.ibm.able.equalaccess.engine.ACReport.Result;
 import com.ibm.able.equalaccess.report.BaselineManager.eAssertResult;
+import com.microsoft.playwright.*;
 
-public class AccessibilityCheckerTest {
+public class AccessibilityCheckerPlaywrightTest {
     public static class UnitTestInfoResult {
         public String ruleId;
         public String reasonId;
@@ -71,36 +67,19 @@ public class AccessibilityCheckerTest {
         public String[] ruleIds;
         public UnitTestInfoResult[] results;
     }
-    private static ChromeDriver driver;
+    private static Page driver;
 
     /**
      * Setup a Selenium Chrome environment before tests
      */
     @BeforeClass public static void setup() {
-        // Make sure we're starting with a clean config
-        File configFile = new File("achecker.json");
-        configFile.delete();
-        ACConfigManager.resetConfig();
-
-        String workingDir = System.getProperty("user.dir");
-        String chromeDriverDir = System.getenv("chromedriverpath");
-        ChromeOptions options = new ChromeOptions();  
-        if (chromeDriverDir == null) {
-            chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
-        } else {
-            options.setBinary(System.getenv("chromebinpath"));
-        }
-        System.setProperty("webdriver.chrome.driver", chromeDriverDir);
-        options.addArguments("--headless=new");
-        // options.setImplicitWaitTimeout
-        // options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
         try {
-            ClientConfig timeoutConfig = ClientConfig.defaultConfig().readTimeout(Duration.ofMinutes(60));
-            AccessibilityCheckerTest.driver = new ChromeDriver(ChromeDriverService.createDefaultService(), options, timeoutConfig);
-        } catch (SessionNotCreatedException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getAdditionalInformation());
-            throw e;
+            Playwright playwright = Playwright.create();
+            Browser browser = playwright.chromium().launch();
+            AccessibilityCheckerPlaywrightTest.driver = browser.newPage();
+        } catch (Throwable err) {
+            System.err.println(err.toString());
+            err.printStackTrace();
         }
     }
 
@@ -108,34 +87,34 @@ public class AccessibilityCheckerTest {
      * Close Selenium Chrome environment after tests
      */
     @AfterClass public static void teardown() {
-        AccessibilityCheckerTest.driver.close();
+        AccessibilityCheckerPlaywrightTest.driver.close();
         AccessibilityChecker.close();
     }
 
     @Test public void getCompliance() {
         ACConfigManager.getConfig().label = new String[] { "IBMa-Java-TeSt" };
-        AccessibilityCheckerTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
-        ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest");
+        AccessibilityCheckerPlaywrightTest.driver.navigate("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
+        ACReport report = AccessibilityChecker.getCompliance(driver, "Playwright_getComplianceTest");
         assertNotNull(report);
         assertTrue(report.results.length > 0);
     }
 
     @Test public void baselines() throws IOException {
-        Paths.get("baselines", "getComplianceTest3.json").toFile().delete();
-        AccessibilityCheckerTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
-        ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest2");
+        Paths.get("baselines", "Playwright_getComplianceTest3.json").toFile().delete();
+        AccessibilityCheckerPlaywrightTest.driver.navigate("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
+        ACReport report = AccessibilityChecker.getCompliance(driver, "Playwright_getComplianceTest2");
         assertEquals(eAssertResult.FAIL, AccessibilityChecker.assertCompliance(report));
         new File("baselines").mkdirs();
-        Files.copy(Paths.get("results", "getComplianceTest2.json").toFile(), Paths.get("baselines", "getComplianceTest3.json").toFile());
+        Files.copy(Paths.get("results", "Playwright_getComplianceTest2.json").toFile(), Paths.get("baselines", "Playwright_getComplianceTest3.json").toFile());
         
-        report = AccessibilityChecker.getCompliance(driver, "getComplianceTest3");
+        report = AccessibilityChecker.getCompliance(driver, "Playwright_getComplianceTest3");
         assertEquals(eAssertResult.PASS, AccessibilityChecker.assertCompliance(report));        
-        Paths.get("baselines", "getComplianceTest3.json").toFile().delete();
+        Paths.get("baselines", "Playwright_getComplianceTest3.json").toFile().delete();
     }
 
     // @Test public void getComplianceLong() {
-    //     AccessibilityCheckerTest.driver.get("https://openliberty.io/docs/latest/reference/javadoc/liberty-jakartaee8-javadoc.html?path=liberty-javaee8-javadoc/index-all.html");
-    //     ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceLong");
+    //     AccessibilityCheckerTest.driver.navigate("https://openliberty.io/docs/latest/reference/javadoc/liberty-jakartaee8-javadoc.html?path=liberty-javaee8-javadoc/index-all.html");
+    //     ACReport report = AccessibilityChecker.getCompliance(driver, "Playwright_getComplianceLong");
     //     assertNotNull(report);
     //     assertTrue(report.results.length > 0);
     // }
@@ -208,9 +187,9 @@ public class AccessibilityCheckerTest {
 
             for (File testFile: testFiles) {
                 if (skipList.contains(testFile)) continue;
-                AccessibilityCheckerTest.driver.get("file://"+testFile.getAbsolutePath());
-                ACReport report = AccessibilityChecker.getCompliance(driver, testFile.getAbsolutePath().substring(testRootDir.getAbsolutePath().length()));
-                String unitTestInfoStr = AccessibilityCheckerTest.driver.executeScript("return JSON.stringify((typeof (window.UnitTest) !== 'undefined' && window.UnitTest))").toString();
+                AccessibilityCheckerPlaywrightTest.driver.navigate("file://"+testFile.getAbsolutePath());
+                ACReport report = AccessibilityChecker.getCompliance(driver, "Playwright_"+testFile.getAbsolutePath().substring(testRootDir.getAbsolutePath().length()));
+                String unitTestInfoStr = AccessibilityCheckerPlaywrightTest.driver.evaluate("() => JSON.stringify((typeof (window.UnitTest) !== 'undefined' && window.UnitTest))").toString();
                 if (!"false".equals(unitTestInfoStr)) {
                     UnitTestInfo expectedInfo = gson.fromJson(unitTestInfoStr, UnitTestInfo.class);
                     List<String> coveredRuleIds = Arrays.asList(expectedInfo.ruleIds);
