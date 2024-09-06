@@ -78,7 +78,7 @@ try {
         script.setAttribute('aChecker', 'ACE');
         script.setAttribute('src', '%s/ace.js');
         script.addEventListener('load', function() {
-            globalThis.ace_ibma = ace;
+            window.ace_ibma = globalThis.ace_ibma = ace;
             if ('undefined' !== typeof(ace)) {
                 ace = ace_backup_in_ibma;
             } 
@@ -107,7 +107,7 @@ try {
     } 
     if ('undefined' === typeof (ace) || ace === null) {
         eval(%s)
-        globalThis.ace_ibma = ace;
+        window.ace_ibma = globalThis.ace_ibma = ace;
         if ('undefined' !== typeof(ace)) {
             ace = ace_backup_in_ibma;
         } 
@@ -188,7 +188,7 @@ try {
     let policies = %s;
     let reportLevels = %s;
 
-    let checker = new window.ace_ibma.Checker();
+    let checker = new (globalThis.ace_ibma || window.ace_ibma).Checker();
     let customRulesets = [];
     customRulesets.forEach((rs) => checker.addRuleset(rs));
     setTimeout(function() {
@@ -223,7 +223,7 @@ try {
             }
     
             // TODO:
-            // String getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
+            // String getPolicies = "return new (globalThis.ace_ibma || window.ace_ibma).Checker().rulesetIds;";
             // if (curPol != null && !checkPolicy) {
             //     checkPolicy = true;
             //     const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await browser.executeScript(getPolicies));
@@ -259,7 +259,7 @@ try {
         String scriptStr = String.format("""
 let cb = arguments[arguments.length - 1];
 try {            
-    let checker = new window.ace_ibma.Checker();
+    let checker = new (globalThis.ace_ibma || window.ace_ibma).Checker();
     let customRulesets = [];
     customRulesets.forEach((rs) => checker.addRuleset(rs));
     cb(JSON.stringify(checker.getGuidelines()));
@@ -276,7 +276,7 @@ try {
         String scriptStr = String.format("""
 let cb = arguments[arguments.length - 1];
 try {            
-    let checker = new window.ace_ibma.Checker();
+    let checker = new (globalThis.ace_ibma || window.ace_ibma).Checker();
     cb(JSON.stringify(checker.getRules()));
 } catch (e) {
     cb(e);

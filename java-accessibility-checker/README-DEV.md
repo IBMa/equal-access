@@ -7,6 +7,11 @@ Run all tests:
 mvn test
 ```
 
+Run specific test
+```
+mvn test -Dtest="TheSecondUnitTest#whenTestCase2_thenPrintTest2_1"
+```
+
 Deploy
 ```
 mvn -s ./settings.xml clean deploy -Dgpg.passphrase=yourpassphrase
