@@ -33,6 +33,7 @@ public class EngineContextManager {
         if (contentContext == null) {
             engineContext = new EngineContextLocal();
         }
+        // See if this is Selenium and we can load it
         if (engineContext == null 
             && Misc.classIsAvailable("org.openqa.selenium.WebDriver"))
         {
@@ -46,6 +47,30 @@ public class EngineContextManager {
                     // We have a webdriver, use EngineContextSelenium to instantiate it
                     Class<?> ecClass = Class.forName("com.ibm.able.equalaccess.enginecontext.selenium.EngineContextSelenium");
                     engineContext = (IEngineContext) ecClass.getConstructor(webdriverClass).newInstance(contentContext);
+                }
+            } catch (ClassNotFoundException e) {
+            } catch (NoSuchMethodException e) {
+            } catch (SecurityException e) {
+            } catch (InstantiationException e) {
+            } catch (IllegalAccessException e) {
+            } catch (IllegalArgumentException e) {
+            } catch (InvocationTargetException e) {
+            }
+        }
+        // See if this is Playwright and we can load it
+        if (engineContext == null 
+            && Misc.classIsAvailable("com.microsoft.playwright.Page"))
+        {
+            if (!Misc.classIsAvailable("com.ibm.able.equalaccess.enginecontext.playwright.EngineContextPlaywright")) {
+                System.err.println("Attempted scan with Page, but com.ibm.able.equalaccess.enginecontext.playwright.EngineContextPlaywright could not be loaded");
+                throw new ACError("Attempted scan with Page, but com.ibm.able.equalaccess.enginecontext.playwright.EngineContextPlaywright could not be loaded");
+            }
+            try {
+                Class<?> playwrightPageClass = Class.forName("com.microsoft.playwright.Page");
+                if (playwrightPageClass.isAssignableFrom(contentContext.getClass())) {
+                    // We have a webdriver, use EngineContextSelenium to instantiate it
+                    Class<?> ecClass = Class.forName("com.ibm.able.equalaccess.enginecontext.playwright.EngineContextPlaywright");
+                    engineContext = (IEngineContext) ecClass.getConstructor(playwrightPageClass).newInstance(contentContext);
                 }
             } catch (ClassNotFoundException e) {
             } catch (NoSuchMethodException e) {
