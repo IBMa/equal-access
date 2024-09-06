@@ -55,7 +55,9 @@ public class AccessibilityChecker {
     }
 
      /**
-      * Perform a scan of the provided context. Currently supported contexts: WebDriver.
+      * Perform a scan of the provided context. 
+      *
+      * Currently supported content contexts: org.openqa.selenium.WebDriver, com.microsoft.playwright.Page.
       * @param content The content to scan. 
       * @param label Provide a label for the scan that is being performed
       * @return Resulting report

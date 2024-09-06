@@ -20,54 +20,44 @@ import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.openqa.selenium.SessionNotCreatedException;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.ibm.able.equalaccess.AccessibilityChecker;
 import com.ibm.able.equalaccess.engine.ACReport;
 import com.ibm.able.equalaccess.engine.ACReport.Result;
 import com.ibm.able.equalaccess.report.BaselineManager.eAssertResult;
+import com.microsoft.playwright.*;
 
-public class SomeClassTest {
-    private static ChromeDriver driver;
+public class SomeClassPlaywrightTest {
+    private static Page driver;
 
     /**
-     * Setup a Selenium Chrome environment before tests
+     * Setup a Playwright Chromium environment before tests
      */
     @BeforeClass public static void setup() {
-        String workingDir = System.getProperty("user.dir");
-        String chromeDriverDir = System.getenv("chromedriverpath");
-        ChromeOptions options = new ChromeOptions();  
-        if (chromeDriverDir == null) {
-            chromeDriverDir = workingDir+"/src/test/resources/chromedriver-mac-arm64/chromedriver";
-        } else {
-            options.setBinary(System.getenv("chromebinpath"));
-        }
-        System.setProperty("webdriver.chrome.driver", chromeDriverDir);
-        options.addArguments("--headless=new");
         try {
-            SomeClassTest.driver = new ChromeDriver(options);
-        } catch (SessionNotCreatedException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getAdditionalInformation());
-            throw e;
+            Playwright playwright = Playwright.create();
+            Browser browser = playwright.chromium().launch();
+            driver = browser.newPage();
+        } catch (Throwable err) {
+            System.err.println(err.toString());
+            err.printStackTrace();
         }
     }
 
     /**
-     * Close Selenium Chrome environment after tests
+     * Close Playwright environment after tests
      */
     @AfterClass public static void teardown() {
-        SomeClassTest.driver.close();
+        SomeClassPlaywrightTest.driver.close();
         AccessibilityChecker.close();
     }
 
     @Test public void getCompliance() {
-        SomeClassTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
+        SomeClassPlaywrightTest.driver.navigate("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
 
         ACReport report = AccessibilityChecker.getCompliance(driver, "getComplianceTest");
         eAssertResult resultCode = AccessibilityChecker.assertCompliance(report);
+        // The page has compliance issues, so this assert should fail
         assertEquals("Scan resulted in "+resultCode.toString(), eAssertResult.PASS, resultCode);
     }
 }
