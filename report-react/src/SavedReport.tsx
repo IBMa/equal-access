@@ -40,7 +40,7 @@ const filterItems = [
     { id: '0', text: 'Violations' },
     { id: '1', text: 'Needs review' },
     { id: '2', text: 'Recommendations' },
-    // { id: '3', text: 'Hidden' },
+    { id: '3', text: 'Hidden' },
 ]
 const viewItems = ["Element roles", "Requirements","Rules"];
 
@@ -75,8 +75,17 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
             this.setState({selectedItems:[...this.state.selectedItems,updatedFilter]})
         }
       }
+
     render() {
        
+
+        function issueBaselineMatch(baselineIssue: { ruleId: string, reasonId: string, path: { dom: string }, messageArgs: string[] }, issue: any) {
+            const ruleIdMatch = baselineIssue.ruleId === issue.ruleId;
+            const reasonIdMatch = baselineIssue.reasonId === issue.reasonId;
+            const pathDomMatch = baselineIssue.path?.dom === issue.path?.dom;       
+            return ruleIdMatch && reasonIdMatch && pathDomMatch ;
+        }
+        
         if (!this.props.reportData) {
             return <React.Fragment>Report Error</React.Fragment>
         }
@@ -90,26 +99,34 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
         let needReview = 0;
         let recommendation = 0;
         for (const issue of this.props.reportData.report.results) {
-            if (issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL") {
+            const isHidden = this.props.reportData?.report?.ignored && this.props.reportData?.report?.ignored.some(ignoredIssue => issueBaselineMatch(issue as any, ignoredIssue));
+
+            if (issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !isHidden) {
                 ++violations;
-            } else if (issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL")) {
+            } else if (issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !isHidden) {
                 ++needReview;
-            } else if (issue.value[0] === "RECOMMENDATION") {
+            } else if (issue.value[0] === "RECOMMENDATION" && !isHidden) {
                 ++recommendation;
             }
         }
         const selectedFilters = this.state.selectedItems.map(item => item.text);
+        
+    
 
         const filteredReport = {
             ...this.props.reportData.report,
             results: this.props.reportData.report.results.filter(issue => {
-                if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL") {
+                const isHidden = this.props.reportData?.report?.ignored && this.props.reportData?.report?.ignored.some(ignoredIssue => issueBaselineMatch(issue as any, ignoredIssue));
+                if (selectedFilters.includes("Hidden") && isHidden) {
+                    return true ; 
+                }
+                if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !isHidden) {
                     return true;
                 }
-                if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL")) {
+                if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !isHidden) {
                     return true;
                 }
-                if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION") {
+                if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION" && !isHidden) {
                     return true;
                 }
                 return false; 

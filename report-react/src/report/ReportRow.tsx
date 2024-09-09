@@ -125,10 +125,10 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             {open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    return (<Grid className={"itemDetail"}>
-                        <Column sm={1} md={2} lg={4} role="cell"></Column>
-                        <Column sm={3} md={6} lg={8} role="cell">
-                            <div className="itemMessage">
+                    return (
+                    <Grid className={"itemDetail"}>
+                        <Column  sm={4} md={8} lg={8} role="cell">
+                            <div className="itemMessage" style={{ width: "100%" }}>
                                 {val === "Violation" && <span>{Violation16}</span>}
                                 {val === "Needs review" && <span>{NeedsReview16}</span>}
                                 {val === "Recommendation" && <span>{Recommendation16}</span>}
@@ -137,7 +137,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                                     this.props.selectItem(item);
                                     evt.preventDefault();
                                     return false;
-                                }}>Learn more <Popup size={16} /></a>
+                                }}>Learn more </a>
                             </div>
                         </Column>
                     </Grid>)
