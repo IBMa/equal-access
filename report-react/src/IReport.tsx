@@ -33,6 +33,7 @@ export interface IReport {
     }
     passUniqueElements?: string[]
     testedUniqueElements?: number
+    ignored?:string[]
 }
 
 export interface IReportItem {

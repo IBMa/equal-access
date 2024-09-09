@@ -75,7 +75,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </Column>
                 <Column sm={3} md={6} lg={8}>
-                    <div className="label">Element</div>
+                    <div className="label">Element Roles</div>
                 </Column>
             </Grid>
             {groups.map(group => {
