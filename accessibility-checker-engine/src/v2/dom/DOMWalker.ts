@@ -23,11 +23,13 @@ export class DOMWalker {
     root : Node;
     node : Node;
     bEndTag: boolean;
+    considerHidden: boolean;
 
-    constructor(element : Node, bEnd? : boolean, root? : Node) {
-        this.root = root || element;
+    constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean) {
+        this.root = root || (element.ownerDocument ? element.ownerDocument.documentElement: element);
         this.node = element;
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
+        this.considerHidden = considerHidden || false;
     }
 
     elem() : HTMLElement | null {
@@ -61,6 +63,7 @@ export class DOMWalker {
     
     static isNodeVisible(node: Node) {
         if (node === null) return false;
+        
         try {
             let vis = null;
             while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
@@ -98,15 +101,19 @@ export class DOMWalker {
     }
 
     nextNode() : boolean {
+        if (!this.node) {
+            this.bEndTag = false;
+            return false;
+        }
         do {
-            // console.log(this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
+            //console.log("HERE", this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 let elementNode = (this.node as HTMLElement);
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && (this.considerHidden ? DOMWalker.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -114,7 +121,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && (this.considerHidden ? DOMWalker.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
@@ -129,8 +136,9 @@ export class DOMWalker {
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.ELEMENT_NODE */ && this.node.firstChild) {
-                    this.node = this.node.firstChild;
+                //} else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.DOCUMENT_FRAGMENT_NODE */ && this.node.firstChild) {
+                } else if (this.node.firstChild) {
+                    this.node = this.node.firstChild; 
                 } else {
                     this.bEndTag = true;
                 }
@@ -165,7 +173,7 @@ export class DOMWalker {
                 }
             }
         } while (
-            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11 && this.node.nodeType !== 3 /* Node.TEXT_NODE */)
+            (this.node.nodeType !== 1 && this.node.nodeType !== 11 && this.node.nodeType !== 3 )
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
         );
         return true;
@@ -178,7 +186,7 @@ export class DOMWalker {
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && (this.considerHidden ? DOMWalker.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -186,7 +194,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && (this.considerHidden ? DOMWalker.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {

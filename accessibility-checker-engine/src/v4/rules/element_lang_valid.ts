@@ -189,7 +189,7 @@ export const element_lang_valid: Rule = {
             // Ensure that there's actually content of this element - skip subtrees that have other lang attributes
             let hasContent = false;
             if (ruleContext.firstChild !== null) {
-                let nw = new DOMWalker(ruleContext);
+                let nw = new DOMWalker(ruleContext, false, ruleContext, true);
                 while (!hasContent && nw.nextNode()) {
                     // Skip hidden
                     if (nw.node.nodeType === 1) {

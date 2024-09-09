@@ -115,7 +115,7 @@ export const input_checkboxes_grouped: Rule = {
             }
             // Get all of the checkboxes in the form or body (but not nested in something else and not hidden)
             // And get a mapping of these checkboxes to
-            let cWalker = new DOMWalker(ctxForm, false, ctxForm);
+            let cWalker = new DOMWalker(ctxForm, false, ctxForm, true);
             let checkboxQ = [];
             let radiosQ = [];
             while (cWalker.nextNode()) {

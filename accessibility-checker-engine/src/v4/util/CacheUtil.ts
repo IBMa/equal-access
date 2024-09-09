@@ -46,7 +46,7 @@ export class CacheUtil {
 
     public static clearCaches(cacheRoot: Node): void {
         delete (cacheRoot.ownerDocument as CacheDocument).aceCache;
-        let nw = new DOMWalker(cacheRoot);
+        let nw = new DOMWalker(cacheRoot, false, cacheRoot, true);
         do {
             delete (nw.node as CacheElement).aceCache;
             nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;

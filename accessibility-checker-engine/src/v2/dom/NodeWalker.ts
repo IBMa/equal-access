@@ -17,6 +17,8 @@
 /* Return a node walker for the given element.
  * bEnd is optional and defaults to false
  * but if true, indicates the node is the end node
+ * 
+ * TO be removed, replaced by DOMWalker.ts
  */
 export class NodeWalker {
     node : Node;

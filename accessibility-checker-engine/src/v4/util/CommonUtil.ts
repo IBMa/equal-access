@@ -18,6 +18,7 @@ import { AriaUtil } from "./AriaUtil";
 import { VisUtil } from "./VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { NodeWalker } from "../../v2/dom/NodeWalker";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 export class CommonUtil {
@@ -299,7 +300,7 @@ export class CommonUtil {
      * @memberOf AriaUtil
      */
     public static getElementsByRoleHidden(doc, roles, considerHiddenSetting, considerImplicitRoles?) {
-
+        
         // In the case that the role to element assoication is already made, and available in the global hasAttribute
         // we can just use that one instead of building a new one.
         let roleToElems = null;
@@ -991,7 +992,7 @@ export class CommonUtil {
      *
      * @memberOf AriaUtil
      */
-    public static getOnScreenInnerText(element) {
+    public static getOnScreenInnerText(element) {console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id'));
         if (!element) return null;
         if (element.nodeType === 3) return element.nodeValue();
 
@@ -999,9 +1000,10 @@ export class CommonUtil {
         //let nw = new NodeWalker(element);
         let nw = new DOMWalker(element);
         // Loop over all the childrens of the element to get the text
-        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
+        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", current node=" + nw.node.nodeName);
+            if (nw.bEndTag) continue;
             if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node))) {
-                if (nw.node.nextSibling) {
+                if (nw.node.nextSibling) { console.log("elem=" + element.nodeName +", node=" + nw.node.nodeName +", sibling value=" + nw.node.nextSibling.nodeValue.trim());
                     if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
                         text += nw.node.nextSibling.nodeValue;
                     nw.node = nw.node.nextSibling;
@@ -1009,9 +1011,11 @@ export class CommonUtil {
                 } else
                     break;
             }
-            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null)
-                text += nw.node.nodeValue;
-        }
+            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null) { console.log("elem=" + element.nodeName +", node=" +nw.node.nodeName + ", node text=" + nw.node.nodeValue.trim());
+                text += nw.node.nodeValue.trim(); 
+            }    
+            console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", text=" + text.trim());
+        } console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", final text=" + text.trim());
         return text.trim();
     }
 
