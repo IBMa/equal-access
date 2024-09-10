@@ -112,7 +112,7 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                 ++hidden;
             }
         }
-        let total=violations+needReview+recommendation-hidden;
+        let total=violations+needReview+recommendation;
 
         const selectedFilters = this.state.selectedItems.map(item => item.text);
         
