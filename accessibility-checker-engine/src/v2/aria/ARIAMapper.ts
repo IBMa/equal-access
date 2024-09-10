@@ -147,9 +147,9 @@ export class ARIAMapper extends CommonMapper {
                 if (!parent) {
                     parent = DOMWalker.parentElement(elem) as HTMLElement;
                 }
-                while (parent && parent.nodeType !== 1) {
+                while (parent && parent.nodeType !== 1) { 
                     parent = DOMWalker.parentElement(elem) as HTMLElement;
-                }
+                } if (elem.nodeName == 'MY-LIST' || elem.nodeName == 'MY-LIST-ITEM') console.log("node=" + elem.nodeName +", parent=" + parent.nodeName +", role=" + parent.getAttribute("role"));
                 let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
                 let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
                     role: "",
