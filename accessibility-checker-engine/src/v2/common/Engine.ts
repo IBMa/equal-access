@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 import { DOMWalker } from "../dom/DOMWalker";
-import { Context, PartInfo, AttrInfo } from "./Context";
+import { Context } from "./Context";
 import { Config } from "../config/Config";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
@@ -178,7 +178,7 @@ export class Engine implements IEngine {
         // Initialize the context detector
         do {
             // Get the context information from the rule mappers
-            const contextHierarchies : RuleContextHierarchy = {}
+            const contextHierarchies : RuleContextHierarchy = {};
             for (const namespace in this.mappers) {
                 if (!walker.bEndTag) {
                     contextHierarchies[namespace] = this.mappers[namespace].openScope(walker.node);

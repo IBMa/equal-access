@@ -67,7 +67,7 @@ export const aria_parent_required: Rule = {
         let presentationRoles = ["none", "presentation"];
         const found = roles.some(r=> presentationRoles.includes(r));
         if (found) return null;
-
+        
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
@@ -81,7 +81,7 @@ export const aria_parent_required: Rule = {
             count++;
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
-        }
+        }console.log("node="+ruleContext.nodeName +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
