@@ -46,7 +46,8 @@ export interface IReportItem {
     value: string[],
     message: string,
     snippet: string,
-    help: string
+    help: string,
+    isHidden?:boolean,
 }
 
 export interface ICheckpoint {

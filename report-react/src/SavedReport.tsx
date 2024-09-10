@@ -22,7 +22,7 @@ import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
 import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect} from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
-import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilImages";
+import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages";
 import ReportElements from "./report/ReportElements";
 
 
@@ -98,6 +98,7 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
         let violations = 0;
         let needReview = 0;
         let recommendation = 0;
+        let hidden=0;
         for (const issue of this.props.reportData.report.results) {
             const isHidden = this.props.reportData?.report?.ignored && this.props.reportData?.report?.ignored.some(ignoredIssue => issueBaselineMatch(issue as any, ignoredIssue));
 
@@ -107,32 +108,48 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                 ++needReview;
             } else if (issue.value[0] === "RECOMMENDATION" && !isHidden) {
                 ++recommendation;
+            } else if(isHidden){
+                ++hidden;
             }
         }
+        let total=violations+needReview+recommendation-hidden;
+
         const selectedFilters = this.state.selectedItems.map(item => item.text);
         
     
+const filteredReport = {
+    ...this.props.reportData.report,
+    results: this.props.reportData.report.results
+        .map(issue => {
+            // Check if the issue is hidden
+            const isHidden = this.props.reportData?.report?.ignored?.some(ignoredIssue => 
+                issueBaselineMatch(issue as any, ignoredIssue)
+            );
+            // Add the hidden flag to each issue
+            return {
+                ...issue,
+                isHidden: isHidden 
+            };
+        })
+        .filter(issue => {
+            // show issues based on selected filter
+            if (issue.isHidden && selectedFilters.includes("Hidden")) {
+                return true;
+            }
+            if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !issue.isHidden) {
+                return true;
+            }
+            if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !issue.isHidden) {
+                return true;
+            }
+            if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION" && !issue.isHidden) {
+                return true;
+            }
 
-        const filteredReport = {
-            ...this.props.reportData.report,
-            results: this.props.reportData.report.results.filter(issue => {
-                const isHidden = this.props.reportData?.report?.ignored && this.props.reportData?.report?.ignored.some(ignoredIssue => issueBaselineMatch(issue as any, ignoredIssue));
-                if (selectedFilters.includes("Hidden") && isHidden) {
-                    return true ; 
-                }
-                if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !isHidden) {
-                    return true;
-                }
-                if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !isHidden) {
-                    return true;
-                }
-                if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION" && !isHidden) {
-                    return true;
-                }
-                return false; 
-            })
-        };
-        
+            return false; 
+        })
+};
+
         return <div
             role="main"
             id="main-content"
@@ -182,25 +199,11 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                         <Grid>
                             <Column sm={4} md={8} lg={{offset: 4, span: 12}}>
                                 <div className="summReport">
-                                    <div style={{display:"flex",float:"right",gap:"1rem"}}>
-                                    <div style={{flex: "1 1 0", marginRight: "0px", margin: "-1px 0px" }}>
-                                    <Dropdown
-                                    className="viewMulti"
-                                    ariaLabel="Select report view"
-                                    id="reportView"
-                                    size="sm" 
-                                    items={viewItems}
-                                    light={false}
-                                    type="default"
-                                    style={{width:"160px", float: "right"}}
-                                    selectedItem={this.state.reportViewState}
-                                    onChange={async (evt: any) => {
-                                        // set state
-                                        this.setState({ reportViewState: evt.selectedItem });
-                                    }}
-                                />
-                                </div>
-                                <div style={{flex: "1 1 0", margin: "-1px 0px",minWidth:"230px"}}>
+                                    <div style={{display:"flex",flexDirection:"column",float:"right",alignItems:"flex-end",rowGap:"0.5rem"}}>
+                                        <div style={{display:"flex",gap:"0.25rem",alignItems:"center"}}>
+                                    {Violation16}{violations}{Recommendation16}{recommendation}{NeedsReview16}{needReview}{ViewOff16}{hidden}<span style={{paddingLeft:"1rem",textDecoration:"underline"}}>{total} issues found</span>
+                                    </div>
+                                    <div style={{gap:"1rem",display:"flex",float:"right"}}>
                                 <MultiSelect
                                     className="viewMulti"
                                     ariaLabel="Issue type filter"
@@ -230,9 +233,24 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                                     onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
 
                                 />
+                                      <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
                                 </div>
-                            
-                                </div>
+
+</div>
                                 {filteredReport.results.length>0 && <>
                                 {this.state.reportViewState === "Element roles" && <>
                                         <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Element roles">
