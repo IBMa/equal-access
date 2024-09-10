@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { IArchiveDefinition, IIssue, IMessage, IReport, IRuleset, ISessionState, ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, IIssue, IMessage, IReport, IRuleset, ISessionState, ISettings, IssueValue } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
@@ -394,6 +394,63 @@ class BackgroundController extends Controller {
                                 }
                                 delete result.node;
                             }
+
+                            // Process report before returning it to avoid large message passing of pass messages
+                            if (report) {
+                                let valueMap: { [key: string]: { [key2: string]: string } } = {
+                                    "VIOLATION": {
+                                        "POTENTIAL": "Needs review",
+                                        "FAIL": "Violation",
+                                        "PASS": "Pass",
+                                        "MANUAL": "Needs review"
+                                    },
+                                    "RECOMMENDATION": {
+                                        "POTENTIAL": "Recommendation",
+                                        "FAIL": "Recommendation",
+                                        "PASS": "Pass",
+                                        "MANUAL": "Recommendation"
+                                    },
+                                    "INFORMATION": {
+                                        "POTENTIAL": "Needs review",
+                                        "FAIL": "Violation",
+                                        "PASS": "Pass",
+                                        "MANUAL": "Recommendation"
+                                    }
+                                };
+                            
+                                let valueToStringSingular = (value: IssueValue) => {
+                                    return valueMap[value[0]][value[1]];
+                                }
+                                for (const result of report.results) {
+                                    if (result.ruleTime > 50) {
+                                        console.info(`[PERF: ${result.ruleId}] ${result.ruleTime}`);
+                                    }
+                                }
+                                // let passResults = [];
+                                let remainResults = [];
+                                let counts = {
+                                    "Violation": 0,
+                                    "Needs review": 0,
+                                    "Recommendation": 0,
+                                    "Pass": 0,
+                                    total: 0
+                                };
+                                let xpaths : string[] = report.results.map((result) => result.path.dom);                    
+                                report.testedUniqueElements = Array.from(new Set(xpaths)).length;
+                                for (const result of report.results) {
+                                    let sing = valueToStringSingular(result.value);
+                                    ++counts[sing as eLevel];
+                                    ++counts.total;
+                                    if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
+                                        // passResults.push(result);
+                                    } else {
+                                        remainResults.push(result);
+                                    }
+                                }
+                                report.results = remainResults;
+                                report.counts = counts;
+                            }
+
                             return report;
                         } catch (err) {
                             console.error(err);
@@ -418,11 +475,6 @@ class BackgroundController extends Controller {
                 this.metrics.sendLogsV2();
                 getDevtoolsController(toolTabId, false, "remote").setScanningState("processing");
                 if (report) {
-                    for (const result of report.results) {
-                        if (result.ruleTime > 50) {
-                            console.info(`[PERF: ${result.ruleId}] ${result.ruleTime}`);
-                        }
-                    }
                     report.results.sort((resultA, resultB) => {
                         let valueA = UtilIssue.valueToStringSingular(resultA.value);
                         let valueB = UtilIssue.valueToStringSingular(resultB.value);
@@ -435,29 +487,6 @@ class BackgroundController extends Controller {
                         if (valueB === "Recommendation") return 1;
                         return 0;
                     });
-                    // let passResults = [];
-                    let remainResults = [];
-                    let counts = {
-                        "Violation": 0,
-                        "Needs review": 0,
-                        "Recommendation": 0,
-                        "Pass": 0,
-                        total: 0
-                    };
-                    let xpaths : string[] = report.results.map((result) => result.path.dom);                    
-                    report.testedUniqueElements = Array.from(new Set(xpaths)).length;
-                    for (const result of report.results) {
-                        let sing = UtilIssue.valueToStringSingular(result.value);
-                        ++counts[sing as eLevel];
-                        ++counts.total;
-                        if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
-                            // passResults.push(result);
-                        } else {
-                            remainResults.push(result);
-                        }
-                    }
-                    report.results = remainResults;
-                    report.counts = counts;
                 }
 
                 getDevtoolsController(toolTabId, false, "remote").setReport(report);
