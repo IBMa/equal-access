@@ -210,11 +210,13 @@
     .viewMulti {
         float:right;
         width: 230px;
-        background-color: #f4f4f4;
         .cds--list-box {
             max-height: 2rem;
-            border: solid #a8a8a8 1px;
         }   
+        .cds--list-box__field {
+            background-color: #f4f4f4;
+            border: solid #a8a8a8 1px;
+        }
     }
     .iconGroup{
         display: flex;
