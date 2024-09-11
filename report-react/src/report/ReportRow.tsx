@@ -121,7 +121,6 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
                 </Column>
             </Grid>
-          {/* {open && <hr></hr>} */}
             {!open && <Grid className="itemDetail" />}
             {open && <React.Fragment>
                 {group.items.map(item => {
