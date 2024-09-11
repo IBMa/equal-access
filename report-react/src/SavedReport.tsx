@@ -207,7 +207,7 @@ const filteredReport = {
                                     <span className="iconSummary">{ViewOff16}&nbsp;{hidden}</span>
                                     <span style={{paddingLeft:"1rem",textDecoration:"underline"}}>{total} issues found</span>
                                     </div>
-                                    <div style={{gap:"1rem",display:"flex",float:"right"}}>
+                                    <div style={{display:"flex",float:"right"}}>
                                 <MultiSelect
                                     className="viewMulti"
                                     ariaLabel="Issue type filter"
