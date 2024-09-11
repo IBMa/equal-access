@@ -216,5 +216,21 @@
             border: solid #a8a8a8 1px;
         }   
     }
-    
+    .iconGroup{
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    .iconSummary{
+        display: flex;
+        align-items: center;
+    }
+}
+.reportGroupFilter{
+    display:flex;
+    flex-direction:column ;
+    float: right;
+    align-items: flex-end;
+    row-gap: 0.5rem;
+}
+
 }
