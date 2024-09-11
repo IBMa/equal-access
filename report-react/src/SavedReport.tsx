@@ -199,9 +199,13 @@ const filteredReport = {
                         <Grid>
                             <Column sm={4} md={8} lg={{offset: 4, span: 12}}>
                                 <div className="summReport">
-                                    <div style={{display:"flex",flexDirection:"column",float:"right",alignItems:"flex-end",rowGap:"0.5rem"}}>
-                                        <div style={{display:"flex",gap:"0.25rem",alignItems:"center"}}>
-                                    {Violation16}{violations}{Recommendation16}{recommendation}{NeedsReview16}{needReview}{ViewOff16}{hidden}<span style={{paddingLeft:"1rem",textDecoration:"underline"}}>{total} issues found</span>
+                                    <div className="reportGroupFilter">
+                                        <div className="iconGroup">
+                                    <span className="iconSummary">{Violation16}&nbsp;{violations}</span>
+                                    <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
+                                    <span className="iconSummary">{NeedsReview16}&nbsp;{needReview}</span>
+                                    <span className="iconSummary">{ViewOff16}&nbsp;{hidden}</span>
+                                    <span style={{paddingLeft:"1rem",textDecoration:"underline"}}>{total} issues found</span>
                                     </div>
                                     <div style={{gap:"1rem",display:"flex",float:"right"}}>
                                 <MultiSelect

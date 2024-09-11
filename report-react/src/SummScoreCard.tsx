@@ -90,7 +90,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
                         >IBM Equal Access Toolkit</a> to guide you.
                     </div>
                     <div style={{paddingTop:"36px"}}>More resources:</div>
-                    <div><a className="link" href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank" rel="noopener noreferrer" style={{color:'#002D9C'}}>Quick unit test for accessibility</a></div>
+                    <div><a className="link" href="https://www.ibm.com/able/toolkit/develop/overview/#unit-testing" target="_blank" rel="noopener noreferrer" style={{color:'#002D9C'}}>Quick unit test for developers</a></div>
                     <div><a className="link" href="https://www.ibm.com/able/toolkit/verify/overview"target="_blank" rel="noopener noreferrer" style={{color:'#002D9C'}}>Full accessibility test process</a></div>
                 </Column>
             </Grid>
