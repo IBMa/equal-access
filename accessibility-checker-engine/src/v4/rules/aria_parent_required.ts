@@ -81,7 +81,7 @@ export const aria_parent_required: Rule = {
             count++;
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
-        }console.log("node="+ruleContext.nodeName +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
+        }console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;

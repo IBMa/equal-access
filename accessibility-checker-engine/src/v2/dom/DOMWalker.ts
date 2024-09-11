@@ -55,7 +55,7 @@ export class DOMWalker {
 
     static parentElement(node: Node) : Element | null {
         let elem : Element = node as Element;
-        do {
+        do {  if (elem.nodeName == 'MY-LIST-ITEM') console.log("walker node=" + elem.nodeName +", role=" +elem.getAttribute("role") +", parent=" + DOMWalker.parentNode(elem).nodeName +", parent nodetype=" + DOMWalker.parentNode(elem).nodeType +", id=" + (DOMWalker.parentNode(elem) as Element).getAttribute("id") +", role=" + (DOMWalker.parentNode(elem) as Element).getAttribute("role"));
             elem = DOMWalker.parentNode(elem) as Element;
         } while (elem && elem.nodeType !== 1);
         return elem;
