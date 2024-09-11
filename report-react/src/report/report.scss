@@ -44,6 +44,9 @@
         min-height: 32px;
         padding: 10px 0px 0px;
     }
+    .itemHeader[aria-expanded="true"]{
+        border-bottom: solid #888888 1px;
+      }
 
     .itemDetail {
         border-bottom: solid #888888 1px;
