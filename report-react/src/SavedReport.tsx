@@ -205,7 +205,7 @@ const filteredReport = {
                                     <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
                                     <span className="iconSummary">{NeedsReview16}&nbsp;{needReview}</span>
                                     <span className="iconSummary">{ViewOff16}&nbsp;{hidden}</span>
-                                    <span style={{paddingLeft:"1rem",textDecoration:"underline"}}>{total} issues found</span>
+                                    <span style={{paddingLeft:"1rem"}}>{total} issues found</span>
                                     </div>
                                     <div style={{display:"flex",float:"right"}}>
                                 <MultiSelect
