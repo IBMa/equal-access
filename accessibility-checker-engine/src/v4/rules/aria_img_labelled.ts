@@ -18,7 +18,7 @@ import { VisUtil } from "../util/VisUtil";
 
 export const aria_img_labelled: Rule = {
     id: "aria_img_labelled",
-    context: "aria:img",
+    context: "aria:img, aria:image",
     refactor: {
         "HAAC_Aria_ImgAlt": {
             "Pass_0": "Pass_0",

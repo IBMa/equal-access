@@ -1079,6 +1079,19 @@ export class ARIADefinitions {
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
+        "image": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "img",
+            roleType: "structure",
+            nameRequired: true,
+            nameFrom: ["author"],
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
+        },
+
         "insertion": {
             container: null,
             props: null,
