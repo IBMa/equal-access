@@ -52,7 +52,8 @@ export const aria_parent_required: Rule = {
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-
+        //console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + ruleContext.getAttribute("role"));
+        
         //skip the check if the element is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
@@ -81,7 +82,7 @@ export const aria_parent_required: Rule = {
             count++;
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
-        }console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
+        } console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;

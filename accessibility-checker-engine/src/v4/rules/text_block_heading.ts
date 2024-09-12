@@ -64,7 +64,7 @@ export const text_block_heading: Rule = {
                 type: "integer"
             }
         }
-
+        
         let bodyFont = 0;
         let body = ruleContext.ownerDocument.getElementsByTagName("body");
         if (body != null) {
@@ -84,11 +84,11 @@ export const text_block_heading: Rule = {
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
-            if (CommonUtil.shouldNodeBeSkippedHidden(nw.node))
+            if (nw.node === ruleContext || CommonUtil.shouldNodeBeSkippedHidden(nw.node))
                 continue;
 
             let nwName = nw.node.nodeName.toLowerCase();
-            if (nw.node.nodeType === 3) {
+            if (nw.node.nodeType === 3) { 
                 // for text child
                 if (nw.node.nodeValue.trim().length > 0 && nw.node.parentElement) {
                     // check it's style if the target element contains text, e.g., <p> fake heading</p> 
