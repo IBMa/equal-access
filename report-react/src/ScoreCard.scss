@@ -19,7 +19,7 @@
     }
 
     .description {
-        color: #565656;
+        @include type.type-style('helper-text-01');
     }
 
     @include breakpoint.breakpoint('sm') {

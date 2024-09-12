@@ -17,7 +17,6 @@
 import React, { RefObject } from "react";
 
 import { IReportItem, valueMap, ICheckpoint, IReport } from "../IReport";
-import Popup from "@carbon/icons-react/lib/Popup";
 import ChevronUp from "@carbon/icons-react/lib/ChevronUp";
 import ChevronDown from "@carbon/icons-react/lib/ChevronDown";
 import { Grid, Column } from "@carbon/react";
