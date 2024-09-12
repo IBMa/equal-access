@@ -20,53 +20,39 @@ import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
-import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme, Tabs, TabList, TabPanel, Tab, TabPanels } from '@carbon/react';
+import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect} from '@carbon/react';
+import { UtilIssueReact } from "./util/UtilIssueReact";
+import { Violation16,NeedsReview16,Recommendation16 } from "./util/UtilImages";
+import ReportElements from "./report/ReportElements";
 
-const Violation16 = <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16">
-    <rect style={{ fill: "none" }} width="16" height="16" />
-    <path style={{ fill: "#A2191F" }} d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" />
-    <path style={{ fill: "#FFFFFF", fillOpacity: 0 }} d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" />
-</svg>
-
-const NeedsReview16 = <svg version="1.1" x="0px" y="0px"
-    width="16px" height="16px" viewBox="0 0 16 16">
-    <rect style={{ fill: "none" }} width="16" height="16" />
-    <path style={{ fill: "#F1C21B" }} d="M14.9,13.3l-6.5-12C8.3,1,8,0.9,7.8,1.1c-0.1,0-0.2,0.1-0.2,0.2l-6.5,12c-0.1,0.1-0.1,0.3,0,0.5
-	C1.2,13.9,1.3,14,1.5,14h13c0.2,0,0.3-0.1,0.4-0.2C15,13.6,15,13.4,14.9,13.3z M7.4,4h1.1v5H7.4V4z M8,11.8c-0.4,0-0.8-0.4-0.8-0.8
-	s0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,11.8,8,11.8z"/>
-    <g>
-        <g>
-            <g>
-                <rect x="7.45" y="4" width="1.1" height="5" />
-            </g>
-        </g>
-        <g>
-            <g>
-                <circle cx="8" cy="11" r="0.8" />
-            </g>
-        </g>
-    </g>
-</svg>
-
-const Recommendation16 = <svg version="1.1" x="0px" y="0px"
-    width="16px" height="16px" viewBox="0 0 16 16">
-    <rect style={{ fill: "none" }} width="16" height="16" />
-    <path style={{ fill: "#0043CE" }} d="M14,15H2c-0.6,0-1-0.4-1-1V2c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v12C15,14.6,14.6,15,14,15z" />
-    <text transform="matrix(1 0 0 1 5.9528 12.5044)" style={{ fill: "#FFFFFF", fontFamily: "IBMPlexSerif", fontSize: "12.9996px" }}>i</text>
-</svg>
 
 interface SavedReportProps {
     reportData: ISavedReportData | null
 }
 
 interface SavedReportState {
-    selectedItem: IReportItem | null
+    selectedItem: IReportItem | null;
+    reportViewState:'Requirements'|'Rules'|'Element roles';
+    selectedItems: Array<{ id: string; text: string }>; 
+
 }
+const filterItems = [
+    { id: '0', text: 'Violations' },
+    { id: '1', text: 'Needs review' },
+    { id: '2', text: 'Recommendations' },
+    // { id: '3', text: 'Hidden' },
+]
+const viewItems = ["Element roles", "Requirements","Rules"];
+
 
 export class SavedReport extends React.Component<SavedReportProps, SavedReportState> {
     state: SavedReportState = {
-        selectedItem: null
+        selectedItem: null,
+        reportViewState: "Element roles",
+        selectedItems: filterItems.filter(item => item.id!=='3'), 
+
     }
+
 
     selectItem(item: IReportItem) {
         this.setState({ selectedItem: item });
@@ -75,8 +61,22 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
     clearItem() {
         this.setState({ selectedItem: null });
     }
-
+  
+    handleFilterChange = (selectedItems: Array<{ id: string; text: string }>) => {
+       this.setState({selectedItems})
+       
+      };
+      handleCardClick=(filterItem:string)=>{
+        if(this.state.selectedItems.some((item)=>item.text===filterItem)){
+            let updatedFilter=this.state.selectedItems.filter((item)=>item.text!==filterItem);
+            this.setState({selectedItems:updatedFilter});
+        }else{
+            let updatedFilter=filterItems.filter((item)=>item.text===filterItem)[0]
+            this.setState({selectedItems:[...this.state.selectedItems,updatedFilter]})
+        }
+      }
     render() {
+       
         if (!this.props.reportData) {
             return <React.Fragment>Report Error</React.Fragment>
         }
@@ -98,6 +98,24 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                 ++recommendation;
             }
         }
+        const selectedFilters = this.state.selectedItems.map(item => item.text);
+
+        const filteredReport = {
+            ...this.props.reportData.report,
+            results: this.props.reportData.report.results.filter(issue => {
+                if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL") {
+                    return true;
+                }
+                if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL")) {
+                    return true;
+                }
+                if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION") {
+                    return true;
+                }
+                return false; 
+            })
+        };
+        
         return <div
             role="main"
             id="main-content"
@@ -126,17 +144,18 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                                 <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={violations} title="Violations" icon={Violation16}>
+                                <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.selectedItems.some((item)=>item.text==="Violations")}
+                                    handleCardClick={this.handleCardClick}>
                                     Accessibility failures that need to be corrected
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16}>
+                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16} checked={this.state.selectedItems.some((item)=>item.text==="Needs review")}  handleCardClick={this.handleCardClick}>
                                     Issues that may not be a violation; manual review is needed
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16}>
+                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16} checked={this.state.selectedItems.some((item)=>item.text==="Recommendations")}  handleCardClick={this.handleCardClick}>
                                     Opportunities to apply best practices to further improve accessibility
                                 </ScoreCard>
                             </Column>
@@ -146,24 +165,78 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                         <Grid>
                             <Column sm={4} md={8} lg={{offset: 4, span: 12}}>
                                 <div className="summReport">
-                                    <Tabs>
-                                        <TabList aria-label="Report details">
-                                            <Tab>Requirements</Tab>
-                                            <Tab>Rules</Tab>
-                                        </TabList>
-                                        <TabPanels>
-                                            <TabPanel>
-                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
-                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
+                                    <div style={{display:"flex",float:"right",gap:"1rem"}}>
+                                    <div style={{flex: "1 1 0", marginRight: "0px", margin: "-1px 0px" }}>
+                                    <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
+                                </div>
+                                <div style={{flex: "1 1 0", margin: "-1px 0px",minWidth:"230px"}}>
+                                <MultiSelect
+                                    className="viewMulti"
+                                    ariaLabel="Issue type filter"
+                                    label="Filter"
+                                    size="sm" 
+                                    hideLabel={true}
+                                    id="filterSelection"
+                                    items={filterItems}
+                                    itemToString={(item:any) => (item ? item.text : '')}
+                                    itemToElement={(item:any) => {
+                                            if (item && item.id === "0") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "1") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
+                                            } else if (item && item.id === "2") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
+                                            } else if (item && item.id === "3") {
+                                                return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
+                                            }
+                                            return <></>
+                                        }
+                                    }
+                                    light={false}
+                                    type="default"
+                                    selectedItems={this.state.selectedItems}
+                                    initialSelectedItems={this.state.selectedItems}
+                                    onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
+
+                                />
+                                </div>
+                            
+                                </div>
+                                {filteredReport.results.length>0 && <>
+                                {this.state.reportViewState === "Element roles" && <>
+                                        <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Element roles">
+                                                    <ReportElements selectItem={this.selectItem.bind(this)} report={filteredReport}  />
                                                 </div>
-                                            </TabPanel>
-                                            <TabPanel>
-                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
-                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
+                                    </>}
+                       
+                                    {this.state.reportViewState === "Requirements" && <>
+                                        <div style={{marginTop:"4rem"}}  role="table" aria-label="Issues grouped by Requirements">
+                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={filteredReport} ruleset={rs} />
                                                 </div>
-                                            </TabPanel>
-                                        </TabPanels>
-                                    </Tabs>
+                                    </>}
+                                    {this.state.reportViewState === "Rules" && <>
+                                        <div  style={{marginTop:"4rem"}} role="table" aria-label="Issues grouped by Rules">
+                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={filteredReport} />
+                                                </div>
+                                    </>}
+                                    </>}
+                                    {filteredReport.results.length===0 &&
+                                    <div className="reportTreeGridEmptyText">No issues detected for the chosen filter criteria. To see all issues, select all issue types, and do not filter hidden issues.</div>}
+                             
                                 </div>
                             </Column>
                         </Grid>
