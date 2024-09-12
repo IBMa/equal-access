@@ -208,7 +208,22 @@ const filteredReport = {
                                     <span style={{paddingLeft:"1rem"}}>{total} issues found</span>
                                     </div>
                                     <div style={{display:"flex",float:"right"}}>
-                                <MultiSelect
+                                      <Dropdown
+                                    className="viewMulti"
+                                    ariaLabel="Select report view"
+                                    id="reportView"
+                                    size="sm" 
+                                    items={viewItems}
+                                    light={false}
+                                    type="default"
+                                    style={{width:"160px", float: "right"}}
+                                    selectedItem={this.state.reportViewState}
+                                    onChange={async (evt: any) => {
+                                        // set state
+                                        this.setState({ reportViewState: evt.selectedItem });
+                                    }}
+                                />
+                                    <MultiSelect
                                     className="viewMulti"
                                     ariaLabel="Issue type filter"
                                     label="Filter"
@@ -236,21 +251,6 @@ const filteredReport = {
                                     initialSelectedItems={this.state.selectedItems}
                                     onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
 
-                                />
-                                      <Dropdown
-                                    className="viewMulti"
-                                    ariaLabel="Select report view"
-                                    id="reportView"
-                                    size="sm" 
-                                    items={viewItems}
-                                    light={false}
-                                    type="default"
-                                    style={{width:"160px", float: "right"}}
-                                    selectedItem={this.state.reportViewState}
-                                    onChange={async (evt: any) => {
-                                        // set state
-                                        this.setState({ reportViewState: evt.selectedItem });
-                                    }}
                                 />
                                 </div>
 
