@@ -374,18 +374,18 @@ export class AriaUtil {
         if (!elem) return null;
         let role = CacheUtil.getCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", null);
         if (role === null) {
-            const roles = AriaUtil.getUserDefinedRoles(elem);
+            const roles = AriaUtil.getUserDefinedRoles(elem); 
             let tagProperty = AriaUtil.getElementAriaProperty(elem);
             let allowedRoles = AriaUtil.getAllowedAriaRoles(elem, tagProperty);
             if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
                 for (let i = 0; i < roles.length; i++) {
-                    if (allowedRoles.includes(roles[i])) {
+                    if (allowedRoles.includes("any") || allowedRoles.includes(roles[i])) {
                         role = roles[i];
                         break;
                     }
                 }
             }
-
+            
             if (role === null && considerImplicitRoles) {
                 const implicitRole = AriaUtil.getImplicitRole(elem);
                 role = implicitRole && implicitRole.length > 0 ? implicitRole[0] : undefined;

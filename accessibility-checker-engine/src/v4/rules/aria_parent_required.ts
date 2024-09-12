@@ -82,7 +82,7 @@ export const aria_parent_required: Rule = {
             count++;
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
-        } console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + roles +", parentRole=" + parentRole +",ancestorRoles="+ancestorRoles);
+        }
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
@@ -96,7 +96,8 @@ export const aria_parent_required: Rule = {
                     roleNameArr.push(roles[j]);
                 }
             }
-        }
+        } 
+
         let retToken1 = new Array();
         retToken1.push(roleNameArr.join(", "));
         let retToken2 = new Array();

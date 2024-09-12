@@ -992,7 +992,7 @@ export class CommonUtil {
      *
      * @memberOf AriaUtil
      */
-    public static getOnScreenInnerText(element) {console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id'));
+    public static getOnScreenInnerText(element) {
         if (!element) return null;
         if (element.nodeType === 3) return element.nodeValue();
 
@@ -1000,10 +1000,10 @@ export class CommonUtil {
         //let nw = new NodeWalker(element);
         let nw = new DOMWalker(element);
         // Loop over all the childrens of the element to get the text
-        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", current node=" + nw.node.nodeName);
+        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
             if (nw.bEndTag) continue;
             if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node))) {
-                if (nw.node.nextSibling) { console.log("elem=" + element.nodeName +", node=" + nw.node.nodeName +", sibling value=" + nw.node.nextSibling.nodeValue.trim());
+                if (nw.node.nextSibling) {
                     if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
                         text += nw.node.nextSibling.nodeValue;
                     nw.node = nw.node.nextSibling;
@@ -1011,11 +1011,10 @@ export class CommonUtil {
                 } else
                     break;
             }
-            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null) { console.log("elem=" + element.nodeName +", node=" +nw.node.nodeName + ", node text=" + nw.node.nodeValue.trim());
+            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null) {
                 text += nw.node.nodeValue.trim(); 
             }    
-            console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", text=" + text.trim());
-        } console.log("elem=" + element.nodeName +", id=" + element.getAttribute('id') +", final text=" + text.trim());
+        }
         return text.trim();
     }
 

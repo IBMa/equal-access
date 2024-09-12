@@ -61,52 +61,53 @@ export const aria_attribute_exists: Rule = {
         let hasAttribute = CommonUtil.hasAttribute;
         let testedProperties = 0;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        for (let j = 0; j < roles.length; ++j) {
-            if (designPatterns[roles[j]] && AriaUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
-                let requiredRoleProps = AriaUtil.getRoleRequiredProperties(roles[j], ruleContext);
-                for (let i = 0, length = requiredRoleProps.length; i < length; i++) {
-                    let attribute = requiredRoleProps[i];
-                    if (hasAttribute(ruleContext, attribute)) {
+        let role = AriaUtil.getResolvedRole(ruleContext);
+        if (!role) return;
+        if (designPatterns[role] && AriaUtil.getRoleRequiredProperties(role, ruleContext) != null) {
+            let requiredRoleProps = AriaUtil.getRoleRequiredProperties(role, ruleContext);
+            for (let i = 0, length = requiredRoleProps.length; i < length; i++) {
+                let attribute = requiredRoleProps[i];
+                if (hasAttribute(ruleContext, attribute)) {
+                    testedProperties++;
+                    let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute(requiredRoleProps[i]));
+                    if (nodeValue.length == 0) attrNameArr.push(requiredRoleProps[i]);
+                } else if (requiredRoleProps[i] == "aria-labelledby") {
+                    if ((role == "radiogroup") && (hasAttribute(ruleContext, "aria-label"))) {
                         testedProperties++;
-                        let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute(requiredRoleProps[i]));
-                        if (nodeValue.length == 0) attrNameArr.push(requiredRoleProps[i]);
-                    } else if (requiredRoleProps[i] == "aria-labelledby") {
-                        if ((roles[i] == "radiogroup") && (hasAttribute(ruleContext, "aria-label"))) {
-                            testedProperties++;
-                            let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-label"));
-                            if (nodeValue.length == 0) attrNameArr.push("aria-label");
-                        }
-                    } else if (requiredRoleProps[i] == "aria-valuenow") {
-                        if ((roles[i] == "progressbar") && (hasAttribute(ruleContext, "aria-valuetext"))) {
-                            testedProperties++;
-                            let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-valuetext"));
-                            if (nodeValue.length == 0) attrNameArr.push("aria-valuetext");
-                        }
+                        let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-label"));
+                        if (nodeValue.length == 0) attrNameArr.push("aria-label");
+                    }
+                } else if (requiredRoleProps[i] == "aria-valuenow") {
+                    if ((role == "progressbar") && (hasAttribute(ruleContext, "aria-valuetext"))) {
+                        testedProperties++;
+                        let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-valuetext"));
+                        if (nodeValue.length == 0) attrNameArr.push("aria-valuetext");
                     }
                 }
             }
-            if (designPatterns[roles[j]]) {
-                let tagProperty = AriaUtil.getElementAriaProperty(ruleContext);
-                let permittedRoles = [];
-                permittedRoles.push(roles[j]);
-                let allowedAttributes = AriaUtil.getAllowedAriaAttributes(ruleContext, permittedRoles, tagProperty);
-                for (let i = 0, length = allowedAttributes.length; i < length; i++) {
-                    let attribute = allowedAttributes[i];
-                    if (attribute == "aria-checked" || attribute == "aria-selected" ||
-                        attribute == "aria-expanded" || attribute == "aria-orientation" ||
-                        attribute == "aria-level") {
-                        if (hasAttribute(ruleContext, attribute)) {
-                            testedProperties++;
-                            let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute(attribute));
-                            if (nodeValue.length == 0 && !attrNameArr.includes(attribute)) {
-                                attrNameArr.push(attribute);
-                            }
+        }
+        
+        if (designPatterns[role]) {
+            let tagProperty = AriaUtil.getElementAriaProperty(ruleContext);
+            let permittedRoles = [];
+            permittedRoles.push(role);
+            let allowedAttributes = AriaUtil.getAllowedAriaAttributes(ruleContext, permittedRoles, tagProperty);
+            for (let i = 0, length = allowedAttributes.length; i < length; i++) {
+                let attribute = allowedAttributes[i];
+                if (attribute == "aria-checked" || attribute == "aria-selected" ||
+                    attribute == "aria-expanded" || attribute == "aria-orientation" ||
+                    attribute == "aria-level") {
+                    if (hasAttribute(ruleContext, attribute)) {
+                        testedProperties++;
+                        let nodeValue = CommonUtil.normalizeSpacing(ruleContext.getAttribute(attribute));
+                        if (nodeValue.length == 0 && !attrNameArr.includes(attribute)) {
+                            attrNameArr.push(attribute);
                         }
                     }
                 }
             }
         }
+
         let retMsg = new Array();
         let passed = attrNameArr.length == 0;
         retMsg.push(attrNameArr.join(", "));
