@@ -71,7 +71,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
                 <Column sm={2} md={4} lg={4} className="scLeft">
                     <h2 className="title">{this.props.title}</h2>
                     <div className="score">{currentStatus}%</div>
-                    <div>Percentage of elements with no detected violations or items to review</div>
+                    <div className="summaryTitleDetail">Percentage of elements with no detected violations or items to review</div>
                 </Column>
                 <Column sm={2} md={4} lg={6}>
                     <div>
