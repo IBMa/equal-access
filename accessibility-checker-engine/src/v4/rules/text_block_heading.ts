@@ -76,14 +76,14 @@ export const text_block_heading: Rule = {
         let wordStr: string[] = [];
         let emphasizedText = false;
         //let nw = new NodeWalker(ruleContext);
-        let nw = new DOMWalker(ruleContext);
+        let nw = new DOMWalker(ruleContext);nw.nextNode();
         let passed = false;
         while (!passed &&
             nw.nextNode() && 
             nw.node !== ruleContext &&
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
-        {
+        {   
             if (nw.node === ruleContext || CommonUtil.shouldNodeBeSkippedHidden(nw.node))
                 continue;
 
