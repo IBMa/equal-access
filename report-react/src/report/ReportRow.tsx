@@ -47,7 +47,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     scrollRef: RefObject<HTMLDivElement> = React.createRef();
 
     state: IReportRowState = {
-        expanded: false,
+        expanded: true,
         lastTimestamp: this.props.report.timestamp,
         scrollTo: false
     };
