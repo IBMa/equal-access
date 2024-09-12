@@ -1,6 +1,10 @@
-import {When, Then} from '@cucumber/cucumber';
+import {When, Then, Given} from '@cucumber/cucumber';
 import {CustomWorld} from '../CustomWorld';
 import { CarbonUtil } from '../util/carbon';
+
+Given('a condition is met', async () => {
+    // Implement the step here
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 // UIShell
@@ -94,6 +98,7 @@ When(`user activates Menu {string} {string}`, async function(label: string, txt:
     const page = (this as CustomWorld).browser.page();
     await CarbonUtil.Menu.activate(page, label, txt);
 })
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Modal

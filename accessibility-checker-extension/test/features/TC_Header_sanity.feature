@@ -1,4 +1,4 @@
-@qa
+
 Feature: ScanButton
     Background:
         # Load the checker panel, verify scan button is present
@@ -11,4 +11,7 @@ Feature: ScanButton
         
 
     Scenario: Dropdown is enable 
-        Then Dropdown "Options" is enabled
+        When user activates Button "Menu"
+        Then elem ".reportTreeGrid #tableGridHeader .gridHeaderCell > span" is visible
+
+         When(`user activates Menu {string}

@@ -229,6 +229,34 @@ export namespace PupUtil {
         return downloadFolder;
     }
 
+    export async function waitState(waitFunc: () => Promise<boolean>, msg?: string) {
+        let count = 0;
+        do {
+            if (await waitFunc()) return;
+            await new Promise(resolve => setTimeout(resolve, 100));
+            ++count;
+        } while (count < 50);
+        if (msg) {
+            assert.strictEqual(false, true, msg);
+        } else {
+            assert.strictEqual(false, true);
+        }
+    }
+    
+    // In PupUtil.ts or wherever PupUtil is implemented
+    export class PupUtil {
+        // Other methods...
+    
+        static async elemHover(page: Page | ElementHandle, selector: string) {
+            const element = await page.waitForSelector(selector);
+            if (element) {
+                await element.hover();  // Puppeteer's hover method
+            } else {
+                throw new Error(`Element with selector ${selector} not found.`);
+            }
+        }
+    }
+
     export async function setTempDownloadFolder(page: Page, folder: string) {
         if (folder.includes("..")) throw new Error(".. not allowed in folder name");
         downloadFolder = join(tmpdir(),folder);

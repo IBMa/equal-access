@@ -58,7 +58,7 @@ export namespace CarbonUtil {
     }
     
     export namespace CodeSnippet {
-        export async function copyCode(page: Page, txt: string) {
+        export async function copyCode(page: Page) {
             let selector = `//button[contains(@class, 'cds--snippet-button') and @aria-label='Copy code']`;
             await PupUtil.elemClick(page, selector);
         }
@@ -90,17 +90,6 @@ export namespace CarbonUtil {
         }
     }
     
-    export namespace ContentSwitcher {
-        export async function switchTo(page: Page, txt: string) {
-            let selector = `//button[text()='${txt}']`;
-            await PupUtil.elemClick(page, selector);
-        }
-    
-        export async function exists(page: Page, txt: string) {
-            await PupUtil.elemVisible(page, `//button[text()='${txt}']`);
-        }
-    }
-    
     export namespace DatePicker {
         export async function selectDate(page: Page, date: string) {
             let selector = `//input[@type='text' and @placeholder='mm/dd/yyyy']`;
@@ -109,28 +98,6 @@ export namespace CarbonUtil {
     
         export async function exists(page: Page) {
             await PupUtil.elemVisible(page, `//input[@type='text' and @placeholder='mm/dd/yyyy']`);
-        }
-    }
-    
-    export namespace FileUploader {
-        export async function uploadFile(page: Page, filePath: string) {
-            let selector = `//input[@type='file']`;
-            await page.setInputFiles(selector, filePath);
-        }
-    
-        export async function exists(page: Page) {
-            await PupUtil.elemVisible(page, `//input[@type='file']`);
-        }
-    }
-    
-    export namespace Form {
-        export async function submit(page: Page, formId: string) {
-            let selector = `//form[@id='${formId}']//button[@type='submit']`;
-            await PupUtil.elemClick(page, selector);
-        }
-    
-        export async function exists(page: Page, formId: string) {
-            await PupUtil.elemVisible(page, `//form[@id='${formId}']`);
         }
     }
     
@@ -148,7 +115,7 @@ export namespace CarbonUtil {
     export namespace InlineLoading {
         export async function waitForCompletion(page: Page) {
             let selector = `//div[contains(@class, 'cds--inline-loading__text')]`;
-            await PupUtil.elemInvisible(page, selector);
+            await PupUtil.elemVisible(page, selector);
         }
     
         export async function exists(page: Page) {
@@ -170,7 +137,7 @@ export namespace CarbonUtil {
     export namespace Loading {
         export async function waitForLoading(page: Page) {
             let selector = `//div[contains(@class, 'cds--loading')]`;
-            await PupUtil.elemInvisible(page, selector);
+            await PupUtil.elemVisible(page, selector);
         }
     
         export async function exists(page: Page) {
@@ -225,7 +192,7 @@ export namespace CarbonUtil {
     export namespace ProgressBar {
         export async function waitForCompletion(page: Page) {
             let selector = `//div[contains(@class, 'cds--progress-bar')]`;
-            await PupUtil.elemInvisible(page, selector);
+            await PupUtil.elemVisible(page, selector);
         }
     
         export async function exists(page: Page) {
@@ -280,13 +247,21 @@ export namespace CarbonUtil {
     export namespace Tooltip {
         export async function showTooltip(page: Page, txt: string) {
             let selector = `//button[@aria-label='${txt}']`;
-            await PupUtil.elemHover(page, selector);
+            
+            // Use Puppeteer's native hover method
+            const element = await page.waitForSelector(selector);
+            if (element) {
+                await element.hover();  // Puppeteer's native hover method
+            } else {
+                throw new Error(`Element with selector ${selector} not found.`);
+            }
         }
     
         export async function exists(page: Page, txt: string) {
             await PupUtil.elemVisible(page, `//button[@aria-label='${txt}']`);
         }
     }
+    
     
     export namespace Treeview {
         export async function expandNode(page: Page, txt: string) {
