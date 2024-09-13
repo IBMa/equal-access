@@ -58,7 +58,7 @@ export class DOMWalker {
         do {  
             elem = DOMWalker.parentNode(elem) as Element;
         } while (elem && elem.nodeType !== 1);
-        //if (node.nodeName == 'MY-LIST-ITEM') console.log("walker node=" + node.nodeName +", role=" + (node as Element).getAttribute("role") +", parent=" + elem.nodeName +", parent nodetype=" + elem.nodeType +", id=" + elem.getAttribute("id") +", role=" + elem.getAttribute("role"));
+        if (node.nodeName == 'MY-LIST-ITEM') console.log("walker node=" + node.nodeName +", role=" + (node as Element).getAttribute("role") +", parent=" + elem.nodeName +", parent nodetype=" + elem.nodeType +", id=" + elem.getAttribute("id") +", role=" + elem.getAttribute("role"));
         return elem;
     }
     
