@@ -667,7 +667,7 @@ export class ARIAMapper extends CommonMapper {
         }
         //return this.elemToImplicitRole(elem);
         const roles = AriaUtil.getImplicitRole(elem);
-        
+        //console.log("node=" + node.nodeName +", role= " + (roles ? roles[0] : null) +", resolved=" + AriaUtil.getResolvedRole(elem));
         return !roles || roles.length ===0 ? null : roles[0];
         
         //return AriaUtil.getResolvedRole(elem);

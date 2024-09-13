@@ -377,13 +377,19 @@ export class AriaUtil {
             const roles = AriaUtil.getUserDefinedRoles(elem); 
             let tagProperty = AriaUtil.getElementAriaProperty(elem);
             let allowedRoles = AriaUtil.getAllowedAriaRoles(elem, tagProperty);
+            let containsGeneric = false;
             if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
                 for (let i = 0; i < roles.length; i++) {
                     if (allowedRoles.includes("any") || allowedRoles.includes(roles[i])) {
+                        if (allowedRoles.includes("any") && roles[i] === 'generic') {
+                            containsGeneric = true;
+                            continue;
+                        }
                         role = roles[i];
                         break;
                     }
                 }
+                if (containsGeneric) role = 'generic';
             }
             
             if (role === null && considerImplicitRoles) {
@@ -447,7 +453,7 @@ export class AriaUtil {
      * @memberOf AriaUtil
      */
     public static getImplicitRole(ele): string[] {
-        if (!ele || ele.nodeType !== 1) return [];
+        if (!ele || ele.nodeType !== 1) return null;
         let implicitRoles: string[] = CacheUtil.getCache(ele, "AriaUtil_ImplicitRole", null);
         if (!implicitRoles) {
             let tagProperty = AriaUtil.getElementAriaProperty(ele);

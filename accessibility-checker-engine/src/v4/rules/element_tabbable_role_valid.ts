@@ -27,6 +27,7 @@ export const element_tabbable_role_valid: Rule = {
         "en-US": {
             "pass": "element_tabbable_role_valid.html",
             "fail_invalid_role": "element_tabbable_role_valid.html",
+            "fail_no_valid_role": "element_tabbable_role_valid.html",
             "group": "element_tabbable_role_valid.html"
         }
     },
@@ -34,6 +35,7 @@ export const element_tabbable_role_valid: Rule = {
         "en-US": {
             "pass": "The tabbable element has a widget role",
             "fail_invalid_role": "The tabbable element's role '{0}' is not a widget role",
+            "fail_no_valid_role": "The tabbable element does not have a valid widget role",
             "group": "A tabbable element must have a valid widget role"
         }
     },
@@ -75,41 +77,34 @@ export const element_tabbable_role_valid: Rule = {
             || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
             return null;
 
-        let roles = AriaUtil.getRoles(ruleContext, false);
-        // ignore 'application' role that contains one or more focusable elements that do not follow a standard interaction pattern supported by a widget role:https://www.w3.org/TR/2023/PR-WAI-ARIA-1.2-20230328/#application 
-        if (roles && roles.includes("application"))
-            return null;
-        
         // elements whose roles allow no descendants that are interactive or with a tabindex >= 0 
         // this case should be handled in widget_tabbable_single and aria_child_tabbable
         const roles_no_interactive_child =["button", "checkbox", "img", "link", "menuitem", "menuitemcheckbox", "menuitemradio", 
                                "option", "radio", "switch", "tab"];
 
-        if (!roles || roles.length === 0) {
-            roles = AriaUtil.getImplicitRole(ruleContext);
-        }
         const parent = DOMWalker.parentNode(ruleContext);
-        const parent_roles = AriaUtil.getRoles(parent as Element, true);
         
-        // ignore if one of the parent roles is in roles_no_interactive_child
-        for (let i=0; i < parent_roles.length; i++) {
-            if (roles_no_interactive_child.includes(parent_roles[i]))
+        const parent_role = AriaUtil.getResolvedRole(parent as Element);
+        
+        // ignore if the parent role is in roles_no_interactive_child
+        if (roles_no_interactive_child.includes(parent_role))
                  return null;
-        }
+        
+        let role = AriaUtil.getResolvedRole(ruleContext);
+        if (!role) 
+            return RuleFail("fail_no_valid_role"); 
+        // ignore 'application' role that contains one or more focusable elements that do not follow a standard interaction pattern supported by a widget role:https://www.w3.org/TR/2023/PR-WAI-ARIA-1.2-20230328/#application 
+        if (role === "application")
+            return null;
 
         // handle the case: tabindex >= 0 to examine whether a widget role is setup or not 
         // pass if one of the roles is a widget type
-        for (let i=0; i < roles.length; i++) {
-            // Row is weird. It's structure, but can also be widget
-            if (roles[i] === "row" || ARIADefinitions.designPatterns[roles[i]].roleType === 'widget') {
-                 return RulePass("pass");
-            }
-            // Focusable separators are widgets
-            if (roles[i] === "separator") {
+        // Row is weird. It's structure, but can also be widget
+        // Focusable separators are widgets
+        if (role === "row" || role === "separator" || ARIADefinitions.designPatterns[role].roleType === 'widget') {
                 return RulePass("pass");
-            }
         }
             
-        return RuleFail("fail_invalid_role", [roles.length === 0 ? 'none' : roles.join(', ')]);
+        return RuleFail("fail_invalid_role", [role]);
     }
 }
