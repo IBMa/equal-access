@@ -68,15 +68,14 @@ export const aria_accessiblename_exists: Rule = {
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
         if ( AriaUtil.getAriaLabel(ruleContext).trim().length === 0 && !CommonUtil.attributeNonEmpty(ruleContext, "title")) {
-            let roles = AriaUtil.getRoles(ruleContext, true);
+            let role = AriaUtil.getResolvedRole(ruleContext);
             //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
-            if (roles && roles.length > 0 && ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents")) {
-                //if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
+            if (role && ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) {
                 //exclude the hidden text?
                 if (!CommonUtil.hasInnerContentHidden(ruleContext))
-                    return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);  
+                    return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);  
             } else 
-                return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);   
+                return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
         }
         return RulePass("pass");
     }
