@@ -6,16 +6,12 @@
     min-height: 12rem;
     border: 1px solid #9E63FB;
     background-color:#be95ff ;
+
     .summaryTitleDetail {
         @include type.type-style('helper-text-01');
+        font-size: 14px;
     }
-    
-    .scLeft {
-        @include type.type-style('helper-text-01');
-    }
- 
-        
-
+   
     .title {
         @include type.type-style('heading-02');
     }
