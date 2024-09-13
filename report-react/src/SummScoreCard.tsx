@@ -65,7 +65,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
         let summaryNumbers = this.calcSummary(this.props.report);
         let currentStatus = summaryNumbers[3].toFixed(0);
 
-        return <div className="scoreCard" style={{border: "1px solid #9E63FB", backgroundColor:'#be95ff'}}>
+        return <div className="summScoreCard" >
             
             <Grid>
                 <Column sm={2} md={4} lg={4} className="scLeft">

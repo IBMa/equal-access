@@ -27,11 +27,7 @@
     }
 }
 
-@include breakpoint.breakpoint('sm') {
-    .cds--css-grid-column:nth-child(even) .scoreCard {
-        margin-right: -1rem;
-    }
-}
+
 @include breakpoint.breakpoint('md') {
     .cds--css-grid-column:nth-child(even) .scoreCard {
         margin-right: 0rem;
