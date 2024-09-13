@@ -8,6 +8,10 @@
 
     border: 1px solid #9E63FB;
     background-color: #E8DAFF;
+
+    .summaryTitleDetail {
+        @include type.type-style('helper-text-01');
+    }
     
     .scLeft {
         flex: 0 0 51.25%;
