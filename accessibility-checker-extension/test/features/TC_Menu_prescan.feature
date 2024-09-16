@@ -1,5 +1,5 @@
 @qa
-Feature: Menu component
+Feature: Menu components before scan 
 
     Background:
         # Load the checker panel, verify scan button is present before scan
