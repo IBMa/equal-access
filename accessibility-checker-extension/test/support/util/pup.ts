@@ -202,7 +202,7 @@ export namespace PupUtil {
         }
         return retVal;
     }
-
+    
     export async function accessibilityScan(page: Page, fullLabel:string) {
         let result = await getCompliance(page, fullLabel);
         let report = result.report as IBaselineReport;

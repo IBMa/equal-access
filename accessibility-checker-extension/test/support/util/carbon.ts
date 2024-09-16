@@ -13,15 +13,21 @@ export namespace CarbonUtil {
 
     export namespace Button {
         export async function activate(page: Page, txt: string) {
-            let src : Page | ElementHandle<Node> = page;
+            let src: Page | ElementHandle<Node> = page;
             try {
                 let modal = await page.waitForXPath(`//div[contains(@class, 'cds--modal')][contains(@class, 'is-visible')]`, { timeout: 10 });
                 if (modal) {
                     src = modal;
                 }
             } catch (err) {
+                // Handle or ignore errors related to modal not being present
             }
-            let selector = `//button[text()='${txt}']|//button[@aria-label='${txt}']|//span[contains(@class, 'cds--popover-container')][span[@role='tooltip']/span[text()='${txt}']]//button`;
+    
+            // Extend the selector to include both button and svg elements with aria-label
+            let selector = `//button[text()='${txt}']|//button[@aria-label='${txt}']|` +
+                           `//span[contains(@class, 'cds--popover-container')][span[@role='tooltip']/span[text()='${txt}']]//button|` +
+                           `//svg[@aria-label='${txt}']`;  // Add support for svg with aria-label
+    
             if (UI_MODE === "mouse") {
                 await PupUtil.elemClick(src, selector);
             } else if (UI_MODE === "keyboard") {
@@ -30,6 +36,7 @@ export namespace CarbonUtil {
                 await PupUtil.elemTap(src, selector);
             }
         }
+    
 
         export async function exists(page: Page, txt: string) {
             await PupUtil.elemVisible(page, `//button[text()='${txt}']|//button[@aria-label='${txt}']|//span[contains(@class, 'cds--popover-container')][span[@role='tooltip']/span[text()='${txt}']]//button`);
@@ -57,6 +64,7 @@ export namespace CarbonUtil {
         }
     }
     
+
     export namespace CodeSnippet {
         export async function copyCode(page: Page) {
             let selector = `//button[contains(@class, 'cds--snippet-button') and @aria-label='Copy code']`;
@@ -317,11 +325,15 @@ export namespace CarbonUtil {
 
     export namespace Menu {
         export async function activate(page: Page, buttonLabel: string, itemLabel: string) {
-            await PupUtil.elemClick(page, `//button[@aria-haspopup='true'][translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='${buttonLabel.toLowerCase()}']|//button[@aria-haspopup='true'][translate(@aria-label,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='${buttonLabel.toLowerCase()}']|//span[contains(@class, 'cds--popover-container')][span[@role='tooltip']/span[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='${buttonLabel.toLowerCase()}']]//button[@aria-haspopup='true']`)
+            // Activate the menu button using the svg with aria-label="Options"
+            await PupUtil.elemClick(page, `svg[aria-label="${buttonLabel.toLowerCase()}"]`);
+            
+            // Click the menu item by its text
             await PupUtil.elemClick(page, `//button[@role='menuitem']/div[text()='${itemLabel}']`);
         }
-
+    
         export async function exists(page: Page, txt: string) {
+            // Verify the menu item is visible
             await PupUtil.elemVisible(page, `//button[@role='menuitem']/div[text()='${txt}']`);
         }
     }
@@ -331,6 +343,7 @@ export namespace CarbonUtil {
             await PupUtil.elemVisible(page, `//h3[contains(@class, 'cds--modal-header__heading')][text()='${txt}']`)
         }
     }
+
 
     export namespace Notification {
         export async function exists_title(page: Page, txt: string) {
@@ -397,47 +410,49 @@ export namespace CarbonUtil {
         }
     }
 
-    export namespace Checkbox {
-        export async function set(page: Page, label: string, setChecked: boolean) {
-            let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
-            let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
-            let labelSelector = `//div[label/span[${labelTextSelector}]]/label`;
+    //Needs work on function 
+    // export namespace Checkbox {
+    //     export async function set(page: Page, label: string, setChecked: boolean) {
+    //         let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
+    //         let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
+    //         let labelSelector = `//div[label/span[${labelTextSelector}]]/label`;
             
-            const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
-            if (isChecked !== setChecked) {
-                // Toggle if the values don't match
-                await PupUtil.elemClick(page, labelSelector);
-            }
+    //         const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
+    //         if (isChecked !== setChecked) {
+    //             // Toggle if the values don't match
+    //             await PupUtil.elemClick(page, labelSelector);
+    //         }
 
-            await Checkbox.checked_state_is(page, label, setChecked);
-        }
+    //         await Checkbox.checked_state_is(page, label, setChecked);
+    //     }
 
-        export async function checked_state_is(page: Page, label: string, checkVal: boolean) {
-            let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
-            let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
-            await PupUtil.waitState(async () => {
-                const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
-                return isChecked === checkVal;
-            })
-        }
-    }
+    //     export async function checked_state_is(page: Page, label: string, checkVal: boolean) {
+    //         let labelTextSelector = label.includes(" ...") ? `starts-with(normalize-space(text()),'${label.replace(/ \.\.\./, "")}')` : `normalize-space(text())='${label}'`;
+    //         let inputSelector = `//div[label/span[${labelTextSelector}]]/input`;
+    //         await PupUtil.waitState(async () => {
+    //             const isChecked = await PupUtil.evalScript(page, inputSelector, (elem) => ((elem as any).checked));
+    //             return isChecked === checkVal;
+    //         })
+    //     }
+    //}
 
-    export namespace Multiselect {
-        export async function activate(page: Page, label: string, values: string[]) {
-            let msLabel = `//div[label[contains(text(), '${label}')]]/label|//button[@role='combobox'][.//*[@class='cds--list-box__label'][.='${label}']]`;
-            await PupUtil.elemClick(page, msLabel);
-            await PupUtil.evalScript(page, msLabel, (elem) => {
-                let selectedItems = elem.querySelectorAll("li[aria-selected='true']");
-                for (const selectedItem of selectedItems) {
-                    (selectedItem as any).click();
-                }
-            })
-            for (const value of values) {
-                await PupUtil.elemClick(page, `//div[label[contains(text(), '${label}')]]//li[.='${value}']`);
-            }
-            await PupUtil.elemPress(page, msLabel, "Escape");
-        }
-    }
+    // Needs work on function 
+    // export namespace Multiselect {
+    //     export async function activate(page: Page, label: string, values: string[]) {
+    //         let msLabel = `//div[label[contains(text(), '${label}')]]/label|//button[@role='combobox'][.//*[@class='cds--list-box__label'][.='${label}']]`;
+    //         await PupUtil.elemClick(page, msLabel);
+    //         await PupUtil.evalScript(page, msLabel, (elem) => {
+    //             let selectedItems = elem.querySelectorAll("li[aria-selected='true']");
+    //             for (const selectedItem of selectedItems) {
+    //                 (selectedItem as any).click();
+    //             }
+    //         })
+    //         for (const value of values) {
+    //             await PupUtil.elemClick(page, `//div[label[contains(text(), '${label}')]]//li[.='${value}']`);
+    //         }
+    //         await PupUtil.elemPress(page, msLabel, "Escape");
+    //     }
+    // }
 
     
     export namespace Tab {

@@ -94,10 +94,60 @@ Then(`Link {string} exists`, async function(txt: string) {
 // Menu
 ////
 
-When(`user activates Menu {string} {string}`, async function(label: string, txt: string) {
-    const page = (this as CustomWorld).browser.page();
-    await CarbonUtil.Menu.activate(page, label, txt);
+// When(`user activates Menu {string} {string}`, async function(label: string, txt: string) {
+//     const page = (this as CustomWorld).browser.page();
+//     await CarbonUtil.Menu.activate(page, label, txt);
+// })
+
+When('user activates Menu Button {string}', async function (label: string) {
+    const page = (this as CustomWorld).browser.page();  // Access Puppeteer page from CustomWorld
+
+    // Use correct selector for Carbon component's Options button (SVG element)
+    const selector = `svg[aria-label="${label}"]`;  // Match SVG by aria-label
+    await page.waitForSelector(selector, { timeout: 60000 });  // Wait for the button with "options" label
+    await page.click(selector);    
 })
+
+// Step definition to check if the menu item exists
+Then('carbon elem {string} is visible', async function (txt: string) {
+    const page = (this as CustomWorld).browser.page();
+
+    // Wait for the specific menu option to appear with the text
+    await page.waitForXPath(`//div[contains(@class, 'cds--overflow-menu-options__option-content') and text()='${txt}']`, { visible: true, timeout: 60000 });
+})
+
+
+Then('carbon elem {string} is disabled', async function (txt: string) {
+    const page = (this as CustomWorld).browser.page();
+
+    // Use XPath to find the button by its associated div text
+    const [button] = await page.$x(`//button[contains(@class, 'cds--overflow-menu-options__btn') and .//div[text()='${txt}']]`);
+
+    if (!button) {
+        throw new Error(`Button with text "${txt}" not found`);
+    }
+
+    // Check if the button is disabled by casting to HTMLButtonElement
+    const isDisabled = await page.evaluate((btn) => {
+        return (btn as HTMLButtonElement).hasAttribute('disabled');
+    }, button);
+
+    if (!isDisabled) {
+        throw new Error(`Button with text "${txt}" is not disabled`);
+    }
+})
+
+// Then(`elem {string} is visible`, async function (selector: string) {
+//     const page = (this as CustomWorld).browser.page();  // Retrieve the browser page from CustomWorld
+//     const isVisible = await page.$eval(selector, (elem) => {
+//         return window.getComputedStyle(elem).display !== 'none';  // Check if the element is visible
+//     });
+
+//     if (!isVisible) {
+//         throw new Error(`Element ${selector} is not visible`);
+//     }
+// })
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
