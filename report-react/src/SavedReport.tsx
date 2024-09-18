@@ -202,8 +202,8 @@ const filteredReport = {
                                     <div className="reportGroupFilter">
                                         <div className="iconGroup">
                                     <span className="iconSummary">{Violation16}&nbsp;{violations}</span>
-                                    <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
                                     <span className="iconSummary">{NeedsReview16}&nbsp;{needReview}</span>
+                                    <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
                                     <span className="iconSummary">{ViewOff16}&nbsp;{hidden}</span>
                                     <span style={{paddingLeft:"1rem"}}>{total} issues found</span>
                                     </div>
