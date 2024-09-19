@@ -157,7 +157,7 @@ const filteredReport = {
             <Theme theme="g10">
                 <div>
                     <Grid>
-                        <Column sm={2} md={8} lg={4}>
+                        <Column sm={4} md={8} lg={4}>
                             <div className="summInfo">
                                 <h1 className="prodName">
                                     IBM <strong>Accessibility</strong><br />
@@ -173,22 +173,22 @@ const filteredReport = {
                     </Grid>
                     <section aria-label="Report overview: score cards">
                         <Grid>
-                            <Column sm={2} md={4} lg={4}>
+                            <Column sm={4} md={4} lg={4}>
                                 <div className="time" style={{paddingTop:"12px"}}>{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
                                 <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                             </Column>
-                            <Column sm={2} md={4} lg={4}>
+                            <Column sm={4} md={4} lg={4}>
                                 <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.selectedItems.some((item)=>item.text==="Violations")}
                                     handleCardClick={this.handleCardClick}>
                                     Accessibility failures that need to be corrected
                                 </ScoreCard>
                             </Column>
-                            <Column sm={2} md={4} lg={4}>
+                            <Column sm={4} md={4} lg={4}>
                                 <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16} checked={this.state.selectedItems.some((item)=>item.text==="Needs review")}  handleCardClick={this.handleCardClick}>
                                     Issues that may not be a violation; manual review is needed
                                 </ScoreCard>
                             </Column>
-                            <Column sm={2} md={4} lg={4}>
+                            <Column sm={4} md={4} lg={4}>
                                 <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16} checked={this.state.selectedItems.some((item)=>item.text==="Recommendations")}  handleCardClick={this.handleCardClick}>
                                     Opportunities to apply best practices to further improve accessibility
                                 </ScoreCard>
@@ -202,8 +202,8 @@ const filteredReport = {
                                     <div className="reportGroupFilter">
                                         <div className="iconGroup">
                                     <span className="iconSummary">{Violation16}&nbsp;{violations}</span>
-                                    <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
                                     <span className="iconSummary">{NeedsReview16}&nbsp;{needReview}</span>
+                                    <span className="iconSummary">{Recommendation16}&nbsp;{recommendation}</span>
                                     <span className="iconSummary">{ViewOff16}&nbsp;{hidden}</span>
                                     <span style={{paddingLeft:"1rem"}}>{total} issues found</span>
                                     </div>

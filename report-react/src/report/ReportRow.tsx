@@ -109,15 +109,15 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
         return <div className="itemRow">
             <Grid role="row" aria-expanded={open} className="itemHeader" onClick={this.toggleRow.bind(this)} tabIndex={0} onKeyDown={this.onKeyDown.bind(this)}>
-                <Column sm={1} md={2} lg={4} role="cell">
+                <Column sm={2} md={2} lg={4} role="cell" >
                     {this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{ paddingRight: "14px" }}>{open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
                     {vCount > 0 && <> <span>{Violation16}</span><span style={{verticalAlign: "text-top",lineHeight: "8px",  margin: ".25rem" }}>{vCount}</span></>}
                     {nrCount > 0 && <> <span>{NeedsReview16}</span><span style={{verticalAlign: "text-top", lineHeight: "8px" , margin: ".25rem" }}>{nrCount}</span></>}
                     {rCount > 0 && <><span>&nbsp;{Recommendation16}</span><span style={{ verticalAlign: "text-top", lineHeight: "8px", margin: ".25rem"  }}>{rCount}</span> </>}
                 </Column>
-                <Column sm={3} md={6} lg={8} role="cell">
-                    <span >{group.title.length === 0 ? "Page" : group.title}</span>
+                <Column sm={2} md={6} lg={8} role="cell">
+                    <span  style={{wordWrap:"break-word"}}>{group.title.length === 0 ? "Page" : group.title}</span>
                 </Column>
             </Grid>
             {!open && <Grid className="itemDetail" />}
