@@ -49,22 +49,20 @@ export class DOMWalker {
             } else {
                 p = null;
             }
-        } 
+        }
         return p;
     }
 
     static parentElement(node: Node) : Element | null {
         let elem : Element = node as Element;
-        do {  
+        do { 
             elem = DOMWalker.parentNode(elem) as Element;
         } while (elem && elem.nodeType !== 1);
-        if (node.nodeName == 'MY-LIST-ITEM') console.log("walker node=" + node.nodeName +", role=" + (node as Element).getAttribute("role") +", parent=" + elem.nodeName +", parent nodetype=" + elem.nodeType +", id=" + elem.getAttribute("id") +", role=" + elem.getAttribute("role"));
         return elem;
     }
     
     static isNodeVisible(node: Node) {
-        if (node === null) return false;
-        
+        if (node === null) return false;        
         try {
             let vis = null;
             while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
@@ -107,7 +105,7 @@ export class DOMWalker {
             return false;
         }
         do {
-            //console.log("HERE", this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
+            //console.log(this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 let elementNode = (this.node as HTMLElement);
@@ -137,9 +135,10 @@ export class DOMWalker {
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
-                //} else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.DOCUMENT_FRAGMENT_NODE */ && this.node.firstChild) {
+                //} else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
+                  //  this.node = this.node.firstChild;
                 } else if (this.node.firstChild) {
-                    this.node = this.node.firstChild; 
+                    this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
                 }

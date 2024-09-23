@@ -17,7 +17,6 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
-import { inspect } from "util";
 
 export const aria_parent_required: Rule = {
     id: "aria_parent_required",
@@ -53,8 +52,7 @@ export const aria_parent_required: Rule = {
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", roles=" + ruleContext.getAttribute("role")+ ", parent="+ ruleContext.parentElement.nodeName );
-        console.log("rule node="+ruleContext.nodeName + ", id="+ruleContext.getAttribute("id") +", contextHierarchies=" + inspect(contextHierarchies['aria']));
+        
         //skip the check if the element is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;

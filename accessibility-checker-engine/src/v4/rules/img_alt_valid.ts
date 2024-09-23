@@ -14,7 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
 export const img_alt_valid: Rule = {
