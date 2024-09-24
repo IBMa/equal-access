@@ -23,6 +23,18 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 export class CommonUtil {
 
+    public static input_type_with_placeholder = ["text", "search", "tel", "url", "email", "password", "number"];
+    public static input_text_types = [
+        "text", "file", "password",
+        "checkbox", "radio",
+        "search", "tel", "url", "email",  //HTML 5. Note: type = "hidden" doesn't require text
+        "date", "number", "range", //HTML 5. type = "image" is checked in g10.
+        "time", "color"
+    ];
+    public static input_button_types = [
+        "button", "reset", "submit"
+    ];
+
     public static tabTagMap = {
         "button": function (element): boolean {
             return !element.hasAttribute("disabled");

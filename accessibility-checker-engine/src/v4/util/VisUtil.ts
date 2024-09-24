@@ -59,6 +59,13 @@ export class VisUtil {
      *    Note: If either current node or any of the parent nodes are hidden then this
      *          function will return false (node is not visible).
      *
+     *    Note: nodes with CSS properties opacity:0 or filter:opacity(0%), or similar SVG mechanisms: 
+     *      They are not considered hidden. Text hidden with these methods can still be selected or copied, 
+     *      and user agents still expose it in their accessibility trees.  
+     * 
+     *    Note: nodes hidden off screen or behind another object: they are not considered hidden. 
+     *      They are exposed in the accessibility tree and they can even name on-screen objects.
+     * 
      * @parm {element} node The node which should be checked if it is visible or not.
      * @return {bool} false if the node is NOT visible, true otherwise
      *
