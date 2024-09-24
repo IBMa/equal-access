@@ -385,7 +385,16 @@ export class AriaUtil {
                             containsGeneric = true;
                             continue;
                         }
+                        
                         role = roles[i];
+                        if (role === "presentation" || role === "none") {
+                            // If element is focusable, then presentation roles are to be ignored
+                            if (CommonUtil.isFocusable(elem)) {
+                                //reset rule to null
+                                role = null;
+                                continue;
+                            }
+                        }
                         break;
                     }
                 }

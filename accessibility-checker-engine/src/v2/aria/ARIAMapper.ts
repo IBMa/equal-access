@@ -652,6 +652,10 @@ export class ARIAMapper extends CommonMapper {
         if (!elem || elem.nodeType !== 1 /* Node.ELEMENT_NODE */) {
             return null;
         }
+
+        const role = AriaUtil.getResolvedRole(elem);
+        return role === "presentation" || role === "none" ? null : role;
+        /**
         
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
             let roleStr = elem.getAttribute("role").trim();
@@ -673,5 +677,6 @@ export class ARIAMapper extends CommonMapper {
         return !roles || roles.length ===0 ? null : roles[0];
         
         //return AriaUtil.getResolvedRole(elem);
+        */
     }
 } 
