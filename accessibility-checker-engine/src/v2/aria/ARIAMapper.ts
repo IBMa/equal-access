@@ -25,6 +25,7 @@ import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
 import { CacheUtil } from "../../v4/util/CacheUtil";
 import { DOMWalker } from "../dom/DOMWalker";
+
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
