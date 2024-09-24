@@ -19,6 +19,7 @@ import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 import { CommonUtil } from "../../v4/util/CommonUtil";
 import { AriaUtil } from "../../v4/util/AriaUtil";
+import { VisUtil } from "../../v4/util/VisUtil";
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
@@ -419,7 +420,7 @@ export class ARIAMapper extends CommonMapper {
         // See https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-search-input-type-tel-input-type-url-and-textarea-element
 
         // 2a. Only show hidden content if it's referenced by a labelledby
-        if (!labelledbyTraverse && !DOMWalker.isNodeVisible(cur)) {
+        if (!labelledbyTraverse && !VisUtil.isNodeVisible(cur)) {
             return "";
         }
 

@@ -24,6 +24,7 @@ import { Issue, Rule, RuleContext, RuleContextHierarchy, RuleResult, eRuleConfid
 import { HelpMap, IEngine, NlsMap } from "../../v4/api/IEngine";
 import { IMapper } from "../../v4/api/IMapper";
 import { Report } from "../../v4/api/IReport";
+import { VisUtil } from "../../v4/util/VisUtil";
 
 class WrappedRule {
     ns: string;
@@ -195,9 +196,9 @@ export class Engine implements IEngine {
                     contextHierarchies[namespace] = this.mappers[namespace].closeScope(walker.node);
                 }
             }
-
+            
             if (walker.node.nodeType !== 11 
-                && (DOMWalker.isNodeVisible(walker.node)
+                && (VisUtil.isNodeVisible(walker.node)
                     // || walker.node.nodeName.toLowerCase() === "head"
                     || walker.node.nodeName.toLowerCase() === "meta"
                     || walker.node.nodeName.toLowerCase() === "style"

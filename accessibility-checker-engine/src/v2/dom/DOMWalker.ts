@@ -14,6 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
+import { VisUtil } from "../../v4/util/VisUtil";
 /**
  * Walks in a DOM order
  * 
@@ -112,7 +113,7 @@ export class DOMWalker {
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && (this.considerHidden ? DOMWalker.isNodeVisible(iframeNode) : true)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -120,7 +121,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && (this.considerHidden ? DOMWalker.isNodeVisible(elementNode) : true)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
@@ -186,7 +187,7 @@ export class DOMWalker {
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && (this.considerHidden ? DOMWalker.isNodeVisible(iframeNode) : true)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -194,7 +195,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && (this.considerHidden ? DOMWalker.isNodeVisible(elementNode) : true)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {

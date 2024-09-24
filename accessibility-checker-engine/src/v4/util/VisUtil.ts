@@ -110,8 +110,10 @@ export class VisUtil {
         //            mark this element as visible at all times.
         //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
         //            mark this element as visible at all times.
+        // datalist --> In the rendering, the datalist element represents nothing and it, along with its children, should be hidden.
         if (VisUtil.hiddenByDefaultElements != null && VisUtil.hiddenByDefaultElements != undefined && VisUtil.hiddenByDefaultElements.indexOf(nodeName) > -1) {
-            return true;
+            //return true;
+            return false;
         }
 
         // Check if this node is visible, we check couple of CSS properties and hidden attribute.
@@ -181,7 +183,7 @@ export class VisUtil {
                 return false;
             }
 
-            // check content-visibility: if the content-visibility is hiddenthen, return false as the element is not visible
+            // check content-visibility: if the content-visibility is hidden, then, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
                 CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
