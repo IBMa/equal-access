@@ -84,18 +84,8 @@ export const input_label_exists: Rule = {
         }
 
         let POF = -1;
-        /** let textTypes = [
-            "text", "file", "password",
-            "checkbox", "radio",
-            "search", "tel", "url", "email",  //HTML 5. Note: type = "hidden" doesn't require text
-            "date", "number", "range", //HTML 5. type = "image" is checked in g10.
-            "time", "color"
-        ]
-        let buttonTypes = [
-            "button", "reset", "submit"
-        ]*/
         let textTypes = CommonUtil.input_text_types;
-        let buttonTypes = CommonUtil.input_button_types;  
+        let buttonTypes = CommonUtil.form_button_types;  
        
         let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
         if (textTypes.indexOf(type) !== -1) { // If type is in the list

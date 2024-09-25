@@ -31,9 +31,17 @@ export class CommonUtil {
         "date", "number", "range", //HTML 5. type = "image" is checked in g10.
         "time", "color"
     ];
-    public static input_button_types = [
+    public static input_time_types = [
+        "date", "month", "week", "time", "datetime-local"
+    ];
+    public static input_other_types = [
+        "range", "color", "checkbox", "radio", "file", "image"
+    ];
+    public static form_button_types = [
         "button", "reset", "submit"
     ];
+
+    public static form_labelable_elements = ["input",  "textarea", "select", "keygen", "progress", "meter", "output", "button"];
 
     public static tabTagMap = {
         "button": function (element): boolean {
@@ -806,6 +814,52 @@ export class CommonUtil {
         } else {
             return false;
         }
+    }
+
+    // Return the implicit label of the given form field
+    public static getImplicitLabel(element) {
+        let parentNode = CommonUtil.getAncestor(element, "label");
+        // Test  a) if the parent is a label which is the implicit label
+        //       b) if the form element is the first child of the label
+        //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
+        //       d) form elements which may have a label: button
+        // form elements that do not require implicit or explicit label element are:
+        // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
+
+        if (parentNode && parentNode.tagName.toLowerCase() === "label" && CommonUtil.isFirstFormElement(parentNode, element)) {
+            let parentClone = parentNode.cloneNode(true);
+            // exclude all form elements from the label since they might also have inner content
+            parentClone = CommonUtil.removeAllFormElementsFromLabel(parentClone);
+            const label = CommonUtil.getInnerText(parentClone);
+            return label !== null && label.trim() !== '' ? label.trim() : null;
+        } else
+            return null;
+    }
+
+    /**
+     * This function is responsible for getting the label for a form field element.
+     *
+     *
+     * @parm {element} element - The element for which to get the label element for.
+     *
+     * @return {string} text - return the label text or null
+     *
+     * @memberOf AriaUtil
+     */
+    public static getFormFieldLabel(elem) : string | null {
+        let label = null;
+        // get the label from the attribute "for" of the label element
+        // Get only the non-hidden labels for element
+        let labelElem = CommonUtil.getLabelForElementHidden(elem, true);
+        if (labelElem !== null) {
+            label = CommonUtil.getInnerText(labelElem);
+            if (label !== null && label.trim() !== "")
+                return label;
+        }
+        
+        // get the label of which the form field is the first child
+        return CommonUtil.getImplicitLabel(elem);
+
     }
 
     public static isFirstFormElement(parentNode, element) {

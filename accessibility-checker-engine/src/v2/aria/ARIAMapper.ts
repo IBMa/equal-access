@@ -653,9 +653,9 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
 
-        const role = AriaUtil.getResolvedRole(elem);
-        return role === "presentation" || role === "none" ? null : role;
-        /**
+        // TO DO: use AriaUtil.getResolvedRole(elem) to replace the code following, which uses only the valid roles for the element based on the aria fallback rule
+        //const role = AriaUtil.getResolvedRole(elem);
+        //return role === "presentation" || role === "none" ? null : role;
         
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
             let roleStr = elem.getAttribute("role").trim();
@@ -674,9 +674,9 @@ export class ARIAMapper extends CommonMapper {
         //return this.elemToImplicitRole(elem);
         const roles = AriaUtil.getImplicitRole(elem);
         //console.log("node=" + node.nodeName +", role= " + (roles ? roles[0] : null) +", resolved=" + AriaUtil.getResolvedRole(elem));
-        return !roles || roles.length ===0 ? null : roles[0];
-        
+        const role = !roles || roles.length ===0 ? null : roles[0];
+        return role === "presentation" || role === "none" ? null : role;
         //return AriaUtil.getResolvedRole(elem);
-        */
+        
     }
 } 

@@ -1259,12 +1259,12 @@ export class AriaUtil {
                 return CommonUtil.normalizeSpacing(ele.getAttribute("aria-label")).toLowerCase().trim();
             }
         }
-        if (ele.nodeName.toLowerCase() === "input") {
+        /**if (ele.nodeName.toLowerCase() === "input") {
             //const label = AriaUtil.getLabelForElement(ele);
             const label = CommonUtil.getLabelForElementHidden(ele, true);
             if (!label) return "";
             return (AriaUtil.getAriaLabel(label) || label.innerText || "").trim();
-        }
+        }*/
         return "";
     }
 
