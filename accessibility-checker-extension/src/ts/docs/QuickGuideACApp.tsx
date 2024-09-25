@@ -206,12 +206,12 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
 
                     <h2 id="scan">2. Create a scan report</h2>
                     <p>
-                        From a single scan, generate a report in both HTML web and Microsoft Excel XLS spreadsheet formats.
+                        From a single scan, export a report in both HTML web and Microsoft Excel XLS spreadsheet formats.
                     </p>
                     <p>
                         <img
                             src="assets/img/2_2_ScanReport.png"
-                            alt="open dropdown menu with focus on 'Download current scan'"
+                            alt="'Export XLS' button highlighted"
                         />
                     </p>
                     <p>
