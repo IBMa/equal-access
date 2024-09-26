@@ -494,7 +494,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <img
 
                         src="assets/img/2_2_ScanReport.png" //was 3.2Report.png
-                        alt="Export XLS' button highlighted"
+                        alt="'Export XLS' button highlighted"
                     />
                 </p>
                 <p>
@@ -1039,9 +1039,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         src="assets/img/7_1_ReportHTML.png"
                         alt="screenshot of a report sorted by Requirements."
                     />
+                </p>
                 <p>
                     This interactive report is an accessible web page (single HTML file) that includes:
-                </p></p>
+                </p>
                 <OrderedList>
                     <ListItem>Scan date and time</ListItem>
                     <ListItem>URL scanned</ListItem>
@@ -1052,7 +1053,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </OrderedList>
                 <p>
                     The interactive features of the report are similar to the Summary report in the Checker view:
-                </p></p>
+                </p>
                 <OrderedList>
                     <ListItem>Filter the list of issues displayed by selecting either the 'Filter' dropdown or by selecting the checkboxes on the summary tiles by 'Violation', 'Needs review', and 'Recommendation'.</ListItem>
                     <ListItem>Display the 'Hidden' issues by selecting the 'Filter' dropdown. Note that the counts and total displayed do not include the 'Hidden' issues.</ListItem>
