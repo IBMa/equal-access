@@ -27,114 +27,261 @@ type NodeCalc = (node: Node) => string;
 export class AccNameUtil {
     
     // calculate accessible name for a given node
-    public static computeAccessibleName(cur: Node) : string | null {
-        // None of the other content applies to text nodes, so just do this first
-        if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) return null;
-        
-        const elem = cur as Element;
+    public static computeAccessibleName(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
 
-        const role = AriaUtil.getResolvedRole(elem);
-        if (!role || role === 'presentation' || role === 'none') return null;
+        let name_pair = CacheUtil.getCache(elem, "ELEMENT_ACCESSBLE_NAME", undefined);
+        if (name_pair !== undefined) return name_pair;
 
-        if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("prohibited"))
-             return null;
-        
-        let accName = CacheUtil.getCache(elem, "ELEMENT_ACCESSBLE_NAME", null);
-        if (accName !== null) return accName;
-
-        // 1. name from author, or elements without a role but with aria-labelledby or aria-label (except where prohibited)
-        accName = AriaUtil.getAriaLabel(elem);
+        // 1. name from author, or elements without a role but with aria-labelledby or aria-label 
+        //   get aria label even for the role where the name is prohibited or is 'presentation' or 'none'
+        let accName = AriaUtil.getAriaLabel(elem);
         if (accName && accName.trim() !== "") {
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
-            return accName;
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":accName, "nameFrom": "ariaLabel"});
+            return {"name":accName, "nameFrom": "ariaLabel"};
         }
 
         // 2. accessible name mapping for native html elements
-        accName = AccNameUtil.computeAccessibleNameForNativeElement(elem);
-        if (accName) {
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
-            return accName;
+        name_pair = AccNameUtil.computeAccessibleNameForNativeElement(elem);
+        if (name_pair !== null) {
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
+            return name_pair;
         }
 
         // 3. name from content for custom elements
+        const role = AriaUtil.getResolvedRole(elem);
         if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("content")) {
-            accName = AccNameUtil.computeAccessibleNameForCustomElement(elem);
-            if (accName) {
-                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
-                return accName;
+            name_pair = AccNameUtil.computeAccessibleNameForCustomElement(elem);
+            if (name_pair !== null) {
+                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
+                return name_pair;
             }
         }
 
         // 4. name from the global attribute "title"
         if (elem.hasAttribute("title")) {
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
-            return elem.getAttribute("title");
+            let title = elem.getAttribute("title").trim();
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":title, "nameFrom": "title"});
+            return {"name":title, "nameFrom": "title"};
         }
         
-        // 5. name from the attribute "placehold"
+        // 5. name from the attribute "placeholder"
         if (nodeName === 'input' && (!elem.hasAttribute("type") || CommonUtil.input_type_with_placeholder.includes(elem.getAttribute("type")))) {
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
             return elem.getAttribute("placeholder");
         }
-        
+
+        CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", null);
         return null;
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForNativeElement(elem: Element) : string | null {
+    public static computeAccessibleNameForNativeElement(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
-        let accName;
         
-        // form labellable fields
+        // labellable fields
         if (CommonUtil.form_labelable_elements.includes(nodeName)) {
             // Get only the non-hidden labels for element
             const label = CommonUtil.getFormFieldLabel(elem);
             if (label !== null || label.trim() !== '')
-                return label;
+                return {"name":label, "nameFrom": "label"};
         }
 
-        // form button type: button, reset, submit
-        if (nodeName === "button" || (nodeName === "input" && elem.hasAttribute("type") && CommonUtil.form_button_types.includes(elem.getAttribute("type")))) {
-            // Get the "value" attribute for element
+        // input types: button, reset, submit
+        if (nodeName === "input" && elem.hasAttribute("type") && CommonUtil.form_button_types.includes(elem.getAttribute("type"))) {
+            // Get the "value" attribute for the element
             const value = CommonUtil.getElementAttribute(elem, "value");
             if (value !== null || value.trim() !== '')
-                return value;
+                return {"name":value, "nameFrom": "value"};
 
-            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
-            if (value === null && nodeName === "input")
-                return elem.getAttribute("type");
+            // input 'submit', 'reset' and 'image' have visible defaults so pass if there is no 'value' attribute 
+            return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
+        }
+
+        // input type = 'image'
+        if (nodeName === "input" && elem.hasAttribute("type") && elem.getAttribute("type") === 'image') {
+            // note that though HTML 5 spec says "The element's [value] attribute must be omitted", Chrome uses the value.
+            // Get the accessible name for the alt attribute
+            const alt = CommonUtil.getElementAttribute(elem, "alt");
+            if (alt !== null || alt.trim() !== '')
+                return {"name":alt, "nameFrom": "alt"};;
+
+            // the visible default text for type "image" is "Submit" same with the type "submit"
+            return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
+        }
+
+        // button
+        // note button may have a value attribute, but it's not a visible text
+        if (nodeName === "button") {
+            // first use the button text
+            const text = CommonUtil.getInnerText(elem);
+            if (text !== null || text.trim() !== '')
+                return {"name":text, "nameFrom": "text"};
+
+            // for image button: get the first image if exists
+            const image = elem.querySelector('img');
+            if (image) {
+                let pair = AccNameUtil.computeAccessibleName(image); 
+                if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                    return pair;
+            }       
+        }
+
+        // fieldset
+        if (nodeName === "fieldset") {
+            // if the fieldset element's first child is a legend element, then use the subtree of the legend
+            const first = elem.firstElementChild;
+            if (first && first.nodeName.toLowerCase() === 'legend') {
+                // legend can be mixed text
+                const text = CommonUtil.getInnerText(first);
+                if (text && text.trim().length > 0) 
+                    return {"name":text, "nameFrom": "legend"}; 
+            }        
+        }
+
+        // output
+        if (nodeName === "output") {
+            // if the associated label element exists, use concatenated accessible name(s) from labelled elements.
+            if (elem.hasAttribute("for")) {
+                let labelIDs = elem.getAttribute("for").trim().split(" ");
+                if (labelIDs && labelIDs.length > 0) {
+                    let label = "";
+                    for (let j = 0; j < labelIDs.length; j++) {
+                        let labelID = labelIDs[j];
+                        let labelNode = elem.ownerDocument.getElementById(labelIDs[j]);
+                        if (labelNode && !DOMUtil.sameNode(labelNode, elem)) {
+                            const pair = AccNameUtil.computeAccessibleName(labelNode);
+                            if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                                label += " " + CommonUtil.normalizeSpacing(pair.name);
+                        }
+                    }
+                    if (label.trim().length > 0)
+                        return {"name":label, "nameFrom": "label"};
+                }
+            }       
+        }
+
+        // summary
+        if (nodeName === "summary") {
+            // use summary element subtree
+            const text = CommonUtil.getInnerText(elem);
+            if (text && text.trim().length > 0) 
+                return {"name":text, "nameFrom": "legend"};         
+        }
+
+        // details
+        if (nodeName === "details") {
+            const first = elem.firstElementChild;
+            if (first && first.nodeName.toLowerCase() === 'summary') {
+                // get accessible name from summary
+                const summary = AccNameUtil.computeAccessibleName(first);
+                if (summary && summary.trim().length > 0) 
+                    return {"name":summary, "nameFrom": "summary"}; 
+            }
+            // If no summary element as a direct child of the details element, 
+            // the user agent should provide one with a subtree containing a localized string of the word "details".
+            return {"name":"details", "nameFrom": "internal"};         
+        }
+
+        // figure
+        if (nodeName === "figure") {
+            // if the figure element has a figcaption as the first or last child
+            let caption = elem.firstElementChild;
+            if (!caption) {
+                caption = elem.lastElementChild;
+                if (caption && caption.nodeName.toLowerCase() === 'figcaption') {
+                    // figcaption can be mixed text
+                    const text = CommonUtil.getInnerText(caption);
+                    if (text && text.trim().length > 0) 
+                        return {"name":text, "nameFrom": "figcaption"}; 
+                } 
+            }        
         }
 
         // img and area elements: use attribute "alt"
         if (nodeName === "img" || nodeName === "area") {
-            return elem.hasAttribute("alt")? DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim() : null;
-        }
-   
-        // input type = 'image'
-        if (nodeName === "input" && elem.hasAttribute("type") && elem.getAttribute("type") === 'image') {
-            // Get the accessible name for the image
-            const value = CommonUtil.getElementAttribute(elem, "value");
-            if (value !== null || value.trim() !== '')
-                return value;
-
-            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
-            if (value === null && nodeName === "input")
-                return elem.getAttribute("type");
+            if (elem.hasAttribute("alt")) {
+                let alt = DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim();
+                return {"name":alt, "nameFrom": "alt"};
+            } else
+               return null;
         }
 
-            /**
-            if (cur.nodeName.toLowerCase() === "fieldset") {
-                if( (<Element>cur).querySelector("legend")){
-                    let legend = (<Element>cur).querySelector("legend");
-                    return legend.innerText;
-                }else{
-                    return this.computeNameHelp(walkId, cur, false, false);
-                }
-                            
+        // table element
+        if (nodeName === "table") {
+            // if the figure element has a caption as the first child
+            let captionElem = elem.firstElementChild;
+            if (captionElem && captionElem.nodeName.toLowerCase() === 'caption') {
+                // caption can be mixed text
+                const caption = CommonUtil.getInnerText(captionElem);
+                if (caption && caption.trim().length > 0) 
+                    return {"name":caption, "nameFrom": "caption"}; 
+            }         
+        }
+
+        // a element
+        if (nodeName === "a") {
+            // first use the link text
+            const text = CommonUtil.getInnerText(elem);
+            if (text !== null || text.trim() !== '')
+                return {"name":text, "nameFrom": "text"};
+
+            // for image link: get the first image if exists
+            const image = elem.querySelector('img');
+            if (image) {
+                let pair = AccNameUtil.computeAccessibleName(image); 
+                if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                    return pair;
+            }       
+        }
+
+        // svg
+        if (nodeName === "svg") {
+            // a direct child title element 
+            let svgTitle = elem.querySelector(":scope > title");
+            if (svgTitle) {
+                const title =CommonUtil.getInnerText(svgTitle);
+                if (title !== null || title.trim() !== '')
+                    return {"name":title, "nameFrom": "svgtitle"};
+            } 
+
+            // xlink:title attribute on a link
+            let linkTitle = elem.querySelector("a");
+            if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
+                let link = linkTitle.getAttribute("xlink:title");
+                if (link !== null || link.trim() !== '')
+                    return {"name":link, "nameFrom": "linktitle"};
             }
-            
-        }
+
+            /** for text container elements, the text content. 
+             * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
+             *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
+             * 
+             * select text content excluded the text from the nested svg elements and their children 
+             */ 
+            let text = "";
+            elem.querySelectorAll(":scope > *").forEach((element) => {
+                if (element.nodeName.toLowerCase() !== 'svg' && CommonUtil.hasInnerContent(element))
+                    text += CommonUtil.getInnerText(element);
+            });
+            if (text.trim() !== '')
+                return {"name":text, "nameFrom": "svgtext"}; 
+
+            // from aria-describedby or aria-description 
+            let descby = AriaUtil.getAriaDescription(elem);
+            if (descby && descby.trim().length > 0)
+                return {"name":descby, "nameFrom": "description"};
+
+            // a direct child desc element
+            let descElem = elem.querySelector(":scope > desc");
+            if (descElem) {
+                const desc = CommonUtil.getInnerText(descElem);
+                if (desc && desc.trim().length > 0)
+                    return {"name":desc, "nameFrom": "svgdesc"};
+            }
+        }    
+
+        /**
 
         // 2e.
         if ((walkTraverse || labelledbyTraverse) && isEmbeddedControl) {
@@ -253,7 +400,7 @@ export class AccNameUtil {
             }
         }
         */
-        return "";
+        return null;
         
     
         
@@ -454,7 +601,7 @@ export class AccNameUtil {
             }
         }
         */
-        return "";
+        return null;
         
     
         

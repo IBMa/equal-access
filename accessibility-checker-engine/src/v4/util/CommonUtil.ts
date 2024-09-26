@@ -18,7 +18,6 @@ import { AriaUtil } from "./AriaUtil";
 import { VisUtil } from "./VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { NodeWalker } from "../../v2/dom/NodeWalker";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 export class CommonUtil {
