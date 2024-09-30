@@ -111,9 +111,9 @@ export let a11yRulesets: Guideline[] = [
     },
     {
         id: "IBM_Accessibility",
-        name: "IBM Accessibility 7.2",
+        name: "IBM Accessibility 7.3",
         category: eGuidelineCategory.ACCESSIBILITY,
-        description: "Rules for WCAG 2.0 & 2.1 A and AA plus additional IBM supplemental requirements.",
+        description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
             .filter(sc => (sc.level === "A" || sc.level === "AA" || sc.level === "NA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "2.2" || sc.wcagType === "NA"))
@@ -127,7 +127,7 @@ export let a11yRulesets: Guideline[] = [
     },
     {
         id: "IBM_Accessibility_next",
-        name: "IBM Accessibility 7.3",
+        name: "IBM Accessibility 7.3 preview",
         category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
