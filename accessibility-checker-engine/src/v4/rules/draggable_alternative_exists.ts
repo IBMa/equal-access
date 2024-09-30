@@ -37,7 +37,7 @@ export let draggable_alternative_exists: Rule = {
         }
     },
     rulesets: [{
-        id: ["IBM_Accessibility_next", "WCAG_2_2"],
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_2"],
         num: ["2.5.7"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
