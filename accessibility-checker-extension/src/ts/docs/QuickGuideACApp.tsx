@@ -472,7 +472,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         Select one of the following:</p>
                         <UnorderedList>
                             <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements</ListItem>
-                            <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. This will be the default starting Oct 1, 2024.</ListItem>
+                            <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. Default Oct 1, 2024.</ListItem>
                             <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0</ListItem>
                             <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by EN 301 549 and other policies, but not the latest W3C specification</ListItem>
                             <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508</ListItem>
