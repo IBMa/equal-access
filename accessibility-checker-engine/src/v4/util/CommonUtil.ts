@@ -572,9 +572,11 @@ export class CommonUtil {
             return mime.startsWith("image");
         });
     }
+
+    public static image_extensions = [".bmp", ".gif", ".jpg", ".jpeg", ".pcx", ".png"];
+        
     public static isImgExt(ext) {
-        let image_extensions = [".bmp", ".gif", ".jpg", ".jpeg", ".pcx", ".png"];
-        return CommonUtil.valInArray(ext.toLowerCase(), image_extensions);
+        return CommonUtil.valInArray(ext.toLowerCase(), CommonUtil.image_extensions);
     }
     public static isHtmlExt(ext) {
         let html_extensions = [".asp", ".aspx", ".cfm", ".cfml", ".cgi", ".htm", ".html", ".shtm",

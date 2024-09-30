@@ -242,7 +242,7 @@ export class AccNameUtil {
             if (svgTitle) {
                 const title =CommonUtil.getInnerText(svgTitle);
                 if (title !== null || title.trim() !== '')
-                    return {"name":title, "nameFrom": "svgtitle"};
+                    return {"name":title, "nameFrom": "svgTitle"};
             } 
 
             // xlink:title attribute on a link
@@ -250,7 +250,7 @@ export class AccNameUtil {
             if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
                 let link = linkTitle.getAttribute("xlink:title");
                 if (link !== null || link.trim() !== '')
-                    return {"name":link, "nameFrom": "linktitle"};
+                    return {"name":link, "nameFrom": "linkTitle"};
             }
 
             /** for text container elements, the text content. 
@@ -265,7 +265,7 @@ export class AccNameUtil {
                     text += CommonUtil.getInnerText(element);
             });
             if (text.trim() !== '')
-                return {"name":text, "nameFrom": "svgtext"}; 
+                return {"name":text, "nameFrom": "svgText"}; 
 
             // from aria-describedby or aria-description 
             let descby = AriaUtil.getAriaDescription(elem);
@@ -277,7 +277,7 @@ export class AccNameUtil {
             if (descElem) {
                 const desc = CommonUtil.getInnerText(descElem);
                 if (desc && desc.trim().length > 0)
-                    return {"name":desc, "nameFrom": "svgdesc"};
+                    return {"name":desc, "nameFrom": "svgDesc"};
             }
         }    
 
@@ -430,166 +430,104 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForCustomElement(elem: Element) : string | null {
+    public static computeAccessibleNameForCustomElement(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
-        let accName;
+        const role = AriaUtil.getResolvedRole(elem);
+
+        // textbox etc. return its text value
+        if (role === "textbox") {
+            let name = elem.textContent;
+            if (name && name.trim().length > 0) {
+                if (name.trim().length > 16)
+                    name = name.trim().substring(0, 15);
+                return {"name":name, "nameFrom": "role-value"};
+            }
+        }
         
-        // form labellable fields
-        if (CommonUtil.form_labelable_elements.includes(nodeName)) {
-            // Get only the non-hidden labels for element
-            const label = CommonUtil.getFormFieldLabel(elem);
-            if (label !== null || label.trim() !== '')
-                return label;
-        }
-
-        // form button type: button, reset, submit
-        if (nodeName === "button" || (nodeName === "input" && elem.hasAttribute("type") && CommonUtil.form_button_types.includes(elem.getAttribute("type")))) {
-            // Get the "value" attribute for element
-            const value = CommonUtil.getElementAttribute(elem, "value");
-            if (value !== null || value.trim() !== '')
-                return value;
-
-            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
-            if (value === null && nodeName === "input")
-                return elem.getAttribute("type");
-        }
-
-        // img and area elements: use attribute "alt"
-        if (nodeName === "img" || nodeName === "area") {
-            return elem.hasAttribute("alt")? DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim() : null;
-        }
-   
-        // input type = 'image'
-        if (nodeName === "input" && elem.hasAttribute("type") && elem.getAttribute("type") === 'image') {
-            // Get the accessible name for the image
-            const value = CommonUtil.getElementAttribute(elem, "value");
-            if (value !== null || value.trim() !== '')
-                return value;
-
-            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
-            if (value === null && nodeName === "input")
-                return elem.getAttribute("type");
-        }
-
-            /**
-            if (cur.nodeName.toLowerCase() === "fieldset") {
-                if( (<Element>cur).querySelector("legend")){
-                    let legend = (<Element>cur).querySelector("legend");
-                    return legend.innerText;
-                }else{
-                    return this.computeNameHelp(walkId, cur, false, false);
-                }
-                            
-            }
-            
-        }
-
-        // 2e.
-        if ((walkTraverse || labelledbyTraverse) && isEmbeddedControl) {
-            // If the embedded control has role textbox, return its value.
-            if (role === "textbox") {
-                if (elem.nodeName.toLowerCase() === "input") {
-                    if (elem.hasAttribute("value")) return elem.getAttribute("value");
-                } else {
-                    walkTraverse = false;
+        // for combobox or listbox roles, return the text alternative of the chosen option.
+        if (role === "combobox" || role === "listbox") {
+            const selectedId = elem.getAttribute("aria-activedescendant") || elem.getAttribute("aria-selected") || elem.getAttribute("aria-checked");
+            if (selectedId) {
+                let selectedOption = elem.ownerDocument.getElementById(selectedId);
+                if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
+                    const pair = AccNameUtil.computeAccessibleName(selectedOption);
+                    if (pair && pair.name)
+                        return {"name":pair.name, "nameFrom": "role-option"};
                 }
             }
-
-            // If the embedded control has role button, return the text alternative of the button.
-            if (role === "button") {
-                if (elem.nodeName.toLowerCase() === "input") {
-                    let type = elem.getAttribute("type").toLowerCase();
-                    if (["button", "submit", "reset"].includes(type)) {
-                        if (elem.hasAttribute("value")) return elem.getAttribute("value");
-                        if (type === "submit") return "Submit";
-                        if (type === "reset") return "Reset";
-                    }
-                } else {
-                    walkTraverse = false;
-                }
-            }
-
-            // TODO: If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
-            if (role === "combobox") {
-                if (elem.hasAttribute("aria-activedescendant")) {
-                    let selected = FragmentUtil.getById(elem, "aria-activedescendant");
-                    if (selected && !DOMUtil.sameNode(elem, selected)) {
-                        return ARIAMapper.computeNameHelp(walkId, selected, false, false);
-                    }
-                }
-            }
-
-            // If the embedded control has role range (e.g., a spinbutton or slider):
-            if (["progressbar", "scrollbar", "slider", "spinbutton"].includes(role)) {
-                // If the aria-valuetext property is present, return its value,
-                if (elem.hasAttribute("aria-valuetext")) return elem.getAttribute("aria-valuetext");
-                // Otherwise, if the aria-valuenow property is present, return its value,
-                if (elem.hasAttribute("aria-valuenow")) return elem.getAttribute("aria-valuenow");
-                // TODO: Otherwise, use the value as specified by a host language attribute.
-            }
         }
 
-        // 2f. 2h.
-        if (walkTraverse || ARIADefinitions.nameFromContent(role) || labelledbyTraverse) {
-            // 2fi. Set the accumulated text to the empty string.
-            let accumulated = "";
-            // 2fii. Check for CSS generated textual content associated with the current node and 
-            // include it in the accumulated text. The CSS :before and :after pseudo elements [CSS2] 
-            // can provide textual content for elements that have a content model.
-            //   For :before pseudo elements, User agents MUST prepend CSS textual content, without 
-            //     a space, to the textual content of the current node.
-            //   For :after pseudo elements, User agents MUST append CSS textual content, without a 
-            //     space, to the textual content of the current node.
-            let before = null;
-            before = elem.ownerDocument.defaultView.getComputedStyle(elem,"before").content;
+        // for roles "progressbar", "scrollbar", "slider", "spinbutton"
+        if (["progressbar", "scrollbar", "slider", "spinbutton"].includes(role)) {
+            // If the aria-valuetext property is present, return its value
+            let value = elem.getAttribute("aria-valuetext");
+            if (value && value.trim().length > 0) 
+                return {"name":value, "nameFrom": "role-aria-valuetext"};
+            // Otherwise, if the aria-valuenow property is present, return its value,
+            value = elem.getAttribute("aria-valuenow");
+            if (value && value.trim().length > 0) 
+                return {"name":value, "nameFrom": "role-aria-valuenow"};
+        }
 
-            if (before && before !== "none") {
-                before = before.replace(/^"/,"").replace(/"$/,"");
-                accumulated += before;
-            }
-            // 2fiii. For each child node of the current node:
-            //   Set the current node to the child node.
-            //   Compute the text alternative of the current node beginning with step 2. Set the result 
-            //     to that text alternative.
-            //   Append the result to the accumulated text.
-            if (elem.nodeName.toUpperCase() === "SLOT") {
-                //if no assignedNode, check its own text 
-                if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                    let innerText = CommonUtil.getInnerText(elem);
-                    if (innerText && innerText !== null && innerText.trim().length > 0)
-                        accumulated +=  " " + innerText;
-                } else {    
-                    // check text from all assigned nodes
-                    for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                        let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
-                        accumulated += " " + nextChildContent;
-                    }
-                }
-            } else {
-                let walkChild = elem.firstChild;
-                while (walkChild) {
-                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
+        /** 
+        // CSS generated textual content associated with the current node and 
+        // include it in the accumulated text. The CSS :before and :after pseudo elements [CSS2] 
+        // can provide textual content for elements that have a content model.
+        //   For :before pseudo elements, User agents MUST prepend CSS textual content, without 
+        //     a space, to the textual content of the current node.
+        //   For :after pseudo elements, User agents MUST append CSS textual content, without a 
+        //     space, to the textual content of the current node.
+        let before = null;
+        before = elem.ownerDocument.defaultView.getComputedStyle(elem,"before").content;
+
+        if (before && before !== "none") {
+            before = before.replace(/^"/,"").replace(/"$/,"");
+            accumulated += before;
+        }
+        // 2fiii. For each child node of the current node:
+        //   Set the current node to the child node.
+        //   Compute the text alternative of the current node beginning with step 2. Set the result 
+        //     to that text alternative.
+        //   Append the result to the accumulated text.
+        if (elem.nodeName.toUpperCase() === "SLOT") {
+            //if no assignedNode, check its own text 
+            if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
+                let innerText = CommonUtil.getInnerText(elem);
+                if (innerText && innerText !== null && innerText.trim().length > 0)
+                    accumulated +=  " " + innerText;
+            } else {    
+                // check text from all assigned nodes
+                for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
+                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
                     accumulated += " " + nextChildContent;
-                    walkChild = walkChild.nextSibling;
                 }
             }
-
-            let after = null;
-            try {
-                after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
-            } catch (e) {}
-
-            if (after && after !== "none") {
-                after = after.replace(/^"/,"").replace(/"$/,"");
-                accumulated += after;
-            }
-            // 2fiv. Return the accumulated text.
-            accumulated = accumulated.replace(/\s+/g," ").trim();
-            if (accumulated.trim().length > 0) {
-                return accumulated;
+        } else {
+            let walkChild = elem.firstChild;
+            while (walkChild) {
+                let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
+                accumulated += " " + nextChildContent;
+                walkChild = walkChild.nextSibling;
             }
         }
 
+        let after = null;
+        try {
+            after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
+        } catch (e) {}
+
+        if (after && after !== "none") {
+            after = after.replace(/^"/,"").replace(/"$/,"");
+            accumulated += after;
+        }
+        // 2fiv. Return the accumulated text.
+        accumulated = accumulated.replace(/\s+/g," ").trim();
+        if (accumulated.trim().length > 0) {
+            return accumulated;
+        }
+        
+
+        /**
         // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
         if (elem.hasAttribute("title")) {
             return elem.getAttribute("title");
@@ -629,4 +567,90 @@ export class AccNameUtil {
         return name;
       }*/
     }
+
+    // calculate accessible name from CSS generated content
+    public static computeAccessibleNameForCSSCreatedElement(elem: Element) : any | null {
+        // CSS :before and :after pseudo elements [CSS2] can provide textual content for elements 
+        //      that have a content model.
+        // For :before or :after pseudo elements, user agents must prepend CSS textual content, without 
+        //     a space, to the textual content of the current node.
+        const beforeElem = elem.ownerDocument.defaultView.getComputedStyle(elem,"before");
+        if (beforeElem) {
+            let before = beforeElem.content;
+            if (before && before !== "none") {
+                before = before.replace(/^"/,"").replace(/"$/,"");
+                if (before.trim().length > 0)
+                    return {"name": before, "nameFrom": "css-before"};
+            }
+        }
+
+        const afterElem = elem.ownerDocument.defaultView.getComputedStyle(elem,"after");
+        if (afterElem) {
+            let after = afterElem.content;
+            if (after && after !== "none") {
+                after = after.replace(/^"/,"").replace(/"$/,"");
+                if (after.trim().length > 0)
+                    return {"name": after, "nameFrom": "css-after"};
+            }
+        }
+
+        /**
+        // 2fiii. For each child node of the current node:
+        //   Set the current node to the child node.
+        //   Compute the text alternative of the current node beginning with step 2. Set the result 
+        //     to that text alternative.
+        //   Append the result to the accumulated text.
+        if (elem.nodeName.toUpperCase() === "SLOT") {
+            //if no assignedNode, check its own text 
+            if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
+                let innerText = CommonUtil.getInnerText(elem);
+                if (innerText && innerText !== null && innerText.trim().length > 0)
+                    accumulated +=  " " + innerText;
+            } else {    
+                // check text from all assigned nodes
+                for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
+                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
+                    accumulated += " " + nextChildContent;
+                }
+            }
+        } else {
+            let walkChild = elem.firstChild;
+            while (walkChild) {
+                let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
+                accumulated += " " + nextChildContent;
+                walkChild = walkChild.nextSibling;
+            }
+        }
+
+        let after = null;
+        try {
+            after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
+        } catch (e) {}
+
+        if (after && after !== "none") {
+            after = after.replace(/^"/,"").replace(/"$/,"");
+            accumulated += after;
+        }
+        // 2fiv. Return the accumulated text.
+        accumulated = accumulated.replace(/\s+/g," ").trim();
+        if (accumulated.trim().length > 0) {
+            return accumulated;
+        }
+        
+
+       
+        // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
+        if (elem.hasAttribute("title")) {
+            return elem.getAttribute("title");
+        }
+        if (elem.tagName.toLowerCase() === "svg") {
+            let title = elem.querySelector("title");
+            if (title) {
+                return title.textContent || title.innerText;
+            }
+        }
+        */
+        return null;
+
+    }    
 } 
