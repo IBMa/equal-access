@@ -127,7 +127,7 @@ export let a11yRulesets: Guideline[] = [
     },
     {
         id: "IBM_Accessibility_next",
-        name: "IBM Accessibility 7.3 preview",
+        name: "IBM Accessibility next",
         category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
