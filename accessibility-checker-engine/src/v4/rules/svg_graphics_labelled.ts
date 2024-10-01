@@ -50,7 +50,7 @@ export const svg_graphics_labelled: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the rule
-        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || VisUtil.isNodePresentational(ruleContext)) return null;
 
         // 1. aria-labelledby or aria-label 
         let label = AriaUtil.getAriaLabel(ruleContext);

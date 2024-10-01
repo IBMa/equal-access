@@ -15,6 +15,7 @@ import { CacheUtil } from "./CacheUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { AriaUtil } from "./AriaUtil";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -285,6 +286,16 @@ export class VisUtil {
         if (!VisUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
         let ancestor = DOMUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
         if (ancestor) return true;
+        return false;
+    }
+
+    /**
+     * return true if the node or its ancestor is natively hidden or aria-hidden = 'true'
+     * @param node
+     */
+    public static isNodePresentational(node: Element) : boolean {
+        const role = AriaUtil.getResolvedRole(node);
+        if (role && (role === 'none' || role === 'presentation')) return true;
         return false;
     }
 }

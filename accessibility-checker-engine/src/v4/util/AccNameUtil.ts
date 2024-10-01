@@ -237,48 +237,9 @@ export class AccNameUtil {
 
         // svg
         if (nodeName === "svg") {
-            // a direct child title element 
-            let svgTitle = elem.querySelector(":scope > title");
-            if (svgTitle) {
-                const title =CommonUtil.getInnerText(svgTitle);
-                if (title !== null || title.trim() !== '')
-                    return {"name":title, "nameFrom": "svgTitle"};
-            } 
-
-            // xlink:title attribute on a link
-            let linkTitle = elem.querySelector("a");
-            if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
-                let link = linkTitle.getAttribute("xlink:title");
-                if (link !== null || link.trim() !== '')
-                    return {"name":link, "nameFrom": "linkTitle"};
-            }
-
-            /** for text container elements, the text content. 
-             * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
-             *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
-             * 
-             * select text content excluded the text from the nested svg elements and their children 
-             */ 
-            let text = "";
-            elem.querySelectorAll(":scope > *").forEach((element) => {
-                if (element.nodeName.toLowerCase() !== 'svg' && CommonUtil.hasInnerContent(element))
-                    text += CommonUtil.getInnerText(element);
-            });
-            if (text.trim() !== '')
-                return {"name":text, "nameFrom": "svgText"}; 
-
-            // from aria-describedby or aria-description 
-            let descby = AriaUtil.getAriaDescription(elem);
-            if (descby && descby.trim().length > 0)
-                return {"name":descby, "nameFrom": "description"};
-
-            // a direct child desc element
-            let descElem = elem.querySelector(":scope > desc");
-            if (descElem) {
-                const desc = CommonUtil.getInnerText(descElem);
-                if (desc && desc.trim().length > 0)
-                    return {"name":desc, "nameFrom": "svgDesc"};
-            }
+            let pair = AccNameUtil.computeAccessibleNameForSVGElement(elem);
+            if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                return pair;
         }    
 
         /**
@@ -430,6 +391,52 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
+    public static computeAccessibleNameForSVGElement(elem: Element) : any | null {
+        // 1. a direct child title element 
+        let svgTitle = elem.querySelector(":scope > title");
+        if (svgTitle) {
+            const title =CommonUtil.getInnerText(svgTitle);
+            if (title !== null || title.trim() !== '')
+                return {"name":title, "nameFrom": "svgTitle"};
+        } 
+
+        // 2. xlink:title attribute on a link
+        let linkTitle = elem.querySelector("a");
+        if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
+            let link = linkTitle.getAttribute("xlink:title");
+            if (link !== null || link.trim() !== '')
+                return {"name":link, "nameFrom": "linkTitle"};
+        }
+
+        /** 3. for text container elements, the text content. 
+         * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
+         *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
+         * 
+         * select text content excluded the text from the nested svg elements and their children 
+         */ 
+        let text = "";
+        elem.querySelectorAll(":scope > *").forEach((element) => {
+            if (element.nodeName.toLowerCase() !== 'svg' && CommonUtil.hasInnerContent(element))
+                text += CommonUtil.getInnerText(element);
+        });
+        if (text.trim() !== '')
+            return {"name":text, "nameFrom": "svgText"}; 
+
+        // 4. from aria-describedby or aria-description 
+        let descby = AriaUtil.getAriaDescription(elem);
+        if (descby && descby.trim().length > 0)
+            return {"name":descby, "nameFrom": "description"};
+
+        // 5. a direct child desc element
+        let descElem = elem.querySelector(":scope > desc");
+        if (descElem) {
+            const desc = CommonUtil.getInnerText(descElem);
+            if (desc && desc.trim().length > 0)
+                return {"name":desc, "nameFrom": "svgDesc"};
+        }
+    }
+
+    // calculate accessible name for native elements
     public static computeAccessibleNameForCustomElement(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
         const role = AriaUtil.getResolvedRole(elem);
@@ -469,130 +476,64 @@ export class AccNameUtil {
                 return {"name":value, "nameFrom": "role-aria-valuenow"};
         }
 
-        /** 
-        // CSS generated textual content associated with the current node and 
-        // include it in the accumulated text. The CSS :before and :after pseudo elements [CSS2] 
-        // can provide textual content for elements that have a content model.
-        //   For :before pseudo elements, User agents MUST prepend CSS textual content, without 
-        //     a space, to the textual content of the current node.
-        //   For :after pseudo elements, User agents MUST append CSS textual content, without a 
-        //     space, to the textual content of the current node.
-        let before = null;
-        before = elem.ownerDocument.defaultView.getComputedStyle(elem,"before").content;
+        /** for any element, the content from CSS pseudo-elements 
+         *  :before and :after pseudo elements [CSS2] can provide textual content for elements that have a content model.
+         * For :before or :after pseudo elements, user agents must prepend CSS textual content, without a space, 
+         *   to the textual content of the current node.
+         */
+        let pair = AccNameUtil.computeAccessibleNameForCSSPseudoElement(elem, "before");
+        if (pair !== null && pair.name && pair.name.trim().length > 0)
+            return pair;
 
-        if (before && before !== "none") {
-            before = before.replace(/^"/,"").replace(/"$/,"");
-            accumulated += before;
-        }
-        // 2fiii. For each child node of the current node:
-        //   Set the current node to the child node.
-        //   Compute the text alternative of the current node beginning with step 2. Set the result 
-        //     to that text alternative.
-        //   Append the result to the accumulated text.
-        if (elem.nodeName.toUpperCase() === "SLOT") {
-            //if no assignedNode, check its own text 
-            if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                let innerText = CommonUtil.getInnerText(elem);
-                if (innerText && innerText !== null && innerText.trim().length > 0)
-                    accumulated +=  " " + innerText;
-            } else {    
-                // check text from all assigned nodes
-                for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
-                    accumulated += " " + nextChildContent;
-                }
-            }
-        } else {
-            let walkChild = elem.firstChild;
-            while (walkChild) {
-                let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
-                accumulated += " " + nextChildContent;
-                walkChild = walkChild.nextSibling;
-            }
-        }
+        pair = AccNameUtil.computeAccessibleNameForCSSPseudoElement(elem, "after");
+        if (pair !== null && pair.name && pair.name.trim().length > 0)
+            return pair;
 
-        let after = null;
-        try {
-            after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
-        } catch (e) {}
+        //  Slot element
+        if (nodeName === "slot") {
+            pair = AccNameUtil.computeAccessibleNameForSlotElement(elem);
+            if (pair !== null && pair.name && pair.name.trim().length > 0)
+                return pair;
+        } 
 
-        if (after && after !== "none") {
-            after = after.replace(/^"/,"").replace(/"$/,"");
-            accumulated += after;
-        }
-        // 2fiv. Return the accumulated text.
-        accumulated = accumulated.replace(/\s+/g," ").trim();
-        if (accumulated.trim().length > 0) {
-            return accumulated;
-        }
-        
-
-        /**
-        // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
-        if (elem.hasAttribute("title")) {
-            return elem.getAttribute("title");
-        }
-        if (elem.tagName.toLowerCase() === "svg") {
-            let title = elem.querySelector("title");
-            if (title) {
-                return title.textContent || title.innerText;
-            }
-        }
-        */
-        return null;
-        
-    
-        
-
-    /*        if (role in ARIADefinitions.designPatterns
-            && ARIADefinitions.designPatterns[role].nameFrom 
-            && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) 
-        {
-            name = elem.textContent;
-        }
-        if (elem.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").trim().length > 0) {
-            name = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id").trim()+"']").textContent;
-        }
-        if (elem.hasAttribute("aria-label")) {
-            name = elem.getAttribute("aria-label");
-        }
-        if (elem.hasAttribute("aria-labelledby")) {
-            name = "";
-            const ids = elem.getAttribute("aria-labelledby").split(" ");
-            for (const id of ids) {
-                name += FragmentUtil.getById(elem, id).textContent + " ";
-            }
-            name = name.trim();
-        }
-        return name;
-      }*/
+        return null;    
     }
 
     // calculate accessible name from CSS generated content
-    public static computeAccessibleNameForCSSCreatedElement(elem: Element) : any | null {
-        // CSS :before and :after pseudo elements [CSS2] can provide textual content for elements 
-        //      that have a content model.
-        // For :before or :after pseudo elements, user agents must prepend CSS textual content, without 
-        //     a space, to the textual content of the current node.
-        const beforeElem = elem.ownerDocument.defaultView.getComputedStyle(elem,"before");
-        if (beforeElem) {
-            let before = beforeElem.content;
-            if (before && before !== "none") {
-                before = before.replace(/^"/,"").replace(/"$/,"");
-                if (before.trim().length > 0)
-                    return {"name": before, "nameFrom": "css-before"};
+    public static computeAccessibleNameForCSSPseudoElement(elem: Element, type:string) : any | null {
+        const contentElem = elem.ownerDocument.defaultView.getComputedStyle(elem,type);
+        if (contentElem) {
+            let content = contentElem.content;
+            if (content && content !== "none") {
+                content = content.replace(/^"/,"").replace(/"$/,"");
+                if (content.trim().length > 0)
+                    return {"name": content, "nameFrom": "css-"+type};
             }
         }
+        return null;
+    }
 
-        const afterElem = elem.ownerDocument.defaultView.getComputedStyle(elem,"after");
-        if (afterElem) {
-            let after = afterElem.content;
-            if (after && after !== "none") {
-                after = after.replace(/^"/,"").replace(/"$/,"");
-                if (after.trim().length > 0)
-                    return {"name": after, "nameFrom": "css-after"};
+    // calculate accessible name for SLOT element
+    public static computeAccessibleNameForSlotElement(elem: Element) : any | null {
+        //if no assignedNode, check its own text 
+        let text = "";
+        if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
+            let innerText = CommonUtil.getInnerText(elem);
+            if (innerText && innerText.trim().length > 0)
+                text +=  " " + innerText;
+        } else {    
+            // check text from all assigned nodes
+            for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
+                let nextChildContent = AccNameUtil.computeAccessibleName(slotChild as HTMLElement);
+                if (nextChildContent && nextChildContent.trim().length > 0)
+                text += " " + nextChildContent;
             }
         }
+        if (text.trim().length > 0)
+            return {"name": text, "nameFrom": "content-slot"};
+        
+        return null;
+    }
 
         /**
         // 2fiii. For each child node of the current node:
@@ -650,7 +591,6 @@ export class AccNameUtil {
             }
         }
         */
-        return null;
-
-    }    
+        
+    
 } 

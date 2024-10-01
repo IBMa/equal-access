@@ -58,15 +58,15 @@ export const aria_parent_required: Rule = {
             return;
         
         //skip the check if the element should be a presentational child of an element
-        if (AriaUtil.shouldBePresentationalChild(ruleContext))
+        if (AriaUtil.shouldBePresentationalChild(ruleContext) || VisUtil.isNodePresentational(ruleContext))
             return;
         
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        //let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         
         // ignore if the element contains none or presentation role
-        let presentationRoles = ["none", "presentation"];
-        const found = roles.some(r=> presentationRoles.includes(r));
-        if (found) return null;
+        //let presentationRoles = ["none", "presentation"];
+        //const found = roles.some(r=> presentationRoles.includes(r));
+        //if (found) return null;
         
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
@@ -82,7 +82,8 @@ export const aria_parent_required: Rule = {
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
         }
-        for (let j = 0, length = roles.length; j < length; ++j) {
+        
+        /**for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
                 passed = false;
@@ -96,6 +97,20 @@ export const aria_parent_required: Rule = {
                 }
             }
         } 
+        */
+        const role = AriaUtil.getResolvedRole(ruleContext);
+        if (designPatterns[role] && designPatterns[role].container != null) {
+            testedContainer++;
+            passed = false;
+            containerRoles = designPatterns[role].container;
+            for (let i = 0, containersLength = containerRoles.length; !passed && i < containersLength; i++) {
+                passed = parentRole === containerRoles[i];
+                if (passed) break;
+            }
+            if (passed == false) {
+                roleNameArr.push(role);
+            }
+        }
 
         let retToken1 = new Array();
         retToken1.push(roleNameArr.join(", "));

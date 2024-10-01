@@ -2852,14 +2852,14 @@ export class ARIADefinitions {
                 htmlAttributeValues: null
             }]
         },
-        "aria-autocomplete": {
+        /** "aria-autocomplete": {
             conflict: [{
                 // conflict occurs if both exists, aria value is only for custom widget, rather than native
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["autocomplete"],
                 htmlAttributeValues: null
             }]
-        }  
+        } */ 
     }
 
     static containers = []
