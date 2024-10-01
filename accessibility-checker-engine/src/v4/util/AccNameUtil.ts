@@ -43,7 +43,7 @@ export class AccNameUtil {
 
         // 2. accessible name mapping for native html elements
         name_pair = AccNameUtil.computeAccessibleNameForNativeElement(elem);
-        if (name_pair !== null) {
+        if (name_pair) {
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
             return name_pair;
         }
@@ -52,7 +52,7 @@ export class AccNameUtil {
         const role = AriaUtil.getResolvedRole(elem);
         if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("content")) {
             name_pair = AccNameUtil.computeAccessibleNameForCustomElement(elem);
-            if (name_pair !== null) {
+            if (name_pair) {
                 CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
                 return name_pair;
             }
@@ -94,7 +94,7 @@ export class AccNameUtil {
             if (value !== null || value.trim() !== '')
                 return {"name":value, "nameFrom": "value"};
 
-            // input 'submit', 'reset' and 'image' have visible defaults so pass if there is no 'value' attribute 
+            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
             return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
         }
 
@@ -107,7 +107,7 @@ export class AccNameUtil {
                 return {"name":alt, "nameFrom": "alt"};;
 
             // the visible default text for type "image" is "Submit" same with the type "submit"
-            return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
+            //return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
         }
 
         // button
@@ -120,9 +120,9 @@ export class AccNameUtil {
 
             // for image button: get the first image if exists
             const image = elem.querySelector('img');
-            if (image) {
+            if (image && !VisUtil.isNodeHiddenFromAT(image) && !VisUtil.isNodePresentational(image)) {
                 let pair = AccNameUtil.computeAccessibleName(image); 
-                if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                if (pair && pair.name && pair.name.trim().length > 0) 
                     return pair;
             }       
         }
@@ -147,11 +147,10 @@ export class AccNameUtil {
                 if (labelIDs && labelIDs.length > 0) {
                     let label = "";
                     for (let j = 0; j < labelIDs.length; j++) {
-                        let labelID = labelIDs[j];
                         let labelNode = elem.ownerDocument.getElementById(labelIDs[j]);
                         if (labelNode && !DOMUtil.sameNode(labelNode, elem)) {
                             const pair = AccNameUtil.computeAccessibleName(labelNode);
-                            if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                            if (pair && pair.name && pair.name.trim().length > 0) 
                                 label += " " + CommonUtil.normalizeSpacing(pair.name);
                         }
                     }
@@ -203,8 +202,7 @@ export class AccNameUtil {
             if (elem.hasAttribute("alt")) {
                 let alt = DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim();
                 return {"name":alt, "nameFrom": "alt"};
-            } else
-               return null;
+            }
         }
 
         // table element
@@ -228,17 +226,17 @@ export class AccNameUtil {
 
             // for image link: get the first image if exists
             const image = elem.querySelector('img');
-            if (image) {
+            if (image && !VisUtil.isNodeHiddenFromAT(image) && !VisUtil.isNodePresentational(image)) {
                 let pair = AccNameUtil.computeAccessibleName(image); 
-                if (pair !== null && pair.name && pair.name.trim().length > 0) 
+                if (pair && pair.name && pair.name.trim().length > 0) 
                     return pair;
             }       
         }
 
         // svg
         if (nodeName === "svg") {
-            let pair = AccNameUtil.computeAccessibleNameForSVGElement(elem);
-            if (pair !== null && pair.name && pair.name.trim().length > 0) 
+            const pair = AccNameUtil.computeAccessibleNameForSVGElement(elem);
+            if (pair && pair.name && pair.name.trim().length > 0) 
                 return pair;
         }    
 
@@ -349,45 +347,8 @@ export class AccNameUtil {
                 return accumulated;
             }
         }
-
-        // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
-        if (elem.hasAttribute("title")) {
-            return elem.getAttribute("title");
-        }
-        if (elem.tagName.toLowerCase() === "svg") {
-            let title = elem.querySelector("title");
-            if (title) {
-                return title.textContent || title.innerText;
-            }
-        }
         */
         return null;
-        
-    
-        
-
-    /*        if (role in ARIADefinitions.designPatterns
-            && ARIADefinitions.designPatterns[role].nameFrom 
-            && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) 
-        {
-            name = elem.textContent;
-        }
-        if (elem.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").trim().length > 0) {
-            name = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id").trim()+"']").textContent;
-        }
-        if (elem.hasAttribute("aria-label")) {
-            name = elem.getAttribute("aria-label");
-        }
-        if (elem.hasAttribute("aria-labelledby")) {
-            name = "";
-            const ids = elem.getAttribute("aria-labelledby").split(" ");
-            for (const id of ids) {
-                name += FragmentUtil.getById(elem, id).textContent + " ";
-            }
-            name = name.trim();
-        }
-        return name;
-      }*/
     }
 
     // calculate accessible name for native elements
@@ -425,7 +386,7 @@ export class AccNameUtil {
         // 4. from aria-describedby or aria-description 
         let descby = AriaUtil.getAriaDescription(elem);
         if (descby && descby.trim().length > 0)
-            return {"name":descby, "nameFrom": "description"};
+            return {"name":descby, "nameFrom": "aria-description"};
 
         // 5. a direct child desc element
         let descElem = elem.querySelector(":scope > desc");
@@ -447,7 +408,7 @@ export class AccNameUtil {
             if (name && name.trim().length > 0) {
                 if (name.trim().length > 16)
                     name = name.trim().substring(0, 15);
-                return {"name":name, "nameFrom": "role-value"};
+                return {"name":name, "nameFrom": "value"};
             }
         }
         
@@ -459,7 +420,7 @@ export class AccNameUtil {
                 if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
                     const pair = AccNameUtil.computeAccessibleName(selectedOption);
                     if (pair && pair.name)
-                        return {"name":pair.name, "nameFrom": "role-option"};
+                        return {"name":pair.name, "nameFrom": "option"};
                 }
             }
         }
@@ -469,11 +430,11 @@ export class AccNameUtil {
             // If the aria-valuetext property is present, return its value
             let value = elem.getAttribute("aria-valuetext");
             if (value && value.trim().length > 0) 
-                return {"name":value, "nameFrom": "role-aria-valuetext"};
+                return {"name":value, "nameFrom": "aria-valuetext"};
             // Otherwise, if the aria-valuenow property is present, return its value,
             value = elem.getAttribute("aria-valuenow");
             if (value && value.trim().length > 0) 
-                return {"name":value, "nameFrom": "role-aria-valuenow"};
+                return {"name":value, "nameFrom": "aria-valuenow"};
         }
 
         /** for any element, the content from CSS pseudo-elements 
@@ -486,13 +447,13 @@ export class AccNameUtil {
             return pair;
 
         pair = AccNameUtil.computeAccessibleNameForCSSPseudoElement(elem, "after");
-        if (pair !== null && pair.name && pair.name.trim().length > 0)
+        if (pair && pair.name && pair.name.trim().length > 0)
             return pair;
 
         //  Slot element
         if (nodeName === "slot") {
-            pair = AccNameUtil.computeAccessibleNameForSlotElement(elem);
-            if (pair !== null && pair.name && pair.name.trim().length > 0)
+            pair = AccNameUtil.computeAccessibleNameFromShadowElement(elem);
+            if (pair && pair.name && pair.name.trim().length > 0)
                 return pair;
         } 
 
@@ -514,7 +475,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameForSlotElement(elem: Element) : any | null {
+    public static computeAccessibleNameFromShadowElement(elem: Element) : any | null {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
@@ -531,7 +492,7 @@ export class AccNameUtil {
         }
         if (text.trim().length > 0)
             return {"name": text, "nameFrom": "content-slot"};
-        
+
         return null;
     }
 
