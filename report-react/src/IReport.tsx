@@ -33,6 +33,7 @@ export interface IReport {
     }
     passUniqueElements?: string[]
     testedUniqueElements?: number
+    ignored?:string[]
 }
 
 export interface IReportItem {
@@ -45,7 +46,8 @@ export interface IReportItem {
     value: string[],
     message: string,
     snippet: string,
-    help: string
+    help: string,
+    isHidden?:boolean,
 }
 
 export interface ICheckpoint {
