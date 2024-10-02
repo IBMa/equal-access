@@ -28,6 +28,7 @@ export class AccNameUtil {
     
     // calculate accessible name for a given node
     public static computeAccessibleName(elem: Element) : any | null {
+        if (!elem) return null;
         const nodeName = elem.nodeName.toLowerCase();
 
         let name_pair = CacheUtil.getCache(elem, "ELEMENT_ACCESSBLE_NAME", undefined);
@@ -38,7 +39,7 @@ export class AccNameUtil {
         let accName = AriaUtil.getAriaLabel(elem);
         if (accName && accName.trim() !== "") {
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":accName, "nameFrom": "ariaLabel"});
-            return {"name":accName, "nameFrom": "ariaLabel"};
+            return {"name":CommonUtil.truncateText(accName, 16), "nameFrom": "ariaLabel"};
         }
 
         // 2. accessible name mapping for native html elements
@@ -47,11 +48,11 @@ export class AccNameUtil {
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
             return name_pair;
         }
-
+        
         // 3. name from content for custom elements
         const role = AriaUtil.getResolvedRole(elem);
-        if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("content")) {
-            name_pair = AccNameUtil.computeAccessibleNameForCustomElement(elem);
+        if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) {
+            name_pair = AccNameUtil.computeAccessibleNameFromContent(elem);
             if (name_pair) {
                 CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
                 return name_pair;
@@ -62,13 +63,14 @@ export class AccNameUtil {
         if (elem.hasAttribute("title")) {
             let title = elem.getAttribute("title").trim();
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":title, "nameFrom": "title"});
-            return {"name":title, "nameFrom": "title"};
+            return {"name":CommonUtil.truncateText(title), "nameFrom": "title"};
         }
         
         // 5. name from the attribute "placeholder"
         if (nodeName === 'input' && (!elem.hasAttribute("type") || CommonUtil.input_type_with_placeholder.includes(elem.getAttribute("type")))) {
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", accName);
-            return elem.getAttribute("placeholder");
+            const placeholder = CommonUtil.truncateText(elem.getAttribute("placeholder"));
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", placeholder);
+            return {"name":placeholder, "nameFrom": "placeholder"};
         }
 
         CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", null);
@@ -83,16 +85,16 @@ export class AccNameUtil {
         if (CommonUtil.form_labelable_elements.includes(nodeName)) {
             // Get only the non-hidden labels for element
             const label = CommonUtil.getFormFieldLabel(elem);
-            if (label !== null || label.trim() !== '')
-                return {"name":label, "nameFrom": "label"};
+            if (label && label.trim() !== '')
+                return {"name":CommonUtil.truncateText(label), "nameFrom": "label"};
         }
 
         // input types: button, reset, submit
         if (nodeName === "input" && elem.hasAttribute("type") && CommonUtil.form_button_types.includes(elem.getAttribute("type"))) {
             // Get the "value" attribute for the element
             const value = CommonUtil.getElementAttribute(elem, "value");
-            if (value !== null || value.trim() !== '')
-                return {"name":value, "nameFrom": "value"};
+            if (value && value.trim() !== '')
+                return {"name":CommonUtil.truncateText(value), "nameFrom": "value"};
 
             // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
             return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
@@ -100,11 +102,11 @@ export class AccNameUtil {
 
         // input type = 'image'
         if (nodeName === "input" && elem.hasAttribute("type") && elem.getAttribute("type") === 'image') {
-            // note that though HTML 5 spec says "The element's [value] attribute must be omitted", Chrome uses the value.
+            // note that though HTML 5 spec indicates "The element's [value] attribute must be omitted", Chrome uses the value.
             // Get the accessible name for the alt attribute
             const alt = CommonUtil.getElementAttribute(elem, "alt");
-            if (alt !== null || alt.trim() !== '')
-                return {"name":alt, "nameFrom": "alt"};;
+            if (alt && alt.trim() !== '')
+                return {"name":CommonUtil.truncateText(alt), "nameFrom": "alt"};;
 
             // the visible default text for type "image" is "Submit" same with the type "submit"
             //return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
@@ -115,8 +117,8 @@ export class AccNameUtil {
         if (nodeName === "button") {
             // first use the button text
             const text = CommonUtil.getInnerText(elem);
-            if (text !== null || text.trim() !== '')
-                return {"name":text, "nameFrom": "text"};
+            if (text && text.trim() !== '')
+                return {"name":CommonUtil.truncateText(text), "nameFrom": "text"};
 
             // for image button: get the first image if exists
             const image = elem.querySelector('img');
@@ -135,7 +137,7 @@ export class AccNameUtil {
                 // legend can be mixed text
                 const text = CommonUtil.getInnerText(first);
                 if (text && text.trim().length > 0) 
-                    return {"name":text, "nameFrom": "legend"}; 
+                    return {"name":CommonUtil.truncateText(text), "nameFrom": "legend"}; 
             }        
         }
 
@@ -148,14 +150,14 @@ export class AccNameUtil {
                     let label = "";
                     for (let j = 0; j < labelIDs.length; j++) {
                         let labelNode = elem.ownerDocument.getElementById(labelIDs[j]);
-                        if (labelNode && !DOMUtil.sameNode(labelNode, elem)) {
+                        if (labelNode && !DOMUtil.sameNode(labelNode, elem) && !VisUtil.isNodeHiddenFromAT(labelNode) && !VisUtil.isNodePresentational(labelNode)) {
                             const pair = AccNameUtil.computeAccessibleName(labelNode);
                             if (pair && pair.name && pair.name.trim().length > 0) 
                                 label += " " + CommonUtil.normalizeSpacing(pair.name);
                         }
                     }
                     if (label.trim().length > 0)
-                        return {"name":label, "nameFrom": "label"};
+                        return {"name":CommonUtil.truncateText(label), "nameFrom": "label"};
                 }
             }       
         }
@@ -165,7 +167,7 @@ export class AccNameUtil {
             // use summary element subtree
             const text = CommonUtil.getInnerText(elem);
             if (text && text.trim().length > 0) 
-                return {"name":text, "nameFrom": "legend"};         
+                return {"name":CommonUtil.truncateText(text), "nameFrom": "legend"};         
         }
 
         // details
@@ -175,7 +177,7 @@ export class AccNameUtil {
                 // get accessible name from summary
                 const summary = AccNameUtil.computeAccessibleName(first);
                 if (summary && summary.trim().length > 0) 
-                    return {"name":summary, "nameFrom": "summary"}; 
+                    return {"name":CommonUtil.truncateText(summary), "nameFrom": "summary"}; 
             }
             // If no summary element as a direct child of the details element, 
             // the user agent should provide one with a subtree containing a localized string of the word "details".
@@ -192,16 +194,25 @@ export class AccNameUtil {
                     // figcaption can be mixed text
                     const text = CommonUtil.getInnerText(caption);
                     if (text && text.trim().length > 0) 
-                        return {"name":text, "nameFrom": "figcaption"}; 
+                        return {"name":CommonUtil.truncateText(text), "nameFrom": "figcaption"}; 
                 } 
             }        
         }
 
-        // img and area elements: use attribute "alt"
-        if (nodeName === "img" || nodeName === "area") {
+        // img elements: use attribute "alt"
+        if (nodeName === "img") {
             if (elem.hasAttribute("alt")) {
-                let alt = DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim();
-                return {"name":alt, "nameFrom": "alt"};
+                let alt = elem.getAttribute("alt");
+                return {"name":CommonUtil.truncateText(alt), "nameFrom": "alt"};
+            }
+        }
+
+        // area elements: use attribute "alt"
+        if (nodeName === "area") {
+            if (elem.hasAttribute("alt")) {
+                let alt = elem.getAttribute("alt");
+                if (alt && alt.trim().length > 0)
+                    return {"name":CommonUtil.truncateText(alt), "nameFrom": "alt"};
             }
         }
 
@@ -213,7 +224,7 @@ export class AccNameUtil {
                 // caption can be mixed text
                 const caption = CommonUtil.getInnerText(captionElem);
                 if (caption && caption.trim().length > 0) 
-                    return {"name":caption, "nameFrom": "caption"}; 
+                    return {"name":CommonUtil.truncateText(caption), "nameFrom": "caption"}; 
             }         
         }
 
@@ -221,8 +232,8 @@ export class AccNameUtil {
         if (nodeName === "a") {
             // first use the link text
             const text = CommonUtil.getInnerText(elem);
-            if (text !== null || text.trim() !== '')
-                return {"name":text, "nameFrom": "text"};
+            if (text && text.trim() !== '')
+                return {"name":CommonUtil.truncateText(text), "nameFrom": "text"};
 
             // for image link: get the first image if exists
             const image = elem.querySelector('img');
@@ -238,116 +249,21 @@ export class AccNameUtil {
             const pair = AccNameUtil.computeAccessibleNameForSVGElement(elem);
             if (pair && pair.name && pair.name.trim().length > 0) 
                 return pair;
-        }    
-
-        /**
-
-        // 2e.
-        if ((walkTraverse || labelledbyTraverse) && isEmbeddedControl) {
-            // If the embedded control has role textbox, return its value.
-            if (role === "textbox") {
-                if (elem.nodeName.toLowerCase() === "input") {
-                    if (elem.hasAttribute("value")) return elem.getAttribute("value");
-                } else {
-                    walkTraverse = false;
-                }
-            }
-
-            // If the embedded control has role button, return the text alternative of the button.
-            if (role === "button") {
-                if (elem.nodeName.toLowerCase() === "input") {
-                    let type = elem.getAttribute("type").toLowerCase();
-                    if (["button", "submit", "reset"].includes(type)) {
-                        if (elem.hasAttribute("value")) return elem.getAttribute("value");
-                        if (type === "submit") return "Submit";
-                        if (type === "reset") return "Reset";
-                    }
-                } else {
-                    walkTraverse = false;
-                }
-            }
-
-            // TODO: If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
-            if (role === "combobox") {
-                if (elem.hasAttribute("aria-activedescendant")) {
-                    let selected = FragmentUtil.getById(elem, "aria-activedescendant");
-                    if (selected && !DOMUtil.sameNode(elem, selected)) {
-                        return ARIAMapper.computeNameHelp(walkId, selected, false, false);
-                    }
-                }
-            }
-
-            // If the embedded control has role range (e.g., a spinbutton or slider):
-            if (["progressbar", "scrollbar", "slider", "spinbutton"].includes(role)) {
-                // If the aria-valuetext property is present, return its value,
-                if (elem.hasAttribute("aria-valuetext")) return elem.getAttribute("aria-valuetext");
-                // Otherwise, if the aria-valuenow property is present, return its value,
-                if (elem.hasAttribute("aria-valuenow")) return elem.getAttribute("aria-valuenow");
-                // TODO: Otherwise, use the value as specified by a host language attribute.
-            }
         }
 
-        // 2f. 2h.
-        if (walkTraverse || ARIADefinitions.nameFromContent(role) || labelledbyTraverse) {
-            // 2fi. Set the accumulated text to the empty string.
-            let accumulated = "";
-            // 2fii. Check for CSS generated textual content associated with the current node and 
-            // include it in the accumulated text. The CSS :before and :after pseudo elements [CSS2] 
-            // can provide textual content for elements that have a content model.
-            //   For :before pseudo elements, User agents MUST prepend CSS textual content, without 
-            //     a space, to the textual content of the current node.
-            //   For :after pseudo elements, User agents MUST append CSS textual content, without a 
-            //     space, to the textual content of the current node.
-            let before = null;
-            before = elem.ownerDocument.defaultView.getComputedStyle(elem,"before").content;
-
-            if (before && before !== "none") {
-                before = before.replace(/^"/,"").replace(/"$/,"");
-                accumulated += before;
-            }
-            // 2fiii. For each child node of the current node:
-            //   Set the current node to the child node.
-            //   Compute the text alternative of the current node beginning with step 2. Set the result 
-            //     to that text alternative.
-            //   Append the result to the accumulated text.
-            if (elem.nodeName.toUpperCase() === "SLOT") {
-                //if no assignedNode, check its own text 
-                if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                    let innerText = CommonUtil.getInnerText(elem);
-                    if (innerText && innerText !== null && innerText.trim().length > 0)
-                        accumulated +=  " " + innerText;
-                } else {    
-                    // check text from all assigned nodes
-                    for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                        let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
-                        accumulated += " " + nextChildContent;
-                    }
-                }
-            } else {
-                let walkChild = elem.firstChild;
-                while (walkChild) {
-                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
-                    accumulated += " " + nextChildContent;
-                    walkChild = walkChild.nextSibling;
-                }
-            }
-
-            let after = null;
-            try {
-                after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
-            } catch (e) {}
-
-            if (after && after !== "none") {
-                after = after.replace(/^"/,"").replace(/"$/,"");
-                accumulated += after;
-            }
-            // 2fiv. Return the accumulated text.
-            accumulated = accumulated.replace(/\s+/g," ").trim();
-            if (accumulated.trim().length > 0) {
-                return accumulated;
-            }
-        }
+        /** 
+         *  text elements that doesn't have an implicit role, including
+         * abbr, b, bdi, bdo, br, cite, code, dfn, em, i, kbd, mark, q, rp, rt, ruby, s, samp, small, strong, sub and sup, time, u, var, wbr 
+         * OR the elements with a generic role (no semantic meaning), such as div, span etc
+         * which may be used to calculate the accessible name for its parent: name from children content
         */
+        /**const role = AriaUtil.getResolvedRole(elem);
+        if (!role || role === 'generic') {
+            const pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
+            if (pair && pair.name && pair.name.trim().length > 0) 
+                return pair;
+        }*/
+
         return null;
     }
 
@@ -357,16 +273,16 @@ export class AccNameUtil {
         let svgTitle = elem.querySelector(":scope > title");
         if (svgTitle) {
             const title =CommonUtil.getInnerText(svgTitle);
-            if (title !== null || title.trim() !== '')
-                return {"name":title, "nameFrom": "svgTitle"};
+            if (title && title.trim() !== '')
+                return {"name":CommonUtil.truncateText(title), "nameFrom": "svgTitle"};
         } 
 
         // 2. xlink:title attribute on a link
         let linkTitle = elem.querySelector("a");
         if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
             let link = linkTitle.getAttribute("xlink:title");
-            if (link !== null || link.trim() !== '')
-                return {"name":link, "nameFrom": "linkTitle"};
+            if (link && link.trim() !== '')
+                return {"name":CommonUtil.truncateText(link), "nameFrom": "linkTitle"};
         }
 
         /** 3. for text container elements, the text content. 
@@ -381,34 +297,34 @@ export class AccNameUtil {
                 text += CommonUtil.getInnerText(element);
         });
         if (text.trim() !== '')
-            return {"name":text, "nameFrom": "svgText"}; 
+            return {"name":CommonUtil.truncateText(text), "nameFrom": "svgText"}; 
 
         // 4. from aria-describedby or aria-description 
         let descby = AriaUtil.getAriaDescription(elem);
         if (descby && descby.trim().length > 0)
-            return {"name":descby, "nameFrom": "aria-description"};
+            return {"name":CommonUtil.truncateText(descby), "nameFrom": "aria-description"};
 
         // 5. a direct child desc element
         let descElem = elem.querySelector(":scope > desc");
         if (descElem) {
             const desc = CommonUtil.getInnerText(descElem);
             if (desc && desc.trim().length > 0)
-                return {"name":desc, "nameFrom": "svgDesc"};
+                return {"name":CommonUtil.truncateText(desc), "nameFrom": "svgDesc"};
         }
     }
 
-    // calculate accessible name for native elements
-    public static computeAccessibleNameForCustomElement(elem: Element) : any | null {
+    // calculate accessible name for custom elements marked with aria
+    public static computeAccessibleNameFromContent(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
         const role = AriaUtil.getResolvedRole(elem);
-
+        
         // textbox etc. return its text value
         if (role === "textbox") {
             let name = elem.textContent;
             if (name && name.trim().length > 0) {
                 if (name.trim().length > 16)
                     name = name.trim().substring(0, 15);
-                return {"name":name, "nameFrom": "value"};
+                return {"name":CommonUtil.truncateText(name), "nameFrom": "value"};
             }
         }
         
@@ -420,7 +336,7 @@ export class AccNameUtil {
                 if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
                     const pair = AccNameUtil.computeAccessibleName(selectedOption);
                     if (pair && pair.name)
-                        return {"name":pair.name, "nameFrom": "option"};
+                        return {"name":CommonUtil.truncateText(pair.name), "nameFrom": "option"};
                 }
             }
         }
@@ -434,7 +350,7 @@ export class AccNameUtil {
             // Otherwise, if the aria-valuenow property is present, return its value,
             value = elem.getAttribute("aria-valuenow");
             if (value && value.trim().length > 0) 
-                return {"name":value, "nameFrom": "aria-valuenow"};
+                return {"name":CommonUtil.truncateText(value), "nameFrom": "aria-valuenow"};
         }
 
         /** for any element, the content from CSS pseudo-elements 
@@ -450,13 +366,26 @@ export class AccNameUtil {
         if (pair && pair.name && pair.name.trim().length > 0)
             return pair;
 
-        //  Slot element
-        if (nodeName === "slot") {
-            pair = AccNameUtil.computeAccessibleNameFromShadowElement(elem);
+        //  shadow host
+        if (elem.shadowRoot) {
+            pair = AccNameUtil.computeAccessibleNameForShadowHost(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
                 return pair;
-        } 
+        }
+        
+        // slot element
+        if (nodeName === "slot") {
+            pair = AccNameUtil.computeAccessibleNameForSlostElement(elem);
+            if (pair && pair.name && pair.name.trim().length > 0)
+                return pair;
+        }
 
+        // otherwise: get the value from the element
+        pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
+        if (pair && pair.name && pair.name.trim().length > 0)
+            return pair;
+
+        // no accessible name exists
         return null;    
     }
 
@@ -468,14 +397,33 @@ export class AccNameUtil {
             if (content && content !== "none") {
                 content = content.replace(/^"/,"").replace(/"$/,"");
                 if (content.trim().length > 0)
-                    return {"name": content, "nameFrom": "css-"+type};
+                    return {"name": CommonUtil.truncateText(content), "nameFrom": "css-"+type};
             }
         }
         return null;
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameFromShadowElement(elem: Element) : any | null {
+    public static computeAccessibleNameForShadowHost(elem: Element) : any | null {
+        let text = "";
+        const shadowRoot = elem.shadowRoot;
+        if (shadowRoot) {
+            let children = shadowRoot.querySelectorAll('*');   
+            // check text from all the children elements
+            children.forEach(child => {
+                const pair = AccNameUtil.computeAccessibleName(child);
+                if (pair && pair.name && pair.name.trim().length > 0)
+                text += " " + pair.name;
+            });
+        }
+        if (text.trim().length > 0)
+            return {"name": CommonUtil.truncateText(text), "nameFrom": "shadow-host"};
+
+        return null;
+    }
+
+    // calculate accessible name for SLOT element
+    public static computeAccessibleNameForSlostElement(elem: Element) : any | null {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
@@ -485,73 +433,45 @@ export class AccNameUtil {
         } else {    
             // check text from all assigned nodes
             for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                let nextChildContent = AccNameUtil.computeAccessibleName(slotChild as HTMLElement);
-                if (nextChildContent && nextChildContent.trim().length > 0)
-                text += " " + nextChildContent;
+                let pair = AccNameUtil.computeAccessibleName(slotChild as HTMLElement);
+                if (pair && pair.name && pair.name.length > 0)
+                text += " " + pair.name;
             }
         }
         if (text.trim().length > 0)
-            return {"name": text, "nameFrom": "content-slot"};
+            return {"name": CommonUtil.truncateText(text), "nameFrom": "content-slot"};
 
         return null;
     }
 
-        /**
-        // 2fiii. For each child node of the current node:
-        //   Set the current node to the child node.
-        //   Compute the text alternative of the current node beginning with step 2. Set the result 
-        //     to that text alternative.
-        //   Append the result to the accumulated text.
-        if (elem.nodeName.toUpperCase() === "SLOT") {
-            //if no assignedNode, check its own text 
-            if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                let innerText = CommonUtil.getInnerText(elem);
-                if (innerText && innerText !== null && innerText.trim().length > 0)
-                    accumulated +=  " " + innerText;
-            } else {    
-                // check text from all assigned nodes
-                for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
-                    accumulated += " " + nextChildContent;
+    // calculate accessible name from children content
+    public static computeAccessibleNameFromChildren(elem: Element) : any | null {
+        let text = "";
+        let walkChild = elem.firstChild;
+        while (walkChild) { 
+            if (walkChild.nodeType === 3 && walkChild.nodeValue && walkChild.nodeValue.trim().length > 0) 
+                text += " " + walkChild.nodeValue.trim();
+            else if (walkChild.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(walkChild as HTMLElement) && !VisUtil.isNodePresentational(walkChild as HTMLElement)) {
+                const pair = AccNameUtil.computeAccessibleName(walkChild as HTMLElement);
+                if (pair && pair.name && pair.name.length > 0) 
+                    text += " " + pair.name;
+                else {
+                    /** 
+                     *  text elements that doesn't have an implicit role, including
+                     * abbr, b, bdi, bdo, br, cite, code, dfn, em, i, kbd, mark, q, rp, rt, ruby, s, samp, small, strong, sub and sup, time, u, var, wbr 
+                     * OR the elements with a generic role (no semantic meaning), such as div, span etc
+                     * which may be used to calculate the accessible name for its parent: name from children content
+                    */
+                    const value = CommonUtil.getInnerText(elem);
+                    if (value && value.trim().length > 0) 
+                        text += " " + value.trim();
                 }
             }
-        } else {
-            let walkChild = elem.firstChild;
-            while (walkChild) {
-                let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
-                accumulated += " " + nextChildContent;
-                walkChild = walkChild.nextSibling;
-            }
+            walkChild = walkChild.nextSibling;
         }
+        if (text.trim().length > 0)
+            return {"name": CommonUtil.truncateText(text), "nameFrom": "content"};
 
-        let after = null;
-        try {
-            after = elem.ownerDocument.defaultView.getComputedStyle(elem,"after").content;
-        } catch (e) {}
-
-        if (after && after !== "none") {
-            after = after.replace(/^"/,"").replace(/"$/,"");
-            accumulated += after;
-        }
-        // 2fiv. Return the accumulated text.
-        accumulated = accumulated.replace(/\s+/g," ").trim();
-        if (accumulated.trim().length > 0) {
-            return accumulated;
-        }
-        
-
-       
-        // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
-        if (elem.hasAttribute("title")) {
-            return elem.getAttribute("title");
-        }
-        if (elem.tagName.toLowerCase() === "svg") {
-            let title = elem.querySelector("title");
-            if (title) {
-                return title.textContent || title.innerText;
-            }
-        }
-        */
-        
-    
+        return null;
+    }
 } 

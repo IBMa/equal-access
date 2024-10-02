@@ -17,6 +17,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
@@ -67,16 +68,12 @@ export const aria_accessiblename_exists: Rule = {
         const deprecatedAttributes = AriaUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
-        if ( AriaUtil.getAriaLabel(ruleContext).trim().length === 0 && !CommonUtil.attributeNonEmpty(ruleContext, "title")) {
-            let role = AriaUtil.getResolvedRole(ruleContext);
-            //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
-            if (role && ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) {
-                //exclude the hidden text?
-                if (!CommonUtil.hasInnerContentHidden(ruleContext))
-                    return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);  
-            } else 
-                return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
-        }
+        let role = AriaUtil.getResolvedRole(ruleContext);
+        
+        const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0)
+            return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
+
         return RulePass("pass");
     }
 }

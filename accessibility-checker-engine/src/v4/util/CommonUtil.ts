@@ -832,7 +832,7 @@ export class CommonUtil {
             // exclude all form elements from the label since they might also have inner content
             parentClone = CommonUtil.removeAllFormElementsFromLabel(parentClone);
             const label = CommonUtil.getInnerText(parentClone);
-            return label !== null && label.trim() !== '' ? label.trim() : null;
+            return label && label.trim() !== '' ? label.trim() : null;
         } else
             return null;
     }
@@ -852,9 +852,9 @@ export class CommonUtil {
         // get the label from the attribute "for" of the label element
         // Get only the non-hidden labels for element
         let labelElem = CommonUtil.getLabelForElementHidden(elem, true);
-        if (labelElem !== null) {
+        if (labelElem) {
             label = CommonUtil.getInnerText(labelElem);
-            if (label !== null && label.trim() !== "")
+            if (label && label.trim() !== "")
                 return label;
         }
         
@@ -1118,9 +1118,9 @@ export class CommonUtil {
 
     public static hasInnerContent(element) {
         let text = CommonUtil.getInnerText(element);
-        let hasContent = (text != null && text.trim().length > 0);
+        let hasContent = (text !== null && text.trim().length > 0);
 
-        if (element.firstChild != null) {
+        if (element.firstChild !== null) {
             //let nw = new NodeWalker(element);
             let nw = new DOMWalker(element);
             while (!hasContent && nw.nextNode()) {
@@ -1175,14 +1175,14 @@ export class CommonUtil {
                 hasContent = (
                     node.nodeName.toLowerCase() === "img"
                     && (CommonUtil.attributeNonEmpty(node, "alt") || CommonUtil.attributeNonEmpty(node, "title"))
-                    && VisUtil.isNodeVisible(node)
+                    && !VisUtil.isNodeHiddenFromAT(node as HTMLElement) && !VisUtil.isNodePresentational(node as HTMLElement)
                 ) || (
                         node.nodeName.toLowerCase() === "svg"
                         && CommonUtil.svgHasName(node as any)
                     );
 
                 // Now we check if this node is of type element, visible
-                if (!hasContent && node.nodeType === 1 && VisUtil.isNodeVisible(node)) {
+                if (!hasContent && node.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(node as HTMLElement) && !VisUtil.isNodePresentational(node as HTMLElement)) {
                     // Check if the innerText of the element is empty or not
                     hasContent = !CommonUtil.isInnerTextOnlyEmpty(node);
                     if (!hasContent && hyperlink_flag === true) {
@@ -1467,7 +1467,7 @@ export class CommonUtil {
         var focusableElements = ['input', 'select', 'button', 'textarea', 'option', 'area'];
         if (node.nodeName.toLowerCase() === "a" && CommonUtil.hasAttribute(node, 'href')) return true;
         if (node.nodeName.toLowerCase() === "area" && CommonUtil.hasAttribute(node, 'href')) return true;
-        if (focusableElements.indexOf(node.nodeName.toLowerCase()) != -1) return true;
+        if (focusableElements.indexOf(node.nodeName.toLowerCase()) !== -1) return true;
         return false;
     }
 
@@ -1507,6 +1507,17 @@ export class CommonUtil {
             hasAttribute = attr && attr.specified;
         }
         return hasAttribute;
+    }
+
+    // truncate the given text to a given number of characters
+    // return truncated text
+    public static truncateText(text: string, len = 16) {
+        if (!text) return text;
+        text = text.trim();
+        if (text.length > len)
+            return text.substring(0, len-1);
+        return text;
+
     }
 
 }
