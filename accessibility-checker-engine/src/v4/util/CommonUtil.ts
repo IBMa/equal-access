@@ -1069,7 +1069,7 @@ export class CommonUtil {
         // Loop over all the childrens of the element to get the text
         while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
             if (nw.bEndTag) continue;
-            if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node))) {
+            if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node as HTMLElement))) {
                 if (nw.node.nextSibling) {
                     if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
                         text += nw.node.nextSibling.nodeValue;

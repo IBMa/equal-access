@@ -244,18 +244,27 @@ export class VisUtil {
     public static isContentHidden(node: Element) : boolean {
         if (!node) return false;
 
-        const style =  getComputedStyle(node);
-        if (!style) return false;
+        const vis = CacheUtil.getCache(node, "PT_NODE_ContentHidden", undefined);
+        if (vis !== undefined) return vis;    
 
+        const style =  getComputedStyle(node);
+        if (!style) {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
+            return false;
+        }
         const content_visibility = style.getPropertyValue("content-visibility");
-        if (content_visibility !== 'hidden') 
+        if (content_visibility !== 'hidden') {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
             return false;  
-         
+        } 
         const display = style.getPropertyValue("display"); 
         // inline element only
-        if (display === 'inline')
+        if (display === 'inline') {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
             return false;
-
+        }  
+        
+        CacheUtil.setCache(node, "PT_NODE_ContentHidden", true);
         return true;
     }
 
@@ -263,18 +272,25 @@ export class VisUtil {
      * return true if the node is offscreen by CSS position
      * @param node
      */
-    public static isElementOffscreen(node: Node) : boolean {
+    public static isElementOffscreen(node: HTMLElement) : boolean {
         if (!node) return false;
+        const vis = CacheUtil.getCache(node , "PT_NODE_Offscreen", undefined);
+        if (vis !== undefined) return vis;  
 
         const mapper : DOMMapper = new DOMMapper();
         const bounds = mapper.getUnadjustedBounds(node);;    
         
-        if (!bounds) 
+        if (!bounds) {
+            CacheUtil.setCache(node, "PT_NODE_Offscreen", false); 
             return false;
-
-        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0)
+        }
+        
+        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0) {
+            CacheUtil.setCache(node, "PT_NODE_Offscreen", true);
             return true;
-         
+        } 
+
+        CacheUtil.setCache(node, "PT_NODE_Offscreen", false);
         return false;
     }
 
@@ -283,9 +299,19 @@ export class VisUtil {
      * @param node
      */
     public static isNodeHiddenFromAT(node: Element) : boolean {
-        if (!VisUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
+        const vis = CacheUtil.getCache(node, "PT_NODE_HiddenFromAT", undefined);
+        if (vis !== undefined) return vis;   
+
+        if (!VisUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') {
+            CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", true);
+            return true;
+        }    
         let ancestor = DOMUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
-        if (ancestor) return true;
+        if (ancestor) {
+            CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", true);
+            return true;
+        }
+        CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", false);    
         return false;
     }
 

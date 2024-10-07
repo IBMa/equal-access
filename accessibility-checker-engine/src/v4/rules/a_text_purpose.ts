@@ -16,6 +16,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass } from "../api/IRule"
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const a_text_purpose: Rule = {
     id: "a_text_purpose",
@@ -58,8 +59,10 @@ export const a_text_purpose: Rule = {
         
         // Rule only passes if an element has inner content,
         // in the case that there is only hidden content under the the element it is a violation
+        const accName_pair = AccNameUtil.computeAccessibleName(ruleContext); //console.log("node="+ruleContext.nodeName +", pair="+JSON.stringify(accName_pair)+", ARIAMapper.computeName(ruleContext)="+ARIAMapper.computeName(ruleContext));
         let passed =
-            ARIAMapper.computeName(ruleContext).trim().length > 0
+            (accName_pair && accName_pair.name && accName_pair.name.trim().length > 0) 
+            /**ARIAMapper.computeName(ruleContext).trim().length > 0*/
             || CommonUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
             return RuleFail("fail_acc_name");
