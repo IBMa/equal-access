@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
@@ -50,9 +51,8 @@ export const aria_complementary_labelled: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
-        let passed = AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
-        //return new ValidationResult(passed, [ruleContext], 'role', '', []);
-        if (passed) {
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (pair) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");

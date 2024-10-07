@@ -61,13 +61,6 @@ export const aria_parent_required: Rule = {
         if (AriaUtil.shouldBePresentationalChild(ruleContext) || VisUtil.isNodePresentational(ruleContext))
             return;
         
-        //let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        
-        // ignore if the element contains none or presentation role
-        //let presentationRoles = ["none", "presentation"];
-        //const found = roles.some(r=> presentationRoles.includes(r));
-        //if (found) return null;
-        
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
