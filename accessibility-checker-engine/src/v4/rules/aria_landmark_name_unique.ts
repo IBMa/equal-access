@@ -17,6 +17,7 @@ import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { CacheUtil } from "../util/CacheUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const aria_landmark_name_unique: Rule = {
     id: "aria_landmark_name_unique",
@@ -168,9 +169,11 @@ export const aria_landmark_name_unique: Rule = {
 
             let navigationNodesComputedLabels = [];
             for (let i = 0; i < navigationNodes.length; i++) {
+                const pair = AccNameUtil.computeAccessibleName(navigationNodes[i]);
                 // Loop over all the landmark nodes
                 navigationNodesComputedLabels.push(
-                    ARIAMapper.computeName(navigationNodes[i])
+                    /**ARIAMapper.computeName(navigationNodes[i])*/
+                    pair && pair.name && pair.name.trim().length > 0 ? pair.name.trim() : ""
                 );
             }
             for (let i = 0; i < navigationNodesParents.length; i++) {

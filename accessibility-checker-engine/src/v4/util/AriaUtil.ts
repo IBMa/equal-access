@@ -20,6 +20,7 @@ import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "./VisUtil";
 import { CommonUtil } from "./CommonUtil";
+import { AccNameUtil } from "./AccNameUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
@@ -1259,12 +1260,6 @@ export class AriaUtil {
                 return CommonUtil.normalizeSpacing(ele.getAttribute("aria-label")).toLowerCase().trim();
             }
         }
-        /**if (ele.nodeName.toLowerCase() === "input") {
-            //const label = AriaUtil.getLabelForElement(ele);
-            const label = CommonUtil.getLabelForElementHidden(ele, true);
-            if (!label) return "";
-            return (AriaUtil.getAriaLabel(label) || label.innerText || "").trim();
-        }*/
         return "";
     }
 
@@ -1486,6 +1481,7 @@ export class AriaUtil {
                         break;
                     case "section":
                         name = ARIAMapper.computeName(ruleContext);
+                        //name = AccNameUtil.computeAccessibleName(ruleContext);
                         if (name && name.trim().length > 0) {
                             tagProperty = specialTagProperties["with-name"];
                         } else {

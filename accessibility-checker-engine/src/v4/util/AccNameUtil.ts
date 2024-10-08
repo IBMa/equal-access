@@ -19,6 +19,7 @@ import { CommonUtil } from "./CommonUtil";
 import { AriaUtil } from "./AriaUtil";
 import { VisUtil } from "./VisUtil";
 import { CacheUtil } from "./CacheUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 type ElemCalc = (elem: Element) => string;
@@ -39,7 +40,7 @@ export class AccNameUtil {
         let accName = AriaUtil.getAriaLabel(elem);
         if (accName && accName.trim() !== "") {
             CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":accName, "nameFrom": "ariaLabel"});
-            return {"name":CommonUtil.truncateText(accName, 16), "nameFrom": "ariaLabel"};
+            return {"name":CommonUtil.truncateText(accName), "nameFrom": "ariaLabel"};
         }
 
         // 2. accessible name mapping for native html elements
@@ -231,17 +232,20 @@ export class AccNameUtil {
         // a element
         if (nodeName === "a") {
             // first use the link text
-            const text = CommonUtil.getInnerText(elem);
+            /**const text = CommonUtil.getInnerText(elem);
             if (text && text.trim() !== '')
                 return {"name":CommonUtil.truncateText(text), "nameFrom": "text"};
-
+             
             // for image link: get the first image if exists
             const image = elem.querySelector('img');
             if (image && !VisUtil.isNodeHiddenFromAT(image) && !VisUtil.isNodePresentational(image)) {
                 let pair = AccNameUtil.computeAccessibleName(image); 
                 if (pair && pair.name && pair.name.trim().length > 0) 
                     return pair;
-            }       
+            }*/
+            const pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
+            if (pair && pair.name && pair.name.trim() !== '')
+                return {"name":pair.name.trim(), "nameFrom": "text"};      
         }
 
         // svg
@@ -250,20 +254,6 @@ export class AccNameUtil {
             if (pair && pair.name && pair.name.trim().length > 0) 
                 return pair;
         }
-
-        /** 
-         *  text elements that doesn't have an implicit role, including
-         * abbr, b, bdi, bdo, br, cite, code, dfn, em, i, kbd, mark, q, rp, rt, ruby, s, samp, small, strong, sub and sup, time, u, var, wbr 
-         * OR the elements with a generic role (no semantic meaning), such as div, span etc
-         * which may be used to calculate the accessible name for its parent: name from children content
-        */
-        /**const role = AriaUtil.getResolvedRole(elem);
-        if (!role || role === 'generic') {
-            const pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
-            if (pair && pair.name && pair.name.trim().length > 0) 
-                return pair;
-        }*/
-
         return null;
     }
 
@@ -272,9 +262,9 @@ export class AccNameUtil {
         // 1. a direct child title element 
         let svgTitle = elem.querySelector(":scope > title");
         if (svgTitle) {
-            const title =CommonUtil.getInnerText(svgTitle);
-            if (title && title.trim() !== '')
-                return {"name":CommonUtil.truncateText(title), "nameFrom": "svgTitle"};
+            const pair = AccNameUtil.computeAccessibleNameFromChildren(svgTitle);
+            if (pair && pair.name && pair.name.trim() !== '')
+                return {"name":pair.name.trim(), "nameFrom": "svgTitle"};
         } 
 
         // 2. xlink:title attribute on a link
@@ -282,7 +272,7 @@ export class AccNameUtil {
         if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
             let link = linkTitle.getAttribute("xlink:title");
             if (link && link.trim() !== '')
-                return {"name":CommonUtil.truncateText(link), "nameFrom": "linkTitle"};
+                return {"name":CommonUtil.truncateText(link), "nameFrom": "svglinkTitle"};
         }
 
         /** 3. for text container elements, the text content. 
@@ -293,8 +283,8 @@ export class AccNameUtil {
          */ 
         let text = "";
         elem.querySelectorAll(":scope > *").forEach((element) => {
-            if (element.nodeName.toLowerCase() !== 'svg' && CommonUtil.hasInnerContent(element))
-                text += CommonUtil.getInnerText(element);
+            if (element.nodeName.toLowerCase() !== 'svg')
+                text += (element as HTMLElement).textContent;
         });
         if (text.trim() !== '')
             return {"name":CommonUtil.truncateText(text), "nameFrom": "svgText"}; 
@@ -307,9 +297,9 @@ export class AccNameUtil {
         // 5. a direct child desc element
         let descElem = elem.querySelector(":scope > desc");
         if (descElem) {
-            const desc = CommonUtil.getInnerText(descElem);
-            if (desc && desc.trim().length > 0)
-                return {"name":CommonUtil.truncateText(desc), "nameFrom": "svgDesc"};
+            const pair = AccNameUtil.computeAccessibleNameFromChildren(descElem);
+            if (pair && pair.name && pair.name.trim() !== '')
+                return {"name":pair.name.trim(), "nameFrom": "svgDesc"};
         }
     }
 
@@ -321,11 +311,8 @@ export class AccNameUtil {
         // textbox etc. return its text value
         if (role === "textbox") {
             let name = elem.textContent;
-            if (name && name.trim().length > 0) {
-                if (name.trim().length > 16)
-                    name = name.trim().substring(0, 15);
+            if (name && name.trim().length > 0)
                 return {"name":CommonUtil.truncateText(name), "nameFrom": "value"};
-            }
         }
         
         // for combobox or listbox roles, return the text alternative of the chosen option.
@@ -336,7 +323,7 @@ export class AccNameUtil {
                 if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
                     const pair = AccNameUtil.computeAccessibleName(selectedOption);
                     if (pair && pair.name)
-                        return {"name":CommonUtil.truncateText(pair.name), "nameFrom": "option"};
+                        return {"name": pair.name, "nameFrom": "option"};
                 }
             }
         }
@@ -370,20 +357,20 @@ export class AccNameUtil {
         if (elem.shadowRoot) {
             pair = AccNameUtil.computeAccessibleNameForShadowHost(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
-                return pair;
+                return {"name": pair.name, "nameFrom": "shadow"};;
         }
         
         // slot element
         if (nodeName === "slot") {
             pair = AccNameUtil.computeAccessibleNameForSlostElement(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
-                return pair;
+                return {"name": pair.name, "nameFrom": "slot"};
         }
 
         // otherwise: get the value from the element
         pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
         if (pair && pair.name && pair.name.trim().length > 0)
-            return pair;
+            return {"name": pair.name, "nameFrom": "content"};
 
         // no accessible name exists
         return null;    
@@ -413,7 +400,7 @@ export class AccNameUtil {
             children.forEach(child => {
                 const pair = AccNameUtil.computeAccessibleName(child);
                 if (pair && pair.name && pair.name.trim().length > 0)
-                text += " " + pair.name;
+                    text += " " + pair.name.trim();
             });
         }
         if (text.trim().length > 0)
@@ -427,15 +414,18 @@ export class AccNameUtil {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-            let innerText = CommonUtil.getInnerText(elem);
+            /**let innerText = CommonUtil.getInnerText(elem);
             if (innerText && innerText.trim().length > 0)
-                text +=  " " + innerText;
+                text +=  " " + innerText;*/
+            const pair = AccNameUtil.computeAccessibleName(elem);
+            if (pair && pair.name && pair.name.trim().length > 0)
+                text += " " + pair.name.trim();
         } else {    
             // check text from all assigned nodes
             for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
                 let pair = AccNameUtil.computeAccessibleName(slotChild as HTMLElement);
                 if (pair && pair.name && pair.name.length > 0)
-                text += " " + pair.name;
+                    text += " " + pair.name.trim();
             }
         }
         if (text.trim().length > 0)
@@ -447,27 +437,23 @@ export class AccNameUtil {
     // calculate accessible name from children content
     public static computeAccessibleNameFromChildren(elem: Element) : any | null {
         let text = "";
-        let walkChild = elem.firstChild;
-        while (walkChild) { 
-            if (walkChild.nodeType === 3 && walkChild.nodeValue && walkChild.nodeValue.trim().length > 0) 
-                text += " " + walkChild.nodeValue.trim();
-            else if (walkChild.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(walkChild as HTMLElement) && !VisUtil.isNodePresentational(walkChild as HTMLElement)) {
+        //let walkChild = elem.firstChild;
+        let nw = new DOMWalker(elem);
+        // Loop over all the childrens of the element to get the text
+        while (nw.nextNode() && nw.node !== elem && nw.node !== elem.parentNode) {
+        //while (walkChild) { 
+            const walkChild = nw.node; 
+            if (walkChild.nodeType === 3) {
+                // for the text node, get the parentnode to check visibility
+                const parent = walkChild.parentElement;
+                if (!VisUtil.isNodeHiddenFromAT(parent) && !VisUtil.isNodePresentational(parent) && walkChild.nodeValue && walkChild.nodeValue.trim().length > 0) 
+                    text += " " + walkChild.nodeValue.trim();
+
+            } else if (walkChild.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(walkChild as HTMLElement) && !VisUtil.isNodePresentational(walkChild as HTMLElement)) {
                 const pair = AccNameUtil.computeAccessibleName(walkChild as HTMLElement);
                 if (pair && pair.name && pair.name.length > 0) 
-                    text += " " + pair.name;
-                else {
-                    /** 
-                     *  text elements that doesn't have an implicit role, including
-                     * abbr, b, bdi, bdo, br, cite, code, dfn, em, i, kbd, mark, q, rp, rt, ruby, s, samp, small, strong, sub and sup, time, u, var, wbr 
-                     * OR the elements with a generic role (no semantic meaning), such as div, span etc
-                     * which may be used to calculate the accessible name for its parent: name from children content
-                    */
-                    const value = CommonUtil.getInnerText(elem);
-                    if (value && value.trim().length > 0) 
-                        text += " " + value.trim();
-                }
+                    text += " " + pair.name.trim();
             }
-            walkChild = walkChild.nextSibling;
         }
         if (text.trim().length > 0)
             return {"name": CommonUtil.truncateText(text), "nameFrom": "content"};

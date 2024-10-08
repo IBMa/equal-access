@@ -1511,11 +1511,11 @@ export class CommonUtil {
 
     // truncate the given text to a given number of characters
     // return truncated text
-    public static truncateText(text: string, len = 16) {
+    public static truncateText(text: string, len = 60) {
         if (!text) return text;
         text = text.trim();
         if (text.length > len)
-            return text.substring(0, len-1);
+            return text.substring(0, len-1) +"...";
         return text;
 
     }

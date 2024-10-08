@@ -18,6 +18,7 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { CacheUtil } from "../util/CacheUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const fieldset_label_valid: Rule = {
     id: "fieldset_label_valid",
@@ -83,9 +84,11 @@ export const fieldset_label_valid: Rule = {
             }
             let groupsWithInputsComputedLabels = [];
             for (let i = 0; i < groupsWithInputs.length; i++) {
+                const pair = AccNameUtil.computeAccessibleName(groupsWithInputs[i]);
                 // Loop over all the landmark nodes
                 groupsWithInputsComputedLabels.push(
-                    ARIAMapper.computeName(groupsWithInputs[i])
+                    /**ARIAMapper.computeName(groupsWithInputs[i])*/
+                    pair && pair.name && pair.name.trim().length > 0 ? pair.name.trim() : ""
                 );
             }
             formCache.groupsWithInputs = groupsWithInputs;

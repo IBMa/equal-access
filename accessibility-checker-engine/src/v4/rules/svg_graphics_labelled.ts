@@ -14,8 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AccNameUtil } from "../util/AccNameUtil";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
 export const svg_graphics_labelled: Rule = {
@@ -54,7 +52,7 @@ export const svg_graphics_labelled: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || VisUtil.isNodePresentational(ruleContext)) return null;
 
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (name_pair && name_pair["name"] && name_pair["name"].trim().length > 0)
+        if (name_pair && name_pair.name && name_pair.name.trim().length > 0)
             return RulePass("pass");
         return RuleFail("fail_acc_name")
     }

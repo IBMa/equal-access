@@ -17,6 +17,7 @@ import { LangUtil } from "../../v2/checker/accessibility/util/lang";
 import { VisUtil } from "../util/VisUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 const validateLang = (context: RuleContext): number => {
     const ruleContext = context["dom"].node as Element;
@@ -197,8 +198,9 @@ export const element_lang_valid: Rule = {
                         if (!VisUtil.isNodeVisible(element) || element.hasAttribute("lang")) {
                             nw.bEndTag = true;
                         } else {
+                            const pair = AccNameUtil.computeAccessibleName(element);
                             hasContent = hasContent 
-                                || element.nodeName.toLowerCase() === "img" && ARIAMapper.computeName(element).trim().length > 0;
+                                || element.nodeName.toLowerCase() === "img" && (pair && pair.name && pair.name.trim().length > 0)/**ARIAMapper.computeName(element).trim().length > 0*/;
                         }
                     } else {
                         hasContent = hasContent 

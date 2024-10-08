@@ -18,6 +18,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const element_accesskey_labelled: Rule = {
     id: "element_accesskey_labelled",
@@ -75,7 +76,9 @@ export const element_accesskey_labelled: Rule = {
             return;
 
         // check if accessible name exists
-        if (ARIAMapper.computeName(ruleContext).trim().length > 0)
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (pair && pair.name && pair.name.trim().length > 0)
+        //if (ARIAMapper.computeName(ruleContext).trim().length > 0)
             return RulePass("Pass_0");
         return RulePotential("Potential_1");
 
