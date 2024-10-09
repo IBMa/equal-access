@@ -176,9 +176,9 @@ export class AccNameUtil {
             const first = elem.firstElementChild;
             if (first && first.nodeName.toLowerCase() === 'summary') {
                 // get accessible name from summary
-                const summary = AccNameUtil.computeAccessibleName(first);
-                if (summary && summary.trim().length > 0) 
-                    return {"name":CommonUtil.truncateText(summary), "nameFrom": "summary"}; 
+                const pair = AccNameUtil.computeAccessibleName(first);
+                if (pair && pair.name && pair.name.trim().length > 0) 
+                    return {"name":CommonUtil.truncateText(pair.name.trim()), "nameFrom": "summary"}; 
             }
             // If no summary element as a direct child of the details element, 
             // the user agent should provide one with a subtree containing a localized string of the word "details".

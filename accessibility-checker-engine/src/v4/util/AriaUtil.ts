@@ -1480,9 +1480,10 @@ export class AriaUtil {
                             tagProperty = specialTagProperties["no-child-of-list-role"];
                         break;
                     case "section":
-                        name = ARIAMapper.computeName(ruleContext);
-                        //name = AccNameUtil.computeAccessibleName(ruleContext);
-                        if (name && name.trim().length > 0) {
+                        //name = ARIAMapper.computeName(ruleContext);
+                        //if (name && name.trim().length > 0) {
+                        const label = AriaUtil.getAriaLabel(ruleContext);
+                        if ((label && label.trim().length > 0) || CommonUtil.attributeNonEmpty(ruleContext, "title")) {
                             tagProperty = specialTagProperties["with-name"];
                         } else {
                             tagProperty = specialTagProperties["without-name"];

@@ -25,6 +25,7 @@ import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
 import { CacheUtil } from "../../v4/util/CacheUtil";
 import { DOMWalker } from "../dom/DOMWalker";
+import { AccNameUtil } from "../../v4/util/AccNameUtil";
 
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
@@ -294,7 +295,7 @@ export class ARIAMapper extends CommonMapper {
     // https://www.w3.org/TR/html-aam-1.0/#mapping-html-to-accessibility-apis
     public static elemAttrValueCalculators: { [nodeName:string]: { [attr:string]: string | ElemCalc }} = {
         "global": {
-            "name": ARIAMapper.computeName
+            "name": AccNameUtil.computeAccessibleName  //ARIAMapper.computeName
         }
         , "datalist": {
             // set to "true" if the datalist's selection model allows multiple option elements to be
@@ -400,16 +401,16 @@ export class ARIAMapper extends CommonMapper {
     }
 
     private static nameComputationId = 0;
-    public static computeName(cur: Node) : string {
+    /**public static computeName(cur: Node) : string {
         ++ARIAMapper.nameComputationId;
         return ARIAMapper.computeNameHelp(ARIAMapper.nameComputationId, cur, false, false);
     }
 
     public static computeNameHelp(walkId: number, cur: Node, labelledbyTraverse: boolean, walkTraverse: boolean) : string {
         // 2g. None of the other content applies to text nodes, so just do this first
-        if (cur.nodeType === 3 /* Node.TEXT_NODE */) return cur.nodeValue;
+        if (cur.nodeType === 3 ) return cur.nodeValue;
         if (cur.nodeType === 11) return "";
-        if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) {
+        if (cur.nodeType !== 1 ) {
             if (walkTraverse || labelledbyTraverse) return "";
             throw new Error ("Can only compute name on Element and Text " + cur.nodeType);
         }
@@ -618,7 +619,7 @@ export class ARIAMapper extends CommonMapper {
 
         return "";
     }
-
+    */
 /*        if (role in ARIADefinitions.designPatterns
             && ARIADefinitions.designPatterns[role].nameFrom 
             && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) 
