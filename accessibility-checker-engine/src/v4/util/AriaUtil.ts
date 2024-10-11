@@ -1266,22 +1266,24 @@ export class AriaUtil {
     public static getAriaDescription(ele) {
         if (!ele) return "";
         let normalizedLabel = "";
-        if (ele.hasAttribute("aria-describedby")) {
-            let labelIDs = ele.getAttribute("aria-labelledby").trim().split(" ");
+        let desc = ele.getAttribute("aria-labelledby");
+        if (desc && desc.trim().length > 0) {
+            let labelIDs = desc.trim().split(" ");
             for (let j = 0, length = labelIDs.length; j < length; ++j) {
                 let labelID = labelIDs[j];
                 let labelNode = FragmentUtil.getById(ele, labelID);
                 let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? CommonUtil.getInnerText(labelNode) : "";
-                normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                if (label && label.trim().length > 0)
+                    normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
             }
             if (normalizedLabel.trim().length > 0)
                 return normalizedLabel.trim();
         }
-        if (ele.hasAttribute("aria-description")) {
-            normalizedLabel = ele.getAttribute("aria-description");
-            if (normalizedLabel.trim().length > 0)
-                return normalizedLabel.trim().toLowerCase();
-        }
+
+        desc = ele.getAttribute("aria-description");
+        if (desc && desc.trim().length > 0)
+            return desc.trim().toLowerCase();
+        
         return "";
     }
 

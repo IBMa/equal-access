@@ -19,7 +19,6 @@ import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 import { CommonUtil } from "../../v4/util/CommonUtil";
 import { AriaUtil } from "../../v4/util/AriaUtil";
-import { VisUtil } from "../../v4/util/VisUtil";
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";

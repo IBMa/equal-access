@@ -20,6 +20,7 @@ import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const input_label_exists: Rule = {
     id: "input_label_exists",
@@ -179,6 +180,9 @@ export const input_label_exists: Rule = {
             if (ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents"))
                 passed = CommonUtil.hasInnerContentHidden(ruleContext);
         }
+
+        //const pair = AccNameUtil.computeAccessibleName(ruleContext);    
+        //passed = pair && pair.name && pair.name.trim().length > 0;
 
         if (passed) {
             return RulePass("Pass_0");

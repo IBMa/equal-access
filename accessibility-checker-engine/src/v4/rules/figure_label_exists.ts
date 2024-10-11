@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
-import { AriaUtil } from "../util/AriaUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 import { CommonUtil } from "../util/CommonUtil";
 
 export const figure_label_exists: Rule = {
@@ -57,8 +57,9 @@ export const figure_label_exists: Rule = {
             return null;
         }
 
-        let passed = AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
-
+        //let passed = AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        const passed = pair && pair.name && pair.name.trim().length > 0;
         //return new ValidationResult(passed, [ruleContext], '', '', []);
         if (!passed) {
             return RuleFail("Fail_1", []);

@@ -13,7 +13,6 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { CacheUtil } from "../util/CacheUtil";
 import { CommonUtil } from "../util/CommonUtil";

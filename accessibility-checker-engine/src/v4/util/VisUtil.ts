@@ -38,14 +38,14 @@ export class VisUtil {
     //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
     //            mark this element as visible at all times.
     //  head --> head elements have display: none by default, but it will still behave correct
-    //  title --> title elements have display: none by default, but it will still display the title
+    //  title --> title elements have display: none by default, but it will still display the title. remove title from the list because a title can be a child of a svg element too
     //  meta --> meta elements have display: none by default, but it will still perform the action that meta is suppose to
     //  base --> base elements have display: none by default, but it will still perform the action that meta is suppose to
     //  noscript --> noscript elements have display: none by default, but it will still perform the action that meta is suppose to
     //  template --> template elements have display: none by default, because they are just a mechanism for holding client-side content
     //               that is not to be rendered when a page is loaded. https://developer.mozilla.org/en/docs/Web/HTML/Element/template
     //  datalist --> datalist elements have display: none by default,
-    public static hiddenByDefaultElements = ['script', 'link', 'style', 'head', 'title', 'meta', 'base', 'noscript', 'template', 'datalist']
+    public static hiddenByDefaultElements = ['script', 'link', 'style', 'head', 'meta', 'base', 'noscript', 'template', 'datalist']
 
     /**
      * This function is responsible for checking if the node that is provied is

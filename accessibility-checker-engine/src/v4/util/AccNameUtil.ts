@@ -117,7 +117,7 @@ export class AccNameUtil {
         // note button may have a value attribute, but it's not a visible text
         if (nodeName === "button") {
             // first use the button text
-            const text = CommonUtil.getInnerText(elem);
+            const text = (elem as HTMLElement).innerText;
             if (text && text.trim() !== '')
                 return {"name":CommonUtil.truncateText(text), "nameFrom": "text"};
 
@@ -136,7 +136,7 @@ export class AccNameUtil {
             const first = elem.firstElementChild;
             if (first && first.nodeName.toLowerCase() === 'legend') {
                 // legend can be mixed text
-                const text = CommonUtil.getInnerText(first);
+                const text = (first as HTMLElement).innerText;
                 if (text && text.trim().length > 0) 
                     return {"name":CommonUtil.truncateText(text), "nameFrom": "legend"}; 
             }        
@@ -166,7 +166,7 @@ export class AccNameUtil {
         // summary
         if (nodeName === "summary") {
             // use summary element subtree
-            const text = CommonUtil.getInnerText(elem);
+            const text = (elem as HTMLElement).innerText;
             if (text && text.trim().length > 0) 
                 return {"name":CommonUtil.truncateText(text), "nameFrom": "legend"};         
         }
@@ -193,7 +193,7 @@ export class AccNameUtil {
                 caption = elem.lastElementChild;
                 if (caption && caption.nodeName.toLowerCase() === 'figcaption') {
                     // figcaption can be mixed text
-                    const text = CommonUtil.getInnerText(caption);
+                    const text = (caption as HTMLElement).innerText;
                     if (text && text.trim().length > 0) 
                         return {"name":CommonUtil.truncateText(text), "nameFrom": "figcaption"}; 
                 } 
@@ -223,7 +223,7 @@ export class AccNameUtil {
             let captionElem = elem.firstElementChild;
             if (captionElem && captionElem.nodeName.toLowerCase() === 'caption') {
                 // caption can be mixed text
-                const caption = CommonUtil.getInnerText(captionElem);
+                const caption = (captionElem as HTMLElement).innerText;
                 if (caption && caption.trim().length > 0) 
                     return {"name":CommonUtil.truncateText(caption), "nameFrom": "caption"}; 
             }         
@@ -232,20 +232,24 @@ export class AccNameUtil {
         // a element
         if (nodeName === "a") {
             // first use the link text
-            /**const text = CommonUtil.getInnerText(elem);
+            const text = (elem as HTMLElement).innerText;
             if (text && text.trim() !== '')
                 return {"name":CommonUtil.truncateText(text), "nameFrom": "text"};
              
-            // for image link: get the first image if exists
-            const image = elem.querySelector('img');
-            if (image && !VisUtil.isNodeHiddenFromAT(image) && !VisUtil.isNodePresentational(image)) {
-                let pair = AccNameUtil.computeAccessibleName(image); 
-                if (pair && pair.name && pair.name.trim().length > 0) 
-                    return pair;
-            }*/
-            const pair = AccNameUtil.computeAccessibleNameFromChildren(elem);
-            if (pair && pair.name && pair.name.trim() !== '')
-                return {"name":pair.name.trim(), "nameFrom": "text"};      
+            //for image link: get the image or svg if exists
+            const images = elem.querySelectorAll(":scope > img, :scope > svg");
+            if (images && images.length > 0) {
+                let text = "";
+                images.forEach(image => {
+                    if (!VisUtil.isNodeHiddenFromAT(image) && !VisUtil.isNodePresentational(image)) {
+                        let pair = AccNameUtil.computeAccessibleName(image);
+                        if (pair && pair.name && pair.name.trim().length > 0) 
+                            text += " " + pair.name.trim();
+                    }
+                });
+                if (text.trim() !== '')
+                    return {"name":text.trim(), "nameFrom": "iamges"};
+            }
         }
 
         // svg
@@ -259,17 +263,24 @@ export class AccNameUtil {
 
     // calculate accessible name for native elements
     public static computeAccessibleNameForSVGElement(elem: Element) : any | null {
-        // 1. a direct child title element 
-        let svgTitle = elem.querySelector(":scope > title");
-        if (svgTitle) {
-            const pair = AccNameUtil.computeAccessibleNameFromChildren(svgTitle);
-            if (pair && pair.name && pair.name.trim() !== '')
-                return {"name":pair.name.trim(), "nameFrom": "svgTitle"};
-        } 
+        // 1. a direct child or descendant title element 
+        const svgTitles = elem.querySelectorAll(":scope > title");
+        if (svgTitles && svgTitles.length > 0) {
+            let text = "";
+            svgTitles.forEach(svgTitle => {
+                if (svgTitle && !VisUtil.isNodeHiddenFromAT(svgTitle) && !VisUtil.isNodePresentational(svgTitle)) {
+                    const title = svgTitle.textContent;
+                    if (title && title.trim() !== '')
+                        text += title.trim();
+                }
+            });
+            if (text && text.trim() !== '')
+            return {"name":text.trim(), "nameFrom": "svgTitle"};
+        }
 
         // 2. xlink:title attribute on a link
         let linkTitle = elem.querySelector("a");
-        if (linkTitle && linkTitle.hasAttribute("xlink:title")) {
+        if (linkTitle && !VisUtil.isNodeHiddenFromAT(linkTitle) && !VisUtil.isNodePresentational(linkTitle)) {
             let link = linkTitle.getAttribute("xlink:title");
             if (link && link.trim() !== '')
                 return {"name":CommonUtil.truncateText(link), "nameFrom": "svglinkTitle"};
@@ -283,8 +294,11 @@ export class AccNameUtil {
          */ 
         let text = "";
         elem.querySelectorAll(":scope > *").forEach((element) => {
-            if (element.nodeName.toLowerCase() !== 'svg')
-                text += (element as HTMLElement).textContent;
+            if (element.nodeName.toLowerCase() !== 'svg' && !VisUtil.isNodeHiddenFromAT(element) && !VisUtil.isNodePresentational(element)) {
+                const value = element.textContent;
+                if (value && value.trim().length > 0)
+                    text += value;
+            }    
         });
         if (text.trim() !== '')
             return {"name":CommonUtil.truncateText(text), "nameFrom": "svgText"}; 
@@ -294,12 +308,19 @@ export class AccNameUtil {
         if (descby && descby.trim().length > 0)
             return {"name":CommonUtil.truncateText(descby), "nameFrom": "aria-description"};
 
-        // 5. a direct child desc element
-        let descElem = elem.querySelector(":scope > desc");
-        if (descElem) {
-            const pair = AccNameUtil.computeAccessibleNameFromChildren(descElem);
-            if (pair && pair.name && pair.name.trim() !== '')
-                return {"name":pair.name.trim(), "nameFrom": "svgDesc"};
+        // 5. a direct child or descendant desc element
+        let descElems = elem.querySelectorAll(":scope > desc");
+        if (descElems && descElems.length > 0) {
+            let text = "";
+            descElems.forEach(descElem => {
+                if (descElem && !VisUtil.isNodeHiddenFromAT(descElem) && !VisUtil.isNodePresentational(descElem)) {
+                    const desc = descElem.textContent;
+                    if (desc && desc.trim() !== '')
+                        text += desc.trim();
+                }
+            });
+            if (text && text.trim() !== '')
+                return {"name":text.trim(), "nameFrom": "svgDesc"};
         }
     }
 
@@ -414,16 +435,13 @@ export class AccNameUtil {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-            /**let innerText = CommonUtil.getInnerText(elem);
-            if (innerText && innerText.trim().length > 0)
-                text +=  " " + innerText;*/
             const pair = AccNameUtil.computeAccessibleName(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
                 text += " " + pair.name.trim();
         } else {    
             // check text from all assigned nodes
             for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
-                let pair = AccNameUtil.computeAccessibleName(slotChild as HTMLElement);
+                let pair = AccNameUtil.computeAccessibleName(slotChild as Element);
                 if (pair && pair.name && pair.name.length > 0)
                     text += " " + pair.name.trim();
             }
@@ -450,7 +468,7 @@ export class AccNameUtil {
                     text += " " + walkChild.nodeValue.trim();
 
             } else if (walkChild.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(walkChild as HTMLElement) && !VisUtil.isNodePresentational(walkChild as HTMLElement)) {
-                const pair = AccNameUtil.computeAccessibleName(walkChild as HTMLElement);
+                const pair = AccNameUtil.computeAccessibleName(walkChild as Element);
                 if (pair && pair.name && pair.name.length > 0) 
                     text += " " + pair.name.trim();
             }
