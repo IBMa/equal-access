@@ -119,9 +119,17 @@ export let combobox_popup_reference: Rule = {
         }
 
         if (pattern === "1.0") {
-            return RulePass(expanded ? "Pass_1.0_expanded" : "Pass_1.0_collapsed");
+            if (expanded) {
+                return RulePass("Pass_1.0_expanded");
+            } else {
+                return RulePass("Pass_1.0_collapsed");
+            }
         } else {
-            return RulePass(expanded ? "Pass_1.2_expanded" : "Pass_1.2_collapsed");
+            if (expanded) {
+                return RulePass("Pass_1.2_expanded");
+            } else {
+                return RulePass("Pass_1.2_collapsed");
+            }
         }
     }
 }

@@ -21,19 +21,16 @@ export let media_track_available: Rule = {
     context: "dom:a[href], dom:area[href], dom:applet, dom:embed, dom:object",
     refactor: {
         "RPT_Media_VideoReferenceTrigger": {
-            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
-            "Pass_0": "media_track_available.html",
             "Manual_1": "media_track_available.html",
             "group": "media_track_available.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
             "Manual_1": "Verify availability of a user-selectable audio track with description of visual content",
             "group": "Pre-recorded media should have an audio track that describes visual information"
         }

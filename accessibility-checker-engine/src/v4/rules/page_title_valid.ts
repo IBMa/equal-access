@@ -21,13 +21,13 @@ export let page_title_valid: Rule = {
     refactor: {
         "RPT_Title_Valid": {
             "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
+            // "Fail_1": "Fail_1",
             "Potential_2": "Potential_2"}
     },
     help: {
         "en-US": {
             "Pass_0": "page_title_valid.html",
-            "Fail_1": "page_title_valid.html",
+            // "Fail_1": "page_title_valid.html",
             "Potential_2": "page_title_valid.html",
             "group": "page_title_valid.html"
         }
@@ -35,7 +35,7 @@ export let page_title_valid: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Fail_1": "Page <title> is empty",
+            // "Fail_1": "Page <title> is empty",
             "Potential_2": "Verify that using the filename as the page <title> value is descriptive",
             "group": "Page <title> should be a descriptive title, rather than a filename"
         }

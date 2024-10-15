@@ -20,7 +20,7 @@ export let aria_attribute_deprecated: Rule = {
     context: "dom:*",
     help: {
         "en-US": {
-            "pass": "aria_attribute_deprecated.html",
+            // "pass": "aria_attribute_deprecated.html",
             "fail_aria_role": "aria_attribute_deprecated.html",
             "fail_aria_attr": "aria_attribute_deprecated.html",
             "fail_role_attr": "aria_attribute_deprecated.html",
@@ -29,7 +29,7 @@ export let aria_attribute_deprecated: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "The ARIA roles and attribute are used per specification",
+            // "pass": "The ARIA roles and attribute are used per specification",
             "fail_aria_role": "The ARIA role \"{0}\" is deprecated in the ARIA specification",
             "fail_aria_attr": "The ARIA attributes \"{0}\" are deprecated in the ARIA specification",
             "fail_role_attr": "The ARIA attributes \"{0}\" are deprecated for the role \"{1}\" in the ARIA specification",
