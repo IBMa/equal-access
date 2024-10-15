@@ -21,19 +21,16 @@ export let media_audio_transcribed: Rule = {
     context: "dom:bgsound, dom:a[href], dom:area[href], dom:embed, dom:object",
     refactor: {
         "RPT_Media_AudioTrigger": {
-            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
-            "Pass_0": "media_audio_transcribed.html",
             "Manual_1": "media_audio_transcribed.html",
             "group": "media_audio_transcribed.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
             "Manual_1": "Provide transcripts for audio files",
             "group": "Audio information should also be available in text form"
         }
