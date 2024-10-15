@@ -49,7 +49,7 @@ export let canvas_content_described: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let passed = ruleContext.innerHTML.trim().length > 0;
-        if (passed) return RulePass(1);
+        if (passed) return RulePass("Pass_0");
         if (!passed) return RuleManual("Manual_1");
     }
 }

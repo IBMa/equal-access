@@ -23,12 +23,10 @@ export let text_sensory_misuse: Rule = {
     context: "dom:body, dom:body dom:*",
     refactor: {
         "RPT_Text_SensoryReference": {
-            "Pass_0": "pass",
             "Potential_1": "potential_position, potential_other"}
     },
     help: {
         "en-US": {
-            "pass": "text_sensory_misuse.html",
             "potential_position": "text_sensory_misuse.html",
             "potential_other": "text_sensory_misuse.html",
             "group": "text_sensory_misuse.html"
@@ -36,7 +34,6 @@ export let text_sensory_misuse: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Instructions are meaningful without relying solely on shape, size, or location words",
             "potential_position": "Confirm the word(s) '{0}' of the user instruction is used to indicate a logical rather than visual position",
             "potential_other": "Confirm the user instruction is still understandable without the word(s) '{0}'",
             "group": "Instructions should be meaningful without relying solely on shape, size, or location words"
