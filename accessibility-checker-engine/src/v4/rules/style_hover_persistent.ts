@@ -21,7 +21,7 @@ export let style_hover_persistent: Rule = {
     help: {
         "en-US": {
             "Pass_0": "style_hover_persistent.html",
-            "Pass_1": "style_hover_persistent.html",
+            // "Pass_1": "style_hover_persistent.html",
             "Pass_2": "style_hover_persistent.html",
             "Potential_1": "style_hover_persistent.html",
             "Potential_2": "style_hover_persistent.html",
@@ -32,7 +32,7 @@ export let style_hover_persistent: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "the hover: pseudo-class is not used to display content",
-            "Pass_1": "content displayed via the :hover pseudo-class is a direct child of the trigger element",
+            // "Pass_1": "content displayed via the :hover pseudo-class is a direct child of the trigger element",
             "Pass_2": "content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element",
             "Potential_1": "Confirm the pointer can be positioned over the displayed element, not just the trigger",
             "Potential_2": "Confirm the pointer can be positioned over all the information displayed on hover",
@@ -376,8 +376,8 @@ export let style_hover_persistent: Rule = {
         // console.log("potential2 = "+potential2);
         // console.log("potential3 = "+potential3);
         if (pass0) return RulePass("Pass_0");
-        if (pass1) return RulePass("Pass_2");
-        if (pass2) return RulePass("Pass_3");
+        // if (pass1) return RulePass("Pass_2"); // Doesn't trigger
+        // if (pass2) return RulePass("Pass_3"); // Doesn't trigger
         if (potential1) return RulePotential("Potential_1");
         if (potential2) return RulePotential("Potential_2");
         if (potential3) return RulePotential("Potential_3");
