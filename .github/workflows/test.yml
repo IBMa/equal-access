@@ -388,6 +388,12 @@ jobs:
         chrome-version: latest
         install-chromedriver: true
       id: setup-chrome
+    - name: Set version
+      run: sed -i'.old' -e 's/\<version\>3\.0\.0\<\/version\>/\<version\>'"${GITHUB_REF:10}"'\<\/version\>/g' ./pom.xml
+      working-directory: java-accessibility-checker
+    - name: Echo
+      run: cat ./pom.xml
+      working-directory: java-accessibility-checker
     - run: npm install
       working-directory: rule-server
     - run: npm run build
