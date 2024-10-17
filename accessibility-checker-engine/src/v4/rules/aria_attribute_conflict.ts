@@ -23,14 +23,14 @@ export let aria_attribute_conflict: Rule = {
             + ", dom:*[aria-rowspan]",
     help: {
         "en-US": {
-            "pass": "aria_attribute_conflict.html",
+            // "pass": "aria_attribute_conflict.html",
             "fail_conflict": "aria_attribute_conflict.html",
             "group": "aria_attribute_conflict.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "The ARIA attribute is not conflict with the corresponding HTML attribute",
+            // "pass": "The ARIA attribute is not conflict with the corresponding HTML attribute",
             "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
             "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
         }
