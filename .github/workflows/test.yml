@@ -389,7 +389,7 @@ jobs:
         install-chromedriver: true
       id: setup-chrome
     - name: Set version
-      run: sed -i'.old' -e 's/\<version\>3\.0\.0\<\/version\>/\<version\>'"${GITHUB_REF2:10}"'\<\/version\>/g' ./pom.xml
+      run: sed -i'.old' -e 's/<version>3\.0\.0<\/version>/<version>'"${GITHUB_REF2:10}"'<\/version>/g' ./pom.xml
       working-directory: java-accessibility-checker
       env: 
         GITHUB_REF2: "refs/tags/2.0.4"
