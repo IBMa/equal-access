@@ -22,14 +22,15 @@ export let aria_region_labelled: Rule = {
     refactor: {
         "Rpt_Aria_RegionLabel_Implicit": {
             "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2"}
+            "Fail_1": "Fail_1"
+            // "Fail_2": "Fail_2"
+        }
     },
     help: {
         "en-US": {
             "Pass_0": "aria_region_labelled.html",
             "Fail_1": "aria_region_labelled.html",
-            "Fail_2": "aria_region_labelled.html",
+            // "Fail_2": "aria_region_labelled.html",
             "group": "aria_region_labelled.html"
         }
     },
@@ -37,7 +38,7 @@ export let aria_region_labelled: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Fail_1": "Element with \"region\" role does not have a label",
-            "Fail_2": "Element with \"region\" role is not labeled with 'aria-label' or 'aria-labelledby'",
+            // "Fail_2": "Element with \"region\" role is not labeled with 'aria-label' or 'aria-labelledby'",
             "group": "Each element with \"region\" role must have a label that describes its purpose"
         }
     },
