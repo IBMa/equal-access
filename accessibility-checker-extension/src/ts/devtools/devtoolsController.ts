@@ -638,6 +638,8 @@ export class DevtoolsController extends Controller {
         let bgController = await getBGController();
         let rulesets = await bgController.getRulesets(this.contentTabId);
         let tabInfo = await bgController.getTabInfo(this.contentTabId);
+        let url = tabInfo.url!;
+        let Ignored = await bgController.getIgnore(url);
         if (devtoolsState?.lastReport && rulesets) {
             let reportObj: any = {
                 tabURL: tabInfo.url,
@@ -649,6 +651,8 @@ export class DevtoolsController extends Controller {
                     counts: {
                         "total": devtoolsState?.lastReport.counts.total
                     },
+                    ignored:Ignored,
+
                     results: []
                 }
             }

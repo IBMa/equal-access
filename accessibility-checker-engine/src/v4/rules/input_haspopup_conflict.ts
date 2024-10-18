@@ -21,14 +21,14 @@ export let input_haspopup_conflict: Rule = {
     context: "dom:input[list][aria-haspopup]",
     refactor: {
         "input_haspopup_invalid": {
-            "Pass": "pass",
+            // "Pass": "pass",
             "Potential_1": "potential_type_misuse",
             "Potential_2": "potential_misuse"}
     },
     help: {
         "en-US": {
             "group": "input_haspopup_conflict.html",
-            "pass": "input_haspopup_conflict.html",
+            // "pass": "input_haspopup_conflict.html",
             "potential_type_misuse": "input_haspopup_conflict.html",
             "potential_misuse": "input_haspopup_conflict.html",
             "potential_list_notexist": "input_haspopup_conflict.html",
@@ -39,7 +39,7 @@ export let input_haspopup_conflict: Rule = {
     messages: {
         "en-US": {
             "group": "<input> element with a 'list' attribute should not use an explicit 'aria-haspopup' attribute",
-            "pass": "The <input> element with a 'list' attribute does not use an explicit 'aria-haspopup' attribute",
+            // "pass": "The <input> element with a 'list' attribute does not use an explicit 'aria-haspopup' attribute",
             "potential_type_misuse": "The <input> element with type \"{0}\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "potential_misuse": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "potential_list_notexist": "The list attribute for the <input> element is invalid",
