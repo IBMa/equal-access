@@ -23,19 +23,19 @@ export let text_block_heading: Rule = {
     context: "dom:p, dom:div, dom:br",
     refactor: {
         "RPT_Block_ShouldBeHeading": {
-            "Pass_0": "pass",
+            // "Pass_0": "pass",
             "Potential_1": "potential_heading"}
     },
     help: {
         "en-US": {
-            "pass": "text_block_heading.html",
+            // "pass": "text_block_heading.html",
             "potential_heading": "text_block_heading.html",
             "group": "text_block_heading.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Heading text uses a heading element or role",
+            // "pass": "Heading text uses a heading element or role",
             "potential_heading": "Confirm this text '{0}' is used as a heading and if so, modify to use a heading element or role",
             "group": "Heading text should use a heading element or role"
         }

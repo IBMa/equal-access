@@ -19,7 +19,7 @@
     }
 
     .description {
-        color: #565656;
+        @include type.type-style('helper-text-01');
     }
 
     @include breakpoint.breakpoint('sm') {
@@ -27,11 +27,7 @@
     }
 }
 
-@include breakpoint.breakpoint('sm') {
-    .cds--css-grid-column:nth-child(even) .scoreCard {
-        margin-right: -1rem;
-    }
-}
+
 @include breakpoint.breakpoint('md') {
     .cds--css-grid-column:nth-child(even) .scoreCard {
         margin-right: 0rem;

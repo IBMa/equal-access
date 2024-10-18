@@ -14,6 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 import React, { ReactNode } from "react";
+import {  SelectableTile } from '@carbon/react';
 import "./ScoreCard.scss";
 
 interface ScoreCardProps {
@@ -21,15 +22,22 @@ interface ScoreCardProps {
     icon?: ReactNode
     count?: number
     children?: any
+    checked?:Boolean
+    handleCardClick?:(item:string)=>void
 }
 
 export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
-
+   
     render() {
-        return <div className="scoreCard">
-            <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"top",float:"right"}}>{this.props.icon}</span></div>
+        return <div >
+            <SelectableTile className="scoreCard" 
+   selected={this.props.checked}   onClick={() => this.props.handleCardClick && this.props.handleCardClick(this.props.title)} 
+
+    >
+            <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"middle"}}>&nbsp;{this.props.icon}</span></div>
             <div className="score">{this.props.count}</div>
             <div className="description">{this.props.children}</div>
+            </SelectableTile>
         </div>
     }
 }

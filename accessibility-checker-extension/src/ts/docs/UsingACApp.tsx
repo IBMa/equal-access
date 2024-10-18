@@ -488,17 +488,17 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 
                 <h2 id="t_single_scan_report">3.4 Create a scan report</h2>
                 <p>
-                    To generate a report for a single scan in the Checker view:
+                    You can export a report in both HTML web and Microsoft Excel XLS spreadsheet formats while in the Checker view:
                 </p>
                 <p>
                     <img
 
                         src="assets/img/2_2_ScanReport.png" //was 3.2Report.png
-                        alt="an open dropdown menu with focus on 'download current scan'."
+                        alt="'Export XLS' button highlighted"
                     />
                 </p>
                 <p>
-                    Open the 'Reports' dropdown menu and select 'Download current scan'. 
+                    Once a page has been scanned, select 'Export XLS'. Both HTML and XLS formats will be downloaded.
                 </p>
                 <p>
                     See <Link inline={true} size="lg" href="#the_report" title="Checker reports">Checker reports</Link> for more details.
@@ -506,7 +506,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <h2 id="t_multi_scan_report">3.5 Create a multi-scan report</h2>
                 <p>
-                    To combine up to 50 multiple scans into a single report:
+                    Combine up to 50 multiple scans into a single Microsoft Excel XLS spreadsheet report: 
                 </p>
                 <p>
                     <img
@@ -515,7 +515,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="an open dropdown menu with focus on 'Start storing scans'"
                     />
                 </p>
-                <p>1. Open the 'Reports' dropdown menu and select 'Start storing scans.'</p>
+                <p>1. Open the 'Options' dropdown menu and select 'Start storing scans.'</p>
                 <p>
                     <img
 
@@ -536,7 +536,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         alt="an open dropdown menu with focus on 'download stored scans"
                     />
                 </p> */}
-                <p>4. Open the 'Reports' dropdown menu and select 'View stored scans'.</p>
+                <p>4. Open the 'Options' dropdown menu and select 'View stored scans'.</p>
                 <p>
                     <img
                         src="assets/img/3_5_StoredScans.png" //was 3.3Multi4.png
@@ -554,6 +554,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <ListItem><strong>Cancel</strong>: to uncheck the selections</ListItem>
                     <ListItem><strong>Return</strong>: click back (or navigate) into the Checker to continue using the functionality, such as storing more scans</ListItem>
                 </UnorderedList>
+                <p>6. Open the 'Options' dropdown menu and select 'Export stored scans'.</p>
 
                 <h2 id="focus_view">3.6 Focus view</h2>
                 <p>
@@ -981,7 +982,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
                     <UnorderedList>
                         <ListItem><strong>IBM Accessibility 7.2</strong>: includes checking against WCAG 2.1 plus additional IBM requirements.</ListItem>
-                        <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. This will be the default starting Oct 1, 2024.</ListItem>
+                        <ListItem><strong>IBM Accessibility 7.3</strong>: includes checking against WCAG 2.2 plus additional IBM requirements. Default Oct 1, 2024.</ListItem>
                         <ListItem><strong>WCAG 2.2 (A, AA)</strong>: this is the latest W3C specification with no additional IBM requirements. Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and 2.0.</ListItem>
                         <ListItem><strong>WCAG 2.1 (A, AA)</strong>: referenced by earlier versions of EN 301 549 and other policies, but not the latest W3C specification. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.</ListItem>
                         <ListItem><strong>WCAG 2.0 (A, AA)</strong>: referenced by US Section 508.</ListItem>
@@ -1031,23 +1032,34 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     inline={true} size="lg">Create a multi-scan report</Link>.
                 </p>
                 
-                <h3 id="HTML_reports">HTML reports</h3>
+                <h3 id="HTML_reports">HTML report</h3>
                 {/* <p><strong>HTML reports</strong></p> */}
                 <p>
                     <img
                         src="assets/img/7_1_ReportHTML.png"
-                        alt="an HTML page for 'IBM accessibility equal access toolkit: accessibility checker report'"
+                        alt="screenshot of a report sorted by Requirements."
                     />
+                </p>
                 <p>
-                    This interactive report is in an HTML web format that includes:
-                </p></p>
+                    This interactive report is an accessible web page (single HTML file) that includes:
+                </p>
                 <OrderedList>
                     <ListItem>Scan date and time</ListItem>
                     <ListItem>URL scanned</ListItem>
                     <ListItem>Percentage of elements with no detected violations or items to review</ListItem>
-                    <ListItem>Summary of test results </ListItem>
-                    <ListItem>Issue details organized by Requirements or by Rules</ListItem>
+                    <ListItem>Summary of test results by Violations, Needs review, and Recommendations</ListItem>
+                    <ListItem>Issue details organizable by Elements roles, Requirements, or by Rules</ListItem>
                     <ListItem>‘Learn more’ link with detailed help description for each issue</ListItem>
+                </OrderedList>
+                <p>
+                    The interactive features of the report are similar to the Summary report in the Checker view:
+                </p>
+                <OrderedList>
+                    <ListItem>Filter the list of issues displayed by selecting either the 'Filter' dropdown or by selecting the checkboxes on the summary tiles by 'Violation', 'Needs review', and 'Recommendation'.</ListItem>
+                    <ListItem>Display the 'Hidden' issues by selecting the 'Filter' dropdown. Note that the counts and total displayed do not include the 'Hidden' issues.</ListItem>
+                    <ListItem>Change the organization of the issues list by selecting the dropdown to see issues by 'Elements roles', 'Requirements', or by 'Rules'. Note that each group is an accordion that can be collapsed for a condensed view.</ListItem>
+                    <ListItem>Display the specific 'What to do' guidance for each individual issue by selecting the 'Learn more' link.</ListItem>
+                    <ListItem>Send the single HTML file to team members or save it in project records.</ListItem>
                 </OrderedList>
                 <p>
                     <strong>Note</strong>: The percentages reported are based on automated tests only. 
@@ -1066,7 +1078,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                     <img
                         src="assets/img/7_1_ReportXLS_hidden.png"
-                        alt="an Excel spreadsheet of an accessibility scan report"
+                        alt="an Excel spreadsheet of a scan report"
                     />
                 </p>
                 <OrderedList>
