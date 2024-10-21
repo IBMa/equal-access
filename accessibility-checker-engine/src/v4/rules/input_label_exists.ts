@@ -14,12 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../util/VisUtil";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { AccNameUtil } from "../util/AccNameUtil";
 
 export const input_label_exists: Rule = {
@@ -83,7 +78,7 @@ export const input_label_exists: Rule = {
             // Handled by input_label_existsImage
             return null;
         }
-
+/** 
         let POF = -1;
         let textTypes = CommonUtil.input_text_types;
         let buttonTypes = CommonUtil.form_button_types;  
@@ -180,9 +175,9 @@ export const input_label_exists: Rule = {
             if (ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents"))
                 passed = CommonUtil.hasInnerContentHidden(ruleContext);
         }
-
-        //const pair = AccNameUtil.computeAccessibleName(ruleContext);    
-        //passed = pair && pair.name && pair.name.trim().length > 0;
+*/
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);console.log("node="+ruleContext.nodeName+", pair="+JSON.stringify(pair));
+        passed = pair && pair.name && pair.name.trim().length > 0;
 
         if (passed) {
             return RulePass("Pass_0");

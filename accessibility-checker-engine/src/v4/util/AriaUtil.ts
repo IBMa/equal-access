@@ -2008,5 +2008,4 @@ export class AriaUtil {
     public static isNodeInGrid(node) {
         return AriaUtil.getAncestorWithRole(node, "grid") != null;
     }
-
 }

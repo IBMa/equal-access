@@ -13,6 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { AccNameUtil } from "../util/AccNameUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
@@ -57,7 +58,9 @@ export const frame_title_exists: Rule = {
             return null;
         }
 
-        if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
+        const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (name_pair && name_pair.name && name_pair.name.trim().length > 0) {
+        //if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");

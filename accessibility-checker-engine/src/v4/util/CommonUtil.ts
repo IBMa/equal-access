@@ -15,6 +15,7 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { CacheUtil } from "./CacheUtil";
 import { RuleContextHierarchy } from "../api/IRule";
 import { AriaUtil } from "./AriaUtil";
+import { AccNameUtil } from "./AccNameUtil";
 import { VisUtil } from "./VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
@@ -27,7 +28,7 @@ export class CommonUtil {
         "text", "file", "password",
         "checkbox", "radio",
         "search", "tel", "url", "email",  //HTML 5. Note: type = "hidden" doesn't require text
-        "date", "number", "range", //HTML 5. type = "image" is checked in g10.
+        "date", "number", "range",
         "time", "color"
     ];
     public static input_time_types = [
@@ -841,35 +842,142 @@ export class CommonUtil {
      * This function is responsible for getting the label for a form field element.
      *
      *
-     * @parm {element} element - The element for which to get the label element for.
+     * @parm {element} element - The element from which to get the label.
      *
      * @return {string} text - return the label text or null
      *
      * @memberOf AriaUtil
      */
     public static getFormFieldLabel(elem) : string | null {
-        let label = null;
         // get the label from the attribute "for" of the label element
         // Get only the non-hidden labels for element
         let labelElem = CommonUtil.getLabelForElementHidden(elem, true);
-        if (labelElem) {
-            label = CommonUtil.getInnerText(labelElem);
-            if (label && label.trim() !== "")
-                return label;
-        }
-        
-        // get the label of which the form field is the first child
-        return CommonUtil.getImplicitLabel(elem);
 
+        /** if it's not label with for attribute, then find implicit label
+         * cases for explict label: 
+         *   <label for='my'></label><input id='my'/>
+         *   <label for='my'><input id='my'/></label>   
+         * cases for implicit label: 
+         *    <label><input /></label>
+         */
+        if (!labelElem) {
+            labelElem = CommonUtil.getAncestor(elem, "label");
+            if (!labelElem || labelElem.tagName.toLowerCase() !== "label" || !CommonUtil.isFirstFormElement(labelElem, elem))
+                return null;
+        }
+
+        let value = "";
+        // value directly from element text
+        let label = labelElem.innerText; // ignore hidden text
+        if (label && label.trim() !== "")
+            value += label.trim();
+
+        // value from child element attribute
+        label = CommonUtil.getLabelTextFromAttribute(labelElem, true);
+        if (label && label.trim() !== "")
+            value += label.trim();
+
+        // wired case: get aria label from label element itself just in case (though name prohibited from aria in html)
+        label = AriaUtil.getAriaLabel(labelElem);
+        if (label && label.trim() !== "")
+            value += label.trim();
+
+        return value.trim();
+    }
+
+    /**
+     * calculate label from embedded control: https://w3c.github.io/accname/
+     * @param {element} labelElem label element
+     * @param {boolean} ignoreHidden - true if hidden elements with label should be ignored from the list
+     *                                false if the hidden elements should be added  
+     * @returns label text or ''
+     * 
+     * note the assumption is the labelElem refers either to a labelled element by 'for' attribute 
+     *  or its first form field is labbelled element
+     */ 
+    public static getLabelTextFromAttribute(labelElem: Element, ignoreHidden: boolean) : string {
+        // label either points to a labelable element by its for attribute or the first element child
+        // get the labelled elment if it's an implicit label
+        let labeledElem = null;
+        for (let i=0; i < labelElem.children.length; i++) {
+            const child: Element = labelElem.children.item(i);
+            if (CommonUtil.form_labelable_elements.includes(child.nodeName.toLowerCase())) {
+                labeledElem = child;
+                break;
+            }
+        }
+        //let labeledElem = null;
+        /**if (labelElem.hasAttribute("for")) {
+            const id = labelElem.getAttribute("for").trim();
+            labeledElem = document.getElementById(id);
+            if (!labeledElem || DOMUtil.sameNode(labeledElem, labelElem))
+                labeledElem = null;
+        }*/
+        
+        let nw = new DOMWalker(labelElem);
+        let text = '';
+        while (nw.nextNode() && nw.node !== labelElem) {
+            // only check element children
+            if (nw.node && nw.node.nodeType === 1 && nw.elem()) {
+                const elem = nw.elem();
+                // ignore if it's hidden, or labelled element, or first form element if not labeled by for attribute
+                if ((ignoreHidden && (VisUtil.isNodeHiddenFromAT(elem) || VisUtil.isNodePresentational(elem)))
+                    || (labeledElem && labeledElem.contains(elem)))
+                    continue;
+
+                const role = AriaUtil.getResolvedRole(elem);
+                // textbox etc. return its text value
+                if (role === "textbox") {
+                    const name = elem.getAttribute("value");
+                    if (name && name.trim().length > 0)
+                        text += ' ' + name.trim();
+
+                } else if (role === "combobox" || role === "listbox") { 
+                    // for combobox or listbox roles, return the text alternative of the chosen option.
+                    const selectedId = elem.getAttribute("aria-activedescendant") || elem.getAttribute("aria-selected") || elem.getAttribute("aria-checked");
+                    if (selectedId) {
+                        let selectedOption = elem.ownerDocument.getElementById(selectedId);
+                        if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
+                            const pair = AccNameUtil.computeAccessibleName(selectedOption);
+                            if (pair && pair.name)
+                                text += ' ' + pair.name.trim();
+                        }
+                    }
+                } else if (["progressbar", "scrollbar", "slider", "spinbutton", "meter"].includes(role)) {
+                    // for range role type, including "progressbar", "scrollbar", "slider", "spinbutton" roles
+                    // If the aria-valuetext property is present, return its value
+                    let value = elem.getAttribute("aria-valuetext");
+                    if (value && value.trim().length > 0) 
+                        text += ' ' + value.trim();
+
+                    // Otherwise, if the aria-valuenow property is present, return its value,
+                    value = elem.getAttribute("aria-valuenow");
+                    if (value && value.trim().length > 0) 
+                        text += ' ' + value.trim();
+
+                    // finally use native value attribute
+                    value = elem.getAttribute("value");
+                    if (value && value.trim().length > 0) 
+                        text += ' ' + value.trim();
+                }
+
+                // get aria label from the element
+                const value = AriaUtil.getAriaLabel(elem);
+                if (value && value.trim() !== "")
+                    text += ' ' + value.trim();
+            }
+
+        }
+        return text.trim();    
     }
 
     public static isFirstFormElement(parentNode, element) {
-        let formElementsRequiringLabel = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
+        //let formElementsRequiringLabel = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
         if (parentNode.firstChild != null) {
             //let nw = new NodeWalker(parentNode);
             let nw = new DOMWalker(parentNode);
             while (nw.nextNode()) {
-                if (formElementsRequiringLabel.indexOf(nw.node.nodeName.toLowerCase()) !== -1) {
+                if (CommonUtil.form_labelable_elements.indexOf(nw.node.nodeName.toLowerCase()) !== -1) {
                     return nw.node === element;
                 }
             }

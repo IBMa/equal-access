@@ -50,7 +50,14 @@ export class AccNameUtil {
             return name_pair;
         }
         
-        // 3. name from content for custom elements
+        // 3. name from native or aria attribute
+        /**name_pair = AccNameUtil.computeAccessibleNameFromAttribute(elem);
+        if (name_pair) {
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", name_pair);
+            return name_pair;
+        }*/
+
+        // 4. name from content for custom elements with a role
         const role = AriaUtil.getResolvedRole(elem);
         if (ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) {
             name_pair = AccNameUtil.computeAccessibleNameFromContent(elem);
@@ -60,18 +67,24 @@ export class AccNameUtil {
             }
         }
 
-        // 4. name from the global attribute "title"
+        // 5. name from the global attribute "title"
         if (elem.hasAttribute("title")) {
             let title = elem.getAttribute("title").trim();
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":title, "nameFrom": "title"});
-            return {"name":CommonUtil.truncateText(title), "nameFrom": "title"};
+            if (title && title.trim().length > 0) {
+                title = CommonUtil.truncateText(title);
+                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":title, "nameFrom": "title"});
+                return {"name":title, "nameFrom": "title"};
+            }
         }
         
-        // 5. name from the attribute "placeholder"
-        if (nodeName === 'input' && (!elem.hasAttribute("type") || CommonUtil.input_type_with_placeholder.includes(elem.getAttribute("type")))) {
-            const placeholder = CommonUtil.truncateText(elem.getAttribute("placeholder"));
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", placeholder);
-            return {"name":placeholder, "nameFrom": "placeholder"};
+        // 6. name from the attribute "placeholder"
+        if (nodeName === 'textarea' || (nodeName === 'input' && (!elem.hasAttribute("type") || CommonUtil.input_type_with_placeholder.includes(elem.getAttribute("type"))))) {
+            let placeholder = elem.getAttribute("placeholder");
+            if (placeholder && placeholder.trim().length > 0) {
+                placeholder = CommonUtil.truncateText(placeholder);
+                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", placeholder);
+                return {"name":placeholder, "nameFrom": "placeholder"};
+            }    
         }
 
         CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", null);
@@ -90,27 +103,31 @@ export class AccNameUtil {
                 return {"name":CommonUtil.truncateText(label), "nameFrom": "label"};
         }
 
-        // input types: button, reset, submit
-        if (nodeName === "input" && elem.hasAttribute("type") && CommonUtil.form_button_types.includes(elem.getAttribute("type"))) {
-            // Get the "value" attribute for the element
-            const value = CommonUtil.getElementAttribute(elem, "value");
-            if (value && value.trim() !== '')
-                return {"name":CommonUtil.truncateText(value), "nameFrom": "value"};
+        // input types: button, reset, submit, image
+        if (nodeName === "input" && elem.hasAttribute("type")) { 
+            if (CommonUtil.form_button_types.includes(elem.getAttribute("type"))) {
+                // input types: button, reset, submit
+                // Get the "value" attribute for the element
+                const value = CommonUtil.getElementAttribute(elem, "value");
+                if (value && value.trim() !== '')
+                    return {"name":CommonUtil.truncateText(value), "nameFrom": "value"};
 
-            // input 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute 
-            return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
-        }
+                // input 'submit' and 'reset' have visible defaults so pass if there is no explicit 'value' attribute
+                const type = elem.getAttribute("type");
+                if (type === 'submit' || type === 'reset')
+                    return {"name":type, "nameFrom": "internal"};
 
-        // input type = 'image'
-        if (nodeName === "input" && elem.hasAttribute("type") && elem.getAttribute("type") === 'image') {
-            // note that though HTML 5 spec indicates "The element's [value] attribute must be omitted", Chrome uses the value.
-            // Get the accessible name for the alt attribute
-            const alt = CommonUtil.getElementAttribute(elem, "alt");
-            if (alt && alt.trim() !== '')
-                return {"name":CommonUtil.truncateText(alt), "nameFrom": "alt"};;
+            } else if (elem.getAttribute("type") === 'image') {
+                // input type = 'image'
+                // note that though HTML 5 spec indicates "The element's [value] attribute must be omitted", Chrome uses the value.
+                // Get the accessible name for the alt attribute
+                const alt = CommonUtil.getElementAttribute(elem, "alt");
+                if (alt && alt.trim() !== '')
+                    return {"name":CommonUtil.truncateText(alt), "nameFrom": "alt"};;
 
-            // the visible default text for type "image" is "Submit" same with the type "submit"
-            //return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
+                // the visible default text for type "image" is "Submit" same with the type "submit"
+                //return {"name":elem.getAttribute("type"), "nameFrom": "internal"};
+            }
         }
 
         // button
@@ -325,13 +342,13 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for custom elements marked with aria
-    public static computeAccessibleNameFromContent(elem: Element) : any | null {
+    /**public static computeAccessibleNameFromAttribute(elem: Element) : any | null {
         const nodeName = elem.nodeName.toLowerCase();
         const role = AriaUtil.getResolvedRole(elem);
         
         // textbox etc. return its text value
         if (role === "textbox") {
-            let name = elem.textContent;
+            const name = elem.getAttribute("value");
             if (name && name.trim().length > 0)
                 return {"name":CommonUtil.truncateText(name), "nameFrom": "value"};
         }
@@ -349,8 +366,8 @@ export class AccNameUtil {
             }
         }
 
-        // for roles "progressbar", "scrollbar", "slider", "spinbutton"
-        if (["progressbar", "scrollbar", "slider", "spinbutton"].includes(role)) {
+        // for range role type, including "progressbar", "scrollbar", "slider", "spinbutton" roles
+        if (["progressbar", "scrollbar", "slider", "spinbutton", "meter"].includes(role)) {
             // If the aria-valuetext property is present, return its value
             let value = elem.getAttribute("aria-valuetext");
             if (value && value.trim().length > 0) 
@@ -359,9 +376,23 @@ export class AccNameUtil {
             value = elem.getAttribute("aria-valuenow");
             if (value && value.trim().length > 0) 
                 return {"name":CommonUtil.truncateText(value), "nameFrom": "aria-valuenow"};
+
+            // finally use native value attribute
+            value = elem.getAttribute("value");
+            if (value && value.trim().length > 0) 
+                return {"name":CommonUtil.truncateText(value), "nameFrom": "value"};
         }
 
-        /** for any element, the content from CSS pseudo-elements 
+        // no accessible name exists
+        return null;    
+    }*/
+
+    // calculate accessible name for custom elements marked with aria
+    public static computeAccessibleNameFromContent(elem: Element) : any | null {
+        const nodeName = elem.nodeName.toLowerCase();
+        const role = AriaUtil.getResolvedRole(elem);
+        
+        /** for acc name from content, the content from CSS pseudo-elements 
          *  :before and :after pseudo elements [CSS2] can provide textual content for elements that have a content model.
          * For :before or :after pseudo elements, user agents must prepend CSS textual content, without a space, 
          *   to the textual content of the current node.
