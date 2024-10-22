@@ -19,6 +19,7 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const label_name_visible: Rule = {
     id: "label_name_visible",
@@ -67,11 +68,11 @@ export const label_name_visible: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
 
         let isInputButton = false;
-        let buttonTypes = ["button", "reset", "submit"/*, "image"*/];
+        //let buttonTypes = ["button", "reset", "submit"]; //"image"
         let inputType = null;
         if (nodeName === "input" && ruleContext.hasAttribute("type")) {
             inputType = ruleContext.getAttribute("type").toLowerCase();
-            if (buttonTypes.indexOf(inputType) !== -1) {
+            if (CommonUtil.form_button_types.indexOf(inputType) !== -1) {
                 isInputButton = true;
             }
         }
@@ -81,7 +82,7 @@ export const label_name_visible: Rule = {
             // skip the checks if it has an aria-labelledby since it takes precedence.
         } else {
             let theLabel = null;
-            if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
+            /**if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
                 let labelValues = theLabelBy.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
                     let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
@@ -97,7 +98,13 @@ export const label_name_visible: Rule = {
             if (!theLabel) {
                 return null;
             }
+            */
+            const accName = AccNameUtil.computeAccessibleName(ruleContext);
+            if (!accName || !accName.name || accName.name.trim().length ===0)
+                return;
 
+            theLabel = accName.name.trim();
+            
             let text = null;
 
             if (isInputButton) {

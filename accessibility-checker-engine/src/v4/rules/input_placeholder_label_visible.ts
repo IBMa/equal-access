@@ -12,7 +12,6 @@
 *****************************************************************************/
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
-import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export const input_placeholder_label_visible: Rule = {
     id: "input_placeholder_label_visible",
