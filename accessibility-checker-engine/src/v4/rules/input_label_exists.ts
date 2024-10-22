@@ -176,7 +176,7 @@ export const input_label_exists: Rule = {
                 passed = CommonUtil.hasInnerContentHidden(ruleContext);
         }
 */
-        const pair = AccNameUtil.computeAccessibleName(ruleContext);console.log("node="+ruleContext.nodeName+", pair="+JSON.stringify(pair));
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
         passed = pair && pair.name && pair.name.trim().length > 0;
 
         if (passed) {

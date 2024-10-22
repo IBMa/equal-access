@@ -851,27 +851,34 @@ export class CommonUtil {
     public static getFormFieldLabel(elem) : string | null {
         // get the label from the attribute "for" of the label element
         // Get only the non-hidden labels for element
-        let labelElem = CommonUtil.getLabelForElementHidden(elem, true);
-
-        /** if it's not label with for attribute, then find implicit label
-         * cases for explict label: 
-         *   <label for='my'></label><input id='my'/>
-         *   <label for='my'><input id='my'/></label>   
-         * cases for implicit label: 
-         *    <label><input /></label>
-         */
-        if (!labelElem) {
-            labelElem = CommonUtil.getAncestor(elem, "label");
-            if (!labelElem || labelElem.tagName.toLowerCase() !== "label" || !CommonUtil.isFirstFormElement(labelElem, elem))
-                return null;
-        }
-
         let value = "";
-        // value directly from element text
-        let label = labelElem.innerText; // ignore hidden text
+        let label = null;
+        let labelElem = CommonUtil.getLabelForElementHidden(elem, true);
+        if (labelElem) {
+            // value directly from element text
+            label = labelElem.innerText; // ignore hidden text
+        } else {    
+            /** if it's not label with for attribute, then find implicit label
+             * cases for explict label: 
+             *   <label for='my'></label><input id='my'/>
+             *   <label for='my'><input id='my'/></label>   
+             * cases for implicit label: 
+             *    <label><input /></label>
+             */
+            labelElem = CommonUtil.getAncestor(elem, "label");
+            if (labelElem && labelElem.tagName.toLowerCase() === "label" && CommonUtil.isFirstFormElement(labelElem, elem)) {
+                let parentClone = labelElem.cloneNode(true);
+                // exclude all the text from the first form element since they might also 
+                // have inner content that is part of innerText
+                parentClone = CommonUtil.removeAllFormElementsFromLabel(parentClone);
+                label = CommonUtil.getInnerText(parentClone);
+            } else
+                return null;   
+        }
+        
         if (label && label.trim() !== "")
             value += label.trim();
-
+        
         // value from child element attribute
         label = CommonUtil.getLabelTextFromAttribute(labelElem, true);
         if (label && label.trim() !== "")
@@ -906,13 +913,6 @@ export class CommonUtil {
                 break;
             }
         }
-        //let labeledElem = null;
-        /**if (labelElem.hasAttribute("for")) {
-            const id = labelElem.getAttribute("for").trim();
-            labeledElem = document.getElementById(id);
-            if (!labeledElem || DOMUtil.sameNode(labeledElem, labelElem))
-                labeledElem = null;
-        }*/
         
         let nw = new DOMWalker(labelElem);
         let text = '';

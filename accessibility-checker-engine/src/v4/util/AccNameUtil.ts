@@ -39,7 +39,7 @@ export class AccNameUtil {
         //   get aria label even for the role where the name is prohibited or is 'presentation' or 'none'
         let accName = AriaUtil.getAriaLabel(elem);
         if (accName && accName.trim() !== "") {
-            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":accName, "nameFrom": "ariaLabel"});
+            CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":CommonUtil.truncateText(accName), "nameFrom": "ariaLabel"});
             return {"name":CommonUtil.truncateText(accName), "nameFrom": "ariaLabel"};
         }
 
@@ -82,7 +82,7 @@ export class AccNameUtil {
             let placeholder = elem.getAttribute("placeholder");
             if (placeholder && placeholder.trim().length > 0) {
                 placeholder = CommonUtil.truncateText(placeholder);
-                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", placeholder);
+                CacheUtil.setCache(elem, "ELEMENT_ACCESSBLE_NAME", {"name":placeholder, "nameFrom": "placeholder"});
                 return {"name":placeholder, "nameFrom": "placeholder"};
             }    
         }
@@ -265,8 +265,18 @@ export class AccNameUtil {
                     }
                 });
                 if (text.trim() !== '')
-                    return {"name":text.trim(), "nameFrom": "iamges"};
+                    return {"name":text.trim(), "nameFrom": "alt"};
             }
+        }
+
+        // optgroup
+        // label participate in accessible name calculation: https://www.w3.org/TR/html-aam-1.0/#att-label
+        // The label attribute must be specified. Its value gives the name of the group
+        // the value is disabled in the interface
+        if (nodeName === "optgroup" || nodeName === "option" || nodeName === "track") {
+            const label = elem.getAttribute("label");
+            if (label && label.trim().length > 0)
+                return {"name":CommonUtil.truncateText(label), "nameFrom": "label"};
         }
 
         // svg
@@ -340,52 +350,6 @@ export class AccNameUtil {
                 return {"name":text.trim(), "nameFrom": "svgDesc"};
         }
     }
-
-    // calculate accessible name for custom elements marked with aria
-    /**public static computeAccessibleNameFromAttribute(elem: Element) : any | null {
-        const nodeName = elem.nodeName.toLowerCase();
-        const role = AriaUtil.getResolvedRole(elem);
-        
-        // textbox etc. return its text value
-        if (role === "textbox") {
-            const name = elem.getAttribute("value");
-            if (name && name.trim().length > 0)
-                return {"name":CommonUtil.truncateText(name), "nameFrom": "value"};
-        }
-        
-        // for combobox or listbox roles, return the text alternative of the chosen option.
-        if (role === "combobox" || role === "listbox") {
-            const selectedId = elem.getAttribute("aria-activedescendant") || elem.getAttribute("aria-selected") || elem.getAttribute("aria-checked");
-            if (selectedId) {
-                let selectedOption = elem.ownerDocument.getElementById(selectedId);
-                if (selectedOption && !DOMUtil.sameNode(elem, selectedOption)) {
-                    const pair = AccNameUtil.computeAccessibleName(selectedOption);
-                    if (pair && pair.name)
-                        return {"name": pair.name, "nameFrom": "option"};
-                }
-            }
-        }
-
-        // for range role type, including "progressbar", "scrollbar", "slider", "spinbutton" roles
-        if (["progressbar", "scrollbar", "slider", "spinbutton", "meter"].includes(role)) {
-            // If the aria-valuetext property is present, return its value
-            let value = elem.getAttribute("aria-valuetext");
-            if (value && value.trim().length > 0) 
-                return {"name":value, "nameFrom": "aria-valuetext"};
-            // Otherwise, if the aria-valuenow property is present, return its value,
-            value = elem.getAttribute("aria-valuenow");
-            if (value && value.trim().length > 0) 
-                return {"name":CommonUtil.truncateText(value), "nameFrom": "aria-valuenow"};
-
-            // finally use native value attribute
-            value = elem.getAttribute("value");
-            if (value && value.trim().length > 0) 
-                return {"name":CommonUtil.truncateText(value), "nameFrom": "value"};
-        }
-
-        // no accessible name exists
-        return null;    
-    }*/
 
     // calculate accessible name for custom elements marked with aria
     public static computeAccessibleNameFromContent(elem: Element) : any | null {
