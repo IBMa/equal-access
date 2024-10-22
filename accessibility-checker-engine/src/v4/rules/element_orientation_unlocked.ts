@@ -54,7 +54,7 @@ export const element_orientation_unlocked: Rule = {
         if (CommonUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
-        const nodeName = ruleContext.nodeName.toLowerCase();    
+        const nodeName = ruleContext.nodeName.toLowerCase();
         
         // cache the orientation result for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
@@ -69,16 +69,24 @@ export const element_orientation_unlocked: Rule = {
         Object.keys(orientationTransforms).forEach(key => {
             Object.keys(orientationTransforms[key]).forEach(tag => {
                 if (Object.keys(orientationTransforms[key][tag]).length > 0 && CSSUtil.selectorMatchesElem(ruleContext, tag))
-                    media_transforms.push(orientationTransforms[key][tag].transform);    
+                    if (orientationTransforms[key][tag].transform)
+                        media_transforms.push(orientationTransforms[key][tag].transform);
+                    else
+                        media_transforms.push(orientationTransforms[key][tag]);
+                }    
             });
         });
-
+        
         // no match, the element is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
         let ret = [];
         for (let i=0; i < media_transforms.length; i++) {
-            const media_transform = media_transforms[i];
+            let media_transform = media_transforms[i];
+            if (typeof media_transform === 'object')
+                for(var key in media_transform)
+                    media_transform = key +"(" + media_transform[key] +")";
+            
             let containsRotation = false;
             ['rotate', 'rotate3d', 'rotateZ', 'matrix', 'matrix3d'].forEach(rotation => {
                 if (media_transform.includes(rotation)) containsRotation = true;
@@ -104,11 +112,13 @@ export const element_orientation_unlocked: Rule = {
              */
             if (definedStyle['transform']) {
                 const page_degree = CSSUtil.getRotationDegree(definedStyle['transform']);
-                degree -= page_degree;
+                // rotate is additive
+                degree += page_degree;
             }    
             
+            // When degree is 1 turn (360 degree), it is not considered an orientation lock
             // allow 1 degree floating range for the right angle
-            if ((degree > 89 && degree < 91) || (degree > -91 && degree < -89))
+            if (Math.abs(degree - 360) % 360 > 1)
                 ret.push(RuleFail("fail_locked", [nodeName]));
             else ret.push(RulePass("pass"));
         }

@@ -23,19 +23,19 @@ export const list_markup_review: Rule = {
     context: "dom:*",
     refactor: {
         "RPT_List_UseMarkup": {
-            "Pass_0": "Pass_0",
+            // "Pass_0": "Pass_0",
             "Potential_1": "Potential_1"}
     },
     help: {
         "en-US": {
-            "pass": "list_markup_review.html",
+            // "pass": "list_markup_review.html",
             "potential_list": "list_markup_review.html",
             "group": "list_markup_review.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Proper HTML elements are used to create a list",
+            // "pass": "Proper HTML elements are used to create a list",
             "potential_list": "Verify this is a list and if so, modify to use proper HTML elements for the list",
             "group": "Proper HTML elements should be used to create a list"
         }

@@ -20,19 +20,16 @@ export const media_live_captioned: Rule = {
     context: "dom:embed, dom:object",
     refactor: {
         "RPT_Media_VideoObjectTrigger": {
-            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
-            "Pass_0": "media_live_captioned.html",
             "Manual_1": "media_live_captioned.html",
             "group": "media_live_captioned.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
             "Manual_1": "Verify captions are provided for live media (streaming video with audio)",
             "group": "Live media (streaming video with audio) should have captions for audio content"
         }

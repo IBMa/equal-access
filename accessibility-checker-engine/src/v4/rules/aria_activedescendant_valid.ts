@@ -27,8 +27,9 @@ export const aria_activedescendant_valid: Rule = {
             "Pass_0": "Pass_0",
             "Fail_1": "Fail_1",
             "Fail_2": "Fail_2",
-            "Fail_3": "Fail_3",
-            "Fail_4": "Fail_4"}
+            "Fail_3": "Fail_3"
+            // "Fail_4": "Fail_4"
+        }
     },
     help: {
         "en-US": {
@@ -36,7 +37,7 @@ export const aria_activedescendant_valid: Rule = {
             "Fail_1": "aria_activedescendant_valid.html",
             "Fail_2": "aria_activedescendant_valid.html",
             "Fail_3": "aria_activedescendant_valid.html",
-            "Fail_4": "aria_activedescendant_valid.html",
+            // "Fail_4": "aria_activedescendant_valid.html",
             "group": "aria_activedescendant_valid.html"
         }
     },
@@ -46,7 +47,7 @@ export const aria_activedescendant_valid: Rule = {
             "Fail_1": "The 'aria-activedescendant' property is empty",
             "Fail_2": "The 'aria-activedescendant' property references a hidden node",
             "Fail_3": "Element is not a combobox, and the referenced active-descendant element is not a valid descendant",
-            "Fail_4": "Element is a combobox, and the referenced active-descendant element is not controlled by this component",
+            // "Fail_4": "Element is a combobox, and the referenced active-descendant element is not controlled by this component",
             "group": "The 'aria-activedescendant' property must reference the 'id' of a non-empty, non-hidden active child element"
         }
     },

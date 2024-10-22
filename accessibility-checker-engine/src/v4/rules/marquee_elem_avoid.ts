@@ -19,19 +19,17 @@ export const marquee_elem_avoid: Rule = {
     context: "dom:marquee",
     refactor: {
         "RPT_Marquee_Trigger": {
-            "Passed_0": "Passed_0",
-            "Fail_1": "Fail_1"}
+            "Fail_1": "Fail_1"
+        }
     },
     help: {
         "en-US": {
-            "Passed_0": "marquee_elem_avoid.html",
             "Fail_1": "marquee_elem_avoid.html",
             "group": "marquee_elem_avoid.html"
         }
     },
     messages: {
         "en-US": {
-            "Passed_0": "Rule Passed",
             "Fail_1": "Scrolling content found that uses the obsolete <marquee> element",
             "group": "The <marquee> element is obsolete and should not be used"
         }

@@ -23,7 +23,7 @@ export const draggable_alternative_exists: Rule = {
     help: {
         "en-US": {
             "group": "draggable_alternative_exists.html",
-            "pass_alternative": "draggable_alternative_exists.html",
+            // "pass_alternative": "draggable_alternative_exists.html",
             "pass_undraggable": "draggable_alternative_exists.html",
             "potential_alternative": "draggable_alternative_exists.html"
         }
@@ -31,13 +31,13 @@ export const draggable_alternative_exists: Rule = {
     messages: {
         "en-US": {
             "group": "A draggable element must have a \"single pointer\" alternative",
-            "pass_alternative": "The draggable element \"{0}\" has a \"single pointer\" alternative",
+            // "pass_alternative": "The draggable element \"{0}\" has a \"single pointer\" alternative",
             "pass_undraggable": "The element \"{0}\" is not draggable",
             "potential_alternative": "Ensure the draggable element \"{0}\" has a \"single pointer\" alternative"
         }
     },
     rulesets: [{
-        id: ["IBM_Accessibility_next", "WCAG_2_2"],
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_2"],
         num: ["2.5.7"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE

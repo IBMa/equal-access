@@ -239,81 +239,48 @@ export class CSSUtil {
         }
     }
 
-    /**
-     * Returns the media query defined for the document
-     *
-     *
-     * @param {Document} doc
-     */
-    public static getMediaOrientationTransform(doc: Document) {
-        let orientationTransforms = {};
-
-        // Iterate through all of the stylesheets and rules
-        for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
-            const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet;
-            try {
-                if (sheet && sheet.cssRules) {
-                    for (
-                        let rIndex = 0;
-                        rIndex < sheet.cssRules.length;
-                        ++rIndex
-                    ) {
-                        const sheetRule = sheet.cssRules[rIndex];
-                        if (
-                            4 /* CSSRule.MEDIA_RULE */ === sheetRule.MEDIA_RULE
-                        ) {
-                            const rule = sheetRule as CSSMediaRule;
-                            if (rule && rule.media) {
-                                const mediaList = rule.media;
-                                for (let i = 0; i < mediaList.length; i++) {
-                                    let elem_transforms =
-                                        orientationTransforms[
-                                        mediaList
-                                            .item(i)
-                                            .toLocaleLowerCase()
-                                        ];
-                                    if (!elem_transforms) elem_transforms = {};
-                                    let styleRules = rule.cssRules;
-                                    for (
-                                        let i = 0;
-                                        i < styleRules.length;
-                                        ++i
-                                    ) {
-                                        if (
-                                            1 /* CSSRule.STYLE_RULE */ ===
-                                            styleRules[i].STYLE_RULE
-                                        ) {
-                                            const styleRule = styleRules[
-                                                i
-                                            ] as CSSStyleRule;
-                                            const selector =
-                                                styleRule.selectorText;
-                                            if (selector) {
-                                                let transforms = {};
-                                                const styles = styleRule.style;
-                                                for (
-                                                    let s = 0;
-                                                    s < styles.length;
-                                                    ++s
-                                                ) {
-                                                    const key = styles[s];
-                                                    if (
-                                                        key.toLocaleLowerCase() ===
-                                                        "transform"
-                                                    ) {
-                                                        if (
-                                                            key === "all" &&
-                                                            styles[key]
-                                                        ) {
-                                                            delete transforms[
-                                                                key
-                                                            ];
-                                                            break;
-                                                        } else {
-                                                            transforms[key] =
-                                                                styles[key];
-                                                        }
+/**
+ * Returns the media query defined for the document
+ * 
+ * 
+ * @param {Document} doc 
+ */
+export function getMediaOrientationTransform(doc: Document) {
+    let orientationTransforms = {}
+    
+    // Iterate through all of the stylesheets and rules
+    for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
+        const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet; 
+        try {
+            if (sheet && sheet.cssRules) {
+                for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                    const sheetRule = sheet.cssRules[rIndex]; 
+                    if (4 /* CSSRule.MEDIA_RULE */ === sheetRule.MEDIA_RULE) { 
+                        const rule = sheetRule as CSSMediaRule;
+                        if (rule && rule.media) {
+                            const mediaList = rule.media; 
+                            for (let i = 0; i < mediaList.length; i++) {
+                                let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
+                                if (!elem_transforms) elem_transforms = {};
+                                let styleRules = rule.cssRules;
+                                for (let i = 0; i < styleRules.length; ++i) {
+                                    if (1 /* CSSRule.STYLE_RULE */ === styleRules[i].STYLE_RULE) { 
+                                        const styleRule = styleRules[i] as CSSStyleRule;
+                                        const selector = styleRule.selectorText;
+                                        if (selector) {
+                                            let transforms = {};
+                                            const styles = styleRule.style;
+                                            for (let s=0; s < styles.length; ++s) {
+                                                const key = styles[s];
+                                                if (key.toLocaleLowerCase() === "transform") {
+                                                    if (key === "all" && styles[key]) {
+                                                        delete transforms[key];
+                                                        break;
+                                                    } else {
+                                                        transforms[key] = styles[key];
                                                     }
+                                                } else if (key.toLocaleLowerCase() === "rotate") {
+                                                    transforms[key] = styles[key];
                                                 }
                                                 elem_transforms[selector] =
                                                     transforms;

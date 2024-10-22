@@ -44,7 +44,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Chrome
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -53,7 +53,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -92,7 +92,7 @@ jobs:
     - run: npm test
       working-directory: accessibility-checker/test-act-w3
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: ACT Text Results
         path: accessibility-checker/test-act-w3/act-report-v2.txt
