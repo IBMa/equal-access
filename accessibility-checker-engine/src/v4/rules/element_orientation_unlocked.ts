@@ -68,7 +68,7 @@ export const element_orientation_unlocked: Rule = {
         let media_transforms = [];
         Object.keys(orientationTransforms).forEach(key => {
             Object.keys(orientationTransforms[key]).forEach(tag => {
-                if (Object.keys(orientationTransforms[key][tag]).length > 0 && CSSUtil.selectorMatchesElem(ruleContext, tag))
+                if (Object.keys(orientationTransforms[key][tag]).length > 0 && CSSUtil.selectorMatchesElem(ruleContext, tag)) {
                     if (orientationTransforms[key][tag].transform)
                         media_transforms.push(orientationTransforms[key][tag].transform);
                     else
