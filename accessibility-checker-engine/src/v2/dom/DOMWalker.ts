@@ -62,30 +62,6 @@ export class DOMWalker {
         return elem;
     }
     
-    /**static isNodeVisible(node: Node) {
-        if (node === null) return false;        
-        try {
-            let vis = null;
-            while (node && node.nodeType !== 1 ) {
-                node = DOMWalker.parentElement(node);
-            }
-            let elem = node as Element;
-            let w = elem.ownerDocument.defaultView;
-            do {
-                let cs = w.getComputedStyle(elem);
-                if (cs.display === "none") return false;
-                if (vis === null && cs.visibility) {
-                    vis = cs.visibility;
-                    if (vis === "hidden") return false;
-                }
-                elem = DOMWalker.parentElement(elem);
-            } while (elem);
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }*/
-
     atRoot() : boolean {
         if ((this as any).ownerElement) return false;
         if (this.root === this.node) {
