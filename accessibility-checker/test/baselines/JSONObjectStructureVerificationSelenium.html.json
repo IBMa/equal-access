@@ -37,6 +37,10 @@
             "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use",
             "Pass_0": "Rule Passed"
         },
+        "element_tabbable_unobscured": {
+            "0": "When an element receives focus, it is not entirely covered by other content",
+            "pass": "The element is not entirely covered by other content"
+        },
         "element_tabbable_visible": {
             "0": "A tabbable element should be visible on the screen when it has keyboard focus",
             "pass": "The tabbable element is visible on the screen"
@@ -89,6 +93,10 @@
             "0": "The keyboard focus indicator should be visible when default border or outline is modified by CSS",
             "pass_focus_visible": "The keyboard focus indicator is visible or is not changed from the browser default"
         },
+        "target_spacing_sufficient": {
+            "0": "The target must be sufficiently sized or spaced from other targets",
+            "pass_spacing": "The target's spacing from other targets is sufficient"
+        },
         "text_contrast_sufficient": {
             "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
             "pass": "The contrast ratio of text with its background meets WCAG AA requirements"
@@ -110,7 +118,7 @@
             "pass": "Components with a widget role should have no more than one tabbable element"
         }
     },
-    "numExecuted": 64,
+    "numExecuted": 66,
     "results": [
         {
             "apiArgs": [],
@@ -159,7 +167,7 @@
             },
             "reasonId": "Pass_0",
             "ruleId": "html_lang_exists",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<html lang=\"en\">",
             "value": [
                 "VIOLATION",
@@ -623,7 +631,7 @@
             },
             "reasonId": "Pass_0",
             "ruleId": "aria_role_valid",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<div role=\"navigation\">",
             "value": [
                 "VIOLATION",
@@ -777,6 +785,33 @@
             },
             "category": "Accessibility",
             "level": "pass",
+            "message": "The element is not entirely covered by other content",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/navigation[1]/link[1]",
+                "dom": "/html[1]/body[1]/div[1]/a[1]"
+            },
+            "reasonId": "pass",
+            "ruleId": "element_tabbable_unobscured",
+            "ruleTime": 0,
+            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_tabbable_unobscured.html#%7B%22message%22%3A%22The%20element%20is%20not%20entirely%20covered%20by%20other%20content%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22element_tabbable_unobscured%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 37,
+                "left": 16,
+                "top": 16,
+                "width": 112
+            },
+            "category": "Accessibility",
+            "level": "pass",
             "message": "The tabbable element is visible on the screen",
             "messageArgs": [],
             "path": {
@@ -858,6 +893,33 @@
             },
             "category": "Accessibility",
             "level": "pass",
+            "message": "The target's spacing from other targets is sufficient",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/navigation[1]/link[1]",
+                "dom": "/html[1]/body[1]/div[1]/a[1]"
+            },
+            "reasonId": "pass_spacing",
+            "ruleId": "target_spacing_sufficient",
+            "ruleTime": 0,
+            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/target_spacing_sufficient.html#%7B%22message%22%3A%22The%20target's%20spacing%20from%20other%20targets%20is%20sufficient%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass_spacing%22%2C%22ruleId%22%3A%22target_spacing_sufficient%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 37,
+                "left": 16,
+                "top": 16,
+                "width": 112
+            },
+            "category": "Accessibility",
+            "level": "pass",
             "message": "The contrast ratio of text with its background meets WCAG AA requirements",
             "messageArgs": [
                 "9.40",
@@ -874,7 +936,7 @@
             },
             "reasonId": "pass",
             "ruleId": "text_contrast_sufficient",
-            "ruleTime": 0,
+            "ruleTime": 1,
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "value": [
                 "VIOLATION",
@@ -1009,7 +1071,7 @@
             },
             "reasonId": "pass",
             "ruleId": "widget_tabbable_exists",
-            "ruleTime": 1,
+            "ruleTime": 0,
             "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
             "value": [
                 "VIOLATION",
@@ -1506,7 +1568,7 @@
             },
             "reasonId": "pass",
             "ruleId": "text_contrast_sufficient",
-            "ruleTime": 1,
+            "ruleTime": 0,
             "snippet": "<h1>",
             "value": [
                 "VIOLATION",
@@ -1870,7 +1932,7 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         }
     ],
-    "ruleTime": 2,
+    "ruleTime": 3,
     "summary": {
         "counts": {
             "ignored": 1,
@@ -1878,13 +1940,13 @@
             "elementsViolation": 0,
             "elementsViolationReview": 0,
             "manual": 0,
-            "pass": 63,
+            "pass": 65,
             "potentialrecommendation": 0,
             "potentialviolation": 0,
             "recommendation": 0,
             "violation": 0
         },
-        "scanTime": 15,
+        "scanTime": 16,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
             "IBM_Accessibility"
@@ -1897,10 +1959,10 @@
             "manual",
             "pass"
         ],
-        "startScan": 1729697184987,
+        "startScan": 1729699942223,
         "URL": "file:///Users/shunguoyan/git/equal-access/accessibility-checker/test/mocha/aChecker.Slow1/aChecker.ObjectStructure/JSONObjectStructureVerificationSelenium.html"
     },
-    "scanID": "e6ce3768-82c9-4aa8-a23f-b5da7efa882f",
+    "scanID": "b34adb45-eacf-4933-9dc9-cad64b26506d",
     "toolID": "accessibility-checker-v3.0.0",
     "label": "JSONObjectStructureVerificationSelenium.html"
 }
