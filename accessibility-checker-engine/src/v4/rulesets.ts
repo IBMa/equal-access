@@ -83,7 +83,7 @@ const summaries = {
     "ARIA": "The ARIA specification issues that cause accessibility issues may be covered by other rules and will be reported under those accessibility requirements. However, some non-conforming ARIA specification issues are still reported.",
 }     
 
-export let a11yRulesets: Guideline[] = [
+export const a11yRulesets: Guideline[] = [
     // {
     //     id: "DEBUG",
     //     name: "DEBUG Rules",

@@ -11,11 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let detector_tabbable: Rule = {
+export const detector_tabbable: Rule = {
     id: "detector_tabbable",
     context: "dom:*",
     help: {
@@ -39,7 +40,7 @@ export let detector_tabbable: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.isTabbable(ruleContext)) {
+        if (!CommonUtil.isTabbable(ruleContext)) {
             return null;
         }
         let hierContext = contextHierarchies.aria[contextHierarchies.aria.length - 1];

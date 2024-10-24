@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let img_longdesc_misuse: Rule = {
+export const img_longdesc_misuse: Rule = {
     id: "img_longdesc_misuse",
     context: "dom:img[longdesc]",
     refactor: {
@@ -52,8 +53,8 @@ export let img_longdesc_misuse: Rule = {
         let longdesc = ruleContext.getAttribute("longdesc");
         // if (longdesc is bad URL) passed = false;
 
-        let ext = RPTUtil.getFileExt(longdesc);
-        let passed = ext.length != 0 && RPTUtil.isHtmlExt(ext)
+        let ext = CommonUtil.getFileExt(longdesc);
+        let passed = ext.length != 0 && CommonUtil.isHtmlExt(ext)
             || longdesc.startsWith("#")
             || longdesc.startsWith("http://")
             || longdesc.startsWith("https://")

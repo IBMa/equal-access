@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_attribute_allowed: Rule = {
+export const aria_attribute_allowed: Rule = {
     id: "aria_attribute_allowed",
     context: "dom:*",
     refactor: {
@@ -59,7 +59,7 @@ export let aria_attribute_allowed: Rule = {
             let testedProperties = 0;
             for (let i = 0, length = contextAttributes.length; i < length; i++) {
                 let attrName = contextAttributes[i].name;
-                if (RPTUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
+                if (AriaUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
                     testedProperties++;
                     // Now we just have aria attributes which can
                     // pass or fail based on whether there property is valid

@@ -11,12 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let table_structure_misuse: Rule = {
+export const table_structure_misuse: Rule = {
     id: "table_structure_misuse",
     context: "dom:table",
     refactor: {
@@ -50,20 +52,20 @@ export let table_structure_misuse: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         // JCH - OUT OF SCOPE hidden in context
-        if (RPTUtil.isDataTable(ruleContext)) return null;
-        if (RPTUtil.isNodeInGrid(ruleContext)) return null;
+        if (TableUtil.isDataTable(ruleContext)) return null;
+        if (AriaUtil.isNodeInGrid(ruleContext)) return null;
 
         let errorNodes = [];
-        if (RPTUtil.attributeNonEmpty(ruleContext, "summary"))
+        if (CommonUtil.attributeNonEmpty(ruleContext, "summary"))
             errorNodes.push(ruleContext);
 
         let captionElems = ruleContext.getElementsByTagName("caption");
         for (let i = 0; i < captionElems.length; ++i) {
-            if (RPTUtil.getAncestor(captionElems[i], "table") == ruleContext) {
+            if (CommonUtil.getAncestor(captionElems[i], "table") == ruleContext) {
 
                 // Check if the node should be skipped or not based on the Check Hidden Content setting and if the node isVisible or
                 // not.
-                if (RPTUtil.shouldNodeBeSkippedHidden(captionElems[i])) {
+                if (CommonUtil.shouldNodeBeSkippedHidden(captionElems[i])) {
                     continue;
                 }
 
@@ -80,11 +82,11 @@ export let table_structure_misuse: Rule = {
 
         let thNodes = ruleContext.getElementsByTagName("th");
         for (let i = 0; i < thNodes.length; ++i) {
-            if (RPTUtil.getAncestor(thNodes[i], "table") == ruleContext) {
+            if (CommonUtil.getAncestor(thNodes[i], "table") == ruleContext) {
 
                 // Check if the node should be skipped or not based on the Check Hidden Content setting and if the node isVisible or
                 // not.
-                if (RPTUtil.shouldNodeBeSkippedHidden(thNodes[i])) {
+                if (CommonUtil.shouldNodeBeSkippedHidden(thNodes[i])) {
                     continue;
                 }
 
@@ -101,11 +103,11 @@ export let table_structure_misuse: Rule = {
         let tdNodes = ruleContext.getElementsByTagName("td");
         for (let i = 0; i < tdNodes.length; ++i) {
             if ((tdNodes[i].hasAttribute("scope") || tdNodes[i].hasAttribute("headers")) &&
-                RPTUtil.getAncestor(tdNodes[i], "table") == ruleContext) {
+                CommonUtil.getAncestor(tdNodes[i], "table") == ruleContext) {
 
                 // Check if the node should be skipped or not based on the Check Hidden Content setting and if the node isVisible or
                 // not.
-                if (RPTUtil.shouldNodeBeSkippedHidden(tdNodes[i])) {
+                if (CommonUtil.shouldNodeBeSkippedHidden(tdNodes[i])) {
                     continue;
                 }
 

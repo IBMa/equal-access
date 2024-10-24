@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AncestorUtil } from "../../v2/checker/accessibility/util/ancestor";
 import { LangUtil } from "../../v2/checker/accessibility/util/lang";
 
-export let html_lang_exists: Rule = {
+export const html_lang_exists: Rule = {
     id: "html_lang_exists",
     context: "dom:html",
     refactor: {

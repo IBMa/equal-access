@@ -13,9 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let img_alt_redundant: Rule = {
+export const img_alt_redundant: Rule = {
     id: "img_alt_redundant",
     context: "dom:img[alt]",
     refactor: {
@@ -52,7 +53,7 @@ export let img_alt_redundant: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let aNode = RPTUtil.getAncestor(ruleContext, "a");
+        let aNode = CommonUtil.getAncestor(ruleContext, "a");
         //If not in an anchor, Out of Scope
         if (aNode == null) return null;
 
@@ -77,17 +78,18 @@ export let img_alt_redundant: Rule = {
         } else {
             let passed = true;
             //alt is non-zero, but no link text - ensure adjacent link text isn't redundant
-            let walk = new NodeWalker(aNode);
+            //let walk = new NodeWalker(aNode);
+            let walk = new DOMWalker(aNode);
             while (passed && walk.prevNode()) {
                 // Get the node and nodeName
                 let node = walk.node;
                 let nodeName = node.nodeName.toLowerCase();
                 if ((nodeName == "#text" && node.nodeValue.length > 0) ||
-                    (nodeName == "img" && RPTUtil.attributeNonEmpty(node, "alt"))) {
+                    (nodeName == "img" && CommonUtil.attributeNonEmpty(node, "alt"))) {
                     break;
                 }
                 // Comply with the Check Hidden Content Setting if the a element should be checked or not
-                else if (nodeName === "a" && !RPTUtil.shouldNodeBeSkippedHidden(node)) {
+                else if (nodeName === "a" && !CommonUtil.shouldNodeBeSkippedHidden(node)) {
                     // Text before image link
                     passed = ((node as HTMLElement).innerText || node.textContent || "").trim().toLowerCase() != altText;
                 }
@@ -95,18 +97,19 @@ export let img_alt_redundant: Rule = {
             if (!passed) {
                 return RuleFail("Fail_2");
             }
-            walk = new NodeWalker(aNode, true);
+            //walk = new NodeWalker(aNode, true);
+            walk = new DOMWalker(aNode, true);
             while (passed && walk.nextNode()) {
                 // Get the node and nodeName
                 let node = walk.node;
                 let nodeName = node.nodeName.toLowerCase();
 
                 if ((nodeName == "#text" && node.nodeValue.length > 0) ||
-                    (nodeName == "img" && RPTUtil.attributeNonEmpty(node, "alt"))) {
+                    (nodeName == "img" && CommonUtil.attributeNonEmpty(node, "alt"))) {
                     break;
                 }
                 // Comply with the Check Hidden Content Setting if the a element should be checked or not
-                else if (nodeName == "a" && !RPTUtil.shouldNodeBeSkippedHidden(node)) {
+                else if (nodeName == "a" && !CommonUtil.shouldNodeBeSkippedHidden(node)) {
                     passed = (node as HTMLElement).innerText.trim().toLowerCase() != altText;
                 }
             }

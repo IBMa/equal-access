@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { DOMWalker } from "./DOMWalker";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export class ColorUtil {
 

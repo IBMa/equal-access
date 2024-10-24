@@ -12,10 +12,11 @@
 *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let aria_img_labelled: Rule = {
+export const aria_img_labelled: Rule = {
     id: "aria_img_labelled",
     context: "aria:img, aria:image",
     refactor: {
@@ -79,16 +80,16 @@ export let aria_img_labelled: Rule = {
         
         // If role === img, you must use an aria label
         //check attributes aria-label and aria-labelledby for other tags (e.g., <div>, <span>, etc)
-        let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;
+        let passed = AriaUtil.getAriaLabel(ruleContext).length > 0;
 
         if (!passed && ruleContext.nodeName.toLowerCase() === "svg") {
             let svgTitle = ruleContext.querySelector("title");
-            passed = svgTitle && RPTUtil.hasInnerContent(svgTitle);
+            passed = svgTitle && CommonUtil.hasInnerContent(svgTitle);
         }
 
         if (!passed) {
             //check title attribute
-            passed = RPTUtil.attributeNonEmpty(ruleContext, "title");
+            passed = CommonUtil.attributeNonEmpty(ruleContext, "title");
             // We should guide people to use alt or label - this is just a secondary approach to silence the rule.
             // So, we should keep the POF from above.
             // if (!passed) POF = "Fail_3";

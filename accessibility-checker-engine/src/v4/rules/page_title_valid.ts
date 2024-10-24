@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let page_title_valid: Rule = {
+export const page_title_valid: Rule = {
     id: "page_title_valid",
     context: "dom:head dom:title",
     refactor: {
@@ -50,7 +50,7 @@ export let page_title_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
-        let titleStr = RPTUtil.getInnerText(ruleContext).trim();
+        let titleStr = CommonUtil.getInnerText(ruleContext).trim();
 
         // allow .com, .net and .org
         let titleStrLowercase = titleStr.toLowerCase();

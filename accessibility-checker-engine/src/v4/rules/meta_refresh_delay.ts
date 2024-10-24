@@ -11,10 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let meta_refresh_delay: Rule = {
+export const meta_refresh_delay: Rule = {
     id: "meta_refresh_delay",
     context: "dom:meta[http-equiv][content]",
     refactor: {

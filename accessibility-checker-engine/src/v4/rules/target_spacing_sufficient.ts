@@ -11,14 +11,14 @@
     limitations under the License.
  *****************************************************************************/
 
-    import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+    import { CommonUtil } from "../util/CommonUtil";
     import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-    import { VisUtil } from "../../v2/dom/VisUtil";
+    import { VisUtil } from "../util/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { getComputedStyle } from "../util/CSSUtil";
+    import { CSSUtil } from "../util/CSSUtil";
     
-    export let target_spacing_sufficient: Rule = {
+    export const target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
         context: "dom:*",
         dependencies: [],
@@ -65,16 +65,16 @@
             const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
             //ignore certain elements
-            if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
+            if (CommonUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
                 || nodeName === "body" || nodeName === "html" )
                 return null;
             
             // ignore hidden, non-target, or inline element without text in the same line
-            if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
+            if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTarget(ruleContext))
                 return null;
 
             // check inline element: without text in the same line
-            const status = RPTUtil.getInlineStatus(ruleContext);
+            const status = CSSUtil.getInlineStatus(ruleContext);
             if (status === null) return null;
             if (status.inline) {
                 if (status.text) {
@@ -86,7 +86,7 @@
                 }    
             } else {
                 // ignore browser default
-                if (RPTUtil.isTargetBrowserDefault(ruleContext)) 
+                if (CSSUtil.isTargetBrowserDefault(ruleContext)) 
                     return RulePass("pass_default");
             }
 
@@ -131,7 +131,7 @@
                     before = false;
                     continue;
                 }    
-                if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext) 
+                if (!VisUtil.isNodeVisible(elem) || !CommonUtil.isTarget(elem) || elem.contains(ruleContext) 
                    || checked.some(item => item.contains(elem))) continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);

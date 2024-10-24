@@ -11,14 +11,15 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 
-export let aria_landmark_name_unique: Rule = {
+export const aria_landmark_name_unique: Rule = {
     id: "aria_landmark_name_unique",
     context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
     refactor: {
@@ -79,7 +80,7 @@ export let aria_landmark_name_unique: Rule = {
             navigationNodesComputedLabels: string[],
             navigationNodesParents: any[],
             navigationNodesMatchFound: string[]
-        } = getCache(
+        } = CacheUtil.getCache(
             ruleContext.ownerDocument,
             "aria_landmark_name_unique",
             null
@@ -168,9 +169,11 @@ export let aria_landmark_name_unique: Rule = {
 
             let navigationNodesComputedLabels = [];
             for (let i = 0; i < navigationNodes.length; i++) {
+                const pair = AccNameUtil.computeAccessibleName(navigationNodes[i]);
                 // Loop over all the landmark nodes
                 navigationNodesComputedLabels.push(
-                    ARIAMapper.computeName(navigationNodes[i])
+                    /**ARIAMapper.computeName(navigationNodes[i])*/
+                    pair && pair.name && pair.name.trim().length > 0 ? pair.name.trim() : ""
                 );
             }
             for (let i = 0; i < navigationNodesParents.length; i++) {
@@ -268,7 +271,7 @@ export let aria_landmark_name_unique: Rule = {
             formCache.navigationNodes = navigationNodes;
             formCache.navigationNodesParents = navigationNodesParents;
             formCache.navigationNodesMatchFound = navigationNodesMatchFound;
-            setCache(
+            CacheUtil.setCache(
                 ruleContext.ownerDocument,
                 "aria_landmark_name_unique",
                 formCache

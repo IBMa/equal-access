@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { LangUtil } from "../../v2/checker/accessibility/util/lang";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 const validateLang = (context: RuleContext): number => {
     const ruleContext = context["dom"].node as Element;
@@ -50,7 +51,7 @@ const validateLang = (context: RuleContext): number => {
     return 0;
 }
 
-export let html_lang_valid: Rule = {
+export const html_lang_valid: Rule = {
     id: "html_lang_valid",
     context: "dom:html[lang], dom:html[xml:lang]",
     help: {
@@ -117,7 +118,7 @@ export let html_lang_valid: Rule = {
     }
 }
 
-export let element_lang_valid: Rule = {
+export const element_lang_valid: Rule = {
     id: "element_lang_valid",
     context: "dom:*[lang], dom:*[xml:lang]",
     help: {
@@ -189,7 +190,7 @@ export let element_lang_valid: Rule = {
             // Ensure that there's actually content of this element - skip subtrees that have other lang attributes
             let hasContent = false;
             if (ruleContext.firstChild !== null) {
-                let nw = new DOMWalker(ruleContext);
+                let nw = new DOMWalker(ruleContext, false, ruleContext, true);
                 while (!hasContent && nw.nextNode()) {
                     // Skip hidden
                     if (nw.node.nodeType === 1) {
@@ -197,8 +198,9 @@ export let element_lang_valid: Rule = {
                         if (!VisUtil.isNodeVisible(element) || element.hasAttribute("lang")) {
                             nw.bEndTag = true;
                         } else {
+                            const pair = AccNameUtil.computeAccessibleName(element);
                             hasContent = hasContent 
-                                || element.nodeName.toLowerCase() === "img" && ARIAMapper.computeName(element).trim().length > 0;
+                                || element.nodeName.toLowerCase() === "img" && (pair && pair.name && pair.name.trim().length > 0)/**ARIAMapper.computeName(element).trim().length > 0*/;
                         }
                     } else {
                         hasContent = hasContent 

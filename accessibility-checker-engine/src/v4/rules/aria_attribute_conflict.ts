@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_attribute_conflict: Rule = {
+export const aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
     context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]" 
             + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
@@ -46,25 +46,22 @@ export let aria_attribute_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        let invalidAttributes = AriaUtil.getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
         
         let ret = [];
-        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+        let ariaAttributes = AriaUtil.getUserDefinedAriaAttributes(ruleContext);
         if (!ariaAttributes || ariaAttributes.length ===0)
             return null;
 
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        let conflictAttributes = AriaUtil.getConflictAriaAndHtmlAttributes(ruleContext);
         for (let i = 0; i < conflictAttributes.length; i++) {
             ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
             if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
-                RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
+                CommonUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
         }
 
-        //for (let i = 0; i < ariaAttributes.length; i++)
-        //    ret.push(RulePass("pass"));
-        
         if (ret.length > 0) 
             return ret;
 

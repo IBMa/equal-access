@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_banner_single: Rule = {
+export const aria_banner_single: Rule = {
     id: "aria_banner_single",
     context: "dom:*[role], dom:header",
     refactor: {
@@ -46,12 +46,12 @@ export let aria_banner_single: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.hasRoleInSemantics(ruleContext, "banner")) {
+        if (!AriaUtil.hasRoleInSemantics(ruleContext, "banner")) {
             return null;
         }
 
         let passed =
-            RPTUtil.getSiblingWithRoleHidden(
+            AriaUtil.getSiblingWithRoleHidden(
                 ruleContext,
                 "banner",
                 true,

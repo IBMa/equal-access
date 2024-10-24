@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export let element_tabbable_unobscured: Rule = {
+export const element_tabbable_unobscured: Rule = {
     id: "element_tabbable_unobscured",
     context: "dom:*",
     dependencies: [],
@@ -45,13 +45,13 @@ export let element_tabbable_unobscured: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
 
-        if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTabbable(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
           
         //ignore certain elements
-        if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
+        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
             || nodeName === "body" || nodeName === "html" )
             return null;
         

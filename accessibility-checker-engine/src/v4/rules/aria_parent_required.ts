@@ -14,10 +14,11 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let aria_parent_required: Rule = {
+export const aria_parent_required: Rule = {
     id: "aria_parent_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
@@ -51,22 +52,15 @@ export let aria_parent_required: Rule = {
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-
+        
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element should be a presentational child of an element
-        if (RPTUtil.shouldBePresentationalChild(ruleContext))
+        if (AriaUtil.shouldBePresentationalChild(ruleContext) || VisUtil.isNodePresentational(ruleContext))
             return;
         
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        
-        // ignore if the element contains none or presentation role
-        let presentationRoles = ["none", "presentation"];
-        const found = roles.some(r=> presentationRoles.includes(r));
-        if (found) return null;
-
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
@@ -81,7 +75,8 @@ export let aria_parent_required: Rule = {
             parentRole = ancestorRoles[ancestorRoles.length - count];
 
         }
-        for (let j = 0, length = roles.length; j < length; ++j) {
+        
+        /**for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
                 passed = false;
@@ -94,7 +89,22 @@ export let aria_parent_required: Rule = {
                     roleNameArr.push(roles[j]);
                 }
             }
+        } 
+        */
+        const role = AriaUtil.getResolvedRole(ruleContext);
+        if (designPatterns[role] && designPatterns[role].container != null) {
+            testedContainer++;
+            passed = false;
+            containerRoles = designPatterns[role].container;
+            for (let i = 0, containersLength = containerRoles.length; !passed && i < containersLength; i++) {
+                passed = parentRole === containerRoles[i];
+                if (passed) break;
+            }
+            if (passed == false) {
+                roleNameArr.push(role);
+            }
         }
+
         let retToken1 = new Array();
         retToken1.push(roleNameArr.join(", "));
         let retToken2 = new Array();

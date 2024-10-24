@@ -11,12 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { CommonUtil } from "../util/CommonUtil";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getCache, setCache } from "../util/CacheUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { CacheUtil } from "../util/CacheUtil";
 
-export let style_color_misuse: Rule = {
+export const style_color_misuse: Rule = {
     id: "style_color_misuse",
     context: "dom:style, dom:*[style], dom:font[color], dom:link",
     refactor: {
@@ -51,7 +52,7 @@ export let style_color_misuse: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
         let styleText = "";
         if (nodeName === "style") {
-            styleText = RPTUtil.getInnerText(ruleContext).toLowerCase();
+            styleText = CommonUtil.getInnerText(ruleContext).toLowerCase();
             // check import
             for (let sIndex = 0; sIndex < ruleContext.ownerDocument.styleSheets.length; sIndex++) {
                 let sheet = ruleContext.ownerDocument.styleSheets[sIndex] as CSSStyleSheet;
@@ -112,9 +113,10 @@ export let style_color_misuse: Rule = {
             }
             // Color used � are there semantics involved?
             passed = nodeName in goodTagNames ||
-                RPTUtil.getAncestor(ruleContext, goodTagNames) !== null;
+                CommonUtil.getAncestor(ruleContext, goodTagNames) !== null;
             if (!passed && ruleContext.hasChildNodes()) {
-                let nw = new NodeWalker(ruleContext);
+                //let nw = new NodeWalker(ruleContext);
+                let nw = new DOMWalker(ruleContext);
                 while (!passed && nw.nextNode() && nw.node !== ruleContext) {
                     passed = nw.node.nodeName.toLowerCase() in goodTagNames;
                 }
@@ -122,9 +124,9 @@ export let style_color_misuse: Rule = {
         }
         // Trigger only once
         if (!passed) {
-            let triggered = getCache(ruleContext.ownerDocument, "style_color_misuse", false);
+            let triggered = CacheUtil.getCache(ruleContext.ownerDocument, "style_color_misuse", false);
             passed = triggered;
-            setCache(ruleContext.ownerDocument, "style_color_misuse", true);
+            CacheUtil.setCache(ruleContext.ownerDocument, "style_color_misuse", true);
         }
 
         if (passed) return RulePass("Pass_0");

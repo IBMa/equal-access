@@ -12,11 +12,11 @@
 *****************************************************************************/
 
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { CommonUtil } from "../util/CommonUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let meta_redirect_optional: Rule = {
+export const meta_redirect_optional: Rule = {
     id: "meta_redirect_optional",
     context: "dom:meta[http-equiv][content]",
     refactor: {
@@ -69,7 +69,7 @@ export let meta_redirect_optional: Rule = {
             return null;
         }
         // Only check the first one since it takes priority
-        if (RPTUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "meta_redirect_optional", false)) {
+        if (CommonUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "meta_redirect_optional", false)) {
             return null;
         }
         let timeMatch = content.match(/^(\d+); +[^ ]/);

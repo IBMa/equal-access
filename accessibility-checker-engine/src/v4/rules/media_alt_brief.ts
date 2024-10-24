@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let media_alt_brief: Rule = {
+export const media_alt_brief: Rule = {
     id: "media_alt_brief",
     context: "dom:img[alt], dom:applet[alt], dom:area[alt], dom:embed[alt], dom:input[type][alt]",
     refactor: {

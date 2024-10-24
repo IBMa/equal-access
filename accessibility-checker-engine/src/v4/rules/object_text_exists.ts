@@ -13,11 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 
-export let object_text_exists: Rule = {
+export const object_text_exists: Rule = {
     id: "object_text_exists",
     context: "dom:object",
     refactor: {
@@ -71,7 +70,9 @@ export let object_text_exists: Rule = {
             return null;
         }
         
-        let passed = ARIAMapper.computeName(ruleContext).trim().length > 0;
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        const passed = pair && pair.name && pair.name.trim().length > 0;
+        //let passed = ARIAMapper.computeName(ruleContext).trim().length > 0;
         if (passed) {
             return RulePass("pass");
         } else {

@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 import { AncestorUtil } from "../../v2/checker/accessibility/util/ancestor";
 
-export let page_title_exists: Rule = {
+export const page_title_exists: Rule = {
     id: "page_title_exists",
     context: "dom:html",
     refactor: {
@@ -75,7 +75,7 @@ export let page_title_exists: Rule = {
         }
         let possibleTitles = (ruleContext as Element).querySelectorAll("title");
         for (let idx = 0; idx < possibleTitles.length; ++idx) {
-            if (!RPTUtil.getAncestor(possibleTitles[idx], ["svg"])) {
+            if (!CommonUtil.getAncestor(possibleTitles[idx], ["svg"])) {
                 findTitle = possibleTitles[idx];
                 break;
             }
@@ -92,7 +92,7 @@ export let page_title_exists: Rule = {
 
         // if we get here we have <head> and <title>
 
-        if (findTitle != null && RPTUtil.getInnerText(findTitle).trim().length > 0) {
+        if (findTitle != null && CommonUtil.getInnerText(findTitle).trim().length > 0) {
             return RulePass("Pass_0");
         } else { // <title> has no innerHTML third PoF
             return RuleFail("Fail_3");

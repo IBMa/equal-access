@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes } from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_attribute_deprecated: Rule = {
+export const aria_attribute_deprecated: Rule = {
     id: "aria_attribute_deprecated",
     context: "dom:*",
     help: {
@@ -47,13 +47,13 @@ export let aria_attribute_deprecated: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         let ret = [];
-        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = AriaUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) {
             for (let i = 0; i < deprecatedRoles.length; i++)
                 ret.push(RuleFail('fail_aria_role', [deprecatedRoles[i]]));     
         }
 
-        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = AriaUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) {
             for (let i = 0; i < deprecatedAttributes.length; i++) {
                 // "role":"any", "attribute":ariaAttrs[i]}

@@ -15,15 +15,16 @@
  *****************************************************************************/
 
 import { DOMWalker } from "../dom/DOMWalker";
-import { Context, PartInfo, AttrInfo } from "./Context";
+import { Context } from "./Context";
 import { Config } from "../config/Config";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { clearCaches } from "../../v4/util/CacheUtil";
+import { CacheUtil } from "../../v4/util/CacheUtil";
 import { Issue, Rule, RuleContext, RuleContextHierarchy, RuleResult, eRuleConfidence } from "../../v4/api/IRule";
 import { HelpMap, IEngine, NlsMap } from "../../v4/api/IEngine";
 import { IMapper } from "../../v4/api/IMapper";
 import { Report } from "../../v4/api/IReport";
+import { VisUtil } from "../../v4/util/VisUtil";
 
 class WrappedRule {
     ns: string;
@@ -161,8 +162,8 @@ export class Engine implements IEngine {
             root = (root as Document).documentElement;
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
-        clearCaches(root);
-        const walker = new DOMWalker(root);
+        CacheUtil.clearCaches(root);
+        const walker = new DOMWalker(root, false, root, true);
         const retVal : Report = {
             results: [],
             numExecuted: 0,
@@ -178,7 +179,7 @@ export class Engine implements IEngine {
         // Initialize the context detector
         do {
             // Get the context information from the rule mappers
-            const contextHierarchies : RuleContextHierarchy = {}
+            const contextHierarchies : RuleContextHierarchy = {};
             for (const namespace in this.mappers) {
                 if (!walker.bEndTag) {
                     contextHierarchies[namespace] = this.mappers[namespace].openScope(walker.node);
@@ -195,9 +196,9 @@ export class Engine implements IEngine {
                     contextHierarchies[namespace] = this.mappers[namespace].closeScope(walker.node);
                 }
             }
-
+            
             if (walker.node.nodeType !== 11 
-                && (DOMWalker.isNodeVisible(walker.node)
+                && (VisUtil.isNodeVisible(walker.node)
                     // || walker.node.nodeName.toLowerCase() === "head"
                     || walker.node.nodeName.toLowerCase() === "meta"
                     || walker.node.nodeName.toLowerCase() === "style"
@@ -244,7 +245,7 @@ export class Engine implements IEngine {
                 }
             }
         } while (walker.nextNode());
-        clearCaches(root);
+        CacheUtil.clearCaches(root);
         retVal.totalTime = new Date().getTime()-start;
         return Promise.resolve(retVal);
     }

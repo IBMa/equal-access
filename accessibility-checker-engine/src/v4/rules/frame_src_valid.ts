@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let frame_src_valid: Rule = {
+export const frame_src_valid: Rule = {
     id: "frame_src_valid",
     context: "dom:frame, dom:iframe",
     refactor: {
@@ -47,8 +47,8 @@ export let frame_src_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = RPTUtil.attributeNonEmpty(ruleContext, "src") &&
-            RPTUtil.isHtmlExt(RPTUtil.getFileExt(ruleContext.getAttribute("src")));
+        let passed = CommonUtil.attributeNonEmpty(ruleContext, "src") &&
+            CommonUtil.isHtmlExt(CommonUtil.getFileExt(ruleContext.getAttribute("src")));
         if (passed) return RulePass("Pass_0");
         if (!passed) return RulePotential("Potential_1");
 
