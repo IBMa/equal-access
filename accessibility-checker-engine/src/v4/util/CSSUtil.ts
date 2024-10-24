@@ -127,7 +127,7 @@ export class CSSUtil {
         }
 
         let storedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
-        if (!pseudoClass && storedStyles !== null) {
+        if (!pseudoClass && storedStyles) {
             definedStyles = storedStyles["definedStyles"];
             definedStylePseudo = storedStyles["definedStylePseudo"];
         } else {
@@ -868,7 +868,7 @@ export class CSSUtil {
         let walkNode = elem;
         while (walkNode !== null) {
             const node = CacheUtil.getCache(walkNode, "AriaUtil_AncestorWithStyles", null);
-            if (node !== null) return node;
+            if (node) return node;
 
             const styles = CSSUtil.getDefinedStyles(walkNode);
             for (const style in styleProps) {

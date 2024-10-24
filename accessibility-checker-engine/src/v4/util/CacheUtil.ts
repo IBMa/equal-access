@@ -24,6 +24,7 @@ export class CacheUtil {
     /* Return a pointer to the given global variable
          * with its initial value as given */
     public static getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
+        if (!cacheSpot) return undefined;
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
@@ -35,6 +36,7 @@ export class CacheUtil {
     }
 
     public static setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value): any {
+        if (!cacheSpot) return undefined;
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}

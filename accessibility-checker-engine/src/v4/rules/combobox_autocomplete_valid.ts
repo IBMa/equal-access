@@ -53,6 +53,7 @@ export const combobox_autocomplete_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        if (!cache) return null;
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupId, popupElement } = cachedElem;

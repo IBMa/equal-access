@@ -87,6 +87,7 @@ export const combobox_design_valid: Rule = {
         let key = context["dom"].rolePath;
         if (key) {
             let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            if (!cache) return null;
             cache[key] = {
                 "inputElement": editable ? ruleContext : null,
                 "pattern": pattern,

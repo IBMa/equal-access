@@ -299,6 +299,7 @@ export class VisUtil {
      * @param node
      */
     public static isNodeHiddenFromAT(node: Element) : boolean {
+        if (!node) return false;
         const vis = CacheUtil.getCache(node, "PT_NODE_HiddenFromAT", undefined);
         if (vis !== undefined) return vis;   
 

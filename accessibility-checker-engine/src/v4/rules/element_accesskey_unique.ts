@@ -47,7 +47,7 @@ export const element_accesskey_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let map = CacheUtil.getCache(ruleContext.ownerDocument, "element_accesskey_unique", {});
-
+  
         let key = ruleContext.getAttribute("accesskey");
 
         let passed = !(key in map);

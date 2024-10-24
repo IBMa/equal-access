@@ -52,6 +52,7 @@ export const combobox_haspopup_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         const cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        if (!cache) return null;
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;

@@ -134,7 +134,7 @@ export const table_headers_related: Rule = {
 
         let rcInfo = CacheUtil.getCache(ruleContext, "table_headers_related", null);
         let tInfo = CacheUtil.getCache(parentTable, "table_headers_related", null);
-        let passed = rcInfo !== null && tInfo !== null && rcInfo in tInfo;
+        let passed = rcInfo && tInfo && rcInfo in tInfo;
 
         if (!passed && rcInfo === "0:0" &&
             CommonUtil.getInnerText(ruleContext).trim().length == 0) {
