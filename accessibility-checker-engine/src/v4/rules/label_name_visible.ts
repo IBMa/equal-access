@@ -82,7 +82,7 @@ export const label_name_visible: Rule = {
             // skip the checks if it has an aria-labelledby since it takes precedence.
         } else {
             let theLabel = null;
-            /**if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
+            if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
                 let labelValues = theLabelBy.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
                     let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
@@ -98,12 +98,6 @@ export const label_name_visible: Rule = {
             if (!theLabel) {
                 return null;
             }
-            */
-            const accName = AccNameUtil.computeAccessibleName(ruleContext);
-            if (!accName || !accName.name || accName.name.trim().length ===0)
-                return;
-
-            theLabel = accName.name.trim();
             
             let text = null;
 
