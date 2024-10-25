@@ -1814,7 +1814,7 @@ export class ARIADefinitions {
         },
         "button": {
             implicitRole: ["button"],
-            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
+            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio","separator", "slider", "switch", "tab", "treeitem"],
             globalAriaAttributesValid: true
         },
         "canvas": {
@@ -1927,7 +1927,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "hgroup": {
-            implicitRole: ["generic"],
+            implicitRole: ["group"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },

@@ -64,13 +64,9 @@
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
-            //ignore certain elements
-            if (CommonUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
-                || nodeName === "body" || nodeName === "html" )
-                return null;
             
             // ignore hidden, non-target, or inline element without text in the same line
-            if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTarget(ruleContext))
+            if (!CommonUtil.isTarget(ruleContext))
                 return null;
 
             // check inline element: without text in the same line
@@ -103,23 +99,23 @@
             if (!zindex || isNaN(Number(zindex)))
                 zindex = "0";
             
-            var elems = doc.querySelectorAll('body *:not(script)');
+            //select all elements except itself and descendants
+            var elems = doc.querySelectorAll('body *:not(script):not(style)');
             if (!elems || elems.length === 0)
                 return;
             
             const mapper : DOMMapper = new DOMMapper();
             const bounds = mapper.getUnadjustedBounds(ruleContext); //context["dom"].bounds;    
-            if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
+            if (!bounds) 
                 return null;
-                
-                    
+                        
             let before = true;
             let minX = 24;
             let minY = 24;
             let adjacentX = null;
             let adjacentY = null;
             let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
-            for (let i=0; i < elems.length; i++) { 
+            for (let i=0; i < elems.length; i++) { //console.log("target="+nodeName +", target id="+ ruleContext.getAttribute("id") +" elem="+elems[i].nodeName +", id="+elems[i].getAttribute("id"));
                 const elem = elems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
@@ -130,12 +126,14 @@
                     //the next node in elems will be after the target node (ruleContext). 
                     before = false;
                     continue;
-                }    
-                if (!VisUtil.isNodeVisible(elem) || !CommonUtil.isTarget(elem) || elem.contains(ruleContext) 
-                   || checked.some(item => item.contains(elem))) continue;
+                }
+                // ignore ascendants of the element, not a target, or itself or its ascendant already checked   
+                if (elem.contains(ruleContext)  || !CommonUtil.isTarget(elem) 
+                   || checked.some(item => item.contains(elem))) 
+                    continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);
-                if (bnds.height === 0 || bnds.width === 0) continue;
+                if (!bnds) continue;
                 
                 var zStyle = getComputedStyle(elem); 
                 let z_index = '0';

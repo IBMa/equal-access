@@ -458,29 +458,33 @@ export class CommonUtil {
          * 
          */
     public static isTarget(element) {
-        if (!element) return false;
-
-        if (element.hasAttribute("tabindex") || CommonUtil.isTabbable(element)) return true;
-
-        const roles = AriaUtil.getRoles(element, true);
-        if (!roles && roles.length === 0)
+        if (!element || element.nodeType !== 1 
+            || ["html", "body"].includes(element.nodeName.toLowerCase())
+            || CommonUtil.getAncestor(element, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
+            || !VisUtil.isNodeVisible(element) || VisUtil.isNodeVisuallyHidden(element) 
+            || CommonUtil.isNodeDisabled(element) || VisUtil.isElementOffscreen(element))
             return false;
 
-        let tagProperty = AriaUtil.getElementAriaProperty(element);
-        let allowedRoles = AriaUtil.getAllowedAriaRoles(element, tagProperty);
-        if (!allowedRoles || allowedRoles.length === 0)
-            return false;
+        if (element.hasAttribute("tabindex") || CommonUtil.isTabbable(element)) 
+            return true;
 
-        let parent = element.parentElement;
-        // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
-        while (parent && roles.some(role => role === 'group'))
-            parent = parent.parentElement;
+        const role = AriaUtil.getResolvedRole(element);
+        if (!role) return false;
 
-        if (parent && (parent.hasAttribute("tabindex") || CommonUtil.isTabbable(parent))) {
-            const target_roles = ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
-            if (allowedRoles.includes('any') || roles.some(role => target_roles.includes(role)))
+        const target_roles = ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "treeitem"];
+        if (target_roles.includes(role)) {
+            // find the proper parent elements
+            let parent = element.parentElement;
+            if (parent) {
+                const parent_role = AriaUtil.getResolvedRole(parent);
+                // datalist, fieldset, optgroup, etc. may be just used for grouping purpose, so go up to the parent
+                if (parent_role === 'group')
+                    parent = parent.parentElement;
+            }
+            
+            if (parent && CommonUtil.isTarget(parent))
                 return true;
-        }
+        }    
         return false;
     }
 

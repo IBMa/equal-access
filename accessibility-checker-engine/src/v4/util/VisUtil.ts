@@ -16,6 +16,7 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 import { AriaUtil } from "./AriaUtil";
+import { CSSUtil } from "./CSSUtil";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -232,6 +233,56 @@ export class VisUtil {
     }
 
     /**
+     * This function is responsible for checking if the node that is visually hidden by clipping or opaq:
+     *    1. Check if the current node is visually hidden:
+     *       CSS --> clip: rect(0px, 0px, 0px, 0px)
+     *       CSS --> opacity: 0
+     *
+     *    Note: If either current node or any of the parent nodes are visually hidden then this
+     *          function will return true (node is not visually hidden).
+     *
+     *    Note: nodes with CSS properties clip: rect(0px, 0px, 0px, 0px) or opacity:0 or filter:opacity(0%), or similar SVG mechanisms: 
+     *      They are not considered hidden to an AT. Text hidden with these methods can still be selected or copied, 
+     *      and user agents still expose it in their accessibility trees.  
+     * 
+     * @parm {element} node The node which should be checked if it is visually hidden or not.
+     * @return {bool} true if the node is visually hidden, false otherwise
+     *
+     * @memberOf VisUtil
+     */
+    public static isNodeVisuallyHidden(node: Node) : boolean {
+        if (!node || node.nodeType !== 1) return false;
+        
+        let elem = node as HTMLElement;
+        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
+        // true when we detect that the node is hidden. We have to set it to false so that we know
+        // the rules has already been checked.
+        const hidden = CacheUtil.getCache(elem, "PT_NODE_VISUALLY_HIDDEN", undefined);
+        if (hidden === undefined) {
+            // defined styles only give the styles that changed
+            const defined_styles = CSSUtil.getDefinedStyles(elem);
+            if ((defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)')
+                || (defined_styles['opacity'] && parseFloat(defined_styles['opacity']) < 0.1))  {
+                CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN", true);
+                return true;
+            }
+
+            // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
+            // the hidden CSS, property or attribute. Only keep checking until we are all the way back to the parentNode
+            // element.
+            let parentElement = DOMWalker.parentElement(elem);
+            if (!parentElement)
+                return false;
+
+            // Check upwards recursively
+            const hid = VisUtil.isNodeVisuallyHidden(parentElement);
+            CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN", hid);
+            return hid;
+        }
+        return hidden;
+    }
+
+    /**
      * return true if the node or its ancestor is hidden by CSS content-visibility:hidden
      * At this time, CSS content-visibility is partially supported by Chrome & Edge, but not supported by Firefox
      * The implementation TEMPORARILY follows the Chrome test results:
@@ -273,19 +324,20 @@ export class VisUtil {
      * @param node
      */
     public static isElementOffscreen(node: HTMLElement) : boolean {
-        if (!node) return false;
+        if (!node) return true;
+        if (node.nodeType !== 1) return false;
+        
         const vis = CacheUtil.getCache(node , "PT_NODE_Offscreen", undefined);
         if (vis !== undefined) return vis;  
 
         const mapper : DOMMapper = new DOMMapper();
-        const bounds = mapper.getUnadjustedBounds(node);;    
-        
+        const bounds = mapper.getUnadjustedBounds(node); 
         if (!bounds) {
-            CacheUtil.setCache(node, "PT_NODE_Offscreen", false); 
-            return false;
+            CacheUtil.setCache(node, "PT_NODE_Offscreen", true); 
+            return true;
         }
         
-        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0) {
+        if (bounds['height'] === 0 || bounds['width'] === 0 || (bounds['top']+bounds['height']) <= 0 || (bounds['left']+bounds['width']) <= 0) {
             CacheUtil.setCache(node, "PT_NODE_Offscreen", true);
             return true;
         } 
