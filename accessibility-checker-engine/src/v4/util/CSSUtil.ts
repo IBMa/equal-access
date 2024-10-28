@@ -19,6 +19,7 @@ import { CommonUtil } from "./CommonUtil";
 import { AriaUtil } from "./AriaUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { Bounds } from "../api/IBounds";
 
 type PseudoClass =
     | ":hover"
@@ -295,7 +296,7 @@ export class CSSUtil {
                             }
                         }
                     }
-                }  
+                }
             } catch (err) {
                 if (
                     !err.toString().includes("Cannot access rules") &&
@@ -682,129 +683,211 @@ export class CSSUtil {
     public static getInlineStatus(element) {
         if (!element) return null;
 
-        const style = getComputedStyle(element);
-        if (!style) return null;
+        const elem_styl = getComputedStyle(element);
+        if (!elem_styl) return null;
 
         let status = { inline: false, text: false, violation: null };
-        const udisplay = style.getPropertyValue("display");
+        const udisplay = elem_styl.getPropertyValue("display");
         // inline element only
         if (udisplay !== "inline") return status;
 
         status.inline = true;
         const parent = element.parentElement;
-        if (parent) {
-            const mapper: DOMMapper = new DOMMapper();
-            const bounds = mapper.getUnadjustedBounds(element);
-            const style = getComputedStyle(parent);
-            const display = style.getPropertyValue("display");
-            // an inline element is inside a block. note <body> is a block element too
-            if (display === "block" || display === "inline-block") {
-                let containText = false;
-                // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
-                let walkNode = element.nextSibling;
-                let last = true;
-                while (walkNode) {
-                    // note browsers insert Text nodes to represent whitespaces.
-                    if (
-                        !containText &&
-                        walkNode.nodeType === Node.TEXT_NODE &&
-                        walkNode.nodeValue &&
-                        walkNode.nodeValue.trim().length > 0
-                    ) {
-                        containText = true;
-                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        // special case: <br> is styled 'inline' by default, but change the line
-                        if (
-                            status.violation === null &&
-                            walkNode.nodeName.toLowerCase() !== "br"
-                        ) {
-                            const cStyle = getComputedStyle(walkNode);
-                            const cDisplay = cStyle.getPropertyValue("display");
-                            if (cDisplay === "inline") {
-                                last = false;
-                                if (
-                                    CommonUtil.isTarget(walkNode) &&
-                                    bounds.width < 24
-                                ) {
-                                    // check if the horizontal spacing is sufficient
-                                    const bnds =
-                                        mapper.getUnadjustedBounds(walkNode);
-                                    if (
-                                        Math.round(bounds.width / 2) +
-                                        bnds.left -
-                                        (bounds.left + bounds.width) <
-                                        24
-                                    )
-                                        status.violation =
-                                            walkNode.nodeName.toLowerCase();
-                                }
-                            } else break;
-                        }
-                    }
-                    walkNode = walkNode.nextSibling;
-                }
+        if (!parent) return status;
 
-                walkNode = element.previousSibling;
-                let first = true;
-                let checked = false;
-                while (walkNode) {
-                    // note browsers insert Text nodes to represent whitespaces.
-                    if (
-                        !containText &&
-                        walkNode.nodeType === Node.TEXT_NODE &&
-                        walkNode.nodeValue &&
-                        walkNode.nodeValue.trim().length > 0
-                    ) {
-                        containText = true;
-                    } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
-                        // special case: <br> is styled 'inline' by default, but change the line
-                        if (
-                            !checked &&
-                            walkNode.nodeName.toLowerCase() !== "br"
-                        ) {
-                            const cStyle = getComputedStyle(walkNode);
-                            const cDisplay = cStyle.getPropertyValue("display");
-                            if (cDisplay === "inline") {
-                                first = false;
-                                checked = true;
-                                if (
-                                    CommonUtil.isTarget(walkNode) &&
-                                    bounds.width < 24
-                                ) {
-                                    // check if the horizontal spacing is sufficient
-                                    const bnds =
-                                        mapper.getUnadjustedBounds(walkNode);
-                                    if (
-                                        Math.round(bounds.width / 2) +
-                                        bounds.left -
-                                        (bnds.left + bnds.width) <
-                                        24
-                                    ) {
-                                        status.violation =
-                                            status.violation === null
-                                                ? walkNode.nodeName.toLowerCase()
-                                                : status.violation +
-                                                ", " +
-                                                walkNode.nodeName.toLowerCase();
-                                    }
-                                }
-                            } else break;
-                        }
-                    }
-                    walkNode = walkNode.previousSibling;
-                }
-
-                // one or more inline elements are in the same line with text
-                if (containText) status.text = true;
-
-                return status;
-            } else {
-                //parent is inline element
-                if (!CommonUtil.isInnerTextOnlyEmpty(parent)) status.text = true;
-            }
+        const mapper: DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(element);
+        const style = getComputedStyle(parent);
+        const display = style.getPropertyValue("display");
+        // an inline element is inside a block. note <body> is a block element too
+        if (display !== "block" && display !== "inline-block") {
+            //parent is inline element
+            if (!CommonUtil.isInnerTextOnlyEmpty(parent))
+                status.text = true;
+            return status;
         }
+
+        /**
+         * @returns "yes"": inline with text, "no": inline without text, 
+         *          "violation": not spacing enough to neiboring inline target
+         *          "block": block element,  
+         */
+        function isInlineWithText(node: Node) : string | null {
+            // note browsers insert Text nodes to represent whitespaces.
+            if (node.nodeType === Node.TEXT_NODE) {
+                if (node.nodeValue && node.nodeValue.trim().length > 0)
+                    return "yes";
+                else
+                    return "no";
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                // special case: <br> is styled 'inline' by default, but change the line
+                if (node.nodeName.toLowerCase() === "br")
+                    return "block";
+                    
+                const cStyle = getComputedStyle(node as Element);
+                const cDisplay = cStyle.getPropertyValue("display");
+                if (cDisplay === "inline") {
+                    if (CommonUtil.isTarget(node)) {
+                        if (bounds.width < 24) { 
+                            // check if the horizontal spacing is sufficient
+                            const bnds = mapper.getUnadjustedBounds(node);
+                            if (
+                                Math.round(bounds.width / 2) + bnds.left -
+                                (bounds.left + bounds.width) < 24
+                            ) {
+                                status.violation = node.nodeName.toLowerCase();
+                                return "violation";
+                            } else
+                                return "no";        
+                        }           
+                    } 
+                    if (!CommonUtil.isInnerTextOnlyEmpty(node))
+                        return "yes";
+                    return "no";
+                } else
+                    return "block";
+            } else
+               return "block";
+        }
+
+        // an inline element is inside a block. note <body> is a block element too
+        //if (display === "block" || display === "inline-block") {
+        let containText = false;
+        // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
+        let walkNode = element.nextSibling;
+        while (walkNode) {
+            let inlineText = isInlineWithText(walkNode);
+            if (inlineText === "yes") {
+                status.text = true;
+                return status;
+            }
+            if (inlineText === "block") {
+                break;
+            }
+            walkNode = walkNode.nextSibling;
+        }
+
+        walkNode = element.previousSibling;
+        while (walkNode) {
+            let inlineText = isInlineWithText(walkNode);
+            if (inlineText === "yes") {
+                status.text = true;
+                return status;
+            }
+            if (inlineText === "block") {
+                break;
+            }
+            walkNode = walkNode.previousSibling;
+        }
+        return status;
+        
+        /**let last = true;
+        /while (walkNode) {
+            let inlineText = isInlineWithText(walkNode);
+
+            // note browsers insert Text nodes to represent whitespaces.
+            if (
+                !containText &&
+                walkNode.nodeType === Node.TEXT_NODE &&
+                walkNode.nodeValue &&
+                walkNode.nodeValue.trim().length > 0
+            ) {
+                containText = true;
+            } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                // special case: <br> is styled 'inline' by default, but change the line
+                if (
+                    status.violation === null &&
+                    walkNode.nodeName.toLowerCase() !== "br"
+                ) {
+                    const cStyle = getComputedStyle(walkNode);
+                    const cDisplay = cStyle.getPropertyValue("display");
+                    if (cDisplay === "inline") {
+                        last = false;
+                        if (
+                            CommonUtil.isTarget(walkNode) &&
+                            bounds.width < 24
+                        ) {
+                            // check if the horizontal spacing is sufficient
+                            const bnds =
+                                mapper.getUnadjustedBounds(walkNode);
+                            if (
+                                Math.round(bounds.width / 2) +
+                                bnds.left -
+                                (bounds.left + bounds.width) <
+                                24
+                            )
+                                status.violation =
+                                    walkNode.nodeName.toLowerCase();
+                        }
+                    } else break;
+                }
+            }
+            walkNode = walkNode.nextSibling;
+        }
+
+        walkNode = element.previousSibling;
+        let first = true;
+        let checked = false;
+        while (walkNode) {
+            // note browsers insert Text nodes to represent whitespaces.
+            if (
+                !containText &&
+                walkNode.nodeType === Node.TEXT_NODE &&
+                walkNode.nodeValue &&
+                walkNode.nodeValue.trim().length > 0
+            ) {
+                containText = true;
+            } else if (walkNode.nodeType === Node.ELEMENT_NODE) {
+                // special case: <br> is styled 'inline' by default, but change the line
+                if (
+                    !checked &&
+                    walkNode.nodeName.toLowerCase() !== "br"
+                ) {
+                    const cStyle = getComputedStyle(walkNode);
+                    const cDisplay = cStyle.getPropertyValue("display");
+                    if (cDisplay === "inline") {
+                        first = false;
+                        checked = true;
+                        if (
+                            CommonUtil.isTarget(walkNode) &&
+                            bounds.width < 24
+                        ) {
+                            // check if the horizontal spacing is sufficient
+                            const bnds =
+                                mapper.getUnadjustedBounds(walkNode);
+                            if (
+                                Math.round(bounds.width / 2) +
+                                bounds.left -
+                                (bnds.left + bnds.width) <
+                                24
+                            ) {
+                                status.violation =
+                                    status.violation === null
+                                        ? walkNode.nodeName.toLowerCase()
+                                        : status.violation +
+                                        ", " +
+                                        walkNode.nodeName.toLowerCase();
+                            }
+                        }
+                    } else break;
+                }
+            }
+            walkNode = walkNode.previousSibling;
+            
+        }
+
+            // one or more inline elements are in the same line with text
+            if (containText) status.text = true;
+
+            return status;
+        } else {
+            //parent is inline element
+            if (!CommonUtil.isInnerTextOnlyEmpty(parent)) status.text = true;
+        }
+
         // all other cases
         return status;
+        */
     }
 
     /**

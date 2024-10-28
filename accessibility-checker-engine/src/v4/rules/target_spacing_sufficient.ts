@@ -177,7 +177,9 @@
                      && ((bounds.left > bnds.left && bounds.left < bnds.left + bnds.width) || (bnds.left > bounds.left && bnds.left < bounds.left + bounds.width))) 
                      || (((bounds.top > bnds.top && bounds.top < bnds.top + bnds.height) || (bnds.top > bounds.top && bnds.top < bounds.top + bounds.height))
                      && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left + bounds.width >= bnds.left && bounds.left + bounds.width <= bnds.left + bnds.width)))) {
-                     // TODO: more check to turn to violation  
+                        if (bounds.height >= 24 && bounds.width >= 24)
+                            return RulePass("pass_sized");
+                        // TODO: more check to turn to violation  
                      return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
 
                 } else { // no overlap with the elem, though may overlap withe other elements
