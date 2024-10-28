@@ -270,7 +270,7 @@ public class BaselineManager {
             retVal.add(new DiffResult("A", idx, null, gson.toJson(expectedRs[idx])));
         }
         for (int idx=expectedRs.length; idx < actualRs.length; ++idx) {
-            retVal.add(new DiffResult("A", idx, gson.toJson(expectedRs[idx]), null));
+            retVal.add(new DiffResult("A", idx, gson.toJson(actualRs[idx]), null));
         }
         for (int idx=0; idx<Math.min(actualRs.length, expectedRs.length); ++idx) {
             Result actualR = actualRs[idx];
