@@ -27,7 +27,7 @@ export class DOMWalker {
     considerHidden: boolean;
 
     constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean) {
-        this.root = root || (element.ownerDocument ? element.ownerDocument.documentElement: element);
+        this.root = root || (element && element.ownerDocument ? element.ownerDocument.documentElement: element);
         this.node = element;
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
         this.considerHidden = considerHidden || false;
