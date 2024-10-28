@@ -752,6 +752,32 @@ export class AriaUtil {
     }
 
     /**
+     * return the roles with given role type.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {array} roleTyples - role types, such as 'widget', 'structure' etc.
+     *
+     * @return {array} roles - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf AriaUtil
+     */
+    public static isWidget(element) {
+        if (!element) return false;
+
+        const widget = CacheUtil.getCache(element.ownerDocument, "is_element_widget", null);
+        if (widget === null) {
+            let ret = false;
+            const role = AriaUtil.getResolvedRole(element); 
+            if (role && ARIADefinitions.designPatterns[role].roleType === 'widget')
+                ret = true;
+            
+            CacheUtil.setCache(element.ownerDocument, "is_element_widget", ret);
+            return ret;
+        }
+        return widget;
+    }
+
+    /**
      * This function is responsible for finding a node which matches the role and is a sibling of the
      * provided element.
      *

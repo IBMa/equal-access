@@ -54,8 +54,8 @@
 
 <body>
 
-  <div id="first" tabindex="0">1</div>
-  <div id="second" tabindex="0">2</div>
+  <div role='button' id="first" tabindex="0">1</div>
+  <div role='button' id="second" tabindex="0">2</div>
 
 <script>
   UnitTest = {
@@ -69,7 +69,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
+              "aria": "/document[1]/button[1]"
             },
             "reasonId": "pass_sized",
             "message": "The target’s size is more than 24 CSS pixels",
@@ -85,7 +85,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]"
+              "aria": "/document[1]/button[2]"
             },
             "reasonId": "potential_overlap",
             "message": "Ensure the overlapped target \"div\" meets a minimum target size or has sufficient spacing from the overlapping target \"div\"",

@@ -55,9 +55,9 @@ export class CommonUtil {
             return !element.hasAttribute("disabled");
         },
         "textarea": true,
-        "div": function (element) {
+        /**"div": function (element) {
             return element.hasAttribute("contenteditable");
-        },
+        },*/
         "a": function (element) {
             // xlink:href?? see svg
             return element.hasAttribute("href");
@@ -109,6 +109,7 @@ export class CommonUtil {
             }
             return retVal;
         } else {
+            if (element.hasAttribute("contenteditable")) return true;
             return false;
         }
     }
@@ -121,6 +122,29 @@ export class CommonUtil {
             return false;
         }
         return CommonUtil.isTabbable(ele);
+    }
+
+    /**
+     * Note that this only detects if the element itself is interactive, but not onclick event.
+     */
+    public static isClickable(element) {
+        if (!VisUtil.isNodeVisible(element)) return false;
+        
+        // native focusable element
+        let nodeName = element.nodeName.toLowerCase();
+        if (nodeName in CommonUtil.tabTagMap) {
+            let retVal = CommonUtil.tabTagMap[nodeName];
+            if (typeof (retVal) === "function") {
+                retVal = retVal(element);
+            }
+            return retVal;
+        } else { 
+            //custom widget
+            if (AriaUtil.isWidget(element) && element.hasAttribute("tabindex")) {
+                return true;
+            } 
+        }
+        return false;  
     }
 
     /* 
@@ -457,15 +481,15 @@ export class CommonUtil {
          * a target is en element that accept a pointer action (click or touch)
          * 
          */
-    public static isTarget(element) {
+    public static isTarget(element) { 
         if (!element || element.nodeType !== 1 
             || ["html", "body"].includes(element.nodeName.toLowerCase())
             || CommonUtil.getAncestor(element, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
             || !VisUtil.isNodeVisible(element) || VisUtil.isNodeVisuallyHidden(element) 
             || CommonUtil.isNodeDisabled(element) || VisUtil.isElementOffscreen(element))
             return false;
-
-        if (element.hasAttribute("tabindex") || CommonUtil.isTabbable(element)) 
+        
+        if (CommonUtil.isClickable(element)) 
             return true;
 
         const role = AriaUtil.getResolvedRole(element);
