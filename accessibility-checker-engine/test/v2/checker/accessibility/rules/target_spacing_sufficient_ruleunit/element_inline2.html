@@ -76,7 +76,54 @@
     UnitTest = {
       ruleIds: ["target_spacing_sufficient"],
       results: [
-
+      {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/article[1]/div[1]/div[1]/p[1]/a[1]",
+              "aria": "/document[1]/main[1]/article[1]/paragraph[1]/link[1]"
+            },
+            "reasonId": "pass_inline",
+            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/article[1]/div[1]/div[1]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/article[1]/link[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/article[1]/aside[1]/nav[1]/div[1]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/article[1]/complementary[1]/navigation[1]/link[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
     }
   </script>

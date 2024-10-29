@@ -712,7 +712,7 @@ export class CSSUtil {
          *          "violation": not spacing enough to neiboring inline target
          *          "block": block element,  
          */
-        function isInlineWithText(node: Node) : string | null {
+        function isInlineWithText(node: Node, before: boolean) : string | null {
             // note browsers insert Text nodes to represent whitespaces.
             if (node.nodeType === Node.TEXT_NODE) {
                 if (node.nodeValue && node.nodeValue.trim().length > 0)
@@ -731,10 +731,8 @@ export class CSSUtil {
                         if (bounds.width < 24) { 
                             // check if the horizontal spacing is sufficient
                             const bnds = mapper.getUnadjustedBounds(node);
-                            if (
-                                Math.round(bounds.width / 2) + bnds.left -
-                                (bounds.left + bounds.width) < 24
-                            ) {
+                            if ((before && (Math.round(bounds.width / 2) + bounds.left - bnds.left < 24))
+                                || (!before && (Math.round(bounds.width / 2) + bounds.left - (bnds.left + bnds.width) < 24))) {
                                 status.violation = node.nodeName.toLowerCase();
                                 return "violation";
                             } else
@@ -751,15 +749,13 @@ export class CSSUtil {
         }
 
         // an inline element is inside a block. note <body> is a block element too
-        //if (display === "block" || display === "inline-block") {
-        let containText = false;
         // one or more inline elements with text in the same line: <target>, text<target>, <target>text, <inline>+text<target>, <target><inline>+text, text<target><inline>+
         let walkNode = element.nextSibling;
         while (walkNode) {
-            let inlineText = isInlineWithText(walkNode);
+            let inlineText = isInlineWithText(walkNode, true);
             if (inlineText === "yes") {
                 status.text = true;
-                return status;
+                break;
             }
             if (inlineText === "block") {
                 break;
@@ -769,10 +765,10 @@ export class CSSUtil {
 
         walkNode = element.previousSibling;
         while (walkNode) {
-            let inlineText = isInlineWithText(walkNode);
+            let inlineText = isInlineWithText(walkNode, false);
             if (inlineText === "yes") {
                 status.text = true;
-                return status;
+                break;
             }
             if (inlineText === "block") {
                 break;
@@ -780,7 +776,7 @@ export class CSSUtil {
             walkNode = walkNode.previousSibling;
         }
         return status;
-        
+
         /**let last = true;
         /while (walkNode) {
             let inlineText = isInlineWithText(walkNode);

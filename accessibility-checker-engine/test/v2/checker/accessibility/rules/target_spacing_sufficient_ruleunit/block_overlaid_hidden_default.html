@@ -59,7 +59,23 @@
   UnitTest = {
     ruleIds: ["target_spacing_sufficient"],
     results: [
-         {
+    {
+            "ruleId": "target_spacing_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
