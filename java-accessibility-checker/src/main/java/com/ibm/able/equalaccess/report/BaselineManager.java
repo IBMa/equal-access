@@ -208,10 +208,10 @@ public class BaselineManager {
         DiffResult[] differences = diff(actual, expected);
         if (differences != null && differences.length > 0) {
             differences = Arrays.stream(differences).filter(difference -> {
-                return "E".equals(difference.kind)
+                return !("E".equals(difference.kind)
                     && difference.path.length == 4
                     && difference.path.length > 2 && "bounds".equals(difference.path[2])
-                    && Math.abs((Integer)difference.lhs-(Integer)difference.rhs) <= 1;
+                    && Math.abs((Integer)difference.lhs-(Integer)difference.rhs) <= 1);
             }).toArray(size -> new DiffResult[size]);
             if (differences.length == 0) return null;
         }
