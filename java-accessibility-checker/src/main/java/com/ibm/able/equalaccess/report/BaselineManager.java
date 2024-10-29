@@ -208,10 +208,10 @@ public class BaselineManager {
         DiffResult[] differences = diff(actual, expected);
         if (differences != null && differences.length > 0) {
             differences = Arrays.stream(differences).filter(difference -> {
-                return "E".equals(difference.kind)
+                return !("E".equals(difference.kind)
                     && difference.path.length == 4
                     && difference.path.length > 2 && "bounds".equals(difference.path[2])
-                    && Math.abs((Integer)difference.lhs-(Integer)difference.rhs) <= 1;
+                    && Math.abs((Integer)difference.lhs-(Integer)difference.rhs) <= 1);
             }).toArray(size -> new DiffResult[size]);
             if (differences.length == 0) return null;
         }
@@ -270,7 +270,7 @@ public class BaselineManager {
             retVal.add(new DiffResult("A", idx, null, gson.toJson(expectedRs[idx])));
         }
         for (int idx=expectedRs.length; idx < actualRs.length; ++idx) {
-            retVal.add(new DiffResult("A", idx, gson.toJson(expectedRs[idx]), null));
+            retVal.add(new DiffResult("A", idx, gson.toJson(actualRs[idx]), null));
         }
         for (int idx=0; idx<Math.min(actualRs.length, expectedRs.length); ++idx) {
             Result actualR = actualRs[idx];
