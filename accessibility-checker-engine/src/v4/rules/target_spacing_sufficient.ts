@@ -69,7 +69,7 @@
             if (!bounds) 
                 return null;
             
-            // ignore hidden, non-target, or inline element without text in the same line
+            // ignore hidden, non-target
             if (!CommonUtil.isTarget(ruleContext))
                 return null;
 
