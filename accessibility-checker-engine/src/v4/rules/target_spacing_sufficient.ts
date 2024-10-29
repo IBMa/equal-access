@@ -123,7 +123,7 @@
             let adjacentX = null;
             let adjacentY = null;
             let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
-            for (let i=0; i < elems.length; i++) { //console.log("target="+nodeName +", target id="+ ruleContext.getAttribute("id") +" elem="+elems[i].nodeName +", id="+elems[i].getAttribute("id"));
+            for (let i=0; i < elems.length; i++) {
                 const elem = elems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
