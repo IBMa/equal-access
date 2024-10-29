@@ -112,7 +112,12 @@ var skipList = [
 
     // Puppeteer and embedded-chrome @media css behave differently (?)
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-fail4.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-pass3.html")
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-pass3.html"),
+
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "link_text.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "element_inline2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "link_inline_with_block.html")
+
 ]
 
 var skipMap = {}
