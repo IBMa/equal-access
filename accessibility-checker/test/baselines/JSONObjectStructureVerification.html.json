@@ -10,7 +10,7 @@
                 "dom": "/html[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Lang has a valid primary lang and conforms to BCP 47",
             "messageArgs": [],
@@ -93,7 +93,7 @@
                 "dom": "/html[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -446,7 +446,7 @@
                 "dom": "/html[1]/body[1]/div[1]",
                 "aria": "/document[1]/navigation[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "pass",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -473,7 +473,7 @@
                 "dom": "/html[1]/body[1]/div[1]",
                 "aria": "/document[1]/navigation[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "pass",
             "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
             "messageArgs": [],
@@ -611,7 +611,7 @@
                 "dom": "/html[1]/body[1]/div[1]",
                 "aria": "/document[1]/navigation[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "pass",
             "message": "The required attributes for the element with the role are defined",
             "messageArgs": [],
@@ -638,7 +638,7 @@
                 "dom": "/html[1]/body[1]/div[1]/a[1]",
                 "aria": "/document[1]/navigation[1]/link[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -774,8 +774,8 @@
                 "aria": "/document[1]/navigation[1]/link[1]"
             },
             "ruleTime": 1,
-            "reasonId": "pass_spacing",
-            "message": "The target's spacing from other targets is sufficient",
+            "reasonId": "pass_default",
+            "message": "The target's size is determined by the user agent and is not modified by the author",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -788,7 +788,7 @@
             "category": "Accessibility",
             "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/target_spacing_sufficient.html#%7B%22message%22%3A%22The%20target's%20spacing%20from%20other%20targets%20is%20sufficient%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass_spacing%22%2C%22ruleId%22%3A%22target_spacing_sufficient%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/target_spacing_sufficient.html#%7B%22message%22%3A%22The%20target's%20size%20is%20determined%20by%20the%20user%20agent%20and%20is%20not%20modified%20by%20the%20author%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass_default%22%2C%22ruleId%22%3A%22target_spacing_sufficient%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "text_contrast_sufficient",
@@ -862,7 +862,7 @@
                 "dom": "/html[1]/body[1]/div[1]/a[1]",
                 "aria": "/document[1]/navigation[1]/link[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "pass",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -905,33 +905,6 @@
             "level": "pass",
             "ignored": false,
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/a_text_purpose.html#%7B%22message%22%3A%22Hyperlink%20has%20a%20description%20of%20its%20purpose%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22a_text_purpose%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "label_name_visible",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[1]/a[1]",
-                "aria": "/document[1]/navigation[1]/link[1]"
-            },
-            "ruleTime": 2,
-            "reasonId": "Pass_0",
-            "message": "Accessible name matches or contains the visible label text",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 18,
-                "width": 56
-            },
-            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/label_name_visible.html#%7B%22message%22%3A%22Accessible%20name%20matches%20or%20contains%20the%20visible%20label%20text%22%2C%22snippet%22%3A%22%3Ca%20alt%3D%5C%22skip%20to%20main%20content%5C%22%20href%3D%5C%22%23navskip%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22label_name_visible%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "widget_tabbable_exists",
@@ -1078,7 +1051,7 @@
                 "dom": "/html[1]/body[1]/div[2]",
                 "aria": "/document[1]/main[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [
@@ -1135,7 +1108,7 @@
                 "dom": "/html[1]/body[1]/div[2]",
                 "aria": "/document[1]/main[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -1216,7 +1189,7 @@
                 "dom": "/html[1]/body[1]/div[2]/a[1]",
                 "aria": "/document[1]/main[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -1405,7 +1378,7 @@
                 "dom": "/html[1]/body[1]/div[2]/h1[1]",
                 "aria": "/document[1]/main[1]/heading[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -1548,7 +1521,7 @@
                 "dom": "/html[1]/body[1]/div[2]/div[1]",
                 "aria": "/document[1]/main[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -1683,7 +1656,7 @@
                 "dom": "/html[1]/body[1]/div[2]/div[2]",
                 "aria": "/document[1]/main[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -1812,8 +1785,8 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         }
     ],
-    "numExecuted": 66,
-    "ruleTime": 16,
+    "numExecuted": 65,
+    "ruleTime": 15,
     "nls": {
         "html_lang_valid": {
             "0": "The default human language of the page must be valid and specified in accordance with BCP 47",
@@ -1893,7 +1866,7 @@
         },
         "target_spacing_sufficient": {
             "0": "The target must be sufficiently sized or spaced from other targets",
-            "pass_spacing": "The target's spacing from other targets is sufficient"
+            "pass_default": "The target's size is determined by the user agent and is not modified by the author"
         },
         "text_contrast_sufficient": {
             "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
@@ -1902,10 +1875,6 @@
         "a_text_purpose": {
             "0": "Hyperlinks must have an accessible name for their purpose",
             "pass": "Hyperlink has a description of its purpose"
-        },
-        "label_name_visible": {
-            "0": "Accessible name must match or contain the visible label text",
-            "Pass_0": "Accessible name matches or contains the visible label text"
         },
         "widget_tabbable_exists": {
             "0": "Component must have at least one tabbable element",
@@ -1944,9 +1913,9 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 65
+            "pass": 64
         },
-        "scanTime": 92,
+        "scanTime": 102,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
             "IBM_Accessibility"
@@ -1959,10 +1928,10 @@
             "manual",
             "pass"
         ],
-        "startScan": 1729698769614,
+        "startScan": 1730216530896,
         "URL": "data:text/html;charset=utf-8,%3C!DOCTYPE%20html%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20HTML%204.01%20Transitional%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FTR%2Fhtml4%2Floose.dtd%22%3E%0A%3C!--%0A%20%20%20%20%20%2F******************************************************************************%0A%20%20%20%20%20Copyright%3A%3A%202020-%20IBM%2C%20Inc%0A%0A%20%20%20%20Licensed%20under%20the%20Apache%20License%2C%20Version%202.0%20(the%20%22License%22)%3B%0A%20%20%20%20you%20may%20not%20use%20this%20file%20except%20in%20compliance%20with%20the%20License.%0A%20%20%20%20You%20may%20obtain%20a%20copy%20of%20the%20License%20at%0A%0A%20%20%20%20http%3A%2F%2Fwww.apache.org%2Flicenses%2FLICENSE-2.0%0A%0A%20%20%20%20Unless%20required%20by%20applicable%20law%20or%20agreed%20to%20in%20writing%2C%20software%0A%20%20%20%20distributed%20under%20the%20License%20is%20distributed%20on%20an%20%22AS%20IS%22%20BASIS%2C%0A%20%20%20%20WITHOUT%20WARRANTIES%20OR%20CONDITIONS%20OF%20ANY%20KIND%2C%20either%20express%20or%20implied.%0A%20%20%20%20See%20the%20License%20for%20the%20specific%20language%20governing%20permissions%20and%0A%20%20%20%20limitations%20under%20the%20License.%0A%20%20*****************************************************************************%2F%0A%0A--%3E%20%0A%3Chtml%20lang%3D%22en%22%3E%0A%0A%3Chead%3E%0A%20%20%20%20%3Ctitle%3EHelo%20World%3C%2Ftitle%3E%0A%20%20%20%20%3Cmeta%20charset%3D%22utf-8%22%3E%0A%20%20%20%20%3Cmeta%20name%3D%22Description%22%20content%3D%22text%22%3E%0A%3C%2Fhead%3E%0A%0A%3Cbody%3E%0A%20%20%20%20%3Cdiv%20role%3D%22navigation%22%3E%0A%20%20%20%20%20%20%20%20%3Ca%20href%3D%22%23navskip%22%20alt%3D%22skip%20to%20main%20content%22%3E%20NavSkip%20%3C%2Fa%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%0A%20%20%20%20%3Cdiv%20role%3D%22main%22%3E%0A%20%20%20%20%20%20%20%20%3Ca%20name%3D%22navskip%22%3E%3C%2Fa%3E%0A%0A%20%20%20%20%20%20%20%20%3C!--%20xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%20--%3E%0A%0A%20%20%20%20%20%20%20%20%3Ch1%3EThis%20is%20a%20basic%20file%20to%20test%20that%20the%20karma-ibma%20is%20scanning%20for%20accessibility%20violations...%3C%2Fh1%3E%0A%0A%20%20%20%20%20%20%20%20%3Cdiv%20id%3D%22firstDiv%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C!--%3Cimg%20src%3D%22somfile.png%22%2F%3E--%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C!--%3Cimg%20src%3D%22somfile.png%22%2F%3E--%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20id%3D%22firstDiv%22%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%3Cscript%20type%3D%22text%2Fjavascript%22%3E%0A%2F%2F%3C!%5BCDATA%5B%0A%20%20if%20(typeof(OpenAjax)%20%3D%3D%20'undefined')%20OpenAjax%20%3D%20%7B%7D%0A%20%20if%20(typeof(OpenAjax.a11y)%20%3D%3D%20'undefined')%20OpenAjax.a11y%20%3D%20%7B%7D%0A%20%20OpenAjax.a11y.ruleCoverage%20%3D%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20ruleId%3A%20%221%22%2C%0A%20%20%20%20%20%20passedXpaths%3A%20%5B%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20failedXpaths%3A%20%5B%0A%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%2C%0A%20%20%5D%3B%0A%2F%2F%5D%5D%3E%0A%3C%2Fscript%3E%20%20%20%20%0A%3C%2Fbody%3E%0A%0A%3C%2Fhtml%3E%0A"
     },
-    "scanID": "da64ee7e-c7af-4942-be9d-aee8a8704097",
+    "scanID": "4c52c455-f4c2-4b51-816d-3ae99de4b8de",
     "toolID": "accessibility-checker-v3.0.0",
     "label": "JSONObjectStructureVerification.html"
 }
