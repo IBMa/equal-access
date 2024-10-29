@@ -198,14 +198,14 @@ public class AccessibilityCheckerSeleniumFFTest {
                 Paths.get(testRootDir.getAbsolutePath(), "a_text_purpose_ruleunit", "A-slot-text-error1.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit", "link_in_text.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit", "block_element_inline.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "aria_landmark_name_unique_ruleunit", "example_0_fail.html").toFile()
+                Paths.get(testRootDir.getAbsolutePath(), "aria_landmark_name_unique_ruleunit", "example_0_fail.html").toFile(),
 
                 // Misc
                 // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 
-                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_text.html"),
-                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","element_inline2.html"),
-                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_text.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","element_inline2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_inline_with_block.html".toFile()
             }));
 
             for (File testFile: testFiles) {
