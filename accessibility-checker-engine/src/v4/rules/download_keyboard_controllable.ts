@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let download_keyboard_controllable: Rule = {
+export const download_keyboard_controllable: Rule = {
     id: "download_keyboard_controllable",
     context: "dom:a[href],dom:area[href]",
     refactor: {
@@ -47,7 +47,7 @@ export let download_keyboard_controllable: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let href = ruleContext.getAttribute("href");
-        let ext = RPTUtil.getFileExt(href);
+        let ext = CommonUtil.getFileExt(href);
         let passed = ![".docx", ".doc", ".pdf", ".odt"].includes(ext);
         if (passed) return null;
         if (!passed) return RuleManual("Manual_1");

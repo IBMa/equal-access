@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RulePotential, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RulePotential, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let img_alt_null: Rule = {
+export const img_alt_null: Rule = {
     id: "img_alt_null",
     context: "dom:img[alt]",
     refactor: {
@@ -55,9 +56,9 @@ export let img_alt_null: Rule = {
             return null;
         }
         // We have a title, but alt is empty
-        if (RPTUtil.getAriaLabel(ruleContext).length > 0) {
+        if (AriaUtil.getAriaLabel(ruleContext).length > 0) {
             return RulePotential("potential_aria_override");
-        } else if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+        } else if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
             return RuleFail("fail_decorative");
         } else {
             return RulePass("pass");

@@ -15,8 +15,8 @@
  *****************************************************************************/
 
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
-import { DOMWalker } from "../dom/DOMWalker";
 import { ARIAMapper } from "./ARIAMapper";
+import { VisUtil } from "../../v4/util/VisUtil";
 
 /**
  * Walks in an ARIA order
@@ -59,7 +59,7 @@ export class ARIAWalker {
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && VisUtil.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -67,7 +67,7 @@ export class ARIAWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && VisUtil.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
@@ -152,7 +152,7 @@ export class ARIAWalker {
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && VisUtil.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -160,7 +160,7 @@ export class ARIAWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && VisUtil.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {

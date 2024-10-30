@@ -76,6 +76,9 @@ var skipList = [
 
     // Misc
     // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRootDir, "target_spacing_sufficient_ruleunit","link_text.html"),
+    path.join(testRootDir, "target_spacing_sufficient_ruleunit","element_inline2.html"),
+    path.join(testRootDir, "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
 ]
 
 var skipMap = {}

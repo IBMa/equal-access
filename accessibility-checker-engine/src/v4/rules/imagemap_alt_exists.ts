@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let imagemap_alt_exists: Rule = {
+export const imagemap_alt_exists: Rule = {
     id: "imagemap_alt_exists",
     context: "dom:img[usemap], dom:img[ismap]",
     refactor: {
@@ -49,8 +49,8 @@ export let imagemap_alt_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt") ||
-            (!ruleContext.hasAttribute("ismap") && !RPTUtil.attributeNonEmpty(ruleContext, "usemap"));
+        let passed = CommonUtil.attributeNonEmpty(ruleContext, "alt") ||
+            (!ruleContext.hasAttribute("ismap") && !CommonUtil.attributeNonEmpty(ruleContext, "usemap"));
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

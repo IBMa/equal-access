@@ -11,10 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getCache, setCache } from "../../v4/util/CacheUtil";
-import { DOMUtil } from "./DOMUtil";
-import { DOMWalker } from "./DOMWalker";
+import { CacheUtil } from "./CacheUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { AriaUtil } from "./AriaUtil";
+import { CSSUtil } from "./CSSUtil";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -37,14 +39,14 @@ export class VisUtil {
     //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
     //            mark this element as visible at all times.
     //  head --> head elements have display: none by default, but it will still behave correct
-    //  title --> title elements have display: none by default, but it will still display the title
+    //  title --> title elements have display: none by default, but it will still display the title. remove title from the list because a title can be a child of a svg element too
     //  meta --> meta elements have display: none by default, but it will still perform the action that meta is suppose to
     //  base --> base elements have display: none by default, but it will still perform the action that meta is suppose to
     //  noscript --> noscript elements have display: none by default, but it will still perform the action that meta is suppose to
     //  template --> template elements have display: none by default, because they are just a mechanism for holding client-side content
     //               that is not to be rendered when a page is loaded. https://developer.mozilla.org/en/docs/Web/HTML/Element/template
     //  datalist --> datalist elements have display: none by default,
-    public static hiddenByDefaultElements = ['script', 'link', 'style', 'head', 'title', 'meta', 'base', 'noscript', 'template', 'datalist']
+    public static hiddenByDefaultElements = ['script', 'link', 'style', 'head', 'meta', 'base', 'noscript', 'template', 'datalist']
 
     /**
      * This function is responsible for checking if the node that is provied is
@@ -59,6 +61,13 @@ export class VisUtil {
      *    Note: If either current node or any of the parent nodes are hidden then this
      *          function will return false (node is not visible).
      *
+     *    Note: nodes with CSS properties opacity:0 or filter:opacity(0%), or similar SVG mechanisms: 
+     *      They are not considered hidden. Text hidden with these methods can still be selected or copied, 
+     *      and user agents still expose it in their accessibility trees.  
+     * 
+     *    Note: nodes hidden off screen or behind another object: they are not considered hidden. 
+     *      They are exposed in the accessibility tree and they can even name on-screen objects.
+     * 
      * @parm {element} node The node which should be checked if it is visible or not.
      * @return {bool} false if the node is NOT visible, true otherwise
      *
@@ -76,7 +85,7 @@ export class VisUtil {
         // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
         // true when we detect that the node is hidden. We have to set it to false so that we know
         // the rules has already been checked.
-        setCache(node, "PT_NODE_HIDDEN", getCache(node, "PT_NODE_HIDDEN", false));
+        CacheUtil.setCache(node, "PT_NODE_HIDDEN", CacheUtil.getCache(node, "PT_NODE_HIDDEN", false));
 
         // We should only allow nodeType element, and TextNode all other nodesTypes
         // we can return the visibility as visible.
@@ -110,8 +119,10 @@ export class VisUtil {
         //            mark this element as visible at all times.
         //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
         //            mark this element as visible at all times.
+        // datalist --> In the rendering, the datalist element represents nothing and it, along with its children, should be hidden.
         if (VisUtil.hiddenByDefaultElements != null && VisUtil.hiddenByDefaultElements != undefined && VisUtil.hiddenByDefaultElements.indexOf(nodeName) > -1) {
-            return true;
+            //return true;
+            return false;
         }
 
         // Check if this node is visible, we check couple of CSS properties and hidden attribute.
@@ -142,7 +153,7 @@ export class VisUtil {
 
             // Get the hidden element property and hidden attribute
             let hiddenAttribute = node.getAttribute("hidden");
-            let hiddenPropertyCustom = getCache(node, "PT_NODE_HIDDEN", undefined);
+            let hiddenPropertyCustom = CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
             // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
             // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
@@ -170,20 +181,20 @@ export class VisUtil {
             //  node custom hidden property ser (node.PT_NODE_HIDDEN)
             // If any of the above conditions are true then we return false as this element is not visible
             if ((compStyle !== null && ((compStyle.getPropertyValue('display') === 'none' ||
-                (!getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
+                (!CacheUtil.getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
                 (compStyle.getPropertyValue('display') !== 'block'  && (hiddenProperty || hiddenAttribute != null || hiddenPropertyCustom)))) {
                 // Set a custom expandos property on the the node to identify that it is hidden, so that we can uses
                 // use this in the rules to determine if the node is hidden or not, if we need to.
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
                 // properties is a lot faster performance whise. For Hash map we need to store based on xpath, and to calculate
                 // xpath it is more performance impact.
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
             }
 
-            // check content-visibility: if the content-visibility is hiddenthen, return false as the element is not visible
+            // check content-visibility: if the content-visibility is hidden, then, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return false;
             }
         }
@@ -202,7 +213,7 @@ export class VisUtil {
             // so that in the function we can skip checking visibility: hidden for parent elements since visibility: hidden
             // is inherited, which allows a child to have a different setting then the child. This property only needs to be checked
             // once for the first element that is passed down and that is all. Ignore it for all the parents that we iterate over.
-            setCache(parentElement as Element, "Visibility_Check_Parent", true);
+            CacheUtil.setCache(parentElement as Element, "Visibility_Check_Parent", true);
 
             // Check upwards recursively, and save the results in an variable
             let nodeVisible = VisUtil.isNodeVisible(parentElement);
@@ -210,7 +221,7 @@ export class VisUtil {
             // If the node is found to not be visible then add the custom PT_NODE_HIDDEN to true.
             // so that we can use this in the rules.
             if (!nodeVisible) {
-                setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
             }
 
             // Check upwards recursively
@@ -219,6 +230,56 @@ export class VisUtil {
 
         // Return true (node is visible)
         return true;
+    }
+
+    /**
+     * This function is responsible for checking if the node that is visually hidden by clipping or opaq:
+     *    1. Check if the current node is visually hidden:
+     *       CSS --> clip: rect(0px, 0px, 0px, 0px)
+     *       CSS --> opacity: 0
+     *
+     *    Note: If either current node or any of the parent nodes are visually hidden then this
+     *          function will return true (node is not visually hidden).
+     *
+     *    Note: nodes with CSS properties clip: rect(0px, 0px, 0px, 0px) or opacity:0 or filter:opacity(0%), or similar SVG mechanisms: 
+     *      They are not considered hidden to an AT. Text hidden with these methods can still be selected or copied, 
+     *      and user agents still expose it in their accessibility trees.  
+     * 
+     * @parm {element} node The node which should be checked if it is visually hidden or not.
+     * @return {bool} true if the node is visually hidden, false otherwise
+     *
+     * @memberOf VisUtil
+     */
+    public static isNodeVisuallyHidden(node: Node) : boolean {
+        if (!node || node.nodeType !== 1) return false;
+        
+        let elem = node as HTMLElement;
+        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
+        // true when we detect that the node is hidden. We have to set it to false so that we know
+        // the rules has already been checked.
+        const hidden = CacheUtil.getCache(elem, "PT_NODE_VISUALLY_HIDDEN", undefined);
+        if (hidden === undefined) {
+            // defined styles only give the styles that changed
+            const defined_styles = CSSUtil.getDefinedStyles(elem);
+            if ((defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)')
+                || (defined_styles['opacity'] && parseFloat(defined_styles['opacity']) < 0.1))  {
+                CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN", true);
+                return true;
+            }
+
+            // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
+            // the hidden CSS, property or attribute. Only keep checking until we are all the way back to the parentNode
+            // element.
+            let parentElement = DOMWalker.parentElement(elem);
+            if (!parentElement)
+                return false;
+
+            // Check upwards recursively
+            const hid = VisUtil.isNodeVisuallyHidden(parentElement);
+            CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN", hid);
+            return hid;
+        }
+        return hidden;
     }
 
     /**
@@ -234,18 +295,27 @@ export class VisUtil {
     public static isContentHidden(node: Element) : boolean {
         if (!node) return false;
 
-        const style =  getComputedStyle(node);
-        if (!style) return false;
+        const vis = CacheUtil.getCache(node, "PT_NODE_ContentHidden", undefined);
+        if (vis !== undefined) return vis;    
 
+        const style =  getComputedStyle(node);
+        if (!style) {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
+            return false;
+        }
         const content_visibility = style.getPropertyValue("content-visibility");
-        if (content_visibility !== 'hidden') 
+        if (content_visibility !== 'hidden') {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
             return false;  
-         
+        } 
         const display = style.getPropertyValue("display"); 
         // inline element only
-        if (display === 'inline')
+        if (display === 'inline') {
+            CacheUtil.setCache(node, "PT_NODE_ContentHidden", false);
             return false;
-
+        }  
+        
+        CacheUtil.setCache(node, "PT_NODE_ContentHidden", true);
         return true;
     }
 
@@ -253,18 +323,26 @@ export class VisUtil {
      * return true if the node is offscreen by CSS position
      * @param node
      */
-    public static isElementOffscreen(node: Node) : boolean {
-        if (!node) return false;
+    public static isElementOffscreen(node: HTMLElement) : boolean {
+        if (!node) return true;
+        if (node.nodeType !== 1) return false;
+        
+        const vis = CacheUtil.getCache(node , "PT_NODE_Offscreen", undefined);
+        if (vis !== undefined) return vis;  
 
         const mapper : DOMMapper = new DOMMapper();
-        const bounds = mapper.getUnadjustedBounds(node);;    
-        
-        if (!bounds) 
-            return false;
-
-        if (bounds['height'] === 0 || bounds['width'] === 0 || bounds['top'] < 0 || bounds['left'] < 0)
+        const bounds = mapper.getUnadjustedBounds(node); 
+        if (!bounds) {
+            CacheUtil.setCache(node, "PT_NODE_Offscreen", true); 
             return true;
-         
+        }
+        
+        if (bounds['height'] === 0 || bounds['width'] === 0 || (bounds['top']+bounds['height']) <= 0 || (bounds['left']+bounds['width']) <= 0) {
+            CacheUtil.setCache(node, "PT_NODE_Offscreen", true);
+            return true;
+        } 
+
+        CacheUtil.setCache(node, "PT_NODE_Offscreen", false);
         return false;
     }
 
@@ -273,9 +351,30 @@ export class VisUtil {
      * @param node
      */
     public static isNodeHiddenFromAT(node: Element) : boolean {
-        if (!VisUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
+        if (!node) return false;
+        const vis = CacheUtil.getCache(node, "PT_NODE_HiddenFromAT", undefined);
+        if (vis !== undefined) return vis;   
+
+        if (!VisUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') {
+            CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", true);
+            return true;
+        }    
         let ancestor = DOMUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
-        if (ancestor) return true;
+        if (ancestor) {
+            CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", true);
+            return true;
+        }
+        CacheUtil.setCache(node, "PT_NODE_HiddenFromAT", false);    
+        return false;
+    }
+
+    /**
+     * return true if the node or its ancestor is natively hidden or aria-hidden = 'true'
+     * @param node
+     */
+    public static isNodePresentational(node: Element) : boolean {
+        const role = AriaUtil.getResolvedRole(node);
+        if (role && (role === 'none' || role === 'presentation')) return true;
         return false;
     }
 }

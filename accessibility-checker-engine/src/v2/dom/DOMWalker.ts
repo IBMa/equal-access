@@ -14,6 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
+import { VisUtil } from "../../v4/util/VisUtil";
 /**
  * Walks in a DOM order
  * 
@@ -23,13 +24,19 @@ export class DOMWalker {
     root : Node;
     node : Node;
     bEndTag: boolean;
+    considerHidden: boolean;
 
-    constructor(element : Node, bEnd? : boolean, root? : Node) {
-        this.root = root || element;
+    constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean) {
+        this.root = root || (element && element.ownerDocument ? element.ownerDocument.documentElement: element);
         this.node = element;
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
+        this.considerHidden = considerHidden || false;
     }
 
+    elem() : HTMLElement | null {
+        return this.node.nodeType === 1 && this.node as HTMLElement || null;
+    }
+    
     static parentNode(node: Node) : Node | null {
         if (node === null) return null;
         let p : Node = node.parentNode;
@@ -49,36 +56,12 @@ export class DOMWalker {
 
     static parentElement(node: Node) : Element | null {
         let elem : Element = node as Element;
-        do {
+        do { 
             elem = DOMWalker.parentNode(elem) as Element;
         } while (elem && elem.nodeType !== 1);
         return elem;
     }
     
-    static isNodeVisible(node: Node) {
-        if (node === null) return false;
-        try {
-            let vis = null;
-            while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
-                node = DOMWalker.parentElement(node);
-            }
-            let elem = node as Element;
-            let w = elem.ownerDocument.defaultView;
-            do {
-                let cs = w.getComputedStyle(elem);
-                if (cs.display === "none") return false;
-                if (vis === null && cs.visibility) {
-                    vis = cs.visibility;
-                    if (vis === "hidden") return false;
-                }
-                elem = DOMWalker.parentElement(elem);
-            } while (elem);
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-
     atRoot() : boolean {
         if ((this as any).ownerElement) return false;
         if (this.root === this.node) {
@@ -94,15 +77,19 @@ export class DOMWalker {
     }
 
     nextNode() : boolean {
+        if (!this.node) {
+            this.bEndTag = false;
+            return false;
+        }
         do {
-            // console.log(this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
+            //console.log(this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 let elementNode = (this.node as HTMLElement);
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -110,7 +97,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
@@ -125,7 +112,9 @@ export class DOMWalker {
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.ELEMENT_NODE */ && this.node.firstChild) {
+                //} else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
+                  //  this.node = this.node.firstChild;
+                } else if (this.node.firstChild) {
                     this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
@@ -161,7 +150,7 @@ export class DOMWalker {
                 }
             }
         } while (
-            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11 && this.node.nodeType !== 3 /* Node.TEXT_NODE */)
+            (this.node.nodeType !== 1 && this.node.nodeType !== 11 && this.node.nodeType !== 3 )
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
         );
         return true;
@@ -174,7 +163,7 @@ export class DOMWalker {
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMWalker.isNodeVisible(iframeNode)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(iframeNode) : true)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -182,7 +171,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMWalker.isNodeVisible(elementNode)
+                    && (this.considerHidden ? VisUtil.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {
