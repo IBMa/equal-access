@@ -28,7 +28,7 @@ export const svg_graphics_labelled: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "A none decorative SVG element must have an accessible name",
+            "group": "A non-decorative SVG element must have an accessible name",
             "pass": "The SVG element has an accessible name",
             "fail_acc_name": "The SVG element has no accessible name"
         }
