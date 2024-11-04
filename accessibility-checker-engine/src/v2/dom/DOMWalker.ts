@@ -27,8 +27,14 @@ export class DOMWalker {
     considerHidden: boolean;
 
     constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean) {
-        this.root = root || (element && element.ownerDocument ? element.ownerDocument.documentElement: element);
+        this.root = root || ((element && element.ownerDocument) ? element.ownerDocument.documentElement: element);
+        if (this.root.nodeType === 9) {
+            this.root = (this.root as Document).documentElement
+        }
         this.node = element;
+        if (this.node.nodeType === 9) {
+            this.node = (this.node as Document).documentElement
+        }
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
         this.considerHidden = considerHidden || false;
     }
@@ -112,10 +118,8 @@ export class DOMWalker {
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
-                //} else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
-                  //  this.node = this.node.firstChild;
-                } else if (this.node.firstChild) {
-                    this.node = this.node.firstChild;
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
+                   this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
                 }
