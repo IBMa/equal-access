@@ -119,7 +119,7 @@ export class DOMWalker {
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
-                   this.node = this.node.firstChild;
+                    this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
                 }
