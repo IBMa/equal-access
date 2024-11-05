@@ -18,6 +18,10 @@ import { VisUtil } from "../../v4/util/VisUtil";
 /**
  * Walks in a DOM order
  * 
+ * Assumption that nodes of shadow DOMs call assignSlots on the shadow root before 
+ * doing other processing in that tree. If you walk into a shadow root, the DOMWalker
+ * will do it automatically.
+ * 
  * See also ../aria/ARIAWalker
  */
 export class DOMWalker {
@@ -69,6 +73,18 @@ export class DOMWalker {
         } while (elem && elem.nodeType !== 1);
         return elem;
     }
+
+    static assignSlots(root: ShadowRoot) {
+        let slots = root.querySelectorAll("slot");
+        for (let iSlot=0; iSlot<slots.length; ++iSlot) {
+            let processSlot = slots[iSlot];
+            let assignedNodes = processSlot.assignedNodes();
+            for (let iAssigned=0; iAssigned<assignedNodes.length; ++iAssigned) {
+                (assignedNodes[iAssigned] as any).slotOwner = processSlot;
+                (assignedNodes[iAssigned] as any).slotIndex = iAssigned;
+            }
+        }
+    }
     
     atRoot() : boolean {
         if ((this as any).ownerElement) return false;
@@ -118,16 +134,15 @@ export class DOMWalker {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
+                    DOMWalker.assignSlots(this.node as ShadowRoot);
                 } else if (this.node.nodeType === 1 
                     && elementNode.nodeName.toLowerCase() === "slot"
                     && slotElement.assignedNodes().length > 0) 
                 {
                     DBG && console.log("!!!0c");
-                    let slotOwner = this.node;
                     this.node = slotElement.assignedNodes()[0];
-                    (this.node as any).slotOwner = slotOwner;
-                    (this.node as any).slotIndex = 0;
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild && !(this.node.firstChild as any).slotOwner) {
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) 
+                    && this.node.firstChild && !(this.node.firstChild as any).slotOwner) {
                     DBG && console.log("!!!0d");
                     this.node = this.node.firstChild;
                 } else {
@@ -147,8 +162,6 @@ export class DOMWalker {
                     // delete (this.node as any).slotIndex;
                      if (nextSlotIndex < slotOwner.assignedNodes().length) {
                         this.node = slotOwner.assignedNodes()[nextSlotIndex];
-                        (this.node as any).slotOwner = slotOwner;
-                        (this.node as any).slotIndex = nextSlotIndex;    
                         this.bEndTag = false;
                     } else {
                         this.node = slotOwner;
@@ -213,7 +226,9 @@ export class DOMWalker {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) && this.node.lastChild) {
+                    DOMWalker.assignSlots(this.node as ShadowRoot);
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) 
+                    && this.node.lastChild && !(this.node.lastChild as any).slotOwner) {
                     this.node = this.node.lastChild;
                 } else {
                     this.bEndTag = false;

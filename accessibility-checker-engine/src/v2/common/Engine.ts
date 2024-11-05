@@ -163,7 +163,7 @@ export class Engine implements IEngine {
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
         CacheUtil.clearCaches(root);
-        const walker = new DOMWalker(root, false, root, true, false);
+        const walker = new DOMWalker(root, false, root, true);
         const retVal : Report = {
             results: [],
             numExecuted: 0,
