@@ -25,8 +25,10 @@ export class DOMWalker {
     node : Node;
     bEndTag: boolean;
     considerHidden: boolean;
+    DEBUG: boolean;
 
-    constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean) {
+    constructor(element : Node, bEnd? : boolean, root? : Node, considerHidden? : boolean, DEBUG?: boolean) {
+        this.DEBUG = !!DEBUG;
         this.root = root || ((element && element.ownerDocument) ? element.ownerDocument.documentElement: element);
         if (this.root.nodeType === 9) {
             this.root = (this.root as Document).documentElement
@@ -82,7 +84,11 @@ export class DOMWalker {
         }
     }
 
+    DEBUGIDX = 0;
+    indent = 0;
     nextNode() : boolean {
+        let DBG = false;//this.DEBUGIDX >= 7 && this.DEBUGIDX <= 10;
+        let startName = this.node.nodeName;
         if (!this.node) {
             this.bEndTag = false;
             return false;
@@ -99,6 +105,7 @@ export class DOMWalker {
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
+                    DBG && console.log("!!!0a");
                     let ownerElement = this.node;
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
@@ -107,6 +114,7 @@ export class DOMWalker {
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
+                    DBG && console.log("!!!0b");
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
@@ -114,24 +122,30 @@ export class DOMWalker {
                     && elementNode.nodeName.toLowerCase() === "slot"
                     && slotElement.assignedNodes().length > 0) 
                 {
+                    DBG && console.log("!!!0c");
                     let slotOwner = this.node;
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
                     (this.node as any).slotIndex = 0;
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild) {
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) && this.node.firstChild && !(this.node.firstChild as any).slotOwner) {
+                    DBG && console.log("!!!0d");
                     this.node = this.node.firstChild;
                 } else {
+                    DBG && console.log("!!!0e");
                     this.bEndTag = true;
                 }
             } else {
+                DBG && console.log("!!!1");
                 if (this.atRoot()) {
+                    DBG && console.log("!!!1a");
                     return false;
                 } else if ((this.node as any).slotOwner) {
+                    DBG && console.log("!!!1b");
                     let slotOwner = (this.node as any).slotOwner;
                     let nextSlotIndex = (this.node as any).slotIndex+1;
-                    delete (this.node as any).slotOwner;
-                    delete (this.node as any).slotIndex;
-                    if (nextSlotIndex < slotOwner.assignedNodes().length) {
+                    // delete (this.node as any).slotOwner;
+                    // delete (this.node as any).slotIndex;
+                     if (nextSlotIndex < slotOwner.assignedNodes().length) {
                         this.node = slotOwner.assignedNodes()[nextSlotIndex];
                         (this.node as any).slotOwner = slotOwner;
                         (this.node as any).slotIndex = nextSlotIndex;    
@@ -141,15 +155,19 @@ export class DOMWalker {
                         this.bEndTag = true;
                     }
                 } else if ((this.node as any).ownerElement) {
+                    DBG && console.log("!!!1c");
                     this.node = (this.node as any).ownerElement;
                     this.bEndTag = true;
                 } else if (this.node.nextSibling) {
+                    DBG && console.log("!!!1d");
                     this.node = this.node.nextSibling;
                     this.bEndTag = false;
                 } else if (this.node.parentNode) {
+                    DBG && console.log("!!!1e");
                     this.node = this.node.parentNode;
                     this.bEndTag = true;
                 } else {
+                    DBG && console.log("!!!f");
                     return false;
                 }
             }
@@ -157,6 +175,19 @@ export class DOMWalker {
             (this.node.nodeType !== 1 && this.node.nodeType !== 11 && this.node.nodeType !== 3 )
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
         );
+        const indent = () => {
+            let s = "";
+            for (let idx=0; idx<this.indent; ++idx) {
+                s += " ";
+            }
+            return s;
+        }
+        if (this.bEndTag) this.indent -= 2;
+        this.DEBUG && console.log(indent()+`<${this.bEndTag?"/":""}${this.node.nodeName}> (from ${startName}) ${this.DEBUGIDX++}`);
+        this.DEBUG && (this.node as any).slotOwner && console.log(indent()+`slotOwner: ${(this.node as any).slotOwner.nodeName}`);
+        this.DEBUG && (this.node as any).slotIndex && console.log(indent()+`slotIndex: ${(this.node as any).slotIndex}`);
+        this.DEBUG && (this.node as any).ownerElement && console.log(indent()+`ownerElement: ${(this.node as any).ownerElement.nodeName}`);
+        if (!this.bEndTag) this.indent += 2;
         return true;
     }
 

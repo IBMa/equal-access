@@ -48,10 +48,11 @@
                 //{ pattern: 'test/v2/checker/accessibility/rules/aria_role_valid_ruleunit/td_attribute_invalid_copy.html', watched: true },
                 //{ pattern: 'test/v2/checker/accessibility/rules/text_block_heading_ruleunit/Headings-noneUsedEmphasizedText.html', watched: true },
                 { pattern: 'test/v2/checker/accessibility/rules/aria_parent_required_ruleunit/webComponentPass.html', watched: true },
+                { pattern: 'test/v2/checker/accessibility/rules/aria_parent_required_ruleunit/webComponentPass2.html', watched: true },
     
     
-                //{ pattern: 'test/**/*_ruleunit/*.html', watched: true },
-                //{ pattern: 'test/**/*_ruleunit/*.htm', watched: true },
+                { pattern: 'test/**/*_ruleunit/*.html', watched: true },
+                { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
                 // all files ending in "_test"
                 // { pattern: 'test/*_test.js', watched: true },
                 { pattern: 'test/**/*_test.js', watched: true }
