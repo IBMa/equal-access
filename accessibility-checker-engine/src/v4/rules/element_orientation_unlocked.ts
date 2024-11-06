@@ -13,11 +13,11 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, selectorMatchesElem, getMediaOrientationTransform, getRotationDegree} from "../util/CSSUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { getCache, setCache } from "../util/CacheUtil";
+import { CSSUtil } from "../util/CSSUtil";
+import { VisUtil } from "../util/VisUtil";
+import { CacheUtil } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
 export const element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
@@ -51,24 +51,24 @@ export const element_orientation_unlocked: Rule = {
             return null;
         
         //skip elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
+        if (CommonUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
         const nodeName = ruleContext.nodeName.toLowerCase();
         
         // cache the orientation result for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
-        let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
+        let orientationTransforms = CacheUtil.getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
-            orientationTransforms = getMediaOrientationTransform(doc);
-            setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
+            orientationTransforms = CSSUtil.getMediaOrientationTransform(doc);
+            CacheUtil.setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
         } 
         
         // find if the element matches orientation selector(s)
         let media_transforms = [];
         Object.keys(orientationTransforms).forEach(key => {
             Object.keys(orientationTransforms[key]).forEach(tag => {
-                if (Object.keys(orientationTransforms[key][tag]).length > 0 && selectorMatchesElem(ruleContext, tag)) {
+                if (Object.keys(orientationTransforms[key][tag]).length > 0 && CSSUtil.selectorMatchesElem(ruleContext, tag)) {
                     if (orientationTransforms[key][tag].transform)
                         media_transforms.push(orientationTransforms[key][tag].transform);
                     else
@@ -94,7 +94,7 @@ export const element_orientation_unlocked: Rule = {
             // no rotation transform, skip
             if (!containsRotation) continue;
 
-            let degree = getRotationDegree(media_transform);
+            let degree = CSSUtil.getRotationDegree(media_transform);
             
             // no or 360n degree rotation 
             if (degree === 0) { 
@@ -105,13 +105,13 @@ export const element_orientation_unlocked: Rule = {
              * calculate the original page rotation transformation, example
              *  html { transform: rotate(2.5deg); }
             */
-            const definedStyle = getDefinedStyles(ruleContext);
+            const definedStyle = CSSUtil.getDefinedStyles(ruleContext);
             
             /** 
              * compensate the media orientation with the page orientation
              */
             if (definedStyle['transform']) {
-                const page_degree = getRotationDegree(definedStyle['transform']);
+                const page_degree = CSSUtil.getRotationDegree(definedStyle['transform']);
                 // rotate is additive
                 degree += page_degree;
             }    

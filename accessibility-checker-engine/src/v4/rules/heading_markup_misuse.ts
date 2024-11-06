@@ -11,11 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let heading_markup_misuse: Rule = {
+export const heading_markup_misuse: Rule = {
     id: "heading_markup_misuse",
     context: "dom:h1, dom:h2, dom:h3, dom:h4, dom:h5, dom:h6",
     dependencies: ["heading_content_exists"],
@@ -54,7 +55,7 @@ export let heading_markup_misuse: Rule = {
         }
         const ruleContext = context["dom"].node as Element;
         let headingLengthThresh = validateParams.headingLengthThresh.value;
-        let passed = RPTUtil.wordCount(RPTUtil.getInnerText(ruleContext)) <= headingLengthThresh;
+        let passed = CommonUtil.wordCount(CommonUtil.getInnerText(ruleContext)) <= headingLengthThresh;
         if (passed) return RulePass("Pass_0");
         if (!passed) return RulePotential("Potential_1");
 

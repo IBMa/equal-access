@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let text_whitespace_valid: Rule = {
+export const text_whitespace_valid: Rule = {
     id: "text_whitespace_valid",
     context: "dom:*",
     help: {
@@ -43,7 +43,7 @@ export let text_whitespace_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         // Don't trigger if we're not in the body or if we're in a script
-        let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
+        let checkAncestor = CommonUtil.getAncestor(ruleContext, ["body", "script", "code"]);
         if (checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body")
             return null;
             

@@ -11,10 +11,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let blink_elem_deprecated: Rule = {
+export const blink_elem_deprecated: Rule = {
     id: "blink_elem_deprecated",
     context: "dom:blink",
     refactor: {

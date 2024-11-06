@@ -1079,6 +1079,19 @@ export class ARIADefinitions {
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
+        "image": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "img",
+            roleType: "structure",
+            nameRequired: true,
+            nameFrom: ["author"],
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
+        },
+
         "insertion": {
             container: null,
             props: null,
@@ -1801,7 +1814,7 @@ export class ARIADefinitions {
         },
         "button": {
             implicitRole: ["button"],
-            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "slider", "switch", "tab", "treeitem"],
+            validRoles: ["checkbox", "combobox", "gridcell", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio","separator", "slider", "switch", "tab", "treeitem"],
             globalAriaAttributesValid: true
         },
         "canvas": {
@@ -1914,7 +1927,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "hgroup": {
-            implicitRole: ["generic"],
+            implicitRole: ["group"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2839,14 +2852,14 @@ export class ARIADefinitions {
                 htmlAttributeValues: null
             }]
         },
-        "aria-autocomplete": {
+        /** "aria-autocomplete": {
             conflict: [{
                 // conflict occurs if both exists, aria value is only for custom widget, rather than native
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["autocomplete"],
                 htmlAttributeValues: null
             }]
-        }  
+        } */ 
     }
 
     static containers = []

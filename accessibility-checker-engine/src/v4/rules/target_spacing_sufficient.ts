@@ -11,14 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-    import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+    import { CommonUtil } from "../util/CommonUtil";
     import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
     import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-    import { VisUtil } from "../../v2/dom/VisUtil";
     import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { getComputedStyle } from "../util/CSSUtil";
+    import { CSSUtil } from "../util/CSSUtil";
     
-    export let target_spacing_sufficient: Rule = {
+    export const target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
         context: "dom:*",
         dependencies: [],
@@ -64,17 +63,21 @@
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
             const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
-            //ignore certain elements
-            if (RPTUtil.getAncestor(ruleContext, ["svg", "pre", "code", "script", "meta", 'head']) !== null 
-                || nodeName === "body" || nodeName === "html" )
+            
+            const mapper : DOMMapper = new DOMMapper();
+            const bounds = mapper.getUnadjustedBounds(ruleContext); //context["dom"].bounds;    
+            if (!bounds) 
                 return null;
             
-            // ignore hidden, non-target, or inline element without text in the same line
-            if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTarget(ruleContext))
+            // ignore hidden, non-target
+            if (!CommonUtil.isTarget(ruleContext))
                 return null;
 
+            if (bounds.height >= 24 && bounds.width >= 24)
+                return RulePass("pass_sized"); 
+
             // check inline element: without text in the same line
-            const status = RPTUtil.getInlineStatus(ruleContext);
+            const status = CSSUtil.getInlineStatus(ruleContext);
             if (status === null) return null;
             if (status.inline) {
                 if (status.text) {
@@ -82,11 +85,17 @@
                         return RulePass("pass_inline");
                     else
                         // case 1: inline element is too close horizontally
-                        return RulePass("recommendation_inline", [nodeName, status.violation]);
-                }    
+                        return RulePotential("recommendation_inline", [nodeName, status.violation]);
+                } else {
+                    if (status.violation === null)
+                        return RulePass("pass_default");
+                    else
+                        // case 1: inline element is too close horizontally
+                        return RulePotential("recommendation_inline", [nodeName, status.violation]);
+                }
             } else {
                 // ignore browser default
-                if (RPTUtil.isTargetBrowserDefault(ruleContext)) 
+                if (CSSUtil.isTargetBrowserDefault(ruleContext)) 
                     return RulePass("pass_default");
             }
 
@@ -103,23 +112,18 @@
             if (!zindex || isNaN(Number(zindex)))
                 zindex = "0";
             
-            var elems = doc.querySelectorAll('body *:not(script)');
+            //select all elements except itself and descendants
+            var elems = doc.querySelectorAll('body *:not(script):not(style)');
             if (!elems || elems.length === 0)
                 return;
             
-            const mapper : DOMMapper = new DOMMapper();
-            const bounds = mapper.getUnadjustedBounds(ruleContext); //context["dom"].bounds;    
-            if (!bounds || bounds['height'] === 0 || bounds['width'] === 0 ) 
-                return null;
-                
-                    
             let before = true;
             let minX = 24;
             let minY = 24;
             let adjacentX = null;
             let adjacentY = null;
             let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
-            for (let i=0; i < elems.length; i++) { 
+            for (let i=0; i < elems.length; i++) {
                 const elem = elems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
@@ -130,12 +134,14 @@
                     //the next node in elems will be after the target node (ruleContext). 
                     before = false;
                     continue;
-                }    
-                if (!VisUtil.isNodeVisible(elem) || !RPTUtil.isTarget(elem) || elem.contains(ruleContext) 
-                   || checked.some(item => item.contains(elem))) continue;
+                }
+                // ignore ascendants of the element, not a target, or itself or its ascendant already checked   
+                if (elem.contains(ruleContext)  || !CommonUtil.isTarget(elem) 
+                   || checked.some(item => item.contains(elem))) 
+                    continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);
-                if (bnds.height === 0 || bnds.width === 0) continue;
+                if (!bnds) continue;
                 
                 var zStyle = getComputedStyle(elem); 
                 let z_index = '0';
@@ -154,11 +160,8 @@
                     if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {
                         // the target is entirely covered: tabbable target handled by element_tabbable_unobscured and tabindex=-1 ignored
                         return null;
-                    } else {
-                        if (bounds.height >= 24 && bounds.width >= 24)
-                            return RulePass("pass_sized");  
-                        return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]);    
-                    }
+                    } else
+                        return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]);
                 } 
                 
                 // case 3: if the target overlaps the element entirely
@@ -167,11 +170,8 @@
                     // if the element on top    
                     if (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)) {
                         return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
-                    } else { // the target on top
-                        if (bounds.height >= 24 && bounds.width >= 24)
-                            return RulePass("pass_sized");  
-                        return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]); 
-                    }    
+                    } else // the target on top
+                        return RuleFail("violation_spacing", [nodeName, elem.nodeName.toLowerCase()]);     
                 }
                 
                 // case 4: the element overlaps partially with the target
@@ -179,8 +179,8 @@
                      && ((bounds.left > bnds.left && bounds.left < bnds.left + bnds.width) || (bnds.left > bounds.left && bnds.left < bounds.left + bounds.width))) 
                      || (((bounds.top > bnds.top && bounds.top < bnds.top + bnds.height) || (bnds.top > bounds.top && bnds.top < bounds.top + bounds.height))
                      && ((bounds.left >= bnds.left && bounds.left <= bnds.left + bnds.width) || (bounds.left + bounds.width >= bnds.left && bounds.left + bounds.width <= bnds.left + bnds.width)))) {
-                     // TODO: more check to turn to violation  
-                     return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
+                        // TODO: more check to turn to violation  
+                        return RulePotential("potential_overlap", [nodeName, elem.nodeName.toLowerCase()]); 
 
                 } else { // no overlap with the elem, though may overlap withe other elements
                     let disX = 24; 
@@ -205,11 +205,7 @@
                 checked.push(elem);
             }
             
-            // case 5: no verlap + sufficient target size
-            if (bounds.height >= 24 && bounds.width >= 24) {
-                return RulePass("pass_sized"); 
-            }
-            // case 6: no overlap + insufficient target size. check spacing    
+            // case 5: no overlap + insufficient target size. check spacing    
             if (Math.round(bounds.width/2) + minX < 12 || Math.round(bounds.height/2) + minY < 12) {
                 if (Math.round(bounds.width/2) + minX < Math.round(bounds.height/2) + minY)
                     return RuleFail("violation_spacing", [nodeName, adjacentX.nodeName.toLowerCase()]); 

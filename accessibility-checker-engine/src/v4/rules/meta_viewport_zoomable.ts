@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let meta_viewport_zoomable: Rule = {
+export const meta_viewport_zoomable: Rule = {
     id: "meta_viewport_zoomable",
     context: "dom:meta[name][content]",
     refactor: {

@@ -46,7 +46,9 @@
                 // { pattern: 'test/v2/checker/accessibility/rules/Rpt_Aria_RequiredParent_Native_Host_Sematics_ruleunit/ACT_ff89c9_pass4.html', watched: true },
                 //{ pattern: 'test/v2/checker/accessibility/rules/label_name_visible_ruleunit/label_offscreen.html', watched: true },
                 //{ pattern: 'test/v2/checker/accessibility/rules/aria_role_valid_ruleunit/td_attribute_invalid_copy.html', watched: true },
-                //{ pattern: 'test/v2/checker/accessibility/rules/label_name_visible_ruleunit/label_multiple_offscreen.html', watched: true },
+                //{ pattern: 'test/v2/checker/accessibility/rules/text_block_heading_ruleunit/Headings-noneUsedEmphasizedText.html', watched: true },
+                { pattern: 'test/v2/checker/accessibility/rules/aria_parent_required_ruleunit/webComponentPass.html', watched: true },
+                { pattern: 'test/v2/checker/accessibility/rules/aria_parent_required_ruleunit/webComponentPass2.html', watched: true },
     
     
                 { pattern: 'test/**/*_ruleunit/*.html', watched: true },

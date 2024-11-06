@@ -13,10 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
 
-export let aria_attribute_redundant: Rule = {
+export const aria_attribute_redundant: Rule = {
     id: "aria_attribute_redundant",
     context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]" 
             + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
@@ -46,12 +45,12 @@ export let aria_attribute_redundant: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        let invalidAttributes = AriaUtil.getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
 
         // if conflict already reported, ignore reporting overlap
-        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        let conflictAttributes = AriaUtil.getConflictAriaAndHtmlAttributes(ruleContext);
         if (conflictAttributes && conflictAttributes.length > 0)
             return null;
 
@@ -71,7 +70,7 @@ export let aria_attribute_redundant: Rule = {
         }
         let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');
+            const examinedHtmlAtrNames = AriaUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');
             if (examinedHtmlAtrNames === null) continue;
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Pass') { //pass

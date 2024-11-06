@@ -13,10 +13,11 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let aria_descendant_valid: Rule = {
+export const aria_descendant_valid: Rule = {
     id: "aria_descendant_valid",
     context: "dom:*",
     dependencies: ["aria_role_valid"],
@@ -48,17 +49,17 @@ export let aria_descendant_valid: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
         
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element doesn't require presentational children only
-        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext))
+        if (!AriaUtil.containsPresentationalChildrenOnly(ruleContext))
             return;
         
-        let roles = RPTUtil.getRoles(ruleContext, false);
+        let roles = AriaUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length === 0) 
-            roles =  RPTUtil.getImplicitRole(ruleContext);
+            roles =  AriaUtil.getImplicitRole(ruleContext);
         
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
         if (!roles || roles.length === 0) 
@@ -67,7 +68,7 @@ export let aria_descendant_valid: Rule = {
         let tagName = ruleContext.tagName.toLowerCase();
         // get all the children from accessibility tree, 
         // including ones with aria-owns    
-        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);
+        let directATChildren = AriaUtil.getDirectATChildren(ruleContext);
         if (directATChildren && directATChildren.length > 0) {
             // the element with at least one non-presentational children
             let explicitRoles = new Array();
@@ -78,12 +79,12 @@ export let aria_descendant_valid: Rule = {
                 if (tag === 'img' || tag === 'svg') continue;
                 
                 // get explicit role if exists
-                let childRoles = RPTUtil.getRoles(directATChildren[j], false);
+                let childRoles = AriaUtil.getRoles(directATChildren[j], false);
                 if (childRoles && childRoles.length > 0) {
                     explicitRoles.push(childRoles.join(", "));
                 } else {
                     // get implicit role if exists
-                    childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
+                    childRoles =  AriaUtil.getImplicitRole(directATChildren[j]);
                     if (childRoles && childRoles.length > 0)
                         implicitRoles.push(childRoles.join(", "));
                 }
