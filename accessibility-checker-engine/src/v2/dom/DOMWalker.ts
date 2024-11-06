@@ -85,7 +85,39 @@ export class DOMWalker {
             }
         }
     }
-    
+
+    static firstChildNotOwnedBySlot(node: Node) {
+        let retVal = node.firstChild;
+        while (retVal && (retVal as any).slotOwner) {
+            retVal = retVal.nextSibling;
+        }
+        return retVal;
+    }
+
+    static lastChildNotOwnedBySlot(node: Node) {
+        let retVal = node.lastChild;
+        while (retVal && (retVal as any).slotOwner) {
+            retVal = retVal.previousSibling;
+        }
+        return retVal;
+    }
+
+    static nextSiblingNotOwnedBySlot(node:Node) {
+        let retVal = node.nextSibling;
+        while (retVal && (retVal as any).slotOwner) {
+            retVal = retVal.nextSibling;
+        }
+        return retVal;
+    }
+
+    static previousSiblingNotOwnedBySlot(node:Node) {
+        let retVal = node.previousSibling;
+        while (retVal && (retVal as any).slotOwner) {
+            retVal = retVal.previousSibling;
+        }
+        return retVal;
+    }
+
     atRoot() : boolean {
         if ((this as any).ownerElement) return false;
         if (this.root === this.node) {
@@ -103,6 +135,13 @@ export class DOMWalker {
     DEBUGIDX = 0;
     indent = 0;
     nextNode() : boolean {
+        const indent = () => {
+            let s = "";
+            for (let idx=0; idx<this.indent; ++idx) {
+                s += " ";
+            }
+            return s;
+        }
         let DBG = false;//this.DEBUGIDX >= 7 && this.DEBUGIDX <= 10;
         let startName = this.node.nodeName;
         if (!this.node) {
@@ -121,7 +160,7 @@ export class DOMWalker {
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
-                    DBG && console.log("!!!0a");
+                    DBG && console.log("!!!Into Frame");
                     let ownerElement = this.node;
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
@@ -130,7 +169,7 @@ export class DOMWalker {
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
-                    DBG && console.log("!!!0b");
+                    DBG && console.log("!!!Into shadow root");
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
@@ -139,62 +178,62 @@ export class DOMWalker {
                     && elementNode.nodeName.toLowerCase() === "slot"
                     && slotElement.assignedNodes().length > 0) 
                 {
-                    DBG && console.log("!!!0c");
+                    DBG && console.log("!!!Into slot");
                     this.node = slotElement.assignedNodes()[0];
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) 
-                    && this.node.firstChild && !(this.node.firstChild as any).slotOwner) {
-                    DBG && console.log("!!!0d");
-                    this.node = this.node.firstChild;
+                    && DOMWalker.firstChildNotOwnedBySlot(this.node)) {
+                    DBG && console.log("!!!First child");
+                    this.node = DOMWalker.firstChildNotOwnedBySlot(this.node);
                 } else {
-                    DBG && console.log("!!!0e");
+                    DBG && console.log("!!!Flip to end tag");
                     this.bEndTag = true;
                 }
             } else {
                 DBG && console.log("!!!1");
                 if (this.atRoot()) {
-                    DBG && console.log("!!!1a");
+                    DBG && console.log("!!!Done at root");
                     return false;
                 } else if ((this.node as any).slotOwner) {
-                    DBG && console.log("!!!1b");
                     let slotOwner = (this.node as any).slotOwner;
                     let nextSlotIndex = (this.node as any).slotIndex+1;
                     // delete (this.node as any).slotOwner;
                     // delete (this.node as any).slotIndex;
-                     if (nextSlotIndex < slotOwner.assignedNodes().length) {
+                    if (nextSlotIndex < slotOwner.assignedNodes().length) {
+                        DBG && console.log("!!!Next slot child");
                         this.node = slotOwner.assignedNodes()[nextSlotIndex];
                         this.bEndTag = false;
                     } else {
+                        DBG && console.log("!!!Back up to slot owner");
                         this.node = slotOwner;
                         this.bEndTag = true;
                     }
                 } else if ((this.node as any).ownerElement) {
-                    DBG && console.log("!!!1c");
+                    DBG && console.log("!!!Up to frame owner");
                     this.node = (this.node as any).ownerElement;
                     this.bEndTag = true;
-                } else if (this.node.nextSibling) {
-                    DBG && console.log("!!!1d");
-                    this.node = this.node.nextSibling;
+                } else if (DOMWalker.nextSiblingNotOwnedBySlot(this.node)) {
+                    DBG && console.log("!!!Next sibling");
+                    this.node = DOMWalker.nextSiblingNotOwnedBySlot(this.node);
                     this.bEndTag = false;
                 } else if (this.node.parentNode) {
-                    DBG && console.log("!!!1e");
+                    DBG && console.log("!!!Parent");
                     this.node = this.node.parentNode;
                     this.bEndTag = true;
                 } else {
-                    DBG && console.log("!!!f");
+                    DBG && console.log("!!!Done with walk");
                     return false;
                 }
+            }
+            if (DBG && (
+                (this.node.nodeType !== 1 && this.node.nodeType !== 11 && this.node.nodeType !== 3 )
+                || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
+            )) {
+                this.DEBUG && console.log(indent()+`<${this.bEndTag?"/":""}${this.node.nodeName}> (from ${startName}) ${this.DEBUGIDX++} SKIPPED`);
             }
         } while (
             (this.node.nodeType !== 1 && this.node.nodeType !== 11 && this.node.nodeType !== 3 )
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
         );
-        const indent = () => {
-            let s = "";
-            for (let idx=0; idx<this.indent; ++idx) {
-                s += " ";
-            }
-            return s;
-        }
         if (this.bEndTag) this.indent -= 2;
         this.DEBUG && console.log(indent()+`<${this.bEndTag?"/":""}${this.node.nodeName}> (from ${startName}) ${this.DEBUGIDX++}`);
         this.DEBUG && (this.node as any).slotOwner && console.log(indent()+`slotOwner: ${(this.node as any).slotOwner.nodeName}`);
@@ -228,16 +267,16 @@ export class DOMWalker {
                     (this.node as any).ownerElement = ownerElement;
                     DOMWalker.assignSlots(this.node as ShadowRoot);
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) 
-                    && this.node.lastChild && !(this.node.lastChild as any).slotOwner) {
-                    this.node = this.node.lastChild;
+                    && DOMWalker.lastChildNotOwnedBySlot(this.node)) {
+                    this.node = DOMWalker.lastChildNotOwnedBySlot(this.node);
                 } else {
                     this.bEndTag = false;
                 }
             } else {
                 if (this.atRoot()) {
                     return false;
-                } else if (this.node.previousSibling) {
-                    this.node = this.node.previousSibling;
+                } else if (DOMWalker.previousSiblingNotOwnedBySlot(this.node)) {
+                    this.node = DOMWalker.previousSiblingNotOwnedBySlot(this.node);
                     this.bEndTag = true;
                 } else if ((this.node as any).ownerElement) {
                     this.node = (this.node as any).ownerElement;
