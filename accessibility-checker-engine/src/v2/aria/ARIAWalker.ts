@@ -35,9 +35,9 @@ export class ARIAWalker {
             this.root = (this.root as Document).documentElement
         }
         this.node = element;
-        if (this.node.nodeType === 9) {
-            this.node = (this.node as Document).documentElement
-        }
+        // if (this.node.nodeType === 9) {
+        //     this.node = (this.node as Document).documentElement
+        // }
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
     }
 
