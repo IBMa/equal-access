@@ -14,9 +14,9 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let label_ref_valid: Rule = {
+export const label_ref_valid: Rule = {
     id: "label_ref_valid",
     context: "dom:label[for]",
     refactor: {
@@ -33,9 +33,9 @@ export let label_ref_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "The 'for' attribute for a label referencea a unique non-empty 'id' attribute of an <input> element",
-            "fail_invalid": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid <input> element",
-            "group": "The 'for' attribute for a label must reference a non-empty, unique 'id' attribute of an <input> element"
+            "pass": "The 'for' attribute for a label referencea a unique non-empty 'id' attribute of a valid element",
+            "fail_invalid": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid element",
+            "group": "The 'for' attribute for a label should reference a non-empty, unique 'id' attribute of a valid element"
         }
     },
     rulesets: [{

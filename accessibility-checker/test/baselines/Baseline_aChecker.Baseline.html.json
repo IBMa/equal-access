@@ -92,7 +92,7 @@
                 "dom": "/html[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -146,33 +146,6 @@
                 "dom": "/html[1]/head[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 1,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<head>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "img_alt_background",
-            "value": [
-                "RECOMMENDATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]",
-                "aria": "/document[1]"
-            },
             "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -188,7 +161,7 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass",
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "skip_main_exists",
@@ -227,7 +200,7 @@
                 "dom": "/html[1]/body[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -308,7 +281,7 @@
                 "dom": "/html[1]/body[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "pass",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -335,7 +308,7 @@
                 "dom": "/html[1]/body[1]/img[1]",
                 "aria": "/document[1]/img[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -515,6 +488,36 @@
             "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20id%3D%5C%22ace%5C%22%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
+            "ruleId": "aria_accessiblename_exists",
+            "value": [
+                "RECOMMENDATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "fail_no_accessible_name",
+            "message": "Element <img> with \"img\" role has no accessible name",
+            "messageArgs": [
+                "img",
+                "img"
+            ],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img id=\"ace\" src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "recommendation",
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_accessiblename_exists.html#%7B%22message%22%3A%22Element%20%3Cimg%3E%20with%20%5C%22img%5C%22%20role%20has%20no%20accessible%20name%22%2C%22snippet%22%3A%22%3Cimg%20id%3D%5C%22ace%5C%22%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_accessible_name%22%2C%22ruleId%22%3A%22aria_accessiblename_exists%22%2C%22msgArgs%22%3A%5B%22img%22%2C%22img%22%5D%7D"
+        },
+        {
             "ruleId": "aria_descendant_valid",
             "value": [
                 "VIOLATION",
@@ -543,7 +546,7 @@
         }
     ],
     "numExecuted": 20,
-    "ruleTime": 5,
+    "ruleTime": 2,
     "nls": {
         "html_lang_exists": {
             "0": "Page must identify the default language of the document with a 'lang' attribute",
@@ -589,6 +592,10 @@
             "0": "Element 'id' attribute values must be unique within a document",
             "Pass_0": "Rule Passed"
         },
+        "aria_accessiblename_exists": {
+            "0": "Elements with certain roles should have accessible names",
+            "fail_no_accessible_name": "Element <{0}> with \"{1}\" role has no accessible name"
+        },
         "aria_descendant_valid": {
             "0": "Browsers ignore the explicit and implicit ARIA roles of the descendants of certain elements",
             "pass": "The element contains valid descendants"
@@ -598,16 +605,16 @@
         "counts": {
             "violation": 0,
             "potentialviolation": 0,
-            "recommendation": 0,
+            "recommendation": 1,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 15,
+            "pass": 14,
             "ignored": 5,
             "elements": 4,
             "elementsViolation": 0,
             "elementsViolationReview": 0
         },
-        "scanTime": 34,
+        "scanTime": 28,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
             "IBM_Accessibility",
@@ -621,10 +628,10 @@
             "manual",
             "pass"
         ],
-        "startScan": 1724686697450,
+        "startScan": 1729695667976,
         "URL": "data:text/html;charset=utf-8,%3C!--%0A%20%20%20%20%20%2F******************************************************************************%0A%20%20%20%20%20Copyright%3A%3A%202020-%20IBM%2C%20Inc%0A%0A%20%20%20%20Licensed%20under%20the%20Apache%20License%2C%20Version%202.0%20(the%20%22License%22)%3B%0A%20%20%20%20you%20may%20not%20use%20this%20file%20except%20in%20compliance%20with%20the%20License.%0A%20%20%20%20You%20may%20obtain%20a%20copy%20of%20the%20License%20at%0A%0A%20%20%20%20http%3A%2F%2Fwww.apache.org%2Flicenses%2FLICENSE-2.0%0A%0A%20%20%20%20Unless%20required%20by%20applicable%20law%20or%20agreed%20to%20in%20writing%2C%20software%0A%20%20%20%20distributed%20under%20the%20License%20is%20distributed%20on%20an%20%22AS%20IS%22%20BASIS%2C%0A%20%20%20%20WITHOUT%20WARRANTIES%20OR%20CONDITIONS%20OF%20ANY%20KIND%2C%20either%20express%20or%20implied.%0A%20%20%20%20See%20the%20License%20for%20the%20specific%20language%20governing%20permissions%20and%0A%20%20%20%20limitations%20under%20the%20License.%0A%20%20*****************************************************************************%2F%0A%0A--%3E%20%20%20%20%0A%20%20%20%20%3Chtml%3E%0A%20%20%20%20%3Cbody%3E%0A%20%20%20%20%20%20%20%20%3Cimg%20src%3D%22fail.png%22%20id%3D%22ace%22%3E%0A%20%20%20%20%3C%2Fbody%3E%0A%3C%2Fhtml%3E"
     },
-    "scanID": "5711a3a0-a763-4067-9eef-7f1db63cf8cb",
+    "scanID": "773dc15c-5eb9-43e3-886c-4a0c472ab819",
     "toolID": "accessibility-checker-v3.0.0",
     "label": "Baseline_aChecker.Baseline.html"
 }

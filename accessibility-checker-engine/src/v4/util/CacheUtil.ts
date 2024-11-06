@@ -20,34 +20,38 @@ export interface CacheElement extends Element {
     aceCache: { [key: string]: any }
 }
 
-/* Return a pointer to the given global variable
-     * with its initial value as given */
-export function getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
-    let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
-    if (cacheObj.aceCache === undefined) {
-        cacheObj.aceCache = {}
+export class CacheUtil {
+    /* Return a pointer to the given global variable
+         * with its initial value as given */
+    public static getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
+        if (!cacheSpot) return undefined;
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        if (cacheObj.aceCache === undefined) {
+            cacheObj.aceCache = {}
+        }
+        if (cacheObj.aceCache[keyName] === undefined) {
+            cacheObj.aceCache[keyName] = initValue;
+        }
+        return cacheObj.aceCache[keyName]
     }
-    if (cacheObj.aceCache[keyName] === undefined) {
-        cacheObj.aceCache[keyName] = initValue;
+
+    public static setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value): any {
+        if (!cacheSpot) return undefined;
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        if (cacheObj.aceCache === undefined) {
+            cacheObj.aceCache = {}
+        }
+        cacheObj.aceCache[globalName] = value;
+        return value;
     }
-    return cacheObj.aceCache[keyName]
-}
 
-export function setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value) : any {
-    let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
-    if (cacheObj.aceCache === undefined) {
-        cacheObj.aceCache = {}
+
+    public static clearCaches(cacheRoot: Node): void {
+        delete (cacheRoot.ownerDocument as CacheDocument).aceCache;
+        let nw = new DOMWalker(cacheRoot, false, cacheRoot, true);
+        do {
+            delete (nw.node as CacheElement).aceCache;
+            nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
+        } while (nw.nextNode());
     }
-    cacheObj.aceCache[globalName] = value;
-    return value;
-}
-
-
-export function clearCaches(cacheRoot : Node) : void {
-    delete (cacheRoot.ownerDocument as CacheDocument).aceCache;
-    let nw = new DOMWalker(cacheRoot);
-    do {
-        delete (nw.node as CacheElement).aceCache;
-        nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
-    } while (nw.nextNode());
 }

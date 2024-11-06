@@ -11,14 +11,15 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export let aria_activedescendant_valid: Rule = {
+export const aria_activedescendant_valid: Rule = {
     id: "aria_activedescendant_valid",
     context: "dom:*[aria-activedescendant]",
     refactor: {
@@ -60,11 +61,11 @@ export let aria_activedescendant_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // combobox active descendants handled by 'combobox_active_descendant'
-        if (RPTUtil.hasRoleInSemantics(ruleContext, "combobox")) {
+        if (AriaUtil.hasRoleInSemantics(ruleContext, "combobox")) {
             return null;
         }
 
-        let descendant_id = RPTUtil.getAriaAttribute(ruleContext, "aria-activedescendant");
+        let descendant_id = AriaUtil.getAriaAttribute(ruleContext, "aria-activedescendant");
         // POF1: The attribute is empty
         if (!descendant_id || descendant_id.trim() === "") {
             return RuleFail("Fail_1");
@@ -91,7 +92,7 @@ export let aria_activedescendant_valid: Rule = {
 
         // or is a logical descendant as indicated by the aria-owns attribute.
         if (ruleContext.hasAttribute("aria-owns")) {
-            let owned_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-owns").trim()).split(" ");
+            let owned_ids = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-owns").trim()).split(" ");
             for (let i = 0; i < owned_ids.length; i++) {
                 let owned_ele = FragmentUtil.getById(ruleContext, owned_ids[i]);
                 if (owned_ele && !DOMUtil.sameNode(owned_ele, ruleContext) && owned_ele.contains(descendant)) {
@@ -105,16 +106,16 @@ export let aria_activedescendant_valid: Rule = {
         //  textbox refers to either a descendant of the element controlled by the textbox or is a logical 
         //  descendant of that controlled element as indicated by the aria-owns attribute.
         //
-        if (RPTUtil.hasRoleInSemantics(ruleContext, "textbox") && ruleContext.hasAttribute("aria-controls")) {
+        if (AriaUtil.hasRoleInSemantics(ruleContext, "textbox") && ruleContext.hasAttribute("aria-controls")) {
             pofId = 3;
-            let controlled_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-controls").trim()).split(" ");
+            let controlled_ids = CommonUtil.normalizeSpacing(ruleContext.getAttribute("aria-controls").trim()).split(" ");
             for (let i = 0; i < controlled_ids.length; i++) {
                 let controlled_ele = FragmentUtil.getById(ruleContext, controlled_ids[i]);
                 if (controlled_ele && !DOMUtil.sameNode(controlled_ele, ruleContext) && controlled_ele.contains(descendant)) {
                     return RulePass("Pass_0");
                 }
                 if (controlled_ele.hasAttribute("aria-owns")) {
-                    let owns_ids = RPTUtil.normalizeSpacing(controlled_ele.getAttribute("aria-owns").trim()).split(" ");
+                    let owns_ids = CommonUtil.normalizeSpacing(controlled_ele.getAttribute("aria-owns").trim()).split(" ");
                     for (let j = 0; j < owns_ids.length; j++) {
                         let owned_ele = FragmentUtil.getById(ruleContext, owns_ids[j]);
                         if (owned_ele && !DOMUtil.sameNode(owned_ele, ruleContext) && owned_ele.contains(descendant)) {
