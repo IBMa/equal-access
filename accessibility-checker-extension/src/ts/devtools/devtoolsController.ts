@@ -439,8 +439,8 @@ export class DevtoolsController extends Controller {
                     if (Config.ELEM_FOCUS_MODE) {
                         await this.setFocusMode(true);
                     }
-                    // if (path && path !== devtoolsState!.lastElementPath) {
-                    if (path) {
+                    if (path && path !== devtoolsState!.lastElementPath) {
+                    // if (path) {
                         let report = await this.getReport();
                         if (report) {
                             let newIssue : IIssue | null = null;
