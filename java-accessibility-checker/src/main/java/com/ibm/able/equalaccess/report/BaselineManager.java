@@ -132,7 +132,7 @@ public class BaselineManager {
         // check to make sure there are no violations that are listed in the fails on.
         if (expected != null) {
             // Run the diff algo to get the list of differences
-            DiffResult[] differences = BaselineManager.diffResultsWithExpected(actualResults, expected);
+            DiffResult[] differences = BaselineManager.diffResultsWithExpected(actualResults, expected, false);
 
             // console.log("difference=" + JSON.stringify(differences, null, '    '));
 
@@ -145,7 +145,7 @@ public class BaselineManager {
                 modActual.sortResults();
                 ACReport modExpected = (ACReport) expected.clone();
                 modExpected.sortResults();
-                DiffResult[] differences2 = BaselineManager.diffResultsWithExpected(modActual, modExpected);
+                DiffResult[] differences2 = BaselineManager.diffResultsWithExpected(modActual, modExpected, false);
                 if (differences2 == null || differences2.length == 0) {
                     return eAssertResult.PASS;
                 } else {
@@ -203,7 +203,16 @@ public class BaselineManager {
      *     }
      * ]
      */
-    public static DiffResult[] diffResultsWithExpected(ACReport actual, ACReport expected) {
+    public static DiffResult[] diffResultsWithExpected(ACReport actual, ACReport expected, boolean clean) {
+        // In the case clean is set to true then run the cleanComplianceObjectBeforeCompare function on
+        // both the actual and expected objects passed in. This is to make sure that the objcet follow a
+        // simalar structure before compareing the objects.
+        if (clean) {
+            // Clean actual and expected objects
+            actual = actual.copyClean();
+            expected = expected.copyClean();
+        }
+
         // Run Deep diff function to compare the actual and expected values.
         DiffResult[] differences = diff(actual, expected);
         if (differences != null && differences.length > 0) {
