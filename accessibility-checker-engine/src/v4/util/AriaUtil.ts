@@ -768,7 +768,7 @@ export class AriaUtil {
         if (widget === null) {
             let ret = false;
             const role = AriaUtil.getResolvedRole(element); 
-            if (role && ARIADefinitions.designPatterns[role].roleType === 'widget')
+            if (role && ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].roleType === 'widget')
                 ret = true;
             
             CacheUtil.setCache(element.ownerDocument, "is_element_widget", ret);

@@ -64,7 +64,7 @@ export const element_accesskey_labelled: Rule = {
         if (!roles || roles.length === 0) return;
 
         let patterns = ARIADefinitions.designPatterns[roles[0]]
-        if (!patterns.nameFrom) 
+        if (!patterns || !patterns.nameFrom) 
             return;
 
         // ignore if accessble name is required (checked in other rules) or prohibited (text element)    

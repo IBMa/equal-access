@@ -1646,8 +1646,8 @@ export class CommonUtil {
     }
 
     // truncate the given text to a given number of characters
-    // return truncated text
-    public static truncateText(text: string, len = 60) {
+    // return truncated text to 150 chars, same with the media_alt_brief rule
+    public static truncateText(text: string, len = 150) {
         if (!text) return text;
         text = text.trim();
         if (text.length > len)
