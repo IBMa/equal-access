@@ -11,19 +11,19 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let draggable_alternative_exists: Rule = {
+export const draggable_alternative_exists: Rule = {
     id: "draggable_alternative_exists",
     context: "dom:*[draggable]",
     dependencies: [],
     help: {
         "en-US": {
             "group": "draggable_alternative_exists.html",
-            "pass_alternative": "draggable_alternative_exists.html",
+            // "pass_alternative": "draggable_alternative_exists.html",
             "pass_undraggable": "draggable_alternative_exists.html",
             "potential_alternative": "draggable_alternative_exists.html"
         }
@@ -31,13 +31,13 @@ export let draggable_alternative_exists: Rule = {
     messages: {
         "en-US": {
             "group": "A draggable element must have a \"single pointer\" alternative",
-            "pass_alternative": "The draggable element \"{0}\" has a \"single pointer\" alternative",
+            // "pass_alternative": "The draggable element \"{0}\" has a \"single pointer\" alternative",
             "pass_undraggable": "The element \"{0}\" is not draggable",
             "potential_alternative": "Ensure the draggable element \"{0}\" has a \"single pointer\" alternative"
         }
     },
     rulesets: [{
-        id: ["IBM_Accessibility_next", "WCAG_2_2"],
+        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_2"],
         num: ["2.5.7"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -51,7 +51,7 @@ export let draggable_alternative_exists: Rule = {
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
           
         //ignore certain elements
-        if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
+        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
             || nodeName === "body" || nodeName === "html" )
             return null;
         

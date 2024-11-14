@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let media_alt_exists: Rule = {
+export const media_alt_exists: Rule = {
     id: "media_alt_exists",
     context: "dom:area[alt], dom:embed[alt]",
     refactor: {
@@ -56,8 +56,8 @@ export let media_alt_exists: Rule = {
             uri = ruleContext.getAttribute("src")
         }
         if (uri == null) uri = "";
-        let ext = RPTUtil.getFileExt(uri);
-        let isAudVid = ext.length != 0 && (RPTUtil.isAudioExt(ext) || RPTUtil.isVideoExt(ext));
+        let ext = CommonUtil.getFileExt(uri);
+        let isAudVid = ext.length != 0 && (CommonUtil.isAudioExt(ext) || CommonUtil.isVideoExt(ext));
         let altText = ruleContext.getAttribute("alt");
         let passed = !isAudVid || (altText.length > 0 && altText.indexOf(ext) == -1);
 

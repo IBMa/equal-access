@@ -13,12 +13,14 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { AccNameUtil } from "../util/AccNameUtil";
 
-export let element_accesskey_labelled: Rule = {
+export const element_accesskey_labelled: Rule = {
     id: "element_accesskey_labelled",
     context: "dom:*[accesskey]",
     refactor: {
@@ -50,19 +52,19 @@ export let element_accesskey_labelled: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return;
 
         //skip if the element is tabbable, it's covered by other rules
-        if (RPTUtil.isTabbable(ruleContext))
+        if (CommonUtil.isTabbable(ruleContext))
             return;
 
-        let roles = RPTUtil.getRoles(ruleContext, true);
+        let roles = AriaUtil.getRoles(ruleContext, true);
         //skip the native element, mostly text elements
         if (!roles || roles.length === 0) return;
 
         let patterns = ARIADefinitions.designPatterns[roles[0]]
-        if (!patterns.nameFrom) 
+        if (!patterns || !patterns.nameFrom) 
             return;
 
         // ignore if accessble name is required (checked in other rules) or prohibited (text element)    
@@ -74,7 +76,9 @@ export let element_accesskey_labelled: Rule = {
             return;
 
         // check if accessible name exists
-        if (ARIAMapper.computeName(ruleContext).trim().length > 0)
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (pair && pair.name && pair.name.trim().length > 0)
+        //if (ARIAMapper.computeName(ruleContext).trim().length > 0)
             return RulePass("Pass_0");
         return RulePotential("Potential_1");
 

@@ -63,7 +63,7 @@ const archiveId = `${paddedDate}${monthStr}${now.getFullYear()}`;
     lastVersion[lastVersion.length-1] = parseInt(lastVersion[lastVersion.length-1])+1;
     archives.splice(1, 0, {
         "id": `${paddedDate}${monthStr}${now.getFullYear()}`,
-        "name": `${paddedDate} ${monthStr} ${now.getFullYear()} Deployment (IBM 7.2, 7.3)`,
+        "name": `${paddedDate} ${monthStr} ${now.getFullYear()} Deployment (IBM 7.3)`,
         "version": lastVersion.join("."),
         "path": `/archives/${archiveDir}`
     })

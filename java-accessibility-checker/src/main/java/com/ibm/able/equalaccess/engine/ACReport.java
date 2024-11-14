@@ -16,6 +16,7 @@
 
 package com.ibm.able.equalaccess.engine;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -116,6 +117,17 @@ public class ACReport implements Cloneable {
         @Override
         public Object clone() { 
             return super.clone();
+        }
+
+        public Result copyClean() {
+            Result issue = new Result();
+            issue.ruleId = this.ruleId;
+            issue.reasonId = this.reasonId;
+            // Make sure that the xpath in the case there is a [1] we replace it with ""
+            // to support some browser which return it differently
+            issue.path = new HashMap<String, String>();
+            issue.path.put("dom", this.path.get("dom").replaceAll("\\[1\\]", ""));
+            return issue;
         }
 
         public String toHelpData() {
@@ -298,6 +310,20 @@ public class ACReport implements Cloneable {
         for (int idx=0; idx<results.length; ++idx) {
             ret.results[idx] = (ACReport.Result) results[idx].clone();
         }
+        return ret;
+    }
+
+    public ACReport copyClean() {
+        // Shallow copy
+        ACReport ret = new ACReport();
+        ret.label = this.label;
+        ArrayList<Result> temp = new ArrayList<Result>(results.length);
+        for (int idx=0; idx<results.length; ++idx) {
+            if (!("pass".equals(results[idx].level.toString()))) {
+                temp.add(results[idx].copyClean());
+            }
+        }
+        ret.results = temp.toArray(new Result[temp.size()]);
         return ret;
     }
 

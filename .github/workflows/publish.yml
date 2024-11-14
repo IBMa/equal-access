@@ -173,7 +173,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Chrome
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -195,7 +195,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -258,7 +258,7 @@ jobs:
       env:
         GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
     - name: Set version
-      run: sed -i'.old' -e 's/\<version\>3\.0\.0\<\/version\>/\<version\>'"${GITHUB_REF:10}"'\<\/version\>/g' ./pom.xml
+      run: sed -i'.old' -e 's/<version>3\.0\.0<\/version>/<version>'"${GITHUB_REF:10}"'<\/version>/g' ./pom.xml
       working-directory: java-accessibility-checker
     - name: Publish package
       run: mvn --batch-mode deploy -DskipTests -Dgpg.passphrase=$GPG_SIGNING_KEY_PASS

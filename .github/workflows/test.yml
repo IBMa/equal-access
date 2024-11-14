@@ -42,10 +42,15 @@ jobs:
     - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
     - name: Upload rule listing
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: Rule listing
         path: accessibility-checker-engine/dist/help/rules.html
+    - name: Upload rule mapping spreadsheet
+      uses: actions/upload-artifact@v4
+      with:
+        name: Rule mapping spreadsheet
+        path: accessibility-checker-engine/dist/help/rules.csv
 
 
   act-results:
@@ -84,7 +89,7 @@ jobs:
     - run: npm test
       working-directory: accessibility-checker/test-act-w3
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: ACT Text Results
         path: accessibility-checker/test-act-w3/act-report-v2.txt
@@ -562,7 +567,7 @@ jobs:
       run: npm test
       working-directory: accessibility-checker-extension/test
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Chrome
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -571,7 +576,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip

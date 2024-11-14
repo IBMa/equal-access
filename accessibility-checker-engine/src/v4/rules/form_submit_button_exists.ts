@@ -11,11 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
-export let form_submit_button_exists: Rule = {
+export const form_submit_button_exists: Rule = {
     id: "form_submit_button_exists",
     context: "dom:form",
     refactor: {
@@ -49,7 +50,8 @@ export let form_submit_button_exists: Rule = {
         let passed = false;
         if (ruleContext.firstChild) {
             // submit buttons are usually at the bottom - walk backwards
-            let nw = new NodeWalker(ruleContext, true);
+            //let nw = new NodeWalker(ruleContext, true);
+            let nw = new DOMWalker(ruleContext, true);
             while (!passed && nw.prevNode() && nw.node != ruleContext) {
                 if (!nw.bEndTag) {
                     let nodeName = nw.node.nodeName.toLowerCase();
@@ -62,7 +64,7 @@ export let form_submit_button_exists: Rule = {
                     } else if (nodeName === "button") {
                         passed = nw.elem().hasAttribute("type") && nw.elem().getAttribute("type").toLowerCase() === "submit";
                     } else if (nw.node.nodeType === 1) {
-                        passed = RPTUtil.hasRole(nw.node, "button");
+                        passed = AriaUtil.hasRole(nw.node, "button");
                     }
                 }
             }

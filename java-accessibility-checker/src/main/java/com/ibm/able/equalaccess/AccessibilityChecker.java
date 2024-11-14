@@ -163,8 +163,8 @@ public class AccessibilityChecker {
      *     }
      * ]
      */
-    public static DiffResult[] diffResultsWithExpected(ACReport actual, ACReport expected) {
-        return BaselineManager.diffResultsWithExpected(actual, expected);
+    public static DiffResult[] diffResultsWithExpected(ACReport actual, ACReport expected, boolean clean) {
+        return BaselineManager.diffResultsWithExpected(actual, expected, clean);
     }
 
 // export function addRuleset(ruleset) {

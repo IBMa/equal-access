@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let canvas_content_described: Rule = {
+export const canvas_content_described: Rule = {
     id: "canvas_content_described",
     context: "dom:canvas",
     refactor: {
@@ -49,7 +49,7 @@ export let canvas_content_described: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let passed = ruleContext.innerHTML.trim().length > 0;
-        if (passed) return RulePass(1);
+        if (passed) return RulePass("Pass_0");
         if (!passed) return RuleManual("Manual_1");
     }
 }
