@@ -43,6 +43,9 @@ class BackgroundController extends Controller {
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
+    
+
+
     ///// General extension functions /////////////////////////////////////////
 
     /**
@@ -468,6 +471,7 @@ class BackgroundController extends Controller {
                         }
                     }
                 }
+                
 
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
@@ -488,6 +492,14 @@ class BackgroundController extends Controller {
                         return 0;
                     });
                 }
+                console.info("JOHO HERE");
+                connect();
+                
+                keepAlive("ping");
+                // sendMessage(report.results[0].message);
+                sendMessage(JSON.stringify(report.results[0]));
+
+                // disconnect();
 
                 getDevtoolsController(toolTabId, false, "remote").setReport(report);
                 getDevtoolsController(toolTabId, false, "remote").setScanningState("idle");
@@ -684,6 +696,71 @@ export function getBGController(type?: eControllerType) {
     }
     return singleton;
 }
+
+const TEN_SECONDS_MS = 10 * 1000;
+let webSocket:any = null;
+
+// Toggle WebSocket connection on action button click
+// Send a message every 10 seconds, the ServiceWorker will
+// be kept alive as long as messages are being sent.
+// chrome.action.onClicked.addListener(async () => {
+//   if (webSocket) {
+//     disconnect();
+//   } else {
+//     connect();
+//     keepAlive();
+//   }
+// });
+
+function connect() {
+    console.log("JOHO: CONNECT");
+    // webSocket = new WebSocket('ws://localhost:8080');
+    webSocket = new WebSocket('wss://rms-sandbox.rqz6qqeidkk.us-south.codeengine.appdomain.cloud');
+
+    webSocket.onopen = () => {
+        console.log('websocket connection opened');
+    };
+
+    webSocket.onmessage = (event:any) => {
+        console.log(event.data);
+    };
+
+    webSocket.onclose = () => {
+        console.log("in onclose");
+        console.log('websocket connection closed');
+        webSocket = null;
+    };
+}
+
+// function disconnect() {
+//   if (webSocket) {
+//     webSocket.close();
+//   }
+// }
+
+function sendMessage(message:string) {
+    if (webSocket) {
+        console.log(message);
+        webSocket.onopen = () => webSocket.send(message);
+    }
+}
+
+function keepAlive(message:string) {
+  const keepAliveIntervalId = setInterval(
+    () => {
+      if (webSocket) {
+        console.log(message);
+        webSocket.onopen = () => webSocket.send(message);
+      } else {
+        clearInterval(keepAliveIntervalId);
+      }
+    },
+    // It's important to pick an interval that's shorter than 30s, to
+    // avoid that the service worker becomes inactive.
+    TEN_SECONDS_MS
+  );
+}
+
 
 
 
