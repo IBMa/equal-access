@@ -24,7 +24,7 @@ export const aria_accessiblename_exists: Rule = {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
             "fail_no_accessible_name": "aria_accessiblename_exists.html",
-            "fail_no_accessible_name_iamge": "aria_accessiblename_exists.html",
+            "fail_no_accessible_name_image": "aria_accessiblename_exists.html",
             "group": "aria_accessiblename_exists.html"
         }
     },
