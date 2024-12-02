@@ -77,7 +77,7 @@ export const aria_accessiblename_exists: Rule = {
         let role = AriaUtil.getResolvedRole(ruleContext);
         
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0) {console.log("role="+role+", pair="+JSON.stringify(name_pair));
+        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0) {
             if (role === 'img' || role === 'image')
                 return RuleFail("fail_no_accessible_name_image", [ruleContext.nodeName.toLowerCase(), role]); 
             return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
