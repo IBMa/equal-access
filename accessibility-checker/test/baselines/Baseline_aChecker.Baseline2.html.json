@@ -1,61 +1,7 @@
 {
     "results": [
         {
-            "ruleId": "html_lang_exists",
-            "value": [
-                "VIOLATION",
-                "FAIL"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Fail_3",
-            "message": "Page detected as HTML, but does not have a 'lang' attribute",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 600,
-                "width": 800
-            },
-            "snippet": "<html>",
-            "category": "Accessibility",
-            "level": "violation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20detected%20as%20HTML%2C%20but%20does%20not%20have%20a%20'lang'%20attribute%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_3%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "html_skipnav_exists",
-            "value": [
-                "VIOLATION",
-                "POTENTIAL"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Potential_1",
-            "message": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 600,
-                "width": 800
-            },
-            "snippet": "<html>",
-            "category": "Accessibility",
-            "level": "potentialviolation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/html_skipnav_exists.html#%7B%22message%22%3A%22Verify%20there%20is%20a%20way%20to%20bypass%20blocks%20of%20content%20that%20are%20repeated%20on%20multiple%20Web%20pages%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22POTENTIAL%22%5D%2C%22reasonId%22%3A%22Potential_1%22%2C%22ruleId%22%3A%22html_skipnav_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "page_title_exists",
+            "ruleId": "WCAG20_Doc_HasTitle",
             "value": [
                 "VIOLATION",
                 "FAIL"
@@ -77,93 +23,11 @@
             },
             "snippet": "<html>",
             "category": "Accessibility",
-            "level": "violation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/page_title_exists.html#%7B%22message%22%3A%22Missing%20%3Ctitle%3E%20element%20in%20%3Chead%3E%20element%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_2%22%2C%22ruleId%22%3A%22page_title_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_content_in_landmark",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 1,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 600,
-                "width": 800
-            },
-            "snippet": "<html>",
-            "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "violation"
         },
         {
-            "ruleId": "img_alt_background",
-            "value": [
-                "RECOMMENDATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 600,
-                "width": 800
-            },
-            "snippet": "<html>",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_content_in_landmark",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<head>",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Chead%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "skip_main_exists",
+            "ruleId": "WCAG20_Body_FirstASkips_Native_Host_Sematics",
             "value": [
                 "VIOLATION",
                 "FAIL"
@@ -185,147 +49,11 @@
             },
             "snippet": "<body>",
             "category": "Accessibility",
-            "level": "violation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/skip_main_exists.html#%7B%22message%22%3A%22The%20page%20does%20not%20provide%20a%20way%20to%20quickly%20navigate%20to%20the%20main%20content%20(ARIA%20%5C%22main%5C%22%20landmark%20or%20a%20skip%20link)%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_content_in_landmark",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 1,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 584,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "violation"
         },
         {
-            "ruleId": "img_alt_background",
-            "value": [
-                "RECOMMENDATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 584,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_quoted_correctly",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 584,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_whitespace_valid",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "pass",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 584,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "img_alt_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "img_alt_valid",
+            "ruleId": "WCAG20_Img_HasAlt",
             "value": [
                 "VIOLATION",
                 "FAIL"
@@ -335,186 +63,23 @@
                 "aria": "/document[1]/img[1]"
             },
             "ruleTime": 0,
-            "reasonId": "fail_no_alt",
-            "message": "The image has neither an accessible name nor is marked as decorative or redundant",
+            "reasonId": "Fail_2",
+            "message": "Image does not have an 'alt' attribute short text alternative",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
                 "left": 8,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "violation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_content_in_landmark",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 1,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "violation"
         },
         {
-            "ruleId": "img_alt_background",
-            "value": [
-                "RECOMMENDATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_quoted_correctly",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "text_whitespace_valid",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "pass",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "aria_descendant_valid",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[1]",
-                "aria": "/document[1]/img[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "pass",
-            "message": "The element contains valid descendants",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_descendant_valid.html#%7B%22message%22%3A%22The%20element%20contains%20valid%20descendants%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_descendant_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "img_alt_misuse",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/img[2]",
-                "aria": "/document[1]/img[2]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 12,
-                "top": 23,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<img src=\"fail.png\">",
-            "category": "Accessibility",
-            "level": "pass",
-            "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_misuse.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_misuse%22%2C%22msgArgs%22%3A%5B%5D%7D"
-        },
-        {
-            "ruleId": "img_alt_valid",
+            "ruleId": "WCAG20_Img_HasAlt",
             "value": [
                 "VIOLATION",
                 "FAIL"
@@ -524,24 +89,985 @@
                 "aria": "/document[1]/img[2]"
             },
             "ruleTime": 0,
-            "reasonId": "fail_no_alt",
-            "message": "The image has neither an accessible name nor is marked as decorative or redundant",
+            "reasonId": "Fail_2",
+            "message": "Image does not have an 'alt' attribute short text alternative",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "violation",
-            "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "ignored": false,
+            "level": "violation"
         },
         {
-            "ruleId": "aria_content_in_landmark",
+            "ruleId": "RPT_Html_SkipNav",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Potential_1",
+            "message": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "ruleId": "HAAC_BackgroundImg_HasTextOrTitle",
+            "value": [
+                "RECOMMENDATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_List_UseMarkup",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_Emoticons",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_LetterSpacing",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "text_quoted_correctly",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 600,
+                "width": 800
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_BackgroundImg_HasTextOrTitle",
+            "value": [
+                "RECOMMENDATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_List_UseMarkup",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_Emoticons",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_LetterSpacing",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "text_quoted_correctly",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/head[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<head>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_BackgroundImg_HasTextOrTitle",
+            "value": [
+                "RECOMMENDATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_List_UseMarkup",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_Emoticons",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_LetterSpacing",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "text_quoted_correctly",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 584,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Img_AltCommonMisuse",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_BackgroundImg_HasTextOrTitle",
+            "value": [
+                "RECOMMENDATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_List_UseMarkup",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_Emoticons",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_LetterSpacing",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "text_quoted_correctly",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Img_AltCommonMisuse",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -557,18 +1083,17 @@
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "pass"
         },
         {
-            "ruleId": "img_alt_background",
+            "ruleId": "HAAC_BackgroundImg_HasTextOrTitle",
             "value": [
                 "RECOMMENDATION",
                 "PASS"
@@ -584,15 +1109,144 @@
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/img_alt_background.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22img_alt_background%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "pass"
+        },
+        {
+            "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[2]",
+                "aria": "/document[1]/img[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 12,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_List_UseMarkup",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[2]",
+                "aria": "/document[1]/img[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 12,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[2]",
+                "aria": "/document[1]/img[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 12,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_Emoticons",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[2]",
+                "aria": "/document[1]/img[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 12,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "ruleId": "WCAG20_Text_LetterSpacing",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[2]",
+                "aria": "/document[1]/img[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 12,
+                "top": 22,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"fail.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
         },
         {
             "ruleId": "text_quoted_correctly",
@@ -611,18 +1265,17 @@
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_quoted_correctly.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22text_quoted_correctly%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "pass"
         },
         {
-            "ruleId": "text_whitespace_valid",
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -632,24 +1285,23 @@
                 "aria": "/document[1]/img[2]"
             },
             "ruleTime": 0,
-            "reasonId": "pass",
+            "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/text_whitespace_valid.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22text_whitespace_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "pass"
         },
         {
-            "ruleId": "aria_descendant_valid",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -659,89 +1311,84 @@
                 "aria": "/document[1]/img[2]"
             },
             "ruleTime": 0,
-            "reasonId": "pass",
-            "message": "The element contains valid descendants",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
                 "left": 12,
-                "top": 23,
+                "top": 22,
                 "height": 0,
                 "width": 0
             },
             "snippet": "<img src=\"fail.png\">",
             "category": "Accessibility",
-            "level": "pass",
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_descendant_valid.html#%7B%22message%22%3A%22The%20element%20contains%20valid%20descendants%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22fail.png%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_descendant_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "level": "pass"
         }
     ],
-    "numExecuted": 25,
-    "ruleTime": 3,
+    "numExecuted": 52,
     "nls": {
-        "html_lang_exists": {
-            "0": "Page must identify the default language of the document with a 'lang' attribute",
+        "WCAG20_Html_HasLang": {
             "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute"
         },
-        "html_skipnav_exists": {
-            "0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
+        "RPT_Html_SkipNav": {
             "Potential_1": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages"
         },
-        "page_title_exists": {
-            "0": "The page should have a title that correctly identifies the subject of the page",
+        "WCAG20_Doc_HasTitle": {
             "Fail_2": "Missing <title> element in <head> element"
         },
-        "aria_content_in_landmark": {
-            "0": "All content must reside within an element with a landmark role",
+        "HAAC_BackgroundImg_HasTextOrTitle": {
             "Pass_0": "Rule Passed"
         },
-        "img_alt_background": {
-            "0": "Background images that convey important information must have a text alternative that describes the image",
+        "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
             "Pass_0": "Rule Passed"
         },
-        "skip_main_exists": {
-            "0": "Pages must provide a way to skip directly to the main content",
-            "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
+        "RPT_List_UseMarkup": {
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Text_SensoryReference": {
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_Emoticons": {
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_LetterSpacing": {
+            "Pass_0": "Rule Passed"
         },
         "text_quoted_correctly": {
-            "0": "Quotations should be marked with <q> or <blockquote> elements",
             "Pass_0": "Rule Passed"
         },
-        "text_whitespace_valid": {
-            "0": "Space characters should not be used to control spacing within a word",
-            "pass": "Rule Passed"
-        },
-        "img_alt_misuse": {
-            "0": "'alt' attribute value must be a good inline replacement for the image",
+        "IBMA_Color_Contrast_WCAG2AA_PV": {
             "Pass_0": "Rule Passed"
         },
-        "img_alt_valid": {
-            "0": "Images must have accessible names unless they are decorative or redundant",
-            "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant"
+        "HAAC_Aria_Native_Host_Semantics": {
+            "Pass_0": "Rule Passed"
         },
-        "aria_descendant_valid": {
-            "0": "Browsers ignore the explicit and implicit ARIA roles of the descendants of certain elements",
-            "pass": "The element contains valid descendants"
+        "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
+        },
+        "WCAG20_Img_HasAlt": {
+            "Fail_2": "Image does not have an 'alt' attribute short text alternative"
+        },
+        "RPT_Img_AltCommonMisuse": {
+            "Pass_0": "Rule Passed"
         }
     },
     "summary": {
         "counts": {
-            "ignored": 6,
-            "elements": 5,
-            "elementsViolation": 0,
-            "elementsViolationReview": 0,
-            "violation": 0,
-            "potentialviolation": 0,
+            "violation": 5,
+            "potentialviolation": 1,
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 19
+            "pass": 46,
+            "ignored": 0
         },
-        "scanTime": 34,
-        "ruleArchive": "Preview Rules (preview)",
+        "scanTime": 5,
+        "ruleArchive": "",
         "policies": [
-            "IBM_Accessibility",
-            "WCAG_2_2"
+            "IBM_Accessibility"
         ],
         "reportLevels": [
             "violation",
@@ -751,10 +1398,10 @@
             "manual",
             "pass"
         ],
-        "startScan": 1732551895968,
+        "startScan": 1582566852099,
         "URL": "data:text/html;charset=utf-8,%3C!--%0A%20%20%20%20%20%2F******************************************************************************%0A%20%20%20%20%20Copyright%3A%3A%202020-%20IBM%2C%20Inc%0A%0A%20%20%20%20Licensed%20under%20the%20Apache%20License%2C%20Version%202.0%20(the%20%22License%22)%3B%0A%20%20%20%20you%20may%20not%20use%20this%20file%20except%20in%20compliance%20with%20the%20License.%0A%20%20%20%20You%20may%20obtain%20a%20copy%20of%20the%20License%20at%0A%0A%20%20%20%20http%3A%2F%2Fwww.apache.org%2Flicenses%2FLICENSE-2.0%0A%0A%20%20%20%20Unless%20required%20by%20applicable%20law%20or%20agreed%20to%20in%20writing%2C%20software%0A%20%20%20%20distributed%20under%20the%20License%20is%20distributed%20on%20an%20%22AS%20IS%22%20BASIS%2C%0A%20%20%20%20WITHOUT%20WARRANTIES%20OR%20CONDITIONS%20OF%20ANY%20KIND%2C%20either%20express%20or%20implied.%0A%20%20%20%20See%20the%20License%20for%20the%20specific%20language%20governing%20permissions%20and%0A%20%20%20%20limitations%20under%20the%20License.%0A%20%20*****************************************************************************%2F%0A%0A--%3E%20%0A%3Chtml%3E%0A%20%20%20%20%3Cbody%3E%0A%20%20%20%20%20%20%20%20%3Cimg%20src%3D%22fail.png%22%3E%0A%20%20%20%20%20%20%20%20%3Cimg%20src%3D%22fail.png%22%3E%0A%20%20%20%20%3C%2Fbody%3E%0A%3C%2Fhtml%3E"
     },
-    "scanID": "6371e2d2-3117-4468-9fb7-7d53bc205e7c",
+    "scanID": "00b5c4de-a980-4344-92c9-856172c4e903",
     "toolID": "accessibility-checker-v3.0.0",
     "label": "Baseline_aChecker.Baseline2.html"
 }

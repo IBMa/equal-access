@@ -76,7 +76,7 @@ describe("Baseline testing", function () {
                     var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     let result = await aChecker.getCompliance(unitTestDataFileContent, "Baseline_" + labelName);
-                    let assertVal = aChecker.assertCompliance(result.report);console.log("report="+JSON.stringify(result.report));
+                    let assertVal = aChecker.assertCompliance(result.report);
                     if (assertVal !== codes[unitTestFile]) {
                         console.log("inspect result", util.inspect(result.report, null, 6));
                     } 
