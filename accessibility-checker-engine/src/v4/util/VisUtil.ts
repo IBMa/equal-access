@@ -82,10 +82,6 @@ export class VisUtil {
             nodeIn = DOMWalker.parentNode(nodeIn);
         }
         let node = nodeIn as Element;
-        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
-        // true when we detect that the node is hidden. We have to set it to false so that we know
-        // the rules has already been checked.
-        CacheUtil.setCache(node, "PT_NODE_HIDDEN", CacheUtil.getCache(node, "PT_NODE_HIDDEN", false));
 
         // We should only allow nodeType element, and TextNode all other nodesTypes
         // we can return the visibility as visible.
@@ -125,6 +121,14 @@ export class VisUtil {
             return false;
         }
 
+        if (CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined) !== undefined) {
+            return CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
+        }
+        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
+        // true when we detect that the node is hidden. We have to set it to false so that we know
+        // the rules has already been checked.
+        CacheUtil.setCache(node, "PT_NODE_HIDDEN", CacheUtil.getCache(node, "PT_NODE_HIDDEN", false));
+
         // Check if this node is visible, we check couple of CSS properties and hidden attribute.
         // area, param and audio elements we do not check if they are hidden as it does not apply to them.
         // Check the unhideableElements array which is part of the rules, to check if this element is allowed to be hidden or not
@@ -148,6 +152,7 @@ export class VisUtil {
             // In the case that defaultView does not exists return true to identify that this
             // node is visible, because were not able to detect if it was not.
             else {
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return true;
             }
 
@@ -167,6 +172,7 @@ export class VisUtil {
                 (hiddenAttribute === null || hiddenAttribute === undefined) &&
                 !hiddenPropertyCustom // This covers false, null or undefined
             ) {
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
                 return true;
             }
 
@@ -188,13 +194,13 @@ export class VisUtil {
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
                 // properties is a lot faster performance whise. For Hash map we need to store based on xpath, and to calculate
                 // xpath it is more performance impact.
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
                 return false;
             }
 
             // check content-visibility: if the content-visibility is hidden, then, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
                 return false;
             }
         }
@@ -220,15 +226,17 @@ export class VisUtil {
 
             // If the node is found to not be visible then add the custom PT_NODE_HIDDEN to true.
             // so that we can use this in the rules.
-            if (!nodeVisible) {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
-            }
+            // if (!nodeVisible) {
+            //     CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
+            // }
 
             // Check upwards recursively
+            CacheUtil.setCache(node, "PT_NODE_HIDDEN", nodeVisible);
             return nodeVisible;
         }
 
         // Return true (node is visible)
+        CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
         return true;
     }
 
