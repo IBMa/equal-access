@@ -81,7 +81,7 @@ body:
     attributes:
       value: |
         ### Definition of Done
-        (DO NOT modify this section. This section is for IBM internal use only.)
+        (DO NOT EDIT THIS SECTION. This section is for IBM internal use only.)
         - [ ] Design artifacts reviewed
         - [ ] Work item implemented
         - [ ] Automated test case created (when applicable)
