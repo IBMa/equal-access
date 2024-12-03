@@ -44,7 +44,7 @@ context('Accessibility checker tests', () => {
             cy.visit('no-violations.html')
                 .getCompliance('assert compliance rc 0 no baseline')
                 .assertCompliance()
-                .then((rc) => {
+                .then((rc) => {console.warn("no-violations rc=" + rc);
                     return expect(rc).to.equal(0)
                 });
         });
@@ -53,7 +53,7 @@ context('Accessibility checker tests', () => {
             cy.visit('violations.html')
                 .getCompliance('violations')
                 .assertCompliance(false)
-                .then((rc) => expect(rc).to.equal(0));
+                .then((rc) => {console.warn("violations rc=" + rc); expect(rc).to.equal(0)});
         });
 
         it('Fails when the baselines dont match', () => {
@@ -61,7 +61,7 @@ context('Accessibility checker tests', () => {
             cy.visit('violations.html')
                 .getCompliance('violations-no-match')
                 .assertCompliance(false)
-                .then((rc) => {
+                .then((rc) => { console.warn("violations no match rc=" + rc);
                     expect(rc).to.equal(1);
                 })
         });
@@ -70,7 +70,7 @@ context('Accessibility checker tests', () => {
             cy.visit('violations.html')
                 .getCompliance('assert compliance rc 2')
                 .assertCompliance(false) // Don't actually run the assertion in the command so we can check the output
-                .then((rc) => expect(rc).to.equal(2));
+                .then((rc) => {console.warn("violations rc2=" + rc);expect(rc).to.equal(2)});
         });
     });
 
