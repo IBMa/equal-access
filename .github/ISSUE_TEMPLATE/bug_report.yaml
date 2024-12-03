@@ -65,9 +65,9 @@ body:
       required: true
   - type: markdown
     attributes:
-      label: Definition of Done
-      description: |
-        <!-- Do not modify this section. This section is for internal use only. -->
+      value: |
+        ## Definition of Done
+        (DO NOT modify this section. This section is for IBMinternal use only.)
         - [ ] Design artifacts reviewed
         - [ ] Work item implemented
         - [ ] Automated test case created (when applicable)
