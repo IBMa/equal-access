@@ -65,9 +65,9 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: |
-        ## Definition of Done
-        <!-- Do not modify this section. This section is for IBM internal use only.  -->
+      label: Definition of Done
+      description: |
+        <!-- Do not modify this section. This section is for internal use only. -->
         - [ ] Design artifacts reviewed
         - [ ] Work item implemented
         - [ ] Automated test case created (when applicable)
@@ -75,6 +75,6 @@ body:
         - [ ] Run Checker (when applicable)
         - [ ] Manual and Screen Reader Testing (when applicable)
         - [ ] Video recording of user experience walkthrough (if impact to UX)
-        - [ ] PR created
-        
+        - [ ] PR created      
+          
   
