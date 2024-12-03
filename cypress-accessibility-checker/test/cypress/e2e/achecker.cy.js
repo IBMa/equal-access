@@ -85,13 +85,13 @@ context('Accessibility checker tests', () => {
     it('getDiffResults() should return diff between scan and baseline', () => {
         // Compare violations to a no-violations baseline
         cy.visit('violations.html')
-            .getCompliance('violations-no-match')
+            .getCompliance('violations-no-match-diff')
             .assertCompliance(false)
             .then((rc) => {
                 expect(rc).to.equal(1);
             })
 
-        cy.getDiffResults('violations-no-match').then((result) => {
+        cy.getDiffResults('violations-no-match-diff').then((result) => {
             expect(result).not.to.be.null;
             result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
             result.forEach((obj) => expect(obj.kind).not.to.be.undefined);
