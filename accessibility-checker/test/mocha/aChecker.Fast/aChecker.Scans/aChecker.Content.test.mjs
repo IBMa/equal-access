@@ -14,17 +14,17 @@
     limitations under the License.
   *****************************************************************************/
 
- 'use strict';
+'use strict';
 
-var fs = require("fs");
-var path = require("path");
-var unitTestcaseHTML = {};
-var aChecker = require("../../../../src");
-const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
-var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
-var gdirs = fs.readdirSync(testRootDir);
-var expect = require("chai").expect;
+import * as fs from "fs";
+import * as path from "path";
+import * as aChecker from "../../../../src/mjs/index.js";
+import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
+import { expect } from "chai";
 
+let unitTestcaseHTML = {};
+let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
+let gdirs = fs.readdirSync(testRootDir);
 const mapRuleToG = aChecker.ruleIdToLegacyId;
 
 let mapGToRule = {}
@@ -32,7 +32,6 @@ for (const key in mapRuleToG) {
     mapGToRule[mapRuleToG[key]] = key;
 }
 
-// Determine which rules are in policy
 let validList = {};
 let policyMap = {};
 const checker = new ace.Checker();
@@ -55,90 +54,87 @@ before(async function () {
 });
 
 gdirs.forEach(function (gdir) {
-    var gdir = path.join(testRootDir, gdir)
+    gdir = path.join(testRootDir, gdir)
     if (fs.lstatSync(gdir).isDirectory()) {
-        var files = fs.readdirSync(gdir);
+        let files = fs.readdirSync(gdir);
         files.forEach(function (f) {
-            var fileExtension = f.substr(f.lastIndexOf('.') + 1);
+            let fileExtension = f.substr(f.lastIndexOf('.') + 1);
             if (fileExtension === 'html' || fileExtension === 'htm') {
-                var f = path.join(gdir, f);
-                unitTestcaseHTML[f] = "file://" + f;
+                f = path.join(gdir, f);
+                unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
             };
         });
     }
 });
 
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
-var skipList = [
+let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules");
+let skipList = [
 
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps when loaded as a string
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Hidden_ruleunit", "unitTestisNodeVisible.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "blink_css_review_ruleunit", "TextDecoration-Blink.html"),
+    path.join(testRoot, "Hidden_ruleunit", "unitTestisNodeVisible.html"),
+    path.join(testRoot, "img_alt_background_ruleunit", "APassedFileWithNoImg.html"),
+    path.join(testRoot, "blink_css_review_ruleunit", "TextDecoration-Blink.html"),
     // CSS processing errors
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_eventhandler_role_valid_ruleunit", "eventHandlerMissingRole2.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_widget_labelled_ruleunit", "menuItemCheckboxNoInnerText.html"),
+    path.join(testRoot, "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
+    path.join(testRoot, "aria_eventhandler_role_valid_ruleunit", "eventHandlerMissingRole2.html"),
+    path.join(testRoot, "aria_widget_labelled_ruleunit", "menuItemCheckboxNoInnerText.html"),
     // Can't access referenced files
     // no baseline found
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "img_alt_redundant_ruleunit", "Img-redundantLink.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_after_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_before_ruleunit", "Input-hasLabelBadPlacement.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_mouseevent_keyboard_ruleunit", "Events-invalidNoMouseRequired.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "input_label_exists_ruleunit", "D766.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "a_text_purpose_ruleunit", "A-nonTabable.html"),
+    path.join(testRoot, "img_alt_redundant_ruleunit", "Img-redundantLink.html"),
+    path.join(testRoot, "input_label_after_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(testRoot, "input_label_before_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(testRoot, "element_mouseevent_keyboard_ruleunit", "Events-invalidNoMouseRequired.html"),
+    path.join(testRoot, "input_label_exists_ruleunit", "D766.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-nonTabable.html"),
 
     //in karma conf file skip list
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
+    path.join(testRoot, "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
 
     // Meta refresh
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
     // Blank titles are removed from the DOM
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-empty.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-invalidSpaces.html"),
-
-    // CSS linkage via data URL issues
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "style_color_misuse_ruleunit","D543.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "style_before_after_review_ruleunit","D100.html"),
+    path.join(testRoot, "page_title_valid_ruleunit","Title-empty.html"),
+    path.join(testRoot, "page_title_valid_ruleunit", "Title-invalidSpaces.html"),
+    path.join(testRoot, "style_color_misuse_ruleunit", "D543.html"),
+    path.join(testRoot, "style_before_after_review_ruleunit", "D100.html"),
 
     // TODO: temprarily ignore till the issue is resolved: https://github.com/IBMa/equal-access/issues/1932
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_attribute_conflict_ruleunit","aria-hidden.html"),
+    path.join(testRoot, "aria_attribute_conflict_ruleunit","aria-hidden.html"),
 
     // Puppeteer and embedded-chrome @media css behave differently (?)
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-fail4.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-pass3.html"),
-
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "link_text.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "element_inline2.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "target_spacing_sufficient_ruleunit", "link_inline_with_block.html")
-
+    path.join(testRoot, "element_orientation_unlocked_ruleunit","act-fail4.html"),
+    path.join(testRoot, "element_orientation_unlocked_ruleunit","act-pass3.html"),
+    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_text.html"),
+    path.join(testRoot, "target_spacing_sufficient_ruleunit","element_inline2.html"),
+    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
 ]
 
-var skipMap = {}
+let skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
 });
 
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
-describe("Rule Unit Tests As URLs", function () {
+describe("Rule Unit Tests As Content", function () {
     after(() => {
         aChecker.close();
     });
 
     // Variable Decleration
-    var originalTimeout;
+    let originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (let unitTestFile in unitTestcaseHTML) {
         if (unitTestFile in skipMap) continue;
         // Get the extension of the file we are about to scan
-        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.
@@ -163,13 +159,13 @@ describe("Rule Unit Tests As URLs", function () {
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
-                    var unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
-                    var actualMap = {};
+                    let unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
+                    let actualMap = {};
                     let report = null;
                     let browser = null;
                     let puppeteer = null;
                     // Perform the accessibility scan using the IBMaScan Wrapper
-                    aChecker.getCompliance(unitTestDataFileContent, "ContentURL_" + unitTestFile)
+                    aChecker.getCompliance(unitTestDataFileContent, "Content_" + unitTestFile)
                         .then((result) => {
                             if (!result || !result.report) {
                                 try { expect(false).to.equal(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
