@@ -1,6 +1,0 @@
-{
-    "type": "module",
-    "bin": {
-      "achecker": "./src/mjs/bin/achecker.js"
-    }  
-}
