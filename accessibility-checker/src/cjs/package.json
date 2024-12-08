@@ -1,6 +1,3 @@
 {
-    "type":"commonjs",
-    "bin": {
-      "achecker": "./src/cjs/bin/achecker.js"
-    }
+    "type":"commonjs"
 }

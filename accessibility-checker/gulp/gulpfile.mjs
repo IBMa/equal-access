@@ -49,7 +49,7 @@ gulp.task("build-uglify", function () {
 
 gulp.task("build-copy", function () {
     return gulp.src([
-        "../src/**/bin/achecker.js",
+        "../src/bin/achecker.js",
         "../src/mjs/index.d.ts",
         "../src/package.json",
         "../src/README.md",

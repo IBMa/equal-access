@@ -11,6 +11,10 @@
         "sourceMap": true,
         //"alwaysStrict": true,
         "esModuleInterop": true,
+        
+        "module": "commonjs",
+        "outDir": "src",
+        "target": "es2015"
     },
     "include": [
         "src-ts/**/*.ts",
