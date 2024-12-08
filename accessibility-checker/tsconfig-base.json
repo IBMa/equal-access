@@ -11,7 +11,6 @@
         "sourceMap": true,
         //"alwaysStrict": true,
         "esModuleInterop": true,
-        
         "module": "commonjs",
         "outDir": "src",
         "target": "es2015"
