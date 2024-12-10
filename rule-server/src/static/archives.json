@@ -3,7 +3,31 @@
         "id": "latest",
         "name": "Latest Deployment",
         "path": "/archives/latest"
-    }, 
+    },
+    {
+        "id": "13November2024",
+        "name": "13 November 2024 Deployment (IBM 7.3)",
+        "version": "3.1.78",
+        "path": "/archives/2024.11.13"
+    },
+    {
+        "id": "06November2024",
+        "name": "06 November 2024 Deployment (IBM 7.3)",
+        "version": "3.1.77",
+        "path": "/archives/2024.11.06"
+    },
+    {
+        "id": "01October2024",
+        "name": "01 October 2024 Deployment (IBM 7.3)",
+        "version": "3.1.76",
+        "path": "/archives/2024.10.01"
+    },
+    {
+        "id": "29August2024",
+        "name": "29 August 2024 Deployment (IBM 7.2, 7.3)",
+        "version": "3.1.75",
+        "path": "/archives/2024.08.29"
+    },
     {
         "id": "06August2024",
         "name": "06 August 2024 Deployment (IBM 7.2, 7.3)",
@@ -213,7 +237,6 @@
         "name": "17 November 2021 Deployment (IBM 7.2)",
         "version": "3.1.12",
         "path": "/archives/2021.11.17"
-        
     },
     {
         "id": "25Oct2021",

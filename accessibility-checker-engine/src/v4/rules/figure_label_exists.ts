@@ -11,12 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../util/VisUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let figure_label_exists: Rule = {
+export const figure_label_exists: Rule = {
     id: "figure_label_exists",
     context: "dom:figure",
     refactor: {
@@ -56,8 +57,9 @@ export let figure_label_exists: Rule = {
             return null;
         }
 
-        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
-
+        //let passed = AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
+        const pair = AccNameUtil.computeAccessibleName(ruleContext);
+        const passed = pair && pair.name && pair.name.trim().length > 0;
         //return new ValidationResult(passed, [ruleContext], '', '', []);
         if (!passed) {
             return RuleFail("Fail_1", []);

@@ -11,29 +11,26 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let blink_elem_deprecated: Rule = {
+export const blink_elem_deprecated: Rule = {
     id: "blink_elem_deprecated",
     context: "dom:blink",
     refactor: {
         "WCAG20_Blink_AlwaysTrigger": {
-            "Pass_0": "Pass_0",
             "Fail_1": "Fail_1"
         }
     },
     help: {
         "en-US": {
             "group": `blink_elem_deprecated.html`,
-            "Pass_0": `blink_elem_deprecated.html`,
             "Fail_1": `blink_elem_deprecated.html`
         }
     },
     messages: {
         "en-US": {
             "group": "Content that blinks persistently must not be used",
-            "Pass_0": "Rule Passed",
             "Fail_1": "Content found that blinks persistently"
         }
     },

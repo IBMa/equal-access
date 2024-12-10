@@ -7,7 +7,7 @@
       <div>
         <slot id="slot1" name="heading"></slot>
       </div>
-      <ul id="debugWalk2">
+      <ul>
         <slot id="slot2"></slot>
       </ul>
     </template>
@@ -53,9 +53,9 @@
   <body>
     <main>
       <h1>Test page</h1>
-      <my-list>
-        <div role="heading" aria-level="4" slot="heading" id="debugWalk1">Something</div>
-        <my-list-item role="listitem">Sample item</my-list-item>
+      <my-list >
+        <div role="heading" aria-level="4" slot="heading" >Something</div>
+        <my-list-item role="listitem" >Sample item</my-list-item>
       </my-list>
     </main>
     <script>

@@ -11,29 +11,31 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { VisUtil } from "../util/VisUtil";
 
-export let list_markup_review: Rule = {
+export const list_markup_review: Rule = {
     id: "list_markup_review",
     context: "dom:*",
     refactor: {
         "RPT_List_UseMarkup": {
-            "Pass_0": "Pass_0",
+            // "Pass_0": "Pass_0",
             "Potential_1": "Potential_1"}
     },
     help: {
         "en-US": {
-            "pass": "list_markup_review.html",
+            // "pass": "list_markup_review.html",
             "potential_list": "list_markup_review.html",
             "group": "list_markup_review.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Proper HTML elements are used to create a list",
+            // "pass": "Proper HTML elements are used to create a list",
             "potential_list": "Verify this is a list and if so, modify to use proper HTML elements for the list",
             "group": "Proper HTML elements should be used to create a list"
         }
@@ -52,22 +54,22 @@ export let list_markup_review: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
 
         //skip the check if the element is hidden or disabled
-        if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
+        if (CommonUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
             return null;
 
         // Don't trigger if we're not in the body or if we're in a script
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) 
+        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null) 
             return null;
 
         // ignore script, label and their child elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
+        if (CommonUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
             return null;
 
         // ignore all widgets and their children, and certain structure roles
-        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget"]);
+        let roles = AriaUtil.getRolesWithTypes(ruleContext, ["widget"]);
         // add some structure roles
-        RPTUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
-        if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+        CommonUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
+        if (AriaUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
             return null;
 
         let passed = true;
@@ -86,7 +88,8 @@ export let list_markup_review: Rule = {
                 if (!passed) {
                     // Ensure that there's some sort of block level element before this
                     // Avoid failures due to things like <i>Some sentence</i>. New sentence.
-                    let nw = new NodeWalker(walkNode);
+                    //let nw = new NodeWalker(walkNode);
+                    let nw = new DOMWalker(walkNode);
                     while (!passed && nw.prevNode()) {
                         let nodeName = nw.node.nodeName.toLowerCase();
                         if (["blockquote", "center", "dir", "div", "form", "h1",

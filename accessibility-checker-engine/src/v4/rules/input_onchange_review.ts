@@ -11,20 +11,20 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let input_onchange_review: Rule = {
+export const input_onchange_review: Rule = {
     id: "input_onchange_review",
     context: "dom:input[onchange], dom:textarea[onchange], dom:select[onchange]",
     refactor: {
         "WCAG20_Input_HasOnchange": {
-            "Pass_0": "pass",
+            // "Pass_0": "pass",
             "Potential_1": "potential_warning"}
     },
     help: {
         "en-US": {
-            "pass": "input_onchange_review.html",
+            // "pass": "input_onchange_review.html",
             "potential_warning": "input_onchange_review.html",
             "group": "input_onchange_review.html"
         }
@@ -32,7 +32,7 @@ export let input_onchange_review: Rule = {
     messages: {
         "en-US": {
             "group": "Users must be advised if, due to a change of element value, a form automatically submits, a new window opens, or a change in focus occurs",
-            "pass": "The user is advised of the automatic form submission, new window opening, or focus change",
+            // "pass": "The user is advised of the automatic form submission, new window opening, or focus change",
             "potential_warning": "Confirm that the user is advised if, due to a change of element value, a form automatically submits, a new window opens, or a change in focus occurs"    
         }
     },

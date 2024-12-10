@@ -23,6 +23,20 @@
 - [ ] This PR has been reviewed and is ready for test  
 - [ ] I understand that the title of this PR will be used for the next release notes.
 
+
+### Assets to aide review attached
+<!-- DO NOT EDIT THIS SECTION. This section is for IBM internal review only. Specify the additional artifacts that should be reviewed alongside this PR. -->
+- [ ] Links to design artifacts 
+- [ ] Links to video walkthrough of user experience 
+- [ ] Other
+
+### Definition of Done
+<!-- DO NOT EDIT THIS SECTION. This section is for IBM internal review only. Verify that the following requirements are met prior to marking this PR (issue) as Done. -->
+- [ ] Peer review complete
+- [ ] Secondary review complete
+- [ ] Staging deployment verified
+
+      
 <!--
 -- TITLE INSTRUCTIONS START: DO NOT EDIT THIS SECTION --
 The title of this PR will be used for release notes, please provide a relevant title. 

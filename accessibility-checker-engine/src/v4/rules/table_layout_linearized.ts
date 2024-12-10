@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { VisUtil } from "../util/VisUtil";
+import { TableUtil } from "../util/TableUtil";
 
-export let table_layout_linearized: Rule = {
+export const table_layout_linearized: Rule = {
     id: "table_layout_linearized",
     context: "dom:table",
     refactor: {
@@ -49,7 +49,7 @@ export let table_layout_linearized: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        let passed = !RPTUtil.isLayoutTable(ruleContext);
+        let passed = !TableUtil.isLayoutTable(ruleContext);
         if (passed) return RulePass("Pass_0");
         if (!passed) return RulePotential("Potential_1");
 

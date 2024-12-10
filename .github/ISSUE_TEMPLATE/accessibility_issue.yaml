@@ -51,7 +51,7 @@ body:
   - type: input
     id: tool
     attributes:
-      label: Automated testing tool and ruleset
+      label: Automated testing tool and ruleset.
       description: 'Which tool and ruleset uncovered the issue?'
       placeholder: e.g. IBM Equal Access Accessibility Checker - Latest Deployment
   - type: input
@@ -77,4 +77,16 @@ body:
         'How do we reproduce the accessibility violation you described?'
     validations:
       required: true
-  
+  - type: markdown
+    attributes:
+      value: |
+        ### Definition of Done
+        (DO NOT EDIT THIS SECTION. This section is for IBM internal use only.)
+        - [ ] Design artifacts reviewed
+        - [ ] Work item implemented
+        - [ ] Automated test case created (when applicable)
+        - [ ] Unit test completed
+        - [ ] Run Checker (when applicable)
+        - [ ] Manual and Screen Reader Testing (when applicable)
+        - [ ] Video recording of user experience walkthrough (if impact to UX)
+        - [ ] PR created

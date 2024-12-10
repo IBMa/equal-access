@@ -11,28 +11,25 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let media_live_captioned: Rule = {
+export const media_live_captioned: Rule = {
     id: "media_live_captioned",
     context: "dom:embed, dom:object",
     refactor: {
         "RPT_Media_VideoObjectTrigger": {
-            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
-            "Pass_0": "media_live_captioned.html",
             "Manual_1": "media_live_captioned.html",
             "group": "media_live_captioned.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
             "Manual_1": "Verify captions are provided for live media (streaming video with audio)",
             "group": "Live media (streaming video with audio) should have captions for audio content"
         }
@@ -46,7 +43,7 @@ export let media_live_captioned: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = !RPTUtil.isVideoObjEmbedLink(ruleContext);
+        let passed = !CommonUtil.isVideoObjEmbedLink(ruleContext);
         if (passed) return null;
         if (!passed) return RuleManual("Manual_1");
     }

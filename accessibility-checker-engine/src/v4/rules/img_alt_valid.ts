@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let img_alt_valid: Rule = {
+export const img_alt_valid: Rule = {
     id: "img_alt_valid",
     context: "dom:img",
     refactor: {
@@ -57,7 +57,7 @@ export let img_alt_valid: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
         
-        if (RPTUtil.getAriaLabel(ruleContext).trim().length !== 0) {
+        if (AriaUtil.getAriaLabel(ruleContext).trim().length !== 0) {
             // the img has non-empty aria label
             return RulePass("pass");
         }
@@ -71,7 +71,7 @@ export let img_alt_valid: Rule = {
             if (title === null || title.length === 0) {
                 // no title or title is empty, examine alt further
                 if (alt === null) {
-                    let role = RPTUtil.getResolvedRole(ruleContext, false);
+                    let role = AriaUtil.getResolvedRole(ruleContext, false);
                     if (role === 'presentation' || role === 'none')
                         return RulePass("pass");
                     

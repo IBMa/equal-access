@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>input_haspopup_conflict - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"<input> element with a 'list' attribute should not use an explicit 'aria-haspopup' attribute","pass":"The <input> element with a 'list' attribute does not use an explicit 'aria-haspopup' attribute","potential_type_misuse":"The <input> element with type \"{0}\" and 'list' attribute uses an explicit 'aria-haspopup' attribute","potential_misuse":"The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute","potential_list_notexist":"The list attribute for the <input> element is invalid","fail_invalid_list_type":"The list attribute for the <input> element with the type \"{0}\" is invalid","fail_invalid_list_elem":"The list attribute for the <input> element does not reference a datalist element"}};
+        RULE_ID = "input_haspopup_conflict"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+To ensure that end users can understand and interact with certain types of input, 
+proper coding is required so that their Assistive Technologies (AT) can gather the information and avoid unintended consequences:
+* Input elements that have a `list` attribute with a certain input type, 
+also have an implicit role of **combobox**, 
+which in turn has an implicit `aria-haspopup="listbox"` property; 
+therefore, developers should not explicitly assign the `aria-haspopup` property because it will be either redundant or possibly conflict. 
+* When HTML elements use both `aria-*` attributes and their HTML implied equivalents, 
+browsers must ignore the explicit (redundant or conflicting) ARIA attribute – the native HTML attribute with their [implied ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/#implicit_semantics) take precedence. 
+* When standard HTML controls are created according to specification without either redundant or possibly conflicting ARIA attributes, 
+the conditions of this rule will be met.
+    
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+Developers should not use both the (redundant or conflicting) [`aria-haspopup`](https://www.w3.org/TR/wai-aria-1.2/#aria-haspopup) attribute 
+and their native HTML implied equivalents on certain inputs types with a [`list`](https://html.spec.whatwg.org/multipage/input.html#attr-input-list) attribute. 
+Affected input types include 
+[`text`](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), 
+[`search`](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), 
+[`tel`](https://html.spec.whatwg.org/multipage/input.html#telephone-state-%28type=tel%29), 
+[`url`](https://html.spec.whatwg.org/multipage/input.html#url-state-%28type=url%29), 
+[`email`](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29), 
+[`date`](https://html.spec.whatwg.org/multipage/input.html#date-state-(type=date), 
+[`month`](https://html.spec.whatwg.org/multipage/input.html#month-state-(type=month), 
+[`week`](https://html.spec.whatwg.org/multipage/input.html#week-state-(type=week), 
+[`time`](https://html.spec.whatwg.org/multipage/input.html#time-state-(type=time), 
+[`datetime-local`](https://html.spec.whatwg.org/multipage/input.html#local-date-and-time-state-(type=datetime-local), 
+[`number`](https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number), 
+[`range`](https://html.spec.whatwg.org/multipage/input.html#range-state-(type=range), 
+and [`color`](https://html.spec.whatwg.org/multipage/input.html#color-state-(type=color):
+* **Remove** the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute
+* **And/Or**, add a valid input type if missing 
+* **And/Or**, correct the invalid input type
+* Otherwise, any [global `aria-*` states and properties](https://www.w3.org/TR/wai-aria-1.2/#global_states) not deprecated and any other `aria-*` attributes applicable to the [`combobox`](https://www.w3.org/TR/wai-aria-1.2/#combobox) role are allowed
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA in HTML specification](https://www.w3.org/TR/html-aria/#el-input-text-list)
+* [ARIA5: ARIA state and property attributes to expose the state of a user interface component](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA5)
+* [G108: Using markup features to expose the name and role, allow user-settable properties to be directly set, and provide notification of changes](https://www.w3.org/WAI/WCAG22/Techniques/general/G108)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairments using voice control
+* People who physically cannot use a pointing device
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

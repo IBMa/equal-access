@@ -13,9 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let heading_content_exists: Rule = {
+export const heading_content_exists: Rule = {
     id: "heading_content_exists",
     context: "dom:h1, dom:h2, dom:h3, dom:h4, dom:h5, dom:h6",
     refactor: {
@@ -46,7 +46,7 @@ export let heading_content_exists: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = RPTUtil.hasInnerContentHidden(ruleContext);
+        let passed =CommonUtil.hasInnerContentHidden(ruleContext);
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

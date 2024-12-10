@@ -23,9 +23,9 @@
             },
             "snippet": "<html>",
             "category": "Accessibility",
-            "ignored": true,
             "level": "violation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20detected%20as%20HTML%2C%20but%20does%20not%20have%20a%20'lang'%20attribute%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_3%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "ignored": true,
+            "help": "https://able.ibm.com/rules/archives/2024.10.01/doc/en-US/html_lang_exists.html#%7B%22message%22%3A%22Page%20detected%20as%20HTML%2C%20but%20does%20not%20have%20a%20'lang'%20attribute%22%2C%22snippet%22%3A%22%3Chtml%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_3%22%2C%22ruleId%22%3A%22html_lang_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "skip_main_exists",
@@ -50,9 +50,9 @@
             },
             "snippet": "<body>",
             "category": "Accessibility",
-            "ignored": true,
             "level": "violation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/skip_main_exists.html#%7B%22message%22%3A%22The%20page%20does%20not%20provide%20a%20way%20to%20quickly%20navigate%20to%20the%20main%20content%20(ARIA%20%5C%22main%5C%22%20landmark%20or%20a%20skip%20link)%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "ignored": true,
+            "help": "https://able.ibm.com/rules/archives/2024.10.01/doc/en-US/skip_main_exists.html#%7B%22message%22%3A%22The%20page%20does%20not%20provide%20a%20way%20to%20quickly%20navigate%20to%20the%20main%20content%20(ARIA%20%5C%22main%5C%22%20landmark%20or%20a%20skip%20link)%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "aria_content_in_landmark",
@@ -77,9 +77,9 @@
             },
             "snippet": "<h1>",
             "category": "Accessibility",
-            "ignored": true,
             "level": "violation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Content%20is%20not%20within%20a%20landmark%20element%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "ignored": true,
+            "help": "https://able.ibm.com/rules/archives/2024.10.01/doc/en-US/aria_content_in_landmark.html#%7B%22message%22%3A%22Content%20is%20not%20within%20a%20landmark%20element%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "img_alt_valid",
@@ -104,9 +104,9 @@
             },
             "snippet": "<img src=\"missing-alt.jpg\">",
             "category": "Accessibility",
-            "ignored": true,
             "level": "violation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "ignored": true,
+            "help": "https://able.ibm.com/rules/archives/2024.10.01/doc/en-US/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "ruleId": "aria_accessiblename_exists",
@@ -134,12 +134,12 @@
             },
             "snippet": "<img src=\"missing-alt.jpg\">",
             "category": "Accessibility",
-            "ignored": true,
             "level": "recommendation",
-            "help": "https://able.ibm.com/rules/archives/2024.08.06/doc/en-US/aria_accessiblename_exists.html#%7B%22message%22%3A%22Element%20%3Cimg%3E%20with%20%5C%22img%5C%22%20role%20has%20no%20accessible%20name%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_accessible_name%22%2C%22ruleId%22%3A%22aria_accessiblename_exists%22%2C%22msgArgs%22%3A%5B%22img%22%2C%22img%22%5D%7D"
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/archives/2024.10.01/doc/en-US/aria_accessiblename_exists.html#%7B%22message%22%3A%22Element%20%3Cimg%3E%20with%20%5C%22img%5C%22%20role%20has%20no%20accessible%20name%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22RECOMMENDATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_accessible_name%22%2C%22ruleId%22%3A%22aria_accessiblename_exists%22%2C%22msgArgs%22%3A%5B%22img%22%2C%22img%22%5D%7D"
         }
     ],
-    "numExecuted": 31,
+    "numExecuted": 28,
     "ruleTime": 0,
     "nls": {
         "html_lang_exists": {
@@ -165,16 +165,16 @@
     },
     "summary": {
         "counts": {
+            "ignored": 4,
+            "elements": 4,
+            "elementsViolation": 0,
+            "elementsViolationReview": 0,
             "violation": 0,
             "potentialviolation": 0,
-            "recommendation": 0,
+            "recommendation": 1,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 26,
-            "ignored": 5,
-            "elements": 7,
-            "elementsViolation": 0,
-            "elementsViolationReview": 0
+            "pass": null
         },
         "scanTime": 4,
         "ruleArchive": "Preview Rules (preview)",
@@ -188,10 +188,10 @@
             "potentialrecommendation",
             "manual"
         ],
-        "startScan": 1723480681453,
+        "startScan": 1729712593546,
         "URL": "http://localhost:8080/test/sample-html/violations.html"
     },
-    "scanID": "03c0fc62-453a-4b6c-a2b2-869c2818e5ea",
+    "scanID": "799e0910-e0a0-4eb0-b566-7a0fe6e54e52",
     "toolID": "cypress-accessibility-checker-v3.0.0",
     "label": "violations"
 }

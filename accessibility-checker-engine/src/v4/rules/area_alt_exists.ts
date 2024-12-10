@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let area_alt_exists: Rule = {
+export const area_alt_exists: Rule = {
     id: "area_alt_exists",
     context: "dom:area",
     refactor: {
@@ -51,7 +51,7 @@ export let area_alt_exists: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         // JCH - NO OUT OF SCOPE hidden in context
-        if (RPTUtil.attributeNonEmpty(ruleContext, "alt")) {
+        if (CommonUtil.attributeNonEmpty(ruleContext, "alt")) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");
