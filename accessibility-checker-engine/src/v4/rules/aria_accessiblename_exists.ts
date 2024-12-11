@@ -14,9 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { AccNameUtil } from "../util/AccNameUtil";
 
 export const aria_accessiblename_exists: Rule = {
@@ -26,6 +24,7 @@ export const aria_accessiblename_exists: Rule = {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
             "fail_no_accessible_name": "aria_accessiblename_exists.html",
+            "fail_no_accessible_name_image": "aria_accessiblename_exists.html",
             "group": "aria_accessiblename_exists.html"
         }
     },
@@ -33,6 +32,7 @@ export const aria_accessiblename_exists: Rule = {
         "en-US": {
             "pass": "An accessible name is provided for the element",
             "fail_no_accessible_name": "Element <{0}> with \"{1}\" role has no accessible name",
+            "fail_no_accessible_name_image": "Element <{0}> with \"{1}\" role has no accessible name",
             "group": "Elements with certain roles should have accessible names"
         }
     },
@@ -40,9 +40,17 @@ export const aria_accessiblename_exists: Rule = {
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.RECOMMENDATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["fail_no_accessible_name"]
+    },
+    {
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["ARIA"],
+        "level": eRulePolicy.RECOMMENDATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["fail_no_accessible_name_image"]
     }],
-    act: [],
+    act: [{"23a2a8": {"fail_no_accessible_name_image": "fail"}}],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
@@ -50,8 +58,8 @@ export const aria_accessiblename_exists: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
-        // svg element is handled in svg_graphics)labbelled rule
-        if (nodeName === 'svg') return;
+        // svg element is handled in svg_graphics_labbelled rule and image rules
+        if (nodeName === 'svg' || nodeName === 'img') return;
         
         // when table element with a caption as first child
         if (nodeName === 'table' 
@@ -69,9 +77,11 @@ export const aria_accessiblename_exists: Rule = {
         let role = AriaUtil.getResolvedRole(ruleContext);
         
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0)
+        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0) {
+            if (role === 'img' || role === 'image')
+                return RuleFail("fail_no_accessible_name_image", [ruleContext.nodeName.toLowerCase(), role]); 
             return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
-
+        }    
         return RulePass("pass");
     }
 }
