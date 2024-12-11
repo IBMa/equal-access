@@ -311,21 +311,27 @@ export class Checker implements IChecker {
             }
             for (const rsId of rsIds) {
                 if (rsId in rsInfo) {
-                    Object.keys(rsInfo[rsId]).forEach(code => { 
+                    const reCode = new RegExp(`(^|--)${reasonCode}($|--)`);
+                    Object.keys(rsInfo[rsId]).forEach(code => {
                         let level = null;
-                        const reCode = new RegExp(`(^|--)${reasonCode}($|--)`);
                         if (code === 'None')
                             level = rsInfo[rsId]["None"];
                         else if (reCode.test(code))
-                            level = rsInfo[rsId][code];
-                        if (level === eRulePolicy.VIOLATION) {
-                            retVal = eRulePolicy.VIOLATION;
-                        } else if (level === eRulePolicy.RECOMMENDATION && retVal === null) {
-                            retVal = eRulePolicy.RECOMMENDATION;
-                        } else if (retVal === null) {
-                            retVal = eRulePolicy.INFORMATION;
-                        }    
-                    });          
+                            level = rsInfo[rsId][code]; 
+                        
+                        if (level !== null) {
+                            if (level === eRulePolicy.VIOLATION) {
+                                retVal = eRulePolicy.VIOLATION;
+                            } else if (level === eRulePolicy.RECOMMENDATION && retVal === null) {
+                                retVal = eRulePolicy.RECOMMENDATION; 
+                            } else if (retVal === null) {
+                                retVal = eRulePolicy.INFORMATION;
+                            }
+                        }
+                    });
+                    if (retVal === null) {
+                        retVal = eRulePolicy.INFORMATION;
+                    }    
                 }
             }
         } 
