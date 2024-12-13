@@ -45,8 +45,17 @@ export const img_alt_null: Rule = {
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
-    }],
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["fail_decorative"]
+    },
+    {
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["ARIA"],
+        "level": eRulePolicy.VIOLATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["potential_aria_override"]
+    }
+    ],
     act: [{"46ca7f": {"potential_aria_override": "fail"}}],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
