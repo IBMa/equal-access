@@ -5,6 +5,24 @@
         "path": "/archives/latest"
     },
     {
+        "id": "12December2024",
+        "name": "12 December 2024 Deployment (IBM 7.3)",
+        "version": "3.1.79",
+        "path": "/archives/2024.12.12"
+    },
+    {
+        "id": "13November2024",
+        "name": "13 November 2024 Deployment (IBM 7.3)",
+        "version": "3.1.78",
+        "path": "/archives/2024.11.13"
+    },
+    {
+        "id": "06November2024",
+        "name": "06 November 2024 Deployment (IBM 7.3)",
+        "version": "3.1.77",
+        "path": "/archives/2024.11.06"
+    },
+    {
         "id": "01October2024",
         "name": "01 October 2024 Deployment (IBM 7.3)",
         "version": "3.1.76",

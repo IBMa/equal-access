@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { AccNameUtil } from "../util/AccNameUtil";
 
-export let a_text_purpose: Rule = {
+export const a_text_purpose: Rule = {
     id: "a_text_purpose",
     // doc-biblioref is a link
     context: "aria:link,aria:doc-biblioref",
@@ -52,15 +52,17 @@ export let a_text_purpose: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
         
         // Rule only passes if an element has inner content,
         // in the case that there is only hidden content under the the element it is a violation
+        const accName_pair = AccNameUtil.computeAccessibleName(ruleContext);
         let passed =
-            ARIAMapper.computeName(ruleContext).trim().length > 0
-            || RPTUtil.nonTabableChildCheck(ruleContext);
+            (accName_pair && accName_pair.name && accName_pair.name.trim().length > 0) 
+            /**ARIAMapper.computeName(ruleContext).trim().length > 0*/
+            || CommonUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
             return RuleFail("fail_acc_name");
         } else {

@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache } from "../util/CacheUtil";
+import { CacheUtil } from "../util/CacheUtil";
 
-export let form_label_unique: Rule = {
+export const form_label_unique: Rule = {
     id: "form_label_unique",
     context: "dom:label[for]",
     refactor: {
@@ -48,7 +48,7 @@ export let form_label_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context
-        let labelIds = getCache(FragmentUtil.getOwnerFragment(ruleContext), "RPT_Label_Single", {})
+        let labelIds = CacheUtil.getCache(FragmentUtil.getOwnerFragment(ruleContext), "RPT_Label_Single", {})
         let id = ruleContext.getAttribute("for");
         let passed = !(id in labelIds);
         labelIds[id] = true;

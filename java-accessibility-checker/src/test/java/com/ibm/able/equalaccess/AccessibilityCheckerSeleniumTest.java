@@ -18,7 +18,10 @@ package com.ibm.able.equalaccess;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -122,15 +125,50 @@ public class AccessibilityCheckerSeleniumTest {
 
     @Test public void baselines() throws IOException {
         Paths.get("baselines", "Selenium_getComplianceTest3.json").toFile().delete();
+        Paths.get("baselines", "Selenium_getComplianceTest3_1.json").toFile().delete();
         AccessibilityCheckerSeleniumTest.driver.get("https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/");
         ACReport report = AccessibilityChecker.getCompliance(driver, "Selenium_getComplianceTest2");
         assertEquals(eAssertResult.FAIL, AccessibilityChecker.assertCompliance(report));
         new File("baselines").mkdirs();
         Files.copy(Paths.get("results", "Selenium_getComplianceTest2.json").toFile(), Paths.get("baselines", "Selenium_getComplianceTest3.json").toFile());
+        Files.copy(Paths.get("results", "Selenium_getComplianceTest2.json").toFile(), Paths.get("baselines", "Selenium_getComplianceTest3_1.json").toFile());
         
         report = AccessibilityChecker.getCompliance(driver, "Selenium_getComplianceTest3");
-        assertEquals(eAssertResult.PASS, AccessibilityChecker.assertCompliance(report));        
+        assertEquals(eAssertResult.PASS, AccessibilityChecker.assertCompliance(report));
+
+        removeFirstItemFromBaseline(Paths.get("baselines", "Selenium_getComplianceTest3_1.json").toFile());
+        report = AccessibilityChecker.getCompliance(driver, "Selenium_getComplianceTest3_1");
+        assertEquals(eAssertResult.BASELINE_MISMATCH, AccessibilityChecker.assertCompliance(report));
         Paths.get("baselines", "Selenium_getComplianceTest3.json").toFile().delete();
+        Paths.get("baselines", "Selenium_getComplianceTest3_1.json").toFile().delete();
+    }
+
+    private static void removeFirstItemFromBaseline(File f1) {
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+    
+        try {
+            FileReader fr = new FileReader(f1);
+            BufferedReader br = new BufferedReader(fr);
+            int idx=1;
+            while ((line = br.readLine()) != null) {
+                if (idx <= 2 || idx >= 30) {
+                    lines.add(line);
+                }
+                ++idx;
+            }
+            fr.close();
+            br.close();
+
+            FileWriter fw = new FileWriter(f1);
+            BufferedWriter out = new BufferedWriter(fw);
+            for(String s : lines)
+                out.write(s+"\n");
+            out.flush();
+            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     // @Test public void getComplianceLong() {
@@ -204,6 +242,10 @@ public class AccessibilityCheckerSeleniumTest {
 
                 // Misc
                 // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_text.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","element_inline2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_inline_with_block.html").toFile()
             }));
 
             for (File testFile: testFiles) {

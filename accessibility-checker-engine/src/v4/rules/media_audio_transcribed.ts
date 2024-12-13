@@ -11,29 +11,26 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleManual, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let media_audio_transcribed: Rule = {
+export const media_audio_transcribed: Rule = {
     id: "media_audio_transcribed",
     context: "dom:bgsound, dom:a[href], dom:area[href], dom:embed, dom:object",
     refactor: {
         "RPT_Media_AudioTrigger": {
-            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
-            "Pass_0": "media_audio_transcribed.html",
             "Manual_1": "media_audio_transcribed.html",
             "group": "media_audio_transcribed.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
             "Manual_1": "Provide transcripts for audio files",
             "group": "Audio information should also be available in text form"
         }
@@ -54,7 +51,7 @@ export let media_audio_transcribed: Rule = {
         if (thisNode == "bgsound") {
             passed = false;
         } else {
-            passed = !RPTUtil.isAudioObjEmbedLink(ruleContext);
+            passed = !CommonUtil.isAudioObjEmbedLink(ruleContext);
         }
         if (passed) return null; // Out of Scope
         if (!passed) return RuleManual("Manual_1");

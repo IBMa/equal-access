@@ -13,22 +13,22 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getCache, setCache } from "../util/CacheUtil";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { CacheUtil } from "../util/CacheUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let text_sensory_misuse: Rule = {
+export const text_sensory_misuse: Rule = {
     id: "text_sensory_misuse",
     context: "dom:body, dom:body dom:*",
     refactor: {
         "RPT_Text_SensoryReference": {
-            "Pass_0": "pass",
+            // "Pass_0": "pass",
             "Potential_1": "potential_position, potential_other"}
     },
     help: {
         "en-US": {
-            "pass": "text_sensory_misuse.html",
+            // "pass": "text_sensory_misuse.html",
             "potential_position": "text_sensory_misuse.html",
             "potential_other": "text_sensory_misuse.html",
             "group": "text_sensory_misuse.html"
@@ -36,7 +36,7 @@ export let text_sensory_misuse: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Instructions are meaningful without relying solely on shape, size, or location words",
+            // "pass": "Instructions are meaningful without relying solely on shape, size, or location words",
             "potential_position": "Confirm the word(s) '{0}' of the user instruction is used to indicate a logical rather than visual position",
             "potential_other": "Confirm the user instruction is still understandable without the word(s) '{0}'",
             "group": "Instructions should be meaningful without relying solely on shape, size, or location words"
@@ -55,30 +55,30 @@ export let text_sensory_misuse: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
         
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
+        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
             return null;
         
         // Don't trigger if we're not in the body or if we're in a script
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) 
+        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null) 
             return null;
         
         // ignore script, link, label and their child elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", "a", 'label']) !== null)
+        if (CommonUtil.getAncestor(ruleContext, ["script", "a", 'label']) !== null)
             return null;
     
         // ignore text on landmark roles, but not on their children (e.g., section, main)
-        const role = RPTUtil.getResolvedRole(ruleContext);
+        const role = AriaUtil.getResolvedRole(ruleContext);
         if (role) {
-            let lmRoles = RPTUtil.getRolesWithTypes(ruleContext, ["landmark"]);
+            let lmRoles = AriaUtil.getRolesWithTypes(ruleContext, ["landmark"]);
             if (lmRoles && lmRoles.includes(role))
                 return null;
         }    
         
         // ignore all widgets and headings, and their children, and certain structure roles
-        let roles = RPTUtil.getRolesWithTypes(ruleContext, ["widget", "heading"]);
+        let roles = AriaUtil.getRolesWithTypes(ruleContext, ["widget", "heading"]);
         // add some structure roles
-        RPTUtil.concatUniqueArrayItemList(["caption", "cell", "code", "columnheader", "definition", "figure", "list", "listitem", "math", "meter", "row", "rowgroup", "rowheader", "term"], roles);
-        if (RPTUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+        CommonUtil.concatUniqueArrayItemList(["caption", "cell", "code", "columnheader", "definition", "figure", "list", "listitem", "math", "meter", "row", "rowgroup", "rowheader", "term"], roles);
+        if (AriaUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
             return null;
 
         let violatedPositionText = "";
@@ -139,7 +139,7 @@ const validateParams = {
 
 function getRegex(doc, type) {
     if (!validateParams[type]) return "";
-    let sensoryRegex = getCache(doc, type + "_sensory_misuse", null);
+    let sensoryRegex = CacheUtil.getCache(doc, type + "_sensory_misuse", null);
     if (sensoryRegex == null) {
         let sensoryText = validateParams[type].value;
         let regexStr = "(\s\s+|" + sensoryText[0];
@@ -154,7 +154,7 @@ function getRegex(doc, type) {
         //regexStr += ")\\W";
         regexStr += ")";
         sensoryRegex = new RegExp(regexStr, "gi");
-        setCache(doc, type +"_sensory_misuse", sensoryRegex);
+        CacheUtil.setCache(doc, type +"_sensory_misuse", sensoryRegex);
     }
     return sensoryRegex;
 }

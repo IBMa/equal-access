@@ -13,18 +13,18 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { VisUtil } from "../util/VisUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
+    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img,aria:image, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak, doc-example",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
             "fail_no_accessible_name": "aria_accessiblename_exists.html",
+            "fail_no_accessible_name_image": "aria_accessiblename_exists.html",
             "group": "aria_accessiblename_exists.html"
         }
     },
@@ -32,6 +32,7 @@ export const aria_accessiblename_exists: Rule = {
         "en-US": {
             "pass": "An accessible name is provided for the element",
             "fail_no_accessible_name": "Element <{0}> with \"{1}\" role has no accessible name",
+            "fail_no_accessible_name_image": "Element <{0}> with \"{1}\" role has no accessible name",
             "group": "Elements with certain roles should have accessible names"
         }
     },
@@ -39,9 +40,17 @@ export const aria_accessiblename_exists: Rule = {
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.RECOMMENDATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["fail_no_accessible_name"]
+    },
+    {
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["ARIA"],
+        "level": eRulePolicy.RECOMMENDATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["fail_no_accessible_name_image"]
     }],
-    act: [],
+    act: [{"23a2a8": {"fail_no_accessible_name_image": "fail"}}],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
@@ -49,8 +58,8 @@ export const aria_accessiblename_exists: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
-        // svg element is handled in svg_graphics)labbelled rule
-        if (nodeName === 'svg') return;
+        // svg element is handled in svg_graphics_labbelled rule and image rules
+        if (nodeName === 'svg' || nodeName === 'img') return;
         
         // when table element with a caption as first child
         if (nodeName === 'table' 
@@ -58,24 +67,21 @@ export const aria_accessiblename_exists: Rule = {
             && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
             return RulePass("pass");
 
-        const invalidRoles = getRolesUndefinedByAria(ruleContext);
+        const invalidRoles = AriaUtil.getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
-        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = AriaUtil.getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) return null;
-        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = AriaUtil.getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
-        if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {
-            let roles = RPTUtil.getRoles(ruleContext, true);
-            //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
-            if (roles && roles.length > 0 && ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents")) {
-                //if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
-                //exclude the hidden text?
-                if (!RPTUtil.hasInnerContentHidden(ruleContext))
-                    return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);  
-            } else 
-                return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);   
-        }
+        let role = AriaUtil.getResolvedRole(ruleContext);
+        
+        const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
+        if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0) {
+            if (role === 'img' || role === 'image')
+                return RuleFail("fail_no_accessible_name_image", [ruleContext.nodeName.toLowerCase(), role]); 
+            return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
+        }    
         return RulePass("pass");
     }
 }

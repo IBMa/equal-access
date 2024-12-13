@@ -11,11 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let aria_main_label_unique: Rule = {
+export const aria_main_label_unique: Rule = {
     id: "aria_main_label_unique",
     context: "aria:main",
     refactor: {
@@ -46,14 +47,14 @@ export let aria_main_label_unique: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let contextLabel = RPTUtil.getAriaLabel(ruleContext);
+        let contextLabel = AriaUtil.getAriaLabel(ruleContext);
 
-        let parentDocRole = RPTUtil.getAncestorWithRole(
+        let parentDocRole = AriaUtil.getAncestorWithRole(
             ruleContext,
             "document",
             true
         );
-        let mains = RPTUtil.getElementsByRoleHidden(
+        let mains = CommonUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
             "main",
             true,
@@ -63,13 +64,13 @@ export let aria_main_label_unique: Rule = {
         for (let i = 0; i < mains.length; ++i) {
             if (mains[i] === ruleContext) continue;
             result = RulePass("Pass_0");
-            let thisParentDocRole = RPTUtil.getAncestorWithRole(
+            let thisParentDocRole = AriaUtil.getAncestorWithRole(
                 mains[i],
                 "document",
                 true
             );
             if (thisParentDocRole === parentDocRole) {
-                if (RPTUtil.getAriaLabel(mains[i]) === contextLabel) {
+                if (AriaUtil.getAriaLabel(mains[i]) === contextLabel) {
                     result = RuleFail("Fail_1");
                     break;
                 }

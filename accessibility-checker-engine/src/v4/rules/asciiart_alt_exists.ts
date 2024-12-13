@@ -11,11 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
-import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { CommonUtil } from "../util/CommonUtil";
 
-export let asciiart_alt_exists: Rule = {
+export const asciiart_alt_exists: Rule = {
     id: "asciiart_alt_exists",
     context: "dom:pre, dom:listing, dom:xmp, dom:plaintext",
     refactor: {
@@ -58,14 +57,14 @@ export let asciiart_alt_exists: Rule = {
         if (ruleContext.nodeName.toLowerCase() == "pre") {
             if ((ruleContext.previousSibling && ruleContext.previousSibling.nodeName.toLowerCase() == "code") ||
                 ruleContext.getElementsByTagName("code").length > 0 ||
-                RPTUtil.getAncestor(ruleContext, "code")) {
+                CommonUtil.getAncestor(ruleContext, "code")) {
 
                 return RulePass("Pass_0");
             }
         }
 
         let passed = true;
-        let txtValue = RPTUtil.getInnerText(ruleContext);
+        let txtValue = CommonUtil.getInnerText(ruleContext);
         let nonAlphaNumericNorSpaceCount = 0;
         let alphNumSameCharacterCount = 0;
         let lastCharacter = "";

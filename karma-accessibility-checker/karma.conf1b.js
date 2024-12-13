@@ -79,6 +79,10 @@ module.exports = function (config) {
             "test/client/**/aChecker.LocalFile.test.js",
             // host server was shutdown
             "test/client/**/aChecker.URL.test.js",
+
+            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/target_spacing_sufficient_ruleunit/element_inline2.html", 
+            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/target_spacing_sufficient_ruleunit/link_inline_with_block.html",  
+            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/target_spacing_sufficient_ruleunit/link_text.html"
         ],
         // Frameworks to use to run the tests that we define
         // Available frameworks: https://npmjs.org/browse/keyword/karma-adapter

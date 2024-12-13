@@ -11,24 +11,25 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { VisUtil } from "../../v2/dom/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
-export let input_haspopup_conflict: Rule = {
+export const input_haspopup_conflict: Rule = {
     id: "input_haspopup_conflict",
     context: "dom:input[list][aria-haspopup]",
     refactor: {
         "input_haspopup_invalid": {
-            "Pass": "pass",
+            // "Pass": "pass",
             "Potential_1": "potential_type_misuse",
             "Potential_2": "potential_misuse"}
     },
     help: {
         "en-US": {
             "group": "input_haspopup_conflict.html",
-            "pass": "input_haspopup_conflict.html",
+            // "pass": "input_haspopup_conflict.html",
             "potential_type_misuse": "input_haspopup_conflict.html",
             "potential_misuse": "input_haspopup_conflict.html",
             "potential_list_notexist": "input_haspopup_conflict.html",
@@ -39,7 +40,7 @@ export let input_haspopup_conflict: Rule = {
     messages: {
         "en-US": {
             "group": "<input> element with a 'list' attribute should not use an explicit 'aria-haspopup' attribute",
-            "pass": "The <input> element with a 'list' attribute does not use an explicit 'aria-haspopup' attribute",
+            // "pass": "The <input> element with a 'list' attribute does not use an explicit 'aria-haspopup' attribute",
             "potential_type_misuse": "The <input> element with type \"{0}\" and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "potential_misuse": "The <input> element with a missing or invalid type and 'list' attribute uses an explicit 'aria-haspopup' attribute",
             "potential_list_notexist": "The list attribute for the <input> element is invalid",
@@ -58,10 +59,10 @@ export let input_haspopup_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip if the fieldset is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
             return null;
 
-        let roles = RPTUtil.getUserDefinedRoles(ruleContext);
+        let roles = AriaUtil.getUserDefinedRoles(ruleContext);
         // let "aria_role_valid" to handle invalid role. Only allowed role is combobox which is implicit. 
         if (roles && roles.length > 0 && !roles.includes('combobox')) 
             return null;         
