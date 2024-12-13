@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join, resolve as pathResolve } from "path";
 import { ICheckerReport, ICheckerResult } from "./api/IChecker.js";
 import { ACBrowserManager } from "./ACBrowserManager.js";
