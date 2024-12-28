@@ -325,7 +325,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem"}}>
                         <div style={{flex: "0 1 8.75rem",paddingRight:"1rem"}}>
                             <div style={{display: "flex"}}>
-                                <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem" }}>
                                     {this.state.scanningState !== "idle" && <InlineLoading 
                                         className="inlineLoading"
                                         description={"Scanning"}
@@ -335,6 +334,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                     
                                     <ComboButton
                                             label="Scan"
+                                            menuAlignment="bottom-start"
                                             ref={this.scanRef}
                                             style={{
                                                 display:
@@ -418,7 +418,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                                 }}
                                             />
                                         </ComboButton>
-                             </div>      
                             </div>
                         </div>
                         <div style={{flex: "1 1 8.75rem"}}>
