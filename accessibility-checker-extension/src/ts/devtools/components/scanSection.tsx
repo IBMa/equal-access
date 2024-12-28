@@ -28,18 +28,18 @@ import {
     InlineLoading,
     Modal,
     Grid,
-    OverflowMenu,
-    OverflowMenuItem,
     Switch,
     Tooltip,
     Link,
+    ComboButton,
+    MenuItem,
+    MenuItemDivider
 } from "@carbon/react";
 import {
     Keyboard,
     KeyboardOff
 } from "@carbon/react/icons";
 import { ListenerType } from '../../messaging/controller';
-import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { DefinitionTooltip } from '@carbon/react';
@@ -323,70 +323,102 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             <Grid> 
                 <Column sm={4} md={8} lg={8}>
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem"}}>
-                        <div style={{flex: "0 1 8.75rem"}}>
+                        <div style={{flex: "0 1 8.75rem",paddingRight:"1rem"}}>
                             <div style={{display: "flex"}}>
                                 <div style={{flex: "1 1 8.75rem", maxWidth: "8.75rem" }}>
                                     {this.state.scanningState !== "idle" && <InlineLoading 
                                         className="inlineLoading"
                                         description={"Scanning"}
-                                        style={{minWidth: "8.75rem", paddingLeft: ".5rem" }}
+                                        style={{minWidth: "8.75rem",  }}
                                         status={this.state.scanningState !== "done" ? 'active' : 'finished'}
                                     />}
-                                    <Button 
-                                        ref={this.scanRef}
-                                        style={{
-                                            display: this.state.scanningState !== "idle" ? "none": undefined,
-                                            minWidth: "8.75rem"
-                                        }}
-                                        accesskey="s"
-                                        size="sm"
-                                        disabled={this.state.pageStatus !== "complete" || !this.state.canScan} 
-                                        onClick={() => { 
-                                            this.scan(); 
-                                        }
-                                    }>Scan</Button>
-                                </div>
-                                <OverflowMenu 
-                                    data-floating-menu-container
-                                    size="sm" 
-                                    ariaLabel="stored scans" 
-                                    renderIcon={ChevronDown}
-                                >
-                                    {/* <OverflowMenuItem
-                                        disabled={!this.state.reportContent}
-                                        itemText="Download current scan" 
-                                        onClick={() => this.devtoolsController.exportXLS("last") }
-                                    /> */}
-                                    <OverflowMenuItem 
-                                        // if scanStorage false not storing scans, if true storing scans
-                                        itemText= {this.state.storeReports ? "Stop storing scans" : "Start storing scans"}
-                                        onClick={() => {
-                                            this.devtoolsController.setStoreReports(!this.state.storeReports);
-                                        }}
-                                    />
-                                    <OverflowMenuItem 
-                                        disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                        itemText="Export stored scans" 
-                                        onClick={() => this.devtoolsController.exportXLS("all") }
-                                    />
-                                    <OverflowMenuItem 
-                                        disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
-                                        itemText="View stored scans" 
-                                        onClick={async () => {
-                                            await devtoolsAppController.setSecondaryView("stored");
-                                            devtoolsAppController.openSecondary(".cds--overflow-menu[aria-label='stored scans']");
-                                        }}
-                                    />
-                                    <OverflowMenuItem 
-                                        disabled={this.state.storedReportsCount === 0}
-                                        isDelete={this.state.storedReportsCount > 0}
-                                        hasDivider
-                                        itemText="Delete stored scans" 
-                                        onClick={() => {
-                                            this.setState({ confirmClearStored: true });
-                                        }}
-                                    />
-                                </OverflowMenu>
+                                    
+                                    <ComboButton
+                                            label="Scan"
+                                            ref={this.scanRef}
+                                            style={{
+                                                display:
+                                                    this.state.scanningState !==
+                                                    "idle"
+                                                        ? "none"
+                                                        : undefined,
+                                                minWidth: "8.75rem",
+                                            }}
+                                            accesskey="s"
+                                            size="sm"
+                                            disabled={
+                                                this.state.pageStatus !==
+                                                    "complete" ||
+                                                !this.state.canScan
+                                            }
+                                            onClick={() => {
+                                                this.scan();
+                                            }}
+                                        >
+                                            <MenuItem
+                                                // if scanStorage false not storing scans, if true storing scans
+                                                label={
+                                                    this.state.storeReports
+                                                        ? "Stop storing scans"
+                                                        : "Start storing scans"
+                                                }
+                                                onClick={() => {
+                                                    this.devtoolsController.setStoreReports(
+                                                        !this.state.storeReports
+                                                    );
+                                                }}
+                                            />
+                                            <MenuItem
+                                                label="Export stored scans"
+                                                disabled={
+                                                    this.state
+                                                        .storedReportsCount ===
+                                                    0
+                                                }
+                                                onClick={() =>
+                                                    this.devtoolsController.exportXLS(
+                                                        "all"
+                                                    )
+                                                }
+                                            />
+                                            <MenuItem
+                                                label="View stored scans"
+                                                disabled={
+                                                    this.state
+                                                        .storedReportsCount ===
+                                                    0
+                                                } // disabled when no stored scans or 1 stored scan
+                                                onClick={async () => {
+                                                    await devtoolsAppController.setSecondaryView(
+                                                        "stored"
+                                                    );
+                                                    devtoolsAppController.openSecondary(
+                                                        ".cds--overflow-menu[aria-label='stored scans']"
+                                                    );
+                                                }}
+                                            />
+                                            <MenuItemDivider />
+
+                                            <MenuItem
+                                                disabled={
+                                                    this.state
+                                                        .storedReportsCount ===
+                                                    0
+                                                }
+                                                isDelete={
+                                                    this.state
+                                                        .storedReportsCount > 0
+                                                }
+                                                label="Delete stored scans"
+                                                onClick={() => {
+                                                    this.setState({
+                                                        confirmClearStored:
+                                                            true,
+                                                    });
+                                                }}
+                                            />
+                                        </ComboButton>
+                             </div>      
                             </div>
                         </div>
                         <div style={{flex: "1 1 8.75rem"}}>
