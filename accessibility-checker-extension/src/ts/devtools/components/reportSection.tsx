@@ -290,7 +290,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 <Button
                                     kind="tertiary"
                                     disabled={totalCount === 0}
-                                    style={{ float: "right", minHeight: "18px", maxHeight: "32px", minWidth: "10rem" }}
+                                    style={{ float: "right", minHeight: "18px", maxHeight: "32px", minWidth: "10rem",  alignItems: "center" }}
                                     onClick={() => this.devtoolsController.exportXLS("last") }
                                 >Export XLS</Button>
                             </div>
