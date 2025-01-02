@@ -183,9 +183,7 @@ const filteredReport = {
                         </div>
                         <div
                             style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "8px", // Add spacing between elements
+                                gap: "8px", // Add spacing between elements
                             }}
                         >
                             {/* URL with ellipsis */}
@@ -206,13 +204,15 @@ const filteredReport = {
 
                             {/* Copy button */}
                             <CopyButton
-                            onClick={this.copyToClipboard}
-                            feedback="Copied!"
-                            feedbackTimeout={2000} 
-                            style={{
-                                alignSelf: "flex-start", 
-                                marginTop: "4px", 
-                            }}
+                                align="bottom-left"
+                                iconDescription="Copy page URL to clipboard"
+                                onClick={this.copyToClipboard}
+                                feedback="Copied!"
+                                feedbackTimeout={2000} 
+                                style={{
+                                    alignSelf: "flex-start", 
+                                    marginTop: "4px", 
+                                }}
                             />
                         </div>
                         </Column>
