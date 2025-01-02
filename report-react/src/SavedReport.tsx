@@ -20,7 +20,7 @@ import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
-import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect} from '@carbon/react';
+import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect,CopyButton} from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
 import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages";
 import ReportElements from "./report/ReportElements";
@@ -75,6 +75,10 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
             this.setState({selectedItems:[...this.state.selectedItems,updatedFilter]})
         }
       }
+    copyToClipboard = () => {
+          if(this.props.reportData)
+        navigator.clipboard.writeText(this.props.reportData.tabURL)
+      };
 
     render() {
        
@@ -173,10 +177,45 @@ const filteredReport = {
                     </Grid>
                     <section aria-label="Report overview: score cards">
                         <Grid>
-                            <Column sm={4} md={4} lg={4}>
-                                <div className="time" style={{paddingTop:"12px"}}>{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
-                                <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
-                            </Column>
+                        <Column sm={4} md={4} lg={4}>
+                        <div className="time" style={{ paddingTop: "12px" }}>
+                            {new Date(this.props.reportData.report.timestamp).toLocaleString()}
+                        </div>
+                        <div
+                            style={{
+                                gap: "8px", // Add spacing between elements
+                            }}
+                        >
+                            {/* URL with ellipsis */}
+                            <div
+                            className="url"
+                            style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 4, // Limit text to 4 lines
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                wordBreak: "break-word", // Handle long URLs gracefully
+                            }}
+                            >
+                            <strong>Scanned page:</strong>{" "}
+                            <span title={this.props.reportData.tabURL}>{this.props.reportData.tabURL}</span>
+                            </div>
+
+                            {/* Copy button */}
+                            <CopyButton
+                                align="bottom-left"
+                                iconDescription="Copy page URL to clipboard"
+                                onClick={this.copyToClipboard}
+                                feedback="Copied!"
+                                feedbackTimeout={2000} 
+                                style={{
+                                    alignSelf: "flex-start", 
+                                    marginTop: "4px", 
+                                }}
+                            />
+                        </div>
+                        </Column>
                             <Column sm={4} md={4} lg={4}>
                                 <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.selectedItems.some((item)=>item.text==="Violations")}
                                     handleCardClick={this.handleCardClick}>
