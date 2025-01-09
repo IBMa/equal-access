@@ -210,6 +210,99 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState({ selectedIssue: issue });
     }
 
+    private async aiProcessIssueData(issue: IIssue) {
+        // get help file
+        const str = issue.help;
+        const splitWord = "html";
+        const index = str.indexOf(splitWord);
+        let before = "";
+        if (index !== -1) {
+            before = str.substring(0, index + splitWord.length);
+        }
+        let helpURL = before; // string before splitWord
+       
+        let helpHTML = '';
+        await fetch(helpURL)
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.text(); // Assuming the URL returns text content
+            })
+            .then(data => {
+                // 'data' now contains the content from the URL
+                helpHTML = data; 
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the data:', error);
+            });
+        
+        const cheerio = require('cheerio');
+        const $ = cheerio.load(helpHTML);
+        const scripts = $('mark-down script[type="text/plain"]');
+
+        let whatToDo = '';
+        let aboutThisRequirement = '';
+
+        scripts.each((_index:any, script:any) => {
+            
+            const text = $(script).text();
+            const sections = text.split('###');
+
+             sections.forEach((section:any) => {
+                if (section.trim().startsWith('What to do')) {
+                whatToDo = section.trim(); // here is the What to do section
+                } else if (section.trim().startsWith('About this requirement')) {
+                aboutThisRequirement = section.trim(); // About this requirement section
+                }
+            });
+        });
+
+        let settings = await this.bgcontroller.getSettings();
+        let rulesets = await this.bgcontroller.getRulesets(this.devtoolsAppController.contentTabId!);
+        let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
+
+        let issueCheckpoints = [];
+        for (const checkpoint of ruleset!.checkpoints) {
+            // see if issue ruleId in checkpoint
+            for (const rule of checkpoint.rules!) {
+                if (issue.ruleId === rule.id) {
+                    issueCheckpoints.push(checkpoint);
+                }
+            }
+        }
+        // get the specific rule in each Checkpoint
+        let checkpointNumber = "";
+        for (const checkpoint of issueCheckpoints) {
+            checkpointNumber += checkpoint.num;
+        }
+        let checkpointRule;
+        for (const rule of issueCheckpoints[0].rules!) {
+            if (issue.ruleId === rule.id) {
+                checkpointRule = rule;
+            }
+        }
+        let checkpointWcagLevel = "";
+        for (const checkpoint of issueCheckpoints) {
+            checkpointWcagLevel += checkpoint.wcagLevel;
+        }
+        
+        // AI Prompt Data
+        console.log("\nAI PROMPT DATA\n");
+        console.log("Issue type = ", UtilIssue.valueToStringSingular(issue.value));
+        console.log("Toolkit level = ", checkpointRule?.toolkitLevel);
+        console.log("Checkpoint = ", checkpointNumber);
+        console.log("WCAG level = ", checkpointWcagLevel);
+        console.log("Rule ID/name = ", issue.ruleId);
+        console.log("Rule message: ", issue.message);
+        console.log("Rule reason code: ", issue.reasonId);
+        console.log("Rule specific message: ");
+        console.log("Element where issue found", issue.path.dom);
+        console.log("Code where issue is found: ", issue.snippet);
+        console.log("(from Help)\n", whatToDo);
+        console.log("(from Help)\n", aboutThisRequirement);
+    }
+
     onGroup(groupId: string) {
         let newExpanded: string[] = JSON.parse(JSON.stringify(this.state.expandedGroups));
         if (newExpanded.includes(groupId)) {
@@ -553,6 +646,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState({ checkedIssues: modifyList });
     }
 
+
+
     ///////////////// Render ////////////
     render() {
         let content: React.ReactNode = <></>;
@@ -841,6 +936,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
                                                 evt.stopPropagation();
+                                                console.log("Trigger the collection of AI data for prompt.");
+                                                console.log("thisIssue: ", thisIssue);
+                                                // when user as for learn more give them AI enhanced help
+                                                this.aiProcessIssueData(thisIssue);
                                                 this.onRow(group, thisIssue);
                                                 this.devtoolsAppController.setSecondaryView("help");
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
