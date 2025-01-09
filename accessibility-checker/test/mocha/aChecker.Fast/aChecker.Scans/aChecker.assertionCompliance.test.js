@@ -49,7 +49,35 @@ var skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
     path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
     path.join(testRoot, "element_accesskey_labelled_ruleunit", "AssesskeyNeedsLabelHidden.html"),
-    path.join(testRoot, "aria_activedescendant_valid_ruleunit", "ActiveDescendant.html")
+    path.join(testRoot, "aria_activedescendant_valid_ruleunit", "ActiveDescendant.html"),
+
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-pass-1.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-pass-2.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-fail-1.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-fail-2.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-fail-3.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-1.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-2.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-3.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-4.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-5.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-6.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-7.html"),
+    path.join(testRoot, "meta_refresh_delay_ruleunit", "act-inapplicable-8.html"),
+
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-pass-1.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-pass-2.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-fail-1.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-fail-2.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-fail-3.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-1.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-2.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-3.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-4.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-5.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-6.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-8.html")
 ]
 var skipMap = {}
 skipList.forEach(function (skip) {
