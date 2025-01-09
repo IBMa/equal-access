@@ -140,7 +140,7 @@ var skipList = [
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-5.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-6.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
-    path.join(tprocess.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-8.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-8.html"),
 
 
     // Blank titles are removed from the DOM
