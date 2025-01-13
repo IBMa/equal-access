@@ -199,7 +199,7 @@ public class AccessibilityCheckerPlaywrightTest {
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-1.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-2.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-3.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), , "meta_redirect_optional_ruleunit", "act-inapplicable-4.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-4.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-5.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-6.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(),  "meta_redirect_optional_ruleunit", "act-inapplicable-7.html").toFile(),
