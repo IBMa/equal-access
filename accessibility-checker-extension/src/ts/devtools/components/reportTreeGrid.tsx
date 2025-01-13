@@ -578,10 +578,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     }}
                 >turn off focus view</Link>, <Link
                     inline={true}
-                    onClick={() => {
-                        this.props.onResetFilters;
-                    }}
-                >select all issue types</Link>, and do not filter hidden issues.
+                    onClick={()=>this.props.onResetFilters() }
+                >reset the filters</Link>, and do not filter hidden issues.
             </div>
         } else {
             // Calculate all of the show/hide/checked states
