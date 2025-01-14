@@ -16,23 +16,23 @@
 
  'use strict';
 
-var fs = require("fs");
-var path = require("path");
-var unitTestcaseHTML = {};
-var aChecker = require("../../../../src");
-const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
-var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
-var gdirs = fs.readdirSync(testRootDir);
-var expect = require("chai").expect;
+import * as fs from "fs";
+import * as path from "path";
+import * as aChecker from "../../../../src/mjs/index.js";
+// import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
+import { expect } from "chai";
+let unitTestcaseHTML = {};
+let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
+let gdirs = fs.readdirSync(testRootDir);
 
 gdirs.forEach(function (gdir) {
-    var gdir = path.join(testRootDir, gdir)
+    gdir = path.join(testRootDir, gdir)
     if (fs.lstatSync(gdir).isDirectory()) {
-        var files = fs.readdirSync(gdir);
+        let files = fs.readdirSync(gdir);
         files.forEach(function (f) {
-            var fileExtension = f.substr(f.lastIndexOf('.') + 1);
+            let fileExtension = f.substr(f.lastIndexOf('.') + 1);
             if (fileExtension === 'html' || fileExtension === 'htm') {
-                var f = path.join(gdir, f);
+                f = path.join(gdir, f);
                 unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
             };
         });
@@ -41,7 +41,7 @@ gdirs.forEach(function (gdir) {
 
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules")
-var skipList = [
+let skipList = [
     // Testcase has a script reference to a file, which traps when loaded as a string
     // Not in Karma conf skip list
     path.join(testRoot, "Hidden", "unitTestisNodeVisible.html"),
@@ -79,7 +79,7 @@ var skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-8.html")
 ]
-var skipMap = {}
+let skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
 });
@@ -91,14 +91,14 @@ describe("Rule Unit Tests With Assertion", function () {
     });
 
     // Variable Decleration
-    var originalTimeout;
+    let originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (let unitTestFile in unitTestcaseHTML) {
         if (unitTestFile in skipMap) continue;
 
         // Get the extension of the file we are about to scan
-        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.

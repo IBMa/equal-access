@@ -353,7 +353,7 @@ export class ReporterManager {
     private static filterReport(engineResult: IEngineReport, scanLabel: string): IBaselineReport {
         let ignoreLookup = {}
         let baselineReport = ReporterManager.absAPI.loadBaseline(scanLabel);
-        if (baselineReport) {
+        if (baselineReport && baselineReport.results) {
             for (const issue of baselineReport.results) {
                 ignoreLookup[issue.path.dom] = ignoreLookup[issue.path.dom] || {}
                 ignoreLookup[issue.path.dom][issue.ruleId] = ignoreLookup[issue.path.dom][issue.ruleId] || {}
