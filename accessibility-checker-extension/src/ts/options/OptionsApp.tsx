@@ -43,6 +43,8 @@ import {
 
 import "./option.scss";
 import { getDevtoolsController } from "../devtools/devtoolsController";
+import { Theme } from "@carbon/react";
+import { BrowserDetection } from "../util/browserDetection";
 
 interface OptionsAppState {
     lastSettings?: ISettings
@@ -453,7 +455,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             />
                         </>}
 
-                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(
+                             <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
+                            <Modal
                             aria-label="Version information"
                             modalHeading="Selecting a rule set deployment date"
                             passiveModal={true}
@@ -472,9 +476,13 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                             <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to the requirements in the accessibility guideline,
                                 see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
-                        </Modal>, document.body)}
+                                </Modal>
+                                </Theme>
+                        , document.body)}
 
-                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(
+                            <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
+                            <Modal
                             modalHeading="Stored scans"
                             size='sm'
                             primaryButtonText="Change deployment dates" 
@@ -491,7 +499,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             }
                         >
                             <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
-                        </Modal>, document.body)}
+                                </Modal>
+                                </Theme>
+                        , document.body)}
 
                     </div>
                     {/**** Select ruleset / policy  */}
@@ -535,7 +545,9 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             />
                         </>}
 
-                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                        {typeof document === 'undefined' ? null : ReactDOM.createPortal(
+                            <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
+                            <Modal 
                             aria-label="Guidelines information"
                             modalHeading="Selecting an accessibility guideline"
                             passiveModal={true}
@@ -551,10 +563,14 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA)</strong>: Referenced by US Section 508, but not the latest W3C specification.</p>
                             <p style={{ maxWidth: "100%" }}><strong>Rule sets</strong>: A packaged set for a guideline, each of which is a collection of rules mapped to requirements in the accessibility guideline, 
                                 see the <Link inline={true} size="md" className="link" href="https://www.ibm.com/able/requirements/checker-rule-sets" target="_blank" style={{ color: '#002D9C' }}>Checker rule sets</Link>.</p>
-                        </Modal>, document.body)}
+                                </Modal>
+                                </Theme>
+                        , document.body)}
                     </div>
 
-                    {typeof document === 'undefined' ? null : ReactDOM.createPortal(<Modal
+                    {typeof document === 'undefined' ? null : ReactDOM.createPortal(
+                        <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"}>
+                        <Modal
                         modalHeading="Stored scans"
                         primaryButtonText="Change Guidelines" 
                         secondaryButtonText="Cancel"
@@ -570,7 +586,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         }
                     >
                         <p>Changing the rule set deployment dates will delete any currently stored scans.</p>
-                    </Modal>, document.body)}
+                            </Modal>
+                            </Theme>, document.body)}
 
 
                     <h2>Keyboard checker mode</h2>
