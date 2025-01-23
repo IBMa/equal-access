@@ -14,7 +14,7 @@
     limitations under the License.
 *****************************************************************************/
 
-import { IBaselineReport, IBaselineResult } from "../engine/IReport.js";
+import { IBaselineReport, IBaselineResult } from "../engine/IReport";
 
 /**
  * Interface for writing files

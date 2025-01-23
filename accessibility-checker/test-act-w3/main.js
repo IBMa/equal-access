@@ -1,8 +1,8 @@
 'use strict';
 
-import * as puppeteer from "puppeteer";
-import { getTestcases, getResult } from "./act.mjs";
-import * as fs from "fs";
+const puppeteer = require('puppeteer');
+const { getTestcases, getResult } = require("./act");
+const fs = require("fs");
 (async () => {
     // Fetch the testcases from ACT
     let ruleTestInfo = await getTestcases();
@@ -12,7 +12,7 @@ import * as fs from "fs";
     }
     
     // Setup the Puppeteer test environment
-    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: true, ignoreHTTPSErrors: true });
     let pupPage = await browser.newPage();
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {
@@ -63,14 +63,12 @@ import * as fs from "fs";
                         while (!succeeded) {
                             try {
                                 await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded' });
-                                const client = await pupPage.target().createCDPSession();
-                                await client.send("Page.stopLoading");
+                                await pupPage._client.send("Page.stopLoading");
                                 let win = await pupPage.evaluate("document");
                                 if (win) {
                                     succeeded = true;
                                 }
                             } catch (err) {
-                                console.log(err);
                             }
                         }
                     } else {

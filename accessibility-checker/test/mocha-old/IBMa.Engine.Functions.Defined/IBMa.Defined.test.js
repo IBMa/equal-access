@@ -14,9 +14,9 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../src/mjs/index.js";
-import { expect } from "chai";
-    
+var expect = require('chai').expect;
+var aChecker = require("../../../src/");
+
 // Check all aspects of the IBMa namespace to make sure that all things are defined.
 // Need to do this check, to make sure the engine is loaded into the browser correctly by the karma plugin.
 describe("Check IBMa namespace", function () {

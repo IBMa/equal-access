@@ -22,7 +22,7 @@
 // Load all the modules that are needed
 import { tmpdir } from "os";
 import * as pathLib from "path";
-import { IConfigInternal, eRuleLevel } from "./IConfig.js";
+import { IConfigInternal, eRuleLevel } from "./IConfig";
 
 // Used to specify all the constant
 export const ACConstants : IConfigInternal = {
@@ -83,7 +83,7 @@ export const ACConstants : IConfigInternal = {
     configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), pathLib.join(".config", "aceconfig")],
 
     ignoreHTTPSErrors: false,
-    headless: "shell",
+
     perfMetrics: true,
     engineMode: "DEFAULT"
 };

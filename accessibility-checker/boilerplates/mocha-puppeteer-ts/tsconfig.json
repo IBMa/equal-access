@@ -2,8 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "allowJs": true,
-        "target": "ES6",
-        "module": "es2022",
+        "target": "ES5",
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,

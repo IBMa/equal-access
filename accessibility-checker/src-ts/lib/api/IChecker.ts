@@ -1,5 +1,5 @@
-import { eRuleLevel } from "../common/config/IConfig.js";
-import { IBaselineReport } from "../common/engine/IReport.js";
+import { eRuleLevel } from "../common/config/IConfig";
+import { IBaselineReport } from "../common/engine/IReport";
 
 export enum eAssertResult {
     ERROR = -1,

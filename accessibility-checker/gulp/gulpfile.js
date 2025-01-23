@@ -31,17 +31,15 @@ function notice(years) {
         " *****************************************************************************/\n";
 }
 
-import gulp from "gulp";
-import ginsert from "gulp-insert";
-import greplace from "gulp-replace";
-import terser from "gulp-terser";
+const gulp = require("gulp"),
+    ginsert = require("gulp-insert"),
+    greplace = require("gulp-replace"),
+    terser = require("gulp-terser");
 
 gulp.task("build-uglify", function () {
-    return gulp.src(["../src/**/lib/**/*.js", "../src/*/index.js", "!../src/node_modules/**"])
-        .pipe(terser({compress:{typeofs: false}}))
-        // .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
-        // .pipe(greplace('void 0===ace', "'undefined'===typeof ace"))
-        // .pipe(greplace('void 0!==ace', "'undefined'!==typeof ace"))
+    return gulp.src(["../src/**/lib/**/*.js", "../src/index.js", "!../src/node_modules/**"])
+        .pipe(terser())
+        .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
         .pipe(ginsert.prepend(notice("2016,2017,2018,2019")))
         .pipe(gulp.dest("../package"));
 
@@ -49,8 +47,12 @@ gulp.task("build-uglify", function () {
 
 gulp.task("build-copy", function () {
     return gulp.src([
+<<<<<<< HEAD:accessibility-checker/gulp/gulpfile.mjs
         "../src/bin/achecker.js",
         "../src/mjs/index.d.ts",
+=======
+        "../src/**/bin/achecker.js",
+>>>>>>> parent of b2bedf83 (chore(all): Sync with the master and update libraries (#1960)):accessibility-checker/gulp/gulpfile.js
         "../src/package.json",
         "../src/README.md",
     ])

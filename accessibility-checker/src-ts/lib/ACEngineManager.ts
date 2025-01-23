@@ -4,10 +4,6 @@ import { ACConfigManager } from "./common/config/ACConfigManager";
 import { fetch_get_text } from "./common/api-ext/Fetch";
 import { IChecker } from "./common/engine/IChecker";
 
-// The following two lines will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
-// import { createRequire } from "module"; 
-// const require = createRequire(import.meta.url);
-
 let ace;
 
 let checker: IChecker;
@@ -77,7 +73,7 @@ export class ACEngineManager {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof ace) {
+                                if ('undefined' !== typeof(ace)) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
@@ -141,7 +137,7 @@ export class ACEngineManager {
         if ('undefined' === typeof (ace) || ace === null) {
             eval(${JSON.stringify(ACEngineManager.engineContent)})
             globalThis.ace_ibma = ace;
-            if ('undefined' !== typeof ace) {
+            if ('undefined' !== typeof(ace)) {
                 ace = ace_backup_in_ibma;
             } 
             cb();
@@ -168,11 +164,9 @@ export class ACEngineManager {
                     return ACEngineManager.loadEngineLocal();
                 }).catch(function (err) {
                     console.log(err);
-                    return Promise.reject(err);
                 });
             } catch (e) {
                 console.log(e);
-                return Promise.reject(e);
             }
         } else if (ACEngineManager.isWebDriverIO(content)) {
 
@@ -277,7 +271,7 @@ export class ACEngineManager {
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
-                    fs.writeFile(nodePath + ".js", data, async function (err) {
+                    fs.writeFile(nodePath + ".js", data, function (err) {
                         if (err) {
                             console.log(err);
                             reject(err);

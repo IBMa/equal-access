@@ -2,14 +2,7 @@
   "name": "accessibility-checker",
   "version": "3.0.0",
   "description": "An automated testing tools for accessibility testing using Puppeteer, Selenium, or Zombie",
-  "main": "cjs/index.js",
-  "module": "mjs/index.js",
-  "exports": {
-    ".": {
-        "import": "./mjs/index.js",
-        "require": "./cjs/index.js"
-    }
-  },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,11 +18,12 @@
   "author": "IBM Accessibility",
   "license": "Apache-2.0",
   "dependencies": {
+    "axios": "^1.4.0",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
-    "puppeteer": "^22.14.0",
+    "puppeteer": "^13.0.0",
     "string-hash": "^1.1.3"
   },
   "repository": {

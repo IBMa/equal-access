@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join, resolve as pathResolve } from "path";
 import { ICheckerReport, ICheckerResult } from "./api/IChecker.js";
@@ -9,6 +10,19 @@ import { ReporterManager } from "./common/report/ReporterManager.js";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI.js";
 import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
+=======
+import { ICheckerReport, ICheckerResult } from "./api/IChecker";
+import { ACBrowserManager } from "./ACBrowserManager";
+import { ACEngineManager } from "./ACEngineManager";
+import { ACConfigManager } from "./common/config/ACConfigManager";
+import { IConfigInternal } from "./common/config/IConfig";
+import { ReporterManager } from "./common/report/ReporterManager";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
+import { IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { dirname, join, resolve as pathResolve } from "path";
+import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
+>>>>>>> parent of b2bedf83 (chore(all): Sync with the master and update libraries (#1960))
 
 declare var after;
 
@@ -46,11 +60,7 @@ class MyFS implements IAbstractAPI {
     loadBaseline(label) {
         let baselineFile = join(join(process.cwd(), Config.baselineFolder), label+".json");
         if (!existsSync(baselineFile)) return null;
-        if (typeof require !== "undefined") {
-            return require(baselineFile);
-        } else {
-            return JSON.parse(readFileSync(baselineFile).toString());
-        }
+        return require(baselineFile);
     }
     getChecker() {
         return ACEngineManager.getChecker();
@@ -75,47 +85,42 @@ async function initialize() {
     BaselineManager.initialize(Config, absAPI, refactorMap);
 }
 
-(async () => {
-    try {
-        // If cucumber is the platform...
-        let module = (await import("cucumber"!));
-        let {AfterAll} = require('cucumber');
-        if (module.default.AfterAll) {
-            module.default.AfterAll(function (done) {
-                // const rulePack = `${Config.rulePack}`;
+try {
+    // If cucumber is the platform...
+    let {AfterAll} = require('cucumber');
+    AfterAll(function (done) {
+        // const rulePack = `${Config.rulePack}`;
+        initialize()
+            .then(() => ReporterManager.generateSummaries())
+            .then(() => ACBrowserManager.close())
+            .then(done);
+    });
+} catch (e) {
+    if (typeof (after) !== "undefined") {
+        after(function (done) {
+            if (Config) {
+                if (this.timeout) {
+                    this.timeout(300000);
+                }
+                // const rulePack = `${Config.rulePack}/ace`;
                 initialize()
                     .then(() => ReporterManager.generateSummaries())
                     .then(() => ACBrowserManager.close())
                     .then(done);
-            });
-        }
-    } catch (e) {
-        if (typeof (after) !== "undefined") {
-            after(function (done) {
-                if (Config) {
-                    if (this.timeout) {
-                        this.timeout(300000);
-                    }
-                    // const rulePack = `${Config.rulePack}/ace`;
-                    initialize()
-                        .then(() => ReporterManager.generateSummaries())
-                        .then(() => ACBrowserManager.close())
-                        .then(done);
-                } else {
-                    done();
-                }
-            });
-        } else {
-            process.on('beforeExit', async function () {
-                if (Config) {
-                    initialize()
-                        .then(() => ReporterManager.generateSummaries())
-                    ACBrowserManager.close();
-                }
-            });
-        }
+            } else {
+                done && done();
+            }
+        });
+    } else {
+        process.on('beforeExit', async function () {
+            if (Config) {
+                initialize()
+                    .then(() => ReporterManager.generateSummaries())
+                ACBrowserManager.close();
+            }
+        });
     }
-})();
+}
 
 function areValidPolicy(valPolicies, curPol) {
     let isValPol = false;
@@ -145,8 +150,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     Config.DEBUG && console.log("START 'aChecker.getCompliance' function");
     if (!content) {
         console.error("aChecker: Unable to get compliance of null or undefined object")
-        //return null;
-        throw new Error("aChecker: Unable to get compliance of null or undefined object");
+        return null;
     }
 
     // Variable Decleration
@@ -202,10 +206,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
     }
 
     let parsed = await getParsed(content);
-    if (!parsed) {
-        console.error("Invalid content: " + content);
-        throw new Error("Invalid content: " + content);
-    }
+    if (parsed === null) return null;
     await ACEngineManager.loadEngine(parsed);
 
     // Get the Data when the scan is started
@@ -339,7 +340,6 @@ cb(e);
             }
             finalReport = ReporterManager.addEngineReport("Selenium", startScan, url, title, label, origReport);
         }
-        
         return {
             "report": finalReport,
             "webdriver": parsed
@@ -545,7 +545,6 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
             }
             finalReport = ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
         }
-        
         page.aceBusy = false;
 
         return {

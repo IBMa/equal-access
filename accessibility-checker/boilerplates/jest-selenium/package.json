@@ -11,6 +11,6 @@
     "chromedriver": "*",
     "install": "^0.10.1",
     "jest": "^26.0.1",
-    "selenium-webdriver": "4.9.2"
+    "selenium-webdriver": "4.3.0"
   }
 }

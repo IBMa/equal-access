@@ -14,9 +14,9 @@
     limitations under the License.
 *****************************************************************************/
 
-import { IAbstractAPI } from "../api-ext/IAbstractAPI.js";
-import { IConfigInternal, eAssertResult } from "../config/IConfig.js";
-import { IBaselineReport } from "../engine/IReport.js";
+import { IAbstractAPI } from "../api-ext/IAbstractAPI";
+import { IConfigInternal, eAssertResult } from "../config/IConfig";
+import { IBaselineReport } from "../engine/IReport";
 import * as DeepDiff from "deep-diff";
 
 export type RefactorMap = {
@@ -211,11 +211,7 @@ export class BaselineManager {
         }
 
         // Run Deep diff function to compare the actual and expected values.
-        let diff = DeepDiff.diff;
-        if (!diff) {
-            diff = DeepDiff.default.diff;
-        }
-        let differences = diff(actual, expected);
+        let differences = DeepDiff.diff(actual, expected);
         if (differences) {
             differences = differences.filter(difference => !(
                 difference.kind === "E"

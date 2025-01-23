@@ -23,16 +23,11 @@ When(/^I click on XPath "([^"]*)"$/, function(selector) {
     });
 });
 
-When(/^I click on ID "([^"]*)"$/, async function(selector) {
+When(/^I click on ID "([^"]*)"$/, function(selector) {
     const myThis = this;
     const condition = until.elementLocated(By.id(selector));
-    return myThis.driver.wait(condition, 8000).then(async function() {
-        let elem = await myThis.driver.findElement(By.id(selector));
-        let rect = await elem.getRect();
-        await myThis.driver.executeScript(`window.scrollTo(${rect.x+rect.width}, ${rect.y+rect.height});`);
-        await myThis.driver.sleep(2000);
-        await elem.click();
-        await myThis.driver.sleep(2000);
+    return myThis.driver.wait(condition, 8000).then(function() {
+        return myThis.driver.findElement(By.id(selector)).click();
     });
 });
 

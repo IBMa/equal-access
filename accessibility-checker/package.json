@@ -8,26 +8,35 @@
     "lint": "eslint src",
     "test": "mocha -R dot test/mocha/**/*.test.js test/a11y-rule-test-able/*.test.js",
     "build": "npm run build:common && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
+<<<<<<< HEAD
     "build:ts": "npx tsc -p tsconfig-base.json && npx tsc -p tsconfig-cjs.json && sed -i'.old' 's/\\/\\/ const __filename/const __filename/g; s/\\/\\/ import { fileURLToPath }/import { fileURLToPath }/g' ./src-ts/lib/common/config/ACConfigManager.ts && npx tsc -p tsconfig.json && sed -i'.old' 's/const __filename/\\/\\/ const __filename/g; s/import { fileURLToPath }/\\/\\/ import { fileURLToPath }/g' ./src-ts/lib/common/config/ACConfigManager.ts && rm ./src-ts/lib/common/config/ACConfigManager.ts.old && shx cp ./src-ts/conf/package-cjs.json ./src/cjs/package.json && shx cp ./src-ts/conf/package-mjs.json ./src/mjs/package.json && sed -i'.old' 's/\\/\\/ import { createRequire }/import { createRequire }/g; s/\\/\\/ const require/const require/g' ./src/mjs/lib/ACEngineManager.js && rm ./src/mjs/lib/ACEngineManager.js.old",
     "build:ts:src": "npx tsc -p tsconfig.json && sed -i'.old' 's/\\/\\/ const __filename/const __filename/g; s/\\/\\/ import { fileURLToPath }/import { fileURLToPath }/g' ./src-ts/lib/common/config/ACConfigManager.ts && npx tsc -p tsconfig.json && sed -i'.old' 's/const __filename/\\/\\/ const __filename/g; s/import { fileURLToPath }/\\/\\/ import { fileURLToPath }/g' ./src-ts/lib/common/config/ACConfigManager.ts && rm ./src-ts/lib/common/config/ACConfigManager.ts.old && shx cp ./src-ts/conf/package-cjs.json ./src/cjs/package.json && shx cp ./src-ts/conf/package-mjs.json ./src/mjs/package.json && sed -i'.old' 's/\\/\\/ import { createRequire }/import { createRequire }/g; s/\\/\\/ const require/const require/g' ./src/mjs/lib/ACEngineManager.js && rm ./src/mjs/lib/ACEngineManager.js.old",
     "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/common/report/genReport.ts)",
     "build:common": "shx rm -rf ./src-ts/lib/common && shx cp -R ../common/module/src ./src-ts/lib/common && npm run build:report",
     "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/*.js && cd package && npm pack",
     "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/*.js"
+=======
+    "build:ts": "npx tsc",
+    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/common/report/genReport.ts)",
+    "build:common": "shx rm -rf ./src-ts/lib/common && shx cp -R ../common/module/src ./src-ts/lib/common && npm run build:report",
+    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js && cd package && npm pack",
+    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js"
+>>>>>>> parent of b2bedf83 (chore(all): Sync with the master and update libraries (#1960))
   },
   "repository": {
     "type": "git",
     "url": "git@github.com/IBMa/equal-access/accessibility-checker"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=10"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
-    "puppeteer": "^22.14.0"
+    "puppeteer": "^13.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.21.1",
@@ -58,16 +67,14 @@
     "natives": "1.1.6",
     "playwright": "^1.21.1",
     "rimraf": "^3.0.2",
-    "selenium-webdriver": "4.9.2",
+    "selenium-webdriver": "4.3.0",
     "serve-index": "^1.9.1",
     "shx": "^0.3.4",
     "tmp": "0.2.1",
     "typescript": "^5.1.3",
     "url-exists": "^1.0.3",
     "ws": "^8.3.0",
-    "xml2js": "^0.4.23",
-    "ts-node": "^10.9.2"
-
+    "xml2js": "^0.4.23"
   },
   "publishConfig": {
     "access": "public"

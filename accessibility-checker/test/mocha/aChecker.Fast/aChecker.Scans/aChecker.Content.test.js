@@ -14,17 +14,17 @@
     limitations under the License.
   *****************************************************************************/
 
-'use strict';
+ 'use strict';
 
-import * as fs from "fs";
-import * as path from "path";
-import * as aChecker from "../../../../src/mjs/index.js";
-import ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
-import { expect } from "chai";
+var fs = require("fs");
+var path = require("path");
+var unitTestcaseHTML = {};
+var aChecker = require("../../../../src");
+const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
+var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
+var gdirs = fs.readdirSync(testRootDir);
+var expect = require("chai").expect;
 
-let unitTestcaseHTML = {};
-let testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
-let gdirs = fs.readdirSync(testRootDir);
 const mapRuleToG = aChecker.ruleIdToLegacyId;
 
 let mapGToRule = {}
@@ -54,13 +54,13 @@ before(async function () {
 });
 
 gdirs.forEach(function (gdir) {
-    gdir = path.join(testRootDir, gdir)
+    var gdir = path.join(testRootDir, gdir)
     if (fs.lstatSync(gdir).isDirectory()) {
-        let files = fs.readdirSync(gdir);
+        var files = fs.readdirSync(gdir);
         files.forEach(function (f) {
-            let fileExtension = f.substr(f.lastIndexOf('.') + 1);
+            var fileExtension = f.substr(f.lastIndexOf('.') + 1);
             if (fileExtension === 'html' || fileExtension === 'htm') {
-                f = path.join(gdir, f);
+                var f = path.join(gdir, f);
                 unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
             };
         });
@@ -69,7 +69,7 @@ gdirs.forEach(function (gdir) {
 
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 let testRoot = path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules");
-let skipList = [
+var skipList = [
 
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps when loaded as a string
@@ -144,7 +144,7 @@ let skipList = [
     path.join(testRoot, "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
 ]
 
-let skipMap = {}
+var skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
 });
@@ -156,13 +156,13 @@ describe("Rule Unit Tests As Content", function () {
     });
 
     // Variable Decleration
-    let originalTimeout;
+    var originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (let unitTestFile in unitTestcaseHTML) {
+    for (var unitTestFile in unitTestcaseHTML) {
         if (unitTestFile in skipMap) continue;
         // Get the extension of the file we are about to scan
-        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.
@@ -187,8 +187,8 @@ describe("Rule Unit Tests As Content", function () {
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
-                    let unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
-                    let actualMap = {};
+                    var unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
+                    var actualMap = {};
                     let report = null;
                     let browser = null;
                     let puppeteer = null;
