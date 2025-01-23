@@ -12,15 +12,16 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CSSUtil } from "../util/CSSUtil";
+import { getCSSStyle } from "../util/CSSUtil";
 
 /**
  * Description: Trigger if :before and :after are used in CSS (Internal and External) with content
  * Origin: WCAG 2.0 F87
  */
-export const style_before_after_review: Rule = {
+export let style_before_after_review: Rule = {
     id: "style_before_after_review",
     context: "dom:style, dom:link",
     refactor: {
@@ -57,7 +58,7 @@ export const style_before_after_review: Rule = {
         let passed = true;
         //check Internal styles        
         if (ruleContext.nodeName.toLowerCase() === "style") {
-            let css = CSSUtil.getCSSStyle(ruleContext);
+            let css = getCSSStyle(ruleContext);
             for (let i = 0; passed && i < css.length; ++i) {
                 // Guard against bad CSS
                 if (css[i].selector) {

@@ -11,17 +11,16 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../util/VisUtil";
-import { CSSUtil } from "../util/CSSUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { isMaterialIconFont } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { AccNameUtil } from "../util/AccNameUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export const label_name_visible: Rule = {
+export let label_name_visible: Rule = {
     id: "label_name_visible",
     context: "aria:button,aria:checkbox,aria:gridcell,aria:link,aria:menuitem,aria:menuitemcheckbox,aria:menuitemradio,aria:option,aria:radio,aria:switch,aria:tab,aria:treeitem,dom:input,dom:textarea,dom:select,dom:output,dom:meter",
     refactor: {
@@ -55,12 +54,12 @@ export const label_name_visible: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         if (!VisUtil.isNodeVisible(ruleContext) ||
-            CommonUtil.isNodeDisabled(ruleContext)) {
+            RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
 
         // pass if the visible text uses Material Icon font
-        if (CSSUtil.isMaterialIconFont(ruleContext)) 
+        if (isMaterialIconFont(ruleContext)) 
             return RulePass("Pass_0");
 
         let passed = true;
@@ -68,37 +67,37 @@ export const label_name_visible: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
 
         let isInputButton = false;
-        //let buttonTypes = ["button", "reset", "submit"]; //"image"
+        let buttonTypes = ["button", "reset", "submit"/*, "image"*/];
         let inputType = null;
         if (nodeName === "input" && ruleContext.hasAttribute("type")) {
             inputType = ruleContext.getAttribute("type").toLowerCase();
-            if (CommonUtil.form_button_types.indexOf(inputType) !== -1) {
+            if (buttonTypes.indexOf(inputType) !== -1) {
                 isInputButton = true;
             }
         }
 
-        let theLabelBy = AriaUtil.getAriaAttribute(ruleContext, "aria-labelledby");
-        if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy) && !isInputButton) {
+        let theLabelBy = RPTUtil.getAriaAttribute(ruleContext, "aria-labelledby");
+        if (theLabelBy && !RPTUtil.isIdReferToSelf(ruleContext, theLabelBy) && !isInputButton) {
             // skip the checks if it has an aria-labelledby since it takes precedence.
         } else {
             let theLabel = null;
-            if (theLabelBy && !CommonUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
+            if (theLabelBy && !RPTUtil.isIdReferToSelf(ruleContext, theLabelBy)) {
                 let labelValues = theLabelBy.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
                     let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
                     if (elementById) {
-                        theLabel = CommonUtil.getInnerText(elementById);
+                        theLabel = RPTUtil.getInnerText(elementById);
                         break;
                     }
                 }
             } else {
-                theLabel = AriaUtil.getAriaAttribute(ruleContext, "aria-label");
+                theLabel = RPTUtil.getAriaAttribute(ruleContext, "aria-label");
             }
 
             if (!theLabel) {
                 return null;
             }
-            
+
             let text = null;
 
             if (isInputButton) {
@@ -124,13 +123,13 @@ export const label_name_visible: Rule = {
 
             if (!text) {
                 // look for a <label> element
-                let labelElem = CommonUtil.getLabelForElementHidden(ruleContext, true);
+                let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
                 if (!labelElem) {
                     let parentNode = DOMWalker.parentNode(ruleContext);
                     if (parentNode.nodeName.toLowerCase() === "label" /*&& RPTUtil.isFirstFormElement(parentNode, ruleContext)*/) {
                         let parentClone = parentNode.cloneNode(true);
                         // exclude all form elements from the label since they might also have inner content
-                        labelElem = CommonUtil.removeAllFormElementsFromLabel(parentClone);
+                        labelElem = RPTUtil.removeAllFormElementsFromLabel(parentClone);
                     }
                 }
 
@@ -141,7 +140,7 @@ export const label_name_visible: Rule = {
                     text = ""; // skip content check for some elements
                 } else {
                     // get the visible text only
-                    text = CommonUtil.getOnScreenInnerText(element);
+                    text = RPTUtil.getOnScreenInnerText(element);
                 }
 
                 /* Note: Disable this alt check in images for now until we get confirmation
@@ -162,10 +161,10 @@ export const label_name_visible: Rule = {
             let nonalphanumeric = /[^a-zA-Z0-9]/g;
 
             text = text.replace(nonalphanumeric, " "); // only consider alphanumeric characters
-            let normalizedText = CommonUtil.normalizeSpacing(text).toLowerCase(); // Leading and trailing whitespace and difference in case sensitivity should be ignored.
+            let normalizedText = RPTUtil.normalizeSpacing(text).toLowerCase(); // Leading and trailing whitespace and difference in case sensitivity should be ignored.
 
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
-            let normalizedLabel = CommonUtil.normalizeSpacing(theLabel).toLowerCase();
+            let normalizedLabel = RPTUtil.normalizeSpacing(theLabel).toLowerCase();
 
             if (normalizedText.length > 1) { // skip non-text content. e.g., <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);

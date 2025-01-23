@@ -13,14 +13,13 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export const aria_widget_labelled: Rule = {
+export let aria_widget_labelled: Rule = {
     id: "aria_widget_labelled",
     context: "dom:*",
     refactor: {
@@ -56,10 +55,10 @@ export const aria_widget_labelled: Rule = {
         if (
             (ruleContext.hasAttribute("type") &&
                 ruleContext.getAttribute("type") === "hidden") ||
-            (AriaUtil.getAncestorWithRole(ruleContext, "combobox") &&
+            (RPTUtil.getAncestorWithRole(ruleContext, "combobox") &&
                 !(
-                    AriaUtil.hasRoleInSemantics(ruleContext, "textbox") ||
-                    AriaUtil.hasRoleInSemantics(ruleContext, "searchbox")
+                    RPTUtil.hasRoleInSemantics(ruleContext, "textbox") ||
+                    RPTUtil.hasRoleInSemantics(ruleContext, "searchbox")
                 ))
         ) {
             // we need to diagnose that a combobox input textbox has a label(github issue #1104)
@@ -119,8 +118,8 @@ export const aria_widget_labelled: Rule = {
         // avoid diagnosing the popup list of a combobox.
         let rolesToCheck = ["listbox", "tree", "grid", "dialog"];
         for (let j = 0; j < rolesToCheck.length; j++) {
-            if (AriaUtil.hasRoleInSemantics(ruleContext, rolesToCheck[j])) {
-                let comboboxes = CommonUtil.getElementsByRoleHidden(
+            if (RPTUtil.hasRoleInSemantics(ruleContext, rolesToCheck[j])) {
+                let comboboxes = RPTUtil.getElementsByRoleHidden(
                     ruleContext.ownerDocument,
                     "combobox",
                     true,
@@ -128,12 +127,12 @@ export const aria_widget_labelled: Rule = {
                 );
                 for (let k = 0; k < comboboxes.length; k++) {
                     let combobox = comboboxes[k];
-                    let aria_owns = CommonUtil.getElementAttribute(
+                    let aria_owns = RPTUtil.getElementAttribute(
                         combobox,
                         "aria-owns"
                     );
                     if (aria_owns) {
-                        let owns = CommonUtil.normalizeSpacing(
+                        let owns = RPTUtil.normalizeSpacing(
                             aria_owns.trim()
                         ).split(" ");
                         for (let i = 0; i < owns.length; i++) {
@@ -154,7 +153,7 @@ export const aria_widget_labelled: Rule = {
         let prohibited = false;
         let designPatterns = ARIADefinitions.designPatterns;
         //get attribute roles as well as implicit roles.
-        let roles = AriaUtil.getRoles(ruleContext, true);
+        let roles = RPTUtil.getRoles(ruleContext, true);
         let numWidgetsTested = 0;
         let interactiveRoleTypes = ["widget", "liveRegion", "window"];
         for (let i = 0, length = roles.length; passed && i < length; ++i) {
@@ -172,9 +171,9 @@ export const aria_widget_labelled: Rule = {
                 // Title is legal, but don't advertise its use in documentation.
                 // Encourage use of aria-label, aria-labelledby or html label element.
                 passed =
-                    AriaUtil.hasAriaLabel(ruleContext) ||
-                    CommonUtil.attributeNonEmpty(ruleContext, "title") ||
-                    CommonUtil.getLabelForElementHidden(ruleContext, true);
+                    RPTUtil.hasAriaLabel(ruleContext) ||
+                    RPTUtil.attributeNonEmpty(ruleContext, "title") ||
+                    RPTUtil.getLabelForElementHidden(ruleContext, true);
 
                 if (
                     !passed &&
@@ -183,12 +182,12 @@ export const aria_widget_labelled: Rule = {
                 ) {
                     // See if widget's accessible name is supplied by element's inner text
                     // nameFrom: ["author", "contents"]
-                    passed = CommonUtil.hasInnerContentOrAlt(ruleContext);
+                    passed = RPTUtil.hasInnerContentOrAlt(ruleContext);
                 }
 
                 if (!passed) {
                     // check if it has implicit label, like <label><input ....>abc </label>
-                    passed = CommonUtil.hasImplicitLabel(ruleContext);
+                    passed = RPTUtil.hasImplicitLabel(ruleContext);
                 }
 
                 if (

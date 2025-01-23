@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const media_autostart_controllable: Rule = {
+export let media_autostart_controllable: Rule = {
     id: "media_autostart_controllable",
     context: "dom:param[name=autoplay], dom:param[name=autostart], dom:embed[flashvars], dom:embed[src], dom:*[autostart=true], dom:*[autostart=1], dom:bgsound",
     refactor: {

@@ -25,8 +25,8 @@
   <style>
   div {   
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 75px;
+      height: 75px;
       border-radius: 10px;
       color: white;
       padding: 5px;
@@ -54,8 +54,8 @@
 
 <body>
 
-  <div role='button' id="first" tabindex="0">1</div>
-  <div role='button' id="second" tabindex="0">2</div>
+  <div id="first" tabindex="0">1</div>
+  <div id="second" tabindex="0">2</div>
 
 <script>
   UnitTest = {
@@ -65,18 +65,15 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/button[1]"
+              "aria": "/document[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "Ensure the overlapped target \"div\" meets a minimum target size or has sufficient spacing from the overlapping target \"div\"",
-            "messageArgs": [
-              "div",
-              "div"
-            ],
+            "reasonId": "pass_sized",
+            "message": "The target’s size is more than 24 CSS pixels",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -84,15 +81,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]/button[2]"
+              "aria": "/document[1]"
             },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
+            "reasonId": "potential_overlap",
+            "message": "Ensure the overlapped target \"div\" meets a minimum target size or has sufficient spacing from the overlapping target \"div\"",
+            "messageArgs": [
+              "div",
+              "div"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

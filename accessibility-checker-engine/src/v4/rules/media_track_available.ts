@@ -11,26 +11,29 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RuleManual, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const media_track_available: Rule = {
+export let media_track_available: Rule = {
     id: "media_track_available",
     context: "dom:a[href], dom:area[href], dom:applet, dom:embed, dom:object",
     refactor: {
         "RPT_Media_VideoReferenceTrigger": {
+            "Pass_0": "Pass_0",
             "Manual_1": "Manual_1"}
     },
     help: {
         "en-US": {
+            "Pass_0": "media_track_available.html",
             "Manual_1": "media_track_available.html",
             "group": "media_track_available.html"
         }
     },
     messages: {
         "en-US": {
+            "Pass_0": "Rule Passed",
             "Manual_1": "Verify availability of a user-selectable audio track with description of visual content",
             "group": "Pre-recorded media should have an audio track that describes visual information"
         }
@@ -52,7 +55,7 @@ export const media_track_available: Rule = {
         if (nodeName == "applet") {
             passed = false;
         } else {
-            passed = !CommonUtil.isVideoObjEmbedLink(ruleContext);
+            passed = !RPTUtil.isVideoObjEmbedLink(ruleContext);
         }
 
         if (passed) return null;

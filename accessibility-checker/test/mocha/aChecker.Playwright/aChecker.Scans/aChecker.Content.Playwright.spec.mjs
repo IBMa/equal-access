@@ -133,11 +133,7 @@ var skipList = [
     path.join(testRoot, "style_before_after_review_ruleunit","D100.html"),
 
     // Misc
-    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
-
-    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_text.html"),
-    path.join(testRoot, "target_spacing_sufficient_ruleunit","element_inline2.html"),
-    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
+    path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html")
 ]
 
 var skipMap = {}

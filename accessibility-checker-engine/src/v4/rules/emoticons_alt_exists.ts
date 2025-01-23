@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const emoticons_alt_exists: Rule = {
+export let emoticons_alt_exists: Rule = {
     id: "emoticons_alt_exists",
     context: "dom:*",
     refactor: {
@@ -107,7 +108,7 @@ export const emoticons_alt_exists: Rule = {
 
         if (!passed) {
             // Don't trigger if we're not in the body or if we're in a script, pre, code
-            let checkAncestor = CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "body"]);
+            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "body"]);
             passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
         }
         if (passed) return RulePass("Pass_0");

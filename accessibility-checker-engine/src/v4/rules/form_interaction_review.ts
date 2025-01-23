@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const form_interaction_review: Rule = {
+export let form_interaction_review: Rule = {
     id: "form_interaction_review",
     context: "dom:form[target]",
     refactor: {
@@ -53,11 +53,11 @@ export const form_interaction_review: Rule = {
         }
         const ruleContext = context["dom"].node as Element;
         let tStr = ruleContext.getAttribute("target");
-        let passed = tStr === "_parent" || tStr === "_self" || tStr === "_top" || CommonUtil.getFrameByName(ruleContext, tStr) != null;
+        let passed = tStr === "_parent" || tStr === "_self" || tStr === "_top" || RPTUtil.getFrameByName(ruleContext, tStr) != null;
         if (!passed) {
             // Name is not part of this frameset – must have potential to create new window?
             // See if a new window is mentioned
-            let textStr = CommonUtil.getInnerText(ruleContext);
+            let textStr = RPTUtil.getInnerText(ruleContext);
             if (ruleContext.hasAttribute("title"))
                 textStr += " " + ruleContext.getAttribute("title");
             for (let i = 0; !passed && i < validateParams.paramWinText.value.length; ++i)

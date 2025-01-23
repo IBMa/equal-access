@@ -11,13 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
-export const aria_attribute_value_valid: Rule = {
+export let aria_attribute_value_valid: Rule = {
     id: "aria_attribute_value_valid",
     context: "dom:*",
     dependencies: ["aria_attribute_allowed"],
@@ -60,9 +59,9 @@ export const aria_attribute_value_valid: Rule = {
         if (contextAttributes) {
             for (let i = 0, length = contextAttributes.length; i < length; i++) {
                 let attrName = contextAttributes[i].name;
-                if (AriaUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
+                if (RPTUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
                     let dataTypes = propertyDataTypes[attrName];
-                    let nodeValue = CommonUtil.normalizeSpacing(contextAttributes[i].nodeValue);
+                    let nodeValue = RPTUtil.normalizeSpacing(contextAttributes[i].nodeValue);
                     testedPropertyValues++;
                     if (dataTypes && dataTypes.values) {
                         if (dataTypes.values.indexOf(nodeValue) == -1) {

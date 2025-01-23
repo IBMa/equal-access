@@ -11,14 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export const iframe_interactive_tabbable: Rule = {
+export let iframe_interactive_tabbable: Rule = {
     id: "iframe_interactive_tabbable",
     context: "dom:iframe",
     dependencies: [],
@@ -46,7 +45,7 @@ export const iframe_interactive_tabbable: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         const mapper : DOMMapper = new DOMMapper();
@@ -67,7 +66,7 @@ export const iframe_interactive_tabbable: Rule = {
         if (!iframElem || !iframElem.contentDocument || !iframElem.contentDocument.documentElement)
             return null;
 
-        const count = CommonUtil.getTabbableChildren(ruleContext);
+        const count = RPTUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RuleFail("fail_invalid");
 

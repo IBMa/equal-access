@@ -12,12 +12,11 @@
  *****************************************************************************/
 
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const aria_attribute_required: Rule = {
+export let aria_attribute_required: Rule = {
     id: "aria_attribute_required",
     context: "dom:*[role]",
     dependencies: ["aria_role_allowed"],
@@ -53,51 +52,55 @@ export const aria_attribute_required: Rule = {
         let attrNameArr = new Array();
         let roleNameArr = new Array();
         let designPatterns = ARIADefinitions.designPatterns;
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         //let implicitRole = ARIAMapper.elemToImplicitRole(ruleContext);
-        //let implicitRole = AriaUtil.getImplicitRole(ruleContext);
-        let hasAttribute = CommonUtil.hasAttribute;
+        let implicitRole = RPTUtil.getImplicitRole(ruleContext);
+        let hasAttribute = RPTUtil.hasAttribute;
         let testedRoles = 0;
 
-        let tagProperty = AriaUtil.getElementAriaProperty(ruleContext);
-        let role = AriaUtil.getResolvedRole(ruleContext);
-        if (!role) return;
-        
-        let requiredRoleProps = AriaUtil.getRoleRequiredProperties(role, ruleContext);
-        if (designPatterns[role] && requiredRoleProps !== null) {
-            let allowedRoleProps = AriaUtil.getAllowedAriaAttributes(ruleContext, role, tagProperty);
-            let roleMissingReqProp = false;
-            for (let i = 0, propertiesLength = requiredRoleProps.length; i < propertiesLength; i++) {
-                if (!allowedRoleProps.includes(requiredRoleProps[i])) continue;
-                if (!hasAttribute(ruleContext, requiredRoleProps[i])) {
-                    // If an aria-labelledby isn't present, an aria-label will meet the requirement.
-                    if (requiredRoleProps[i] == "aria-labelledby") {
-                        if ((!hasAttribute(ruleContext, "aria-label")) || (role != "radiogroup")) {
+        let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+        for (let j = 0, rolesLength = roles.length; j < rolesLength; ++j) {
+            if (implicitRole.length > 0 && implicitRole.includes(roles[j])) continue;
+            if (designPatterns[roles[j]] && RPTUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
+                let requiredRoleProps = RPTUtil.getRoleRequiredProperties(roles[j], ruleContext);
+                let allowedRoleProps = RPTUtil.getAllowedAriaAttributes(ruleContext, roles[j], tagProperty);
+                let roleMissingReqProp = false;
+                testedRoles++;
+                for (let i = 0, propertiesLength = requiredRoleProps.length; i < propertiesLength; i++) {
+                    if (!allowedRoleProps.includes(requiredRoleProps[i])) continue;
+                    if (!hasAttribute(ruleContext, requiredRoleProps[i])) {
+                        // If an aria-labelledby isn't present, an aria-label will meet the requirement.
+                        if (requiredRoleProps[i] == "aria-labelledby") {
+                            if ((!hasAttribute(ruleContext, "aria-label")) || (roles[i] != "radiogroup")) {
+                                attrNameArr.push(requiredRoleProps[i]);
+                                roleMissingReqProp = true;
+                            }
+                        } else if (requiredRoleProps[i] == "aria-valuenow") {
+                            if ((!hasAttribute(ruleContext, "aria-valuetext")) || (roles[i] != "progressbar")) {
+                                attrNameArr.push(requiredRoleProps[i]);
+                                roleMissingReqProp = true;
+                            }
+                        } else if (requiredRoleProps[i] == "aria-controls" && roles[j] == "combobox") {
+                            // Skip this check since aria-controls in the textbox of a combobox is already handled in rule HAAC_Combobox_Must_have_Text_Input
+                        } else {
                             attrNameArr.push(requiredRoleProps[i]);
                             roleMissingReqProp = true;
                         }
-                    } else if (requiredRoleProps[i] == "aria-valuenow") {
-                        if ((!hasAttribute(ruleContext, "aria-valuetext")) || (role != "progressbar")) {
-                            attrNameArr.push(requiredRoleProps[i]);
-                            roleMissingReqProp = true;
-                        }
-                    } else if (requiredRoleProps[i] == "aria-controls" && role == "combobox") {
-                        // Skip this check since aria-controls in the textbox of a combobox is already handled in rule HAAC_Combobox_Must_have_Text_Input
-                    } else {
-                        attrNameArr.push(requiredRoleProps[i]);
-                        roleMissingReqProp = true;
                     }
                 }
-            }
-            if (roleMissingReqProp == true) {
-                roleNameArr.push(role);
+                if (roleMissingReqProp == true) {
+                    roleNameArr.push(roles[j]);
+                }
             }
         }
-        
-        let passed = roleNameArr.length == 0 || attrNameArr.length == 0; // only aria attributes so NO OUT OF SCOPE
-        if (!passed) {
-            let retToken = new Array();
-            retToken.push(roleNameArr.join(", "));
-            retToken.push(attrNameArr.join(", "));
+        let retToken = new Array();
+        let passed = attrNameArr.length == 0; // only aria attributes so NO OUT OF SCOPE
+        retToken.push(roleNameArr.join(", "));
+        retToken.push(attrNameArr.join(", "));
+        //return new ValidationResult(passed, [ruleContext], attrNameArr, '', passed == true ? [] : retToken);
+        if (testedRoles === 0) {
+            return null;
+        } else if (!passed) {
             return RuleFail("fail_missing", retToken);
         } else {
             return RulePass("pass");

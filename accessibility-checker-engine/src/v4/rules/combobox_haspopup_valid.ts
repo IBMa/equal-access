@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CacheUtil } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
 
-export const combobox_haspopup_valid: Rule = {
+export let combobox_haspopup_valid: Rule = {
     id: "combobox_haspopup_valid",
     context: "aria:combobox",
     dependencies: ["combobox_popup_reference"],
@@ -51,8 +51,7 @@ export const combobox_haspopup_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        const cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
-        if (!cache) return null;
+        const cache = getCache(ruleContext.ownerDocument, "combobox", {});
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;
@@ -61,7 +60,7 @@ export const combobox_haspopup_valid: Rule = {
         // detected in combobox_popup_reference
         if (!popupElement) return null;
         // Check that popup role is listbox, grid, tree, or dialog and that it matches the combobox
-        let popupRoles = AriaUtil.getRoles(popupElement, true);
+        let popupRoles = RPTUtil.getRoles(popupElement, true);
         let validRoles = ["listbox", "grid", "tree", "dialog"].filter((validRole) => popupRoles.includes(validRole));
         if (validRoles.length === 0) {
             return RuleFail("Fail_popup_role_invalid", [popupRoles.join(","), popupId]);

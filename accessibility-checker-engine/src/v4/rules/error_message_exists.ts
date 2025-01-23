@@ -11,14 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const error_message_exists: Rule = {
+export let error_message_exists: Rule = {
     id: "error_message_exists",
     context: "dom:*[aria-invalid=true]",
     refactor: {
@@ -52,7 +51,7 @@ export const error_message_exists: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let aria_errMsgId = AriaUtil.getAriaAttribute(ruleContext, "aria-errormessage");
+        let aria_errMsgId = RPTUtil.getAriaAttribute(ruleContext, "aria-errormessage");
 
         // If aria-errormessage is not provided, then OUT_OF_SCOPE
         if (!aria_errMsgId) {

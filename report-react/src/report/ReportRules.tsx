@@ -19,8 +19,6 @@ import React from "react";
 import { IReport, IReportItem, valueMap } from "../IReport";
 import ReportRow from "./ReportRow";
 import { Grid, Column } from "@carbon/react";
-import { UtilIssue } from "../util/UtilIssue";
-import { IssueValue } from "../util/UtilIssueReact";
 
 interface IReportRulesState {
 }
@@ -63,9 +61,6 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         let groups = [];
         for (const ruleId in groupMap) {
             groups.push(groupMap[ruleId]);
-        }
-        for (const group of groups) {
-            group.items.sort((a, b) => UtilIssue.valueToOrder(a.value as  IssueValue)-UtilIssue.valueToOrder(b.value as  IssueValue));
         }
 
         return <div className="report" role="rowgroup">

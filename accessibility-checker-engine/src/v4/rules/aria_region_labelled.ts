@@ -11,27 +11,25 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_region_labelled: Rule = {
+export let aria_region_labelled: Rule = {
     id: "aria_region_labelled",
     context: "aria:region",
     refactor: {
         "Rpt_Aria_RegionLabel_Implicit": {
             "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"
-            // "Fail_2": "Fail_2"
-        }
+            "Fail_1": "Fail_1",
+            "Fail_2": "Fail_2"}
     },
     help: {
         "en-US": {
             "Pass_0": "aria_region_labelled.html",
             "Fail_1": "aria_region_labelled.html",
-            // "Fail_2": "aria_region_labelled.html",
+            "Fail_2": "aria_region_labelled.html",
             "group": "aria_region_labelled.html"
         }
     },
@@ -39,7 +37,7 @@ export const aria_region_labelled: Rule = {
         "en-US": {
             "Pass_0": "Rule Passed",
             "Fail_1": "Element with \"region\" role does not have a label",
-            // "Fail_2": "Element with \"region\" role is not labeled with 'aria-label' or 'aria-labelledby'",
+            "Fail_2": "Element with \"region\" role is not labeled with 'aria-label' or 'aria-labelledby'",
             "group": "Each element with \"region\" role must have a label that describes its purpose"
         }
     },
@@ -54,7 +52,7 @@ export const aria_region_labelled: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
-        let passed = AriaUtil.hasAriaLabel(ruleContext) || CommonUtil.attributeNonEmpty(ruleContext, "title");
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
         if (passed) {
             return RulePass("Pass_0");
         } else {

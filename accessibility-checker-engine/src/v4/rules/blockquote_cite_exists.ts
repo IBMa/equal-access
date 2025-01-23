@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const blockquote_cite_exists: Rule = {
+export let blockquote_cite_exists: Rule = {
     id: "blockquote_cite_exists",
     context: "dom:blockquote",
     refactor: {
@@ -46,9 +46,9 @@ export const blockquote_cite_exists: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = CommonUtil.attributeNonEmpty(ruleContext, "cite");
+        let passed = RPTUtil.attributeNonEmpty(ruleContext, "cite");
         if (!passed) {
-            let citeElems = CommonUtil.getDocElementsByTag(ruleContext, "cite");
+            let citeElems = RPTUtil.getDocElementsByTag(ruleContext, "cite");
             passed = citeElems != null && citeElems.length > 0;
         }
         if (passed) return RulePass("Pass_0");

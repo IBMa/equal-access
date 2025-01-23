@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
-import { CacheUtil } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 function patternDetect(elem: Element): String {
     // check 'explicit' role combobox and that it is not <select>. 
@@ -36,7 +35,7 @@ function patternDetect(elem: Element): String {
     return "1.2";
 }
 
-export const combobox_design_valid: Rule = {
+export let combobox_design_valid: Rule = {
     id: "combobox_design_valid",
     context: "aria:combobox",
     refactor: {
@@ -70,7 +69,7 @@ export const combobox_design_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext)) {
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
         let pattern = patternDetect(ruleContext);
@@ -81,19 +80,18 @@ export const combobox_design_valid: Rule = {
         }
 
         let tagName = ruleContext.tagName.toLowerCase();
-        let expanded = (AriaUtil.getAriaAttribute(ruleContext, "aria-expanded") || "").trim().toLowerCase() === "true";
+        let expanded = (RPTUtil.getAriaAttribute(ruleContext, "aria-expanded") || "").trim().toLowerCase() === "true";
         let editable = tagName === "input" && (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() === "text");
 
         let key = context["dom"].rolePath;
         if (key) {
-            let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
-            if (!cache) return null;
+            let cache = getCache(ruleContext.ownerDocument, "combobox", {});
             cache[key] = {
                 "inputElement": editable ? ruleContext : null,
                 "pattern": pattern,
                 "expanded": expanded
             };
-            CacheUtil.setCache(ruleContext.ownerDocument, "combobox", cache);
+            setCache(ruleContext.ownerDocument, "combobox", cache);
         } else {
             // No xpath?
             return null;

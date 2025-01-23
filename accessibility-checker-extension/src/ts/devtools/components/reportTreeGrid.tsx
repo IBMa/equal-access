@@ -835,10 +835,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                             role="link"
                                             href="#0"
-                                            id={rowId}
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
-                                                evt.stopPropagation();
                                                 this.onRow(group, thisIssue);
                                                 this.devtoolsAppController.setSecondaryView("help");
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);

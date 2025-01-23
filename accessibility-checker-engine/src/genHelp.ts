@@ -135,7 +135,7 @@ width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 
     return `<span class="issueLevel">${icon}&nbsp;${val}</span>`;
 }
 
-function processRules(includePass?: boolean) {
+function processRules() {
     let retVal = [];
     for (const ruleset of a11yRulesets as Guideline[]) {
         if (ruleset.type === "extension") continue;
@@ -183,7 +183,7 @@ function processRules(includePass?: boolean) {
                         if (msgCode === "group") return;
                         let re = new RegExp(`\\.Rule([^()) ]+)[ ()]+["']${msgCode}["']`);
                         let reMatch = re.exec(rule.run.toString());
-                        if (includePass || (reMatch && reMatch[1] !== "Pass")) {
+                        if (reMatch && reMatch[1] !== "Pass") {
                             ruleInfo.reasons.push({
                                 id: msgCode,
                                 message: rule.messages["en-US"][msgCode],
@@ -200,8 +200,6 @@ function processRules(includePass?: boolean) {
                         if (b.level === "Potential") return 1;
                         if (a.level === "Manual") return -1;
                         if (b.level === "Manual") return 1;
-                        if (a.level === "Pass") return -1;
-                        if (b.level === "Pass") return 1;
                         return 0;
                     })
                     cpInfo.rules.push(ruleInfo);
@@ -215,9 +213,6 @@ function processRules(includePass?: boolean) {
                     }
                     if (retVal === 0) {
                         retVal = b.reasons.filter(reasonInfo => (reasonInfo.type === "Manual")).length - a.reasons.filter(reasonInfo => (reasonInfo.type === "Manual")).length;
-                    }
-                    if (retVal === 0) {
-                        retVal = b.reasons.filter(reasonInfo => (reasonInfo.type === "Pass")).length - a.reasons.filter(reasonInfo => (reasonInfo.type === "Pass")).length;
                     }
                     return retVal;
                 }
@@ -309,73 +304,7 @@ ${cpSections}
     writeFileSync(path.join(__dirname, '..', 'dist', "help", "rules.html"), rulesHTML);
 }
 
-function buildRuleMapping() {
-    const vMap = {
-        "VIOLATION_Fail": "Violation",
-        "VIOLATION_Potential": "Violation Potential",
-        "VIOLATION_Manual": "Violation Manual",
-        "VIOLATION_Pass": "Pass",
-        "RECOMMENDATION_Fail": "Rec",
-        "RECOMMENDATION_Potential": "Rec Potential",
-        "RECOMMENDATION_Manual": "Rec Manual",
-        "RECOMMENDATION_Pass": "Pass"
-    }
-    const actMap = {
-        "Pass": "pass",
-        "Fail": "fail",
-        "Potential": "cantTell",
-        "Manual": "cantTell"
-    }
-    const csv = (str : string) => {
-        if (str === null) {
-            return '"null"';
-        } else if (!str || str.length == 0) {
-            return '""';
-        } else {
-            str = str.replace(/"/g, '""');
-            return `"${str}"`;
-        }
-    }
-    let rsInfo = processRules(true);
-    let csvStr = `Rule ID, Reason Code, Rule message, Reason message, Violation Level, Toolkit Level, WCAG Requirements, ACT mapping\n`;
-    let ruleset = rsInfo.filter(rs => rs.id === "IBM_Accessibility")[0];
-    for (const checkpoint of ruleset.checkpoints) {
-        for (const rule of checkpoint.rules) {
-            for (const reason of rule.reasons) {
-                let vLevelStrings = [];
-                let tkLevelStrings = [];
-                let rsStrings = [];
-                let actStrings = [];
-                for (const rsInfo of rule.rule.rulesets) {
-                    tkLevelStrings.push(rsInfo.toolkitLevel);
-                    vLevelStrings.push(vMap[`${rsInfo.level}_${reason.type}`]);
-                    rsStrings.push(rsInfo.num);
-                }
-                if (typeof rule.rule.act === typeof "") {
-                    actStrings.push(rule.rule.act+":"+actMap[reason.type]);
-                } else if (rule.rule.act.length) {
-                    for (const actInfo of rule.rule.act) {
-                        if (typeof actInfo === typeof "") {
-                            actStrings.push(actInfo+":"+actMap[reason.type]);
-                        } else {
-                            for (const key in actInfo) {
-                                if (reason.id in actInfo[key]) {
-                                    actStrings.push(key+":"+actInfo[key][reason.id])
-                                }
-                            }
-                        }
-                    }
-                }
-                let csvStrLine = `${csv(rule.rule.id)},${csv(reason.id)},${csv(rule.rule.messages['en-US'].group)},${csv(reason.message)},${csv(vLevelStrings.join(" | "))},${csv(tkLevelStrings.join(" | "))},${csv(rsStrings.join(" | "))},${csv(actStrings.join(" | "))}\n`;
-                csvStr += csvStrLine;
-            }
-        }
-    }
-    writeFileSync(path.join(__dirname, '..', 'dist', "help", "rules.csv"), csvStr);
-}
-
 (async () => {
     await buildV4();
     await buildRuleViewer();
-    await buildRuleMapping();
 })();

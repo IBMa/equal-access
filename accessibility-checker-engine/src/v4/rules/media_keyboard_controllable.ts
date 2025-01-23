@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const media_keyboard_controllable: Rule = {
+export let media_keyboard_controllable: Rule = {
     id: "media_keyboard_controllable",
     context: "dom:audio, dom:video",
     refactor: {

@@ -13,10 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const fieldset_legend_valid: Rule = {
+export let fieldset_legend_valid: Rule = {
     id: "fieldset_legend_valid",
     context: "dom:fieldset",
     refactor: {
@@ -55,18 +55,18 @@ export const fieldset_legend_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         
       //skip if the fieldset is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return null;
 
         // In the case a legend is hidden, we should still trigger a violations for this
-        let legends = CommonUtil.getChildByTagHidden(ruleContext, "legend", true, false);
+        let legends = RPTUtil.getChildByTagHidden(ruleContext, "legend", true, false);
         if (legends.length === 0) {
             // Fieldset has NO Legend
             return RuleFail("Fail_1");
         } else if (legends.length > 1) {
             // Fieldset has more than one legend
             return RuleFail("Fail_2");
-        } else if (CommonUtil.getInnerText(legends[0]).trim().length === 0) {
+        } else if (RPTUtil.getInnerText(legends[0]).trim().length === 0) {
             // Fieldset has legend but legend is empty
             return RuleFail("Fail_3");
         }

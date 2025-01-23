@@ -11,10 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const table_scope_valid: Rule = {
+export let table_scope_valid: Rule = {
     id: "table_scope_valid",
     context: "dom:td[scope], dom:th[scope]",
     refactor: {

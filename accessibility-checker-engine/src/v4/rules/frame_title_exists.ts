@@ -11,13 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AccNameUtil } from "../util/AccNameUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const frame_title_exists: Rule = {
+export let frame_title_exists: Rule = {
     id: "frame_title_exists",
     context: "dom:frame, dom:iframe",
     refactor: {
@@ -58,9 +57,7 @@ export const frame_title_exists: Rule = {
             return null;
         }
 
-        const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (name_pair && name_pair.name && name_pair.name.trim().length > 0) {
-        //if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
+        if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
             return RulePass("Pass_0");
         } else {
             return RuleFail("Fail_1");

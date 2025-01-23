@@ -3,25 +3,31 @@
 .summScoreCard {
     margin: 1rem -1rem 0rem -1rem;
     padding: 1rem;
-    min-height: 12rem;
-    border: 1px solid #8A3FFC;
-    background-color:#E8DAFF;
 
-    .summaryTitleDetail {
-        @include type.type-style('helper-text-01');
-        font-size: 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #9E63FB;
+    background-color: #E8DAFF;
+    
+    .scLeft {
+        flex: 0 0 51.25%;
+        max-width: 51.25%;
+
+        @media (min-width: 66rem) {
+            flex: 0 0 33.75%;
+            max-width: 33.75%;
+        }
     }
-   
+
     .title {
         @include type.type-style('heading-02');
     }
 
     .score {
         // @include type.type-style('display-03');
-        font-size: 54px;
-        font-weight: 400;
-        margin: 1rem 0rem;
+        font-size: 96px;
     }
+
     @media (min-width: 42rem) {
         margin: 1rem 0rem 0rem -1rem;
     }

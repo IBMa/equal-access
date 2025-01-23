@@ -11,13 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const skip_main_described: Rule = {
+export let skip_main_described: Rule = {
     id: "skip_main_described",
     context: "dom:body",
     dependencies: ["skip_main_exists"],
@@ -61,19 +61,19 @@ export const skip_main_described: Rule = {
 
         // Check for landmarks first
         let passed;
-        if (CacheUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
-            CacheUtil.setCache(ruleContext, "IBM_hasLandmarks_Implicit", CommonUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
+        if (getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
+            setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
                 "form", "main", "navigation", "search"
             ], true, true).length > 0);
         }
-        passed = CacheUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
+        passed = getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
 
         if (!passed) { // No landmarks, check for skip links
             let links = doc.links;
             // Skip link should be the first one on the page with an href attribute (i.e., links[0])
             // also if the first link is hidden then we should also trigger a violation.
             if (links && links.length > 0 && VisUtil.isNodeVisible(links[0])) {
-                let testText = CommonUtil.getInnerText(doc.links[0]).toLowerCase();
+                let testText = RPTUtil.getInnerText(doc.links[0]).toLowerCase();
                 for (let i = 0; !passed && i < validateParams.paramSkipText.value.length; ++i) {
                     passed = testText.indexOf(validateParams.paramSkipText.value[i]) != -1;
                 }

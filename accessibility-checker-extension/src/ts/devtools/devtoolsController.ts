@@ -439,8 +439,8 @@ export class DevtoolsController extends Controller {
                     if (Config.ELEM_FOCUS_MODE) {
                         await this.setFocusMode(true);
                     }
-                    if (path && path !== devtoolsState!.lastElementPath) {
-                    // if (path) {
+                    // if (path && path !== devtoolsState!.lastElementPath) {
+                    if (path) {
                         let report = await this.getReport();
                         if (report) {
                             let newIssue : IIssue | null = null;
@@ -638,8 +638,6 @@ export class DevtoolsController extends Controller {
         let bgController = await getBGController();
         let rulesets = await bgController.getRulesets(this.contentTabId);
         let tabInfo = await bgController.getTabInfo(this.contentTabId);
-        let url = tabInfo.url!;
-        let Ignored = await bgController.getIgnore(url);
         if (devtoolsState?.lastReport && rulesets) {
             let reportObj: any = {
                 tabURL: tabInfo.url,
@@ -651,8 +649,6 @@ export class DevtoolsController extends Controller {
                     counts: {
                         "total": devtoolsState?.lastReport.counts.total
                     },
-                    ignored:Ignored,
-
                     results: []
                 }
             }

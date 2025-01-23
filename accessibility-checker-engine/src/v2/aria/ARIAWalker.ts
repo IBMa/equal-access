@@ -15,9 +15,8 @@
  *****************************************************************************/
 
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
-import { ARIAMapper } from "./ARIAMapper";
-import { VisUtil } from "../../v4/util/VisUtil";
 import { DOMWalker } from "../dom/DOMWalker";
+import { ARIAMapper } from "./ARIAMapper";
 
 /**
  * Walks in an ARIA order
@@ -31,13 +30,7 @@ export class ARIAWalker {
 
     constructor(element : Node, bEnd? : boolean, root? : Node) {
         this.root = root || element;
-        if (this.root.nodeType === 9) {
-            this.root = (this.root as Document).documentElement
-        }
         this.node = element;
-        // if (this.node.nodeType === 9) {
-        //     this.node = (this.node as Document).documentElement
-        // }
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
     }
 
@@ -66,7 +59,7 @@ export class ARIAWalker {
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && VisUtil.isNodeVisible(iframeNode)
+                    && DOMWalker.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -74,22 +67,24 @@ export class ARIAWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && VisUtil.isNodeVisible(elementNode)
+                    && DOMWalker.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
-                    DOMWalker.assignSlots(this.node as ShadowRoot);
                 } else if (this.node.nodeType === 1 
                     && elementNode.nodeName.toLowerCase() === "slot"
                     && slotElement.assignedNodes().length > 0) 
                 {
+                    //TODO: need to conside its own content, a slot may have its own content or assigned content
+                    let slotOwner = this.node;
                     this.node = slotElement.assignedNodes()[0];
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) 
-                    && DOMWalker.firstChildNotOwnedBySlot(this.node)) {
-                    this.node = DOMWalker.firstChildNotOwnedBySlot(this.node);
+                    (this.node as any).slotOwner = slotOwner;
+                    (this.node as any).slotIndex = 0;
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.ELEMENT_NODE */ && this.node.firstChild) {
+                    this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
                 }
@@ -99,10 +94,12 @@ export class ARIAWalker {
                 } else if ((this.node as any).slotOwner) {
                     let slotOwner = (this.node as any).slotOwner;
                     let nextSlotIndex = (this.node as any).slotIndex+1;
-                    // delete (this.node as any).slotOwner;
-                    // delete (this.node as any).slotIndex;
+                    delete (this.node as any).slotOwner;
+                    delete (this.node as any).slotIndex;
                     if (nextSlotIndex < slotOwner.assignedNodes().length) {
                         this.node = slotOwner.assignedNodes()[nextSlotIndex];
+                        (this.node as any).slotOwner = slotOwner;
+                        (this.node as any).slotIndex = nextSlotIndex;    
                         this.bEndTag = false;
                     } else {
                         this.node = slotOwner;
@@ -111,8 +108,8 @@ export class ARIAWalker {
                 } else if ((this.node as any).ownerElement) {
                     this.node = (this.node as any).ownerElement;
                     this.bEndTag = true;
-                } else if (DOMWalker.nextSiblingNotOwnedBySlot(this.node)) {
-                    this.node = DOMWalker.nextSiblingNotOwnedBySlot(this.node);
+                } else if (this.node.nextSibling) {
+                    this.node = this.node.nextSibling;
                     this.bEndTag = false;
                     skipOwned = true;
                 } else if (this.node.parentNode) {
@@ -149,15 +146,13 @@ export class ARIAWalker {
     }
 
     prevNode() : boolean {
-        let skipOwned = false;
         do {
-            skipOwned = false;
             if (this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && VisUtil.isNodeVisible(iframeNode)
+                    && DOMWalker.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -165,49 +160,28 @@ export class ARIAWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && VisUtil.isNodeVisible(elementNode)
+                    && DOMWalker.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
-                    DOMWalker.assignSlots(this.node as ShadowRoot);
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) 
-                    && DOMWalker.lastChildNotOwnedBySlot(this.node)) {
-                    this.node = DOMWalker.lastChildNotOwnedBySlot(this.node);
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) && this.node.lastChild) {
+                    this.node = this.node.lastChild;
                 } else {
                     this.bEndTag = false;
                 }
             } else {
                 if (this.atRoot()) {
                     return false;
-                } else if (DOMWalker.previousSiblingNotOwnedBySlot(this.node)) {
-                    this.node = DOMWalker.previousSiblingNotOwnedBySlot(this.node);
+                } else if (this.node.previousSibling) {
+                    this.node = this.node.previousSibling;
                     this.bEndTag = true;
                 } else if ((this.node as any).ownerElement) {
                     this.node = (this.node as any).ownerElement;
                     this.bEndTag = false;
-                    skipOwned = true;
                 } else if (this.node.parentNode) {
-                    if (this.node.parentNode.nodeType === 1 && (this.node.parentNode as HTMLElement).hasAttribute("aria-owns")) {
-                        let ownIds = (this.node.parentNode as HTMLElement).getAttribute("aria-owns").split(/ +/g);
-                        if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("id")) {
-                            this.node = FragmentUtil.getOwnerFragment(this.node).getElementById(ownIds[0]);
-                            this.bEndTag = false;
-                        } else {
-                            let idx = ownIds.indexOf((this.node as HTMLElement).getAttribute("id"));
-                            if (idx === ownIds.length - 1) {
-                                // last one
-                                this.node = this.node.parentNode;
-                                this.bEndTag = true;            
-                            } else {
-                                // grab next
-                                this.node = FragmentUtil.getOwnerFragment(this.node).getElementById(ownIds[idx+1]);
-                                this.bEndTag = false;
-                            }
-                        }
-                    }
                     this.node = this.node.parentNode;
                     this.bEndTag = false;
                 } else {
@@ -217,7 +191,6 @@ export class ARIAWalker {
         } while (
             (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11)
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
-            || (skipOwned && this.node.nodeType === 1 && !!ARIAMapper.getAriaOwnedBy(this.node as HTMLElement))
         );
         return true;
     }

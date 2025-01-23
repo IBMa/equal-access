@@ -11,13 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
 
-export const aria_banner_label_unique: Rule = {
+export let aria_banner_label_unique: Rule = {
     id: "aria_banner_label_unique",
     context: "aria:banner",
     refactor: {
@@ -50,7 +49,7 @@ export const aria_banner_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Consider the Check Hidden Content setting that is set by the rules
         // Also, consider Implicit role checking.
-        let landmarks = CommonUtil.getElementsByRoleHidden(
+        let landmarks = RPTUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
             "banner",
             true,
@@ -60,20 +59,20 @@ export const aria_banner_label_unique: Rule = {
             return null;
         }
 
-        let dupes = CacheUtil.getCache(
+        let dupes = getCache(
             ruleContext.ownerDocument,
             "aria_banner_label_unique",
             null
         );
         if (!dupes) {
-            dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            CacheUtil.setCache(
+            dupes = RPTUtil.findAriaLabelDupes(landmarks);
+            setCache(
                 ruleContext.ownerDocument,
                 "aria_banner_label_unique",
                 dupes
             );
         }
-        let myLabel = AriaUtil.getAriaLabel(ruleContext);
+        let myLabel = RPTUtil.getAriaLabel(ruleContext);
         let passed =
             myLabel !== "" && (!(myLabel in dupes) || dupes[myLabel] <= 1);
 

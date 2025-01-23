@@ -15,22 +15,22 @@
   UnitTest = {
     ruleIds: ["img_alt_valid"],
     results: [
-      {
-            "ruleId": "img_alt_valid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/img[1]",
-              "aria": "/document[1]/img[1]"
-            },
-            "reasonId": "fail_no_alt",
-            "message": "The image has neither an accessible name nor is marked as decorative or redundant",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-      }
+         {
+              "ruleId": "img_alt_valid",
+              "value": [
+                "INFORMATION",
+                "PASS"
+              ],
+              "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+              },
+              "reasonId": "pass",
+              "message": "The image has an accessible name or is correctly marked as decorative or redundant",
+              "messageArgs": [],
+              "apiArgs": [],
+              "category": "Accessibility"
+          }
     ]
   };
 </script>

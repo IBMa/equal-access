@@ -11,14 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../util/VisUtil";
-import { CSSUtil } from "..//util/CSSUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { getComputedStyle, getPixelsFromStyle } from "..//util/CSSUtil";
 
-export const element_scrollable_tabbable: Rule = {
+export let element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
     context: "dom:*",
     dependencies: [],
@@ -48,15 +47,15 @@ export const element_scrollable_tabbable: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip elements
-        if (CommonUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
+        if (RPTUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
             return null;
 
         //skip if no visible content
-        if (!CommonUtil.hasInnerContent(ruleContext))
+        if (!RPTUtil.hasInnerContent(ruleContext))
             return null;
             
         const nodeName = ruleContext.nodeName.toLowerCase();
@@ -71,18 +70,18 @@ export const element_scrollable_tabbable: Rule = {
            return null; 
 
         // ignore if both x and y scroll distances < element's horizontal/vertical padding
-        const padding_x = CSSUtil.getPixelsFromStyle(styles.paddingLeft, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingRight, ruleContext);
-        const padding_y = CSSUtil.getPixelsFromStyle(styles.paddingTop, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingBottom, ruleContext);
+        const padding_x = getPixelsFromStyle(styles.paddingLeft, ruleContext) + getPixelsFromStyle(styles.paddingRight, ruleContext);
+        const padding_y = getPixelsFromStyle(styles.paddingTop, ruleContext) + getPixelsFromStyle(styles.paddingBottom, ruleContext);
         if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + padding_x 
             && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ padding_y)
             return null;
         
         // pass if element is tabbable
-        if (CommonUtil.isTabbable(ruleContext))
+        if (RPTUtil.isTabbable(ruleContext))
             return RulePass("pass_tabbable");
 
         // check if element content is tabbable
-        const count = CommonUtil.getTabbableChildren(ruleContext);
+        const count = RPTUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RulePass("pass_interactive");
 

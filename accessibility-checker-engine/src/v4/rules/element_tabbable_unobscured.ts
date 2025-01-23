@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export const element_tabbable_unobscured: Rule = {
+export let element_tabbable_unobscured: Rule = {
     id: "element_tabbable_unobscured",
     context: "dom:*",
     dependencies: [],
@@ -36,7 +36,7 @@ export const element_tabbable_unobscured: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_2"],
+        id: ["IBM_Accessibility_next", "WCAG_2_2"],
         num: ["2.4.11"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -45,13 +45,13 @@ export const element_tabbable_unobscured: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
 
-        if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTabbable(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || !RPTUtil.isTabbable(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
           
         //ignore certain elements
-        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
+        if (RPTUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
             || nodeName === "body" || nodeName === "html" )
             return null;
         

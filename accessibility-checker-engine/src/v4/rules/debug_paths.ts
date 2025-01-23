@@ -11,10 +11,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const debug_paths: Rule = {
+export let debug_paths: Rule = {
     id: "debug_paths",
     context: "dom:*",
     help: {

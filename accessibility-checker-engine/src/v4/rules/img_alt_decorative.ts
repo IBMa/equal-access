@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const img_alt_decorative: Rule = {
+export let img_alt_decorative: Rule = {
     id: "img_alt_decorative",
     context: "dom:img[alt]",
     refactor: {
@@ -50,7 +50,7 @@ export const img_alt_decorative: Rule = {
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let passed = true;
-        if (AriaUtil.hasRole(ruleContext, "presentation") || AriaUtil.hasRole(ruleContext, "none")) {
+        if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none")) {
             passed = ruleContext.getAttribute("alt").length == 0;
         }
         if (!passed) {

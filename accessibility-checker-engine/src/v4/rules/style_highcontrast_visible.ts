@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CacheUtil } from "../util/CacheUtil";
+import { getCache, setCache } from "../util/CacheUtil";
 
-export const style_highcontrast_visible: Rule = {
+export let style_highcontrast_visible: Rule = {
     id: "style_highcontrast_visible",
     context: "dom:style, dom:link, dom:*[style]",
     refactor: {
@@ -59,10 +59,10 @@ export const style_highcontrast_visible: Rule = {
         if (nodeName !== "style" && nodeName !== "link" &&
             ruleContext.hasAttribute("style") && ruleContext.getAttribute("style").trim().length === 0)
             return RulePass("Pass_0");
-        let triggered = CacheUtil.getCache(ruleContext.ownerDocument, "style_highcontrast_visible", false);
+        let triggered = getCache(ruleContext.ownerDocument, "style_highcontrast_visible", false);
         let passed = triggered;
         //        Packages.java.lang.System.out.println(triggered);
-        CacheUtil.setCache(ruleContext.ownerDocument, "style_highcontrast_visible", true);
+        setCache(ruleContext.ownerDocument, "style_highcontrast_visible", true);
         if (passed) return RulePass("Pass_0");
         if (!passed) return RuleManual("Manual_1");
     }

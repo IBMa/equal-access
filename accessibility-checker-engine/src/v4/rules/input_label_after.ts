@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { CommonUtil } from "../util/CommonUtil";
+import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const input_label_after: Rule = {
+export let input_label_after: Rule = {
     id: "input_label_after",
     context: "dom:input",
     refactor: {
@@ -58,18 +57,17 @@ export const input_label_after: Rule = {
         }
 
         // Get only the non-hidden labels for element
-        let labelElem = CommonUtil.getLabelForElementHidden(ruleContext, true);
-        if (labelElem === null || !CommonUtil.hasInnerContentHidden(labelElem)) {
+        let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
+        if (labelElem === null || !RPTUtil.hasInnerContentHidden(labelElem)) {
             // Due to dependency, label must be done via title - this rule doesn't apply
             return null;
         }
-        let value = CommonUtil.compareNodeOrder(labelElem, ruleContext);
+        let value = RPTUtil.compareNodeOrder(labelElem, ruleContext);
         let passed;
         if (value === -2) {
             // input nested in label
             passed = false;
-            //let walkNode = new NodeWalker(labelElem);
-            let walkNode = new DOMWalker(labelElem);
+            let walkNode = new NodeWalker(labelElem);
             walkNode.node = ruleContext;
             while (!passed && walkNode.nextNode()) {
                 passed = ((walkNode.node.nodeName.toLowerCase() === "#text" && walkNode.node.nodeValue.trim().length > 0)

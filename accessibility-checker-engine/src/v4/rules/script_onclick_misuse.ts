@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const script_onclick_misuse: Rule = {
+export let script_onclick_misuse: Rule = {
     id: "script_onclick_misuse",
     context: "dom:*[onclick]",
     refactor: {
@@ -55,10 +55,10 @@ export const script_onclick_misuse: Rule = {
         };
         const ruleContext = context["dom"].node as Element;
         // If there's an aria-role specified, don't trigger this.
-        let passed = CommonUtil.attributeNonEmpty(ruleContext, "role");
+        let passed = RPTUtil.attributeNonEmpty(ruleContext, "role");
         // If this is an a or area, don't trigger if there's an href.
         let nodeName = ruleContext.nodeName.toLowerCase();
-        passed = passed || ((nodeName == "a" || nodeName == "area") && CommonUtil.attributeNonEmpty(ruleContext, "href"));
+        passed = passed || ((nodeName == "a" || nodeName == "area") && RPTUtil.attributeNonEmpty(ruleContext, "href"));
 
         // If the guards failed, check to see if they're looking at links
         if (!passed) {

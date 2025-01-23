@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const embed_alt_exists: Rule = {
+export let embed_alt_exists: Rule = {
     id: "embed_alt_exists",
     context: "dom:embed",
     refactor: {
@@ -49,7 +49,7 @@ export const embed_alt_exists: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        let passed = CommonUtil.attributeNonEmpty(ruleContext, "alt");
+        let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt");
         return passed ? RulePass("Pass_0") : RulePotential("Potential_1");
     }
 }

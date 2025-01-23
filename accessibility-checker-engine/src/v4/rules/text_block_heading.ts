@@ -13,30 +13,29 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { CSSUtil } from "../util/CSSUtil";
-import { VisUtil } from "../util/VisUtil";
+import { getComputedStyle, getPixelsFromStyle } from "../util/CSSUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const text_block_heading: Rule = {
+export let text_block_heading: Rule = {
     id: "text_block_heading",
     context: "dom:p, dom:div, dom:br",
     refactor: {
         "RPT_Block_ShouldBeHeading": {
-            // "Pass_0": "pass",
+            "Pass_0": "pass",
             "Potential_1": "potential_heading"}
     },
     help: {
         "en-US": {
-            // "pass": "text_block_heading.html",
+            "pass": "text_block_heading.html",
             "potential_heading": "text_block_heading.html",
             "group": "text_block_heading.html"
         }
     },
     messages: {
         "en-US": {
-            // "pass": "Heading text uses a heading element or role",
+            "pass": "Heading text uses a heading element or role",
             "potential_heading": "Confirm this text '{0}' is used as a heading and if so, modify to use a heading element or role",
             "group": "Heading text should use a heading element or role"
         }
@@ -51,11 +50,11 @@ export const text_block_heading: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (CommonUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
+        if (RPTUtil.isNodeDisabled(ruleContext) || !VisUtil.isNodeVisible(ruleContext))
             return null;
 
         // Don't trigger if we're not in the body or if we're in a script
-        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null || CommonUtil.getAncestor(ruleContext, ["script"]) !== null) 
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null || RPTUtil.getAncestor(ruleContext, ["script"]) !== null) 
             return null;
 
         const validateParams = {
@@ -64,41 +63,41 @@ export const text_block_heading: Rule = {
                 type: "integer"
             }
         }
-        
+
         let bodyFont = 0;
         let body = ruleContext.ownerDocument.getElementsByTagName("body");
         if (body != null) {
             let bodyStyle = getComputedStyle(body[0]);
-            if (bodyStyle) bodyFont = CSSUtil.getPixelsFromStyle(bodyStyle['font-size'], body);
+            if (bodyStyle) bodyFont = getPixelsFromStyle(bodyStyle['font-size'], body);
         }
         let numWords = validateParams.numWords.value;
         let wordsSeen = 0;
         let wordStr: string[] = [];
         let emphasizedText = false;
-        //let nw = new NodeWalker(ruleContext);
-        let nw = new DOMWalker(ruleContext);nw.nextNode();
+        let nw = new NodeWalker(ruleContext);
+
         let passed = false;
         while (!passed &&
             nw.nextNode() && 
             nw.node !== ruleContext &&
             nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
-        {   
-            if (nw.node === ruleContext || CommonUtil.shouldNodeBeSkippedHidden(nw.node))
+        {
+            if (RPTUtil.shouldNodeBeSkippedHidden(nw.node))
                 continue;
 
             let nwName = nw.node.nodeName.toLowerCase();
-            if (nw.node.nodeType === 3) { 
+            if (nw.node.nodeType === 3) {
                 // for text child
                 if (nw.node.nodeValue.trim().length > 0 && nw.node.parentElement) {
                     // check it's style if the target element contains text, e.g., <p> fake heading</p> 
                     let style = getComputedStyle(nw.node.parentElement);
                     if (style && (style['font-weight'] === 'bold' || style['font-weight'] >= 700
                         ||  (style['font-size'] && style['font-size'].includes("large")) 
-                        || (style['font-size'] && bodyFont !== 0 && CSSUtil.getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
+                        || (style['font-size'] && bodyFont !== 0 && getPixelsFromStyle(style['font-size'],nw.node.parentElement)  > bodyFont))) {
                         let nextStr = nw.node.nodeValue.trim();
                         
-                        let wc = CommonUtil.wordCount(nextStr);
+                        let wc = RPTUtil.wordCount(nextStr);
                         if (wc > 0) {
                             wordStr.push(nextStr);
                             emphasizedText = true;
@@ -116,9 +115,9 @@ export const text_block_heading: Rule = {
                 // for element child
                 if (nwName === "b" || nwName === "strong" || nwName === "u" || nwName === "font") {
                     // if the target element contains emphasis child, e.g., <p><strong>fake heading</strong></p> 
-                    let nextStr = CommonUtil.getInnerText(nw.node);
+                    let nextStr = RPTUtil.getInnerText(nw.node);
                     
-                    let wc = CommonUtil.wordCount(nextStr);
+                    let wc = RPTUtil.wordCount(nextStr);
                     if (wc > 0) {
                         wordStr.push(nextStr);
                         emphasizedText = true;
@@ -130,7 +129,7 @@ export const text_block_heading: Rule = {
                 } else {
                     // ignore the element which has a role except 'generic', 'paragraph' or 'strong'
                     // ignore applet element that is deprecated anyway
-                    let role = AriaUtil.getResolvedRole(nw.node as HTMLElement);
+                    let role = RPTUtil.getResolvedRole(nw.node as HTMLElement);
                     passed = (role !== null && role !== 'generic' && role !== 'paragraph' && role !== 'strong') || nwName === "applet";
                 }
             }

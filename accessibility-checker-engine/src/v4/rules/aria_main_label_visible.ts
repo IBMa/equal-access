@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const aria_main_label_visible: Rule = {
+export let aria_main_label_visible: Rule = {
     id: "aria_main_label_visible",
     context: "dom:body",
     refactor: {
@@ -51,7 +50,7 @@ export const aria_main_label_visible: Rule = {
         // Consider the Check Hidden Content setting that is set by the rules
         //call getElementsByRoleHidden with considerImplicit flag as true
         //so that the method returs <main> elements
-        let landmarks = CommonUtil.getElementsByRoleHidden(
+        let landmarks = RPTUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
             "main",
             true,
@@ -61,7 +60,7 @@ export const aria_main_label_visible: Rule = {
             return null;
         }
 
-        let passed = AriaUtil.hasUniqueAriaLabelledby(landmarks);
+        let passed = RPTUtil.hasUniqueAriaLabelledby(landmarks);
 
         if (!passed) {
             return RuleFail("Fail_1");

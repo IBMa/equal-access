@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const img_ismap_misuse: Rule = {
+export let img_ismap_misuse: Rule = {
     id: "img_ismap_misuse",
     context: "dom:img[ismap]",
     refactor: {
@@ -58,7 +58,7 @@ export const img_ismap_misuse: Rule = {
                 usemap = usemap.substr(idx + 1);
 
             if (usemap.length > 0) {
-                let maps = CommonUtil.getDocElementsByTag(ruleContext, "map");
+                let maps = RPTUtil.getDocElementsByTag(ruleContext, "map");
                 for (let i = 0; !passed && i < maps.length; ++i) {
                     passed = maps[i].hasAttribute("name") &&
                         maps[i].getAttribute("name").toLowerCase() == usemap;

@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const aria_activedescendant_tabindex_valid: Rule = {
+export let aria_activedescendant_tabindex_valid: Rule = {
     id: "aria_activedescendant_tabindex_valid",
     context: "dom:*[aria-activedescendant]",
     refactor: {
@@ -58,7 +58,7 @@ export const aria_activedescendant_tabindex_valid: Rule = {
         //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
         //  2. In the case that this element has an aria-disabled attribute then, we mark this rule as passed.
         // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
-        if (CommonUtil.isNodeDisabled(ruleContext)) {
+        if (RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
 
@@ -67,11 +67,11 @@ export const aria_activedescendant_tabindex_valid: Rule = {
             return;
 
         // If the tabindex attribute is provided then verify that it is 0 or -1
-        passed = CommonUtil.isTabbable(ruleContext);
+        passed = RPTUtil.isTabbable(ruleContext);
 
         // pass if one of the children is tabbable. in this case, the tab will stop on the first tabbable element
         if (!passed) 
-            passed = CommonUtil.getTabbableChildren(ruleContext) > 0;
+            passed = RPTUtil.getTabbableChildren(ruleContext) > 0;
 
         // Build array for node token
         let retToken1 = new Array();

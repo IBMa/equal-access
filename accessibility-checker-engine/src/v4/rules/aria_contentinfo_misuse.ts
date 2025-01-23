@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const aria_contentinfo_misuse: Rule = {
+export let aria_contentinfo_misuse: Rule = {
     id: "aria_contentinfo_misuse",
     context: "dom:*[role], dom:footer, dom:address",
     refactor: {
@@ -49,13 +48,13 @@ export const aria_contentinfo_misuse: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //consider implicit role
-        if (!AriaUtil.hasRoleInSemantics(ruleContext, "contentinfo")) {
+        if (!RPTUtil.hasRoleInSemantics(ruleContext, "contentinfo")) {
             return null;
         }
 
         // Consider the Check Hidden Content setting that is set by the rules
         let passed =
-            CommonUtil.getElementsByRoleHidden(
+            RPTUtil.getElementsByRoleHidden(
                 ruleContext.ownerDocument,
                 "main",
                 true,

@@ -65,9 +65,6 @@ export type IEngineReport = {
         [ruleId: string]: {
             [reasonId: string]: string
         }
-    },
-    summary?: {
-        counts?: EngineSummaryCounts
     }
 }
 
@@ -79,28 +76,6 @@ export type IBaselineResult = IEngineResult & {
     level: eRuleLevel
 }
 
-export type EngineSummaryCounts = {
-    violation: number,
-    potentialviolation: number,
-    recommendation: number,
-    potentialrecommendation: number,
-    manual: number,
-    pass: number
-}
-
-export type SummaryCounts = {
-    violation: number,
-    potentialviolation: number,
-    recommendation: number,
-    potentialrecommendation: number,
-    manual: number,
-    pass: number,
-    ignored: number,
-    elements: number,
-    elementsViolation: number,
-    elementsViolationReview: number
-}
-
 export type IBaselineReport = {
     results: IBaselineResult[]
     numExecuted: number,
@@ -110,7 +85,18 @@ export type IBaselineReport = {
         }
     }
     summary: {
-        counts: SummaryCounts,
+        counts: {
+            violation: number,
+            potentialviolation: number,
+            recommendation: number,
+            potentialrecommendation: number,
+            manual: number,
+            pass: number,
+            ignored: number,
+            elements: number,
+            elementsViolation: number,
+            elementsViolationReview: number
+        }
         scanTime: number,
         ruleArchive: string
         policies: string[]
@@ -134,8 +120,7 @@ export type CompressedReport = [
     string, // ruleArchive
     string[], // policies
     string[], // reportLevels
-    CompressedIssue[],
-    SummaryCounts
+    CompressedIssue[]
 ]
 
 export type CompressedIssue = [ // results

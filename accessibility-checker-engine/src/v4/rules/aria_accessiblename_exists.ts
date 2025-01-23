@@ -13,13 +13,20 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+<<<<<<< HEAD
 import { AriaUtil } from "../util/AriaUtil";
 import { VisUtil } from "../util/VisUtil";
 import { AccNameUtil } from "../util/AccNameUtil";
+=======
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { getDeprecatedAriaRoles, getDeprecatedAriaAttributes, getRolesUndefinedByAria} from "../util/CommonUtil";
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img,aria:image, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak, doc-example",
+    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -58,8 +65,15 @@ export const aria_accessiblename_exists: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         let nodeName = ruleContext.nodeName.toLocaleLowerCase();
+<<<<<<< HEAD
         // svg element is handled in svg_graphics_labbelled rule and image rules
         if (nodeName === 'svg' || nodeName === 'img') return;
+=======
+        // svg element is handled in svg_graphics)labbelled rule
+        if (nodeName === 'svg') return;
+        // img element handled in img_alt_valid
+        if (nodeName === "img" && ruleContext.hasAttribute("alt")) return RulePass("pass");
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
         
         // when table element with a caption as first child
         if (nodeName === 'table' 
@@ -67,13 +81,14 @@ export const aria_accessiblename_exists: Rule = {
             && ruleContext.firstElementChild.textContent && ruleContext.firstElementChild.textContent.trim().length > 0)
             return RulePass("pass");
 
-        const invalidRoles = AriaUtil.getRolesUndefinedByAria(ruleContext);
+        const invalidRoles = getRolesUndefinedByAria(ruleContext);
         if (invalidRoles && invalidRoles.length > 0) return null;
-        const deprecatedRoles = AriaUtil.getDeprecatedAriaRoles(ruleContext);
+        const deprecatedRoles = getDeprecatedAriaRoles(ruleContext);
         if (deprecatedRoles && deprecatedRoles.length > 0) return null;
-        const deprecatedAttributes = AriaUtil.getDeprecatedAriaAttributes(ruleContext);
+        const deprecatedAttributes = getDeprecatedAriaAttributes(ruleContext);
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
+<<<<<<< HEAD
         let role = AriaUtil.getResolvedRole(ruleContext);
         
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
@@ -82,6 +97,19 @@ export const aria_accessiblename_exists: Rule = {
                 return RuleFail("fail_no_accessible_name_image", [ruleContext.nodeName.toLowerCase(), role]); 
             return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), role]);
         }    
+=======
+        if ( RPTUtil.getAriaLabel(ruleContext).trim().length === 0 && !RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+            let roles = RPTUtil.getRoles(ruleContext, true);
+            //when multiple roles specified, only the first valid role is applied, and the others just as fallbacks
+            if (roles && roles.length > 0 && ARIADefinitions.designPatterns[roles[0]] && ARIADefinitions.designPatterns[roles[0]].nameFrom && ARIADefinitions.designPatterns[roles[0]].nameFrom.includes("contents")) {
+                //if (!RPTUtil.getInnerText(ruleContext) || RPTUtil.getInnerText(ruleContext).trim().length === 0)
+                //exclude the hidden text?
+                if (!RPTUtil.hasInnerContentHidden(ruleContext))
+                    return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);  
+            } else 
+                return RuleFail("fail_no_accessible_name", [ruleContext.nodeName.toLowerCase(), roles[0]]);   
+        }
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
         return RulePass("pass");
     }
 }

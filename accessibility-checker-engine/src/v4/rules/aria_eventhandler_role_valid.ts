@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const aria_eventhandler_role_valid: Rule = {
+export let aria_eventhandler_role_valid: Rule = {
     id: "aria_eventhandler_role_valid",
     context: "dom:*[onclick],dom:*[onblur], dom:*[ondblclick], dom:*[onfocus], dom:*[onkeydown],dom:*[onkeypress], dom:*[onkeyup], dom:*[onmousedown], dom:*[onmouseup], dom:*[onmousemove], dom:*[onmouseout], dom:*[onmouseover], dom:*[onresize], dom:*[onchange]",
     refactor: {
@@ -49,18 +48,18 @@ export const aria_eventhandler_role_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Don't trigger this for SVG element for now until a determination is made (by Rich)
         // to support SVG at a point when the SVG a11y spec is ready.
-        if (CommonUtil.getAncestor(ruleContext, "svg")) {
+        if (RPTUtil.getAncestor(ruleContext, "svg")) {
             return null;
         }
 
         //this rule is passed if a element has attribut role 
         //also, passed of element has any implicit roles. 
-        if (AriaUtil.hasAnyRole(ruleContext, true)) {
+        if (RPTUtil.hasAnyRole(ruleContext, true)) {
             return RulePass("Pass_0");
         }
 
         //pass if this element is received focus by default
-        if (CommonUtil.isfocusableByDefault(ruleContext)) {
+        if (RPTUtil.isfocusableByDefault(ruleContext)) {
             return RulePass("Pass_0");
         }
 

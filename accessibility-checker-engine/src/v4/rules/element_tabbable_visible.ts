@@ -11,13 +11,13 @@
     limitations under the License.
  *****************************************************************************/
 
-import { CommonUtil } from "../util/CommonUtil";
-import { CSSUtil } from "../util/CSSUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
 import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 
-export const element_tabbable_visible: Rule = {
+export let element_tabbable_visible: Rule = {
     id: "element_tabbable_visible",
     context: "dom:*",
     dependencies: [],
@@ -44,7 +44,7 @@ export const element_tabbable_visible: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!CommonUtil.isTabbable(ruleContext))
+        if (!RPTUtil.isTabbable(ruleContext))
             return null;
         
         const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
@@ -55,8 +55,8 @@ export const element_tabbable_visible: Rule = {
         if (!bounds) return null;
         
         // defined styles only give the styles that changed
-        const defined_styles = CSSUtil.getDefinedStyles(ruleContext);
-        const onfocus_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus");
+        const defined_styles = getDefinedStyles(ruleContext);
+        const onfocus_styles = getDefinedStyles(ruleContext, ":focus");
                 
         if (bounds['height'] === 0 || bounds['width'] === 0)
             return RulePotential("potential_visible", []);
@@ -70,12 +70,12 @@ export const element_tabbable_visible: Rule = {
              * which likely incurs the changes of the label style.   
              */ 
             if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
-                const label = CommonUtil.getLabelForElement(ruleContext);
-                if (label && !CommonUtil.isInnerTextEmpty(label)) {
-                    const focus_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus");
-                    const focus_visible_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-visible");
-                    const focus_within_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-within");
-                    const checked_styles = CSSUtil.getDefinedStyles(ruleContext, ":checked");
+                const label = RPTUtil.getLabelForElement(ruleContext);
+                if (label && !RPTUtil.isInnerTextEmpty(label)) {
+                    const focus_styles = getDefinedStyles(ruleContext, ":focus");
+                    const focus_visible_styles = getDefinedStyles(ruleContext, ":focus-visible");
+                    const focus_within_styles = getDefinedStyles(ruleContext, ":focus-within");
+                    const checked_styles = getDefinedStyles(ruleContext, ":checked");
                     
                     if (focus_styles || focus_visible_styles || focus_within_styles || checked_styles)
                         return RulePass("pass");

@@ -11,15 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_id_unique: Rule = {
+export let aria_id_unique: Rule = {
     id: "aria_id_unique",
     context: "dom:*",
     refactor: {
@@ -65,14 +64,14 @@ export const aria_id_unique: Rule = {
             for (let i = 0, attrLength = contextAttributes.length; i < attrLength; i++) {
                 pass = true;
                 let attrName = contextAttributes[i].name;
-                if (AriaUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
+                if (RPTUtil.isDefinedAriaAttribute(ruleContext, attrName)) {
                     let dataTypes = ARIADefinitions.propertyDataTypes[attrName];
                     if (dataTypes && dataTypes.type) {
                         let supportsOneIDRef = (dataTypes.type == "http://www.w3.org/2001/XMLSchema#idref") ? true : false;
                         //If the data type supports one or more id refs do error checking
                         if (supportsOneIDRef || (dataTypes.type == "http://www.w3.org/2001/XMLSchema#idrefs")) {
                             testedReferences++;
-                            let nodeValueLength = CommonUtil.normalizeSpacing(contextAttributes[i].nodeValue).length;
+                            let nodeValueLength = RPTUtil.normalizeSpacing(contextAttributes[i].nodeValue).length;
                             let idArray = contextAttributes[i].nodeValue.split(" ");
 
                             // Check for an empty ID Ref

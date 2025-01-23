@@ -11,14 +11,14 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 /**
  * Description: Trigger when viewport units are used for font size.
  * Origin: Various
  */
-export const style_viewport_resizable: Rule = {
+export let style_viewport_resizable: Rule = {
     id: "style_viewport_resizable",
     context: "dom:link, dom:style, dom:*[style]",
     refactor: {

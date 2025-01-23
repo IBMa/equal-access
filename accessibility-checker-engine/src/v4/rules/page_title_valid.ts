@@ -11,23 +11,23 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const page_title_valid: Rule = {
+export let page_title_valid: Rule = {
     id: "page_title_valid",
     context: "dom:head dom:title",
     refactor: {
         "RPT_Title_Valid": {
             "Pass_0": "Pass_0",
-            // "Fail_1": "Fail_1",
+            "Fail_1": "Fail_1",
             "Potential_2": "Potential_2"}
     },
     help: {
         "en-US": {
             "Pass_0": "page_title_valid.html",
-            // "Fail_1": "page_title_valid.html",
+            "Fail_1": "page_title_valid.html",
             "Potential_2": "page_title_valid.html",
             "group": "page_title_valid.html"
         }
@@ -35,7 +35,7 @@ export const page_title_valid: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            // "Fail_1": "Page <title> is empty",
+            "Fail_1": "Page <title> is empty",
             "Potential_2": "Verify that using the filename as the page <title> value is descriptive",
             "group": "Page <title> should be a descriptive title, rather than a filename"
         }
@@ -50,7 +50,7 @@ export const page_title_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
-        let titleStr = CommonUtil.getInnerText(ruleContext).trim();
+        let titleStr = RPTUtil.getInnerText(ruleContext).trim();
 
         // allow .com, .net and .org
         let titleStrLowercase = titleStr.toLowerCase();

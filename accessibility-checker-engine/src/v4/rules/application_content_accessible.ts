@@ -11,12 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
-import { VisUtil } from "../util/VisUtil";
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const application_content_accessible: Rule = {
+export let application_content_accessible: Rule = {
     id: "application_content_accessible",
     context: "aria:application",
     refactor: {
@@ -54,7 +54,7 @@ export const application_content_accessible: Rule = {
         for (let i = 0; passed && i < children.length; i++) {
             if (children[i].nodeType === 1) {
                 if (VisUtil.isNodeVisible(children[i])) {
-                    passed = AriaUtil.hasRoleInSemantics(children[i], "document") || AriaUtil.hasRoleInSemantics(children[i], "article");
+                    passed = RPTUtil.hasRoleInSemantics(children[i], "document") || RPTUtil.hasRoleInSemantics(children[i], "article");
                 }
             } else if (children[i].nodeType === 3) {
                 passed = children[i].nodeValue.trim().length === 0;

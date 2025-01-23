@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_graphic_labelled: Rule = {
+export let aria_graphic_labelled: Rule = {
     id: "aria_graphic_labelled",
     context: "aria:graphics-document,aria:graphics-symbol",
     refactor: {
@@ -69,16 +69,16 @@ export const aria_graphic_labelled: Rule = {
 
         // If role === img, you must use an aria label
         //check attributes aria-label and aria-labelledby for other tags (e.g., <div>, <span>, etc)
-        let passed = AriaUtil.getAriaLabel(ruleContext).length > 0;
+        let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;
 
         if (!passed && ruleContext.nodeName.toLowerCase() === "svg") {
             let svgTitle = ruleContext.querySelector("title");
-            passed = svgTitle && CommonUtil.hasInnerContent(svgTitle);
+            passed = svgTitle && RPTUtil.hasInnerContent(svgTitle);
         }
 
         if (!passed) {
             //check title attribute
-            passed = CommonUtil.attributeNonEmpty(ruleContext, "title");
+            passed = RPTUtil.attributeNonEmpty(ruleContext, "title");
             // We should guide people to use alt or label - this is just a secondary approach to silence the rule.
             // So, we should keep the POF from above.
             // if (!passed) POF = "Fail_3";

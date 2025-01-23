@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const form_submit_review: Rule = {
+export let form_submit_review: Rule = {
     id: "form_submit_review",
     context: "dom:select[onchange], dom:input[onchange]",
     refactor: {

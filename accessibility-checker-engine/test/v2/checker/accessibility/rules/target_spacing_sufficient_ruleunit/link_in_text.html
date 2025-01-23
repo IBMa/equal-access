@@ -6,16 +6,16 @@
 </head>
 <body>
   <main>
-    <div>This is a <a id='1' href="#">link</a> in text.</div>
+    <div>This is a <a href="#">link</a> in text.</div>
     <div style="margin-top: 2rem;">
     <div>
-      <a id='2' href="#">Link 1</a> &nbsp;&nbsp;&nbsp; <a id='3' href="#">Link 2</a> &nbsp;&nbsp;&nbsp; <a id='4' href="#">Link 3</a>.
+      <a href="#">Link 1</a> &nbsp;&nbsp;&nbsp; <a href="#">Link 2</a> &nbsp;&nbsp;&nbsp; <a href="#">Link 3</a>.
     </div>
 
     <div style="margin-top: 2rem;">
-    <div style="height:50px;"><a id='5' href="#">Link 1</a> &nbsp;&nbsp;&nbsp; <a id='6' href="#">Link 2</a> &nbsp;&nbsp;&nbsp;<a id='7' href="#">Link 3</a></div>
-    <div><a id='8' href="#">Link 2</a></div>
-    <div><a id='9' href="#">Link 3</a></div>
+    <div style="height:50px;"><a href="#">Link 1</a> &nbsp;&nbsp;&nbsp; <a href="#">Link 2</a> &nbsp;&nbsp;&nbsp;<a href="#">Link 3</a></div>
+    <div><a href="#">Link 2</a></div>
+    <div><a href="#">Link 3</a></div>
     </div>
 
   </main>
@@ -97,8 +97,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]/div[1]/a[1]",
               "aria": "/document[1]/main[1]/link[5]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -113,8 +113,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]/div[1]/a[2]",
               "aria": "/document[1]/main[1]/link[6]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -129,8 +129,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]/div[1]/a[3]",
               "aria": "/document[1]/main[1]/link[7]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -139,15 +139,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]/div[2]/a[1]",
               "aria": "/document[1]/main[1]/link[8]"
             },
-            "reasonId": "pass_default",
-            "message": "The target's size is determined by the user agent and is not modified by the author",
-            "messageArgs": [],
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -155,15 +158,18 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]/div[3]/a[1]",
               "aria": "/document[1]/main[1]/link[9]"
             },
-            "reasonId": "pass_default",
-            "message": "The target's size is determined by the user agent and is not modified by the author",
-            "messageArgs": [],
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
+            "messageArgs": [
+              "a",
+              "a"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

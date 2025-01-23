@@ -20,8 +20,6 @@ import "./report.scss";
 import { IReport, IReportItem, valueMap } from "../IReport";
 import ReportRow from "./ReportRow";
 import { Grid, Column } from "@carbon/react";
-import { UtilIssue } from "../util/UtilIssue";
-import { IssueValue } from "../util/UtilIssueReact";
 
 interface IReportElementsState {
 }
@@ -51,7 +49,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             let thisGroup = groupMap[item.path.aria];
             if (!thisGroup) {
                 thisGroup = {
-                    title: (item.path.aria),
+                    title: item.path.aria,
                     counts: {},
                     items: []
                 }
@@ -61,13 +59,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.items.push(item);
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
-            
         }
-        groups.sort((groupA, groupB) => groupA.title.localeCompare(groupB.title));
-        for (const group of groups) {
-            group.items.sort((a, b) => UtilIssue.valueToOrder(a.value as  IssueValue)-UtilIssue.valueToOrder(b.value as  IssueValue));
-        }
-
 
         return <div className="report" role="rowgroup">
             <Grid className="reportHeader">
@@ -75,7 +67,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </Column>
                 <Column sm={3} md={6} lg={8}>
-                    <div className="label">Element Roles</div>
+                    <div className="label">Element</div>
                 </Column>
             </Grid>
             {groups.map(group => {

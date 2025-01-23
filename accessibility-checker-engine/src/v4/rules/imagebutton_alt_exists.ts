@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const imagebutton_alt_exists: Rule = {
+export let imagebutton_alt_exists: Rule = {
     id: "imagebutton_alt_exists",
     context: "dom:input",
     refactor: {
@@ -57,9 +56,9 @@ export const imagebutton_alt_exists: Rule = {
         if (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() != "image") {
             return null;
         }
-        if (CommonUtil.attributeNonEmpty(ruleContext, "alt")) {
+        if (RPTUtil.attributeNonEmpty(ruleContext, "alt")) {
             return RulePass("Pass_0");
-        } else if (AriaUtil.hasAriaLabel(ruleContext)) {
+        } else if (RPTUtil.hasAriaLabel(ruleContext)) {
             return RulePass("Pass_1");
         } else if (ruleContext.hasAttribute("title") && ruleContext.getAttribute("title").length > 0) {
             return RulePass("Pass_2");

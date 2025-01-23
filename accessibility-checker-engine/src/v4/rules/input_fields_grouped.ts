@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const input_fields_grouped: Rule = {
+export let input_fields_grouped: Rule = {
     id: "input_fields_grouped",
     context: "dom:input, dom:textarea, dom:select",
     refactor: {
@@ -52,11 +52,11 @@ export const input_fields_grouped: Rule = {
             if (type != "text" && type != "file" && type != "password")
                 return RulePass("Pass_0");
         }
-        if (CommonUtil.getAncestor(ruleContext, "fieldset") != null)
+        if (RPTUtil.getAncestor(ruleContext, "fieldset") != null)
             return RulePass("Pass_0");
 
         // No fieldset - see if this input is all by itself - no need to group single inputs
-        let parent = CommonUtil.getAncestor(ruleContext, ["form", "body"]);
+        let parent = RPTUtil.getAncestor(ruleContext, ["form", "body"]);
         let checkTypes = ["input", "textarea", "select"];
         let passed = true;
 
@@ -66,7 +66,7 @@ export const input_fields_grouped: Rule = {
 
                 // Check if the node should be skipped or not based on the Check Hidden Content setting and if the node isVisible or
                 // not.
-                if (CommonUtil.shouldNodeBeSkippedHidden(controls[j])) {
+                if (RPTUtil.shouldNodeBeSkippedHidden(controls[j])) {
                     continue;
                 }
 

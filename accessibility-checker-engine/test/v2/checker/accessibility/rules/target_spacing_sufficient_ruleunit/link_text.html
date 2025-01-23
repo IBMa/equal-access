@@ -52,8 +52,8 @@
               "dom": "/html[1]/body[1]/div[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -68,8 +68,8 @@
               "dom": "/html[1]/body[1]/div[1]/a[2]",
               "aria": "/document[1]/link[2]"
             },
-            "reasonId": "pass_inline",
-            "message": "The target is in a sentence or its size is otherwise constrained by the line-height of non-target text",
+            "reasonId": "pass_spacing",
+            "message": "The target's spacing from other targets is sufficient",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
@@ -78,14 +78,14 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[2]/a[1]",
               "aria": "/document[1]/link[3]"
             },
-            "reasonId": "recommendation_inline",
-            "message": "Confirm the inline target \"a\" is sufficiently spaced from another inline target \"a\"",
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
             "messageArgs": [
               "a",
               "a"
@@ -97,14 +97,14 @@
             "ruleId": "target_spacing_sufficient",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[2]/a[2]",
               "aria": "/document[1]/link[4]"
             },
-            "reasonId": "recommendation_inline",
-            "message": "Confirm the inline target \"a\" is sufficiently spaced from another inline target \"a\"",
+            "reasonId": "violation_spacing",
+            "message": "Undersized target \"a\" does not have sufficient spacing of 12 CSS pixels from another target \"a\"",
             "messageArgs": [
               "a",
               "a"

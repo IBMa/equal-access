@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const input_autocomplete_valid: Rule = {
+export let input_autocomplete_valid: Rule = {
     id: "input_autocomplete_valid",
     context: "dom:input[autocomplete], dom:textarea[autocomplete], dom:select[autocomplete]",
     refactor: {
@@ -64,7 +64,7 @@ export const input_autocomplete_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         //skip the check if the element is hidden or disabled
-        if (!VisUtil.isNodeVisible(ruleContext) || CommonUtil.isNodeDisabled(ruleContext)) {
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
         

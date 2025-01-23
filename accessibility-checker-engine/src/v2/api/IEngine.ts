@@ -65,27 +65,27 @@ export { eGuidelineType as eRulesetType } from "../../v4/api/IGuideline";
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export const RulePass = RulePassNew;
+export let RulePass = RulePassNew;
 
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export const RuleRender = RuleRenderNew;
+export let RuleRender = RuleRenderNew;
 
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export const RuleFail = RuleFailNew;
+export let RuleFail = RuleFailNew;
 
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export const RulePotential = RulePotentialNew;
+export let RulePotential = RulePotentialNew;
 
 /**
  * @deprecated See ../../v4/api/IRule
  */
-export const RuleManual = RuleManualNew;
+export let RuleManual = RuleManualNew;
 
 /**
  * @deprecated See ../../v4/api/IRule

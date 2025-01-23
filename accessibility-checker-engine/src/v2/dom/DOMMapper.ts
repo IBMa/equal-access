@@ -16,7 +16,6 @@
 
 import { CommonMapper } from "../common/CommonMapper";
 import { Bounds } from "../api/IMapper";
-import { CacheUtil } from "../../v4/util/CacheUtil";
 
 export class DOMMapper extends CommonMapper {
     getRole(node: Node) : string {
@@ -43,10 +42,7 @@ export class DOMMapper extends CommonMapper {
      * @returns 
      */
     getBounds(node: Node) : Bounds {
-        if (node.nodeType !== 1 /*Node.ELEMENT_NODE*/) return null;
-
-        const bunds = CacheUtil.getCache(node as Element, "DOMMapper_Bounds", undefined);
-        if (bunds === undefined) {
+        if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             let adjustment = 1;
             if (node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.devicePixelRatio) {
                 adjustment = node.ownerDocument.defaultView.devicePixelRatio;
@@ -57,18 +53,16 @@ export class DOMMapper extends CommonMapper {
             if (bounds) {
                 let scrollX = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollX || 0;
                 let scrollY = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollY || 0;
-                const ret = {
+                return {
                     "left": Math.ceil((bounds.left + scrollX) * adjustment),
                     "top": Math.ceil((bounds.top + scrollY) * adjustment),
                     "height": Math.ceil(bounds.height * adjustment),
                     "width": Math.ceil(bounds.width * adjustment)
                 };
-                CacheUtil.setCache(node as Element, "DOMMapper_Bounds", ret);
-                return ret;
             }
-            return null;
         }
-        return bunds;
+
+        return null;
     }
 
     /**
@@ -77,26 +71,21 @@ export class DOMMapper extends CommonMapper {
      * @returns 
      */
     getUnadjustedBounds(node: Node) : Bounds {
-        if (node.nodeType !== 1 /*Node.ELEMENT_NODE*/) return null;
-
-        const bunds = CacheUtil.getCache(node as Element, "DOMMapper_UnadjustedBounds", undefined);
-        if (bunds === undefined) {
+        if (node.nodeType === 1 /*Node.ELEMENT_NODE*/) {
             const bounds = (node as Element).getBoundingClientRect();
             // adjusted for scroll if any
             if (bounds) {
                 let scrollX = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollX || 0;
                 let scrollY = node && node.ownerDocument && node.ownerDocument.defaultView && node.ownerDocument.defaultView.scrollY || 0;
-                const ret = {
+                return {
                     "left": Math.ceil(bounds.left + scrollX),
                     "top": Math.ceil(bounds.top + scrollY),
                     "height": Math.ceil(bounds.height),
                     "width": Math.ceil(bounds.width)
                 };
-                CacheUtil.setCache(node as Element, "DOMMapper_UnadjustedBounds", ret);
-                return ret;
             }
-            return null;
         }
-        return bunds;
+
+        return null;
     }
 }

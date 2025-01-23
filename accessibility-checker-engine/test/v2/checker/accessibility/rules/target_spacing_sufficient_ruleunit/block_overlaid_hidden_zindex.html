@@ -54,8 +54,8 @@
 
 <body>
 
-  <div role='button' id="first" tabindex="0">1</div>
-  <div role='button' id="second" tabindex="0">2</div>
+  <div id="first" tabindex="0">1</div>
+  <div id="second" tabindex="0">2</div>
 
 <script>
   UnitTest = {
@@ -68,24 +68,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/button[1]"
-            },
-            "reasonId": "pass_sized",
-            "message": "The target’s size is more than 24 CSS pixels",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "target_spacing_sufficient",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
               "dom": "/html[1]/body[1]/div[2]",
-              "aria": "/document[1]/button[2]"
+              "aria": "/document[1]"
             },
             "reasonId": "pass_sized",
             "message": "The target’s size is more than 24 CSS pixels",

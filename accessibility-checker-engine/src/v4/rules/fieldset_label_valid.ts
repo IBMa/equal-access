@@ -13,13 +13,13 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { CacheUtil } from "../util/CacheUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
-import { AccNameUtil } from "../util/AccNameUtil";
+import { getCache, setCache } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const fieldset_label_valid: Rule = {
+export let fieldset_label_valid: Rule = {
     id: "fieldset_label_valid",
     context: "aria:group",
     refactor: {
@@ -55,11 +55,11 @@ export const fieldset_label_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
 
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
-        let formCache = CacheUtil.getCache(
+        let formCache = getCache(
             ruleContext.ownerDocument,
             "landmark_group_input",
             null
@@ -83,18 +83,16 @@ export const fieldset_label_valid: Rule = {
             }
             let groupsWithInputsComputedLabels = [];
             for (let i = 0; i < groupsWithInputs.length; i++) {
-                const pair = AccNameUtil.computeAccessibleName(groupsWithInputs[i]);
                 // Loop over all the landmark nodes
                 groupsWithInputsComputedLabels.push(
-                    /**ARIAMapper.computeName(groupsWithInputs[i])*/
-                    pair && pair.name && pair.name.trim().length > 0 ? pair.name.trim() : ""
+                    ARIAMapper.computeName(groupsWithInputs[i])
                 );
             }
             formCache.groupsWithInputs = groupsWithInputs;
             formCache.groupsWithInputsComputedLabels =
                 groupsWithInputsComputedLabels;
 
-            CacheUtil.setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
+            setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
         }
         // formCache.groupsWithInputs.forEach(element => {
         //     console.log("formCache.groupsWithInputs: " +element.id)

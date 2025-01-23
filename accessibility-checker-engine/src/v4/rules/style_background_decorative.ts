@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const style_background_decorative: Rule = {
+export let style_background_decorative: Rule = {
     id: "style_background_decorative",
     context: "dom:style, dom:*[style]",
     refactor: {
@@ -51,12 +51,12 @@ export const style_background_decorative: Rule = {
         if (nodeName === "link" && ruleContext.hasAttribute("rel") &&
             ruleContext.getAttribute("rel").toLowerCase() === "stylesheet") {
             // External stylesheet - trigger
-            passed = CommonUtil.triggerOnce(ruleContext, "style_background_decorative", false);
+            passed = RPTUtil.triggerOnce(ruleContext, "style_background_decorative", false);
         }
         if (passed && nodeName === "style" || ruleContext.hasAttribute("style")) {
             let styleText;
             if (nodeName === "style")
-                styleText = CommonUtil.getInnerText(ruleContext);
+                styleText = RPTUtil.getInnerText(ruleContext);
             else
                 styleText = ruleContext.getAttribute("style");
             let bgMatches = styleText.match(/background:[^;]*/g);

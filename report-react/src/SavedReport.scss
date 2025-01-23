@@ -23,7 +23,7 @@
     .summReport, .summCard {
         margin: 1rem -1rem 0rem -1rem;
         padding: 1rem;
-        border:solid #a8a8a8;
+
         background-color: #FFFFFF;
 
         .title {
@@ -34,9 +34,6 @@
             margin: 1rem 0rem 0rem -1rem;
         }
     }
-    .reportTreeGridEmptyText {
-    margin-top: 5rem;
-}
 
     .cds--modal-content {
         padding: 1rem 1rem 0rem 1rem;
@@ -207,33 +204,4 @@
             }
         }
     }
-    .viewMulti {
-        float:right;
-        width: 230px;
-        .cds--list-box {
-            max-height: 2rem;
-        }   
-        .cds--list-box__field {
-            background-color: #f4f4f4;
-            border: solid #a8a8a8 1px;
-        }
-    }
-    .iconGroup{
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-    .iconSummary{
-        display: flex;
-        align-items: center;
-        font-weight: 600;
-    }
-}
-.reportGroupFilter{
-    display:flex;
-    flex-direction:column ;
-    float: right;
-    align-items: flex-end;
-    row-gap: 0.5rem;
-}
-
 }

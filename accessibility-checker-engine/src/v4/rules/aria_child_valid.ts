@@ -13,11 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_child_valid: Rule = {
+export let aria_child_valid: Rule = {
     id: "aria_child_valid",
     //context: "dom:*[role]",
     //dependencies: ["Rpt_Aria_ValidRole"],
@@ -51,17 +50,17 @@ export const aria_child_valid: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
         
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element requires presentational children only
-        if (AriaUtil.containsPresentationalChildrenOnly(ruleContext))
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext))
             return;
         
-        let roles = AriaUtil.getRoles(ruleContext, false);
+        let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length === 0) 
-            roles =  AriaUtil.getImplicitRole(ruleContext);
+            roles =  RPTUtil.getImplicitRole(ruleContext);
         
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
         if (!roles || roles.length === 0) 
@@ -77,7 +76,7 @@ export const aria_child_valid: Rule = {
         if (roles.includes("combobox"))
             return null;
         
-        let requiredChildRoles = AriaUtil.getRequiredChildRoles(ruleContext, true);
+        let requiredChildRoles = RPTUtil.getRequiredChildRoles(ruleContext, true);
         // a 'group' role is allowed but not required for some elements so remove it if exists
         if (requiredChildRoles.includes('group')) {
             let index = requiredChildRoles.indexOf('group');
@@ -94,7 +93,7 @@ export const aria_child_valid: Rule = {
 
         // get all the children from accessibility tree, 
         // including ones with aria-owns    
-        let directATChildren = AriaUtil.getDirectATChildren(ruleContext);
+        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);
         
         if (!directATChildren || directATChildren.length == 0) {
             // the element with at least one required role dosen't contain any accessible child
@@ -115,10 +114,10 @@ export const aria_child_valid: Rule = {
         
         let violateElemRoles = new Array();
         for (let j=0; j < directATChildren.length; j++) {
-            let childRoles = AriaUtil.getRoles(directATChildren[j], false);
+            let childRoles = RPTUtil.getRoles(directATChildren[j], false);
             // if explicit role doesn't exist, get the implicit one
             if (!childRoles || childRoles.length == 0) 
-                childRoles =  AriaUtil.getImplicitRole(directATChildren[j]);
+                childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
             
             if (childRoles && childRoles.length > 0) {
                 /**

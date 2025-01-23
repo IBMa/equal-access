@@ -101,8 +101,7 @@ export type Issue = RuleResult & {
     ruleTime: number,
     message: string,
     bounds?: Bounds,
-    snippet: string,
-    level?: string
+    snippet: string
 }
 
 export type RuleContextHierarchy = { [namespace: string] : IMapResult[] };

@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CacheUtil } from "../util/CacheUtil";
+import { getCache } from "../util/CacheUtil";
 
-export const element_accesskey_unique: Rule = {
+export let element_accesskey_unique: Rule = {
     id: "element_accesskey_unique",
     context: "dom:*[accesskey]",
     refactor: {
@@ -46,8 +46,8 @@ export const element_accesskey_unique: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let map = CacheUtil.getCache(ruleContext.ownerDocument, "element_accesskey_unique", {});
-  
+        let map = getCache(ruleContext.ownerDocument, "element_accesskey_unique", {});
+
         let key = ruleContext.getAttribute("accesskey");
 
         let passed = !(key in map);

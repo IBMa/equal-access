@@ -11,11 +11,11 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const blink_css_review: Rule = {
+export let blink_css_review: Rule = {
     id: "blink_css_review",
     context: "dom:style, dom:*[style]",
     refactor: {
@@ -47,7 +47,7 @@ export const blink_css_review: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let textValue = CommonUtil.getInnerText(ruleContext);
+        let textValue = RPTUtil.getInnerText(ruleContext);
         if (ruleContext.hasAttribute('style')) {
             textValue = ruleContext.getAttribute('style');
         }

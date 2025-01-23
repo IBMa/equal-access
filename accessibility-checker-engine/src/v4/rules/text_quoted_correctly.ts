@@ -11,12 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const text_quoted_correctly: Rule = {
+export let text_quoted_correctly: Rule = {
     id: "text_quoted_correctly",
     context: "dom:*",
     help: {
@@ -45,7 +45,7 @@ export const text_quoted_correctly: Rule = {
         // ignore the check if the node is hidden
         if (!VisUtil.isNodeVisible(ruleContext) ) return null;
         // Don't trigger if the element is not in the body
-        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null) return null;
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) return null;
 
         const validateParams = {
             minWords: {
@@ -79,14 +79,14 @@ export const text_quoted_correctly: Rule = {
                 // we're not already marked up
                 // Also skip if we're in a script - there's lots of quotes used in scripts
                 if ((dblQuotes !== null || snglQuotes !== null) &&
-                    CommonUtil.getAncestor(walkNode, ignored) === null) {
+                    RPTUtil.getAncestor(walkNode, ignored) === null) {
                     if (dblQuotes != null) {
                         for (let i = 0; passed && i < dblQuotes.length; ++i)
-                            passed = CommonUtil.wordCount(dblQuotes[i]) < minWords;
+                            passed = RPTUtil.wordCount(dblQuotes[i]) < minWords;
                     }
                     if (snglQuotes != null) {
                         for (let i = 0; passed && i < snglQuotes.length; ++i)
-                            passed = CommonUtil.wordCount(snglQuotes[i]) < minWords;
+                            passed = RPTUtil.wordCount(snglQuotes[i]) < minWords;
                     }
 
                     // Remove any linefeed inside the quote

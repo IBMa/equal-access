@@ -83,7 +83,7 @@ const summaries = {
     "ARIA": "The ARIA specification issues that cause accessibility issues may be covered by other rules and will be reported under those accessibility requirements. However, some non-conforming ARIA specification issues are still reported.",
 }     
 
-export const a11yRulesets: Guideline[] = [
+export let a11yRulesets: Guideline[] = [
     // {
     //     id: "DEBUG",
     //     name: "DEBUG Rules",
@@ -111,9 +111,9 @@ export const a11yRulesets: Guideline[] = [
     },
     {
         id: "IBM_Accessibility",
-        name: "IBM Accessibility 7.3",
+        name: "IBM Accessibility 7.2",
         category: eGuidelineCategory.ACCESSIBILITY,
-        description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
+        description: "Rules for WCAG 2.0 & 2.1 A and AA plus additional IBM supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA
         checkpoints: SCs
             .filter(sc => (sc.level === "A" || sc.level === "AA" || sc.level === "NA") && (sc.wcagType === "2.0" || sc.wcagType === "2.1" || sc.wcagType === "2.2" || sc.wcagType === "NA"))
@@ -127,7 +127,7 @@ export const a11yRulesets: Guideline[] = [
     },
     {
         id: "IBM_Accessibility_next",
-        name: "IBM Accessibility next",
+        name: "IBM Accessibility 7.3",
         category: eGuidelineCategory.ACCESSIBILITY,
         description: "Rules for WCAG 2.0, 2.1, 2.2 A and AA plus additional IBM supplemental requirements.",
         // This ruleset has all 2.0 and 2.1 checkpoints that are A or AA

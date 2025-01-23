@@ -17,15 +17,12 @@
 import { ARIADefinitions } from "./ARIADefinitions";
 import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { CommonUtil } from "../../v4/util/CommonUtil";
-import { AriaUtil } from "../../v4/util/AriaUtil";
+import { RPTUtil } from "../checker/accessibility/util/legacy"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
-import { CacheUtil } from "../../v4/util/CacheUtil";
+import { getCache, setCache } from "../../v4/util/CacheUtil";
 import { DOMWalker } from "../dom/DOMWalker";
-import { AccNameUtil } from "../../v4/util/AccNameUtil";
-
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
@@ -87,7 +84,7 @@ export class ARIAMapper extends CommonMapper {
 
     static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
         const doc = FragmentUtil.getOwnerFragment(elem);
-        if (!CacheUtil.getCache(doc, "ARIAMapper::precalcOwned", false)) {
+        if (!getCache(doc, "ARIAMapper::precalcOwned", false)) {
             const owners = doc.querySelectorAll("[aria-owns]");
             for (let iOwner = 0; iOwner < owners.length; ++iOwner) {
                 const owner = owners[iOwner];
@@ -96,13 +93,13 @@ export class ARIAMapper extends CommonMapper {
                     const owned = doc.getElementById(ownIds[iId]);
                     //ignore if the aria-owns point to the element itself
                     if (owned && !DOMUtil.sameNode(owner, owned)) {
-                        CacheUtil.setCache(owned, "aria-owned", owner);
+                        setCache(owned, "aria-owned", owner);
                     }
                 }
             }
-            CacheUtil.setCache(doc, "ARIAMapper::precalcOwned", true);
+            setCache(doc, "ARIAMapper::precalcOwned", true);
         }
-        return CacheUtil.getCache(elem, "aria-owned", null);
+        return getCache(elem, "aria-owned", null);
     }
 
     private getNodeHierarchy(node: Node) {
@@ -140,7 +137,7 @@ export class ARIAMapper extends CommonMapper {
                     [role: string]: number
                 }
                 childrenCanHaveRole: boolean
-            }> = CacheUtil.getCache(elem, "ARIAMapper::getNodeHierarchy", null);
+            }> = getCache(elem, "ARIAMapper::getNodeHierarchy", null);
             if (!nodeHierarchy) {
                 // This element hasn't been processed yet - but ::reset processes them all in the right order
 
@@ -148,8 +145,8 @@ export class ARIAMapper extends CommonMapper {
                 let parent = ARIAMapper.getAriaOwnedBy(elem);
                 if (!parent) {
                     parent = DOMWalker.parentElement(elem) as HTMLElement;
-                } 
-                while (parent && parent.nodeType !== 1) { 
+                }
+                while (parent && parent.nodeType !== 1) {
                     parent = DOMWalker.parentElement(elem) as HTMLElement;
                 }
                 let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
@@ -213,7 +210,7 @@ export class ARIAMapper extends CommonMapper {
                     nodeHierarchy.push(item);
                 }
                 nodeHierarchy.push(nodeInfo);
-                CacheUtil.setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
+                setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
             }
             return nodeHierarchy;
         }
@@ -282,7 +279,7 @@ export class ARIAMapper extends CommonMapper {
         if (retVal.length > 0) {
             retVal[retVal.length-1].role = "/"+retVal[retVal.length-1].role
             let parent = DOMWalker.parentElement(node);
-            this.hierarchyResults = parent ? CacheUtil.getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
+            this.hierarchyResults = parent ? getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
         }
         return retVal;
     }
@@ -294,7 +291,7 @@ export class ARIAMapper extends CommonMapper {
     // https://www.w3.org/TR/html-aam-1.0/#mapping-html-to-accessibility-apis
     public static elemAttrValueCalculators: { [nodeName:string]: { [attr:string]: string | ElemCalc }} = {
         "global": {
-            "name": AccNameUtil.computeAccessibleName  //ARIAMapper.computeName
+            "name": ARIAMapper.computeName
         }
         , "datalist": {
             // set to "true" if the datalist's selection model allows multiple option elements to be
@@ -400,28 +397,28 @@ export class ARIAMapper extends CommonMapper {
     }
 
     private static nameComputationId = 0;
-    /**public static computeName(cur: Node) : string {
+    public static computeName(cur: Node) : string {
         ++ARIAMapper.nameComputationId;
         return ARIAMapper.computeNameHelp(ARIAMapper.nameComputationId, cur, false, false);
     }
 
     public static computeNameHelp(walkId: number, cur: Node, labelledbyTraverse: boolean, walkTraverse: boolean) : string {
         // 2g. None of the other content applies to text nodes, so just do this first
-        if (cur.nodeType === 3 ) return cur.nodeValue;
+        if (cur.nodeType === 3 /* Node.TEXT_NODE */) return cur.nodeValue;
         if (cur.nodeType === 11) return "";
-        if (cur.nodeType !== 1 ) {
+        if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) {
             if (walkTraverse || labelledbyTraverse) return "";
             throw new Error ("Can only compute name on Element and Text " + cur.nodeType);
         }
 
         const elem = cur as Element;
         // We've been here before - prevent recursion
-        if (CacheUtil.getCache(elem, "data-namewalk", null) === ""+walkId) return "";
-        CacheUtil.setCache(elem, "data-namewalk", ""+walkId);
+        if (getCache(elem, "data-namewalk", null) === ""+walkId) return "";
+        setCache(elem, "data-namewalk", ""+walkId);
         // See https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-search-input-type-tel-input-type-url-and-textarea-element
 
         // 2a. Only show hidden content if it's referenced by a labelledby
-        if (!labelledbyTraverse && !VisUtil.isNodeVisible(cur)) {
+        if (!labelledbyTraverse && !DOMWalker.isNodeVisible(cur)) {
             return "";
         }
 
@@ -480,7 +477,7 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !CommonUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
+                    if (label.hasAttribute("aria-label") || (label.hasAttribute("aria-labelledby") && !RPTUtil.isIdReferToSelf(cur, label.getAttribute("aria-labelledby")))) {
                         return this.computeNameHelp(walkId, label, false, false);
                     } else {
                         return label.textContent;
@@ -570,7 +567,7 @@ export class ARIAMapper extends CommonMapper {
             if (elem.nodeName.toUpperCase() === "SLOT") {
                 //if no assignedNode, check its own text 
                 if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
-                    let innerText = CommonUtil.getInnerText(elem);
+                    let innerText = RPTUtil.getInnerText(elem);
                     if (innerText && innerText !== null && innerText.trim().length > 0)
                         accumulated +=  " " + innerText;
                 } else {    
@@ -618,7 +615,7 @@ export class ARIAMapper extends CommonMapper {
 
         return "";
     }
-    */
+
 /*        if (role in ARIADefinitions.designPatterns
             && ARIADefinitions.designPatterns[role].nameFrom 
             && ARIADefinitions.designPatterns[role].nameFrom.includes("contents")) 
@@ -652,18 +649,13 @@ export class ARIAMapper extends CommonMapper {
         if (!elem || elem.nodeType !== 1 /* Node.ELEMENT_NODE */) {
             return null;
         }
-
-        // TO DO: use AriaUtil.getResolvedRole(elem) to replace the code following, which uses only the valid roles for the element based on the aria fallback rule
-        //const role = AriaUtil.getResolvedRole(elem);
-        //return role === "presentation" || role === "none" ? null : role;
-        
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
             let roleStr = elem.getAttribute("role").trim();
             let roles = roleStr.split(" ");
             for (const role of roles) {
                 if (role === "presentation" || role === "none") {
                     // If element is focusable, then presentation roles are to be ignored
-                    if (!CommonUtil.isFocusable(elem)) {
+                    if (!RPTUtil.isFocusable(elem)) {
                         return null;
                     }
                 } else if (role in ARIADefinitions.designPatterns) {
@@ -672,11 +664,274 @@ export class ARIAMapper extends CommonMapper {
             }
         }
         //return this.elemToImplicitRole(elem);
-        const roles = AriaUtil.getImplicitRole(elem);
-        //console.log("node=" + node.nodeName +", role= " + (roles ? roles[0] : null) +", resolved=" + AriaUtil.getResolvedRole(elem));
-        const role = !roles || roles.length ===0 ? null : roles[0];
-        return role === "presentation" || role === "none" ? null : role;
-        //return AriaUtil.getResolvedRole(elem);
-        
+        const roles = RPTUtil.getImplicitRole(elem);
+        return !roles || roles.length ===0 ? null : roles[0];
     }
+    /**
+    public static elemToImplicitRole(elem : Element) {
+        let nodeName = elem.nodeName.toLowerCase();
+
+        if (!(nodeName in ARIAMapper.elemToRoleMap)) {
+            return null;
+        }
+        let role = ARIAMapper.elemToRoleMap[nodeName];
+        if (typeof role === "string") {
+            return role;
+        } else if (typeof role === "function") {
+            return role(elem);
+        } else {
+            return null;
+        }
+    }
+    
+    public static hasParentRole(element, role) : boolean {
+        let parent = DOMWalker.parentNode(element);
+        // If link is in a menu, it's a menuitem
+        while (parent) {
+            if (ARIAMapper.nodeToRole(parent) === role)
+                return true;
+            parent = DOMWalker.parentNode(parent);
+        }
+        return false;
+    }
+    
+    private static inputToRoleMap = (function() {
+        let hasList = function(element) {
+            if (element.hasAttribute("list")) {
+                let id = element.getAttribute("list");
+                let idRef = FragmentUtil.getById(element, id);
+                if (idRef && idRef.nodeName.toLowerCase() === "datalist") {
+                    return true;
+                }
+            }
+            return false;
+        };
+        let textSuggestions = function(element) {
+            return hasList(element) ? "combobox" : "textbox";
+        }
+        return {
+            "button": "button",
+            "image": "button",
+            "checkbox": "checkbox",
+            "radio": "radio",
+            "email": textSuggestions,
+            "search": function(element) {
+                return hasList(element) ? "combobox" : "searchbox";
+            },
+            "tel": textSuggestions,
+            "text": textSuggestions,
+            "url": textSuggestions,
+            "number": "spinbutton",
+            "range": "slider",
+            "reset": "button",
+            "submit": "button"
+        }
+    })();
+
+    private static inputToRole(element) {
+        if (!element) {
+            return null;
+        }
+
+        let eType = "text";
+        if (element.hasAttribute("type") && element.getAttribute("type").toLowerCase().trim().length > 0) {
+            eType = element.getAttribute("type").toLowerCase().trim();
+        }
+
+        if (!(eType in ARIAMapper.inputToRoleMap)) {
+            return null;
+        }
+        let role = ARIAMapper.inputToRoleMap[eType];
+        if (typeof role === "string") {
+            return role;
+        } else if (typeof role === "function") {
+            return role(element);
+        } else {
+            return null;
+        }
+    }
+   
+    private static elemToRoleMap = (function() {
+        let sectioningRoots = {
+            "blockquote": true,
+            "body": true,
+            "details": true,
+            "dialog": true,
+            "fieldset": true,
+            "figure": true,
+            "td": true
+        };
+        let sectioningContent = {
+            "article": true,
+            "aside": true,
+            "nav": true,
+            "section": true,
+            "main": true
+        };
+        let sectioningRole = {
+            "article": true,
+            "complementary": true,
+            "navigation": true,
+            "region": true,
+            "main": true
+        };
+        let inputToRole = function(element) {
+            return ARIAMapper.inputToRole(element);
+        }
+        return {
+            "a": function(element) {
+                // If it doesn't represent a hyperlink, 'generic' role
+                if (!element.hasAttribute("href")) return null;
+                return "link";
+            },
+            "area": function(element) {
+                // If it doesn't represent a hyperlink, no corresponding role
+                if (!element.hasAttribute("href")) return null;
+                return "link";
+            },
+            "article": "article",
+            "aside": "complementary",
+            "button": "button",
+            "datalist": "listbox",
+            "dd": "definition",
+            "details": "group",
+            "dfn": "term",
+            "dialog": "dialog",
+            "dt": "term",
+            "fieldset": "group",
+            "figure": "figure",
+            "footer": function(element) {
+                let parent = DOMWalker.parentNode(element);
+                // If nearest sectioningRoot or sectioningContent is body
+                while (parent && parent.nodeType === 1) {
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    let nodeName = parent.nodeName.toLowerCase();
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
+                        return (nodeName === "body") ? "contentinfo" : null;
+                    }
+                    parent = DOMWalker.parentNode(parent);
+                }
+                return null;
+            },
+            "form": function(element) {
+                let name = ARIAMapper.computeName(element);
+                return (name && name.trim().length > 0) ? "form" : null;
+            },
+            // TODO "form-associated custom element"
+            "h1": "heading",
+            "h2": "heading",
+            "h3": "heading",
+            "h4": "heading",
+            "h5": "heading",
+            "h6": "heading",
+            "header": function(element) {
+                let parent = DOMWalker.parentNode(element);
+                // If nearest sectioningRoot or sectioningContent is body
+                while (parent && parent.nodeType === 1) {
+                    let nodeName = parent.nodeName.toLowerCase();
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
+                        return (nodeName === "body") ? "banner" : null;
+                    }
+                    parent = DOMWalker.parentNode(parent);
+                }
+                return null;
+            },
+            "hr": "separator",
+            "html": "document",
+            "img": function(element) {
+                if (element.hasAttribute("alt") && element.getAttribute("alt").length === 0) {
+                    return "presentation";
+                } else {
+                    return "img";
+                }
+            },
+            "input": inputToRole,
+            "keygen": "listbox", // deprecated, but keep for backward compat
+            "li": "listitem",
+            "main": "main",
+            "math": "math",
+            "menu": "list",
+            "nav": "navigation",
+            "ol": "list",
+            "optgroup": "group",
+            "option": "option",
+            "output": "status",
+            "progress": "progressbar",
+            "section": function(element) {
+                let name = ARIAMapper.computeName(element);
+                return (name && name.trim().length > 0) ? "region" : null;
+            },
+            "select": function(element) {
+                if (element.hasAttribute("multiple") || (RPTUtil.attributeNonEmpty(element, "size") && parseInt(element.getAttribute("size")) > 1)) {
+                    return "listbox";
+                } else {
+                    return "combobox";
+                }
+            },
+            "summary": "button",
+            "svg": "graphics-document",
+            "table": "table",
+            "tbody": function(element) {
+                let parent = DOMWalker.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    if (role === "table" || role === "grid" || role === "treegrid") return "rowgroup";
+                    parent = DOMWalker.parentNode(parent);
+                }
+                return null;
+            },
+            "textarea": "textbox",
+            "td": function(element) {
+                let parent = DOMWalker.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    if (role === "table") return "cell";
+                    if (role === "grid" || role === "treegrid") return "gridcell";
+                    parent = DOMWalker.parentNode(parent);
+                }
+                return null;
+            },
+            "th": function(element) {
+                
+                let parent = DOMWalker.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    
+                    if (role !== "table" && role !== "grid" && role !== "treegrid") {
+                         parent = DOMWalker.parentNode(parent);
+                         continue; 
+                    }     
+                    // Easiest answer is if scope is specified
+                    if (element.hasAttribute("scope")) {
+                        let scope = element.getAttribute("scope").toLowerCase();
+                        if (scope === "row" || scope === 'rowgroup') return "rowheader";
+                        if (scope === "col" || scope === 'colgroup') return "columnheader";
+                    }
+                    
+                    // scope is auto, default (without a scope) or invalid value.
+                    // if all the sibling elements are th, then return "columnheader" 
+                    var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType === 1 && node.tagName != "TH");
+                    if (siblings === null || siblings.length === 0)
+                        return "columnheader"; 
+                    else return "rowheader";
+                    
+                }
+                return null;
+            },
+            "tfoot": "rowgroup",
+            "thead": "rowgroup",
+            "tr": function(element) {
+                let parent = DOMWalker.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    if (role === "table" || role === "grid" || role === "treegrid") return "row";
+                    parent = DOMWalker.parentNode(parent);
+                }
+                return null;
+            },
+            "ul": "list"
+        }
+    })()
+   */
 } 

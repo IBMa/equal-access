@@ -11,13 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { CacheUtil } from "../util/CacheUtil";
-import { VisUtil } from "../util/VisUtil";
+import { NodeWalker } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const combobox_autocomplete_valid: Rule = {
+export let combobox_autocomplete_valid: Rule = {
     id: "combobox_autocomplete_valid",
     context: "aria:combobox",
     dependencies: ["combobox_popup_reference"],
@@ -52,8 +52,7 @@ export const combobox_autocomplete_valid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
-        if (!cache) return null;
+        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupId, popupElement } = cachedElem;
@@ -69,8 +68,7 @@ export const combobox_autocomplete_valid: Rule = {
             passed = !popupElement.hasAttribute("aria-autocomplete");
             // if any child of popupElement has "aria-autocomplete"
             if (passed && popupElement.children && popupElement.children.length > 0) {
-                //let nw = new NodeWalker(popupElement);
-                let nw = new DOMWalker(popupElement);
+                let nw = new NodeWalker(popupElement);
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                         passed = !nw.elem().hasAttribute("aria-autocomplete");

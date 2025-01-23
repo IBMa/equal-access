@@ -13,12 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { AccNameUtil } from "../util/AccNameUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_application_labelled: Rule = {
+export let aria_application_labelled: Rule = {
     id: "aria_application_labelled",
     context: "aria:application",
     refactor: {
@@ -50,9 +48,9 @@ export const aria_application_labelled: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        
-        const pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (!pair) {
+        let passed = RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
+        // return new ValidationResult(passed, [ruleContext], 'role', '', []);
+        if (!passed) {
             return RuleFail("Fail_1");
         } else {
             return RulePass("Pass_0");

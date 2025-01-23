@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const script_focus_blur_review: Rule = {
+export let script_focus_blur_review: Rule = {
     id: "script_focus_blur_review",
     context: "dom:*[onfocus]",
     refactor: {

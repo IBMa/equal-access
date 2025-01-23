@@ -11,11 +11,17 @@
   limitations under the License.
 *****************************************************************************/
 
+<<<<<<< HEAD
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+=======
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CacheUtil } from "../util/CacheUtil";
 
-export const meta_redirect_optional: Rule = {
+export let meta_redirect_optional: Rule = {
     id: "meta_redirect_optional",
     context: "dom:meta[http-equiv][content]",
     refactor: {
@@ -85,9 +91,18 @@ export const meta_redirect_optional: Rule = {
         if (time === -1) {
             return null;
         }
+<<<<<<< HEAD
 
         CacheUtil.setCache(doc, "meta_redirect_optional_done", true);
         if (time === 0)
+=======
+        // Only check the first one since it takes priority
+        if (RPTUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "meta_redirect_optional", false)) {
+            return null;
+        }
+        let timeMatch = content.match(/^(\d+); +[^ ]/);
+        if (!timeMatch || parseInt(timeMatch[1]) === 0) {
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
             return RulePass("pass");
         else if (time < 72001)
             return RuleFail("fail");

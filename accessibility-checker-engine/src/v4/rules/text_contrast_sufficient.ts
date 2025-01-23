@@ -11,16 +11,16 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
-import { ColorUtil } from "../util/ColorUtil";
+import { RPTUtil} from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { CSSUtil } from "../util/CSSUtil";
+//import { setCache } from "../util/CacheUtil";
+import { getWeightNumber, getFontInPixels} from "../util/CSSUtil";
+import { containsCKJ } from "../util/CommonUtil";
 
-export const text_contrast_sufficient: Rule = {
+export let text_contrast_sufficient: Rule = {
     id: "text_contrast_sufficient",
     context: "dom:*",
     refactor: {
@@ -74,11 +74,11 @@ export const text_contrast_sufficient: Rule = {
         
         //TODO ? should only consider native disabled, ignore aria-disabled
         //skip disabled element
-        if (CommonUtil.isNodeDisabled(ruleContext))
+        if (RPTUtil.isNodeDisabled(ruleContext))
             return null;
 
         //skip elements
-        if (CommonUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
+        if (RPTUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
             return null;
 
         let doc = ruleContext.ownerDocument;
@@ -92,9 +92,9 @@ export const text_contrast_sufficient: Rule = {
         }
 
         // Ensure that this element has children with actual text.
-        let childStr = CommonUtil.getNodeText(ruleContext);
+        let childStr = RPTUtil.getNodeText(ruleContext);
         
-        if (!CommonUtil.isShadowHostElement(ruleContext) || (CommonUtil.isShadowHostElement(ruleContext) && CommonUtil.getNodeText(ruleContext.shadowRoot) === '')) {
+        if (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')) {
             if (childStr.trim().length == 0 )
                 return null;
             
@@ -115,7 +115,7 @@ export const text_contrast_sufficient: Rule = {
         let elem = ruleContext;
         // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
         // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
-        if (CommonUtil.isShadowHostElement(ruleContext)) {
+        if (RPTUtil.isShadowHostElement(ruleContext)) {
             // if it's direct text of a shadow host
             if (ruleContext.shadowRoot) {
                 for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
@@ -251,11 +251,11 @@ export const text_contrast_sufficient: Rule = {
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        let weight = CSSUtil.getWeightNumber(style.fontWeight);
-        let size = CSSUtil.getFontInPixels(style.fontSize, elem);
+        let weight = getWeightNumber(style.fontWeight);
+        let size = getFontInPixels(style.fontSize, elem);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         
-        if (CSSUtil.containsCKJ(childStr)) {
+        if (containsCKJ(childStr)) {
             // https://github.com/act-rules/act-rules.github.io/pull/2121/files
             // for CJK, 22 pt or 18 pt with font-weight >= 700, 1pt = 1.333 px
             isLargeScale = size >= 29.3 || size >= 24 && weight >= 700;
@@ -263,19 +263,19 @@ export const text_contrast_sufficient: Rule = {
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
         let textShadow = colorCombo.textShadow;
-        let isDisabled = CommonUtil.isNodeDisabled(elem);
+        let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
-            let control = CommonUtil.getControlOfLabel(elem);
+            let control = RPTUtil.getControlOfLabel(elem);
             if (control) {
-                isDisabled = CommonUtil.isNodeDisabled(control);
+                isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
         
-        if (!isDisabled && nodeName === 'label' && CommonUtil.isDisabledByFirstChildFormElement(elem)) {
+        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
 
-        if (!isDisabled && ruleContext.hasAttribute("id") && CommonUtil.isDisabledByReferringElement(elem)) {
+        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(elem)) {
             isDisabled = true;
         }
 

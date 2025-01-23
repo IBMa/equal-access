@@ -11,16 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { VisUtil } from "../util/VisUtil";
-import { TableUtil } from "../util/TableUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const aria_content_in_landmark: Rule = {
+export let aria_content_in_landmark: Rule = {
     id: "aria_content_in_landmark",
     context: "dom:*",
     refactor: {
@@ -56,7 +54,7 @@ export const aria_content_in_landmark: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        let params = CacheUtil.getCache(context.dom.node.ownerDocument, "aria_content_in_landmark", null);
+        let params = getCache(context.dom.node.ownerDocument, "aria_content_in_landmark", null);
         if (!params) {
             params = {
                 landmarks: {
@@ -107,7 +105,7 @@ export const aria_content_in_landmark: Rule = {
                 params.mapNoLandmarkedRoles[params.noLandmarkedRoles.value[i]] = true;
             }
 
-            CacheUtil.setCache(context.dom.node.ownerDocument, "aria_content_in_landmark", params);
+            setCache(context.dom.node.ownerDocument, "aria_content_in_landmark", params);
         }
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
@@ -119,19 +117,19 @@ export const aria_content_in_landmark: Rule = {
         }
 
         let elemsWithoutContent = ["area", "input", "embed", "button", "textarea", "select"];
-        if (!CommonUtil.hasInnerContentHidden(ruleContext) && //only trigger the rule on elements that have content
+        if (!RPTUtil.hasInnerContentHidden(ruleContext) && //only trigger the rule on elements that have content
             elemsWithoutContent.indexOf(nodeName) === -1) { // a few elems wihout content should not be skipped
             return RulePass("Pass_0");
         }
 
         // Short circuit for layout tables
-        if (nodeName == "table" && TableUtil.isLayoutTable(ruleContext)) {
+        if (nodeName == "table" && RPTUtil.isLayoutTable(ruleContext)) {
             return null;
         }
 
         // Check if it is a possible orphan
         let passed = true;
-        let isPossibleOrphanedWidget = AriaUtil.hasRole(ruleContext, params.mapPossibleOrphanedWidgets, true);
+        let isPossibleOrphanedWidget = RPTUtil.hasRole(ruleContext, params.mapPossibleOrphanedWidgets, true);
         //exclude <link rel="stylesheet" href="xyz.css"> in the <head> and <body>(#608)
         //having link in the head could cause lot of violaions                    
         if (nodeName === 'link') {
@@ -147,29 +145,29 @@ export const aria_content_in_landmark: Rule = {
                 // Don't fail elements when a parent or sibling has failed - causes too many messages.
                 let walkElement = DOMWalker.parentElement(ruleContext);
                 while (!passed && walkElement != null) {
-                    passed = CacheUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
                     walkElement = DOMWalker.parentElement(walkElement);
                 }
                 walkElement = ruleContext.nextElementSibling;
                 while (!passed && walkElement != null) {
-                    passed = CacheUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
                     walkElement = walkElement.nextElementSibling;
                 }
                 walkElement = ruleContext.previousElementSibling;
                 while (!passed && walkElement != null) {
-                    passed = CacheUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
                     walkElement = walkElement.previousElementSibling;
                 }
                 if (!passed) {
-                    CacheUtil.setCache(ruleContext, "Rpt_Aria_OrphanedContent", true);
+                    setCache(ruleContext, "Rpt_Aria_OrphanedContent", true);
 
                     // Don't trigger rule if element is a stand-alone widget
-                    passed = CacheUtil.getCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", false) ||
-                        AriaUtil.hasRole(ruleContext, params.mapNoLandmarkedRoles, true) ||
-                        AriaUtil.getAncestorWithRole(ruleContext, params.mapNoLandmarkedRoles, true);
+                    passed = getCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", false) ||
+                        RPTUtil.hasRole(ruleContext, params.mapNoLandmarkedRoles, true) ||
+                        RPTUtil.getAncestorWithRole(ruleContext, params.mapNoLandmarkedRoles, true);
 
                     if (passed) {
-                        CacheUtil.setCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", true);
+                        setCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", true);
                         return null;
                     }
                 } else {

@@ -13,13 +13,11 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { VisUtil } from "../util/VisUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const widget_tabbable_exists: Rule = {
+export let widget_tabbable_exists: Rule = {
     id: "widget_tabbable_exists",
     context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:menubar, aria:grid, aria:treegrid, aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
     refactor: {
@@ -52,11 +50,11 @@ export const widget_tabbable_exists: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
 
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element should be a presentational child of an element
-        if (AriaUtil.shouldBePresentationalChild(ruleContext))
+        if (RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let nodeName = ruleContext.nodeName.toLowerCase();
@@ -67,22 +65,21 @@ export const widget_tabbable_exists: Rule = {
         // Composite user interface widget roles. They act as containers that manage other, contained widgets.
         let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
         for (const role of roleContainers) {
-            if (AriaUtil.getAncestorWithRole(ruleContext, role, true) != null) 
+            if (RPTUtil.getAncestorWithRole(ruleContext, role, true) != null) 
                 // it's a descendant of a composite widget already examined
                 return null;
         }    
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
-        if (CommonUtil.isTabbable(ruleContext)) {
+        if (RPTUtil.isTabbable(ruleContext)) {
             ++count;
         }
         // If node has children, look for tab stops in the children
         // skip the count if the element requires presentational children only
-        if (count < 1 && !AriaUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
-            //let nw = new NodeWalker(ruleContext);
-            let nw = new DOMWalker(ruleContext);
+        if (count < 1 && !RPTUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
+            let nw = new NodeWalker(ruleContext);
             while (count < 1 && nw.nextNode() && nw.node != ruleContext) {
-                if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {
+                if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
                     ++count;
                 }
             }

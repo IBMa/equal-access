@@ -11,11 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
+import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
+import { getRolesUndefinedByAria } from "../util/CommonUtil";
 
-export const aria_role_allowed: Rule = {
+export let aria_role_allowed: Rule = {
     id: "aria_role_allowed",
     context: "dom:*[role]",
     refactor: {
@@ -59,7 +60,7 @@ export const aria_role_allowed: Rule = {
             return null;
         }
 
-        let invalidRoles = AriaUtil.getRolesUndefinedByAria(ruleContext);
+        let invalidRoles = getRolesUndefinedByAria(ruleContext);
 
         if (!invalidRoles || invalidRoles.length === 0)
             return RulePass("Pass_0");

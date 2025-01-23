@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const script_onclick_avoid: Rule = {
+export let script_onclick_avoid: Rule = {
     id: "script_onclick_avoid",
     context: "dom:*[onclick]",
     dependencies: ["script_onclick_misuse"],
@@ -49,11 +49,11 @@ export const script_onclick_avoid: Rule = {
         const ruleContext = context["dom"].node as Element;
         // Don't trigger this for SVG element for now until a determination is made (by Rich)
         // to support SVG at a point when the SVG a11y spec is ready.
-        if (CommonUtil.getAncestor(ruleContext, "svg")) {
+        if (RPTUtil.getAncestor(ruleContext, "svg")) {
             return RulePass("Pass_0");
         }
         // If there's an aria-role specified, don't trigger this.
-        if (CommonUtil.attributeNonEmpty(ruleContext, "role"))
+        if (RPTUtil.attributeNonEmpty(ruleContext, "role"))
             return RulePass("Pass_0");
 
         let nodeName = ruleContext.nodeName.toLowerCase();

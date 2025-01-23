@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const form_font_color: Rule = {
+export let form_font_color: Rule = {
     id: "form_font_color",
     context: "dom:form",
     refactor: {

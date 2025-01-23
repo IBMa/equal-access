@@ -11,13 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { CacheUtil } from "../util/CacheUtil";
-import { VisUtil } from "../util/VisUtil";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const combobox_popup_reference: Rule = {
+export let combobox_popup_reference: Rule = {
     id: "combobox_popup_reference",
     context: "aria:combobox",
     dependencies: ["combobox_design_valid"],
@@ -73,8 +73,7 @@ export const combobox_popup_reference: Rule = {
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        const cache = CacheUtil.getCache(ruleContext.ownerDocument, "combobox", {});
-        if (!cache) return null;
+        const cache = getCache(ruleContext.ownerDocument, "combobox", {});
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;
@@ -120,17 +119,9 @@ export const combobox_popup_reference: Rule = {
         }
 
         if (pattern === "1.0") {
-            if (expanded) {
-                return RulePass("Pass_1.0_expanded");
-            } else {
-                return RulePass("Pass_1.0_collapsed");
-            }
+            return RulePass(expanded ? "Pass_1.0_expanded" : "Pass_1.0_collapsed");
         } else {
-            if (expanded) {
-                return RulePass("Pass_1.2_expanded");
-            } else {
-                return RulePass("Pass_1.2_collapsed");
-            }
+            return RulePass(expanded ? "Pass_1.2_expanded" : "Pass_1.2_collapsed");
         }
     }
 }

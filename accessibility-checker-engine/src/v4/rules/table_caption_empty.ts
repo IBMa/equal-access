@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export const table_caption_empty: Rule = {
+export let table_caption_empty: Rule = {
     id: "table_caption_empty",
     context: "dom:caption",
     refactor: {
@@ -46,7 +46,7 @@ export const table_caption_empty: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let passed = CommonUtil.hasInnerContentHidden(ruleContext);
+        let passed = RPTUtil.hasInnerContentHidden(ruleContext);
         if (!passed) {
             return RuleFail("Fail_1");
         } else {

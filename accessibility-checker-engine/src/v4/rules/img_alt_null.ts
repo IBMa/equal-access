@@ -11,40 +11,38 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RulePotential, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { VisUtil } from "../util/VisUtil";
-import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const img_alt_null: Rule = {
+export let img_alt_null: Rule = {
     id: "img_alt_null",
     context: "dom:img[alt]",
     refactor: {
         "WCAG20_Img_TitleEmptyWhenAltNull": {
-            "Pass_0": "pass",
-            "Fail_1": "fail_decorative"}
+            "Pass_0": "Pass_0",
+            "Fail_1": "Fail_1"}
     },
     help: {
         "en-US": {
-            "pass": "img_alt_null.html",
-            "fail_decorative": "img_alt_null.html",
-            "potential_aria_override": "img_alt_null.html",
+            "Pass_0": "img_alt_null.html",
+            "Fail_1": "img_alt_null.html",
             "group": "img_alt_null.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Neither 'aria' nor 'title' attributes are used for the decorative image",
-            "fail_decorative": "The image 'alt' attribute is empty, but the 'title' attribute is not empty",
-            "potential_aria_override": "The image 'alt' attribute is empty, but the 'aria' label is not empty and overrides the 'alt' attribute",
-            "group": "When the intent is to mark an image as decorative with an empty 'alt' attribute, the 'aria' or 'title' attributes should not be used"
+            "Pass_0": "Rule Passed",
+            "Fail_1": "The image 'alt' attribute is empty, but the 'title' attribute is not empty",
+            "group": "When the image 'alt' attribute is empty, the 'title' attribute must also be empty"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["1.1.1"],
         "level": eRulePolicy.VIOLATION,
+<<<<<<< HEAD
         "toolkitLevel": eToolkitLevel.LEVEL_ONE,
         reasonCodes: ["fail_decorative"]
     },
@@ -57,6 +55,11 @@ export const img_alt_null: Rule = {
     }
     ],
     act: [{"46ca7f": {"potential_aria_override": "fail"}}],
+=======
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+    }],
+    act: [],
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118))
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
@@ -65,12 +68,10 @@ export const img_alt_null: Rule = {
             return null;
         }
         // We have a title, but alt is empty
-        if (AriaUtil.getAriaLabel(ruleContext).length > 0) {
-            return RulePotential("potential_aria_override");
-        } else if (CommonUtil.attributeNonEmpty(ruleContext, "title")) {
-            return RuleFail("fail_decorative");
+        if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+            return RuleFail("Fail_1");
         } else {
-            return RulePass("pass");
+            return RulePass("Pass_0");
         }
     }
 }

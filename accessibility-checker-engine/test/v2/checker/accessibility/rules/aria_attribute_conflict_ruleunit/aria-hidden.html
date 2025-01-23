@@ -39,7 +39,41 @@
         UnitTest = {
           ruleIds: ["aria_attribute_conflict", "aria_attribute_redundant"],
 		  results: [
-		  
+		  {
+            "ruleId": "aria_attribute_conflict",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[7]",
+              "aria": "/document[1]/generic[7]"
+            },
+            "reasonId": "fail_conflict",
+            "message": "The ARIA attribute \"aria-hidden\" is in conflict with the corresponding HTML attribute \"hidden\"",
+            "messageArgs": [
+              "aria-hidden",
+              "hidden"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[8]",
+              "aria": "/document[1]/generic[8]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA attribute is not redundant with a corresponding HTML attribute",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }	
         ]
         };
       </script>

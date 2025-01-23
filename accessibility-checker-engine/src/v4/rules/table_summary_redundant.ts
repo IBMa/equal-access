@@ -11,13 +11,13 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export const table_summary_redundant: Rule = {
+export let table_summary_redundant: Rule = {
     id: "table_summary_redundant",
     context: "dom:table",
     refactor: {
@@ -63,7 +63,7 @@ export const table_summary_redundant: Rule = {
                 if (summaryNodeId) {
                     let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
                     if (summaryNode && !DOMUtil.sameNode(summaryNode,ruleContext)) {
-                        summaryNodeConcat += " " + CommonUtil.getInnerText(summaryNode).trim().toLowerCase();
+                        summaryNodeConcat += " " + RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
                     }
                 }
             }
@@ -76,7 +76,7 @@ export const table_summary_redundant: Rule = {
             if (capElems.length === 0) {
                 return null;
             } else if (sumStr.length > 0) {
-                let capStr = CommonUtil.getInnerText(capElems[0]).trim().toLowerCase();
+                let capStr = RPTUtil.getInnerText(capElems[0]).trim().toLowerCase();
                 if (!sumStr.includes(capStr)) {
                     return RulePass("Pass_0");
                 } else {

@@ -13,10 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AccNameUtil } from "../util/AccNameUtil";
-import { VisUtil } from "../util/VisUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const svg_graphics_labelled: Rule = {
+export let svg_graphics_labelled: Rule = {
     id: "svg_graphics_labelled",
     context: "dom:svg",
     help: {
@@ -28,7 +28,7 @@ export const svg_graphics_labelled: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "A non-decorative SVG element must have an accessible name",
+            "group": "A none decorative SVG element must have an accessible name",
             "pass": "The SVG element has an accessible name",
             "fail_acc_name": "The SVG element has no accessible name"
         }
@@ -49,11 +49,52 @@ export const svg_graphics_labelled: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the rule
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || VisUtil.isNodePresentational(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
-        if (name_pair && name_pair.name && name_pair.name.trim().length > 0)
+        // 1. aria-labelledby or aria-label 
+        let label = RPTUtil.getAriaLabel(ruleContext);
+        if (label && label.length > 0)
             return RulePass("pass");
+        
+        // 2. a direct child title element 
+        let svgTitle = ruleContext.querySelector(":scope > title");
+        if (svgTitle && RPTUtil.hasInnerContent(svgTitle))
+            return RulePass("pass");
+
+        // 3. xlink:title attribute on a link
+        let linkTitle = ruleContext.querySelector("a");
+        if (linkTitle && linkTitle.hasAttribute("xlink:title") && linkTitle.getAttribute("xlink:title").trim().length > 0)
+            return RulePass("pass");
+
+        /** 4. for text container elements, the text content. 
+         * note the SVG text content elements are: ‘text’, ‘textPath’ and ‘tspan’.
+         *  svg element can be nested. One of the purposes is to to group SVG shapes together as a collection for responsive design.
+         * 
+         * select text content excluded the text from the nested svg elements and their children 
+         */ 
+        let text = "";
+        ruleContext.querySelectorAll(":scope > *").forEach((element) => {
+            if (element.nodeName.toLowerCase() !== 'svg' && RPTUtil.hasInnerContent(element))
+                text += RPTUtil.getInnerText(element);
+        });
+        if (text !== '')
+            return RulePass("pass");
+
+        // 5. aria-describedby or aria-description 
+        let descby = RPTUtil.getAriaDescription(ruleContext);
+        if (descby && descby.length > 0)
+            return RulePass("pass");
+
+        // 6. a direct child desc element
+        let desc = ruleContext.querySelector(":scope > desc");
+        if (desc && RPTUtil.hasInnerContent(desc))
+            return RulePass("pass");
+        
+        // 7. title attribue that provides a tooltip 
+        // not clear from the svg mapping spec yet, but Chrome uses svg title attribute in the accessible name, but Firefox doesn't
+        if (ruleContext.hasAttribute("title") && ruleContext.getAttribute("title").trim().length > 0)
+            return RulePass("pass");
+
         return RuleFail("fail_acc_name")
     }
 }

@@ -11,14 +11,14 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { CommonUtil } from "../util/CommonUtil";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { AncestorUtil } from "../../v2/checker/accessibility/util/ancestor";
-import { CacheUtil } from "../util/CacheUtil";
-import { VisUtil } from "../util/VisUtil";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
-export const skip_main_exists: Rule = {
+export let skip_main_exists: Rule = {
     id: "skip_main_exists",
     context: "dom:body",
     refactor: {
@@ -58,15 +58,15 @@ export const skip_main_exists: Rule = {
 
         // Check for landmarks first
         let passed;
-        if (CacheUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
-            CacheUtil.setCache(ruleContext, "IBM_hasLandmarks_Implicit", CommonUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
+        if (getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
+            setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
                 "form", "main", "navigation", "search"
             ], true, true).length > 0);
         }
-        passed = CacheUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
+        passed = getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
 
         if (!passed) { // No landmarks, check for skip links
-            let anchors = CommonUtil.getDocElementsByTag(ruleContext, "a");
+            let anchors = RPTUtil.getDocElementsByTag(ruleContext, "a");
 
             // Skip anchor should be the first one on the page with an href attribute
             let testAnchor = null;

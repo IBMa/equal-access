@@ -11,11 +11,11 @@
     limitations under the License.
  *****************************************************************************/
 
-import { CommonUtil } from "../util/CommonUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export const aria_hidden_nontabbable: Rule = {
+export let aria_hidden_nontabbable: Rule = {
     id: "aria_hidden_nontabbable",
     context: "dom:*[aria-hidden=true], dom:*[aria-hidden=true] dom:*",
     refactor: {
@@ -50,7 +50,7 @@ export const aria_hidden_nontabbable: Rule = {
         const ruleContext = context["dom"].node as Element;
             
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (CommonUtil.isTabbable(ruleContext)) {
+        if (RPTUtil.isTabbable(ruleContext)) {
             return RuleFail("Fail_1", [nodeName]);
         }
         

@@ -173,7 +173,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v1
       with:
         name: accessibility-checker-extension for Chrome
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -195,7 +195,7 @@ jobs:
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v1
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
@@ -223,45 +223,3 @@ jobs:
         BLUEMIX_PASS: ${{ secrets.BLUEMIX_PASS }}
         CLOUD_PWD: ${{ secrets.CLOUD_PWD }}
         TRAVIS_BRANCH: prod
-
-  java-accessibility-checker-deploy:
-    runs-on: ubuntu-22.04
-    permissions:
-      packages: write
-    strategy:
-      matrix:
-        node-version: [18.x]
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-java@v4
-      with:
-        distribution: 'semeru' # See 'Supported distributions' for available options
-        java-version: '17'
-        server-id: central
-        server-username: ${{ secrets.MVN_GITHUB_USER }}
-        server-password: ${{ secrets.MVN_GITHUB_TOKEN }}
-    - uses: s4u/maven-settings-action@v3.0.0
-      with:
-        servers: |
-          [{
-            "id": "central",
-            "username": "${{ secrets.MVN_GITHUB_USER }}",
-            "password": "${{ secrets.MVN_GITHUB_TOKEN }}"
-          }]
-    - name: Configure GPG Key
-      run: echo "$GPG_SIGNING_KEY" >private.key
-      env:
-        GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-    - name: Import GPG Key
-      run: gpg --pinentry-mode=loopback --passphrase "$GPG_SIGNING_KEY_PASS" --import private.key
-      env:
-        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}
-    - name: Set version
-      run: sed -i'.old' -e 's/<version>3\.0\.0<\/version>/<version>'"${GITHUB_REF:10}"'<\/version>/g' ./pom.xml
-      working-directory: java-accessibility-checker
-    - name: Publish package
-      run: mvn --batch-mode deploy -DskipTests -Dgpg.passphrase=$GPG_SIGNING_KEY_PASS
-      working-directory: java-accessibility-checker
-      env:
-        GPG_SIGNING_KEY_PASS: ${{ secrets.GPG_SIGNING_KEY_PASS }}

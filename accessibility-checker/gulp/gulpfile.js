@@ -47,8 +47,12 @@ gulp.task("build-uglify", function () {
 
 gulp.task("build-copy", function () {
     return gulp.src([
+<<<<<<< HEAD:accessibility-checker/gulp/gulpfile.js
 <<<<<<< HEAD:accessibility-checker/gulp/gulpfile.mjs
         "../src/bin/achecker.js",
+=======
+        "../src/**/bin/achecker.js",
+>>>>>>> parent of 01c107fb (chore(repo): Update main-4.x (#2118)):accessibility-checker/gulp/gulpfile.mjs
         "../src/mjs/index.d.ts",
 =======
         "../src/**/bin/achecker.js",

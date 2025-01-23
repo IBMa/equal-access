@@ -8,7 +8,7 @@ import { ACConfigManager } from "./common/config/ACConfigManager.js";
 import { IConfigInternal } from "./common/config/IConfig.js";
 import { ReporterManager } from "./common/report/ReporterManager.js";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI.js";
-import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { IBaselineReport, IEngineReport } from "./common/engine/IReport.js";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
 =======
 import { ICheckerReport, ICheckerResult } from "./api/IChecker";
@@ -243,50 +243,6 @@ async function getComplianceHelperSelenium(label, parsed, curPol) : Promise<IChe
         let scriptStr =
             `let cb = arguments[arguments.length - 1];
 try {
-
-const valueToLevel = (reportValue) => {
-    let reportLevel;
-    if (reportValue[1] === "PASS") {
-        reportLevel = "pass";
-    }
-    else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
-        reportLevel = "manual";
-    }
-    else if (reportValue[0] === "VIOLATION") {
-        if (reportValue[1] === "FAIL") {
-            reportLevel = "violation";
-        }
-        else if (reportValue[1] === "POTENTIAL") {
-            reportLevel = "potentialviolation";
-        }
-    }
-    else if (reportValue[0] === "RECOMMENDATION") {
-        if (reportValue[1] === "FAIL") {
-            reportLevel = "recommendation";
-        }
-        else if (reportValue[1] === "POTENTIAL") {
-            reportLevel = "potentialrecommendation";
-        }
-    }
-    return reportLevel;
-}
-
-const getCounts = (engineReport) => {
-    let counts = {
-        violation: 0,
-        potentialviolation: 0,
-        recommendation: 0,
-        potentialrecommendation: 0,
-        manual: 0,
-        pass: 0
-    }
-    for (const issue of engineReport.results) {
-        ++counts[issue.level];
-    }
-    return counts;
-}
-
-
 let policies = ${JSON.stringify(Config.policies)};
 
 let checker = new window.ace_ibma.Checker();
@@ -296,14 +252,7 @@ setTimeout(function() {
     checker.check(document, policies).then(function(report) {
         for (const result of report.results) {
             delete result.node;
-            result.level = valueToLevel(result.value)
         }
-        report.summary ||= {};
-        report.summary.counts ||= getCounts(report);
-        let reportLevels = ${JSON.stringify((Config.reportLevels || []).concat(Config.failLevels || []).map(lvl => lvl.toString()))};
-        // Filter out pass results unless they asked for them in reports
-        // We don't want to mess with baseline functions, but pass results can break the response object
-        report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
         cb(report);
     })
 },0)
@@ -356,50 +305,8 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let report : IEngineReport = await page.executeAsync(({ policies, customRulesets, reportLevels }, done) => {
+        let report : IEngineReport = await page.executeAsync(({ policies, customRulesets }, done) => {
             
-            const valueToLevel = (reportValue) => {
-                let reportLevel;
-                if (reportValue[1] === "PASS") {
-                    reportLevel = "pass";
-                }
-                else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
-                    reportLevel = "manual";
-                }
-                else if (reportValue[0] === "VIOLATION") {
-                    if (reportValue[1] === "FAIL") {
-                        reportLevel = "violation";
-                    }
-                    else if (reportValue[1] === "POTENTIAL") {
-                        reportLevel = "potentialviolation";
-                    }
-                }
-                else if (reportValue[0] === "RECOMMENDATION") {
-                    if (reportValue[1] === "FAIL") {
-                        reportLevel = "recommendation";
-                    }
-                    else if (reportValue[1] === "POTENTIAL") {
-                        reportLevel = "potentialrecommendation";
-                    }
-                }
-                return reportLevel;
-            }
-
-            const getCounts = (engineReport) => {
-                let counts: EngineSummaryCounts = {
-                    violation: 0,
-                    potentialviolation: 0,
-                    recommendation: 0,
-                    potentialrecommendation: 0,
-                    manual: 0,
-                    pass: 0
-                }
-                for (const issue of engineReport.results) {
-                    ++counts[issue.level];
-                }
-                return counts;
-            }
-
             let checker = new (window as any).ace_ibma.Checker();
             customRulesets.forEach((rs) => checker.addRuleset(rs));
             return new Promise<Report>((resolve, reject) => {
@@ -407,19 +314,13 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
                     checker.check(document, policies).then(function (report) {
                         for (const result of report.results) {
                             delete result.node;
-                            result.level = valueToLevel(result.value)
                         }
-                        report.summary ||= {};
-                        report.summary.counts ||= getCounts(report);
-                        // Filter out pass results unless they asked for them in reports
-                        // We don't want to mess with baseline functions, but pass results can break the response object
-                        report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                         resolve(report);
                         done(report);
                     })
                 }, 0)
             })
-        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets, reportLevels: (Config.reportLevels || []).concat(Config.failLevels || []).map(lvl => lvl.toString()) });
+        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
         if (curPol != null && !checkPolicy) {
             const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.execute(() => (new (window as any).ace_ibma.Checker().rulesetIds)));
             checkPolicy = true;
@@ -460,49 +361,8 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let report : IEngineReport = await page.evaluate(({ policies, customRulesets, reportLevels }) => {  
-            const valueToLevel = (reportValue) => {
-                let reportLevel;
-                if (reportValue[1] === "PASS") {
-                    reportLevel = "pass";
-                }
-                else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
-                    reportLevel = "manual";
-                }
-                else if (reportValue[0] === "VIOLATION") {
-                    if (reportValue[1] === "FAIL") {
-                        reportLevel = "violation";
-                    }
-                    else if (reportValue[1] === "POTENTIAL") {
-                        reportLevel = "potentialviolation";
-                    }
-                }
-                else if (reportValue[0] === "RECOMMENDATION") {
-                    if (reportValue[1] === "FAIL") {
-                        reportLevel = "recommendation";
-                    }
-                    else if (reportValue[1] === "POTENTIAL") {
-                        reportLevel = "potentialrecommendation";
-                    }
-                }
-                return reportLevel;
-            }
-
-            const getCounts = (engineReport) => {
-                let counts: EngineSummaryCounts = {
-                    violation: 0,
-                    potentialviolation: 0,
-                    recommendation: 0,
-                    potentialrecommendation: 0,
-                    manual: 0,
-                    pass: 0
-                }
-                for (const issue of engineReport.results) {
-                    ++counts[issue.level];
-                }
-                return counts;
-            }
-
+        let report : IEngineReport = await page.evaluate(({ policies, customRulesets }) => {
+            
             let checker = new (window as any).ace_ibma.Checker();
             customRulesets.forEach((rs) => checker.addRuleset(rs));
             return new Promise<Report>((resolve, reject) => {
@@ -510,18 +370,12 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                     checker.check(document, policies).then(function (report) {
                         for (const result of report.results) {
                             delete result.node;
-                            result.level = valueToLevel(result.value)
                         }
-                        report.summary ||= {};
-                        report.summary.counts ||= getCounts(report);
-                        // Filter out pass results unless they asked for them in reports
-                        // We don't want to mess with baseline functions, but pass results can break the response object
-                        report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                         resolve(report);
                     })
                 }, 0)
             })
-        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets, reportLevels: (Config.reportLevels || []).concat(Config.failLevels || []).map(lvl => lvl.toString()) });
+        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
         if (curPol != null && !checkPolicy) {
             const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.evaluate("new window.ace_ibma.Checker().rulesetIds"));
             checkPolicy = true;
@@ -559,48 +413,6 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
 
 async function getComplianceHelperLocal(label, parsed, curPol) : Promise<ICheckerResult> {
     try {
-        const valueToLevel = (reportValue) => {
-            let reportLevel;
-            if (reportValue[1] === "PASS") {
-                reportLevel = "pass";
-            }
-            else if ((reportValue[0] === "VIOLATION" || reportValue[0] === "RECOMMENDATION") && reportValue[1] === "MANUAL") {
-                reportLevel = "manual";
-            }
-            else if (reportValue[0] === "VIOLATION") {
-                if (reportValue[1] === "FAIL") {
-                    reportLevel = "violation";
-                }
-                else if (reportValue[1] === "POTENTIAL") {
-                    reportLevel = "potentialviolation";
-                }
-            }
-            else if (reportValue[0] === "RECOMMENDATION") {
-                if (reportValue[1] === "FAIL") {
-                    reportLevel = "recommendation";
-                }
-                else if (reportValue[1] === "POTENTIAL") {
-                    reportLevel = "potentialrecommendation";
-                }
-            }
-            return reportLevel;
-        }
-
-        const getCounts = (engineReport) => {
-            let counts: EngineSummaryCounts = {
-                violation: 0,
-                potentialviolation: 0,
-                recommendation: 0,
-                potentialrecommendation: 0,
-                manual: 0,
-                pass: 0
-            }
-            for (const issue of engineReport.results) {
-                ++counts[issue.level];
-            }
-            return counts;
-        }
-
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
         ACEngineManager.customRulesets.forEach((rs) => checker.addGuideline(rs));
@@ -608,14 +420,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             .then(function (report) {
                 for (const result of report.results) {
                     delete result.node;
-                    result.level = valueToLevel(result.value)
                 }
-                report.summary ||= {};
-                report.summary.counts ||= getCounts(report);
-                let reportLevels = (Config.reportLevels || []).concat(Config.failLevels || []).map(lvl => lvl.toString());
-                // Filter out pass results unless they asked for them in reports
-                // We don't want to mess with baseline functions, but pass results can break the response object
-                report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                 return report;
             })
 
