@@ -1,14 +1,14 @@
-import { ICheckerReport, ICheckerResult } from "./api/IChecker";
-import { ACBrowserManager } from "./ACBrowserManager";
-import { ACEngineManager } from "./ACEngineManager";
-import { ACConfigManager } from "./common/config/ACConfigManager";
-import { IConfigInternal } from "./common/config/IConfig";
-import { ReporterManager } from "./common/report/ReporterManager";
+import { ICheckerReport, ICheckerResult } from "./api/IChecker.js";
+import { ACBrowserManager } from "./ACBrowserManager.js";
+import { ACEngineManager } from "./ACEngineManager.js";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
+import { IConfigInternal } from "./common/config/IConfig.js";
+import { ReporterManager } from "./common/report/ReporterManager.js";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI";
-import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport";
+import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport.js";
 import { dirname, join, resolve as pathResolve } from "path";
-import { BaselineManager, RefactorMap } from "./common/report/BaselineManager";
+import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
 
 declare var after;
 
