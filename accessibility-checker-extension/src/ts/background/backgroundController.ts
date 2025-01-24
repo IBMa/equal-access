@@ -56,6 +56,8 @@ class BackgroundController extends Controller {
             return senderTabId!;
         });
     }
+
+   
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
@@ -154,6 +156,24 @@ class BackgroundController extends Controller {
                 });
             });
         });
+    }
+
+     /**
+     * Get element from DOM for AI
+     */
+     public async getElement(xpath: string) {
+        console.log("bg xpath = ", xpath);
+        console.log("document = ", document);
+        console.log("window.document = ", window.document);
+        let x = window.document.evaluate( 
+            xpath, 
+            document, 
+            null, 
+            XPathResult.FIRST_ORDERED_NODE_TYPE, 
+            null 
+        );
+        console.log("x.singleNodeValue is ", x.singleNodeValue);
+        return x.singleNodeValue;
     }
 
     ///// Settings related functions /////////////////////////////////////////

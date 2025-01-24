@@ -75,6 +75,7 @@ export default class DomPathUtils {
             }, XPathResult.ANY_TYPE, null);
             let element = nodes.iterateNext();
             if (element) {
+                console.log("docDomPathToElement returned element: ", element);
                 return element as HTMLElement;
             } else {
                 return null;
@@ -134,6 +135,7 @@ export default class DomPathUtils {
         if (srcPath) {
             element = this.docDomPathToElement(doc, srcPath) || element;
         }
+        console.log("domPathToElem returned element: ", element);
         return element;
     }
 
