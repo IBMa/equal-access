@@ -26,6 +26,7 @@ export class ACEngineManager {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
             if (ENGINE_LOAD_MODE === "REMOTE") {
+                config.DEBUG && console.log("[INFO] engineMode REMOTE");
                 await page.evaluate((scriptUrl) => {
                     try {
                         var ace_backup_in_ibma;
@@ -61,19 +62,21 @@ export class ACEngineManager {
                     }
                 }, `${config.rulePack}/ace.js`);
             } else if (ENGINE_LOAD_MODE === "INJECT") {
-                await page.evaluate((engineContent) => {
+                config.DEBUG && console.log("[INFO] engineMode INJECT");
+                let aceAlreadyExists = await page.evaluate(() => { try { return 'undefined' !== typeof(ace) } catch (e) { return false; } });
+                await page.evaluate((engineContent, aceAlreadyExists) => {
                     try {
                         var ace_backup_in_ibma;
-                        if ('undefined' !== typeof(ace)) {
+                        if (aceAlreadyExists) {
                             if (!ace || !ace.Checker)
                                 ace_backup_in_ibma = ace;
                             ace = null;
                         }
-                        if ('undefined' === typeof (ace) || ace === null) {
+                        if (!aceAlreadyExists || ace === null) {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof(ace)) {
+                                if (aceAlreadyExists) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
@@ -82,7 +85,7 @@ export class ACEngineManager {
                     } catch (e) {
                         return Promise.reject(e);
                     }
-                }, ACEngineManager.engineContent);
+                }, ACEngineManager.engineContent, aceAlreadyExists);
             }
             return ACEngineManager.loadEngineLocal();
         } else if (ACEngineManager.isSelenium(content)) {
