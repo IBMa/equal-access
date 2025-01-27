@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
@@ -39,16 +39,8 @@ export const aria_search_label_unique: Rule = {
             "group": "Each element with \"search\" role must have a unique label that describes its purpose"
         }
     },
-    /**
-     * deprecated the rule on 01/27/2025
-     * rulesets: [{
-        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.4.1"],
-        "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_THREE
-    }],*/
     rulesets: [{
-        "id": [],
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["2.4.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
