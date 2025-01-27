@@ -1207,15 +1207,15 @@ export class CommonUtil {
             if (nw.bEndTag) continue;
             if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node as HTMLElement))) {
                 if (nw.node.nextSibling) {
-                    if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue && nw.node.nextSibling.nodeValue.trim() !== '')
-                        text += ' ' + nw.node.nextSibling.nodeValue.trim();
+                    if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
+                        text += nw.node.nextSibling.nodeValue;
                     nw.node = nw.node.nextSibling;
                     continue;
                 } else
                     break;
             }
-            if (nw.node.nodeType === 3 && nw.node.nodeValue && nw.node.nodeValue.trim() !== '') {
-                text += ' ' + nw.node.nodeValue.trim(); 
+            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null) {
+                text += nw.node.nodeValue.trim(); 
             }    
         }
         return text.trim();
