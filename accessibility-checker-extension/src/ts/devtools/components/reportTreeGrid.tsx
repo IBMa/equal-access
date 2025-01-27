@@ -36,7 +36,7 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue, UIIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
+import { AiElementXpathState, ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
@@ -298,7 +298,12 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         console.log("Rule reason code: ", issue.reasonId);
         console.log("Rule specific message: ");
         console.log("Element where issue found", issue.path.dom);
-        console.log("Complete element: ", this.bgcontroller.getElement(issue.path.dom));
+        let x: any = issue.path.dom;
+        let path: AiElementXpathState = x;
+        console.log("JOHO path: ",path);
+        await this.devtoolsController.setAiElementXpathState(path);
+        await this.devtoolsController.getAiElementXpathState();
+        
         console.log("Code where issue is found: ", issue.snippet);
         console.log("(from Help)\n", whatToDo);
         console.log("(from Help)\n", aboutThisRequirement);

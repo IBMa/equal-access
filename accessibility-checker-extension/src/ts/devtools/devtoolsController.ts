@@ -32,6 +32,7 @@ let devtoolsState : {
     lastElementPath: string | null
     lastIssue: IIssue | null
     viewState: ViewState
+    aiElementXpathState: AiElementXpathState // JOHO
     focusedMode: boolean
     scanningState: ScanningState
     activePanel: ePanel | null
@@ -41,6 +42,10 @@ export type ePanel = "main" | "elements";
 
 export interface ViewState {
     kcm: boolean
+}
+
+export interface AiElementXpathState {
+    xpath: string
 }
 
 export type ScanningState = "initializing" 
@@ -346,6 +351,43 @@ export class DevtoolsController extends Controller {
 
     public async rempoveScanningStateListener(listener: ListenerType<ScanningState>) {
         this.removeEventListener(listener, `DT_onScanningState`);
+    }
+
+    ///// AI state to get complete element functions
+
+    /**
+     * Set AI element xpath state
+     */
+    public async setAiElementXpathState(xpath: AiElementXpathState | null) : Promise<void> {
+        console.log("func: setAiElementXpathState with argument: ", xpath);
+        return this.hook("setAiElementXpathState", xpath, async () => {
+            if (xpath) {
+                devtoolsState!.aiElementXpathState = xpath;
+                setTimeout(() => {
+                    this.notifyEventListeners("DT_getAiElementXpathState", this.ctrlDest.tabId, xpath);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Get AI element xpath state
+     */
+    public async getAiElementXpathState() : Promise<AiElementXpathState | null> {
+        console.log("func: getAiElementXpathState");
+        return this.hook("getAiElementXpathState", null, async () => {
+            if (!devtoolsState) return null;
+            console.log("devtoolsState?.aiElementXpathState = ", devtoolsState?.aiElementXpathState);
+            return devtoolsState?.aiElementXpathState;
+        });
+    }
+
+    public async addAiElementXpathStateListener(listener: ListenerType<AiElementXpathState>) {
+        this.addEventListener(listener, `DT_onAiElementXpathState`);
+    }
+
+    public async removeAiElementXpathStateListener(listener: ListenerType<AiElementXpathState>) {
+        this.removeEventListener(listener, `DT_onAiElementXpathState`);
     }
 
     ///// View state (visualization) functions //////////////////////////////////////
@@ -756,6 +798,9 @@ export class DevtoolsController extends Controller {
                 viewState: {
                     kcm: false
                 },
+                aiElementXpathState: {  // JOHO
+                    xpath: ""
+                },
                 focusedMode: false,
                 activePanel: null
             };
@@ -776,8 +821,10 @@ export class DevtoolsController extends Controller {
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
                 "DT_getReport": async () => self.getReport(),
                 "DT_getReportMeta": async () => self.getReportMeta(),
-                "DT_getViewState": async () => self.getViewState(),
                 "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
+                "DT_getViewState": async () => self.getViewState(),
+                "DT_setAiElementXpathState": async (msgBody) => self.setAiElementXpathState(msgBody.content),
+                "DT_getAiElementXpathState": async () => self.getAiElementXpathState(),
                 "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
                 "DT_getSelectedIssue": async () => self.getSelectedIssue(),
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),
@@ -817,6 +864,17 @@ export class DevtoolsController extends Controller {
                 },
                 content: devtoolsState.viewState
             });
+
+            // JOHO
+            CommonMessaging.send({
+                type: "DT_onAiElementXpathState",
+                dest: {
+                    type: "contentScript",
+                    tabId: this.ctrlDest.tabId
+                },
+                content: devtoolsState.aiElementXpathState
+            });
+
         }
     }
 }

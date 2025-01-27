@@ -84,6 +84,7 @@ export default class DomPathUtils {
     }
 
     public static domPathToElem(srcPath: string | null | undefined) {
+        console.log("Func: domPathToElem");
         let doc : Document | ShadowRoot = document;
         let element = null;
         while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment") || srcPath.includes("slot"))) {
