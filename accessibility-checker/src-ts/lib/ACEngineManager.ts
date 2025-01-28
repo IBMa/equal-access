@@ -64,7 +64,7 @@ export class ACEngineManager {
             } else if (ENGINE_LOAD_MODE === "INJECT") {
                 config.DEBUG && console.log("[INFO] engineMode INJECT");
                 let aceAlreadyExists = await page.evaluate(() => { try { return 'undefined' !== typeof(ace) } catch (e) { return false; } });
-                await page.evaluate((engineContent, aceAlreadyExists) => {
+                await page.evaluate(({ engineContent, aceAlreadyExists }) => {
                     try {
                         var ace_backup_in_ibma;
                         if (aceAlreadyExists) {
@@ -85,7 +85,8 @@ export class ACEngineManager {
                     } catch (e) {
                         return Promise.reject(e);
                     }
-                }, ACEngineManager.engineContent, aceAlreadyExists);
+                }, { 
+                    engineContent: ACEngineManager.engineContent, aceAlreadyExists });
             }
             return ACEngineManager.loadEngineLocal();
         } else if (ACEngineManager.isSelenium(content)) {
