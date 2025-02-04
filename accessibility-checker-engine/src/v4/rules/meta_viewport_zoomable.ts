@@ -45,8 +45,8 @@ export const meta_viewport_zoomable: Rule = {
     }],
     act: [{
         "b4f0c3": {
-            "Pass_0": "pass",
-            "Potential_1": "fail"
+            "pass": "pass",
+            "potential_zoomable": "fail"
         }
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
