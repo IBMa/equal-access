@@ -11,10 +11,9 @@
   limitations under the License.
 *****************************************************************************/
 
-import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { CacheUtil } from "../util/CacheUtil";
 
 export const meta_redirect_optional: Rule = {
     id: "meta_redirect_optional",
@@ -49,39 +48,51 @@ export const meta_redirect_optional: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
     // Removed ACT bisz58 AAA
-    act: [{ 
+    /**act: [{ 
         "bc659a" : {
             "pass": "pass",
             "fail": "fail",
             "fail_longrefresh": "pass"
         }
-    }],
+    }],*/
+    act: [ "bisz58"],  // fail even if a page is redirected after more than 20 hours (7200)
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // JCH - NO OUT OF SCOPE hidden in context
+        
         if (ruleContext.getAttribute("http-equiv").toLowerCase() !== 'refresh') {
             return null;
         }
 
+        let doc = ruleContext.ownerDocument;
+        if (!doc) return;
+
+        // check if the rule already passed or failed: only the first one tridders if multiple
+        if (CacheUtil.getCache(doc, "meta_redirect_optional_done", false))
+            return null;    
+
         let content = ruleContext.getAttribute("content").toLowerCase();
+        if (!content || content.trim().length ===0)
+            return null;
+
+        let time:number = -1;
+        if (content.match(/^\d+$/)) 
+            time = parseInt(content);
+        else if (content.match(/^\d+;/)) {
+            let pos = content.indexOf(";");
+            time = parseInt(content.substring(0, pos));
+        }
         // Invalid content field
-        if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
+        if (time === -1) {
             return null;
         }
-        // Only check the first one since it takes priority
-        if (CommonUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "meta_redirect_optional", false)) {
-            return null;
-        }
-        let timeMatch = content.match(/^(\d+); +[^ ]/);
-        if (!timeMatch || parseInt(timeMatch[1]) === 0) {
+
+        CacheUtil.setCache(doc, "meta_redirect_optional_done", true);
+        if (time === 0)
             return RulePass("pass");
-        } else {
-            let time = parseInt(timeMatch[1]);
-            if (time < 72001) {
-                return RuleFail("fail");
-            } else {
-                return RuleFail("fail_longrefresh");
-            }
-        }
+        else if (time < 72001)
+            return RuleFail("fail");
+        
+        return RuleFail("fail_longrefresh");    
+
     }
 }

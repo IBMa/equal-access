@@ -33,7 +33,7 @@ const fs = require("fs");
             try {
                 // If no tests, don't bother loading the testcase
                 if (ruleTestInfo[ruleId].aceRules.length > 0) {
-                    console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
+                    console.group(`+ ${testcase.testcaseTitle}${testcase.approved ? "" : " [not approved]" }: ${testcase.url}`);
                     if (ext === ".html" || ext === ".xhtml") {
                         // Special handling for meta refresh
                         if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
@@ -58,7 +58,7 @@ const fs = require("fs");
                         }
                     }
                 } else {
-                    console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
+                    console.group(`? ${testcase.testcaseTitle}${testcase.approved ? "" : " [not approved]" }: ${testcase.url}`);
                 }
                 let { title, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.testcaseId, ruleTestInfo[ruleId].aceRules, !(ext === ".html" || ext === ".htm"));
                 earlResult["@graph"].push({
