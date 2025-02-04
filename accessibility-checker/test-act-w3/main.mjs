@@ -49,7 +49,7 @@ import * as fs from "fs";
 
             try {
                 // This rule has testcases, run the test
-                console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
+                console.group(`+ ${testcase.testcaseTitle}${testcase.approved ? "" : " [not approved]" }: ${testcase.url}`);
                 // Special handling for meta refresh
                 if (ext === ".html" || ext === ".xhtml") {
                     if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a") 
