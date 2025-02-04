@@ -95,8 +95,45 @@ export class ARIAMapper extends CommonMapper {
                 for (let iId=0; iId < ownIds.length; ++iId) {
                     const owned = doc.getElementById(ownIds[iId]);
                     //ignore if the aria-owns point to the element itself
-                    if (owned && !DOMUtil.sameNode(owner, owned)) {
-                        CacheUtil.setCache(owned, "aria-owned", owner);
+                    //if (owned && !DOMUtil.sameNode(owner, owned)) {
+                    //    CacheUtil.setCache(owned, "aria-owned", owner);
+                    //}
+                    /**
+                     *  circular hierarchy check:
+                     *  (1) the owned element is neither the same element with the owner nor any ascendant of the owner
+                     *  (2) any child with aria-owns cannot point to the owner or any ascendant of the owner
+                     */ 
+                    if (owned && !DOMUtil.sameNode(owner, owned)) {   
+                        // check if the owned with aria-owns that points to another element
+                        let ownedNodes = [];
+                        const sub_owners = owned.querySelectorAll("[aria-owns]");
+                        for (let i = 0; i < sub_owners.length; ++i) {
+                            const sub_owner = sub_owners[i]; 
+                            const sub_ownIds = sub_owner.getAttribute("aria-owns").split(/ +/g);
+                            for (let j=0; j < sub_ownIds.length; ++j) {
+                                const ownedNode = doc.getElementById(sub_ownIds[j]);
+                                if (ownedNode)
+                                    ownedNodes.push(ownedNode);
+                            }    
+                        }
+                        if (ownedNodes.length === 0) {
+                            CacheUtil.setCache(owned, "aria-owned", owner);
+                            continue;
+                        }    
+                        // check if any aria-owns points to the element itself or any of it's parent
+                        let parent : Element = owner;      
+                        let circular = false;
+                        while (parent !== null) {
+                            const found = ownedNodes.some(item => DOMUtil.sameNode(parent, item));
+                            if (!found)
+                                parent = DOMWalker.parentElement(parent);
+                            else { 
+                                circular = true;
+                                break;
+                            }   
+                        }
+                        if (!circular)
+                            CacheUtil.setCache(owned, "aria-owned", owner);    
                     }
                 }
             }
