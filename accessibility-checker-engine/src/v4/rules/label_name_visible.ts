@@ -19,7 +19,6 @@ import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
-import { AccNameUtil } from "../util/AccNameUtil";
 
 export const label_name_visible: Rule = {
     id: "label_name_visible",
