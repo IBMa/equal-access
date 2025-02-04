@@ -13,28 +13,29 @@
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { CacheUtil } from "../util/CacheUtil";
 
 export const meta_refresh_delay: Rule = {
     id: "meta_refresh_delay",
     context: "dom:meta[http-equiv][content]",
     refactor: {
         "RPT_Meta_Refresh": {
-            "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"
+            "Pass_0": "pass",
+            "Potential_1": "potential_refresh"
         }
     },
     help: {
         "en-US": {
             "group": "meta_refresh_delay.html",
-            "Pass_0": "meta_refresh_delay.html",
-            "Potential_1": "meta_refresh_delay.html"
+            "pass": "meta_refresh_delay.html",
+            "potential_refresh": "meta_refresh_delay.html"
         }
     },
     messages: {
         "en-US": {
             "group": "Pages should not refresh automatically",
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Verify page is not being caused to refresh automatically",
+            "pass": "Pages do not refresh automatically",
+            "potential_refresh": "Verify page is not being caused to refresh automatically",
         }
     },
     rulesets: [{
@@ -43,18 +44,39 @@ export const meta_refresh_delay: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: [ "bisz58", "bc659a" ],
+    //act: [ "bisz58", "bc659a" ],
+    act: [ "bc659a" ],  // pass if a page is redirected after more than 20 hours (7200)
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (ruleContext.getAttribute("http-equiv").toLowerCase() !== 'refresh')
             return null;
 
+        let doc = ruleContext.ownerDocument;
+        if (!doc) return;
+
+        // check if the rule already passed: the first one takes priority
+        if (CacheUtil.getCache(doc, "meta_refresh_delay_done", false))
+            return null;
+
         let content = ruleContext.getAttribute("content").toLowerCase();
+        if (!content || content.trim().length ===0)
+            return null;
+
+        let time:number = -1;
+        if (content.match(/^\d+$/)) 
+            time = parseInt(content);
+        else if (content.match(/^\d+;/)) {
+            let pos = content.indexOf(";");
+            time = parseInt(content.substring(0, pos));
+        }
         // Invalid content field
-        if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
+        if (time === -1) {
             return null;
         }
-        let fail = !content.match(/^\d+; +[^ ]/);
-        return !fail ? RulePass("Pass_0") : RulePotential("Potential_1");
+
+        CacheUtil.setCache(doc, "meta_refresh_delay_done", true);
+        if (time === 0) 
+            return RulePass("pass");
+        return RulePotential("potential_refresh");
     }
 }
