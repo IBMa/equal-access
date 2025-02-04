@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test case</title>
+</head>
+<body>
+  <button
+    aria-expanded="false"
+    aria-controls="id-:re:"
+    aria-label="AI Text goes here"
+    type="button">
+    <span class="cds--ai-label__text">AI</span>
+    <span class="cds--ai-label__additional-text">Text goes here</span>
+</button>
+
+  <script>
+    UnitTest = {
+      ruleIds: ["label_name_visible"],
+      results: [
+      {
+            "ruleId": "label_name_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Accessible name matches or contains the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    };
+  </script>
+</body>
+</html>
