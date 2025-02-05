@@ -75,7 +75,7 @@ The typical use case will be to get the accessibility compliance of a document a
 cy.getCompliance('my scan').assertCompliance()
 ```
 
-Examples of how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/integration/achecker.js).
+Examples of how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/e2e/achecker.cy.js).
 
 - `cy.getCompliance(label)`
   - Similar to `getCompliance()` in the reference API above.
