@@ -65,7 +65,7 @@ If you do not want to include `cypress-accessibility-checker` globally, you may 
 
 ## Usage
 
-The commands map directly to the description of the APIs located in the  [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
+The commands map directly to the description of the APIs located in the [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
 The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration that is defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
 
