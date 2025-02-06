@@ -36,10 +36,11 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue, UIIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { AiElementXpathState, ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
+import { ePanel, getDevtoolsController, ViewState, AiElementXpathState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
+// import DomPathUtils from "../../contentScripts/DomPathUtils";
 
 export interface IRowGroup {
     id: string;
@@ -63,6 +64,7 @@ interface ReportTreeGridProps<RowType extends IRowGroup> {
 
 interface ReportTreeGridState {
     viewState?: ViewState
+    aiElementXpathState?: AiElementXpathState 
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
@@ -183,6 +185,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }
     }
 
+    getInspectedDoc() {
+        chrome.devtools.inspectedWindow.eval(
+            "document",
+            function(result, isException) {
+                if (isException) {
+                    console.error("An error occurred:", isException);
+                } else {
+                    console.log("The document object:", result);
+                }
+            }
+        );
+    }
+
     scrollToRowId(rowId: string) {
         let elem = document.getElementById(rowId);
         if (elem) {
@@ -210,7 +225,40 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState({ selectedIssue: issue });
     }
 
-    private async aiProcessIssueData(issue: IIssue) {
+    extractURL(str: string) {
+        const regex = /https?:\/\/[^\s]+/g;
+        const matches = str.match(regex);
+        return matches ? matches[0] : null; 
+    }
+
+    outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
+        console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
+        const prompt = {
+            api: "/rms/api/V2/watsonx/checker_help",
+            data: {
+                dom: element,
+                wcg: `${checkpointNumber}`,
+                failure: `${issue.message}`,
+                whatToDo: `${whatToDo}`,
+                references: refsString,
+                source_lang: "React.JS"  
+            }
+        }
+        const promptJsonString = JSON.stringify(prompt, null, 2);
+        console.info("Websocket HERE");
+        this.bgcontroller.connect();
+            
+        this.bgcontroller.keepAlive();
+        setTimeout(() => {
+            console.log("Send the prompt message");
+            this.bgcontroller.sendMessage(JSON.stringify(promptJsonString));
+        }, 3000);
+
+        // disconnect();
+        console.log(promptJsonString);
+    }
+
+    async aiProcessIssueData(issue: IIssue) {
         // get help file
         const str = issue.help;
         const splitWord = "html";
@@ -276,37 +324,101 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         for (const checkpoint of issueCheckpoints) {
             checkpointNumber += checkpoint.num;
         }
-        let checkpointRule;
-        for (const rule of issueCheckpoints[0].rules!) {
-            if (issue.ruleId === rule.id) {
-                checkpointRule = rule;
+        // let checkpointRule;
+        // for (const rule of issueCheckpoints[0].rules!) {
+        //     if (issue.ruleId === rule.id) {
+        //         checkpointRule = rule;
+        //     }
+        // }
+        // let checkpointWcagLevel = "";
+        // for (const checkpoint of issueCheckpoints) {
+        //     checkpointWcagLevel += checkpoint.wcagLevel;
+        // }
+        
+        let element: Node | null;
+        let elementString: string = "";
+        
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            const currentTab = tabs[0];
+            chrome.scripting.executeScript({
+                //@ts-ignore
+                target: { tabId: currentTab.id },
+                func: () => {
+                    return document.documentElement.outerHTML;
+                }
+            }, (results) => {
+                if (results && results[0] && results[0].result) {
+                    console.log("results = ",results);
+                    const htmlString = results[0].result;
+                    console.log("results[0].result = ",results[0].result);
+                    // Process the HTML string (e.g., parse it using DOMParser if needed)
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlString, 'text/html');
+                    // Use the doc object
+                    console.log("doc = ", doc);
+                    let xpath = issue.path.dom;
+                    xpath = xpath.replace(/\/svg\[/g, "/svg:svg[");
+                    console.log("xpath = ",xpath);
+                    // element = document.evaluate(xpath, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    let nodes = (doc as Document).evaluate(xpath, doc, function(prefix) { 
+                        if (prefix === 'svg') {
+                            return 'http://www.w3.org/2000/svg';
+                        } else {
+                            return null;
+                        }
+                    }, XPathResult.ANY_TYPE, null);
+                    let domElement = nodes.iterateNext();
+                    if (domElement) {
+                        element = domElement;
+                    } else {
+                        element = null;
+                    }
+                    console.log("element = ",element);
+                    if (element !== null) {
+                        // need to create parent so can use innerHTML on a detached element
+                        var tmp = document.createElement("div"); 
+                        tmp.appendChild(element);
+                        elementString = tmp.innerHTML;
+                        console.log("elementString = ",elementString);
+                        return element!; // not used
+                    }
+                } else {
+                    return console.error('Could not retrieve document from tab.');
+                }
+            });
+        });
+
+        const lines = aboutThisRequirement.split(/\r?\n/);
+
+        this.extractURL(aboutThisRequirement);
+
+        let reqURLs: string[] = []; 
+        // Using forEach
+        lines.forEach((line) => {
+            let url = this.extractURL(line);
+            if (url === null) {
+            } else {
+                if (url.endsWith(")")) {
+                    url = url.slice(0, -1); // Remove last character if it's ')'
+                }
+                // console.log("url = ",url);
+                // @ts-ignore
+                reqURLs.push(url);
+                // console.log("url = ",url);
             }
-        }
-        let checkpointWcagLevel = "";
-        for (const checkpoint of issueCheckpoints) {
-            checkpointWcagLevel += checkpoint.wcagLevel;
-        }
+        }); 
+        elementString = elementString.replace(/\s+/g, ' ');
+        whatToDo = whatToDo.replace(/\s+/g, ' ');
+        console.log("\n\nelementString\n\n",elementString);
+        console.log("reqURLs = ", reqURLs);
+        let refsString = reqURLs;
+        // let refsString = JSON.stringify(reqURLs);
+        setTimeout(() => {
+            this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString);
+        }, 2000);
         
-        // AI Prompt Data
-        console.log("\nAI PROMPT DATA\n");
-        console.log("Issue type = ", UtilIssue.valueToStringSingular(issue.value));
-        console.log("Toolkit level = ", checkpointRule?.toolkitLevel);
-        console.log("Checkpoint = ", checkpointNumber);
-        console.log("WCAG level = ", checkpointWcagLevel);
-        console.log("Rule ID/name = ", issue.ruleId);
-        console.log("Rule message: ", issue.message);
-        console.log("Rule reason code: ", issue.reasonId);
-        console.log("Rule specific message: ");
-        console.log("Element where issue found", issue.path.dom);
-        let x: any = issue.path.dom;
-        let path: AiElementXpathState = x;
-        console.log("JOHO path: ",path);
-        await this.devtoolsController.setAiElementXpathState(path);
-        await this.devtoolsController.getAiElementXpathState();
-        
-        console.log("Code where issue is found: ", issue.snippet);
-        console.log("(from Help)\n", whatToDo);
-        console.log("(from Help)\n", aboutThisRequirement);
+
+        // console.log(myTimeout);
     }
 
     onGroup(groupId: string) {
@@ -1007,3 +1119,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         return content;
     }
 }
+
+
+
+
+
+
+

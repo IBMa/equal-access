@@ -40,6 +40,9 @@ let myKCMState = false;
 
     
     devtoolsController.addViewStateListener(async (viewState) => {
+        console.log("in addViewStateListener");
+        console.log("viewState.kcm = ", viewState.kcm);
+        
         if (viewState.kcm === myKCMState) return;
         if (viewState.kcm === true) {
             myKCMState = true;
@@ -49,20 +52,6 @@ let myKCMState = false;
             myKCMState = false;
         }
     });
-
-    // console.log("ADDING AiElement LISTENER");
-    /*
-    devtoolsController.addAiElementXpathStateListener(async (aiElementXpathState) => {
-        console.log("aiElementXpathState.xpath = ", aiElementXpathState.xpath);
-        if (aiElementXpathState.xpath) {
-            // get element
-            let aiElement = await DomPathUtils.domPathToElem(aiElementXpathState.xpath);
-            // send return message with aiElement
-            // first let's just check to see if we have anything.
-            console.log("aiElement: ", aiElement);
-        }
-    });
-    */
 
     let delayTimer: string | number | NodeJS.Timeout | undefined;
     addEventListener("resize", () => {

@@ -33,6 +33,7 @@ let devtoolsState : {
     lastIssue: IIssue | null
     viewState: ViewState
     aiElementXpathState: AiElementXpathState // JOHO
+    aiElementState: AiElementState   // JOHO complete element associated with issue
     focusedMode: boolean
     scanningState: ScanningState
     activePanel: ePanel | null
@@ -46,6 +47,10 @@ export interface ViewState {
 
 export interface AiElementXpathState {
     xpath: string
+}
+
+export interface AiElementState {
+    element: string
 }
 
 export type ScanningState = "initializing" 
@@ -358,13 +363,13 @@ export class DevtoolsController extends Controller {
     /**
      * Set AI element xpath state
      */
-    public async setAiElementXpathState(xpath: AiElementXpathState | null) : Promise<void> {
-        console.log("func: setAiElementXpathState with argument: ", xpath);
-        return this.hook("setAiElementXpathState", xpath, async () => {
-            if (xpath) {
-                devtoolsState!.aiElementXpathState = xpath;
+    public async setAiElementXpathState(newState: AiElementXpathState | null) : Promise<void> {
+        console.log("func: setAiElementXpathState with argument: ", newState?.xpath);
+        return this.hook("setAiElementXpathState", newState, async () => {
+            if (newState) {
+                devtoolsState!.aiElementXpathState = newState;
                 setTimeout(() => {
-                    this.notifyEventListeners("DT_getAiElementXpathState", this.ctrlDest.tabId, xpath);
+                    this.notifyEventListeners("DT_getAiElementXpathState", this.ctrlDest.tabId, newState);
                 }, 0);
             }
         });
@@ -377,7 +382,7 @@ export class DevtoolsController extends Controller {
         console.log("func: getAiElementXpathState");
         return this.hook("getAiElementXpathState", null, async () => {
             if (!devtoolsState) return null;
-            console.log("devtoolsState?.aiElementXpathState = ", devtoolsState?.aiElementXpathState);
+            console.log("devtoolsState?.aiElementXpathState.xpath = ", devtoolsState?.aiElementXpathState.xpath);
             return devtoolsState?.aiElementXpathState;
         });
     }
@@ -390,12 +395,48 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onAiElementXpathState`);
     }
 
+    /**
+     * Set AI element state
+     */
+    public async setAiElementState(element: AiElementState | null) : Promise<void> {
+        
+        return this.hook("setAiElementState", element, async () => {
+            if (element) {
+                devtoolsState!.aiElementState = element;
+                setTimeout(() => {
+                    this.notifyEventListeners("DT_getAiElementState", this.ctrlDest.tabId, element);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Get AI element state
+     */
+    public async getAiElementState() : Promise<AiElementState | null> {
+        console.log("func: getAiElementState");
+        return this.hook("getAiElementState", null, async () => {
+            if (!devtoolsState) return null;
+            console.log("devtoolsState?.aiElementState = ", devtoolsState?.aiElementState);
+            return devtoolsState?.aiElementState;
+        });
+    }
+
+    public async addAiElementStateListener(listener: ListenerType<AiElementXpathState>) {
+        this.addEventListener(listener, `DT_onAiElementState`);
+    }
+
+    public async removeAiElementStateListener(listener: ListenerType<AiElementXpathState>) {
+        this.removeEventListener(listener, `DT_onAiElementState`);
+    }
+
     ///// View state (visualization) functions //////////////////////////////////////
 
     /**
      * Set view state
      */
     public async setViewState(newState: ViewState | null) : Promise<void> {
+        console.log("func: setViewState with argument: ", newState?.kcm);
         return this.hook("setViewState", newState, async () => {
             if (newState) {
                 devtoolsState!.viewState = newState;
@@ -410,8 +451,10 @@ export class DevtoolsController extends Controller {
      * Get view state
      */
     public async getViewState() : Promise<ViewState | null> {
+        console.log("func: getViewState");
         return this.hook("getViewState", null, async () => {
             if (!devtoolsState) return null;
+            console.log("devtoolsState?.viewState.xpath = ", devtoolsState?.viewState.kcm);
             return devtoolsState?.viewState;
         });
     }
@@ -799,7 +842,10 @@ export class DevtoolsController extends Controller {
                     kcm: false
                 },
                 aiElementXpathState: {  // JOHO
-                    xpath: ""
+                    xpath: "not set"
+                },
+                aiElementState: {
+                    element: ""
                 },
                 focusedMode: false,
                 activePanel: null
@@ -825,6 +871,8 @@ export class DevtoolsController extends Controller {
                 "DT_getViewState": async () => self.getViewState(),
                 "DT_setAiElementXpathState": async (msgBody) => self.setAiElementXpathState(msgBody.content),
                 "DT_getAiElementXpathState": async () => self.getAiElementXpathState(),
+                "DT_setAiElementState": async (msgBody) => self.setAiElementState(msgBody.content),
+                "DT_getAiElementState": async () => self.getAiElementState(),
                 "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
                 "DT_getSelectedIssue": async () => self.getSelectedIssue(),
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),

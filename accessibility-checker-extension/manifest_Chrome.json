@@ -12,20 +12,23 @@
         "128": "assets/Bee_Logo@128px.png"
 	},
     "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
+        "extension_pages": "script-src 'self'; object-src 'self';"
     },
     "permissions": [
         "tabs",
         "storage",
         "unlimitedStorage",
         "scripting",
-        "activeTab"
+        "activeTab",
+        "webRequest"
 	],
 	"host_permissions": [
         "*://*/*",
-        "<all_urls>"
+        "<all_urls>",
+        "wss://echo.websocket.org/*"
     ],
-	"action": {
+    
+   	"action": {
 		"default_title": "IBM Equal Access Accessibility Checker",
 		"default_icon": {
             "16": "assets/Bee_Logo@16px.png",

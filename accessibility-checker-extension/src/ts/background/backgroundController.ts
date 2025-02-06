@@ -57,10 +57,136 @@ class BackgroundController extends Controller {
         });
     }
 
-   
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
+
+    /***********************************************************
+     * WebSocket components 
+     */
+
+    
+  
+    // Use http or https based on the WebSocket URL
+    //const request = url.startsWith('wss://') ? https.request(requestOptions) : http.request(requestOptions);
+
+    
+    // const token = 'd3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==';
+    // url with token
+    // const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==
+
+
+    public connect() {
+    
+        let webSocket = new WebSocket('wss://echo.websocket.org');
+        this.waitForWebSocketConnection(webSocket)
+        .then(() => {
+            console.log('WebSocket connection established!');
+            // Send messages or perform other actions
+        })
+        .catch((error) => {
+            console.error('Error establishing WebSocket connection:', error);
+        });
+    
+
+        webSocket.onopen = () => {
+            console.log('websocket connection opened');
+        };
+
+        webSocket.onmessage = (event:any) => {
+            console.log("Response message from server: ",event.data);
+        };
+
+        webSocket.onclose = () => {
+            console.log('websocket connection closed');
+        };
+
+        webSocket.onerror = (event) => {
+            console.error("WebSocket error:", event);
+        };
+    }
+
+    disconnect() {
+    if (webSocket) {
+        webSocket.close();
+        console.log('websocket connection disconnected');
+    }
+    }
+
+    // const violation = {
+    //     "api": "/rms/api/V2/watsonx/checker_help",
+    //     "data": {
+    //       "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+    //       "wcag_req": "1.1.1",
+    //       "failure": "The SVG element has no accessible name",
+    //       "whatToDo": "What to do:\n\nEnsure the _non-decorative_ SVG element has an _accessible name_ that is not empty:\n- Add an 'aria-labelledby' attribute to the element that points to visible text on the page that is a meaningful label.\n- Or, add an 'aria-label' attribute to the element.\n- Or, add a direct child '<title>' element.\n- Or, add an 'xlink:title' attribute on a link.\n- Or, for text container elements, add the text content.\n- Or, only if the design cannot have a visible label, use the 'title' attribute to provide a label.\nAs appropriate, ensure the non-decorative SVG element has an accessible description that is not empty, in the following priority:\n- Add an 'aria-describedby' attribute to the element that points to visible text on the page that is a meaningful description.\n- Or, add a direct child '<desc>' element.\n- Or, for text container elements, add the text content.\n- Or, add a direct child '<title>' element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.\n- Or, add a 'xlink:title' attribute on a link, if not used to provide the accessible name.\nEnsure the _decorative_ SVG element use 'aria-hidden' or 'role=none | presentation' to provides a clear indication that the element is not visible, perceivable, or interactive to users.\nNote: The 'aria-labelledby' and 'aria-describedby' properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.\n\nCode example:\n\n<p>How many circles are there?</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\" aria-label=\"shapes from which to choose\">\n <circle role=\"graphics-symbol\" cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" aria-label=\"1 circle\"></circle>\n...\n</svg>",
+    //       "references": [
+    //         "https://www.w3.org/TR/graphics-aria/",
+    //         "https://w3c.github.io/accname/#computation-steps"
+    //       ],
+    //       "source_lang": "React.JS"
+    //     }
+    //   };
+
+    public sendMessage(message:string) {
+        console.log("JOHO: in func sendMessage with message = ", message);
+        if (webSocket) {
+            console.log("Have webSocket so send message.")
+            console.log(message);
+            webSocket.onopen = () => {
+                try {
+                    webSocket.send(message);
+                } catch (error) {
+                    console.error("Error sending message:", error);
+                }
+            }
+            console.log("Message sent - end of func sendMessage");
+        }
+    }
+
+    keepAlive() {
+        const TEN_SECONDS_MS = 10 * 1000;
+        const keepAliveIntervalId = setInterval(
+            () => {
+                if (webSocket) {
+                sendMessage('ping');
+                } else {
+                clearInterval(keepAliveIntervalId);
+                }
+            },
+            // It's important to pick an interval that's shorter than 30s, to
+            // avoid that the service worker becomes inactive.
+            TEN_SECONDS_MS
+        );
+    }
+
+    waitForWebSocketConnection(socket:WebSocket) {
+        return new Promise<void>((resolve, reject) => {
+          if (socket.readyState === WebSocket.OPEN) {
+            resolve();
+          } else {
+            const onOpen = () => {
+              socket.removeEventListener('open', onOpen);
+              resolve();
+            };
+      
+            const onError = (event:any) => {
+              socket.removeEventListener('error', onError);
+              reject(event);
+            };
+      
+            socket.addEventListener('open', onOpen);
+            socket.addEventListener('error', onError);
+          }
+        });
+    }
+      
+
+
+
+
+    
+
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -158,23 +284,7 @@ class BackgroundController extends Controller {
         });
     }
 
-     /**
-     * Get element from DOM for AI
-     */
-     public async getElement(xpath: string) {
-        console.log("bg xpath = ", xpath);
-        console.log("document = ", document);
-        console.log("window.document = ", window.document);
-        let x = window.document.evaluate( 
-            xpath, 
-            document, 
-            null, 
-            XPathResult.FIRST_ORDERED_NODE_TYPE, 
-            null 
-        );
-        console.log("x.singleNodeValue is ", x.singleNodeValue);
-        return x.singleNodeValue;
-    }
+     
 
     ///// Settings related functions /////////////////////////////////////////
     /**
@@ -512,14 +622,18 @@ class BackgroundController extends Controller {
                         return 0;
                     });
                 }
+                
+               
                 console.info("JOHO HERE");
                 connect();
                 
                 keepAlive("ping");
                 // sendMessage(report.results[0].message);
-                sendMessage(JSON.stringify(report.results[0]));
-
+                // sendMessage(JSON.stringify(report.results[0]));
+                sendMessage("Hello from Joho");
                 // disconnect();
+               
+                
 
                 getDevtoolsController(toolTabId, false, "remote").setReport(report);
                 getDevtoolsController(toolTabId, false, "remote").setScanningState("idle");
@@ -717,55 +831,107 @@ export function getBGController(type?: eControllerType) {
     return singleton;
 }
 
+/***********************************************************
+ * WebSocket components 
+ */
+
 const TEN_SECONDS_MS = 10 * 1000;
-let webSocket:any = null;
+  
+// Use http or https based on the WebSocket URL
+//const request = url.startsWith('wss://') ? https.request(requestOptions) : http.request(requestOptions);
 
 // Toggle WebSocket connection on action button click
 // Send a message every 10 seconds, the ServiceWorker will
 // be kept alive as long as messages are being sent.
-// chrome.action.onClicked.addListener(async () => {
-//   if (webSocket) {
-//     disconnect();
-//   } else {
-//     connect();
-//     keepAlive();
-//   }
-// });
+chrome.action.onClicked.addListener(async () => {
+  if (webSocket) {
+    disconnect();
+  } else {
+    connect();
+    sendMessage("Hello2"); // no response, too Fast?
+    keepAlive("ping");
+    sendMessage("Hello3"); // get response
+    keepAlive("Ping");
+    sendMessage("JOHO HELLO!");
+  }
+});
+
+// const token = 'd3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==';
+// url with token
+// const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==
+
+// URL for WebSocket server
+const url = "wss://echo.websocket.org";
+
+// const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=${token}`;
+
+
+const webSocket = new WebSocket(url);
+
+connect();
 
 function connect() {
-    console.log("JOHO: CONNECT");
-    // webSocket = new WebSocket('ws://localhost:8080');
-    webSocket = new WebSocket('wss://rms-sandbox.rqz6qqeidkk.us-south.codeengine.appdomain.cloud');
+   
+    console.log("WebSocket: CONNECT");
+    keepAlive("Ping");
+  
 
     webSocket.onopen = () => {
         console.log('websocket connection opened');
     };
 
     webSocket.onmessage = (event:any) => {
-        console.log(event.data);
+        console.log("Response message from server: ",event.data);
     };
 
     webSocket.onclose = () => {
-        console.log("in onclose");
         console.log('websocket connection closed');
-        webSocket = null;
+    };
+
+    webSocket.onerror = (event) => {
+        console.error("WebSocket error:", event);
     };
 }
 
-// function disconnect() {
-//   if (webSocket) {
-//     webSocket.close();
-//   }
-// }
+function disconnect() {
+  if (webSocket) {
+    webSocket.close();
+    console.log('websocket connection disconnected');
+  }
+}
+
+// const violation = {
+//     "api": "/rms/api/V2/watsonx/checker_help",
+//     "data": {
+//       "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+//       "wcag_req": "1.1.1",
+//       "failure": "The SVG element has no accessible name",
+//       "whatToDo": "What to do:\n\nEnsure the _non-decorative_ SVG element has an _accessible name_ that is not empty:\n- Add an 'aria-labelledby' attribute to the element that points to visible text on the page that is a meaningful label.\n- Or, add an 'aria-label' attribute to the element.\n- Or, add a direct child '<title>' element.\n- Or, add an 'xlink:title' attribute on a link.\n- Or, for text container elements, add the text content.\n- Or, only if the design cannot have a visible label, use the 'title' attribute to provide a label.\nAs appropriate, ensure the non-decorative SVG element has an accessible description that is not empty, in the following priority:\n- Add an 'aria-describedby' attribute to the element that points to visible text on the page that is a meaningful description.\n- Or, add a direct child '<desc>' element.\n- Or, for text container elements, add the text content.\n- Or, add a direct child '<title>' element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.\n- Or, add a 'xlink:title' attribute on a link, if not used to provide the accessible name.\nEnsure the _decorative_ SVG element use 'aria-hidden' or 'role=none | presentation' to provides a clear indication that the element is not visible, perceivable, or interactive to users.\nNote: The 'aria-labelledby' and 'aria-describedby' properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.\n\nCode example:\n\n<p>How many circles are there?</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\" aria-label=\"shapes from which to choose\">\n <circle role=\"graphics-symbol\" cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" aria-label=\"1 circle\"></circle>\n...\n</svg>",
+//       "references": [
+//         "https://www.w3.org/TR/graphics-aria/",
+//         "https://w3c.github.io/accname/#computation-steps"
+//       ],
+//       "source_lang": "React.JS"
+//     }
+//   };
 
 function sendMessage(message:string) {
+    console.log("JOHO: in func sendMessage with message = ", message);
     if (webSocket) {
+        console.log("Have webSocket so send message.")
         console.log(message);
-        webSocket.onopen = () => webSocket.send(message);
+        webSocket.onopen = () => {
+            try {
+                webSocket.send(message);
+              } catch (error) {
+                console.error("Error sending message:", error);
+              }
+        }
+        console.log("Message sent - end of func sendMessage");
     }
 }
 
-function keepAlive(message:string) {
+export function keepAlive(message:string) {
   const keepAliveIntervalId = setInterval(
     () => {
       if (webSocket) {
@@ -780,7 +946,5 @@ function keepAlive(message:string) {
     TEN_SECONDS_MS
   );
 }
-
-
 
 

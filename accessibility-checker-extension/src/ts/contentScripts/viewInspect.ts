@@ -176,12 +176,12 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         } else { 
             // Set the common error information
             overlays.info.innerHTML = (`
-<div style="color:white;">
-    <button aria-label="closes notification" title="closes notification" style="float:right;margin-left:.5rem;background-color:transparent;border:0">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="white" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" class="cds--inline-notification__close-icon" xmlns="http://www.w3.org/2000/svg"><path d="M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z"></path></svg>
-    </button>
-    ${typesText}
-</div>
+            <div style="color:white;">
+                <button aria-label="closes notification" title="closes notification" style="float:right;margin-left:.5rem;background-color:transparent;border:0">
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="white" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" class="cds--inline-notification__close-icon" xmlns="http://www.w3.org/2000/svg"><path d="M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z"></path></svg>
+                </button>
+                ${typesText}
+            </div>
             `);
             overlays.info.querySelector("button")?.addEventListener("click", _evt => {
                 hideOverlays();
@@ -190,9 +190,9 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             if (noVisibleElement === true) {
                 // Selected element isn't visible
                 overlays.elem.innerHTML = (`
-    <div style="color:black;">
-        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue<br>not visible</span>
-    </div>
+                <div style="color:black;">
+                    <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue<br>not visible</span>
+                </div>
                 `);
 
                 window.scrollTo({
@@ -203,9 +203,9 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
             } else if (elemOffScreen === true) {
                 // Selected element is 'rendered', but offscreen
                 overlays.elem.innerHTML = (`
-    <div style="color:black;">
-        <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue <br>off screen</span>
-    </div>
+                <div style="color:black;">
+                    <span style="margin-left:12px;margin-top:10px;display:flex;text-align:center">Selected issue <br>off screen</span>
+                </div>
                 `);
 
                 window.scrollTo({
@@ -227,6 +227,7 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
     }
     
     async function showOverlay(issue: IIssue) {
+        console.log("Func: showOverlay path = ", issue.path.dom);
         let elem = DomPathUtils.domPathToElem(issue.path.dom);
         let noVisibleElement = false;
         let elemOffScreen = false;
@@ -277,6 +278,11 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         }
         
     }
+
+    devtoolsController.addAiElementXpathStateListener(async (aiElementXpathState) => {
+        console.log("in addAiElementXpathStateListener");
+        console.log("aiElementXpathState.xpath = ", aiElementXpathState.xpath);
+    });
 
     devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
         if (issue) {
