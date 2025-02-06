@@ -22,7 +22,8 @@ import Config from "../util/config";
 import EngineCache from "./util/engineCache";
 import { UtilIssue } from "../util/UtilIssue";
 import { ACMetricsLogger } from "../util/ACMetricsLogger";
-//import { web } from "webpack";
+
+
 
 export type TabChangeType = {
     tabId: number
@@ -43,9 +44,6 @@ class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-
-    
-
 
     ///// General extension functions /////////////////////////////////////////
 
@@ -74,13 +72,14 @@ class BackgroundController extends Controller {
     // const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==
     
 
-    public connect(): any {
+    public connect(promptJSON: string): any {
     
         let webSocket = new WebSocket('wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==');
         this.waitForWebSocketConnection(webSocket)
         .then(() => {
             console.log('WebSocket connection established!');
-            // Send messages or perform other actions
+            console.log("promptJSON in connect: \n", promptJSON);
+            this.sendMessage(promptJSON, webSocket);
             return webSocket;
         })
         .catch((error) => {
@@ -88,21 +87,23 @@ class BackgroundController extends Controller {
             return error;
         });
 
-        const violation = {
-            "api": "/rms/api/V2/watsonx/checker_help",
-            "data": {
-              "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
-              "wcag_req": "1.1.1",
-              "failure": "The SVG element has no accessible name",
-              "whatToDo": "What to do:\n\nEnsure the _non-decorative_ SVG element has an _accessible name_ that is not empty:\n- Add an 'aria-labelledby' attribute to the element that points to visible text on the page that is a meaningful label.\n- Or, add an 'aria-label' attribute to the element.\n- Or, add a direct child '<title>' element.\n- Or, add an 'xlink:title' attribute on a link.\n- Or, for text container elements, add the text content.\n- Or, only if the design cannot have a visible label, use the 'title' attribute to provide a label.\nAs appropriate, ensure the non-decorative SVG element has an accessible description that is not empty, in the following priority:\n- Add an 'aria-describedby' attribute to the element that points to visible text on the page that is a meaningful description.\n- Or, add a direct child '<desc>' element.\n- Or, for text container elements, add the text content.\n- Or, add a direct child '<title>' element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.\n- Or, add a 'xlink:title' attribute on a link, if not used to provide the accessible name.\nEnsure the _decorative_ SVG element use 'aria-hidden' or 'role=none | presentation' to provides a clear indication that the element is not visible, perceivable, or interactive to users.\nNote: The 'aria-labelledby' and 'aria-describedby' properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.\n\nCode example:\n\n<p>How many circles are there?</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\" aria-label=\"shapes from which to choose\">\n <circle role=\"graphics-symbol\" cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" aria-label=\"1 circle\"></circle>\n...\n</svg>",
-              "references": [
-                "https://www.w3.org/TR/graphics-aria/",
-                "https://w3c.github.io/accname/#computation-steps"
-              ],
-              "source_lang": "React.JS"
-            }
-          };
-          const violationJSON = JSON.stringify(violation);
+         
+
+        // const violation = {
+        //     "api": "/rms/api/V2/watsonx/checker_help",
+        //     "data": {
+        //       "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+        //       "wcag_req": "1.1.1",
+        //       "failure": "The SVG element has no accessible name",
+        //       "whatToDo": "What to do:\n\nEnsure the _non-decorative_ SVG element has an _accessible name_ that is not empty:\n- Add an 'aria-labelledby' attribute to the element that points to visible text on the page that is a meaningful label.\n- Or, add an 'aria-label' attribute to the element.\n- Or, add a direct child '<title>' element.\n- Or, add an 'xlink:title' attribute on a link.\n- Or, for text container elements, add the text content.\n- Or, only if the design cannot have a visible label, use the 'title' attribute to provide a label.\nAs appropriate, ensure the non-decorative SVG element has an accessible description that is not empty, in the following priority:\n- Add an 'aria-describedby' attribute to the element that points to visible text on the page that is a meaningful description.\n- Or, add a direct child '<desc>' element.\n- Or, for text container elements, add the text content.\n- Or, add a direct child '<title>' element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.\n- Or, add a 'xlink:title' attribute on a link, if not used to provide the accessible name.\nEnsure the _decorative_ SVG element use 'aria-hidden' or 'role=none | presentation' to provides a clear indication that the element is not visible, perceivable, or interactive to users.\nNote: The 'aria-labelledby' and 'aria-describedby' properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.\n\nCode example:\n\n<p>How many circles are there?</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\" aria-label=\"shapes from which to choose\">\n <circle role=\"graphics-symbol\" cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" aria-label=\"1 circle\"></circle>\n...\n</svg>",
+        //       "references": [
+        //         "https://www.w3.org/TR/graphics-aria/",
+        //         "https://w3c.github.io/accname/#computation-steps"
+        //       ],
+        //       "source_lang": "React.JS"
+        //     }
+        //   };
+        //   const violationJSON = JSON.stringify(violation);
         //   const data = { "api": "some_api", "data": {} };
         const pingJSON = {
             "api":"/ping",
@@ -110,13 +111,11 @@ class BackgroundController extends Controller {
           };
         const ping = JSON.stringify(pingJSON); // Now jsonData is a valid JSON string
 
-    
-
         webSocket.onopen = () => {
             console.log('websocket connection opened');
-            this.sendMessage(violationJSON, webSocket);
+            // console.log("violationJSON in connect: \n", violationJSON );
+            // this.sendMessage(violationJSON, webSocket);
             this.keepAlive(ping, webSocket);
-            // this.sendMessage("Hello 2", webSocket);
         };
 
         webSocket.onmessage = (event:any) => {

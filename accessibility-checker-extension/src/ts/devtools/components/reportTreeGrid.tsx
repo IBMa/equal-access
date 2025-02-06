@@ -232,9 +232,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         return matches ? matches[0] : null; 
     }
 
-    outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
+    async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
         console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
-        const prompt = {
+        let prompt = {
             api: "/rms/api/V2/watsonx/checker_help",
             data: {
                 dom: element,
@@ -245,42 +245,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 source_lang: "React.JS"  
             }
         }
-        const promptJsonString = JSON.stringify(prompt, null, 2);
+        let promptJsonString = JSON.stringify(prompt);
+        promptJsonString = promptJsonString.replace(/\s+/g, ' ');
+        
         console.log(promptJsonString);
-
-        setTimeout(() => {
-            console.log("Wait for prompt message");
-            console.log("Prompt message: \n", promptJsonString)
-        }, 3000);
-
-        
-
-        // disconnect();
-        
         
         console.log("Initiate connect websocket from reportTreeGrid");
-        this.bgcontroller.connect();
+        this.bgcontroller.connect(promptJsonString);
+        // in background controller after get response from server disconnect
         
-        // if (webSocket) {
-        //     console.log("WE HAVE websocket");
-        // } else {
-        //     console.log("NO websocket");
-        // }
-        // setTimeout(() => {
-        //     console.log("Got prompt message: \n", promptJsonString);
-        //     console.log("send prompt message");
-        //     // webSocket.send(JSON.stringify(promptJsonString));
-        //     if (webSocket) {
-        //         console.log("send via sendMessage");
-        //         this.bgcontroller.sendMessage("Hello from JOHO",webSocket);
-        //     } else {
-        //         console.log("send via keepAlive");
-        //         this.bgcontroller.keepAlive("Hello from JOHO",webSocket);
-        //     }
-        // }, 15000);
+    }
 
-        
-        
+    async doAI(issue: IIssue) {
+        await this.aiProcessIssueData(issue);
     }
 
     async aiProcessIssueData(issue: IIssue) {
@@ -314,6 +291,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         const $ = cheerio.load(helpHTML);
         const scripts = $('mark-down script[type="text/plain"]');
 
+        // Get What to do and Requirement information
         let whatToDo = '';
         let aboutThisRequirement = '';
 
@@ -331,6 +309,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             });
         });
 
+        // get checkpoint number(s)
         let settings = await this.bgcontroller.getSettings();
         let rulesets = await this.bgcontroller.getRulesets(this.devtoolsAppController.contentTabId!);
         let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
@@ -359,6 +338,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         // for (const checkpoint of issueCheckpoints) {
         //     checkpointWcagLevel += checkpoint.wcagLevel;
         // }
+
+        // Get the element from the xpath in the main page
         
         let element: Node | null;
         let elementString: string = "";
@@ -411,6 +392,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             });
         });
 
+        // Extract and format the urls relating to the issue requirements
+
         const lines = aboutThisRequirement.split(/\r?\n/);
 
         this.extractURL(aboutThisRequirement);
@@ -435,13 +418,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         console.log("\n\nelementString\n\n",elementString);
         console.log("reqURLs = ", reqURLs);
         let refsString = reqURLs;
-        // let refsString = JSON.stringify(reqURLs);
         setTimeout(() => {
             this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString);
         }, 2000);
-        
-
-        // console.log(myTimeout);
     }
 
     onGroup(groupId: string) {
@@ -1080,7 +1059,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                                 console.log("Trigger the collection of AI data for prompt.");
                                                 console.log("thisIssue: ", thisIssue);
                                                 // when user as for learn more give them AI enhanced help
-                                                this.aiProcessIssueData(thisIssue);
+                                                this.doAI(thisIssue);
                                                 this.onRow(group, thisIssue);
                                                 this.devtoolsAppController.setSecondaryView("help");
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
