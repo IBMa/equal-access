@@ -40,9 +40,6 @@ let myKCMState = false;
 
     
     devtoolsController.addViewStateListener(async (viewState) => {
-        console.log("in addViewStateListener");
-        console.log("viewState.kcm = ", viewState.kcm);
-        
         if (viewState.kcm === myKCMState) return;
         if (viewState.kcm === true) {
             myKCMState = true;

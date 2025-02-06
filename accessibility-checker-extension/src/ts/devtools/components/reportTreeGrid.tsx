@@ -40,6 +40,7 @@ import { ePanel, getDevtoolsController, ViewState, AiElementXpathState } from '.
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
+// import { web } from 'webpack';
 // import DomPathUtils from "../../contentScripts/DomPathUtils";
 
 export interface IRowGroup {
@@ -245,17 +246,41 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             }
         }
         const promptJsonString = JSON.stringify(prompt, null, 2);
-        console.info("Websocket HERE");
-        this.bgcontroller.connect();
-            
-        this.bgcontroller.keepAlive();
+        console.log(promptJsonString);
+
         setTimeout(() => {
-            console.log("Send the prompt message");
-            this.bgcontroller.sendMessage(JSON.stringify(promptJsonString));
+            console.log("Wait for prompt message");
+            console.log("Prompt message: \n", promptJsonString)
         }, 3000);
 
+        
+
         // disconnect();
-        console.log(promptJsonString);
+        
+        
+        console.log("Initiate connect websocket from reportTreeGrid");
+        this.bgcontroller.connect();
+        
+        // if (webSocket) {
+        //     console.log("WE HAVE websocket");
+        // } else {
+        //     console.log("NO websocket");
+        // }
+        // setTimeout(() => {
+        //     console.log("Got prompt message: \n", promptJsonString);
+        //     console.log("send prompt message");
+        //     // webSocket.send(JSON.stringify(promptJsonString));
+        //     if (webSocket) {
+        //         console.log("send via sendMessage");
+        //         this.bgcontroller.sendMessage("Hello from JOHO",webSocket);
+        //     } else {
+        //         console.log("send via keepAlive");
+        //         this.bgcontroller.keepAlive("Hello from JOHO",webSocket);
+        //     }
+        // }, 15000);
+
+        
+        
     }
 
     async aiProcessIssueData(issue: IIssue) {
@@ -348,9 +373,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                 }
             }, (results) => {
                 if (results && results[0] && results[0].result) {
-                    console.log("results = ",results);
                     const htmlString = results[0].result;
-                    console.log("results[0].result = ",results[0].result);
                     // Process the HTML string (e.g., parse it using DOMParser if needed)
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlString, 'text/html');

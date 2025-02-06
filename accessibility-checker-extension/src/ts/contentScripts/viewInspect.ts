@@ -279,11 +279,6 @@ type Overlays = { elem: HTMLDivElement, info: HTMLDivElement };
         
     }
 
-    devtoolsController.addAiElementXpathStateListener(async (aiElementXpathState) => {
-        console.log("in addAiElementXpathStateListener");
-        console.log("aiElementXpathState.xpath = ", aiElementXpathState.xpath);
-    });
-
     devtoolsController.addSelectedIssueListener(async (issue: IIssue) => {
         if (issue) {
             showOverlay(issue);
