@@ -49,7 +49,29 @@ export class CommonUtil {
         },
         "iframe": true,
         "input": function (element): boolean {
-            return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
+            if (element.hasAttribute("disabled") || element.getAttribute("type") === "hidden") return false;
+            if (element.getAttribute("type") === "radio") {
+                if (element.checkbox) return true;
+                const name = element.getAttribute("name");
+                if (!name) return true; //single radio, no group
+
+                const group = document.querySelectorAll("input[type='radio'][name='" + name +"']");
+                let checked = null;
+                for (let i = 0; i < group.length; i++) {
+                    if ((group[i] as HTMLInputElement).checked)
+                        checked = group[i];
+                }
+                //only last one applies if multiple radios with 'checked' attributes
+                if (checked) 
+                    if (DOMUtil.sameNode(checked, element))
+                        return true;
+                else {
+                    // if nothing checked yet, return true if it's the first element
+                    if (group.length > 0 && DOMUtil.sameNode(group[0], element))
+                        return true;
+                }
+            } else   
+                return true;
         },
         "select": function (element): boolean {
             return !element.hasAttribute("disabled");
