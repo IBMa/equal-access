@@ -1046,7 +1046,7 @@
     "HTML": {
       "num": "HTML",
       "url": "https://html.spec.whatwg.org/multipage/",
-      "scId": [],
+      "scId": "",
       "scAltId": [],
       "test": "",
       "howToMeetUrl": "https://html.spec.whatwg.org/multipage/",
@@ -1058,7 +1058,7 @@
     "ARIA": {
       "num": "ARIA",
       "url": "https://www.w3.org/TR/wai-aria-1.2/",
-      "scId": [],
+      "scId": "",
       "scAltId": [],
       "test": "",
       "howToMeetUrl": "https://www.w3.org/TR/wai-aria-1.2/",
