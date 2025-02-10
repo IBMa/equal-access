@@ -144,7 +144,15 @@ export class AccNameUtil {
                 let pair = AccNameUtil.computeAccessibleName(image); 
                 if (pair && pair.name && pair.name.trim().length > 0) 
                     return pair;
-            }       
+            }
+            
+            // for a button with a svg image
+            const svg = elem.querySelector('svg');
+            if (svg && !VisUtil.isNodeHiddenFromAT(svg) && !VisUtil.isNodePresentational(svg)) {
+                let pair = AccNameUtil.computeAccessibleNameForSVGElement(svg); 
+                if (pair && pair.name && pair.name.trim().length > 0) 
+                    return pair;
+            }
         }
 
         // fieldset
@@ -397,7 +405,7 @@ export class AccNameUtil {
         const contentElem = elem.ownerDocument.defaultView.getComputedStyle(elem,type);
         if (contentElem) {
             let content = contentElem.content;
-            if (content && content !== "none") {
+            if (content && content !== "none" && content !== "no" && content !== "normal") {
                 content = content.replace(/^"/,"").replace(/"$/,"");
                 if (content.trim().length > 0)
                     return {"name": CommonUtil.truncateText(content), "nameFrom": "css-"+type};
