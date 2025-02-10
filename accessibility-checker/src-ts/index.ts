@@ -96,7 +96,12 @@ export function getConfigUnsupported() : Promise<IConfigInternal> {
     return ACConfigManager.getConfigUnsupported();
 }
 
-export function close() {
+export async function close() {
+    try {
+        await ReporterManager.generateSummaries();
+    } catch (err) {
+        console.error(err);
+    }
     return ACBrowserManager.close();
 }
 

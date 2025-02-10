@@ -94,7 +94,7 @@ async function getAssertion(ruleId, aceRules, result) {
                         && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code)))
                     )).length > 0
                 // Replace with the scId
-                )).map(cp => cp.scId));            
+                )).map(cp => cp.scId).filter(scId => scId.length > 0));            
         }
     }
     return {
