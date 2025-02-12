@@ -14,7 +14,7 @@
     limitations under the License.
 *****************************************************************************/
 
-import { Guideline } from "./IGuideline"
+import { Guideline } from "./IGuideline.js"
 
 /**
  * @deprecated

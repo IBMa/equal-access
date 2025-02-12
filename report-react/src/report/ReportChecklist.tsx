@@ -17,8 +17,8 @@
 import React from "react";
 import "./report.scss";
 
-import { IReport, IReportItem, valueMap, IRuleset, ICheckpoint } from "../IReport";
-import ReportRow from "./ReportRow";
+import { IReport, IReportItem, valueMap, IRuleset, ICheckpoint } from "../IReport.js";
+import ReportRow from "./ReportRow.js";
 import { Grid, Column } from "@carbon/react";
 
 interface IReportChecklistState {

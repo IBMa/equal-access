@@ -14,9 +14,8 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Checkpoint, Guideline } from "./IGuideline";
-import { IEngineReport } from "./IReport";
-import { Issue } from "./IRule";
+import { Guideline } from "./IGuideline.js";
+import { IEngineReport } from "./IReport.js";
 
 export interface IChecker {
     addGuideline(guideline: Guideline);

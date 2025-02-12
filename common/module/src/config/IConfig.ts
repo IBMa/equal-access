@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IArchive } from "./IArchive"
+import { IArchive } from "./IArchive.js"
 
 export enum eAssertResult {
     ERROR = -1,
