@@ -16,6 +16,7 @@
 import React from "react";
 import "./SavedReport.scss";
 import { ISavedReportData, IReportItem } from './IReport';
+import ScoreCard from "./ScoreCard";
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
@@ -23,7 +24,6 @@ import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,Mul
 import { UtilIssueReact } from "./util/UtilIssueReact";
 import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages";
 import ReportElements from "./report/ReportElements";
-import ScoreCard from "./ScoreCard";
 
 
 interface SavedReportProps {
