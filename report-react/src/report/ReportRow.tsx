@@ -16,11 +16,11 @@
 
 import React, { RefObject } from "react";
 
-import { IReportItem, valueMap, ICheckpoint, IReport } from "../IReport.js";
+import { IReportItem, valueMap, ICheckpoint, IReport } from "../IReport";
 import ChevronUp from "@carbon/icons-react/lib/ChevronUp";
 import ChevronDown from "@carbon/icons-react/lib/ChevronDown";
 import { Grid, Column } from "@carbon/react";
-import { Violation16,NeedsReview16,Recommendation16,ViewOff16} from "../util/UtilImages.js";
+import { Violation16,NeedsReview16,Recommendation16,ViewOff16} from "../util/UtilImages";
 
 
 

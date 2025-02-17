@@ -17,11 +17,11 @@
 import React from "react";
 import "./report.scss";
 
-import { IReport, IReportItem, valueMap } from "../IReport.js";
-import ReportRow from "./ReportRow.js";
+import { IReport, IReportItem, valueMap } from "../IReport";
+import ReportRow from "./ReportRow";
 import { Grid, Column } from "@carbon/react";
-import { UtilIssue } from "../util/UtilIssue.js";
-import { IssueValue } from "../util/UtilIssueReact.js";
+import { UtilIssue } from "../util/UtilIssue";
+import { IssueValue } from "../util/UtilIssueReact";
 
 interface IReportElementsState {
 }

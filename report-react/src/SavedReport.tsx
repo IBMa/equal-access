@@ -15,15 +15,15 @@
   *****************************************************************************/
 import React from "react";
 import "./SavedReport.scss";
-import { ISavedReportData, IReportItem } from './IReport.js';
-import ScoreCard from './ScoreCard.js';
-import SummScoreCard from './SummScoreCard.js';
-import ReportChecklist from './report/ReportChecklist.js';
-import ReportRules from './report/ReportRules.js';
+import { ISavedReportData, IReportItem } from './IReport';
+import SummScoreCard from './SummScoreCard';
+import ReportChecklist from './report/ReportChecklist';
+import ReportRules from './report/ReportRules';
 import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect,CopyButton} from '@carbon/react';
-import { UtilIssueReact } from "./util/UtilIssueReact.js";
-import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages.js";
-import ReportElements from "./report/ReportElements.js";
+import { UtilIssueReact } from "./util/UtilIssueReact";
+import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages";
+import ReportElements from "./report/ReportElements";
+import ScoreCard from "./ScoreCard";
 
 
 interface SavedReportProps {
