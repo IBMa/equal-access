@@ -16,7 +16,7 @@
 import React from "react";
 import "./SavedReport.scss";
 import { ISavedReportData, IReportItem } from './IReport';
-import ScoreCard from "./ScoreCard";
+import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
