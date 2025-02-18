@@ -51,6 +51,8 @@ gulp.task("build-copy", function () {
     return gulp.src([
         "../src/bin/achecker.js",
         "../src/mjs/index.d.ts",
+        "../src/cjs/package.json",
+        "../src/mjs/package.json",
         "../src/package.json",
         "../src/README.md",
     ])
