@@ -1,6 +1,6 @@
 import * as fs from "fs"; // file system
 import * as path from "path";
-import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/index";
+import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/index.js";
 import * as ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 const unitTestcaseHTML = {};
 const testRootDir = path.join(process.cwd(), "..", "..", "..", "accessibility-checker-engine","test","v2","checker","accessibility","rules");
