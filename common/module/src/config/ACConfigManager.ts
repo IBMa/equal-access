@@ -17,13 +17,13 @@
 import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
-import { ACConstants } from "./ACConstants";
+import { ACConstants } from "./ACConstants.js";
 import * as crypto from 'crypto';
-import { IConfig, IConfigInternal } from "./IConfig";
-import { fetch_get } from "../api-ext/Fetch";
-import { ReporterManager } from "../report/ReporterManager";
+import { IConfig, IConfigInternal } from "./IConfig.js";
+import { fetch_get } from "../api-ext/Fetch.js";
+import { ReporterManager } from "../report/ReporterManager.js";
 import path from 'path';
-import { IArchive } from "./IArchive";
+import { IArchive } from "./IArchive.js";
 // This line will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
 // import { fileURLToPath } from 'url';
 

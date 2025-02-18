@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Bounds } from "./IBounds";
+import { Bounds } from "./IBounds.js";
 
 export type IMapResult = {
     node: Node,

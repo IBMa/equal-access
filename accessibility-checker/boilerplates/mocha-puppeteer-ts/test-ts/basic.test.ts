@@ -5,7 +5,7 @@ import { assertCompliance, getCompliance, stringifyResults } from "accessibility
 import * as path from "path";
 import { expect } from "chai";
 import { before, after, describe, it } from "mocha";
-import { ICheckerReport } from "accessibility-checker/lib/api/IChecker";
+import { ICheckerReport } from "accessibility-checker/lib/api/IChecker.js";
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
