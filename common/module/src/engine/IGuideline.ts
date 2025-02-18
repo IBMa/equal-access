@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { eRulePolicy } from "./IRule"
+import { eRulePolicy } from "./IRule.js"
 
 export enum eToolkitLevel {
     LEVEL_ONE = "1",

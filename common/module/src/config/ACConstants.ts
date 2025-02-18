@@ -22,7 +22,7 @@
 // Load all the modules that are needed
 import { tmpdir } from "os";
 import * as pathLib from "path";
-import { IConfigInternal, eRuleLevel } from "./IConfig";
+import { IConfigInternal, eRuleLevel } from "./IConfig.js";
 
 // Used to specify all the constant
 export const ACConstants : IConfigInternal = {

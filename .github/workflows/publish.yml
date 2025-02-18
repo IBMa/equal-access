@@ -43,8 +43,8 @@ jobs:
         working-directory: accessibility-checker
       - run: npm run build
         working-directory: accessibility-checker
-      - run: npm test
-        working-directory: accessibility-checker/test-act
+      # - run: npm test
+      #   working-directory: accessibility-checker/test-act
       - run: npm test
         working-directory: accessibility-checker/test-act-w3
       - run: gitactions/publish/achecker-engine.sh

@@ -65,7 +65,7 @@ If you do not want to include `cypress-accessibility-checker` globally, you may 
 
 ## Usage
 
-The commands map directly to the description of the APIs located [in the accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
+The commands map directly to the description of the APIs located in the  [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
 The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration that is defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
 
@@ -75,7 +75,7 @@ The typical use case will be to get the accessibility compliance of a document a
 cy.getCompliance('my scan').assertCompliance()
 ```
 
-Examples of how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/integration/achecker.js).
+Examples of how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/e2e/achecker.cy.js).
 
 - `cy.getCompliance(label)`
   - Similar to `getCompliance()` in the reference API above.
@@ -97,7 +97,7 @@ Chain the commands similar to other Cypress commands. For example, `cy.getCompli
 
 Baselines are a helpful feature of `accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for things like false positives or issues you plan on not fixing.
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](src/README.md) for details.
+The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
 
 ## Development
 
