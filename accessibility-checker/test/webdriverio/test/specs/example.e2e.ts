@@ -1,6 +1,6 @@
 import * as fs from "fs"; // file system
 import * as path from "path";
-import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/cjs/index";
+import { getCompliance, ruleIdToLegacyId, getConfig, close } from "../../../../src/cjs/index.js";
 //import * as ace from "../../../../../accessibility-checker-engine/dist/ace-node.js";
 
 const unitTestcaseHTML = {};

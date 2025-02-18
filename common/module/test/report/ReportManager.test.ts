@@ -1,9 +1,9 @@
 import { readFileSync, writeFileSync, existsSync } from "fs";
-import { IAbstractAPI } from "../../src/api-ext/IAbstractAPI";
-import { IConfigInternal, eRuleLevel } from "../../src/config/IConfig";
-import { ReporterManager } from "../../src/report/ReporterManager";
+import { IAbstractAPI } from "../../src/api-ext/IAbstractAPI.js";
+import { IConfigInternal, eRuleLevel } from "../../src/config/IConfig.js";
+import { ReporterManager } from "../../src/report/ReporterManager.js";
 import { join } from "path";
-import { IBaselineReport, IBaselineResult } from "../../src/engine/IReport";
+import { IBaselineReport, IBaselineResult } from "../../src/engine/IReport.js";
 
 const expected = {
     "report1.json": readFileSync(join(__dirname, "report1_expected.json")).toString(),

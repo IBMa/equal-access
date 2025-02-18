@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule } from "./IRule";
+import { Rule } from "./IRule.js";
 
 export interface IEngine {
     /**

@@ -3,7 +3,7 @@
         "declaration": true,
         "allowJs": true,
         "target": "ES6",
-        "module": "es2022",
+        "module": "ES2022",
         "removeComments": false,
         "noEmitOnError": true,
         "sourceMap": true,

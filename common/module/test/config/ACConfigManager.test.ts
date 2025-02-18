@@ -1,4 +1,4 @@
-import { ACConfigManager, compareVersions } from "../../src/config/ACConfigManager"
+import { ACConfigManager, compareVersions } from "../../src/config/ACConfigManager.js"
 test("Configuration loads", async () => {
     const config = await ACConfigManager.getConfig();
     // console.log(config);
