@@ -76,13 +76,13 @@ export const widget_tabbable_single: Rule = {
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {
                     // Radio inputs with the same name natively are only one tab stop
-                    if (nw.node.nodeName.toLowerCase() === 'input' && (nw.node as Element).getAttribute("type") === 'radio') {
+                    /**if (nw.node.nodeName.toLowerCase() === 'input' && (nw.node as Element).getAttribute("type") === 'radio') {
                         let curName = (nw.node as Element).getAttribute("name");
                         if (name.includes(curName)) 
                             continue;
                         else
                             name.push(curName);
-                    }
+                    }*/
                     ++count;
                 }
             }
