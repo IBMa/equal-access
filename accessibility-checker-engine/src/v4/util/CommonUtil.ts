@@ -1187,8 +1187,9 @@ export class CommonUtil {
     }
 
     /**
-     * return onscreen innerText.
-     * This function should return the same result as innerText if no offscreen content exists
+     * return onscreen innerText only.
+     * The text is not considered onscreen if it's offscreen or its from <svg> whose title or desc doesn't showup on the screen
+     * This function should return the same result as innerText if no offscreen content exists and no svg elements
      *
      * @parm {element} node The node which should be checked it has inner text or not.
      * @return {null | string} null if element has empty inner text, text otherwise
@@ -1203,7 +1204,7 @@ export class CommonUtil {
         //let nw = new NodeWalker(element);
         let nw = new DOMWalker(element);
         // Loop over all the childrens of the element to get the text
-        while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
+        while (nw.nextNode() && nw.node && nw.node !== element && nw.node !== element.parentNode && nw.node.nodeName.toLowerCase() !== "svg") {
             if (nw.bEndTag) continue;
             if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node as HTMLElement))) {
                 if (nw.node.nextSibling) {
