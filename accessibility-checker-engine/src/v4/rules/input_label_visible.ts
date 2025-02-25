@@ -121,7 +121,7 @@ export const input_label_visible: Rule = {
         const text = CommonUtil.getOnScreenInnerText(ruleContext);
         if (text && text.length !== 0)
             return RulePass("pass");
-
+        
         // check if any descendant with an alternative tooltip that can be made visible through mouseover
         // only consider img and svg, and other text content of the descendant is covered in the isInnerText above  
         let descendants = AriaUtil.getAllDescendantsWithRoles(ruleContext, ["img", "graphics-document", "graphics-object", "graphics-symbol"], false, true);
