@@ -69,6 +69,14 @@ export const input_label_visible: Rule = {
         if (CommonUtil.getAncestor(ruleContext, "table"))
             return null;
 
+        // custom widget submission is not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
+        let role = AriaUtil.getResolvedRole(ruleContext);
+        if (role && role === "button" && nodeName !== 'input' && nodeName !== 'button') {    
+            // likely a custom widget, skip if not associated with data entry
+            if (!CommonUtil.getAncestor(ruleContext, "form"))
+                return null;    
+        }
+
         // when in a combobox, only look at the input textbox.
         if (AriaUtil.getAncestorWithRole(ruleContext, "combobox") &&
             !(AriaUtil.hasRoleInSemantics(ruleContext, "textbox") || AriaUtil.hasRoleInSemantics(ruleContext, "searchbox") ||
@@ -99,52 +107,21 @@ export const input_label_visible: Rule = {
         const pair = AccNameUtil.computeAccessibleName(ruleContext);
         // check visible label for input or button
         if (nodeName === 'input' || nodeName === 'button') {
-            /**
-            if (CommonUtil.hasImplicitLabel(ruleContext))
-                return RulePass("pass");
-            
-            let label = CommonUtil.getLabelForElement(ruleContext);
-            if (label && CommonUtil.hasInnerContentHidden(label))
-                return RulePass("pass");  
-
-            // special cases
-            let type = ruleContext.getAttribute("type");
-            if (nodeName === 'input' && type) {
-                type = type.toLowerCase();
-                //submit type of input has a visible label 'Submit' by default
-                if (type === 'submit' || type === 'reset')
-                    return RulePass("pass");
-                //image type of input requires a non-empty alt text
-                if (type === 'image' && CommonUtil.attributeNonEmpty(ruleContext, "alt"))
-                    return RulePass("pass");
-            }
-            */
             if (pair && pair.name && pair.name.trim().length > 0 && (pair.nameFrom === 'label' || pair.nameFrom === 'internal' || pair.nameFrom === 'alt'))
                 return RulePass("pass");
         }
 
-        // custom widget submission is not in scope for this success criteria (IBMa/equal-access#204) if it is not associated with data entry
-        let role = AriaUtil.getResolvedRole(ruleContext);
-        if (role && role === "button" && nodeName !== 'input' && nodeName !== 'button') {    
-            // likely a custom widget, skip if not associated with data entry
-            if (!CommonUtil.getAncestor(ruleContext, "form"))
-                return null;    
-        }
+        // check if an alternative tooltip exists that can be made visible through mouseover
+        if (pair && pair.name && pair.name.trim().length > 0 && (pair.nameFrom === 'text' || pair.nameFrom === 'title'))
+            return RulePass("pass");
 
         // check if any visible text from the control. 
         // note that (1) the text doesn’t need to be associated with the control to form a relationship
         //  (2) the text doesn't need to follow accessible name requirement (e.g. nameFrom)
-        //  and (3) an alternative tooltip exists that can be made visible through mouseover
-        /**if (!CommonUtil.isInnerTextEmpty(ruleContext))
+        const text = CommonUtil.getOnScreenInnerText(ruleContext);
+        if (text && text.length !== 0)
             return RulePass("pass");
         
-        // check if an alternative tooltip exists that can be made visible through mouseover
-        if (CommonUtil.attributeNonEmpty(ruleContext, "title"))
-            return RulePass("pass"); 
-        */ 
-        if (pair && pair.name && pair.name.trim().length > 0 && (pair.nameFrom === 'text' || pair.nameFrom === 'title'))
-            return RulePass("pass");
-
         // check if any descendant with an alternative tooltip that can be made visible through mouseover
         // only consider img and svg, and other text content of the descendant is covered in the isInnerText above  
         let descendants = AriaUtil.getAllDescendantsWithRoles(ruleContext, ["img", "graphics-document", "graphics-object", "graphics-symbol"], false, true);
@@ -167,12 +144,6 @@ export const input_label_visible: Rule = {
             }
         }
 
-        /**if (nodeName === "optgroup" && CommonUtil.attributeNonEmpty(ruleContext, "label"))
-            return RulePass("pass");
-        
-        if (nodeName == "option" && (CommonUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0))
-            return RulePass("pass");
-        */
         if ((nodeName === "optgroup" || nodeName == "option") && (pair && pair.name && pair.name.trim().length > 0 && (pair.nameFrom === 'label' || pair.nameFrom === 'content')))
             return RulePass("pass");
 
