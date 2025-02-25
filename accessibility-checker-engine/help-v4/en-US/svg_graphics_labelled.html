@@ -43,6 +43,60 @@
 <!-- Start main panel -->
 <mark-down><script type="text/plain">
 
+### Inaccessible code detected
+
+```
+<svg viewBox="0 0 600 400" width="0" height="0" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <filter id="protanopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.567, 0.433, 0,     0, 0 0.558, 0.442, 0,     0, 0 0,     0.242, 0.758, 0, 0 0,     0,     0,     1, 0"></feColorMatrix></filter>
+        <filter id="deuteranopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.625, 0.375, 0,   0, 0 0.7,   0.3,   0,   0, 0 0,     0.3,   0.7, 0, 0 0,     0,     0,   1, 0"></feColorMatrix></filter>
+        <filter id="tritanopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.95, 0.05,  0,     0, 0 0,    0.433, 0.567, 0, 0 0,    0.475, 0.525, 0, 0 0,    0,     0,     1, 0"></feColorMatrix></filter>
+    </defs>
+</svg>
+```
+
+### Accessibile HTML DOM code
+
+```
+<svg viewBox=\\\"0 0 600 400\\\" width=\\\"0\\\" height=\\\"0\\\" xmlns:xlink=\\\"http://www.w3.org/1999/xlink\\\" aria-label=\\\"Color Filters\\\" role=\\\"img\\\">
+    <defs>
+        <filter id=\\\"protanopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
+        <filter id=\\\"deuteranopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
+        <filter id=\\\"tritanopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
+    </defs>
+</svg>
+```
+
+### Accessible (Reactjs) source code 
+
+```
+import React from 'react';
+
+function ColorFilters() {
+    return (
+        <svg viewBox=\\\"0 0 600 400\\\" width=\\\"0\\\" height=\\\"0\\\" xmlns:xlink=\\\"http://www.w3.org/1999/xlink\\\" aria-label=\\\"Color Filters\\\" role=\\\"img\\\">       
+            <defs>          
+                <filter id=\\\"protanopia\\\">          
+                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
+                <filter id=\\\"deuteranopia\\\">
+                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
+                <filter id=\\\"tritanopia\\\">
+                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix>
+                </filter>
+            </defs>
+        </svg>
+        );}
+        export default ColorFilters;
+```
+
+### Summary
+
+```
+The original SVG element was inaccessible because it lacked an accessible name. To fix this, an aria-label 
+attribute was added to provide a meaningful label, and a role attribute was added to indicate that the SVG 
+is an image. This allows screen readers to provide a description of the SVG to users with visual impairments.
+```
+
 ### Why is this important?
 
 An SVG component with a graphics role can contain essential information as well as multiple shapes.
@@ -51,7 +105,7 @@ Providing a text alternative (accessible name and description) makes the equival
 With the explicit use of roles and attributes, the author provides a clear indication that the content should convey meaning via the accessibility name and description to assistive technology users.
 
 <!-- This is where the code snippet is injected -->
-<div id="locSnippet"></div>
+<!-- <div id="locSnippet"></div> -->
 
 ### What to do
     
@@ -76,17 +130,6 @@ perceivable, or interactive to users.
 Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
 in order to concatenate one of the other text alternatives with text from a separate element.
 
-    
-Example:
-
-```
-<p>How many circles are there?</p>
-<svg xmlns="http://www.w3.org/2000/svg" aria-label="shapes from which to choose">
-    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" 
-    aria-label="1 circle"></circle>
-    ...
-</svg>
-```
 
 </script></mark-down>
 <!-- End main panel -->
