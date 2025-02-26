@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <label for="control-disabled" class="css-egxz13">
+     <input disabled id="control-disabled" type="checkbox">
+     <span style="color:lightgray;">True</span>
+  </label>
+  <div />
+  <label for="button-disabled" class="css-egxz13">
+    <button disabled id="button-disabled" >Go</button>
+    <span style="color:lightgray;">False</span>
+ </label>
+
+ <form>
+    <fieldset disabled>
+      <label for="control-disabled" class="css-egxz13">
+        <input id="control-disabled" type="checkbox">
+        <span style="color:lightgray;">True</span>
+     </label>
+     <div />
+     <label for="button-disabled" class="css-egxz13">
+       <button id="button-disabled" >Go</button>
+       <span style="color:lightgray;">False</span>
+    </label>
+    </fieldset>
+ </form>
+
+  <script type="text/javascript">
+    UnitTest = {
+      ruleIds: ["text_contrast_sufficient"],
+      results: [
+        {
+          "ruleId": "text_contrast_sufficient",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/p[1]",
+            "aria": "/document[1]/paragraph[1]"
+          },
+          "reasonId": "fail_contrast",
+          "message": "Text contrast of 2.32 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+          "messageArgs": [
+            "2.32",
+            16,
+            400,
+            "#aaaaaa",
+            "#ffffff",
+            false,
+            false
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        }
+      ]
+    }
+
+  </script>
+</body>
+
+</html>
