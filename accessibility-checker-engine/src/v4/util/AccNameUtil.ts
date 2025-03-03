@@ -149,7 +149,7 @@ export class AccNameUtil {
             // for a button with a svg image
             const svg = elem.querySelector('svg');
             if (svg && !VisUtil.isNodeHiddenFromAT(svg) && !VisUtil.isNodePresentational(svg)) {
-                let pair = AccNameUtil.computeAccessibleNameForSVGElement(svg); 
+                let pair = AccNameUtil.computeAccessibleName(svg);
                 if (pair && pair.name && pair.name.trim().length > 0) 
                     return pair;
             }
@@ -330,7 +330,7 @@ export class AccNameUtil {
         let text = "";
         elem.querySelectorAll(":scope > *").forEach((element) => {
             if (element.nodeName.toLowerCase() !== 'svg' && !VisUtil.isNodeHiddenFromAT(element) && !VisUtil.isNodePresentational(element)) {
-                const value = element.textContent;
+                const value = CommonUtil.getInnerText(element);
                 if (value && value.trim().length > 0)
                     text += value;
             }    
