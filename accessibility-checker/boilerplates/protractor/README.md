@@ -1,13 +1,16 @@
-# jest
+# protractor
 
-Using a [Jest](https://www.npmjs.com/package/jest) testing framework with a baseline.
+Protractor is a wrapper around Selenium Webdriver that provides an automated testing framework,
+which simulates user interaction with an Angular web application for a range of browsers and mobile devices.
+It provides all features of Selenium WebDriver along with Angular specific features for seamless end to end testing.
 
 ## Baseline basics
-This folder covers "baseline basics".
 
+[THIS IS COPIED OVER FROM JEST, NEEDS TO BE EDITED and VALIDATED]
 We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json`) and one that does not.
 
-A scan was run previously that detected an issue. That scan was saved as a baseline. The checker will ignore issues stored in the baseline. This feature allows a team to snapshot where they're at to prevent new issues from being introduced. This also allows a team to fail on potential violations, but then store items in the baseline that they've assessed and determined were being addressed in some way.
+A scan was run previously that detected an issue. That scan was saved as a baseline.
+The Checker will ignore issues stored in the baseline. This feature allows a team to snapshot where they're at to prevent new issues from being introduced. This also allows a team to fail on potential violations, but then store items in the baseline that they've assessed and determined were being addressed in some way.
 
 When you `npm install` and `npm test` in this folder, you should expect to see one test fail and one test pass.
 
