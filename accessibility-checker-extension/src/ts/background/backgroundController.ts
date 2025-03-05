@@ -85,25 +85,25 @@ class BackgroundController extends Controller {
             console.error('Error establishing WebSocket connection:', error);
             return error;
         });
-
-         
-
-        // const violation = {
-        //     "api": "/rms/api/V2/watsonx/checker_help",
-        //     "data": {
-        //       "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
-        //       "wcag_req": "1.1.1",
-        //       "failure": "The SVG element has no accessible name",
-        //       "whatToDo": "What to do:\n\nEnsure the _non-decorative_ SVG element has an _accessible name_ that is not empty:\n- Add an 'aria-labelledby' attribute to the element that points to visible text on the page that is a meaningful label.\n- Or, add an 'aria-label' attribute to the element.\n- Or, add a direct child '<title>' element.\n- Or, add an 'xlink:title' attribute on a link.\n- Or, for text container elements, add the text content.\n- Or, only if the design cannot have a visible label, use the 'title' attribute to provide a label.\nAs appropriate, ensure the non-decorative SVG element has an accessible description that is not empty, in the following priority:\n- Add an 'aria-describedby' attribute to the element that points to visible text on the page that is a meaningful description.\n- Or, add a direct child '<desc>' element.\n- Or, for text container elements, add the text content.\n- Or, add a direct child '<title>' element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.\n- Or, add a 'xlink:title' attribute on a link, if not used to provide the accessible name.\nEnsure the _decorative_ SVG element use 'aria-hidden' or 'role=none | presentation' to provides a clear indication that the element is not visible, perceivable, or interactive to users.\nNote: The 'aria-labelledby' and 'aria-describedby' properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.\n\nCode example:\n\n<p>How many circles are there?</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\" aria-label=\"shapes from which to choose\">\n <circle role=\"graphics-symbol\" cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" aria-label=\"1 circle\"></circle>\n...\n</svg>",
-        //       "references": [
-        //         "https://www.w3.org/TR/graphics-aria/",
-        //         "https://w3c.github.io/accname/#computation-steps"
-        //       ],
-        //       "source_lang": "React.JS"
-        //     }
-        //   };
-        //   const violationJSON = JSON.stringify(violation);
-        //   const data = { "api": "some_api", "data": {} };
+        /* Example input to the AI proxy server
+        {
+            "api": "/rms/api/V2/watsonx/checker_help",
+            "data": {
+            "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+            "wcg": "1.1.1",
+            "failure": "The SVG element has no accessible name",
+            "whatToDo": "What to do Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty: * Add an `aria-labelledby` attribute to the element that points to visible text on the page that is a meaningful label. * **Or**, add an `aria-label` attribute to the element. * **Or**, add a direct child `<title>` element. * **Or**, add an `xlink:title` attribute on a link. * **Or**, for text container elements, add the text content. * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label. As appropriate, ensure the _non-decorative_ SVG element has an _accessible description_ that is not empty, in the following priority: * Add an `aria-describedby` attribute to the element that points to visible text on the page that is a meaningful description. * **Or**, add a direct child `<desc>` element. * **Or**, for text container elements, add the text content. * **Or**, add a direct child `<title>` element that provides a tooltip, when ARIA label attributes are used to provide the accessible name. * **Or**, add a `xlink:title` attribute on a link, if not used to provide the accessible name. Ensure the _decorative_ SVG element use `aria-hidden` or `role=’none | presentation’` to provides a clear indication that the element is not visible, perceivable, or interactive to users. Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.",
+            "references": [
+                "https://www.ibm.com/able/requirements/requirements/#1_1_1",
+                "https://www.w3.org/TR/graphics-aria/",
+                "https://w3c.github.io/accname/#computation-steps",
+                "https://w3c.github.io/graphics-aam/#mapping_role_table",
+                "https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table"
+            ],
+                "source_lang": "React.JS"
+            }
+        }
+        */
         const pingJSON = {
             "api":"/ping",
             "data":{}
@@ -112,25 +112,24 @@ class BackgroundController extends Controller {
 
         webSocket.onopen = () => {
             console.log('websocket connection opened');
-            // console.log("violationJSON in connect: \n", violationJSON );
-            // this.sendMessage(violationJSON, webSocket);
             this.keepAlive(ping, webSocket);
         };
-        /*
+        /* response back from the AI proxy server
         {
             "status": 200,
             "message": "Request successful",
-            "timestamp": "2025-01-27T18:24:00.000Z",
+            "timestamp": "2025-03-05T00:03:52.280Z",
             "meta": {
-              "rms_api_version": "2.0.0",
-              "model": "llama-3-405b-instruct",
-              "model_url": "https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx#llama-3-1",
-              "request_duration_ms": 29922
+                "rms_api_version": "2.0.0",
+                "model": "llama-3-405b-instruct",
+                "model_url": "https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx#llama-3-1",
+                "request_duration_ms": 32712
             },
             "data": {
-              "accessible_dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
-              "accessible_source": "import React from 'react';\n  function AccessibleSVG() {\n    return (\n      <svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\">\n        <defs>\n          <filter id=\"protanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"deuteranopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"tritanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n        </defs>\n      </svg>\n    );\n  }\n  export default AccessibleSVG;",
-              "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose."
+                "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+                "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+                "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+                "input_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>"
             },
             "input_token_count": 1170,
             "generated_token_count": 801,
@@ -138,11 +137,14 @@ class BackgroundController extends Controller {
         }
         */
         webSocket.onmessage = (event:any) => {
-            const helpData = this.adjustJsonData(event.data);
+            const jsonData = event.data;
+            const jsonDataObj = JSON.parse(jsonData);
+            if (jsonDataObj.message === "Request successful") {
+                // extract needed data from AI server JSON response
+                // construct JSON of needed data to send to help.js
+                this.adjustJsonData(event);
+            }
             console.log("Response message from server: \n", event.data);
-            console.log("ai help data: \n", helpData);
-            // extract needed data from AI server JSON response
-            // construct JSON of needed data to send to help.js
             // send needed data JSON to help.js
         };
 
@@ -162,21 +164,26 @@ class BackgroundController extends Controller {
         }
     }
 
-    adjustJsonData(jsonData: any) {
+    adjustJsonData(evt: any) {
         // data needed from the response
         // 1. data.input_dom
         // 2. data.accessible_dom
         // 3. data.accessible_source
         // 4. data.change_summary
         // 5. disclaimer
+        const jsonData = evt.data;
         const jsonDataObj = JSON.parse(jsonData);
-        const aiHelpJsonData = {
-            inaccessible_dom: jsonDataObj.data.input_dom,
-            accessible_dom: jsonDataObj.data.accessibile_dom,
-            accessible_source: jsonDataObj.data.accessibile_source,
-            change_summary: jsonDataObj.data.change_summary
-        };
-        return aiHelpJsonData;
+        if (jsonDataObj) {
+            const aiHelpJsonData = {
+                inaccessible_dom: jsonDataObj.data.input_dom,
+                accessible_dom: jsonDataObj.data.accessible_dom,
+                accessible_source: jsonDataObj.data.accessible_source,
+                change_summary: jsonDataObj.data.change_summary,
+                disclaimer: jsonDataObj.disclaimer
+            };
+            console.log(aiHelpJsonData);
+        }
+        // send aiHelpJsonData to help.js
     }
 
     
@@ -249,10 +256,6 @@ class BackgroundController extends Controller {
     /***********************************************************
      * END of WebSocket components for AI building blocks
      ***********************************************************/
-
-
-
-    
 
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
