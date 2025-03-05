@@ -20,11 +20,14 @@
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
     <script type="module">
+        // import prettier from "prettier";
+        // import parserBabel from "prettier/parser-babel";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="../common/help.js"></script>
+    
 </head>
 <body>
     <div class="bx--grid toolHelp">
@@ -43,59 +46,35 @@
 <!-- Start main panel -->
 <mark-down><script type="text/plain">
 
-### Inaccessible code detected
+<!-- This is where the code snippet is injected -->
+<!-- <div id="locSnippet"></div> -->
 
-```
-<svg viewBox="0 0 600 400" width="0" height="0" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <filter id="protanopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.567, 0.433, 0,     0, 0 0.558, 0.442, 0,     0, 0 0,     0.242, 0.758, 0, 0 0,     0,     0,     1, 0"></feColorMatrix></filter>
-        <filter id="deuteranopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.625, 0.375, 0,   0, 0 0.7,   0.3,   0,   0, 0 0,     0.3,   0.7, 0, 0 0,     0,     0,   1, 0"></feColorMatrix></filter>
-        <filter id="tritanopia"><feColorMatrix in="SourceGraphic" type="matrix" values="0.95, 0.05,  0,     0, 0 0,    0.433, 0.567, 0, 0 0,    0.475, 0.525, 0, 0 0,    0,     0,     1, 0"></feColorMatrix></filter>
-    </defs>
-</svg>
-```
+<div id="inA11yDOMCode"></div>
 
-### Accessibile HTML DOM code
+<div id="a11yDOMCode"></div>
 
-```
-<svg viewBox=\\\"0 0 600 400\\\" width=\\\"0\\\" height=\\\"0\\\" xmlns:xlink=\\\"http://www.w3.org/1999/xlink\\\" aria-label=\\\"Color Filters\\\" role=\\\"img\\\">
-    <defs>
-        <filter id=\\\"protanopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
-        <filter id=\\\"deuteranopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
-        <filter id=\\\"tritanopia\\\"><feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
-    </defs>
-</svg>
-```
-
-### Accessible (Reactjs) source code 
-
-```
-import React from 'react';
-
-function ColorFilters() {
-    return (
-        <svg viewBox=\\\"0 0 600 400\\\" width=\\\"0\\\" height=\\\"0\\\" xmlns:xlink=\\\"http://www.w3.org/1999/xlink\\\" aria-label=\\\"Color Filters\\\" role=\\\"img\\\">       
-            <defs>          
-                <filter id=\\\"protanopia\\\">          
-                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
-                <filter id=\\\"deuteranopia\\\">
-                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix></filter>
-                <filter id=\\\"tritanopia\\\">
-                    <feColorMatrix in=\\\"SourceGraphic\\\" type=\\\"matrix\\\" values=\\\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\\\"></feColorMatrix>
-                </filter>
-            </defs>
-        </svg>
-        );}
-        export default ColorFilters;
-```
+<div id="sourceCode"></div>
 
 ### Summary
 
 ```
-The original SVG element was inaccessible because it lacked an accessible name. To fix this, an aria-label 
-attribute was added to provide a meaningful label, and a role attribute was added to indicate that the SVG 
-is an image. This allows screen readers to provide a description of the SVG to users with visual impairments.
+The original SVG element was inaccessible because it lacked an accessible 
+name. To fix this, an aria-label attribute was added to provide a meaningful 
+label, and a role attribute was added to indicate that the SVG is an image. 
+This allows screen readers to provide a description of the SVG to users with 
+visual impairments.
 ```
+
+<!-- <div id="summary"></div> -->
+
+</script></mark-down>
+<!-- End main panel -->
+    <div><p><br /></p></div>
+    <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### General guidance for this issue
 
 ### Why is this important?
 
@@ -136,7 +115,7 @@ in order to concatenate one of the other text alternatives with text from a sepa
                 <!-- This is where the rule id is injected -->
                 <div id="ruleInfo"></div>
             </div>
-            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+            <!-- <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide"> -->
 <!-- Start side panel -->
 <mark-down><script type="text/plain">
 

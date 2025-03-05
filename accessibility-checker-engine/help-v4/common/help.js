@@ -51,6 +51,48 @@ class HTMLBaseElement extends HTMLElement {
     }
 }
 
+function formatHTML(html) {
+    let tabLevel = 0;
+    const tabSize = 4;
+    const result = [];
+  
+    html.split(">").forEach(element => {
+      if (element) {
+        if (element.startsWith("</")) {
+          tabLevel--;
+          result.push(`${" ".repeat(tabLevel * tabSize)}${element}>`);
+        } else if (element.startsWith("<")) {
+          result.push(`${" ".repeat(tabLevel * tabSize)}${element}>`);
+          if (!element.endsWith("/>")) {
+            tabLevel++;
+          }
+        } else {
+          result.push(`${" ".repeat(tabLevel * tabSize)}${element}>`);
+        }
+      }
+    });
+    return result.join("\n");
+}
+
+// formatReactCode = (code) => {
+//     try {
+//         const formattedCode = prettier.format(code, {
+//             parser: "babel",
+//             plugins: [parserBabel],
+//             semi: true,
+//             singleQuote: true,
+//             trailingComma: "es5",
+//             bracketSpacing: true,
+//             jsxBracketSameLine: false,
+//             arrowParens: "always",
+//         });
+//         return formattedCode;
+//     }   catch (error) {
+//         console.error("Error formatting code:", error);
+//         return code;
+//     }
+// }
+
 function isDarkMode() {
     return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 }
@@ -70,15 +112,6 @@ customElements.define(
                     .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
                 }, 0)
         }
-        // childrenAvailableCallback() {
-            // let converted = marked.parse(this.innerHTML);
-            // this.innerHTML = converted
-            //     .replace(/<(\/?)ul>/g, "<$1bx-unordered-list>")
-            //     .replace(/<(\/?)li>/g, "<$1bx-list-item>")
-            //     .replace(/<a href/g, "<a target='_blank' rel='noopener noreferrer' href")
-            //     .replace(/<pre>[ \r\n]*<code>/g, "<code-snippet>")
-            //     .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
-        // }
     }
 );
 
@@ -86,14 +119,44 @@ customElements.define(
     "code-snippet",
     class extends HTMLBaseElement {
         childrenAvailableCallback() {
+            console.log("Func childrenAvailableCallback");
             let oldCode = this.innerHTML;
+            console.log("oldCode = \n", oldCode);
             this.innerHTML = "";
             // const shadowRoot = this.attachShadow({mode: 'open'});
-            const shadowRoot = this;
+            // const shadowRoot = this;
+            const codeSnippet = this;
+            console.log("codeSnippet = ", codeSnippet);
             let snip = document.createElement("bx-code-snippet");
             snip.setAttribute("type", "multi");
-            snip.innerHTML = oldCode.replace(/</g, "&lt;")
-            shadowRoot.appendChild(snip);
+            // get <div> child and setAttribute maxHeight to fit-content
+            // get <pre> child and setAttribute overflow to scroll
+            // note snip element is <code-snippet>
+            console.log("snip (before styling) = \n",snip); // <bx-code-snippet>
+            if (codeSnippet) {
+                console.log("Do shadowRoot styling");
+                console.log(codeSnippet);
+                let nodes = codeSnippet.childNodes;
+                console.log(nodes);
+                
+                console.log(nodes[0]);
+                
+                // shadowRoot.querySelector("div").style.maxHeight="fit-content"; // doesn't work
+                // const extraSheet = new CSSStyleSheet();
+                // extraSheet.replaceSync("div { max-height: fit-content; padding: 16px; font-size: 12px; background-color: white; pre { overflow: scroll;}");
+                // extraSheet.replaceSync("div { max-height: fit-content; pre { overflow: scroll;}");
+                // console.log(shadowRoot.adoptedStyleSheets);
+                // shadowRoot.adoptedStyleSheets = [extraSheet];
+                // console.log(shadowRoot.adoptedStyleSheets);
+                // snip.shadowRoot.adoptedStyleSheets.push(extraSheet);
+                // console.log(snip.shadowRoot.adoptedStyleSheets);
+            }
+            console.log("snip (after styling) = \n",snip); // <bx-code-snippet>
+            snip.innerHTML = oldCode.replace(/</g, "&lt;");
+            console.log("snip.innerHTML = ", snip.innerHTML);
+            console.log("codeSnippet = ", codeSnippet);
+            codeSnippet.appendChild(snip);
+            console.log("codeSnippet after appendChild = \n", codeSnippet);
         }
     }
 );
@@ -114,21 +177,84 @@ const valueMap = {
 };
 
 function updateWithRuleInfo(ruleInfo) {
+    console.log("Func updateWithRuleInfo"); // used for rule and code injection
     if (ruleInfo) {
         if (ruleInfo.message) {
             let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => ruleInfo.msgArgs[matchedNum]);
             document.querySelector("#ruleMessage").innerHTML = ruleMessage.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         }
+        // NOT used in AI version
+        // setTimeout(() => {
+        //     if (ruleInfo.snippet) {
+        //         console.log("JOHO Element location");
+        //         let snip = ruleInfo.snippet;
+        //         snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1");
+        //         let snipElem = document.createElement("code-snippet");
+        //         for (let line of snip.split("\n")) {
+        //             snipElem.appendChild(document.createTextNode(line+"\n"));
+        //         }
+        //         let locSnippet = document.querySelector("#locSnippet");
+        //         locSnippet.innerHTML = `<h3>Element location</h3>`;
+        //         locSnippet.appendChild(snipElem);
+        //     }
+        // }, 0);
         setTimeout(() => {
+            let inA11yDOMCode = "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>";
             if (ruleInfo.snippet) {
-                let snip = ruleInfo.snippet;
-                snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1");
+                console.log("JOHO Inaccessibile code");
+                const formattedHTML = formatHTML(inA11yDOMCode);
+                console.log("formattedHTML: \n", formattedHTML);
+                let snip = formattedHTML;
+                // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
                 let snipElem = document.createElement("code-snippet");
+                console.log("snipElem before split = \n", snipElem);
                 for (let line of snip.split("\n")) {
                     snipElem.appendChild(document.createTextNode(line+"\n"));
                 }
-                let locSnippet = document.querySelector("#locSnippet");
-                locSnippet.innerHTML = `<h3>Element location</h3>`;
+                console.log("snipElem after split = \n", snipElem);
+                let locSnippet = document.querySelector("#inA11yDOMCode");
+                locSnippet.innerHTML = `<h3>Inaccessibile HTML DOM code</h3>`;
+                locSnippet.appendChild(snipElem);
+            }
+        }, 0);
+        setTimeout(() => {
+            let a11yDOMCode = "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-label='Color Filters' role='img'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>";
+            if (ruleInfo.snippet) {
+                console.log("JOHO Accessoble code detected");
+                const formattedHTML = formatHTML(a11yDOMCode);
+                console.log("formattedHTML: \n", formattedHTML);
+                let snip = formattedHTML;
+                // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
+                let snipElem = document.createElement("code-snippet");
+                console.log("snipElem before split = \n", snipElem);
+                for (let line of snip.split("\n")) {
+                    snipElem.appendChild(document.createTextNode(line+"\n"));
+                }
+                console.log("snipElem after split = \n", snipElem);
+                let locSnippet = document.querySelector("#a11yDOMCode");
+                locSnippet.innerHTML = `<h3>Accessibile HTML DOM code</h3>`;
+                locSnippet.appendChild(snipElem);
+            }
+        }, 0);
+        setTimeout(() => {
+            let sourceCode = 
+            // `import React from 'react';\n  function AccessibleSVG() {\n    return (\n      <svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\">\n        <defs>\n          <filter id=\"protanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"deuteranopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"tritanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n        </defs>\n      </svg>\n    );\n  }\n  export default AccessibleSVG`;
+            "import React from 'react'; const ColorFilters = () => { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-label='Color Filters' role='img'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); }; export default ColorFilters;"
+            if (ruleInfo.snippet) {
+                console.log("JOHO Source code detected");
+                // const formattedReact = formatReactCode(sourceCode);
+                const formattedReact = sourceCode;
+                console.log("formattedReact: \n", formattedReact);
+                let snip = formattedReact;
+                // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
+                let snipElem = document.createElement("code-snippet");
+                console.log("snipElem before split = \n", snipElem);
+                for (let line of snip.split("\n")) {
+                    snipElem.appendChild(document.createTextNode(line+"\n"));
+                }
+                console.log("snipElem after split = \n", snipElem);
+                let locSnippet = document.querySelector("#sourceCode");
+                locSnippet.innerHTML = `<h3>(Reactjs) source code that generates A11y DOM code</h3>`;
                 locSnippet.appendChild(snipElem);
             }
         }, 0);
@@ -192,6 +318,7 @@ width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 
         if (RULE_ID) {
             document.querySelector("#ruleInfo").innerHTML = `<p>Rule ID: ${RULE_ID}${ruleInfo.reasonId ? `<br />Reason ID: ${ruleInfo.reasonId}</p>` : ""}`;
         }
+
     }
 }
 
@@ -203,15 +330,21 @@ if ("onhashchange" in window) {// does the browser support the hashchange event?
 }
 
 window.addEventListener("DOMContentLoaded", (evt) => {
+    console.log("event listener DOMContentLoaded");
     let groupMsg = typeof RULE_MESSAGES !== "undefined" && (RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0]) || "";
     groupMsg = groupMsg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     document.querySelector("#groupLabel").innerHTML = groupMsg;
     let ruleInfo;
     if (window.location.search && window.location.search.length > 0) {
+        console.log("JOHO window.location.href = \n", window.location.href);
         const searchParams = new URLSearchParams(window.location.search);
+        console.log("searchParams = \n", searchParams);
         ruleInfo = JSON.parse(decodeURIComponent(searchParams.get("issue")));
+        console.log("ruleInfo = \n",ruleInfo);
     } else if (window.location.hash && window.location.hash.length > 0) {
+        console.log("JOHO window.location.href 2  = \n", window.location.href);
         ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+        console.log("ruleInfo = \n",ruleInfo);
     }
     updateWithRuleInfo(ruleInfo);
 

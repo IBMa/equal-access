@@ -96,6 +96,7 @@ export class DevtoolsAppController {
 
     public setSecondaryView(view: eSecondaryView) {
         this.secondaryView = view;
+        console.log("JOHO this.secondaryView = ", this.secondaryView);
         this.fireSecondaryView(view);
     }
 
@@ -112,6 +113,7 @@ export class DevtoolsAppController {
     }
 
     public openSecondary(closeQuerySelect: string) {
+        console.log("JOHO in func openSeconday with param: ", closeQuerySelect);
         this.secondaryOpen = true;
         this.secondaryCloseQuerySelect = closeQuerySelect;
         this.fireSecondaryOpen(true);
@@ -143,6 +145,7 @@ export class DevtoolsAppController {
     }
 
     public addSecondaryOpenListener(cb: (open: boolean) => void) {
+        console.log("JOHO func addSecondaryOpenListener");
         this.secondaryOpenListeners.push(cb);
     }
 

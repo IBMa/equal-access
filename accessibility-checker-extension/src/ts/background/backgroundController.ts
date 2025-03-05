@@ -24,7 +24,6 @@ import { UtilIssue } from "../util/UtilIssue";
 import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 
-
 export type TabChangeType = {
     tabId: number
     changeInfo: chrome.tabs.TabChangeInfo
@@ -61,7 +60,7 @@ class BackgroundController extends Controller {
     private metrics = new ACMetricsLogger("ac-extension");
 
     /***********************************************************
-     * WebSocket components 
+     * WebSocket components for AI building blocks
      */
 
     // Use http or https based on the WebSocket URL
@@ -117,9 +116,34 @@ class BackgroundController extends Controller {
             // this.sendMessage(violationJSON, webSocket);
             this.keepAlive(ping, webSocket);
         };
-
+        /*
+        {
+            "status": 200,
+            "message": "Request successful",
+            "timestamp": "2025-01-27T18:24:00.000Z",
+            "meta": {
+              "rms_api_version": "2.0.0",
+              "model": "llama-3-405b-instruct",
+              "model_url": "https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx#llama-3-1",
+              "request_duration_ms": 29922
+            },
+            "data": {
+              "accessible_dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+              "accessible_source": "import React from 'react';\n  function AccessibleSVG() {\n    return (\n      <svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\">\n        <defs>\n          <filter id=\"protanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"deuteranopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"tritanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n        </defs>\n      </svg>\n    );\n  }\n  export default AccessibleSVG;",
+              "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose."
+            },
+            "input_token_count": 1170,
+            "generated_token_count": 801,
+            "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        }
+        */
         webSocket.onmessage = (event:any) => {
-            console.log("Response message from server: ",event.data);
+            const helpData = this.adjustJsonData(event.data);
+            console.log("Response message from server: \n", event.data);
+            console.log("ai help data: \n", helpData);
+            // extract needed data from AI server JSON response
+            // construct JSON of needed data to send to help.js
+            // send needed data JSON to help.js
         };
 
         webSocket.onclose = () => {
@@ -136,6 +160,23 @@ class BackgroundController extends Controller {
             webSocket.close();
             console.log('websocket connection disconnected');
         }
+    }
+
+    adjustJsonData(jsonData: any) {
+        // data needed from the response
+        // 1. data.input_dom
+        // 2. data.accessible_dom
+        // 3. data.accessible_source
+        // 4. data.change_summary
+        // 5. disclaimer
+        const jsonDataObj = JSON.parse(jsonData);
+        const aiHelpJsonData = {
+            inaccessible_dom: jsonDataObj.data.input_dom,
+            accessible_dom: jsonDataObj.data.accessibile_dom,
+            accessible_source: jsonDataObj.data.accessibile_source,
+            change_summary: jsonDataObj.data.change_summary
+        };
+        return aiHelpJsonData;
     }
 
     
@@ -166,7 +207,7 @@ class BackgroundController extends Controller {
         } else {
             console.log("Can't send message NO websocket");
         }
-      }
+    }
 
     keepAlive(message:string, webSocket:WebSocket) {
         const TEN_SECONDS_MS = 10 * 1000;
@@ -205,7 +246,9 @@ class BackgroundController extends Controller {
         });
     }
       
-
+    /***********************************************************
+     * END of WebSocket components for AI building blocks
+     ***********************************************************/
 
 
 

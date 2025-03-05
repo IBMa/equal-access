@@ -25,6 +25,10 @@ interface IHelpScreenState {
     issue: IIssue | null
     help1: string | null
     help2: string | null
+    aiNotA11yCode: string | null
+    aiA11yCode: string | null
+    aiSourceCode: string | null
+    aiSummary: string | null
     loading: boolean
     errString?: string
 }
@@ -37,6 +41,10 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         issue: null,
         help1: null,
         help2: null,
+        aiNotA11yCode: null,
+        aiA11yCode: null,
+        aiSourceCode: null,
+        aiSummary: null,
         loading: true
     }
     private devtoolsAppController = getDevtoolsAppController();
@@ -51,7 +59,9 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
     }
 
     setIssue(issue: IIssue) {
-        this.setState( { issue: null, help1: null, help2: null, loading: true, errString: undefined });
+        this.setState( { issue: null, help1: null, help2: null, aiA11yCode: null, aiSourceCode: null, 
+            aiSummary: null, loading: true, errString: undefined });
+            this.setState
         setTimeout(async () => {
             let help1 = null;
             let help2 = null;

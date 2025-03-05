@@ -1062,6 +1062,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                                 this.doAI(thisIssue);
                                                 this.onRow(group, thisIssue);
                                                 this.devtoolsAppController.setSecondaryView("help");
+                                                console.log("`#${rowId} a`= ", `#${rowId} a`);
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
                                                 evt.preventDefault();
                                             }}
