@@ -78,7 +78,7 @@ export const text_contrast_sufficient: Rule = {
             return null;
 
         //skip elements
-        if (CommonUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
+        if (CommonUtil.getAncestor(ruleContext, ["svg", "script", "meta", "style"]))
             return null;
 
         let doc = ruleContext.ownerDocument;
