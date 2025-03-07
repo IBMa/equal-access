@@ -18,7 +18,7 @@ import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
-import { CSSUtil } from "../util/CSSUtil";
+
 export const element_tabbable_role_valid: Rule = {
     id: "element_tabbable_role_valid",
     context:"dom:*",
