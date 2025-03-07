@@ -385,4 +385,51 @@ export class VisUtil {
         if (role && (role === 'none' || role === 'presentation')) return true;
         return false;
     }
+
+    /**
+     * return true if the element is scrollable
+     * @param node
+     */
+    public static isElementScrollable(elem: HTMLElement) : boolean {
+        if (!elem) return false;
+
+        const styles = CSSUtil.getComputedStyle(elem);
+        if (!styles) return false;
+
+        let x_scroll = styles.getPropertyValue('overflow-x');
+        let y_scroll = styles.getPropertyValue('overflow-y');
+        //console.log("before node="+ elem.nodeName +", id="+elem.getAttribute("id") +", x_scroll="+x_scroll + ", y_scroll="+y_scroll);
+ 
+        // If overflow-y is hidden, scroll, or auto, and the overflow-x property is visible (default), the value will be implicitly computed as auto.
+        if (x_scroll === 'visible' && (y_scroll === 'hidden' || y_scroll === 'scroll' || y_scroll === 'auto'))
+            x_scroll = 'auto';
+
+        // If overflow-x is hidden, scroll, or auto and the overflow-y property is visible (default), the value will be implicitly computed as auto.
+        if (y_scroll === 'visible' && (x_scroll === 'hidden' || x_scroll === 'scroll' || x_scroll === 'auto'))
+            y_scroll = 'auto';
+
+        // setting overflow to clip in one direction when it isn't set to visible or clip in the other direction results in the clip value behaving as hidden. 
+        if (x_scroll === 'clip' && y_scroll !== 'visible' && y_scroll !== 'clip')
+            x_scroll = 'hidden';
+        if (y_scroll === 'clip' && x_scroll !== 'visible' && x_scroll !== 'clip')
+            y_scroll = 'hidden';
+
+        // not scrollable: no scroll bars
+        if ((x_scroll === 'visible' || x_scroll === 'hidden' || x_scroll === 'clip')
+            && (y_scroll === 'visible' || y_scroll === 'hidden' || y_scroll === 'clip'))
+            return false;
+
+        // false if the overall scrollable element (clientWidth + scrollbarWidth and clientHeight + scrollbarHeight) is too small to be visible on screen
+        if (Math.max(elem.offsetWidth, elem.offsetHeight) < 30 || Math.min(elem.offsetWidth, elem.offsetHeight) < 15)  
+           return false; 
+
+        // false if content is smaller than the scrollable container: both x and y scroll distances < element's horizontal/vertical padding
+        const padding_x = CSSUtil.getPixelsFromStyle(styles.paddingLeft, elem) + CSSUtil.getPixelsFromStyle(styles.paddingRight, elem);
+        const padding_y = CSSUtil.getPixelsFromStyle(styles.paddingTop, elem) + CSSUtil.getPixelsFromStyle(styles.paddingBottom, elem);
+        if (elem.scrollWidth -  elem.clientWidth < 1 + padding_x 
+            && elem.scrollHeight -  elem.clientHeight < 1+ padding_y)
+            return false;
+
+        return true;
+    }
 }

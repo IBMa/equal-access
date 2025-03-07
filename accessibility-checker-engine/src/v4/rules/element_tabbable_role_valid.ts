@@ -16,10 +16,9 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import { CSSUtil } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
-
+import { CSSUtil } from "../util/CSSUtil";
 export const element_tabbable_role_valid: Rule = {
     id: "element_tabbable_role_valid",
     context:"dom:*",
@@ -71,11 +70,9 @@ export const element_tabbable_role_valid: Rule = {
         if (!ruleContext.hasAttribute("tabindex") || parseInt(ruleContext.getAttribute("tabindex")) < 0)
             return null;
         
-        // ignore elements with CSS overflow: scroll or auto
-        let styles = CSSUtil.getDefinedStyles(ruleContext);
-        if (styles['overflow-x'] === 'scroll' || styles['overflow-y'] === 'scroll' 
-            || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
-            return null;
+        // ignore if the element is scrollable
+        if (VisUtil.isElementScrollable(ruleContext))
+            return null;    
 
         // elements whose roles allow no descendants that are interactive or with a tabindex >= 0 
         // this case should be handled in widget_tabbable_single and aria_child_tabbable
