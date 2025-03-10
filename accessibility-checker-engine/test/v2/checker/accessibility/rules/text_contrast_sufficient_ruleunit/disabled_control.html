@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <label for="control-disabled" class="css-egxz13">
+     <input disabled id="control-disabled" type="checkbox">
+     <span style="color:gray;">True</span>
+  </label>
+  <hr>
+  <label for="button-disabled" class="css-egxz13">
+    <button disabled id="button-disabled" >Go</button>
+    <span>False</span>
+ </label>
+<hr>
+ <form aria-label="form1">
+    <fieldset disabled>
+      <legend style="color:red;">group of user inputs</legend>
+      <label for="control-disabled2" class="css-egxz13">
+        <input id="control-disabled2" type="checkbox">
+        <span style="color:gray;">True</span>
+     </label>
+     <br>
+     <label for="button-disabled3" class="css-egxz13">
+       <button id="button-disabled3" type="submit">Go</button>
+       <span>False</span>
+    </label>
+    </fieldset>
+ </form>
+
+ <hr>
+ <form aria-label="form2">
+    <fieldset disabled>
+      <legend style="color:gray;">group of user inputs</legend>
+      <label for="control-disabled4" class="css-egxz13">
+        <input id="control-disabled4" type="checkbox">
+        <span style="color:gray;">True</span>
+     </label>
+     <br>
+     <label for="button-disabled5" class="css-egxz13">
+       <button id="button-disabled5"  type="submit">Go</button>
+       <span>False</span>
+    </label>
+    </fieldset>
+ </form>
+
+ <hr>
+ <form aria-label="form3">
+    <fieldset>
+      <legend style="color:gray;">group of user inputs</legend>
+      <label for="control-disabled6" class="css-egxz13">
+        <input id="control-disabled6" type="checkbox">
+        <span style="color:gray;">True</span>
+     </label>
+     <br>
+     <label for="button-disabled7" class="css-egxz13">
+       <button id="button-disabled7" type="submit">Go</button>
+       <span>False</span>
+    </label>
+    </fieldset>
+ </form>
+
+  <script type="text/javascript">
+    UnitTest = {
+      ruleIds: ["text_contrast_sufficient"],
+      results: [
+      {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/span[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "3.95",
+              16,
+              400,
+              "#808080",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[2]/span[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/fieldset[1]/legend[1]",
+              "aria": "/document[1]/form[3]/group[1]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.95 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "3.95",
+              16,
+              400,
+              "#808080",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/fieldset[1]/label[1]/span[1]",
+              "aria": "/document[1]/form[3]/group[1]"
+            },
+            "reasonId": "fail_contrast",
+            "message": "Text contrast of 3.95 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "3.95",
+              16,
+              400,
+              "#808080",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/fieldset[1]/label[2]/button[1]",
+              "aria": "/document[1]/form[3]/group[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "18.26",
+              13.3333,
+              400,
+              "#000000",
+              "#efefef",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "text_contrast_sufficient",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/fieldset[1]/label[2]/span[1]",
+              "aria": "/document[1]/form[3]/group[1]"
+            },
+            "reasonId": "pass",
+            "message": "The contrast ratio of text with its background meets WCAG AA requirements",
+            "messageArgs": [
+              "21.00",
+              16,
+              400,
+              "#000000",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    }
+
+  </script>
+</body>
+
+</html>

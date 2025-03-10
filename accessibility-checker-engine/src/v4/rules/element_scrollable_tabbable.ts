@@ -11,12 +11,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
-import { CSSUtil } from "..//util/CSSUtil";
 
 export const element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
@@ -52,7 +50,7 @@ export const element_scrollable_tabbable: Rule = {
             return;
         
         //skip elements
-        if (CommonUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta"]))
+        if (CommonUtil.getAncestor(ruleContext, ["iframe", "svg", "script", "meta", "style"]))
             return null;
 
         //skip if no visible content
@@ -60,23 +58,11 @@ export const element_scrollable_tabbable: Rule = {
             return null;
             
         const nodeName = ruleContext.nodeName.toLowerCase();
-        const styles = getComputedStyle(ruleContext);
-        // not scrollable, inapplicable
-        if ((styles.overflowX === 'visible' || styles.overflowX === 'hidden')
-            && (styles.overflowY === 'visible' || styles.overflowY === 'hidden'))
-            return null;
-
-        // ignore if the overall scrollable element (clientWidth + scrollbarWidth and clientHeight + scrollbarHeight) is too small to be visible on screen
-        if (Math.max(ruleContext.offsetWidth, ruleContext.offsetHeight) < 30 || Math.min(ruleContext.offsetWidth, ruleContext.offsetHeight) < 15)  
-           return null; 
-
-        // ignore if both x and y scroll distances < element's horizontal/vertical padding
-        const padding_x = CSSUtil.getPixelsFromStyle(styles.paddingLeft, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingRight, ruleContext);
-        const padding_y = CSSUtil.getPixelsFromStyle(styles.paddingTop, ruleContext) + CSSUtil.getPixelsFromStyle(styles.paddingBottom, ruleContext);
-        if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + padding_x 
-            && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ padding_y)
-            return null;
         
+        // ignore if the element is not scrollable or content withouting needing a scroll
+        if (!VisUtil.isElementScrollable(ruleContext))
+            return null;
+
         // pass if element is tabbable
         if (CommonUtil.isTabbable(ruleContext))
             return RulePass("pass_tabbable");
