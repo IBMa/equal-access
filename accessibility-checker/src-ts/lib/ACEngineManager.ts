@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager.js";
 import { fetch_get_text } from "./common/api-ext/Fetch.js";
 import { IChecker } from "./common/engine/IChecker.js";
+import { writeFile } from "fs/promises";
 
 let ace;
 
@@ -275,21 +276,15 @@ export class ACEngineManager {
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
-                    fs.writeFile(nodePath + ".js", data, function (err) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        } else {
-                            try {
-                                const ace_ibma = require(nodePath);
-                                checker = new ace_ibma.Checker();
-                                resolve();
-                            } catch (e) {
-                                console.log(e);
-                                reject(e);
-                            }
-                        }
-                    });
+                    try {
+                        await writeFile(nodePath + ".js", data, { flush: true });
+                        const ace_ibma = require(nodePath);
+                        checker = new ace_ibma.Checker();
+                        resolve();
+                    } catch (err) {
+                        console.log(err);
+                        reject(err);
+                    }
                 }
             });
         }
