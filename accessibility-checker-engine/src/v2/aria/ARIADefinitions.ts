@@ -1737,6 +1737,12 @@ export class ARIADefinitions {
 
     // copied from https://html.spec.whatwg.org/multipage/semantics-other.html#disabled-elements
     // https://html.spec.whatwg.org/multipage/input.html#input-type-attr-summary
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled
+    /** note:
+      * if a <fieldset> is disabled, the descendant form controls are all disabled except <legend>
+      * If an <optgroup> is disabled, the select is still interactive (unless otherwise disabled), but none of the items in the option group are selectable.
+      * When an element has the disabled attribute applied, the :disabled pseudo-class also applies to it. 
+     */
     static elementsAllowedDisabled = ["button", "input", "select", "textarea", "optgroup", "option", "fieldset"]; // also form-associated custom element
     static elementsAllowedRequired = ["select", "textarea"]; // remove 'input' and add to the individual element, becuase required is not supported on input@type="range", "color", "hidden" or any button types
     static elementsAllowedReadOnly = ["textarea"]; // remove 'input' and add to the individual element, because readonly is not supported on input@type="checkbox", "radio", "range", "color", "file", hidden" or any button types
