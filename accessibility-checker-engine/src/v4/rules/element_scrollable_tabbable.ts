@@ -15,7 +15,6 @@ import { CommonUtil } from "../util/CommonUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
-import { AriaUtil } from "../util/AriaUtil";
 
 export const element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
@@ -58,10 +57,8 @@ export const element_scrollable_tabbable: Rule = {
         if (!CommonUtil.hasInnerContent(ruleContext))
             return null;
             
-        // ignore if the element's navigation is controlled or owned by another element
-        if (AriaUtil.isNavigationOwnedOrControlled(ruleContext))
-            return null;  
-
+        const nodeName = ruleContext.nodeName.toLowerCase();
+        
         // ignore if the element is not scrollable or content withouting needing a scroll
         if (!VisUtil.isElementScrollable(ruleContext))
             return null;
@@ -79,6 +76,6 @@ export const element_scrollable_tabbable: Rule = {
         if (!ruleContext.hasAttribute("tabindex") && navigator.userAgent.indexOf("Firefox") > -1)
             return null;
 
-        return RuleFail("fail_scrollable", [ruleContext.nodeName.toLowerCase()]);    
+        return RuleFail("fail_scrollable", [nodeName]);    
     }
 }

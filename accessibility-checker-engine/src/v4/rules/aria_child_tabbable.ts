@@ -73,11 +73,21 @@ export const aria_child_tabbable: Rule = {
         if (ruleContext.nodeName.toLowerCase() === 'datalist')
             return null;
 
-        // ignore if the element's navigation is controlled by another element, such as combobox
-        if (AriaUtil.isNavigationOwnedOrControlled(ruleContext))
-            return null;  
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        // Determine if this is referenced by a combobox. If so, focus is controlled by the combobox
+        // ignore if the id of the element is referenced by another element with "aria-controls" or "aria-expanded" and with certain roles. If so, focus is controlled by the referencing element
+        let id = ruleContext.getAttribute("id");
+        if (id && id.trim().length > 0) {
+            /**if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+                return null;
+            }
+            */
+            const elem = ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][aria-haspopup='true'], *[aria-controls='${id}'][aria-expanded='true']`);
+            const containers = ['combobox', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
+            if (elem && CommonUtil.isTabbable(elem) && roles && roles.length >0 && roles.some(r=>containers.includes(r)))
+                return null;
+        }
 
-        let role = AriaUtil.getResolvedRole(ruleContext);
         let passed = true;
         let doc = ruleContext.ownerDocument;
         let hasAttribute = CommonUtil.hasAttribute;
@@ -85,64 +95,66 @@ export const aria_child_tabbable: Rule = {
         let nodeName = "";
         let inScope = false;
 
-        if (ARIADefinitions.containers.includes(role)) {
-            let disabled = hasAttribute(ruleContext, 'aria-disabled') ? ruleContext.getAttribute("aria-disabled") : '';
-            if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant') && !CommonUtil.isTabbable(ruleContext)) {
-                let reqChildren = ARIADefinitions.designPatterns[role].reqChildren;
-                if (reqChildren) {
-                    inScope = true;
-                    passed = false;
-                    let xp = "descendant::*[";
-                    for (let i = 0; i < reqChildren.length; i++) {
-                        xp += "@role='" + reqChildren[i] + "' or ";
-                    }
-                    xp = xp.substring(0, xp.length - 4) + ']';
-                    let xpathResult = doc.evaluate(xp, ruleContext, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
-                    let r: Element = xpathResult.iterateNext() as Element;
-                    while (r && !passed) {
-                        // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
-                        // or not.
-                        //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
-                        //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
-                        //     add it to the roleToElems hash at all or even do any checking for it at all.
-                        //
-                        // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
-                        //       so on and so forth.
-                        if (CommonUtil.shouldNodeBeSkippedHidden(r)) {
-                            r = xpathResult.iterateNext() as Element;
-                            continue;
+        for (let j = 0; j < roles.length; ++j) {
+            if (ARIADefinitions.containers.includes(roles[j])) {
+                let disabled = hasAttribute(ruleContext, 'aria-disabled') ? ruleContext.getAttribute("aria-disabled") : '';
+                if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant') && !CommonUtil.isTabbable(ruleContext)) {
+                    let reqChildren = ARIADefinitions.designPatterns[roles[j]].reqChildren;
+                    if (reqChildren) {
+                        inScope = true;
+                        passed = false;
+                        let xp = "descendant::*[";
+                        for (let i = 0; i < reqChildren.length; i++) {
+                            xp += "@role='" + reqChildren[i] + "' or ";
                         }
-
-                        passed = CommonUtil.isTabbable(r);
-                        
-                        // Required child is not focusable via tabindex. See if there is a grandchild that is focusable by default or by tabindex.
-                        if (!passed) {
-                            let xp2 = "descendant::*";
-                            let xpathResult2 = doc.evaluate(xp2, r, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
-                            let r2 = xpathResult2.iterateNext();
-                            while (r2 && !passed) {
-                                // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
-                                // or not.
-                                //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
-                                //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
-                                //     add it to the roleToElems hash at all or even do any checking for it at all.
-                                //
-                                // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
-                                //       so on and so forth.
-                                if (CommonUtil.shouldNodeBeSkippedHidden(r2)) {
-                                    r2 = xpathResult2.iterateNext();
-                                    continue;
-                                }
-                                passed = CommonUtil.isTabbable(r);
-                                r2 = xpathResult2.iterateNext();
+                        xp = xp.substring(0, xp.length - 4) + ']';
+                        let xpathResult = doc.evaluate(xp, ruleContext, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                        let r: Element = xpathResult.iterateNext() as Element;
+                        while (r && !passed) {
+                            // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+                            // or not.
+                            //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                            //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                            //     add it to the roleToElems hash at all or even do any checking for it at all.
+                            //
+                            // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+                            //       so on and so forth.
+                            if (CommonUtil.shouldNodeBeSkippedHidden(r)) {
+                                r = xpathResult.iterateNext() as Element;
+                                continue;
                             }
-                        }
 
-                        if (!passed) {
-                            roleNameArr = r.getAttribute("role").trim().split(" ");
-                            nodeName = r.nodeName.toLowerCase();
+                            passed = CommonUtil.isTabbable(r);
+                           
+                            // Required child is not focusable via tabindex. See if there is a grandchild that is focusable by default or by tabindex.
+                            if (!passed) {
+                                let xp2 = "descendant::*";
+                                let xpathResult2 = doc.evaluate(xp2, r, CommonUtil.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+                                let r2 = xpathResult2.iterateNext();
+                                while (r2 && !passed) {
+                                    // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+                                    // or not.
+                                    //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                                    //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                                    //     add it to the roleToElems hash at all or even do any checking for it at all.
+                                    //
+                                    // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+                                    //       so on and so forth.
+                                    if (CommonUtil.shouldNodeBeSkippedHidden(r2)) {
+                                        r2 = xpathResult2.iterateNext();
+                                        continue;
+                                    }
+                                    passed = CommonUtil.isTabbable(r);
+                                    r2 = xpathResult2.iterateNext();
+                                }
+                            }
+
+                            if (!passed) {
+                                roleNameArr = r.getAttribute("role").trim().split(" ");
+                                nodeName = r.nodeName.toLowerCase();
+                            }
+                            r = xpathResult.iterateNext() as Element;
                         }
-                        r = xpathResult.iterateNext() as Element;
                     }
                 }
             }

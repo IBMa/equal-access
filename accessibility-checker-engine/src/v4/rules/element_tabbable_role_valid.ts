@@ -69,11 +69,7 @@ export const element_tabbable_role_valid: Rule = {
         // handle the case: no tabindex or tabindex < 0
         if (!ruleContext.hasAttribute("tabindex") || parseInt(ruleContext.getAttribute("tabindex")) < 0)
             return null;
-
-        // ignore if the element's navigation is controlled by another element, such as combobox
-        if (AriaUtil.isNavigationOwnedOrControlled(ruleContext))
-            return null;  
-
+        
         // ignore if the element is scrollable
         if (VisUtil.isElementScrollable(ruleContext))
             return null;    

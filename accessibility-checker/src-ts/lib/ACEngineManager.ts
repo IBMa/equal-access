@@ -81,7 +81,7 @@ export class ACEngineManager {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof ace) {
+                                if (aceAlreadyExists) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
