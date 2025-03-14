@@ -3,7 +3,6 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager.js";
 import { fetch_get_text } from "./common/api-ext/Fetch.js";
 import { IChecker } from "./common/engine/IChecker.js";
-import { writeFile } from "fs/promises";
 
 // The following two lines will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
 // import { createRequire } from "module"; 
@@ -282,15 +281,21 @@ export class ACEngineManager {
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
-                    try {
-                        await writeFile(nodePath + ".js", data, { flush: true });
-                        const ace_ibma = require(nodePath);
-                        checker = new ace_ibma.Checker();
-                        resolve();
-                    } catch (err) {
-                        console.log(err);
-                        reject(err);
-                    }
+                    fs.writeFile(nodePath + ".js", data, async function (err) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            try {
+                                const ace_ibma = require(nodePath);
+                                checker = new ace_ibma.Checker();
+                                resolve();
+                            } catch (e) {
+                                console.log(e);
+                                reject(e);
+                            }
+                        }
+                    });
                 }
             });
         }
