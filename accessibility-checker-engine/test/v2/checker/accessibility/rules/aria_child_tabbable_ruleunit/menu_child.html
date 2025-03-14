@@ -7,7 +7,7 @@
 
   <body>
     <div id="root">
-      <span class="cds--overflow-menu__wrapper" aria-owns="overflow-menu-1__menu-body">
+      <span class="cds--overflow-menu__wrapper" aria-owns="overflow-menu-1__menu-body-2" tabindex="0">
         <span class="cds--popover-container cds--popover--caret cds--popover--high-contrast cds--popover--top cds--tooltip cds--icon-tooltip">
           <button aria-haspopup="true" aria-expanded="true" class="cds--btn--icon-only cds--overflow-menu cds--overflow-menu--open cds--overflow-menu--md cds--btn cds--btn--md cds--btn--primary" type="button" aria-labelledby="tooltip-2" aria-controls="overflow-menu-1__menu-body">
             <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-label="Options" width="16" height="16" viewBox="0 0 32 32" role="img" class="cds--overflow-menu__icon"><circle cx="16" cy="8" r="2"></circle><circle cx="16" cy="16" r="2"></circle><circle cx="16" cy="24" r="2"></circle></svg></button><span aria-hidden="true" role="tooltip" class="cds--popover" id="tooltip-2">
@@ -53,6 +53,42 @@
           </ul>
           <span tabindex="0" role="link" class="cds--visually-hidden">Focus sentinel</span>
         </div>
+        <div>
+          <span tabindex="0" role="link" class="cds--visually-hidden">Focus sentinel</span>
+          <ul class="cds--overflow-menu-options cds--overflow-menu-options--open cds--overflow-menu-options--md" tabindex="-1" role="menu" aria-label="overflow-menu" id="overflow-menu-1__menu-body-2" data-floating-menu-direction="bottom" style="top: 81.9961px; position: absolute; opacity: 1; left: 42px; right: auto;">
+            <li class="cds--overflow-menu-options__option" role="none">
+              <button class="cds--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+                <div class="cds--overflow-menu-options__option-content">Stop app</div>
+              </button>
+            </li>
+            <li class="cds--overflow-menu-options__option" role="none">
+              <button class="cds--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+                <div class="cds--overflow-menu-options__option-content">Restart app</div>
+              </button>
+            </li>
+            <li class="cds--overflow-menu-options__option" role="none">
+              <button class="cds--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+                <div class="cds--overflow-menu-options__option-content">Rename app</div>
+              </button>
+            </li>
+            <li class="cds--overflow-menu-options__option cds--overflow-menu-options__option--disabled" role="none">
+              <button class="cds--overflow-menu-options__btn" disabled="" role="menuitem" tabindex="-1" title="Clone and move app">
+                <div class="cds--overflow-menu-options__option-content">Clone and move app</div>
+              </button>
+            </li>
+            <li class="cds--overflow-menu-options__option" role="none">
+              <button class="cds--overflow-menu-options__btn" role="menuitem" tabindex="-1" title="Edit routes and access">
+                <div class="cds--overflow-menu-options__option-content">Edit routes and access</div>
+              </button>
+            </li>
+            <li class="cds--overflow-menu-options__option cds--overflow-menu--divider cds--overflow-menu-options__option--danger" role="none">
+                <button class="cds--overflow-menu-options__btn" role="menuitem" tabindex="-1">
+                  <div class="cds--overflow-menu-options__option-content">Delete app</div>
+                </button>
+              </li>
+            </ul>
+            <span tabindex="0" role="link" class="cds--visually-hidden">Focus sentinel</span>
+          </div>
     <script>
       UnitTest = {
         ruleIds: ["aria_child_tabbable"],

@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
         "module": "commonjs",
         "types": [
             "node",
@@ -8,6 +10,6 @@
             "expect-webdriverio",
             "@wdio/mocha-framework"
         ],
-        "target": "es2022"
+        "target": "ES2015"
     }
 }

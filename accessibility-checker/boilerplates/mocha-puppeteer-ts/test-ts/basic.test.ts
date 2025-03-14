@@ -6,13 +6,16 @@ import * as path from "path";
 import { expect } from "chai";
 import { before, after, describe, it } from "mocha";
 import { ICheckerReport } from "accessibility-checker/lib/api/IChecker";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 let browser: Puppeteer.Browser;
 let page: Puppeteer.Page;
 
 before(async () => {
     try {
-        browser = await Puppeteer.launch();
+        browser = await Puppeteer.launch({ headless: "shell"});
         page = await browser.newPage();
     } catch (e) {
         console.log(e);

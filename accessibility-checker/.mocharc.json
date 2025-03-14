@@ -1,0 +1,6 @@
+
+{
+    "extension": ["js", "cjs", "mjs"],
+    "package": "./package.json",
+    "node-option": ["experimental-specifier-resolution=node"]
+  }

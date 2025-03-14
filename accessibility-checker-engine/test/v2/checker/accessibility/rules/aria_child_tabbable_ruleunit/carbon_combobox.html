@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Sandbox</title>
+  <meta charset="UTF-8" />
+</head>
+
+<body>
+      <div style="width: 300px;">
+        <div class="cds--list-box__wrapper"><label class="cds--label" id="downshift-:r2:-label" for="carbon-combobox"
+            dir="ltr">ComboBox title</label>
+          <div class="cds--combo-box cds--list-box cds--list-box--expanded">
+            <div class="cds--list-box__field">
+                <input
+                class="cds--text-input cds--text-input--empty cds--combo-box--input--focus" type="text" tabindex="0"
+                aria-haspopup="listbox" aria-activedescendant="" aria-autocomplete="list" aria-expanded="true"
+                aria-labelledby="downshift-:r2:-label" autocomplete="off" id="carbon-combobox" role="combobox"
+                aria-describedby="combobox-helper-text-id-:r1:" value="" title="">
+                <button
+                aria-controls="downshift-:r2:-menu" aria-expanded="true" id="downshift-:r2:-toggle-button" tabindex="-1"
+                aria-label="Close" title="Close" class="cds--list-box__menu-icon cds--list-box__menu-icon--open"
+                type="button"><svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="16"
+                  height="16" viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"></path>
+                </svg></button>
+            </div>
+            <ul id="downshift-:r2:-menu" class="cds--list-box__menu" role="listbox"
+              aria-labelledby="downshift-:r2:-label">
+              <li aria-selected="false" id="downshift-:r2:-item-0" role="option" class="cds--list-box__menu-item"
+                title="An example option that is really long to show what should be done to handle long text">
+                <div class="cds--list-box__menu-item__option">An example option that is really long to show what should
+                  be done to handle long text</div>
+              </li>
+              <li aria-selected="false" id="downshift-:r2:-item-1" role="option" class="cds--list-box__menu-item">
+                <div class="cds--list-box__menu-item__option">Option 1</div>
+              </li>
+              <li aria-selected="false" id="downshift-:r2:-item-2" role="option" class="cds--list-box__menu-item">
+                <div class="cds--list-box__menu-item__option">Option 2</div>
+              </li>
+              <li disabled="" aria-selected="false" id="downshift-:r2:-item-3" role="option"
+                class="cds--list-box__menu-item">
+                <div class="cds--list-box__menu-item__option">Option 3 - a disabled item</div>
+              </li>
+              <li aria-selected="false" id="downshift-:r2:-item-4" role="option" class="cds--list-box__menu-item">
+                <div class="cds--list-box__menu-item__option">Option 4</div>
+              </li>
+              <li aria-selected="false" id="downshift-:r2:-item-5" role="option" class="cds--list-box__menu-item">
+                <div class="cds--list-box__menu-item__option">Option 5</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  <script>
+    UnitTest = {
+      ruleIds: ["aria_child_tabbable"],
+      results: [
+        
+      ]
+    };
+  </script>
+</body>
+
+</html>
