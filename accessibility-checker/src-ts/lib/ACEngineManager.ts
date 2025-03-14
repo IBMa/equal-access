@@ -3,6 +3,13 @@ import * as fs from "fs";
 import { ACConfigManager } from "./common/config/ACConfigManager.js";
 import { fetch_get_text } from "./common/api-ext/Fetch.js";
 import { IChecker } from "./common/engine/IChecker.js";
+<<<<<<< HEAD
+=======
+
+// The following two lines will be modified by sed for cjs vs mjs environments. Look at package.json before modifying
+// import { createRequire } from "module"; 
+// const require = createRequire(import.meta.url);
+>>>>>>> parent of 88f04833 (Merge branch 'master' into dev-2220)
 
 let ace;
 
