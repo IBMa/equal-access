@@ -7,7 +7,8 @@
 
 'use strict';
 
-import * as aChecker from "../src/mjs/index.js";
+const aChecker = require("../src/index");
+const request = require("request");
 const rulesetP = aChecker.getRuleset('IBM_Accessibility');
 
 async function getAceMapping() {
@@ -58,22 +59,25 @@ async function getAceMapping() {
     return retVal;
 }
 
-export async function getTestcases() {
+async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
-    let resp = await fetch("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json");
-    let testcaseInfo = await resp.json();
-    for (const testcase of testcaseInfo.testcases) {
-        // if (testcase.ruleId in aceMapping) {
-            ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
-                aceRules: aceMapping[testcase.ruleId],
-                label: testcase.ruleName,
-                testcases: []
+    return await new Promise((resolve, reject) => {
+        request("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json", (err, req, body) => {
+            let testcaseInfo = JSON.parse(body);
+            for (const testcase of testcaseInfo.testcases) {
+                // if (testcase.ruleId in aceMapping) {
+                    ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
+                        aceRules: aceMapping[testcase.ruleId],
+                        label: testcase.ruleName,
+                        testcases: []
+                    }
+                    ruleTestInfo[testcase.ruleId].testcases.push(testcase);
+                // }
             }
-            ruleTestInfo[testcase.ruleId].testcases.push(testcase);
-        // }
-    }
-    return ruleTestInfo;
+            resolve(ruleTestInfo);
+        });
+    });
 }
 
 async function getAssertion(ruleId, aceRules, result) {
@@ -107,7 +111,7 @@ async function getAssertion(ruleId, aceRules, result) {
     }
 }
 
-export async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
+async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
     const ruleset = await rulesetP;
     let assertions = [];
     if (aceRules.length === 0) {
@@ -226,3 +230,5 @@ export async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
         issuesAll: bSkip ? [] : results.report.results
     }
 }
+
+module.exports = { getTestcases, getResult }

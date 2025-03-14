@@ -211,11 +211,7 @@ export class BaselineManager {
         }
 
         // Run Deep diff function to compare the actual and expected values.
-        let diff = DeepDiff.diff;
-        if (!diff) {
-            diff = DeepDiff.default.diff;
-        }
-        let differences = diff(actual, expected);
+        let differences = DeepDiff.diff(actual, expected);
         if (differences) {
             differences = differences.filter(difference => !(
                 difference.kind === "E"

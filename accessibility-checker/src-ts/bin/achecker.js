@@ -15,11 +15,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
-
-import * as aChecker from "../index.js";
-import * as fs from "fs";
-import * as readline from "readline";
-import * as path from "path";
+ 
+const aChecker = require("../index.js")
+const fs = require('fs');
+const readline = require('readline');
+const path = require("path");
 
 let validCLParams = [
     "inputFile"

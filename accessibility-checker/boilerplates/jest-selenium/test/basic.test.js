@@ -19,14 +19,11 @@ beforeAll(function() {
         
         const options = new chrome.Options();
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless=new");
+        options.addArguments("--headless");
         options.addArguments('--ignore-certificate-errors')
 
         const service = new chrome.ServiceBuilder(spath).build();
-        // setDefaultService function is removed since web-driver v4.3.1+
-        //chrome.setDefaultService(service);
-        chrome.Driver.createSession(options, service);
-
+        chrome.setDefaultService(service);
         browser = new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
         .setChromeOptions(options)

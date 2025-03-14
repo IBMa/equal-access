@@ -13,26 +13,25 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
-'use strict';
+ 'use strict';
 
-import * as fs from "fs";
-import * as path from "path";
-import * as aChecker from "../../../../src/mjs/index.js";
-// import ace from "../../../../accessibility-checker-engine/dist/ace-node.js";
-import { expect } from "chai";
-import * as util from "util";
+var fs = require("fs");
+var path = require("path");
+var unitTestcaseHTML = {};
+var aChecker = require("../../../../src")
+var expect = require("chai").expect;
+var util = require('util')
 
-let unitTestcaseHTML = {};
-let files = ["aChecker.Baseline.html", "aChecker.Baseline2.html"];
+var files = ["aChecker.Baseline.html", "aChecker.Baseline2.html"];
 files.forEach(function (f) {
-    let fileExtension = f.substr(f.lastIndexOf('.') + 1);
+    var fileExtension = f.substr(f.lastIndexOf('.') + 1);
     if (fileExtension === 'html' || fileExtension === 'htm') {
-        f = path.join(process.cwd(), "test","mocha","aChecker.Fast","aChecker.Baselines",f);
+        var f = path.join(process.cwd(), "test","mocha","aChecker.Fast","aChecker.Baselines",f);
         unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
     };
 });
 
-let codes = {};
+var codes = {};
 codes[path.join(process.cwd(), "test", "mocha", "aChecker.Fast", "aChecker.Baselines", "aChecker.Baseline.html")] = 0;
 codes[path.join(process.cwd(), "test", "mocha", "aChecker.Fast", "aChecker.Baselines", "aChecker.Baseline2.html")] = 1;
 
@@ -43,12 +42,12 @@ describe("Baseline testing", function () {
     });
 
     // Variable Decleration
-    let originalTimeout;
+    var originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (let unitTestFile in unitTestcaseHTML) {
+    for (var unitTestFile in unitTestcaseHTML) {
         // Get the extension of the file we are about to scan
-        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.
@@ -73,8 +72,8 @@ describe("Baseline testing", function () {
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
-                    let unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
-                    let labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
+                    var unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
+                    var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     let result = await aChecker.getCompliance(unitTestDataFileContent, "Baseline_" + labelName);
                     let assertVal = aChecker.assertCompliance(result.report);

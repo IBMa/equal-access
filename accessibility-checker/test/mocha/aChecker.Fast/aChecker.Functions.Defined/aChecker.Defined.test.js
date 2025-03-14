@@ -15,10 +15,10 @@
   *****************************************************************************/
 
 var expect = require('chai').expect;
-var aChecker = require("../../../src/");
+var aChecker = require("../../../../src");
 
-describe("ValidationResult", function () {
-    it("Should be defined", function() {
-        expect(typeof ValidationResult).not.toBe("undefined");
+describe("aChecker", function () {
+    it("Should be defined", function () {
+        expect(typeof aChecker).to.not.equal("undefined");
     });
 });

@@ -14,8 +14,8 @@
     limitations under the License.
   *****************************************************************************/
 
-import * as aChecker from "../../../src/mjs/index.js";
-import { expect } from "chai";
+var expect = require('chai').expect;
+var aChecker = require("../../../src/");
 
 // Test to make sure the getRule function still exists in global space (window.getRule)
 describe("getRule", function () {

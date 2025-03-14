@@ -1,15 +1,15 @@
 'use strict';
 
-import * as puppeteer from 'puppeteer';
-import { getTestcases, getResult } from "./act.mjs";
-import * as fs from "fs";
+const puppeteer = require('puppeteer');
+const { getTestcases, getResult } = require("./act");
+const fs = require("fs");
 (async () => {
     let earlResult = {
         "@context": "https://act-rules.github.io/earl-context.json",
         "@graph": []
     }
     let ruleTestInfo = await getTestcases();
-    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: true, ignoreHTTPSErrors: true });
     let pupPage = await browser.newPage();
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {
