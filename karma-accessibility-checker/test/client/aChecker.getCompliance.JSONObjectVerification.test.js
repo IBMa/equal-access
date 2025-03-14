@@ -109,16 +109,6 @@ describe("JSONObjectVerification.test aChecker.getCompliance", function () {
                         })
                         // Run the diff algo to get the list of differences
                         differences = aChecker.diffResultsWithExpected(report, expected, true);
-                        if (typeof differences !== "undefined") {
-                            differences = differences.filter(difference => (
-                                difference.kind !== "E"
-                                || difference.path[2] !== "bounds"
-                                || Math.abs(difference.lhs - difference.rhs) > 2
-                            ))
-                            if (differences.length === 0) {
-                                differences = undefined;
-                            }
-                        }
                     }
                     expect(typeof differences).toEqual("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
                 });
