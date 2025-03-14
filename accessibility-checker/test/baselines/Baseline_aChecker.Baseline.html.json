@@ -281,7 +281,7 @@
                 "dom": "/html[1]/body[1]",
                 "aria": "/document[1]"
             },
-            "ruleTime": 1,
+            "ruleTime": 0,
             "reasonId": "pass",
             "message": "Rule Passed",
             "messageArgs": [],
@@ -497,7 +497,7 @@
                 "dom": "/html[1]/body[1]/img[1]",
                 "aria": "/document[1]/img[1]"
             },
-            "ruleTime": 0,
+            "ruleTime": 1,
             "reasonId": "pass",
             "message": "The element contains valid descendants",
             "messageArgs": [],

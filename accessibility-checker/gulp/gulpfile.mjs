@@ -33,9 +33,8 @@ function notice(years) {
 
 import gulp from "gulp";
 import ginsert from "gulp-insert";
-// import greplace from "gulp-replace";
+import greplace from "gulp-replace";
 import terser from "gulp-terser";
-import merge from "merge-stream";
 
 gulp.task("build-uglify", function () {
     return gulp.src(["../src/**/lib/**/*.js", "../src/*/index.js", "!../src/node_modules/**"])
@@ -49,27 +48,13 @@ gulp.task("build-uglify", function () {
 })
 
 gulp.task("build-copy", function () {
-    return merge([
-        gulp.src([
-            "../src/bin/achecker.js",
-            "../src/mjs/index.d.ts",
-            "../src/package.json",
-            "../src/README.md",
-        ]).pipe(gulp.dest("../package")),
-
-        gulp.src([
-            "../src/mjs/package.json",
-        ]).pipe(gulp.dest("../package/mjs")),
-
-        gulp.src([
-            "../src/cjs/package.json",
-        ]).pipe(gulp.dest("../package/cjs")),
-
-        gulp.src([
-            "../src/bin/achecker.js"
-        ]).pipe(gulp.dest("../package/bin")),
-
-    ]);
+    return gulp.src([
+        "../src/**/bin/achecker.js",
+        "../src/mjs/index.d.ts",
+        "../src/package.json",
+        "../src/README.md",
+    ])
+    .pipe(gulp.dest("../package"));
 
 })
 

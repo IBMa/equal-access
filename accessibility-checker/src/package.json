@@ -44,5 +44,5 @@
   },
   "bin": {
     "achecker": "./bin/achecker.js"
-  }  
+  }
 }
