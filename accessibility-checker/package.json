@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.21.1",
-    "@types/node": "^18.15.3",
+    "@types/node": "^20.17.24",
     "adm-zip": "^0.5.9",
     "chai": "^4.3.4",
     "eslint": "^8.4.1",
