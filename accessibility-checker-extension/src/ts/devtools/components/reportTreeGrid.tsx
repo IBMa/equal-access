@@ -359,10 +359,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlString, 'text/html');
                     // Use the doc object
-                    console.log("doc = ", doc);
+                    // console.log("doc = ", doc);
                     let xpath = issue.path.dom;
                     xpath = xpath.replace(/\/svg\[/g, "/svg:svg[");
-                    console.log("xpath = ",xpath);
+                    // console.log("xpath = ",xpath);
                     // element = document.evaluate(xpath, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
                     let nodes = (doc as Document).evaluate(xpath, doc, function(prefix) { 
                         if (prefix === 'svg') {
@@ -377,7 +377,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     } else {
                         element = null;
                     }
-                    console.log("element = ",element);
+                    // console.log("element = ",element);
                     if (element !== null) {
                         // need to create parent so can use innerHTML on a detached element
                         var tmp = document.createElement("div"); 
@@ -415,8 +415,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }); 
         elementString = elementString.replace(/\s+/g, ' ');
         whatToDo = whatToDo.replace(/\s+/g, ' ');
-        console.log("\n\nelementString\n\n",elementString);
-        console.log("reqURLs = ", reqURLs);
+        // console.log("\n\nelementString\n\n",elementString);
+        // console.log("reqURLs = ", reqURLs);
         let refsString = reqURLs;
         setTimeout(() => {
             this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString);
@@ -1056,13 +1056,13 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
                                                 evt.stopPropagation();
-                                                console.log("Trigger the collection of AI data for prompt.");
+                                                console.log("Learn more clicked which triggers the collection of AI data for prompt.");
                                                 console.log("thisIssue: ", thisIssue);
                                                 // when user as for learn more give them AI enhanced help
                                                 this.doAI(thisIssue);
                                                 this.onRow(group, thisIssue);
+                                                // JOHO can we put a timeout here? No it doesn't help
                                                 this.devtoolsAppController.setSecondaryView("help");
-                                                console.log("`#${rowId} a`= ", `#${rowId} a`);
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
                                                 evt.preventDefault();
                                             }}

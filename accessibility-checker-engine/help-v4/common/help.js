@@ -11,6 +11,7 @@
     limitations under the License.
  *****************************************************************************/
 
+
 class HTMLBaseElement extends HTMLElement {
     constructor(...args) {
         const self = super(...args);
@@ -121,7 +122,6 @@ customElements.define(
         childrenAvailableCallback() {
             console.log("Func childrenAvailableCallback");
             let oldCode = this.innerHTML;
-            console.log("oldCode = \n", oldCode);
             this.innerHTML = "";
             // const shadowRoot = this.attachShadow({mode: 'open'});
             // const shadowRoot = this;
@@ -132,14 +132,14 @@ customElements.define(
             // get <div> child and setAttribute maxHeight to fit-content
             // get <pre> child and setAttribute overflow to scroll
             // note snip element is <code-snippet>
-            console.log("snip (before styling) = \n",snip); // <bx-code-snippet>
+            // console.log("snip (before styling) = \n",snip); // <bx-code-snippet>
             if (codeSnippet) {
-                console.log("Do shadowRoot styling");
-                console.log(codeSnippet);
+                // console.log("Do shadowRoot styling");
+                // console.log(codeSnippet);
                 let nodes = codeSnippet.childNodes;
-                console.log(nodes);
+                // console.log(nodes);
                 
-                console.log(nodes[0]);
+                // console.log(nodes[0]);
                 
                 // shadowRoot.querySelector("div").style.maxHeight="fit-content"; // doesn't work
                 // const extraSheet = new CSSStyleSheet();
@@ -151,10 +151,10 @@ customElements.define(
                 // snip.shadowRoot.adoptedStyleSheets.push(extraSheet);
                 // console.log(snip.shadowRoot.adoptedStyleSheets);
             }
-            console.log("snip (after styling) = \n",snip); // <bx-code-snippet>
+            // console.log("snip (after styling) = \n",snip); // <bx-code-snippet>
             snip.innerHTML = oldCode.replace(/</g, "&lt;");
-            console.log("snip.innerHTML = ", snip.innerHTML);
-            console.log("codeSnippet = ", codeSnippet);
+            // console.log("snip.innerHTML = ", snip.innerHTML);
+            // console.log("codeSnippet = ", codeSnippet);
             codeSnippet.appendChild(snip);
             console.log("codeSnippet after appendChild = \n", codeSnippet);
         }
@@ -203,15 +203,15 @@ function updateWithRuleInfo(ruleInfo) {
             if (ruleInfo.snippet) {
                 console.log("JOHO Inaccessibile code");
                 const formattedHTML = formatHTML(inA11yDOMCode);
-                console.log("formattedHTML: \n", formattedHTML);
+                // console.log("formattedHTML: \n", formattedHTML);
                 let snip = formattedHTML;
                 // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
                 let snipElem = document.createElement("code-snippet");
-                console.log("snipElem before split = \n", snipElem);
+                // console.log("snipElem before split = \n", snipElem);
                 for (let line of snip.split("\n")) {
                     snipElem.appendChild(document.createTextNode(line+"\n"));
                 }
-                console.log("snipElem after split = \n", snipElem);
+                // console.log("snipElem after split = \n", snipElem);
                 let locSnippet = document.querySelector("#inA11yDOMCode");
                 locSnippet.innerHTML = `<h3>Inaccessibile HTML DOM code</h3>`;
                 locSnippet.appendChild(snipElem);
@@ -222,15 +222,15 @@ function updateWithRuleInfo(ruleInfo) {
             if (ruleInfo.snippet) {
                 console.log("JOHO Accessoble code detected");
                 const formattedHTML = formatHTML(a11yDOMCode);
-                console.log("formattedHTML: \n", formattedHTML);
+                // console.log("formattedHTML: \n", formattedHTML);
                 let snip = formattedHTML;
                 // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
                 let snipElem = document.createElement("code-snippet");
-                console.log("snipElem before split = \n", snipElem);
+                // console.log("snipElem before split = \n", snipElem);
                 for (let line of snip.split("\n")) {
                     snipElem.appendChild(document.createTextNode(line+"\n"));
                 }
-                console.log("snipElem after split = \n", snipElem);
+                // console.log("snipElem after split = \n", snipElem);
                 let locSnippet = document.querySelector("#a11yDOMCode");
                 locSnippet.innerHTML = `<h3>Accessibile HTML DOM code</h3>`;
                 locSnippet.appendChild(snipElem);
@@ -244,15 +244,15 @@ function updateWithRuleInfo(ruleInfo) {
                 console.log("JOHO Source code detected");
                 // const formattedReact = formatReactCode(sourceCode);
                 const formattedReact = sourceCode;
-                console.log("formattedReact: \n", formattedReact);
+                // console.log("formattedReact: \n", formattedReact);
                 let snip = formattedReact;
                 // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
                 let snipElem = document.createElement("code-snippet");
-                console.log("snipElem before split = \n", snipElem);
+                // console.log("snipElem before split = \n", snipElem);
                 for (let line of snip.split("\n")) {
                     snipElem.appendChild(document.createTextNode(line+"\n"));
                 }
-                console.log("snipElem after split = \n", snipElem);
+                // console.log("snipElem after split = \n", snipElem);
                 let locSnippet = document.querySelector("#sourceCode");
                 locSnippet.innerHTML = `<h3>(Reactjs) source code that generates A11y DOM code</h3>`;
                 locSnippet.appendChild(snipElem);
@@ -324,6 +324,7 @@ width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 
 
 if ("onhashchange" in window) {// does the browser support the hashchange event?
     window.onhashchange = function () {
+        console.log("onhashchange event");
         let ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
         updateWithRuleInfo(ruleInfo);
     }
@@ -342,8 +343,26 @@ window.addEventListener("DOMContentLoaded", (evt) => {
         ruleInfo = JSON.parse(decodeURIComponent(searchParams.get("issue")));
         console.log("ruleInfo = \n",ruleInfo);
     } else if (window.location.hash && window.location.hash.length > 0) {
-        console.log("JOHO window.location.href 2  = \n", window.location.href);
-        ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+        // hash url with compressed parameters comes back here
+        console.log("JOHO window.location.href 2 = \n", window.location.href);
+        console.log("JOHO window.location.hash 2 = \n", window.location.hash);
+        // need to decompress params
+        const help1ParamsCompressed = window.location.hash?.substring(window.location.hash.indexOf('#')+1);
+        // help1ParamsCompressed = window.location.hash;
+        console.log("help1ParamsCompressed = \n", help1ParamsCompressed);
+        console.log("Count compressed JOHO = ", help1ParamsCompressed.length);
+        const recoveredOrigHelp1Params = LZString.decompressFromEncodedURIComponent(help1ParamsCompressed);
+        console.log("recoveredOrigHelp1Params = \n", recoveredOrigHelp1Params);
+        console.log("Count uncompressed = ", recoveredOrigHelp1Params.length);
+        let help1param1 = recoveredOrigHelp1Params?.substring(0, recoveredOrigHelp1Params.indexOf('&'));
+        console.log("help1param1 (string) = \n", help1param1);
+        console.log("Count = ", help1param1.length);
+
+        console.log("decodeURIComponent(help1param1) = \n", decodeURIComponent(help1param1));
+        console.log("decodeURIComponenthelp1param1)) = \n", decodeURIComponent(help1param1));
+
+        ruleInfo = JSON.parse(decodeURIComponent(help1param1));
+        // ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
         console.log("ruleInfo = \n",ruleInfo);
     }
     updateWithRuleInfo(ruleInfo);

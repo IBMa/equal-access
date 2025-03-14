@@ -20,15 +20,13 @@ import { IIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
 import { getBGController } from "../../background/backgroundController";
 import { getDevtoolsAppController } from "../devtoolsAppController";
+import * as LZString from '../../devtools/../../../node_modules/lz-string';
 
 interface IHelpScreenState {
     issue: IIssue | null
     help1: string | null
     help2: string | null
-    aiNotA11yCode: string | null
-    aiA11yCode: string | null
-    aiSourceCode: string | null
-    aiSummary: string | null
+    aiHelp: string | null,
     loading: boolean
     errString?: string
 }
@@ -41,10 +39,7 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         issue: null,
         help1: null,
         help2: null,
-        aiNotA11yCode: null,
-        aiA11yCode: null,
-        aiSourceCode: null,
-        aiSummary: null,
+        aiHelp: null,
         loading: true
     }
     private devtoolsAppController = getDevtoolsAppController();
@@ -58,32 +53,129 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         this.setIssue(issue!);
     }
 
+    
+
     setIssue(issue: IIssue) {
-        this.setState( { issue: null, help1: null, help2: null, aiA11yCode: null, aiSourceCode: null, 
-            aiSummary: null, loading: true, errString: undefined });
+        console.log("File: helpScreen Func: setIssue");
+        
+        // define JSON object
+        const aiHelp = {
+            "inaccessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+            "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+            "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+            "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+            "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        }
+
+        this.setState( { issue: null, help1: null, help2: null, aiHelp: null,  
+            loading: true, errString: undefined });
             this.setState
         setTimeout(async () => {
             let help1 = null;
             let help2 = null;
             if (issue) {
                 help1 = issue.help;
+                console.log("issue.help = \n", issue.help);
                 let m = help1.match(/[^@]*@([^/]*)\/help(.*)/);
                 if (m) {
+                    console.log("m = ", m);
                     const version = m[1];
                     const helpFile = m[2];
                     let archiveDef = await getBGController().getArchiveDefForVersion(version);
+                    console.log("archiveDef.version = \n", archiveDef.version);
                     if (version === "latest" && archiveDef.version && archiveDef.version.length > 0) {
                         help1 = `https://unpkg.com/accessibility-checker-engine@${archiveDef.version}/help${helpFile}`;
                     }
                     help2 = `https://able.ibm.com/rules${archiveDef.path}/doc${helpFile}`;
                 }
             }
+            if (help1) {
+                console.log("\n\n**** START Setup for help1 URL ****\n")
+                console.log("JOHO File helpScreen.tsx help1 = \n", help1);
+                console.log("Count = ", help1.length);
+                
+                // for testing while constructing the new url we will make a copy of help 1
+
+                // Step 0: Setup URL with parameters
+                console.log("\nStep 0: Setup URL with parameters");
+                const testHelp1 = help1;
+                // extract base url including hash
+                const hashIndex = testHelp1!.indexOf('#');
+                const help1BaseURL = testHelp1!.substring(0, hashIndex + 1);
+                console.log("help1BaseURL = \n", help1BaseURL);
+                console.log("Count = ", help1BaseURL.length);
+
+                // extract from help 1 url everything after the # - part A
+                const help1param1 = testHelp1?.substring(testHelp1.indexOf('#') + 1);
+                console.log("help1param1 (string) = \n", help1param1);
+                console.log("Count = ", help1param1.length); // ***** this is one count to match
+
+                // convert json object to string
+                const help1param2 = JSON.stringify(aiHelp);
+                console.log("help1param2 (string) = \n", help1param2);
+                console.log("Count = ", help1param2.length); // ***** this is one count to match
+
+                // append the aiHelp to the part A after the # prepended by an & (note: don't include the #)
+                let help1AllParams = "";
+                if (help1param1) {
+                    help1AllParams = help1param1 + ('&' + JSON.stringify(aiHelp));
+                }
+                console.log("help1AllParams = \n", help1AllParams); // should find & between parameters
+                console.log("Count = ", help1AllParams.length);
+
+                const completeHelp1URL = help1BaseURL + help1AllParams;
+                console.log("\nComplete help1 URL with AI Help = \n", completeHelp1URL);
+                console.log("Count = ", completeHelp1URL.length); // ***** this is one count to match
+
+                // Step 1: Compress Params
+                console.log("\nStep 1: Compress Params")
+                const compressedHelp1Params = LZString.compressToEncodedURIComponent(help1AllParams);
+                console.log("LZ compressedHelp1Params = \n", compressedHelp1Params);
+                console.log("Count = ", compressedHelp1Params.length);
+                
+                // Step 2: create url with compressed params
+                console.log("\nStep 2: create url with compressed params")
+                const help1URL = help1BaseURL + compressedHelp1Params;
+                console.log("**** Final help1URL is help1BaseURL + compressedHelp1Params = \n", help1URL);
+                console.log("Count = ", help1URL.length); // ***** this is one count to match
+                
+                // Step 3: test params decode which will be done in help.js
+                console.log("**** test params decode which will be done in help.js")
+                // Step 2: Encode and Decompress
+                console.log("\nStep 1: Encode and Decompress")
+                // **** START Decoding URL ****
+                console.log("**** START unraveling URL ****");
+                // get compressed parameters after the #
+                // extract from help 1 url everything after the # - part A
+                const help1ParamsCompressed = help1URL?.substring(help1URL.indexOf('#') + 1);
+                console.log("help1ParamsCompressed = \n", help1ParamsCompressed);
+                console.log("Count = ", help1ParamsCompressed.length); // ***** this is one count to match
+
+                // Step 3: Validate that the original and decoded JSON match
+                console.log("\n\nStep 3: Validate that the original and decoded JSON match");
+                const recoveredOrigHelp1Params = LZString.decompressFromEncodedURIComponent(help1ParamsCompressed);
+                console.log("recoveredOrigHelp1Params = \n", recoveredOrigHelp1Params);
+                console.log("Count = ", recoveredOrigHelp1Params.length); // ***** this is one count to match
+                const isMatch = help1AllParams === recoveredOrigHelp1Params;
+                console.log("Original and Decoded JSON Match:", isMatch);
+                
+                // just use help1
+                help1 = help1URL;
+                console.log("********** help1 = \n", help1);
+            }
+            if (help2)
+                console.log("JOHO file helpScreen help2 = \n", help2);
+                // extract from help 2 url everything after the # - part A
+                // append the aiHelp to the part A after the # prepended by an & (note: don't include the #)
+                // compress the parameters
+                // append the compressed parameters to the url after the # completing the help 2 url
             // Fix help
             this.setState( { issue, help1, help2 });
         }, 0);
     }
 
     onHelpLoaded1(_evt: any) {
+        console.log("onHelpLoaded1 _evt = \n", _evt);
         this.setState({loading: false, help2: null});
     }
 
@@ -100,6 +192,7 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                     }}>
                         {this.state.help1 && <>
                             {/* {this.state.help1} */}
+                            {console.log("*** in helpScreen render, help1 = \n", this.state.help1)}
                             <iframe 
                                 title="Accessibility Checker Help" 
                                 src={this.state.help1}

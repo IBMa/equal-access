@@ -133,7 +133,6 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                         {secondaryPanel}
                 </Column>
             </Grid>
-            {console.log("JOHO document.body = ", document.body)}
             {typeof document === 'undefined'
                 ? null
                 : ReactDOM.createPortal(
