@@ -70,6 +70,40 @@ class BackgroundController extends Controller {
     // url with token
     // const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==
     
+    // In our plain JavaScript file, dispatch the custom event with the message data.
+    public sendResponseMessage = (message: string) => {
+        console.log("In function sendResponseMessage with message = \n", message);
+        message = this.jsonResponse(message);
+        const event = new CustomEvent('my-custom-event', { detail: message });
+        window.dispatchEvent(event);
+    };
+
+     // const aiHelp = {
+        //     "inaccessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+        //     "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+        //     "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        // }
+
+    public jsonResponse(message:string) {
+        console.log("************ Start jsonResponse **************");
+        let jsonObj = JSON.parse(message);
+        console.log("jsonObj = \n", jsonObj);
+        let response = 
+            {
+                "inaccessible_dom":jsonObj.data.input_dom, 
+                "accessible_dom":jsonObj.data.accessible_dom,
+                "accessible_source":jsonObj.data.accessible_source,
+                "change_summary":jsonObj.data.change_summary,
+                "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+            }
+        console.log("response = ", response);
+        const responseStr = JSON.stringify(response);
+        console.log("responseStr = ", responseStr);
+        console.log("************ End jsonResponse **************")
+        return responseStr;
+    }
 
     public connect(promptJSON: string): any {
     
@@ -139,13 +173,17 @@ class BackgroundController extends Controller {
         webSocket.onmessage = (event:any) => {
             const jsonData = event.data;
             const jsonDataObj = JSON.parse(jsonData);
-            if (jsonDataObj.message === "Request successful") {
+            if (jsonDataObj !== undefined && jsonDataObj.meta !== undefined && jsonDataObj.meta.rms_api_version !== undefined) {
                 // extract needed data from AI server JSON response
                 // construct JSON of needed data to send to help.js
                 this.adjustJsonData(event);
+                console.log("Response message from server: \n", event.data);
+                this.sendResponseMessage(event.data); // send needed data JSON to help.js
             }
-            console.log("Response message from server: \n", event.data);
-            // send needed data JSON to help.js
+            if (jsonDataObj.api !== undefined) {
+                console.log("Ping message from server: \n", event.data);
+                this.sendMessage(event.data, webSocket);
+            }
         };
 
         webSocket.onclose = () => {

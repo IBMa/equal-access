@@ -232,6 +232,9 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         return matches ? matches[0] : null; 
     }
 
+    /*
+     * outputPrompt: gather violation context data to send to the AI proxy server
+     */
     async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
         console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
         let prompt = {
@@ -250,18 +253,21 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         
         console.log(promptJsonString);
         
-        console.log("Initiate connect websocket from reportTreeGrid");
+        console.log("\n*************************************************************");
+        console.log("\n***** Initiate background websocket from reportTreeGrid *****\n");
+        console.log("\n*************************************************************\n\n")
         this.bgcontroller.connect(promptJsonString);
         // in background controller after get response from server disconnect
         
     }
 
+    // called from learn more onClick
     async doAI(issue: IIssue) {
         await this.aiProcessIssueData(issue);
     }
 
     async aiProcessIssueData(issue: IIssue) {
-        // get help file
+        // get help url
         const str = issue.help;
         const splitWord = "html";
         const index = str.indexOf(splitWord);
@@ -271,6 +277,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }
         let helpURL = before; // string before splitWord
        
+        // fetch help url content
         let helpHTML = '';
         await fetch(helpURL)
             .then(response => {
@@ -328,16 +335,6 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         for (const checkpoint of issueCheckpoints) {
             checkpointNumber += checkpoint.num;
         }
-        // let checkpointRule;
-        // for (const rule of issueCheckpoints[0].rules!) {
-        //     if (issue.ruleId === rule.id) {
-        //         checkpointRule = rule;
-        //     }
-        // }
-        // let checkpointWcagLevel = "";
-        // for (const checkpoint of issueCheckpoints) {
-        //     checkpointWcagLevel += checkpoint.wcagLevel;
-        // }
 
         // Get the element from the xpath in the main page
         
@@ -417,6 +414,13 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         whatToDo = whatToDo.replace(/\s+/g, ' ');
         // console.log("\n\nelementString\n\n",elementString);
         // console.log("reqURLs = ", reqURLs);
+
+        /*
+         *  wait this all data is ready for outputPrompt
+         *  NOTE: most of the wait is to get the element / elementString
+         *        *** you cannot use a promise for this ***
+         */
+        
         let refsString = reqURLs;
         setTimeout(() => {
             this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString);

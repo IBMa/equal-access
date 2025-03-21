@@ -26,26 +26,46 @@ interface IHelpScreenState {
     issue: IIssue | null
     help1: string | null
     help2: string | null
-    aiHelp: string | null,
+    ai: boolean;
+    aiHelp: string | null, // note this is a json string
     loading: boolean
     errString?: string
 }
 
 interface IHelpScreenProps {
+    // message: string;
+}
+
+interface ResponseEventDetail { // My custom event detail
+    data: any;
 }
 
 export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpScreenState> {
+    private eventListener: ((event: CustomEvent<ResponseEventDetail>) => void) | undefined;
+
     state : IHelpScreenState = {
         issue: null,
         help1: null,
         help2: null,
+        ai: true,
         aiHelp: null,
         loading: true
     }
     private devtoolsAppController = getDevtoolsAppController();
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
 
+   
+
     async componentDidMount(): Promise<void> {
+        this.eventListener = async (event: CustomEvent<ResponseEventDetail>) => {
+            console.log('Custom event received:', event.detail);
+            this.setState({aiHelp: JSON.stringify(event.detail)}, () => {
+                console.log("this.state.aiHelp = \n", this.state.aiHelp);
+            });
+            let issue = await this.devtoolsController.getSelectedIssue();
+            this.setIssue(issue!);
+        };
+        window.addEventListener('my-custom-event', this.eventListener as EventListener);
         this.devtoolsController.addSelectedIssueListener(async (issue) => {
             this.setIssue(issue);
         });
@@ -53,23 +73,52 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         this.setIssue(issue!);
     }
 
+    componentWillUnmount() {
+        if (this.eventListener) {
+          window.removeEventListener('my-custom-event', this.eventListener as EventListener);
+        }
+    }
+
+    handleCustomEvent(event:any) {
+        // Access custom event data using event.detail
+        console.log('Custom event received:', event.type, event.detail);
+        // Perform actions based on the event
+    }
     
 
     setIssue(issue: IIssue) {
         console.log("File: helpScreen Func: setIssue");
         
         // define JSON object
-        const aiHelp = {
-            "inaccessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
-            "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
-            "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
-            "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+        // const aiHelp = {
+        //     "inaccessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+        //     "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+        //     "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        // }
+
+        // define JSON object
+        const aiHelpTemp = {
+            "inaccessible_dom": "We are waiting on AI server.",
+            "accessible_dom": "We are waiting on AI server.",
+            "accessible_source": "We are waiting on AI server.",
+            "change_summary": "We are waiting on AI server.",
             "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
         }
 
-        this.setState( { issue: null, help1: null, help2: null, aiHelp: null,  
+        let aiHelp:string = "";
+
+        if (this.state.aiHelp) {
+            console.log("We have aiHelp  this.state.aiHelp = \n", this.state.aiHelp);
+            aiHelp = this.state.aiHelp;
+        } else {
+            console.log("We are waiting on AI server.");
+            aiHelp = JSON.stringify(aiHelpTemp);
+        }
+
+        this.setState( { issue: null, help1: null, help2: null,  
             loading: true, errString: undefined });
-            this.setState
         setTimeout(async () => {
             let help1 = null;
             let help2 = null;
@@ -135,32 +184,12 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                 
                 // Step 2: create url with compressed params
                 console.log("\nStep 2: create url with compressed params")
-                const help1URL = help1BaseURL + compressedHelp1Params;
-                console.log("**** Final help1URL is help1BaseURL + compressedHelp1Params = \n", help1URL);
-                console.log("Count = ", help1URL.length); // ***** this is one count to match
+                const help1URLCompressed = help1BaseURL + compressedHelp1Params;
+                console.log("**** Final help1URL is help1BaseURL + compressedHelp1Params = \n", help1URLCompressed);
+                console.log("Count = ", help1URLCompressed.length); // ***** this is one count to match
                 
-                // Step 3: test params decode which will be done in help.js
-                console.log("**** test params decode which will be done in help.js")
-                // Step 2: Encode and Decompress
-                console.log("\nStep 1: Encode and Decompress")
-                // **** START Decoding URL ****
-                console.log("**** START unraveling URL ****");
-                // get compressed parameters after the #
-                // extract from help 1 url everything after the # - part A
-                const help1ParamsCompressed = help1URL?.substring(help1URL.indexOf('#') + 1);
-                console.log("help1ParamsCompressed = \n", help1ParamsCompressed);
-                console.log("Count = ", help1ParamsCompressed.length); // ***** this is one count to match
-
-                // Step 3: Validate that the original and decoded JSON match
-                console.log("\n\nStep 3: Validate that the original and decoded JSON match");
-                const recoveredOrigHelp1Params = LZString.decompressFromEncodedURIComponent(help1ParamsCompressed);
-                console.log("recoveredOrigHelp1Params = \n", recoveredOrigHelp1Params);
-                console.log("Count = ", recoveredOrigHelp1Params.length); // ***** this is one count to match
-                const isMatch = help1AllParams === recoveredOrigHelp1Params;
-                console.log("Original and Decoded JSON Match:", isMatch);
-                
-                // just use help1
-                help1 = help1URL;
+                // if no AI just use help1
+                help1 = help1URLCompressed;
                 console.log("********** help1 = \n", help1);
             }
             if (help2)
@@ -191,7 +220,6 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                         position: "relative", height: "100%", width: "100%", padding: "0rem"
                     }}>
                         {this.state.help1 && <>
-                            {/* {this.state.help1} */}
                             {console.log("*** in helpScreen render, help1 = \n", this.state.help1)}
                             <iframe 
                                 title="Accessibility Checker Help" 
@@ -206,7 +234,6 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                                 }}></iframe>
                         </>}
                         {this.state.help2 && <>
-                            {/* {this.state.help2} */}
                             <iframe 
                                 title="Accessibility Checker Help" 
                                 src={this.state.help2}
