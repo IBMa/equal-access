@@ -35,7 +35,7 @@ Review the [accessibility-checker/src/README](src/README.md) for more informatio
 
 Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) and see examples for the following:
 
-- [batch-scan](batch-scan): scan a batch of local files
+- [batch-scan](batch-scan): scan a set of local files
 - [cucumber-selenium](cucumber-selenium): Using [Cucumber](https://www.npmjs.com/package/cucumber) with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
 - [jest](jest): Using a [Jest](https://www.npmjs.com/package/jest) test environment
 - [jest-selenium](jest-selenium): Using a [Jest](https://www.npmjs.com/package/jest) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
@@ -46,9 +46,10 @@ Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) a
 
 ## Baselines
 
-Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues that have been determined to be the following:
+Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues that have been determined to be the following:
 
 - false positives
+- `Needs review` issues resolved
 - issues scheduled to be fixed later
 - capturing new regression issues
 
