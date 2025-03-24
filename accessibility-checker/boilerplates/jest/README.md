@@ -3,7 +3,6 @@
 Using a [Jest](https://www.npmjs.com/package/jest) testing framework with a baseline.
 
 ## Baseline basics
-This folder covers "baseline basics".
 
 We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json`) and one that does not.
 

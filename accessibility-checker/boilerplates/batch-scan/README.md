@@ -24,8 +24,7 @@ Here's a breakdown of what the code does:
 - A success message is logged to the console, indicating the number of pages scanned.
 - If an error occurs during the scanning process, it is caught and logged to the console using `console.error(err)`.
 
-**package.json** - In summary, this file defines a Node.js project with a specific entry point, version, description, and dependencies. It also includes a custom script for testing the application. 
- file for a Node.js project named "@ibma/aat-boilerplate". Here's a breakdown of its contents:
+**package.json** - In summary, this file defines a Node.js project with a specific entry point, version, description, and dependencies. It also includes a custom script for testing the Node.js project named "@ibma/aat-boilerplate". Here's a breakdown of its contents:
 - `name`: The name of the project is "`@ibma/aat-boilerplate`.
 - `version`: The version of the project is `3.0.0`.
 - `description`: The brief description of the project which is "Example usage of accessibility checker in batch scans".
@@ -38,4 +37,4 @@ Here's a breakdown of what the code does:
 
 ## Baseline basics
 
-See the [Baseline basics](https://github.com/IBMa/equal-access/wiki#baseline-basics) topic in the Wiki to get started using a baseline to compare scans over time and to prevent new issues from being introduced.
+See the [Baseline basics](https://github.com/IBMa/equal-access/wiki#baseline-basics) topic in the Wiki to get started comparing scans over time and to prevent new issues from being introduced.
