@@ -2,6 +2,8 @@
 
 Using a [Jest](https://www.npmjs.com/package/jest) testing framework with a baseline.
 
+## Purpose of folders and files in this boilerplate
+
 ## Baseline basics
 
 We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json`) and one that does not.
