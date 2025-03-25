@@ -799,9 +799,9 @@ export class AriaUtil {
     public static isNavigationOwnedOrControlled(element : Element) {
         if (!element) return false;
         
-        let owners: Element[] = CacheUtil.getCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", null);
-        if (owners !== null && owners.length > 0) {
-            if (CommonUtil.getAncestor(element, owners))
+        let ownerElems: Element[] = CacheUtil.getCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", null);
+        if (ownerElems !== null && ownerElems.length > 0) {
+            if (CommonUtil.getAncestor(element, ownerElems))
                 return true;
         }
         let role = AriaUtil.getResolvedRole(element);
@@ -815,11 +815,11 @@ export class AriaUtil {
 
         const containers = ['combobox', 'scrollbar', 'button', 'tab', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
         if (containers.includes(role)) {
-            if (owners === null)
-                owners = [];
+            if (ownerElems === null)
+                ownerElems = [];
             
-            owners.push(element);
-            CacheUtil.setCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", owners);            
+            ownerElems.push(element);
+            CacheUtil.setCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", ownerElems);            
             return true;
         }    
         
