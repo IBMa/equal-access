@@ -18,6 +18,9 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { CacheUtil } from "../util/CacheUtil";
 import { AccNameUtil } from "../util/AccNameUtil";
+import { VisUtil } from "../util/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
 
 export const aria_landmark_name_unique: Rule = {
     id: "aria_landmark_name_unique",
@@ -59,7 +62,7 @@ export const aria_landmark_name_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         // Checking if this landmark is inside a dialog element. If it is we are going to skip checking it. 
-        var copyOfRuleContext = ruleContext;
+        /**var copyOfRuleContext = ruleContext;
         var parnetNodesOfRuleContext = [];
         while (copyOfRuleContext) {
             parnetNodesOfRuleContext.unshift(copyOfRuleContext);
@@ -72,6 +75,9 @@ export const aria_landmark_name_unique: Rule = {
                 }
             }
         })
+        */
+        if (CommonUtil.getAncestor(ruleContext, ["DIALOG"]) !== null || AriaUtil.getAncestorWithRole(ruleContext, "dialog", true) !== null)
+            return null;
 
         // Begining formCache work
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
@@ -104,6 +110,10 @@ export const aria_landmark_name_unique: Rule = {
             let navigationNodesWithoutDialogs = [];
             for (let i = 0; i < navigationNodes.length; i++) {
                 let a = navigationNodes[i];
+                
+                // ignore node that is AT hidden
+                if (VisUtil.isNodeHiddenFromAT(a)) continue;
+                
                 let dialogNodeFoundFlag = false;
                 while (a) {
                     a = a.parentElement;
