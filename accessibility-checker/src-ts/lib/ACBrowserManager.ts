@@ -1,6 +1,6 @@
 import * as puppeteer from "puppeteer";
-import { ACConfigManager } from "./common/config/ACConfigManager";
-import { IConfigInternal } from "./common/config/IConfig";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
+import { IConfigInternal } from "./common/config/IConfig.js";
 
 
 export class ACBrowserManager {

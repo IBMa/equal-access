@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input with image child</title>
+
+</head>
+
+<body>
+
+  <hr style="margin: 20px;">
+
+  <button aria-hidden="true" tabindex="-1" aria-label="Scroll right"
+    class="cds--tab--overflow-nav-button cds--tab--overflow-nav-button--next cds--tab--overflow-nav-button--hidden"
+    type="button"><svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="16" height="16"
+      viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path>
+    </svg>
+  </button>
+
+  <hr style="margin: 20px;">
+  <button type="button">
+      <svg focusable="false">
+          <defs><style>.cls-1{fill:none;}</style></defs>
+          <rect class="cls-1" width="32" height="32"></rect>
+          <title>text</title>
+      </svg>
+  </button>
+
+  <hr style="margin: 20px;">
+  <button type="button">
+      <svg focusable="false" aria-label="svg image">
+          <defs><style>.cls-1{fill:none;}</style></defs>
+          <rect class="cls-1" width="32" height="32"></rect>
+      </svg>
+  </button>
+
+  <hr style="margin: 50px;">
+</body>
+<script>
+  UnitTest = {
+    ruleIds: ["input_label_visible"],
+    results: [
+    {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass",
+            "message": "The input element has an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "input_label_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[3]",
+              "aria": "/document[1]/button[3]"
+            },
+            "reasonId": "potential_no_label",
+            "message": "The input element does not have an associated visible label",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  };
+</script>
+
+</html>

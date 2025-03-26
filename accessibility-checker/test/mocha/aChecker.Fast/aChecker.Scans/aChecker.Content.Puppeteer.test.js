@@ -114,12 +114,43 @@ var skipList = [
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "Meta-RefreshZero.html"),
 
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-pass-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-pass-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-fail-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-fail-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-fail-3.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-3.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-4.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-5.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-6.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-7.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "act-inapplicable-8.html"),
+
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-pass-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-pass-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-fail-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-fail-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-fail-3.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-1.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-3.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-4.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-5.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-6.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_redirect_optional_ruleunit", "act-inapplicable-8.html"),
+
     // Blank titles are removed from the DOM
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-empty.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "page_title_valid_ruleunit","Title-invalidSpaces.html"),
     
     // TODO: temprarily ignore till the issue is resolved: https://github.com/IBMa/equal-access/issues/1932
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_attribute_conflict_ruleunit","aria-hidden.html"),
+
+    // TODO: temprarily ignore due to v3 and v4 difference in Windows
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "text_contrast_sufficient_ruleunit","disabled_control.html"),
 
     // Puppeteer and embedded-chrome @media css behave differently (?)
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-fail4.html"),

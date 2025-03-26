@@ -49,7 +49,32 @@ export class CommonUtil {
         },
         "iframe": true,
         "input": function (element): boolean {
-            return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
+            if (element.hasAttribute("disabled") || element.getAttribute("type") === "hidden") return false;
+            if (element.getAttribute("type") === "radio") {
+                const name = element.getAttribute("name");
+                if (!name || name.trim().length === 0) return true; //single radio, no group
+                let doc = element.ownerDocument;
+                const group = doc.querySelectorAll("input[type='radio'][name='" + name.trim() +"']");
+                if (group.length === 0 || group.length === 1) return true;  //single radio with the name, no others in group
+
+                let checked = null;
+                for (let i = 0; i < group.length; i++) {
+                    if ((group[i] as HTMLInputElement).checked)
+                        checked = group[i];
+                }
+                //only last one applies if multiple radios with 'checked' attributes
+                if (checked !== null) {
+                    if (DOMUtil.sameNode(checked, element))
+                        return true;
+                    return false;
+                } else {
+                    // if nothing checked yet, return true if it's the first element
+                    if (DOMUtil.sameNode(group[0], element))
+                        return true;
+                    return false;
+                }
+            } else   
+                return true;
         },
         "select": function (element): boolean {
             return !element.hasAttribute("disabled");
@@ -1187,7 +1212,7 @@ export class CommonUtil {
     }
 
     /**
-     * return onscreen innerText.
+     * return onscreen innerText only.
      * This function should return the same result as innerText if no offscreen content exists
      *
      * @parm {element} node The node which should be checked it has inner text or not.
@@ -1205,18 +1230,25 @@ export class CommonUtil {
         // Loop over all the childrens of the element to get the text
         while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
             if (nw.bEndTag) continue;
-            if ((nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase())) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node as HTMLElement))) {
+            if (nw.node.nodeType === 1 && (VisUtil.hiddenByDefaultElements.includes(nw.node.nodeName.toLowerCase()) || !VisUtil.isNodeVisible(nw.node) || VisUtil.isElementOffscreen(nw.node as HTMLElement))) { 
+                /** special case for svg <title> element: 
+                 *     text in a <title> element is not rendered as part of the graphic, but browsers usually display it as a tooltip
+                 *     note some svg elements, such as title, desc, have a bounds {"left":0,"top":0,"height":0,"width":0}
+                */
+                if (nw.node.nodeName.toLowerCase() === 'title' && CommonUtil.getAncestor(nw.node, "svg")) 
+                    continue;
+            
                 if (nw.node.nextSibling) {
-                    if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue !== null)
-                        text += nw.node.nextSibling.nodeValue;
+                    if (nw.node.nextSibling.nodeType === 3 && nw.node.nextSibling.nodeValue && nw.node.nextSibling.nodeValue.trim() !== '')
+                        text += ' ' + nw.node.nextSibling.nodeValue.trim();
                     nw.node = nw.node.nextSibling;
                     continue;
                 } else
                     break;
             }
-            if (nw.node.nodeType === 3 && nw.node.nodeValue !== null) {
-                text += nw.node.nodeValue.trim(); 
-            }    
+            if (nw.node.nodeType === 3 && nw.node.nodeValue && nw.node.nodeValue.trim() !== '') {
+                text += ' ' + nw.node.nodeValue.trim(); 
+            }
         }
         return text.trim();
     }

@@ -17,7 +17,7 @@
 	},
 	"license": "Apache-2.0",
 	"dependencies": {
-		"@carbon/react": "1.25.0",
+		"@carbon/react": "^1.72.0",
 		"@carbon/themes": "^11.17.0",
 		"assert": "^2.1.0",
 		"browserify-zlib": "^0.2.0",

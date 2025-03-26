@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Sandbox</title>
+  <meta charset="UTF-8" />
+</head>
+
+<body>
+  <div class="mm-panels">
+    <div id="mm-1" class="mm-panel mm-panel_opened">
+      <ul class="mm-listview">
+        <li class="mm-listitem"><a href="#mm-2" aria-owns="mm-2">Open submenu</a>
+        <li class="mm-listitem"><a href="#mm-3" aria-owns="mm-3">Open Another submenu</a>
+        </li>
+      </ul>
+    </div>
+    <div id="mm-3">
+      <div class="mm-navbar"><a href="#mm-1" aria-owns="mm-1">Close submenu</a>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  UnitTest = {
+    ruleIds: ["aria_descendant_valid"],
+    results: [
+      
+    ]
+  }
+</script>
+</body>
+
+</html>

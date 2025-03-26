@@ -1,8 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
-import { ACConfigManager } from "./common/config/ACConfigManager";
-import { fetch_get_text } from "./common/api-ext/Fetch";
-import { IChecker } from "./common/engine/IChecker";
+import { ACConfigManager } from "./common/config/ACConfigManager.js";
+import { fetch_get_text } from "./common/api-ext/Fetch.js";
+import { IChecker } from "./common/engine/IChecker.js";
+import { writeFile } from "fs/promises";
 
 let ace;
 
@@ -26,6 +27,7 @@ export class ACEngineManager {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
             if (ENGINE_LOAD_MODE === "REMOTE") {
+                config.DEBUG && console.log("[INFO] engineMode REMOTE");
                 await page.evaluate((scriptUrl) => {
                     try {
                         var ace_backup_in_ibma;
@@ -61,19 +63,21 @@ export class ACEngineManager {
                     }
                 }, `${config.rulePack}/ace.js`);
             } else if (ENGINE_LOAD_MODE === "INJECT") {
-                await page.evaluate((engineContent) => {
+                config.DEBUG && console.log("[INFO] engineMode INJECT");
+                let aceAlreadyExists = await page.evaluate(() => { try { return 'undefined' !== typeof(ace) } catch (e) { return false; } });
+                await page.evaluate(({ engineContent, aceAlreadyExists }) => {
                     try {
                         var ace_backup_in_ibma;
-                        if ('undefined' !== typeof(ace)) {
+                        if (aceAlreadyExists) {
                             if (!ace || !ace.Checker)
                                 ace_backup_in_ibma = ace;
                             ace = null;
                         }
-                        if ('undefined' === typeof (ace) || ace === null) {
+                        if (!aceAlreadyExists || ace === null) {
                             return new Promise<void>((resolve, reject) => {
                                 eval(engineContent);
                                 globalThis.ace_ibma = ace;
-                                if ('undefined' !== typeof(ace)) {
+                                if (aceAlreadyExists) {
                                     ace = ace_backup_in_ibma;
                                 }
                                 resolve();
@@ -82,7 +86,8 @@ export class ACEngineManager {
                     } catch (e) {
                         return Promise.reject(e);
                     }
-                }, ACEngineManager.engineContent);
+                }, { 
+                    engineContent: ACEngineManager.engineContent, aceAlreadyExists });
             }
             return ACEngineManager.loadEngineLocal();
         } else if (ACEngineManager.isSelenium(content)) {
@@ -271,21 +276,15 @@ export class ACEngineManager {
                     checker = new ace_ibma.Checker();
                     return resolve();
                 } else {
-                    fs.writeFile(nodePath + ".js", data, function (err) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        } else {
-                            try {
-                                const ace_ibma = require(nodePath);
-                                checker = new ace_ibma.Checker();
-                                resolve();
-                            } catch (e) {
-                                console.log(e);
-                                reject(e);
-                            }
-                        }
-                    });
+                    try {
+                        await writeFile(nodePath + ".js", data, { flush: true });
+                        const ace_ibma = require(nodePath);
+                        checker = new ace_ibma.Checker();
+                        resolve();
+                    } catch (err) {
+                        console.log(err);
+                        reject(err);
+                    }
                 }
             });
         }

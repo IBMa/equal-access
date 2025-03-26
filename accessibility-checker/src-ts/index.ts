@@ -14,17 +14,15 @@
     limitations under the License.
   *****************************************************************************/
 
-import { ACBrowserManager } from "./lib/ACBrowserManager";
-import { ACEngineManager } from "./lib/ACEngineManager";
-import { getComplianceHelper } from "./lib/ACHelper";
-import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker";
-import { ACConfigManager } from "./lib/common/config/ACConfigManager";
-import { IConfig, IConfigInternal } from "./lib/common/config/IConfig";
-import { Checkpoint } from "./lib/common/engine/IGuideline";
-import { IBaselineReport } from "./lib/common/engine/IReport";
-import { Issue } from "./lib/common/engine/IRule";
-import { BaselineManager } from "./lib/common/report/BaselineManager";
-import { ReporterManager } from "./lib/common/report/ReporterManager";
+import { ACBrowserManager } from "./lib/ACBrowserManager.js";
+import { ACEngineManager } from "./lib/ACEngineManager.js";
+import { getComplianceHelper } from "./lib/ACHelper.js";
+import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker.js";
+import { ACConfigManager } from "./lib/common/config/ACConfigManager.js";
+import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
+import { IBaselineReport } from "./lib/common/engine/IReport.js";
+import { BaselineManager } from "./lib/common/report/BaselineManager.js";
+import { ReporterManager } from "./lib/common/report/ReporterManager.js";
 
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
@@ -98,7 +96,12 @@ export function getConfigUnsupported() : Promise<IConfigInternal> {
     return ACConfigManager.getConfigUnsupported();
 }
 
-export function close() {
+export async function close() {
+    try {
+        await ReporterManager.generateSummaries();
+    } catch (err) {
+        console.error(err);
+    }
     return ACBrowserManager.close();
 }
 

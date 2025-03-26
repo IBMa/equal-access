@@ -14,9 +14,9 @@
     limitations under the License.
 *****************************************************************************/
 
-import { IAbstractAPI } from "../api-ext/IAbstractAPI";
-import { IConfigInternal, eAssertResult } from "../config/IConfig";
-import { IBaselineReport } from "../engine/IReport";
+import { IAbstractAPI } from "../api-ext/IAbstractAPI.js";
+import { IConfigInternal, eAssertResult } from "../config/IConfig.js";
+import { IBaselineReport } from "../engine/IReport.js";
 import * as DeepDiff from "deep-diff";
 
 export type RefactorMap = {
