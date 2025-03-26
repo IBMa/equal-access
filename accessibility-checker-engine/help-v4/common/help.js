@@ -11,7 +11,6 @@
     limitations under the License.
  *****************************************************************************/
 
-
 class HTMLBaseElement extends HTMLElement {
     constructor(...args) {
         const self = super(...args);
@@ -141,14 +140,21 @@ customElements.define(
             let oldCode = this.innerHTML;
             this.innerHTML = "";
             // const shadowRoot = this.attachShadow({mode: 'open'});
-            // const shadowRoot = this;
+            const shadowRoot = this;
+
+            // create <code-snippet>
             const codeSnippet = this;
             console.log("codeSnippet = ", codeSnippet);
+
+            // create <cds-code-snippet>
             let snip = document.createElement("cds-code-snippet");
             snip.setAttribute("type", "multi");
+            console.log("snip = ", snip);
+            
             snip.innerHTML = oldCode.replace(/</g, "&lt;");
+            console.log("snip.innerHTML = ", snip.innerHTML);
             codeSnippet.appendChild(snip);
-            console.log("codeSnippet after appendChild = \n", codeSnippet);
+            console.log("codeSnippet after append snip = ", codeSnippet);
         }
     }
 );
@@ -222,81 +228,145 @@ function updateWithRuleInfo(ruleInfo) {
             // let inA11yDOMCode = "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>";
             if (aiInfo.inaccessible_dom) {
                 console.log("JOHO aiInfo.inaccessible_dom = \n", aiInfo.inaccessible_dom);
-                const formattedHTML = formatHTML(aiInfo.inaccessible_dom);
-                // if (aiInfo.inaccessible_dom === "We are waiting on AI server.") {
-                //     let snip = aiInfo.inaccessible_dom;
-                // } else {
-                //     const formattedHTML = formatHTML(aiInfo.inaccessible_dom);
-                //     let snip = formattedHTML;
-                //     for (let line of snip.split("\n")) {
-                //         snipElem.appendChild(document.createTextNode(line+"\n"));
-                //     }
-                // }
-                let snip = formattedHTML;
-                let snipElem = document.createElement("code-snippet");
-                for (let line of snip.split("\n")) {
-                    snipElem.appendChild(document.createTextNode(line+"\n"));
-                }
-                // console.log("snipElem after split = \n", snipElem);
+                let formattedHTML = "";
+                let codeSnippet = HTMLElement;
                 let locSnippet = document.querySelector("#inA11yDOMCode");
-                locSnippet.innerHTML = `<h3>Inaccessibile HTML DOM code</h3>`;
-                locSnippet.appendChild(snipElem);
+                if (aiInfo.inaccessible_dom === "We are waiting on AI server.") {
+                    // formattedHTML = aiInfo.inaccessible_dom;
+                    codeSnippet = document.createElement("cds-code-snippet-skeleton");
+                    codeSnippet.setAttribute("type", "multi");
+                } else {
+                    formattedHTML = formatHTML(aiInfo.inaccessible_dom);
+                    codeSnippet = document.createElement("cds-code-snippet");
+                    codeSnippet.setAttribute("type", "multi");
+                    for (let line of formattedHTML.split("\n")) {
+                        codeSnippet.appendChild(document.createTextNode(line+"\n"));
+                    }
+                    console.log("codeSnippet after content added = ", codeSnippet);
+                }
+                locSnippet.innerHTML = `<h3>Detected Inaccessibile HTML DOM code</h3>`;
+                locSnippet.appendChild(codeSnippet);
+                
+                // let attributes =  codeSnippet.attributes;
+                // for (const attribute of attributes) {
+                //     console.log(`${attribute.name}`);
+                // }
+                // console.log("codeSnippet create code-snippet = ", codeSnippet);
+
+                // add AI icon
+                // codeSnippet.innerHTML += '<cds-ai-label size="small" alignment="top-right"></cds-ai-label>';
+                // aiElem = document.createElement("cds-ai-label");
+                // aiElem.setAttribute("size","small");
+                // aiElem.setAttribute("alignment","top-right");
+                // codeSnippet.appendChild(aiElem);
+
+                // shadowRoot
+                // console.log("codeSnippet.shadowRoot = ", codeSnippet.shadowRoot);
             }
         }, 0);
         setTimeout(() => {
             // let a11yDOMCode = "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-label='Color Filters' role='img'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>";
             if (aiInfo.accessible_dom) {
-                console.log("JOHO Accessoble code detected");
-                const formattedHTML = formatHTML(aiInfo.accessible_dom);
-                // console.log("formattedHTML: \n", formattedHTML);
-                let snip = formattedHTML;
-                // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
-                let snipElem = document.createElement("code-snippet");
-                // console.log("snipElem before split = \n", snipElem);
-                for (let line of snip.split("\n")) {
-                    snipElem.appendChild(document.createTextNode(line+"\n"));
+                console.log("JOHO Accessible code detected");
+                let formattedHTML = "";
+                let codeSnippet = HTMLElement;
+                if (aiInfo.accessible_dom === "We are waiting on AI server.") {
+                    // formattedHTML = aiInfo.inaccessible_dom;
+                    codeSnippet = document.createElement("cds-code-snippet-skeleton");
+                    codeSnippet.setAttribute("type", "multi");
+                } else {
+                    formattedHTML = formatHTML(aiInfo.accessible_dom);
+                    codeSnippet = document.createElement("cds-code-snippet");
+                    codeSnippet.setAttribute("type", "multi");
+                    for (let line of formattedHTML.split("\n")) {
+                        codeSnippet.appendChild(document.createTextNode(line+"\n"));
+                    }
+                    console.log("codeSnippet after content added = ", codeSnippet);
+                    aiElem = document.createElement("cds-ai-label");
+                    aiElem.setAttribute("size","small");
                 }
-                // console.log("snipElem after split = \n", snipElem);
                 let locSnippet = document.querySelector("#a11yDOMCode");
                 locSnippet.innerHTML = `<h3>Accessibile HTML DOM code</h3>`;
-                locSnippet.appendChild(snipElem);
+                if (aiInfo.accessible_source !== "We are waiting on AI server.") {
+                    locSnippet.appendChild(aiElem);
+                }
+                locSnippet.appendChild(codeSnippet);
             }
         }, 0);
         setTimeout(() => {
             let sourceCode = 
             // `import React from 'react';\n  function AccessibleSVG() {\n    return (\n      <svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" aria-hidden=\"true\">\n        <defs>\n          <filter id=\"protanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"deuteranopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n          <filter id=\"tritanopia\">\n            <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix>\n          </filter>\n        </defs>\n      </svg>\n    );\n  }\n  export default AccessibleSVG`;
             "import React from 'react'; const ColorFilters = () => { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-label='Color Filters' role='img'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); }; export default ColorFilters;"
+           
             if (aiInfo.accessible_source) {
                 console.log("JOHO Source code detected");
-                // const formattedReact = formatReactCode(sourceCode);
-                const formattedReact = aiInfo.accessible_source;
-                // console.log("formattedReact: \n", formattedReact);
-                let snip = formattedReact;
-                // snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1"); // HTML formatting takes care of this
-                let snipElem = document.createElement("code-snippet");
-                // console.log("snipElem before split = \n", snipElem);
-                for (let line of snip.split("\n")) {
-                    snipElem.appendChild(document.createTextNode(line+"\n"));
+                let formattedReact = "";
+                let codeSnippet = HTMLElement;
+                let aiElem = HTMLElement;
+                if (aiInfo.accessible_source === "We are waiting on AI server.") {
+                    // formattedReact = aiInfo.accessible_source;
+                    codeSnippet = document.createElement("cds-code-snippet-skeleton");
+                    codeSnippet.setAttribute("type", "multi");
+                } else {
+                    formattedReact = aiInfo.accessible_source;
+                    codeSnippet = document.createElement("cds-code-snippet");
+                    codeSnippet.setAttribute("type", "multi");
+                    for (let line of formattedReact.split("\n")) {
+                        codeSnippet.appendChild(document.createTextNode(line+"\n"));
+                    }
+                    console.log("codeSnippet after content added = ", codeSnippet);
+                    aiElem = document.createElement("cds-ai-label");
+                    aiElem.setAttribute("size","small");
                 }
-                // console.log("snipElem after split = \n", snipElem);
                 let locSnippet = document.querySelector("#sourceCode");
                 locSnippet.innerHTML = `<h3>(Reactjs) source code that generates A11y DOM code</h3>`;
-                locSnippet.appendChild(snipElem);
+                if (aiInfo.accessible_source !== "We are waiting on AI server.") {
+                    locSnippet.appendChild(aiElem);
+                }
+                locSnippet.appendChild(codeSnippet);
             }
         }, 0);
         setTimeout(() => {
             // let summary = "The original SVG element was inaccessible because it lacked an accessible name. To fix this, an aria-label attribute was added to provide a meaningful label, and a role attribute was added to indicate that the SVG is an image. This allows screen readers to provide a description of the SVG to users with visual impairments.";
             if (aiInfo.change_summary) {
                 console.log("JOHO summary detected");
-                const characterLimit = 75;
-                const formattedString = formatString(aiInfo.change_summary, characterLimit);
-                console.log("summary   formattedString = \n", formattedString);
-                let snipElem = document.createElement("code-snippet");
-                snipElem.appendChild(document.createTextNode(formattedString));
-                // console.log("snipElem after split = \n", snipElem);
+                let codeSnippet = HTMLElement;
+                let aiElem = HTMLElement;
+                if (aiInfo.change_summary === "We are waiting on AI server.") {
+                    codeSnippet = document.createElement("cds-code-snippet-skeleton");
+                    codeSnippet.setAttribute("type", "multi");
+                } else {
+                    const characterLimit = 75;
+                    const formattedString = formatString(aiInfo.change_summary, characterLimit);
+                    console.log("summary   formattedString = \n", formattedString);
+
+                    codeSnippet = document.createElement("cds-code-snippet");
+                    codeSnippet.setAttribute("type", "multi");
+                    codeSnippet.appendChild(document.createTextNode(formattedString));
+
+                    aiElem = document.createElement("cds-ai-label");
+                    aiElem.setAttribute("size","small");
+                    // aiElem.setAttribute("style","justify-content: left !important"); // this works
+                    // aiLabelDiv = document.createElement("div");
+                    // aiLabelDiv.setAttribute("slot", "body-text");
+                    // aiLabelDiv.innerHTML("AI explained.\nSummary\nThe summary explains the fix.")
+                    // aiLabelDivPara = document.createElement("p");
+                    // aiLabelDivPara.innerHTML = "AI Explained";
+                    // aiLabelDivH1 = document.createElement("h1");
+                    // aiLabelDivH1.innerHTML = "Summary";
+                    // aiLabelDivPara2 = document.createElement("p");
+                    // aiLabelDivPara2.innerHTML = "The summary explains the fix.";
+                    // aiLabelDiv.appendChild(aiLabelDivPara);
+                    // aiLabelDiv.appendChild(aiLabelDivH1);
+                    // aiLabelDiv.appendChild(aiLabelDivPara2);
+                    // aiElem.appendChild(aiLabelDiv);
+                }
                 let locSnippet = document.querySelector("#summary");
                 locSnippet.innerHTML = `<h3>Summary</h3>`;
-                locSnippet.appendChild(snipElem);
+                if (aiInfo.change_summary !== "We are waiting on AI server.") {
+                    locSnippet.appendChild(aiElem);
+                }
+                locSnippet.appendChild(codeSnippet);
             }
         }, 0);
         if (ruleInfoTemp.value) {

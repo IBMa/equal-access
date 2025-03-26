@@ -88,6 +88,7 @@ class BackgroundController extends Controller {
 
     public jsonResponse(message:string) {
         console.log("************ Start jsonResponse **************");
+        console.log("message = \n", message);
         let jsonObj = JSON.parse(message);
         console.log("jsonObj = \n", jsonObj);
         let response = 
