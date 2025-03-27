@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>svg_graphics_labelled - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"A non-decorative SVG element must have an accessible name","pass":"The SVG element has an accessible name","fail_acc_name":"The SVG element has no accessible name"}};
+        RULE_ID = "svg_graphics_labelled"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+An SVG component with a graphics role can contain essential information as well as multiple shapes.
+When viewed together, these elements give the impression of a single image.
+Providing a text alternative (accessible name and description) makes the equivalent information available through assistive technologies.
+With the explicit use of roles and attributes, the author provides a clear indication that the content should convey meaning via the accessibility name and description to assistive technology users.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+    
+Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty:
+* Add an `aria-labelledby` attribute to the element that points to visible text on the page that is a meaningful label.
+* **Or**, add an `aria-label` attribute to the element.
+* **Or**, add a direct child `<title>` element.
+* **Or**, add an `xlink:title` attribute on a link.
+* **Or**, for text container elements, add the text content.
+* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label.
+
+As appropriate, ensure the _non-decorative_ SVG element has an _accessible description_ that is not empty, in the following priority:
+* Add an `aria-describedby` attribute to the element that points to visible text on the page that is a meaningful description.
+* **Or**, add a direct child `<desc>` element.
+* **Or**, for text container elements, add the text content.
+* **Or**, add a direct child `<title>` element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.
+* **Or**, add a `xlink:title` attribute on a link, if not used to provide the accessible name.
+
+Ensure the _decorative_ SVG element use `aria-hidden` or `role=’none | presentation’` to provides a clear indication that the element is not visible, 
+perceivable, or interactive to users.
+
+Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
+in order to concatenate one of the other text alternatives with text from a separate element.
+
+    
+Example:
+
+```
+<p>How many circles are there?</p>
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="shapes from which to choose">
+    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" 
+    aria-label="1 circle"></circle>
+    ...
+</svg>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [ARIA Graphics Module](https://www.w3.org/TR/graphics-aria/)
+* [Accessible Name and Description Computation](https://w3c.github.io/accname/#computation-steps)
+* [Graphics Accessibility API Mappings](https://w3c.github.io/graphics-aam/#mapping_role_table)     
+* [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table)
+   
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
