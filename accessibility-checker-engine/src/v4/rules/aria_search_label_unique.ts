@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { CacheUtil } from "../util/CacheUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_search_label_unique: Rule = {
     id: "aria_search_label_unique",
@@ -56,6 +57,7 @@ export const aria_search_label_unique: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         // Consider the Check Hidden Content setting that is set by the rules
         let landmarks = CommonUtil.getElementsByRoleHidden(

@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 import { CacheUtil } from "../util/CacheUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_form_label_unique: Rule = {
     id: "aria_form_label_unique",
@@ -48,6 +49,7 @@ export const aria_form_label_unique: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         // Per https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
         // form element should only be considered if it has an aria label or title

@@ -60,7 +60,8 @@ export const aria_landmark_name_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
         const ruleContext = context["dom"].node as Element;
-
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
         // Checking if this landmark is inside a dialog element. If it is we are going to skip checking it. 
         /**var copyOfRuleContext = ruleContext;
         var parnetNodesOfRuleContext = [];
@@ -109,10 +110,7 @@ export const aria_landmark_name_unique: Rule = {
             // This block of code filters out any nav elements that are under a dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.
             let navigationNodesWithoutDialogs = [];
             for (let i = 0; i < navigationNodes.length; i++) {
-                let a = navigationNodes[i];
-                
-                // ignore node that is AT hidden
-                if (VisUtil.isNodeHiddenFromAT(a)) continue;
+                /**let a = navigationNodes[i];
                 
                 let dialogNodeFoundFlag = false;
                 while (a) {
@@ -125,7 +123,13 @@ export const aria_landmark_name_unique: Rule = {
                 }
                 if (!dialogNodeFoundFlag) {
                     navigationNodesWithoutDialogs.push(navigationNodes[i])
-                }
+                }*/
+
+                // ignore node that is AT hidden or in a dialog
+                if (VisUtil.isNodeHiddenFromAT(navigationNodes[i]) || CommonUtil.getAncestor(navigationNodes[i], ["DIALOG"]) !== null || AriaUtil.getAncestorWithRole(navigationNodes[i], "dialog", true) !== null) 
+                    continue;
+                navigationNodesWithoutDialogs.push(navigationNodes[i]);
+                    
             }
             navigationNodes = navigationNodesWithoutDialogs;
 

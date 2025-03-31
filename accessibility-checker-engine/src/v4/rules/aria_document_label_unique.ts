@@ -14,28 +14,27 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_document_label_unique: Rule = {
     id: "aria_document_label_unique",
     context: "aria:document",
     refactor: {
         "Rpt_Aria_MultipleDocumentRoles": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"}
+            "Pass_0": "pass",
+            "Fail_1": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_document_label_unique.html",
+            "pass": "aria_document_label_unique.html",
             "Fail_1": "aria_document_label_unique.html",
             "group": "aria_document_label_unique.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple elements with \"document\" roles do not have unique labels",
+            "pass": "The element with \"document\" role has a unique label that describes its purpose",
+            "fail_label_not_unique": "Multiple elements with \"document\" roles do not have unique labels",
             "group": "Each element with \"document\" role must have a unique label that describes its purpose"
         }
     },
@@ -48,40 +47,14 @@ export const aria_document_label_unique: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // Consider the Check Hidden Content setting that is set by the rules
-        // Also, consider Implicit role checking.
-        let landmarks = CommonUtil.getElementsByRoleHidden(
-            ruleContext.ownerDocument,
-            "document",
-            true,
-            true
-        );
-        if (landmarks.length === 0 || landmarks.length === 1) {
-            return null;
-        }
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        let dupes = CacheUtil.getCache(
-            ruleContext.ownerDocument,
-            "aria_document_label_unique",
-            null
-        );
-        if (!dupes) {
-            dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            CacheUtil.setCache(
-                ruleContext.ownerDocument,
-                "aria_document_label_unique",
-                dupes
-            );
-        }
-        let myLabel = AriaUtil.getAriaLabel(ruleContext);
-        let passed =
-            myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
-
-        // return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-        if (!passed) {
-            return RuleFail("Fail_1", [myLabel]);
+        const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "document", true);    
+        if (dupped == null) return null; 
+        if (dupped) {
+            return RuleFail("fail_label_not_unique");
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }

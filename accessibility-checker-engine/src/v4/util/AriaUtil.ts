@@ -1321,6 +1321,65 @@ export class AriaUtil {
         return dupeMap;
     }
 
+    /**
+     * return accessible names for all AT visible landmark elements 
+     * @param doc 
+     * @returns 
+     */
+    public static getLandmarkAccNames(doc) {
+        let nameMap = CacheUtil.getCache(doc, "AriaUtil_Landmark_AccNames", null);
+        if (nameMap && nameMap.length !== 0) 
+            return nameMap;
+
+        nameMap = [];
+        let landmarkElems = doc.querySelectorAll(
+            'aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], form,[role="form"], section,[role="region"], article,[role="article"], [role="search"],[role="application"],[role="document"]'
+        );
+
+        if (landmarkElems.length === 0) {
+            CacheUtil.setCache(doc, "AriaUtil_Landmark_AccNames", nameMap);
+            return nameMap;
+        }
+
+        landmarkElems.forEach(function (elem: Element) {
+            // ignore if a lanmark element is hidden
+            if (!VisUtil.isNodeHiddenFromAT(elem)) {
+                let name = "";
+                let pair = AccNameUtil.computeAccessibleName(elem);console.log("node="+elem.nodeName +", pair="+JSON.stringify(pair));
+                if (pair && pair.name && pair.name.trim().length > 0)
+                    name = pair.name.trim();
+                
+                const role = AriaUtil.getResolvedRole(elem);
+                nameMap.push({"elem" : elem, "role" : role, "name": name});    
+            }
+        })
+        CacheUtil.setCache(doc, "AriaUtil_Landmark_AccNames", nameMap);
+        return nameMap;
+    }
+
+    /**
+     * check if the given element with the landmark rolw is unique
+     * @param element 
+     * @param role: a specific landmark role, or "any" for all landmark role  
+     * @param considerNoneLabel: if consider the landmarks without a label
+     * @returns 
+     */
+    public static isLandmarkNameUnique(element, role, considerNoneLabel: boolean = false) {
+        const nameMap = AriaUtil.getLandmarkAccNames(element.ownerDocument);
+        const exist = nameMap.find(entry => entry.elem === element && entry.role === role);
+        if (!exist) return null;
+
+        const name = exist.name;
+        if (!considerNoneLabel && name === '') return null;
+
+        for (let i=0; i < nameMap.length; i++) {
+            if (nameMap[i].elem === element) continue;     
+            if (name === nameMap[i].name && nameMap[i].role === role)
+                return true;
+        }
+        return false;
+    }
+
     // Given an array of elements, return true if the elements have unique ARIA labels globally
     public static hasUniqueAriaLabels(elements) {
         return AriaUtil.hasUniqueAriaLabelsLocally(elements, true);
