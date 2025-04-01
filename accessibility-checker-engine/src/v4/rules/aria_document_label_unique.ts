@@ -27,7 +27,7 @@ export const aria_document_label_unique: Rule = {
     help: {
         "en-US": {
             "pass": "aria_document_label_unique.html",
-            "Fail_1": "aria_document_label_unique.html",
+            "fail_label_not_unique": "aria_document_label_unique.html",
             "group": "aria_document_label_unique.html"
         }
     },
