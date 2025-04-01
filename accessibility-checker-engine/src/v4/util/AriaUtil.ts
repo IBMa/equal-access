@@ -1345,7 +1345,7 @@ export class AriaUtil {
             // ignore if a lanmark element is hidden
             if (!VisUtil.isNodeHiddenFromAT(elem)) {
                 let name = "";
-                let pair = AccNameUtil.computeAccessibleName(elem);console.log("node="+elem.nodeName +", pair="+JSON.stringify(pair));
+                let pair = AccNameUtil.computeAccessibleName(elem);
                 if (pair && pair.name && pair.name.trim().length > 0)
                     name = pair.name.trim();
                 

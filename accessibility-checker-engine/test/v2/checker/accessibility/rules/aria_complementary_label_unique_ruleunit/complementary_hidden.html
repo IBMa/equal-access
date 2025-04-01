@@ -24,26 +24,41 @@
 </head>
 <body>
     <main>
-        <section aria-label="my section">
+        <div role='complementary' aria-label="my section">
             This section is visible.
-        </section>
-        <section aria-label="my section" style="display: none">
+        </div>
+        <div role='complementary' aria-label="my section" style="display: none">
             This section has the same label but is display:none, so there shouldn't be an error.
-        </section>
-        <section aria-label="my section" hidden>
+        </div>
+        <div role='complementary' aria-label="my section" hidden>
           This section has the same label but is display:none, so there shouldn't be an error.
-        </section>
-        <section aria-label="my section" aria-hidden="true">
+        </div>
+        <div role='complementary' aria-label="my section" aria-hidden="true">
           This section has the same label but is display:none, so there shouldn't be an error.
-        </section>
+        </div>
     </main>
 
 
 <script>
   UnitTest = {
-      ruleIds: ["aria_landmark_name_unique"],
+      ruleIds: ["aria_complementary_label_unique"],
       results: [
-      
+      {
+            "ruleId": "aria_complementary_label_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]/complementary[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element with \"complementary\" role has a unique label that describes its purpose",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
     ]
   }
 </script>
