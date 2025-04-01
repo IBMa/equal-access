@@ -14,8 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
 export const aria_navigation_label_unique: Rule = {
@@ -23,20 +21,20 @@ export const aria_navigation_label_unique: Rule = {
     context: "aria:navigation",
     refactor: {
         "Rpt_Aria_MultipleNavigationLandmarks_Implicit": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"}
+            "Pass_0": "pass",
+            "Fail_1": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_navigation_label_unique.html",
-            "Fail_1": "aria_navigation_label_unique.html",
+            "pass": "aria_navigation_label_unique.html",
+            "fail_label_not_unique": "aria_navigation_label_unique.html",
             "group": "aria_navigation_label_unique.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple elements with \"navigation\" role do not have unique labels",
+            "pass": "The element with \"navigation\" role has a unique label that describes its purpose",
+            "fail_label_not_unique": "Multiple elements with \"navigation\" role do not have unique labels",
             "group": "Each element with \"navigation\" role must have a unique label that describes its purpose"
         }
     },
@@ -51,6 +49,7 @@ export const aria_navigation_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
+        /**
         // Consider the Check Hidden Content setting that is set by the rules
         let landmarks = CommonUtil.getElementsByRoleHidden(
             ruleContext.ownerDocument,
@@ -81,9 +80,17 @@ export const aria_navigation_label_unique: Rule = {
 
         //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
         if (!passed) {
-            return RuleFail("Fail_1", [myLabel]);
+            return RuleFail("fail_label_not_unique", [myLabel]);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
+        */
+        const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "navigation", true);    
+        if (dupped == null) return null; 
+        if (dupped) {
+            return RuleFail("fail_label_not_unique");
+        } else {
+            return RulePass("pass");
+        }    
     }
 }

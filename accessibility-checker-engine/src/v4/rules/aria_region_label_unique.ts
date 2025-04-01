@@ -14,8 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
-import { CommonUtil } from "../util/CommonUtil";
-import { CacheUtil } from "../util/CacheUtil";
 import { VisUtil } from "../util/VisUtil";
 
 export const aria_region_label_unique: Rule = {
@@ -23,20 +21,20 @@ export const aria_region_label_unique: Rule = {
     context: "aria:region",
     refactor: {
         "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"}
+            "Pass_0": "pass",
+            "Fail_1": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_region_label_unique.html",
-            "Fail_1": "aria_region_label_unique.html",
+            "pass": "aria_region_label_unique.html",
+            "fail_label_not_unique": "aria_region_label_unique.html",
             "group": "aria_region_label_unique.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Multiple elements with \"region\" role do not have unique labels",
+            "pass": "The element with \"region\" role has a unique label that describes its purpose",
+            "fail_label_not_unique": "Multiple elements with \"region\" role do not have unique labels",
             "group": "Each element with \"region\" role must have a unique label that describes its purpose"
         }
     },
@@ -50,6 +48,7 @@ export const aria_region_label_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        /**
         // Per https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
         // form element should only be considered if it has an aria label or title
         if (
@@ -94,6 +93,14 @@ export const aria_region_label_unique: Rule = {
             }
         } else {
             return null;
+        }
+        */
+        const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "region");    
+        if (dupped == null) return null; 
+        if (dupped) {
+            return RuleFail("fail_label_not_unique");
+        } else {
+            return RulePass("pass");
         }
     }
 }

@@ -51,7 +51,7 @@ export const aria_complementary_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "complementary", true);    
+        const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "complementary");    
         if (dupped == null) return null;
                 
         if (dupped) {

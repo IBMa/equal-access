@@ -22,19 +22,19 @@ export const aria_application_label_unique: Rule = {
     refactor: {
         "Rpt_Aria_MultipleApplicationLandmarks": {
             "Pass_0": "pass",
-            "Fail_1": "fail_name_not_uique"}
+            "Fail_1": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
             "pass": "aria_application_label_unique.html",
-            "fail_name_not_uique": "aria_application_label_unique.html",
+            "fail_label_not_unique": "aria_application_label_unique.html",
             "group": "aria_application_label_unique.html"
         }
     },
     messages: {
         "en-US": {
             "pass": "The element with \"application\" role has a unique label that describes its purpose",
-            "fail_name_not_uique": "Multiple elements with \"application\" role do not have unique labels",
+            "fail_label_not_unique": "Multiple elements with \"application\" role do not have unique labels",
             "group": "Each element with \"application\" role must have a unique label that describes its purpose"
         }
     },
@@ -53,7 +53,7 @@ export const aria_application_label_unique: Rule = {
         if (dupped == null) return null;
         
         if (dupped) {
-            return RuleFail("fail_name_not_uique");
+            return RuleFail("fail_label_not_unique");
         } else {
             return RulePass("pass");
         }
