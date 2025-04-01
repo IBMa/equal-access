@@ -778,6 +778,55 @@ export class AriaUtil {
     }
 
     /**
+     * return if the element is owned or controlled by another element. 
+     * If an ancestor of an element is owned or controlled by another element, then the element is also considered as owned or controlled.
+     * an element can be owned or controlled by another element through aria-owns or aria-controls
+     *   when the DOM hierarchy cannot be used to represent the relationship.
+     * aria-owns attribute is used to define contextual relationship with a owning parent 
+     * aria-controls attribute is used to associate an element with the controlling element.
+     *  example elements with roles: combobox, scrollbar, tab, button, listbox, menu, menubar, radiogroup, tree, treegrid
+     * 
+     * when an element is owned or controlled by another element, its navigation may be controlled by the parent 
+     *  through aria-activedescendants attribute or roving tabindex
+     * 
+     * Note navigation with native combobox (input with a datalist) is in native focus navigation, not considered here   
+     * 
+     * @parm {element} element - The element to inspect
+     * @return {boolean} 
+     *
+     * @memberOf AriaUtil
+     */
+    public static isNavigationOwnedOrControlled(element : Element) {
+        if (!element) return false;
+        
+        let ownerElems: Element[] = CacheUtil.getCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", null);
+        if (ownerElems !== null && ownerElems.length > 0) {
+            if (CommonUtil.getAncestor(element, ownerElems))
+                return true;
+        }
+        let role = AriaUtil.getResolvedRole(element);
+        if (!role) return false;
+        
+        let id = element.getAttribute("id");
+        if (!id || id.trim().length === 0) return false;
+
+        const elem = element.ownerDocument.querySelector(`*[aria-controls~='${id}'], *[aria-owns~='${id}']`);
+        if (!elem) return false;
+
+        const containers = ['combobox', 'scrollbar', 'button', 'tab', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
+        if (containers.includes(role)) {
+            if (ownerElems === null)
+                ownerElems = [];
+            
+            ownerElems.push(element);
+            CacheUtil.setCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", ownerElems);            
+            return true;
+        }    
+        
+        return false;
+    }
+
+    /**
      * This function is responsible for finding a node which matches the role and is a sibling of the
      * provided element.
      *
