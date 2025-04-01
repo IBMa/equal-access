@@ -28,6 +28,7 @@ interface IHelpScreenState {
     help2: string | null
     ai: boolean;
     aiHelp: string | null, // note this is a json string
+    newResponse: boolean,
     loading: boolean
     errString?: string
 }
@@ -49,16 +50,16 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         help2: null,
         ai: true,
         aiHelp: null,
+        newResponse: false,
         loading: true
     }
     private devtoolsAppController = getDevtoolsAppController();
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
 
-   
-
     async componentDidMount(): Promise<void> {
         this.eventListener = async (event: CustomEvent<ResponseEventDetail>) => {
             console.log('Custom event received:', event.detail);
+            this.setState({newResponse: true});
             this.setState({aiHelp: JSON.stringify(event.detail)}, () => {
                 console.log("this.state.aiHelp = \n", this.state.aiHelp);
             });
@@ -109,9 +110,10 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
 
         let aiHelp:string = "";
 
-        if (this.state.aiHelp) {
+        if (this.state.aiHelp && this.state.newResponse === true) {
             console.log("We have aiHelp  this.state.aiHelp = \n", this.state.aiHelp);
             aiHelp = this.state.aiHelp;
+            this.setState({newResponse: false});
         } else {
             console.log("We are waiting on AI server.");
             aiHelp = JSON.stringify(aiHelpTemp);

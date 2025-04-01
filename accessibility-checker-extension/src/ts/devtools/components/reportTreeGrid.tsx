@@ -236,6 +236,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
      * outputPrompt: gather violation context data to send to the AI proxy server
      */
     async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
+        console.log("Func: outputPrompt");
         console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
         let prompt = {
             api: "/rms/api/V2/watsonx/checker_help",
@@ -263,10 +264,12 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
     // called from learn more onClick
     async doAI(issue: IIssue) {
+        console.log("Func: doAI");
         await this.aiProcessIssueData(issue);
     }
 
     async aiProcessIssueData(issue: IIssue) {
+        console.log("Func: aiProcessIssueData");
         // get help url
         const str = issue.help;
         const splitWord = "html";

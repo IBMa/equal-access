@@ -19,16 +19,16 @@
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
-    <script type="module">
+    <script defer type="module">
+        console.log("***** START LOAD IMPORTS *****");
         import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/code-snippet.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/ai-label.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script  src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- NOTE: LZString is not getting loaded on time all the time -->
     <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-    <script src="../common/help.js"></script>
-    
+    <script defer src="../common/help.js"></script>
 </head>
 <body>
     <div class="bx--grid toolHelp">
@@ -48,7 +48,7 @@
 <mark-down><script type="text/plain">
 
 <!-- This is where the code snippet is injected -->
-<!-- <div id="locSnippet"></div> -->
+<div id="locSnippet"></div>
 
 <!-- AI info injection sites -->
 
@@ -105,6 +105,17 @@ perceivable, or interactive to users.
 Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
 in order to concatenate one of the other text alternatives with text from a separate element.
 
+
+Example:
+
+```
+<p>How many circles are there?</p>
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="shapes from which to choose">
+    <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" 
+    aria-label="1 circle"></circle>
+    ...
+</svg>
+```
 
 </script></mark-down>
 <!-- End main panel -->

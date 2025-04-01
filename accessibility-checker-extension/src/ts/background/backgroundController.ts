@@ -107,7 +107,7 @@ class BackgroundController extends Controller {
     }
 
     public connect(promptJSON: string): any {
-    
+        console.log("File: BackgroundController.ts Func: connect");
         let webSocket = new WebSocket('wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==');
         this.waitForWebSocketConnection(webSocket)
         .then(() => {

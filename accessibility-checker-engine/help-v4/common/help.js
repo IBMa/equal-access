@@ -11,6 +11,7 @@
     limitations under the License.
  *****************************************************************************/
 
+
 class HTMLBaseElement extends HTMLElement {
     constructor(...args) {
         const self = super(...args);
@@ -74,24 +75,26 @@ function formatHTML(html) {
     return result.join("\n");
 }
 
-// formatReactCode = (code) => {
-//     try {
-//         const formattedCode = prettier.format(code, {
-//             parser: "babel",
-//             plugins: [parserBabel],
-//             semi: true,
-//             singleQuote: true,
-//             trailingComma: "es5",
-//             bracketSpacing: true,
-//             jsxBracketSameLine: false,
-//             arrowParens: "always",
-//         });
-//         return formattedCode;
-//     }   catch (error) {
-//         console.error("Error formatting code:", error);
-//         return code;
-//     }
-// }
+function prettyPrintReactCode(singleLineCode) {
+    // Add spaces and line breaks for readability
+    let formattedCode = singleLineCode
+      .replace(/({|})/g, '\n$1\n') // Add newlines around curly braces
+      .replace(/</g, '\n<') // Add newline before each JSX element
+      .replace(/>/g, '>\n') // Add newline after each JSX element
+      .replace(/\n+/g, '\n') // Remove extra newlines
+      .trim(); // Remove leading/trailing spaces
+    
+    // Adjust indentation level
+    let indentLevel = 0;
+    formattedCode = formattedCode.split('\n').map(line => {
+      if (line.includes('}')) indentLevel--; // Decrease indentation for closing braces
+      const indentedLine = '  '.repeat(indentLevel) + line; // Apply indentation
+      if (line.includes('{') && !line.includes('}')) indentLevel++; // Increase indentation for opening braces
+      return indentedLine;
+    }).join('\n');
+    
+    return formattedCode;
+  }
 
 function formatString(text, limit) {
     const words = text.split(' ');
@@ -181,7 +184,7 @@ const valueMap = {
  * 3. AI case where the AI data is ready to inject so use regular code-snippet
  */
 function updateWithRuleInfo(ruleInfo) {
-    console.log("Func updateWithRuleInfo"); // used for rule and code injection
+    console.log("***** Func updateWithRuleInfo *****"); // used for rule and code injection
     console.log("ruleInfo = \n", ruleInfo);
     // split ruleInfo (later rename to helpInfo) into ruleInfo (param1) and aiInfo (param2)
    
@@ -246,22 +249,6 @@ function updateWithRuleInfo(ruleInfo) {
                 }
                 locSnippet.innerHTML = `<h3>Detected Inaccessibile HTML DOM code</h3>`;
                 locSnippet.appendChild(codeSnippet);
-                
-                // let attributes =  codeSnippet.attributes;
-                // for (const attribute of attributes) {
-                //     console.log(`${attribute.name}`);
-                // }
-                // console.log("codeSnippet create code-snippet = ", codeSnippet);
-
-                // add AI icon
-                // codeSnippet.innerHTML += '<cds-ai-label size="small" alignment="top-right"></cds-ai-label>';
-                // aiElem = document.createElement("cds-ai-label");
-                // aiElem.setAttribute("size","small");
-                // aiElem.setAttribute("alignment","top-right");
-                // codeSnippet.appendChild(aiElem);
-
-                // shadowRoot
-                // console.log("codeSnippet.shadowRoot = ", codeSnippet.shadowRoot);
             }
         }, 0);
         setTimeout(() => {
@@ -284,6 +271,7 @@ function updateWithRuleInfo(ruleInfo) {
                     console.log("codeSnippet after content added = ", codeSnippet);
                     aiElem = document.createElement("cds-ai-label");
                     aiElem.setAttribute("size","small");
+                    aiElem.setAttribute("style", "justify-content: flex-end !important; margin-right: 16px !important;");
                 }
                 let locSnippet = document.querySelector("#a11yDOMCode");
                 locSnippet.innerHTML = `<h3>Accessibile HTML DOM code</h3>`;
@@ -301,6 +289,7 @@ function updateWithRuleInfo(ruleInfo) {
             if (aiInfo.accessible_source) {
                 console.log("JOHO Source code detected");
                 let formattedReact = "";
+                let formattedReactjsCode = "";
                 let codeSnippet = HTMLElement;
                 let aiElem = HTMLElement;
                 if (aiInfo.accessible_source === "We are waiting on AI server.") {
@@ -309,6 +298,24 @@ function updateWithRuleInfo(ruleInfo) {
                     codeSnippet.setAttribute("type", "multi");
                 } else {
                     formattedReact = aiInfo.accessible_source;
+                    formattedReact = prettyPrintReactCode(aiInfo.accessible_source);
+                    console.log("formattedReact = \n",formattedReact);
+                    if (formattedReactjsCode) {
+                        // formattedReactjsCode = prettier.format(aiInfo.accessible_source,
+                        //     {parser: "babel", // Use 'babel' parser for React JSX
+                        //         plugins: [pluginBabel, pluginEstree, pluginHtml], // Add the Babel plugin
+                        //         printWidth: 80, // Adjust as needed
+                        //         tabWidth: 2,
+                        //         useTabs: false,
+                        //         semi: true,
+                        //         singleQuote: false,
+                        //         trailingComma: "all",
+                        //         bracketSpacing: true,
+                        //         jsxBracketSameLine: false,
+                        //         arrowParens: "always",
+                        // });
+                    }
+                    
                     codeSnippet = document.createElement("cds-code-snippet");
                     codeSnippet.setAttribute("type", "multi");
                     for (let line of formattedReact.split("\n")) {
@@ -317,7 +324,9 @@ function updateWithRuleInfo(ruleInfo) {
                     console.log("codeSnippet after content added = ", codeSnippet);
                     aiElem = document.createElement("cds-ai-label");
                     aiElem.setAttribute("size","small");
+                    aiElem.setAttribute("style", "justify-content: flex-end !important; margin-right: 16px !important;");
                 }
+            
                 let locSnippet = document.querySelector("#sourceCode");
                 locSnippet.innerHTML = `<h3>(Reactjs) source code that generates A11y DOM code</h3>`;
                 if (aiInfo.accessible_source !== "We are waiting on AI server.") {
@@ -346,20 +355,7 @@ function updateWithRuleInfo(ruleInfo) {
 
                     aiElem = document.createElement("cds-ai-label");
                     aiElem.setAttribute("size","small");
-                    // aiElem.setAttribute("style","justify-content: left !important"); // this works
-                    // aiLabelDiv = document.createElement("div");
-                    // aiLabelDiv.setAttribute("slot", "body-text");
-                    // aiLabelDiv.innerHTML("AI explained.\nSummary\nThe summary explains the fix.")
-                    // aiLabelDivPara = document.createElement("p");
-                    // aiLabelDivPara.innerHTML = "AI Explained";
-                    // aiLabelDivH1 = document.createElement("h1");
-                    // aiLabelDivH1.innerHTML = "Summary";
-                    // aiLabelDivPara2 = document.createElement("p");
-                    // aiLabelDivPara2.innerHTML = "The summary explains the fix.";
-                    // aiLabelDiv.appendChild(aiLabelDivPara);
-                    // aiLabelDiv.appendChild(aiLabelDivH1);
-                    // aiLabelDiv.appendChild(aiLabelDivPara2);
-                    // aiElem.appendChild(aiLabelDiv);
+                    aiElem.setAttribute("style", "justify-content: flex-end !important; margin-right: 16px !important;");
                 }
                 let locSnippet = document.querySelector("#summary");
                 locSnippet.innerHTML = `<h3>Summary</h3>`;
@@ -442,7 +438,7 @@ if ("onhashchange" in window) {// does the browser support the hashchange event?
 }
 
 window.addEventListener("DOMContentLoaded", (evt) => {
-    console.log("event listener DOMContentLoaded");
+    console.log("***** event listener DOMContentLoaded *****");
     let groupMsg = typeof RULE_MESSAGES !== "undefined" && (RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0]) || "";
     groupMsg = groupMsg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     document.querySelector("#groupLabel").innerHTML = groupMsg;
@@ -469,7 +465,7 @@ window.addEventListener("DOMContentLoaded", (evt) => {
         console.log("help1param1 = \n", help1param1);
         let help1param2 = recoveredOrigHelp1Params?.substring(recoveredOrigHelp1Params.indexOf('&')+1);
         console.log("help1param2 = \n", help1param2);
-        help1param2 = JSON.parse(decodeURIComponent(help1param2));
+        help1param2 = JSON.parse(help1param2);
         console.log("help1param2 = \n", help1param2);
         ruleInfo = help1param1 + '&' + help1param2;
 
