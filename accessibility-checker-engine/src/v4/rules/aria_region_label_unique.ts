@@ -48,53 +48,7 @@ export const aria_region_label_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        /**
-        // Per https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
-        // form element should only be considered if it has an aria label or title
-        if (
-            ruleContext.getAttribute("role") === "region" ||
-            ruleContext.hasAttribute("aria-label") ||
-            (ruleContext.hasAttribute("aria-labelledby") && !CommonUtil.isIdReferToSelf(ruleContext, ruleContext.getAttribute("aria-labelledby"))) ||
-            ruleContext.hasAttribute("title")
-        ) {
-            // Consider the Check Hidden Content setting that is set by the rules
-            // Also, consider Implicit role checking.
-            let landmarks = CommonUtil.getElementsByRoleHidden(
-                ruleContext.ownerDocument,
-                "region",
-                true,
-                true
-            );
-            if (landmarks.length === 0 || landmarks.length === 1) {
-                return null;
-            }
-
-            let dupes = CacheUtil.getCache(
-                ruleContext.ownerDocument,
-                "aria_region_label_unique",
-                null
-            );
-            if (!dupes) {
-                dupes = AriaUtil.findAriaLabelDupes(landmarks);
-                CacheUtil.setCache(
-                    ruleContext.ownerDocument,
-                    "aria_region_label_unique",
-                    dupes
-                );
-            }
-            let myLabel = AriaUtil.getAriaLabel(ruleContext);
-            let passed =
-                myLabel !== "" &&
-                (!(myLabel in dupes) || dupes[myLabel] <= 1);
-            if (!passed) {
-                return RuleFail("Fail_1", [myLabel]);
-            } else {
-                return RulePass("Pass_0");
-            }
-        } else {
-            return null;
-        }
-        */
+        
         const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "region");    
         if (dupped == null) return null; 
         if (dupped) {

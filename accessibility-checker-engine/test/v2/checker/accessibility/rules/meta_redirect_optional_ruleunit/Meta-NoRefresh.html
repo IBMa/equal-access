@@ -23,8 +23,8 @@
 <head>
 	<title>RPT Test Suite</title>
 
-<!-- Test - Fast redirect - time zero seconds -->
-<meta http-equiv="Refresh" content="0; url=http://www.cnn.com">
+<!-- Test - No redirect - NOTrefresh -->
+<meta http-equiv="NOTrefresh" content="5">
 
 </head>
 
@@ -33,7 +33,7 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: Meta-RefreshZero.html</h2>
+<h2>Test case: Meta-NoRefresh.html</h2>
 
 
 <!-- ------------------------------------------------------------------------------------ -->
@@ -43,27 +43,13 @@
 
 
 <ul>
-	<li>Test - Fast redirect - time 0 seconds</li>
+	<li>Test - No redirect - NOTrefresh</li>
 </ul>
 
 
 <a name="navskip"></a>
 
 
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "254",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-      ]
-    },
-  ];
-//]]>
-</script></body>
+</body>
 
 </html>

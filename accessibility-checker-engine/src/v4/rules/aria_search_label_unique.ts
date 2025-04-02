@@ -57,42 +57,6 @@ export const aria_search_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        /**
-        // Consider the Check Hidden Content setting that is set by the rules
-        let landmarks = CommonUtil.getElementsByRoleHidden(
-            ruleContext.ownerDocument,
-            "search",
-            true,
-            true
-        );
-        if (landmarks.length === 0 || landmarks.length === 1) {
-            return null;
-        }
-
-        let dupes = CacheUtil.getCache(
-            ruleContext.ownerDocument,
-            "aria_search_label_unique",
-            null
-        );
-        if (!dupes) {
-            dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            CacheUtil.setCache(
-                ruleContext.ownerDocument,
-                "aria_search_label_unique",
-                dupes
-            );
-        }
-        let myLabel = AriaUtil.getAriaLabel(ruleContext);
-        let passed =
-            myLabel !== "" && (!(myLabel in dupes) || dupes[myLabel] <= 1);
-
-        // return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-        if (!passed) {
-            return RuleFail("Fail_1", [myLabel]);
-        } else {
-            return RulePass("Pass_0");
-        }
-        */
         const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "search", true);    
         if (dupped == null) return null;
         

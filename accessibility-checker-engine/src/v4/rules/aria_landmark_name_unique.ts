@@ -27,20 +27,20 @@ export const aria_landmark_name_unique: Rule = {
     context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
     refactor: {
         "landmark_name_unique": {
-            "Pass_0": "Pass_0",
-            "Fail_0": "Fail_0"}
+            "Pass_0": "pass",
+            "Fail_0": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_landmark_name_unique.html",
-            "Fail_0": "aria_landmark_name_unique.html",
+            "pass": "aria_landmark_name_unique.html",
+            "fail_label_not_unique": "aria_landmark_name_unique.html",
             "group": "aria_landmark_name_unique.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Multiple elements with \"{0}\" landmarks within the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
-            "Fail_0": "Multiple elements with \"{0}\" landmarks within the same parent region are not distinguished from one another because they have the same \"{1}\" label",
+            "pass": "Multiple elements with \"{0}\" landmarks within the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+            "fail_label_not_unique": "Multiple elements with \"{0}\" landmarks within the same parent region are not distinguished from one another because they have the same \"{1}\" label",
             "group": "Each landmark should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent region"
         }
     },
@@ -217,7 +217,7 @@ export const aria_landmark_name_unique: Rule = {
                             ) {
                                 // both have the same (computed) aria-label/aria-labelledby
                                 // if (navigationNodesComputedLabels[i] === "") {
-                                navigationNodesMatchFound.push("Fail_0"); // Fail 0
+                                navigationNodesMatchFound.push("fail_label_not_unique"); // Fail 0
                                 matchFound = true;
                                 break;
                                 // }
@@ -256,7 +256,7 @@ export const aria_landmark_name_unique: Rule = {
                             ) {
                                 // both have the same (computed) aria-label/aria-labelledby
                                 // if (navigationNodesComputedLabels[i] === "") {
-                                navigationNodesMatchFound.push("Fail_0"); // Fail 0
+                                navigationNodesMatchFound.push("fail_label_not_unique"); // Fail 0
                                 matchFound = true;
                                 break;
                                 // }
@@ -274,7 +274,7 @@ export const aria_landmark_name_unique: Rule = {
                 }
                 if (!matchFound) {
                     if (pass_0_flag) {
-                        navigationNodesMatchFound.push("Pass_0");
+                        navigationNodesMatchFound.push("pass");
                     } else {
                         navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array so indexes match up.
                     }
@@ -304,16 +304,16 @@ export const aria_landmark_name_unique: Rule = {
         if (indexToCheck === -1) {
             return null;
         }
-        if (formCache.navigationNodesMatchFound[indexToCheck] === "Pass_0") {
-            return RulePass("Pass_0",
+        if (formCache.navigationNodesMatchFound[indexToCheck] === "pass") {
+            return RulePass("pass",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]
                     ),
                 ]
             );
-        } else if (formCache.navigationNodesMatchFound[indexToCheck] === "Fail_0") {
-            return RuleFail("Fail_0",
+        } else if (formCache.navigationNodesMatchFound[indexToCheck] === "fail_label_not_unique") {
+            return RuleFail("fail_label_not_unique",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]

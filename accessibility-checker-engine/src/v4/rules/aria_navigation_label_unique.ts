@@ -49,42 +49,6 @@ export const aria_navigation_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        /**
-        // Consider the Check Hidden Content setting that is set by the rules
-        let landmarks = CommonUtil.getElementsByRoleHidden(
-            ruleContext.ownerDocument,
-            "navigation",
-            true,
-            true
-        );
-        if (landmarks.length === 0 || landmarks.length === 1) {
-            return null;
-        }
-
-        let dupes = CacheUtil.getCache(
-            ruleContext.ownerDocument,
-            "aria_navigation_label_unique",
-            null
-        );
-        if (!dupes) {
-            dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            CacheUtil.setCache(
-                ruleContext.ownerDocument,
-                "aria_navigation_label_unique",
-                dupes
-            );
-        }
-        let myLabel = AriaUtil.getAriaLabel(ruleContext);
-        let passed =
-            myLabel !== "" && (!(myLabel in dupes) || dupes[myLabel] <= 1);
-
-        //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-        if (!passed) {
-            return RuleFail("fail_label_not_unique", [myLabel]);
-        } else {
-            return RulePass("pass");
-        }
-        */
         const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "navigation", true);    
         if (dupped == null) return null; 
         if (dupped) {

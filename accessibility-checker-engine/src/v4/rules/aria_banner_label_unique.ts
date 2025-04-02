@@ -49,39 +49,6 @@ export const aria_banner_label_unique: Rule = {
         const ruleContext = context["dom"].node as Element;
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
-        /**
-        // Consider the Check Hidden Content setting that is set by the rules
-        // Also, consider Implicit role checking.
-        let landmarks = CommonUtil.getElementsByRoleHidden(
-            ruleContext.ownerDocument,
-            "banner",
-            true,
-            true
-        );
-        if (landmarks.length === 0 || landmarks.length === 1) {
-            return null;
-        }
-
-        let dupes = CacheUtil.getCache(
-            ruleContext.ownerDocument,
-            "aria_banner_label_unique",
-            null
-        );
-        if (!dupes) {
-            dupes = AriaUtil.findAriaLabelDupes(landmarks);
-            CacheUtil.setCache(
-                ruleContext.ownerDocument,
-                "aria_banner_label_unique",
-                dupes
-            );
-        }
-        let myLabel = AriaUtil.getAriaLabel(ruleContext);
-        let passed =
-            myLabel !== "" && (!(myLabel in dupes) || dupes[myLabel] <= 1);
-
-        //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-        */
-
         const dupped = AriaUtil.isLandmarkNameUnique(ruleContext, "banner", true);    
         if (dupped == null) return null;
         

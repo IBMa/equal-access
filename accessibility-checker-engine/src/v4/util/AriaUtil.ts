@@ -1391,8 +1391,8 @@ export class AriaUtil {
         }
 
         landmarkElems.forEach(function (elem: Element) {
-            // ignore if a lanmark element is hidden
-            if (!VisUtil.isNodeHiddenFromAT(elem)) {
+            // ignore node that is AT hidden or in a dialog that is considered as a separate location from the rest of the main page
+            if (!VisUtil.isNodeHiddenFromAT(elem) && CommonUtil.getAncestor(elem, ["DIALOG"]) === null && AriaUtil.getAncestorWithRole(elem, "dialog", true) === null) {
                 let name = "";
                 let pair = AccNameUtil.computeAccessibleName(elem);
                 if (pair && pair.name && pair.name.trim().length > 0)
@@ -1415,7 +1415,12 @@ export class AriaUtil {
      */
     public static isLandmarkNameUnique(element, role, considerNoneLabel: boolean = false) {
         const nameMap = AriaUtil.getLandmarkAccNames(element.ownerDocument);
-        const exist = nameMap.find(entry => entry.elem === element && entry.role === role);
+        let exist = null;
+        if (role === 'any')
+            exist = nameMap.find(entry => entry.elem === element);      
+        else    
+            exist = nameMap.find(entry => entry.elem === element && entry.role === role);
+
         if (!exist) return null;
 
         const name = exist.name;
@@ -1423,8 +1428,12 @@ export class AriaUtil {
 
         for (let i=0; i < nameMap.length; i++) {
             if (nameMap[i].elem === element) continue;     
-            if (name === nameMap[i].name && nameMap[i].role === role)
-                return true;
+            if (name === nameMap[i].name) {
+                if (role === 'any')
+                    return true;
+                else if (nameMap[i].role === role)
+                    return true; 
+            }        
         }
         return false;
     }
