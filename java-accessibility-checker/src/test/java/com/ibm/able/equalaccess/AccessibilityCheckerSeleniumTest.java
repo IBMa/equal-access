@@ -270,7 +270,7 @@ public class AccessibilityCheckerSeleniumTest {
 
                 // Misc
                 // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
-                Paths.get(testRootDir.getAbsolutePath(), "aria_search_label_unique_ruleunit", "search_hidden.html"),
+                Paths.get(testRootDir.getAbsolutePath(), "aria_search_label_unique_ruleunit", "search_hidden.html").toFile(),
 
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_text.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","element_inline2.html").toFile(),
