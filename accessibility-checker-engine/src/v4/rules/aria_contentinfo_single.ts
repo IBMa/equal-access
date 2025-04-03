@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_contentinfo_single: Rule = {
     id: "aria_contentinfo_single",
@@ -46,6 +47,8 @@ export const aria_contentinfo_single: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+
         //find out if <footer> element has siblings as <footer> has implicit contentinfo role
         if (!AriaUtil.hasRoleInSemantics(ruleContext, "contentinfo")) {
             return null;

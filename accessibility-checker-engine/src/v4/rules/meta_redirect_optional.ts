@@ -41,9 +41,18 @@ export const meta_redirect_optional: Rule = {
             "fail_longrefresh": "Check page does not automatically refresh without warning or options"
         }
     },
+    /**
+     * deprecate WCAG AAA
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.2.1"],
+        "num": ["2.2.4", "3.2.5"],
+        "level": eRulePolicy.VIOLATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_THREE
+    }],
+    */
+    rulesets: [{
+        "id": [],
+        "num": ["2.2.4", "3.2.5"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],

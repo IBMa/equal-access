@@ -151,6 +151,7 @@ var skipList = [
 
     // TODO: temprarily ignore due to v3 and v4 difference in Windows
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "text_contrast_sufficient_ruleunit","disabled_control.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_search_label_unique_ruleunit", "search_hidden.html"),
 
     // Puppeteer and embedded-chrome @media css behave differently (?)
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_orientation_unlocked_ruleunit","act-fail4.html"),

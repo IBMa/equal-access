@@ -20,6 +20,10 @@
             "0": "Interactive WAI_ARIA UI components must provide keyboard access",
             "pass": "Rule Passed"
         },
+        "aria_navigation_label_unique": {
+            "0": "Each element with \"navigation\" role must have a unique label that describes its purpose",
+            "pass": "The element with \"navigation\" role has a unique label that describes its purpose"
+        },
         "aria_role_allowed": {
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
@@ -114,7 +118,7 @@
             "pass": "Components with a widget role should have no more than one tabbable element"
         }
     },
-    "numExecuted": 65,
+    "numExecuted": 66,
     "results": [
         {
             "apiArgs": [],
@@ -1531,6 +1535,32 @@
             },
             "category": "Accessibility",
             "level": "pass",
+            "message": "The element with \"navigation\" role has a unique label that describes its purpose",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/navigation[1]",
+                "dom": "/html[1]/body[1]/div[1]"
+            },
+            "reasonId": "pass",
+            "ruleId": "aria_navigation_label_unique",
+            "snippet": "<div role=\"navigation\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/aria_navigation_label_unique.html#%7B%22message%22%3A%22The%20element%20with%20%5C%22navigation%5C%22%20role%20has%20a%20unique%20label%20that%20describes%20its%20purpose%22%2C%22snippet%22%3A%22%3Cdiv%20role%3D%5C%22navigation%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22aria_navigation_label_unique%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 999,
+                "left": 999,
+                "top": 999,
+                "width": 999
+            },
+            "category": "Accessibility",
+            "level": "pass",
             "message": "Rule Passed",
             "messageArgs": [],
             "path": {
@@ -1844,7 +1874,7 @@
             "elementsViolation": 0,
             "elementsViolationReview": 0,
             "manual": 0,
-            "pass": 64,
+            "pass": 65,
             "potentialrecommendation": 0,
             "potentialviolation": 0,
             "recommendation": 0,
