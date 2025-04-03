@@ -153,6 +153,7 @@ let skipList = [
 
     // Misc
     path.join(testRoot, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRoot, "aria_search_label_unique_ruleunit", "search_hidden.html"),
 
     path.join(testRoot, "target_spacing_sufficient_ruleunit","link_text.html"),
     path.join(testRoot, "target_spacing_sufficient_ruleunit","element_inline2.html"),

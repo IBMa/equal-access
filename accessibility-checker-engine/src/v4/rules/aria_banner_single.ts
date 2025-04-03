@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_banner_single: Rule = {
     id: "aria_banner_single",
@@ -46,6 +47,8 @@ export const aria_banner_single: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+
         if (!AriaUtil.hasRoleInSemantics(ruleContext, "banner")) {
             return null;
         }
