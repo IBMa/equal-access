@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_main_label_visible: Rule = {
     id: "aria_main_label_visible",
@@ -47,6 +48,7 @@ export const aria_main_label_visible: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         // Consider the Check Hidden Content setting that is set by the rules
         //call getElementsByRoleHidden with considerImplicit flag as true

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+    <title>Test that display:none blocks are ignored</title>
+</head>
+<body>
+    <main>
+        <div role='form' aria-label="my section">
+            This section is visible.
+        </div>
+        <div role='form' aria-label="my section" style="display: none">
+            This section has the same label but is display:none, so there shouldn't be an error.
+        </div>
+        <div role='form' aria-label="my section" hidden>
+          This section has the same label but is display:none, so there shouldn't be an error.
+        </div>
+        <div role='form' aria-label="my section" aria-hidden="true">
+          This section has the same label but is display:none, so there shouldn't be an error.
+        </div>
+    </main>
+
+
+<script>
+  UnitTest = {
+      ruleIds: ["aria_form_label_unique"],
+      results: [
+      {
+            "ruleId": "aria_form_label_unique",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]/form[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element with \"form\" role has a unique label that describes its purpose",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+</script>
+</body>
+
+</html>

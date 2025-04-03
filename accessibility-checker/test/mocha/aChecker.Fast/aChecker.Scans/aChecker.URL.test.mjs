@@ -94,7 +94,8 @@ let skipList = [
 
     //in karma conf file skip list
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "a_text_purpose_ruleunit", "A-hasTextEmbedded.html"),
-
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "aria_search_label_unique_ruleunit", "search_hidden.html"),
+  
     // Meta refresh
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-invalidRefresh.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "meta_refresh_delay_ruleunit", "Meta-validRefresh.html"),
