@@ -63,6 +63,7 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
             this.setState({aiHelp: JSON.stringify(event.detail)}, () => {
                 console.log("this.state.aiHelp = \n", this.state.aiHelp);
             });
+            
             let issue = await this.devtoolsController.getSelectedIssue();
             this.setIssue(issue!);
         };

@@ -27,10 +27,49 @@
     </script>
     <script  src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- NOTE: LZString is not getting loaded on time all the time -->
-    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-    <script defer src="../common/help.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script defer src="../common/help.js"></script> -->
+    <script>
+        console.log("***** START SEQUENTIAL IMPORTS *****");
+        (function() {
+      
+            // JS files that need to be loaded one after the other
+            var libs = [
+                'https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js',
+                '../common/help.js'
+            ];
+            
+            var injectLibFromStack = function(){
+                if(libs.length > 0){
+                    
+                    //grab the next item on the stack
+                    var nextLib = libs.shift();
+                    var headTag = document.getElementsByTagName('head')[0];
+                    
+                    //create a script tag with this library
+                    var scriptTag = document.createElement('script');
+                    scriptTag.src = nextLib;
+                    
+                    //when successful, inject the next script
+                    scriptTag.onload = function(e){
+                    console.log("---> loaded: " + e.target.src);
+                    injectLibFromStack();
+                    };    
+                    
+                    //append the script tag to the <head></head>
+                    headTag.appendChild(scriptTag);
+                    console.log("injecting: " + nextLib);
+                }
+                else return;
+            }
+            
+            //start script injection
+            injectLibFromStack();
+            })();
+        </script>
 </head>
 <body>
+    
     <div class="bx--grid toolHelp">
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">

@@ -113,6 +113,23 @@ function formatString(text, limit) {
     return formattedText;
 }
 
+function formatAsBullets(text) {
+    const sentences = text.split('\n');
+    let output = '<ul>';
+  
+    for (const sentence of sentences) {
+      if (sentence.startsWith('- ')) {
+        output += `<li>${sentence.substring(2)}</li>`;
+      } else if (sentence.trim() !== ''){
+          output += sentence;
+      }
+    }
+  
+    output += '</ul>';
+    return output;
+  }
+  
+
 function isDarkMode() {
     return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 }
