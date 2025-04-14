@@ -39,9 +39,11 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { ePanel, getDevtoolsController, ViewState, AiElementXpathState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { UtilAIContext } from '../../util/UtilAIContext';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
 // import { web } from 'webpack';
 // import DomPathUtils from "../../contentScripts/DomPathUtils";
+
 
 export interface IRowGroup {
     id: string;
@@ -236,11 +238,14 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
      * outputPrompt: gather violation context data to send to the AI proxy server
      */
     async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
+        let ruleAIContext = UtilAIContext.text_contrast_sufficient_Context(issue);
         console.log("Func: outputPrompt");
         console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
         let prompt = {
             api: "/rms/api/V2/watsonx/checker_help",
             data: {
+                ruleID: `${issue.ruleId}`,
+                aiContext: ruleAIContext,
                 dom: element,
                 wcg: `${checkpointNumber}`,
                 failure: `${issue.message}`,
