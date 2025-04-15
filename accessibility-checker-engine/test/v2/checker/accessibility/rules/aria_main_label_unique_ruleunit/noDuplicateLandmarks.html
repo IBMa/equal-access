@@ -32,7 +32,7 @@
 
     <h3>Multiple landmarks of the same type must have unique labels</h3>
 
-<div hidden="true"> labels
+    <div hidden="true"> labels
         <div id="main_main"> this is the real main area </div>
         <div id="main_test"> main is a landmark </div>
         <div id="tested"> what do we test</div> 
@@ -40,33 +40,33 @@
 
     <main aria-labelledby="main_main">
         <a name="navskip"></a>
-        <document aria-label="main with aria-label" >
+        <div role='document' aria-label="main with aria-label" >
             <h1>This main marked with aria-label</h1>
             <main aria-labelledby="main_test" hidden="true">
                 <p aria-label="main test - aria-label">This main section has proper label and proper role</p>
             </main> 
-        </section>
+        </div>
 
-        <document aria-label="main with aria-labelledby" >
+        <div role='document' aria-label="main with aria-labelledby" >
             <h1>This area is marked with the same aria-labelledby </h1>
             <main aria-label="main is a landmark" role="maNN">
                 <p>This main section has proper label but no proper role</p>
             </main> 
-        </section>
+        </div>
 
-        <document aria-label="main2 with aria-labelledby" >
+        <div role='document' aria-label="main2 with aria-labelledby" >
             <h1>This area is marked with the same aria-labelledby </h1>
             <main aria-label="main is a landmark" role="maNN">
                 <p>This main section has proper label but no proper role</p>
             </main> 
-        </section>
+        </div>
 
-        <document aria-label="main2 with aria-labelledby" >
+        <div role='document' aria-label="main2 with aria-labelledby" >
             <h1>This area has no aria-label </h1>
             <main role="maNN">
                 <p>This main section has no label and no proper role</p>
             </main> 
-        </section>
+        </div>
 </main>
     <a name="navskip"></a>
 

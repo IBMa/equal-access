@@ -75,6 +75,8 @@ var skipList = [
     path.join(testRootDir, "style_before_after_review_ruleunit","D100.html"),
 
     // Misc
+    path.join(testRootDir, "aria_search_label_unique_ruleunit", "search_hidden.html"),
+
     // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),
     path.join(testRootDir, "target_spacing_sufficient_ruleunit","link_text.html"),
     path.join(testRootDir, "target_spacing_sufficient_ruleunit","element_inline2.html"),

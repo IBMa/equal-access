@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
 
 export const aria_complementary_label_visible: Rule = {
     id: "aria_complementary_label_visible",
@@ -48,6 +49,8 @@ export const aria_complementary_label_visible: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+
         if (!AriaUtil.hasRoleInSemantics(ruleContext, "complementary")) {
             return null;
         }
