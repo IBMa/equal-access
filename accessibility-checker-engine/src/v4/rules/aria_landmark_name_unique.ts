@@ -18,26 +18,29 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { CacheUtil } from "../util/CacheUtil";
 import { AccNameUtil } from "../util/AccNameUtil";
+import { VisUtil } from "../util/VisUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { AriaUtil } from "../util/AriaUtil";
 
 export const aria_landmark_name_unique: Rule = {
     id: "aria_landmark_name_unique",
     context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
     refactor: {
         "landmark_name_unique": {
-            "Pass_0": "Pass_0",
-            "Fail_0": "Fail_0"}
+            "Pass_0": "pass",
+            "Fail_0": "fail_label_not_unique"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_landmark_name_unique.html",
-            "Fail_0": "aria_landmark_name_unique.html",
+            "pass": "aria_landmark_name_unique.html",
+            "fail_label_not_unique": "aria_landmark_name_unique.html",
             "group": "aria_landmark_name_unique.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Multiple elements with \"{0}\" landmarks within the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
-            "Fail_0": "Multiple elements with \"{0}\" landmarks within the same parent region are not distinguished from one another because they have the same \"{1}\" label",
+            "pass": "Multiple elements with \"{0}\" landmarks within the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+            "fail_label_not_unique": "Multiple elements with \"{0}\" landmarks within the same parent region are not distinguished from one another because they have the same \"{1}\" label",
             "group": "Each landmark should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent region"
         }
     },
@@ -57,9 +60,10 @@ export const aria_landmark_name_unique: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
         const ruleContext = context["dom"].node as Element;
-
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
         // Checking if this landmark is inside a dialog element. If it is we are going to skip checking it. 
-        var copyOfRuleContext = ruleContext;
+        /**var copyOfRuleContext = ruleContext;
         var parnetNodesOfRuleContext = [];
         while (copyOfRuleContext) {
             parnetNodesOfRuleContext.unshift(copyOfRuleContext);
@@ -72,6 +76,9 @@ export const aria_landmark_name_unique: Rule = {
                 }
             }
         })
+        */
+        if (CommonUtil.getAncestor(ruleContext, ["DIALOG"]) !== null || AriaUtil.getAncestorWithRole(ruleContext, "dialog", true) !== null)
+            return null;
 
         // Begining formCache work
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
@@ -103,7 +110,8 @@ export const aria_landmark_name_unique: Rule = {
             // This block of code filters out any nav elements that are under a dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.
             let navigationNodesWithoutDialogs = [];
             for (let i = 0; i < navigationNodes.length; i++) {
-                let a = navigationNodes[i];
+                /**let a = navigationNodes[i];
+                
                 let dialogNodeFoundFlag = false;
                 while (a) {
                     a = a.parentElement;
@@ -115,7 +123,13 @@ export const aria_landmark_name_unique: Rule = {
                 }
                 if (!dialogNodeFoundFlag) {
                     navigationNodesWithoutDialogs.push(navigationNodes[i])
-                }
+                }*/
+
+                // ignore node that is AT hidden or in a dialog
+                if (VisUtil.isNodeHiddenFromAT(navigationNodes[i]) || CommonUtil.getAncestor(navigationNodes[i], ["DIALOG"]) !== null || AriaUtil.getAncestorWithRole(navigationNodes[i], "dialog", true) !== null) 
+                    continue;
+                navigationNodesWithoutDialogs.push(navigationNodes[i]);
+                    
             }
             navigationNodes = navigationNodesWithoutDialogs;
 
@@ -203,7 +217,7 @@ export const aria_landmark_name_unique: Rule = {
                             ) {
                                 // both have the same (computed) aria-label/aria-labelledby
                                 // if (navigationNodesComputedLabels[i] === "") {
-                                navigationNodesMatchFound.push("Fail_0"); // Fail 0
+                                navigationNodesMatchFound.push("fail_label_not_unique"); // Fail 0
                                 matchFound = true;
                                 break;
                                 // }
@@ -242,7 +256,7 @@ export const aria_landmark_name_unique: Rule = {
                             ) {
                                 // both have the same (computed) aria-label/aria-labelledby
                                 // if (navigationNodesComputedLabels[i] === "") {
-                                navigationNodesMatchFound.push("Fail_0"); // Fail 0
+                                navigationNodesMatchFound.push("fail_label_not_unique"); // Fail 0
                                 matchFound = true;
                                 break;
                                 // }
@@ -260,7 +274,7 @@ export const aria_landmark_name_unique: Rule = {
                 }
                 if (!matchFound) {
                     if (pass_0_flag) {
-                        navigationNodesMatchFound.push("Pass_0");
+                        navigationNodesMatchFound.push("pass");
                     } else {
                         navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array so indexes match up.
                     }
@@ -290,16 +304,16 @@ export const aria_landmark_name_unique: Rule = {
         if (indexToCheck === -1) {
             return null;
         }
-        if (formCache.navigationNodesMatchFound[indexToCheck] === "Pass_0") {
-            return RulePass("Pass_0",
+        if (formCache.navigationNodesMatchFound[indexToCheck] === "pass") {
+            return RulePass("pass",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]
                     ),
                 ]
             );
-        } else if (formCache.navigationNodesMatchFound[indexToCheck] === "Fail_0") {
-            return RuleFail("Fail_0",
+        } else if (formCache.navigationNodesMatchFound[indexToCheck] === "fail_label_not_unique") {
+            return RuleFail("fail_label_not_unique",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]
