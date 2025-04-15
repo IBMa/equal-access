@@ -143,6 +143,7 @@ export class DevtoolsAppController {
     }
 
     public addSecondaryOpenListener(cb: (open: boolean) => void) {
+        console.log("JOHO func addSecondaryOpenListener");
         this.secondaryOpenListeners.push(cb);
     }
 

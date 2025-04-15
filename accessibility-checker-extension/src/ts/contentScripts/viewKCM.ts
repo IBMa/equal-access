@@ -38,7 +38,7 @@ let myKCMState = false;
         getKCMData(report, settings);
     }
 
-    // console.log("ADDING ViewState LISTENERR");
+    
     devtoolsController.addViewStateListener(async (viewState) => {
         if (viewState.kcm === myKCMState) return;
         if (viewState.kcm === true) {
@@ -93,7 +93,6 @@ function getKCMData (report:IReport | null, settings: ISettings) {
 }
 
 function drawDeleteKCM(tabbable:IIssue[], tabbableErrors:IIssue[], settings:ISettings) {
-   
     injectCSS(
         `
         .line {
@@ -290,6 +289,7 @@ function drawDeleteKCM(tabbable:IIssue[], tabbableErrors:IIssue[], settings:ISet
 }
 
 function injectCSS(styleString: string) {
+    console.log("func: injectCSS");
     const style = document.createElement('style');
     style.classList.add("deleteMe");
     style.textContent = styleString;

@@ -15,7 +15,10 @@
 *****************************************************************************/
 
 import { IIssue } from "../interfaces/interfaces";
-
+ 
+// chrome.runtime.sendMessage({message: "messageSent"}, function (response) {
+//     console.log(response);
+// });
 export default class DomPathUtils {
     public static getScreenRect(node: HTMLElement) {
         if (typeof node.getBoundingClientRect === 'undefined') {
@@ -27,6 +30,10 @@ export default class DomPathUtils {
             return rect;
         }
     }
+
+    // Listen for messages in the content script and use the sendResponse
+    // function to send a response back to the background script
+      
 
     public static domPathsToElements(xpaths: string[]) {
         // console.log("Function: domPathsToElements: ")
@@ -67,7 +74,7 @@ export default class DomPathUtils {
         } else { // regular doc type = 9
             domPath = domPath.replace(/\/svg\[/g, "/svg:svg[");
             let nodes = (doc as Document).evaluate(domPath, doc, function(prefix) { 
-                if (prefix === 'svg') { 
+                if (prefix === 'svg') {
                     return 'http://www.w3.org/2000/svg';
                 } else {
                     return null;
@@ -81,6 +88,7 @@ export default class DomPathUtils {
             }
         }
     }
+    
 
     public static domPathToElem(srcPath: string | null | undefined) {
         let doc : Document | ShadowRoot = document;

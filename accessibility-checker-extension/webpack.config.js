@@ -64,6 +64,13 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
+        fallback: {
+            "zlib": require.resolve("browserify-zlib"),
+            "stream": require.resolve("stream-browserify"),
+            "util": require.resolve("util/"),
+            "buffer": require.resolve("buffer/"),
+            "process": require.resolve("process/browser"),
+        }
     },
     module: {
         rules: [
@@ -169,7 +176,6 @@ module.exports = {
                 }
             }
         ]}),
-       
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(nodeEnv),
             'WEB_BROWSER': JSON.stringify(webBrowser),

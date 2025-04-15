@@ -256,6 +256,7 @@ export default class TabStopHighlight {
                         }
                     }
                 } else {
+                    console.log("JOHO Here");
                     console.log("No errorCircle to highlight = ",circle);
                 }
                 // element.focus(); // Can't focus going to Scan Button 

@@ -182,8 +182,22 @@ letter-spacing: 0.16px;
         max-width: 66.66%;
     }
 }
-bx-code-snippet[type="multi"]::after {
-    height: 0px;
+
+/* bx-code-snippet[type="multi"] {
+    max-height: fit-content;
+} */
+
+.bx--snippet-container {
+    max-height: fit-content !important;
+}
+
+.bx--snippet-container pre {
+    overflow: scroll !important;
+}
+
+#inA11yDOMCode {
+    max-height: fit-content;
+    overflow: scroll;
 }
 
 #ruleInfo {

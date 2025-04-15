@@ -32,6 +32,8 @@ let devtoolsState : {
     lastElementPath: string | null
     lastIssue: IIssue | null
     viewState: ViewState
+    aiElementXpathState: AiElementXpathState // JOHO
+    aiElementState: AiElementState   // JOHO complete element associated with issue
     focusedMode: boolean
     scanningState: ScanningState
     activePanel: ePanel | null
@@ -41,6 +43,14 @@ export type ePanel = "main" | "elements";
 
 export interface ViewState {
     kcm: boolean
+}
+
+export interface AiElementXpathState {
+    xpath: string
+}
+
+export interface AiElementState {
+    element: string
 }
 
 export type ScanningState = "initializing" 
@@ -347,6 +357,8 @@ export class DevtoolsController extends Controller {
     public async rempoveScanningStateListener(listener: ListenerType<ScanningState>) {
         this.removeEventListener(listener, `DT_onScanningState`);
     }
+
+    
 
     ///// View state (visualization) functions //////////////////////////////////////
 
@@ -756,6 +768,12 @@ export class DevtoolsController extends Controller {
                 viewState: {
                     kcm: false
                 },
+                aiElementXpathState: {  // JOHO
+                    xpath: "not set"
+                },
+                aiElementState: {
+                    element: ""
+                },
                 focusedMode: false,
                 activePanel: null
             };
@@ -776,8 +794,8 @@ export class DevtoolsController extends Controller {
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
                 "DT_getReport": async () => self.getReport(),
                 "DT_getReportMeta": async () => self.getReportMeta(),
-                "DT_getViewState": async () => self.getViewState(),
                 "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
+                "DT_getViewState": async () => self.getViewState(),
                 "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
                 "DT_getSelectedIssue": async () => self.getSelectedIssue(),
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),
@@ -817,6 +835,17 @@ export class DevtoolsController extends Controller {
                 },
                 content: devtoolsState.viewState
             });
+
+            // JOHO
+            CommonMessaging.send({
+                type: "DT_onAiElementXpathState",
+                dest: {
+                    type: "contentScript",
+                    tabId: this.ctrlDest.tabId
+                },
+                content: devtoolsState.aiElementXpathState
+            });
+
         }
     }
 }

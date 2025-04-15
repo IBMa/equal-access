@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <title>text_contrast_sufficient - Accessibility Checker Help</title>
-    <script>
-        RULE_MESSAGES = {"en-US":{"group":"The contrast ratio of text with its background must meet WCAG AA requirements","pass":"The contrast ratio of text with its background meets WCAG AA requirements","fail_contrast":"Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}","potential_same_color":"The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG AA requirements for minimum contrast","potential_graphic_background":"Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}","potential_text_shadow":"Verify the contrast ratio of the text with shadow meets the WCAG AA minimum requirements for text of size {1}px and weight of {2}"}};
-        RULE_ID = "text_contrast_sufficient"
-    </script>
-
     <!--
 /******************************************************************************
     Copyright:: 2022- IBM, Inc
@@ -25,12 +19,16 @@
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
-    <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+    <script defer type="module">
+        console.log("***** START LOAD IMPORTS *****");
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/ai-label.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="../common/help.js"></script>
+    <script  src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- NOTE: LZString is not getting loaded on time all the time -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script defer src="../common/help.js"></script>
 </head>
 <body>
     <div class="bx--grid toolHelp">
@@ -49,25 +47,26 @@
 <!-- Start main panel -->
 <mark-down><script type="text/plain">
 
-### Why is this important?
-
-When text and its background colors have less than a 4.5 to 1 contrast ratio it can be difficult for people with moderately low vision to read the text without contrast-enhancing technology.
-For larger text of 18 point or more or bold 14 point text, the text and background colors must give at least a 3 to 1 contrast ratio.
-
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
-### What to do
+<!-- AI info injection sites -->
 
- * For large text that is at least 18 point or at least 14 point when bold, adjust the color of the text or its background to give at least a 3 to 1 contrast ratio
- * **And**, for body text that is less than 18 point or less than 14 point when bold, adjust the color of the text or its background to give at least a 4.5 to 1 contrast ratio
+<div id="inA11yDOMCode"></div>
+
+<div id="a11yDOMCode"></div>
+
+<div id="sourceCode"></div>
+
+<div id="summary"></div>
+
+<!-- DONE with AI info injection sites -->
 
 </script></mark-down>
+
 <!-- End main panel -->
-                <!-- This is where the rule id is injected -->
-                <div id="ruleInfo"></div>
-            </div>
-            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+    <div><p><br /></p></div>
+    <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
 <!-- Start side panel -->
 <mark-down><script type="text/plain">
 
