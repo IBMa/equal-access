@@ -478,6 +478,7 @@ export class CSSUtil {
      */
     public static convertValue2Pixels(unit, unitValue, elem) {
         if (unitValue == 0) return 0;
+        if (!unit) unit = "px";
         const supportedUnits = {
             // absolute unit
             px: (value) => value,
@@ -861,6 +862,24 @@ export class CSSUtil {
         }
         CacheUtil.setCache(elem, "AriaUtil_AncestorWithStyles", undefined);
         return null;
+    }
+
+    /**
+     * return an array [value, Unit] from a value-unit combo string
+     * @param valueUnitCombo, such as 20px, 2rem 
+     * @returns 
+     */
+    public static getValueUnitPair(valueUnitCombo) {
+        if (!valueUnitCombo) return null;
+
+        valueUnitCombo = valueUnitCombo.trim().toLowerCase();
+        const value = parseInt(valueUnitCombo);
+        if (isNaN(value)) return null;
+
+        let unit = valueUnitCombo.trim().match(/(\d+(\.\d+)?)\s*([^\d\s]+)/);
+        if (!unit) unit = "px";
+
+        return [value, unit];
     }
 
 }
