@@ -17,7 +17,6 @@
 // Load required modules
 var express = require('express');
 var serveIndex = require('serve-index');
-var fs = require('fs-extra');
 
 // Create an express application
 var app = express();

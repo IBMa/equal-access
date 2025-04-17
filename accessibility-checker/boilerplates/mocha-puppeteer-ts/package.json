@@ -13,7 +13,7 @@
   "devDependencies": {
     "accessibility-checker": "*",
     "chai": "^4.3.0",
-    "mocha": "^8.3.0",
+    "mocha": "^11",
     "puppeteer": "^22.14.0",
     "typescript": "^5.7.3"
   }

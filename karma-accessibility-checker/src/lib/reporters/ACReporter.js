@@ -25,7 +25,6 @@
 var ACReporterCommon = require('./ACReporterCommon');
 // var ACReporterHTML = require('./ACReporterHTML');
 // var ACReporterJSON = require('./ACReporterJSON');
-// var ACReporterSlack = require('./ACReporterSlack');
 // var ACMetricsLogger = require('../log/ACMetricsLogger');
 const { ReporterManager } = require('../common/report/ReporterManager');
 const { BaselineManager } = require('../common/report/BaselineManager');

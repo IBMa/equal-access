@@ -27,7 +27,7 @@
 var test = require('ava');
 var path = require('path');
 var decache = require('decache');
-var fs = require("fs-extra");
+var fs = require("fs");
 var difflet = require("difflet");
 var diff = difflet({ indent: 2 });
 

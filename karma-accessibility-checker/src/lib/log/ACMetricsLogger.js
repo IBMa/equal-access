@@ -22,7 +22,6 @@
  *******************************************************************************/
 
 // Load required modules
-var request = require('request');
 
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
@@ -141,7 +140,7 @@ var ACMetricsLogger = function (toolName, logger, policies) {
                     // Dispatch the call to the metrics server
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
-                    request.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs, function () {
+                    fetch(this.metricsURLV2 + "/api/pub/meter/v2" + qs).catch(() => {}).finally(() => {
                         // Decrement the numProfiles to identify that scan has finished
                         --numProfiles;
 

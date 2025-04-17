@@ -27,7 +27,7 @@
 var test = require('ava');
 var path = require('path');
 var decache = require('decache');
-var fs = require("fs-extra");
+var fs = require("fs");
 
 // Load the function that will be tester
 var ACCommon = require(path.join(__dirname, '..', '..', '..', 'src', 'lib', 'ACCommon'));

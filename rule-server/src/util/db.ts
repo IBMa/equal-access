@@ -1,216 +1,92 @@
+/******************************************************************************
+ * Licensed Materials - Property of IBM
+ * "Restricted Materials of IBM"
+ * © Copyright IBM Corp. 2023 All Rights Reserved.
+ *
+ * Copying, redistribution and/or modification is prohibited.
+ * U.S. Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+ *****************************************************************************/
+
+import { join } from "path";
 import { Config } from "../config";
-const Cloudant = require("@cloudant/cloudant");
-
-const createConnection = (url: string, dbName: string) => new Promise((resolve, reject) => {
-    if (Config.__NODB__) {
-        console.log("Running with stub DB");
-        resolve({
-            updateRecords: (data: any[]) => {}
-        });
-    } else {
-        Cloudant(url, (err, cloudant) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(cloudant.db.use(dbName));
-        })
-    }
-})
-
-export interface DBRow<DocType, KeyType = string, ValueType = string> {
-    id: string,
-    rev: string,
-    key: KeyType,
-    value: ValueType,
-    doc?: DocType
-}
+import { CouchDBWrap } from "../service-util/util/CouchDBWrap";
+import { ICloudant } from "../service-util/util/ICloudant";
+import { existsSync, readdirSync, statSync } from "fs";
 
 export enum eDB {
     AAT
 }
 
-export class DB {
-    conn = null;
-    db : eDB;
-    constructor(db: eDB) {
-        this.db = db;
-        let url = null;
-        if (Config.__CLOUDFOUNDRY__) {
-            const VCAP_SERVICES = process.env.VCAP_SERVICES ? JSON.parse(process.env.VCAP_SERVICES) : {}
-            url = VCAP_SERVICES.cloudantNoSQLDB[0].credentials.url;
-        } else if (Config.__CODEENGINE__) {
-            url = Config.AAT_DB;
-        } else if (Config.COUCHDB_USER && Config.COUCHDB_PASSWORD) {
-            url = `http://${Config.COUCHDB_USER}:${Config.COUCHDB_PASSWORD}@localhost:5984`;
-        }
-        if (url) {
+let dbConns = {}
+type EnumDictionary<T extends string | symbol | number, U> = {
+    [K in T]: U;
+};
+
+export async function getDB(db: eDB): Promise<ICloudant> {
+    if (dbConns[db]) {
+        return dbConns[db];
+    } else {
+        return dbConns[db] = new Promise<ICloudant>(async (resolve, reject) => {
+            let retVal: ICloudant;
+
+            const dbNameMap: EnumDictionary<eDB, string> = {
+                [eDB.AAT]: "aat"
+            }
+            const dbName = dbNameMap[db];
             if (db === eDB.AAT) {
-                this.conn = createConnection(url, "aat");
-            } else {
-                throw new Error("Invalid DB Specified");
-            }
-        } else {
-            console.info("[WARNING]: DB not connected");
-        }
-    }
-
-    static onceCache = {};
-
-    /**
-     * Gets all records from this database once per run. Will not get updated data
-     */
-    async getAllConst() : Promise<any[]> {
-        if (!(this.db in DB.onceCache)) {
-            DB.onceCache[this.db] = await this.getAll();
-        }
-        return DB.onceCache[this.db];
-    }
-
-    /**
-     * Gets all records from this database once per run. Will not get updated data
-     */
-     async getAllConstNotDesign() : Promise<any[]> {
-        let recs = await this.getAllConst();
-        for (let idx = 0; idx < recs.length; ++idx) {
-            if (recs[idx]._id[0] === "_") {
-                recs.splice(idx--, 1);
-            }
-        }
-        return recs;
-    }
-
-    /**
-     * Get all records from this database
-     * @returns Promise with an array of the records
-     */
-    async getAll() : Promise<any[]> {
-        let cloudantRef = await this.conn;
-        return await new Promise((resolve, reject) => {
-            cloudantRef.list({ "include_docs": true }, (err, data) => {
-                resolve(data.rows.map(row => row.doc));
-            });
-        });
-    }
-
-    async getAllNotDesign() : Promise<any[]> {
-        let recs = await this.getAll();
-        for (let idx = 0; idx < recs.length; ++idx) {
-            if (recs[idx]._id[0] === "_") {
-                recs.splice(idx--, 1);
-            }
-        }
-        return recs;
-    }
-
-    async getViewDocs<DocType>(design: string, view: string, keys?: any[]) : Promise<DocType[]> {
-        let cloudantRef = await this.conn;
-        return new Promise((resolve, reject) => {
-            if (keys) {
-                cloudantRef.view(design, view, { "reduce": false, "include_docs": true, keys: keys }, (err, data) => {
-                    err && reject(err);
-                    !err && resolve(data.rows.map((row) => row.doc));
-                });
-            } else {
-                cloudantRef.view(design, view, { "reduce": false, "include_docs": true }, (err, data) => {
-                    err && reject(err);
-                    !err && resolve(data.rows.map((row) => row.doc));
-                });
-            }
-        });
-    }
-
-    async getViewRows<KeyType = string, ValueType = string>(design: string, view: string, keys?: any[]) : Promise<DBRow<undefined, KeyType, ValueType>[]> {
-        let cloudantRef = await this.conn;
-        return new Promise((resolve, reject) => {
-            if (keys) {
-                cloudantRef.view(design, view, { "reduce": false, "include_docs": false, keys: keys }, (err, data) => {
-                    err && reject(err);
-                    !err && resolve(data.rows);
-                });
-            } else {
-                cloudantRef.view(design, view, { "reduce": false, "include_docs": false }, (err, data) => {
-                    err && reject(err);
-                    !err && resolve(data.rows);
-                });
-            }
-        });
-    }
-
-    async getViewRowsDocs<DocType, KeyType = string, ValueType = string>(design: string, view: string) : Promise<DBRow<DocType, KeyType, ValueType>[]> {
-        let cloudantRef = await this.conn;
-        return new Promise((resolve, reject) => {
-            cloudantRef.view(design, view, { "reduce": false, "include_docs": true }, (err, data) => {
-                err && reject(err);
-                !err && resolve(data.rows);
-            });
-        });
-    }
-
-    async getById<DocType>(id: string) {
-        let cloudantRef = await this.conn;
-        return new Promise<DocType>(async (resolve, reject) => {
-            cloudantRef.get(id, (err, data) => {
-                err && reject(err);
-                !err && resolve(data);
-            })
-        })
-    }
-
-    /**
-     * Get all records from this database
-     * @returns Promise with an array of the records
-     */
-     async existIds(ids: string[]) : Promise<boolean> {
-        try {
-            if (ids.length === 0) return true;
-            let cloudantRef = await this.conn;
-            return await new Promise((resolve, reject) => {
-                cloudantRef.list({ "include_docs": false, "keys": ids }, (err, data) => {
-                    if (!data) {
-                        resolve(false);
-                    } else {
-                        let errors = data.rows.map(row => row.error);
-                        resolve(!errors.includes("not_found"))
-                    }
-                });
-            });
-        } catch (err) {
-            console.log("ERR:",err);
-            return false;
-        }
-    }
-
-    async fetchRows(ids: string[]) : Promise<{id: string, rev: string, value: string, doc: any, error: any}[]> {
-        let cloudantRef = await this.conn;
-        return new Promise(async (resolve, reject) => {
-            cloudantRef.fetch({ keys: ids}, (err, data) => {
-                err && reject(err);
-                !err && resolve(data.rows);
-            })
-        })
-    }
-
-    async fetchDocs<DocType>(ids: string[]) : Promise<DocType[]> {
-        let rows = await this.fetchRows(ids);
-        return rows.map(row => row.doc);
-    }
-
-    /**
-     * Pushes the records to the connection as a bulk update
-     * @returns Promise when the update is complete
-     */
-    async updateRecords(records) : Promise<void> {
-        if (!this.conn) return;
-        let cloudantRef = await this.conn;
-        await new Promise<void>((resolve, reject) => {
-            cloudantRef.bulk({ "docs": records }, (err) => {
-                if (err) {
-                    reject(err);
+                if (Config.__CLOUD__ || (Config.AAT_DB && Config.AAT_DB_APIKEY)) {
+                    const { CloudantDBWrap } = await import("../service-util/util/CloudantDBWrap");
+                    retVal = new CloudantDBWrap(CloudantDBWrap.createConnection(Config.AAT_DB, Config.AAT_DB_APIKEY), dbName);
                 } else {
-                    resolve();
+                    let dbURL = "http://" + Config.COUCHDB_USER + ":" + Config.COUCHDB_PASSWORD + "@localhost:5984";
+                    retVal = new CouchDBWrap(CouchDBWrap.createConnection(dbURL), dbName);
                 }
-            });
-        });
+            }
+            if (retVal) {
+                try {
+                    // Make sure the DB exists
+                    await retVal.createDatabase(false);
+                } catch (err) {}
+                // Define the path to the views that need to be loaded in, the views should also ways reside
+                // under the views folder just at db/views_{dbName}
+                const pathToViews = join(__dirname, `views_${dbName}/`);
+                if (existsSync(pathToViews)) {
+                    // INITIALIZE VIEWS from the views directory for all view files that need to be loaded into the
+                    // DB
+                    let files = readdirSync(pathToViews).filter(function(file) {
+                        // Filter on only files
+                        return statSync(pathToViews + join(file)).isFile();
+                    });
+                    let updateViews = [];
+                    for (const file of files) {
+                        // Load the view file into a javascript object
+                        const view = require(pathToViews + join(file));
+
+                        // Remove the file extension from the file name
+                        const viewName = file.substring(0, file.lastIndexOf("."));
+                        view._id = `_design/${viewName}`;
+                        try {
+                            // Fetch the design doc which has the same name, to either create or update this design doc.
+                            let oldView = await retVal.getById<any>(view._id);
+                            if (oldView) {
+                                view._rev = oldView._rev;
+                            }
+                        } catch (err) {}
+                        updateViews.push(view);
+                    }
+                    if (updateViews.length > 0) {
+                        try {
+                            await retVal.updateDocs(updateViews);
+                        } catch (err) {
+                            console.error("Error updating view docs!");
+                            console.error(JSON.stringify(updateViews, null, 2))
+                            throw err;
+                        }
+                    }
+                }
+            }
+            resolve(retVal);
+        })
     }
 }
