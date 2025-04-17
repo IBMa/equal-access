@@ -14,23 +14,21 @@
     limitations under the License.
  *****************************************************************************/
 
-import * as compression from "compression";
-import * as express from 'express';
-import * as fs from "fs";
-import * as https from "https";
-import * as mkdirp from "mkdirp";
-import * as path from "path";
-import * as bodyParser from "body-parser";
+import compression from "compression";
+import express from "express";
+import fs from "fs";
+import https from "https";
+import mkdirp from "mkdirp";
+import path from "path";
+import bodyParser from "body-parser";
 
 import { Config } from "./config";
 import { RegisterRoutes } from './routes/routes';  // here
-import cfenv = require("cfenv");
 
 process.on("uncaughtException", (err) => console.error("[Uncaught]",err));
 
 export class Server {
-    private static appEnv = (cfenv as any).getAppEnv();
-    private static oneDay = Server.appEnv.url.includes("-dev") ? 0 : 86400000;
+    private static oneDay = Config.__LOCAL__ ? 0 : 86400000;
 
     constructor(private app: express.Application) {
     }
