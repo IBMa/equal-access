@@ -14,7 +14,18 @@ export class ACBrowserManager {
             ACBrowserManager.config = await ACConfigManager.getConfigUnsupported();
         }
         if  (force || !ACBrowserManager.browserP) {
-            return ACBrowserManager.browserP = puppeteer.launch({headless: ACBrowserManager.config.headless, ignoreHTTPSErrors: ACBrowserManager.config.ignoreHTTPSErrors || false});
+            let pupOptions: { 
+                headless?: boolean,
+                ignoreHTTPSErrors?: boolean,
+                args?: string[]
+            } = {
+                headless: ACBrowserManager.config.headless, 
+                ignoreHTTPSErrors: ACBrowserManager.config.ignoreHTTPSErrors || false
+            };
+            if (ACBrowserManager.config.puppeteerArgs) {
+                pupOptions.args = ACBrowserManager.config.puppeteerArgs
+            }
+            return ACBrowserManager.browserP = puppeteer.launch(pupOptions);
         } else {
             return ACBrowserManager.browserP;
         }
