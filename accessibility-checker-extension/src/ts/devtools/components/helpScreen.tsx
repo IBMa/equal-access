@@ -57,6 +57,7 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
 
     async componentDidMount(): Promise<void> {
+        console.log("********** helpScreen Did Mount ***********");
         this.eventListener = async (event: CustomEvent<ResponseEventDetail>) => {
             console.log('Custom event received:', event.detail);
             this.setState({newResponse: true});
@@ -86,10 +87,8 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
         console.log('Custom event received:', event.type, event.detail);
         // Perform actions based on the event
     }
-    
-
     setIssue(issue: IIssue) {
-        console.log("File: helpScreen Func: setIssue");
+        console.log("########### File: helpScreen Func: setIssue ##########");
         
         // define JSON object
         // const aiHelp = {
@@ -216,6 +215,7 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
     }
 
     render() {
+        {console.log("%%%%%%%% RENDER helpScreen %%%%%%%%%")}
         return (
             <Grid className="helpScreen" style={{height: "100%"}}>
                 <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}} style={{height: "100%", margin: "0rem"}}>

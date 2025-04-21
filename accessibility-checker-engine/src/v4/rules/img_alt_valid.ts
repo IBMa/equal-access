@@ -52,9 +52,10 @@ export const img_alt_valid: Rule = {
     }],
     act: "23a2a8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLImageElement;
         // JOHO - for AI need image src
-        const imgSrc =  ruleContext.getAttribute('src');
+        // const imgSrc =  ruleContext.getAttribute('src');
+        const imgSrc =  new URL(ruleContext.src, window.location.href).href;
         // If not visible to the screen reader, ignore
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;

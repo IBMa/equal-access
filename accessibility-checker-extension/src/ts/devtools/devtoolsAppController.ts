@@ -210,12 +210,14 @@ export class DevtoolsAppController {
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     private fireSecondaryView(view: eSecondaryView) {
+        console.log("fireSecondaryView with view = ", view);
         for (const listener of this.secondaryViewListeners) {
             listener(view);
         }
     }
 
     private fireSecondaryOpen(open: boolean) {
+        console.log("fireSecondaryOpen with view = ", open);
         for (const listener of this.secondaryOpenListeners) {
             listener(open);
         }

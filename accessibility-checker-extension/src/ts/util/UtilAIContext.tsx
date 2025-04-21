@@ -17,12 +17,21 @@
 import { IIssue } from '../interfaces/interfaces';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+// import { getBGController } from '../background/backgroundController';
+
+
 
 interface MyObject {
     [key: string]: string; //  Any property with a string key will be a number
 }
 
 export class UtilAIContext {
+
+    /*
+     *  AI Rule 1: text_contrast_sufficient
+     *
+     *             For this rule we used the existing rule context for the ai context
+     */
     public static text_contrast_sufficient_Context(issue: IIssue) : any {
         let inputValues = issue.messageArgs; // ['2.93', 32, 400, '#9188ff', '#ffffff', false, false]
         // don't need first entry in array
@@ -45,9 +54,12 @@ export class UtilAIContext {
         }   
     }
 
-    
+    /*
+     *  AI Rule 2: image_alt_valid
+     *
+     *             JOHO added ai context to this rule to provide the url of the image.
+     */    
 
-   
     public static async getImageFile(imageURL: string): Promise<string> {
 
         const response = await axios.get(imageURL, { responseType: 'arraybuffer', });
@@ -65,7 +77,7 @@ export class UtilAIContext {
         
         // Example usage:
         // const imagePath = chrome.runtime.getURL(inputValues[1]);
-        const imageURL = "https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud" + inputValues[1];
+        const imageURL = inputValues[1];
         console.log("imageURL = ", imageURL);
 
         // get file extension
@@ -96,5 +108,24 @@ export class UtilAIContext {
             return ("Error: cannot form text_contrast_sufficient_Context");
         }
     }
+
+    /*
+     *  AI Rule 3: element_tabbable_role_valid
+     *
+     *             There is no rule or ai context for this rule unless we find that we 
+     *             can improve the accuracy or time by adding some.
+     */  
+
+    /*
+     *  AI Rule 4: svg_graphics_labelled
+     *
+     *             There is no rule or ai context for this rule unless we find that we 
+     *             can improve the accuracy or time by adding some.
+     */
+
+    // other violation rules in demo:
+    //      aria_widget_labelled
+    //      Rpt_Aria_InvalidTabindexForActivedescendant
+    //      Rpt_Aria_ValidIdRef
     
 }
