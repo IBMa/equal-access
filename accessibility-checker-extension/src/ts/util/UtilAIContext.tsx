@@ -15,13 +15,15 @@
 *****************************************************************************/
 
 import { IIssue } from '../interfaces/interfaces';
+import axios from 'axios';
+import { Buffer } from 'buffer';
 
 interface MyObject {
     [key: string]: string; //  Any property with a string key will be a number
 }
 
 export class UtilAIContext {
-    public static text_contrast_sufficient_Context(issue: IIssue) : {} | undefined {
+    public static text_contrast_sufficient_Context(issue: IIssue) : any {
         let inputValues = issue.messageArgs; // ['2.93', 32, 400, '#9188ff', '#ffffff', false, false]
         // don't need first entry in array
         inputValues.shift();
@@ -35,6 +37,7 @@ export class UtilAIContext {
             for (let i = 0; i < keys.length; i++) {
                 jsonObject[keys[i]] = stringInputValues[i];
             }
+            // let jsonString = JSON.stringify(jsonObject)
             return jsonObject;
         } else {
             console.log("Error: cannot form text_contrast_sufficient_Context");
@@ -42,63 +45,51 @@ export class UtilAIContext {
         }   
     }
 
-    public static toBase64(file: File) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          // @ts-ignore
-          reader.onload = () => resolve(reader.result?.split(',')[1]); // Extracts the Base64 part
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-    }
+    
 
-    public static async fetchFile(url: string): Promise<File> {
-        console.log("fetchFile: START");
-        try {
-            const response = await fetch(url);
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            const blob = await response.blob();
-            const fileName = this.getFileNameFromUrl(url) || 'downloaded_file';
-            const file = new File([blob], fileName, { type: blob.type });
-            console.log("imageFile fetched: ",file);
-            console.log("toBase64 = ", this.toBase64(file));
-            console.log("fetchFile: RETURN");
-            return file;
-        } catch (error) {
-            console.error("Error fetching file:", error);
-            throw error;
-        }
-    }
-    
-    public static getFileNameFromUrl(url: string): string | null {
-        const urlParts = url.split('/');
-        return urlParts[urlParts.length - 1];
+   
+    public static async getImageFile(imageURL: string): Promise<string> {
+
+        const response = await axios.get(imageURL, { responseType: 'arraybuffer', });
+        const imgBase64 = Buffer.from(response.data, 'binary').toString('base64');
+
+        return imgBase64;
     }
     
       
 
-    public static image_alt_valid_Context(issue: IIssue) : {} | undefined {
+    public static async image_alt_valid_Context(issue: IIssue) : Promise<string> {
         let inputValues = issue.messageArgs; // ["ai-Context", imgSrc] note: first arg ignored
 
-        const keys = ["isBase64", "image"];
+        // const keys = ["isBase64", "image"];
         
         // Example usage:
         // const imagePath = chrome.runtime.getURL(inputValues[1]);
         const imageURL = "https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud" + inputValues[1];
         console.log("imageURL = ", imageURL);
 
-        let imageFile = this.fetchFile(imageURL);
-        console.log("File = ", imageFile);
+        // get file extension
+        let extension = inputValues[1].substring(inputValues[1].lastIndexOf('.') + 1);
+        console.log('File extension:', extension);
 
-        let jsonObject : MyObject = {};
+        let imageBase64 = "";
+        let imageBase64Config = "data:image/" + extension + ";base64,";
+        console.log("imageBase64Config = ", imageBase64Config.toString());
+        
+        await this.getImageFile(imageURL).then(result => {
+            console.log("*** result *** = \n",result);
+            imageBase64 = imageBase64Config + result;
+            console.log("imageBase64Config + result = \n", imageBase64);
+            imageBase64 = JSON.stringify(imageBase64);
+            console.log("imageBase64 = \n", imageBase64);
+        });
         if (issue.messageArgs.length > 1) { // want 2nd value
-            jsonObject[keys[0]] = "false"; 
-            // @ts-ignore
-            jsonObject[keys[1]] = imageURL;
+            let jsonString = `{"isBase64": true, "image": ${imageBase64} }`;
+            console.log("jsonString = ", jsonString);
+            let jsonObject = Object.assign({}, JSON.parse(jsonString));
+            console.log("***** jsonObject ***** = \n", jsonObject);
+            // let aiContext = JSON.stringify(jsonObject);
+            // console.log("***** aiContext string ***** =\n", aiContext);
             return jsonObject;
         } else {
             console.log("Error: cannot form text_contrast_sufficient_Context");

@@ -237,14 +237,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     /*
      * outputPrompt: gather violation context data to send to the AI proxy server
      */
-    async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[]) {
-        let ruleAIContext : {} | undefined;
-        if (issue.ruleId === "text_contrast_sufficient") {
-            ruleAIContext = UtilAIContext.text_contrast_sufficient_Context(issue);
-        } else if (issue.ruleId === "img_alt_valid") {
-            ruleAIContext = UtilAIContext.image_alt_valid_Context(issue);
-
-        }
+    async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[], ruleAIContext: any) {
+        
         console.log("Func: outputPrompt");
         console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
         let prompt = {
@@ -280,6 +274,14 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
     }
 
     async aiProcessIssueData(issue: IIssue) {
+        let ruleAIContext : any;
+        if (issue.ruleId === "text_contrast_sufficient") {
+            ruleAIContext = UtilAIContext.text_contrast_sufficient_Context(issue);
+        } else if (issue.ruleId === "img_alt_valid") {
+            UtilAIContext.image_alt_valid_Context(issue).then(aiContext => {
+                ruleAIContext = aiContext;
+            });
+        }
         console.log("Func: aiProcessIssueData");
         // get help url
         const str = issue.help;
@@ -437,7 +439,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         
         let refsString = reqURLs;
         setTimeout(() => {
-            this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString);
+            this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString, ruleAIContext);
         }, 2000);
     }
 
