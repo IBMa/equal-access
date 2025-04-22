@@ -223,6 +223,12 @@ baselineFolder: test/baselines
 # optional - Where the tool can read/write cached files (ace-node.js / archive.json)
 # Default: `${os.tmpdir()}/accessibility-checker/`
 cacheFolder: /tmp/accessibility-checker
+
+# (optional) If the checker instantiates Puppeteer (using the command-line version)
+# These are additional arguments to pass to Puppeteer
+puppeteerArgs:
+    - --no-sandbox
+    - --disable-setuid-sandbox
 ```
 
 A similar `aceconfig.js` file can also be used:
@@ -245,7 +251,8 @@ module.exports = {
     label: [process.env.TRAVIS_BRANCH],
     outputFolder: "results",
     baselineFolder: "test/baselines",
-    cacheFolder: "/tmp/accessibility-checker"
+    cacheFolder: "/tmp/accessibility-checker",
+    puppeteerArgs: [ "--no-sandbox", "--disable-setuid-sandbox" ]
 };
 ```
 

@@ -160,6 +160,12 @@ export type IConfigInternal = IConfig & {
     headless?: "shell" | boolean
 
     /**
+     * (optional) If the checker is going to instantiate Puppeteer, other browser args that
+     * need to be provided
+     */
+    puppeteerArgs?: string[]
+
+    /**
      * (optional) If the tool allows, set the maximum number of tabs to open
      */
     maxTabs?: number
