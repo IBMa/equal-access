@@ -375,7 +375,7 @@ function updateWithRuleInfo(ruleInfo) {
                     aiElem.setAttribute("style", "justify-content: flex-end !important; margin-right: 16px !important;");
                 }
                 let locSnippet = document.querySelector("#summary");
-                locSnippet.innerHTML = `<h3>Summary</h3>`;
+                locSnippet.innerHTML = `<h3>Summary of changes to fix A11y issues</h3>`;
                 if (aiInfo.change_summary !== "We are waiting on AI server.") {
                     locSnippet.appendChild(aiElem);
                 }
