@@ -17,6 +17,7 @@ import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 import { AriaUtil } from "./AriaUtil";
 import { CSSUtil } from "./CSSUtil";
+import { ClipPathUtil } from "./ClipPathUtil";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -203,6 +204,13 @@ export class VisUtil {
                 CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
                 return false;
             }
+
+            // check hidden by clip-path
+            // TODO: need to check if hidden content contains focusable elements, similarly to offscreen content
+            if (ClipPathUtil.isNodeVisuallyHiddenByClipPath(node)) {
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
+                return false;
+            }
         }
 
         // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
@@ -288,148 +296,6 @@ export class VisUtil {
             return hid;
         }
         return hidden;
-    }
-
-    /**
-     * This function is responsible for checking if the node that is visually hidden by css clip-path:
-     *
-     * Note 1: If either current node or any of the parent nodes are visually hidden then this
-     *          function will return true (node is not visually hidden).
-     *
-     * Note 2: nodes with CSS properties clip-path, the content is not considered hidden to an AT. Text hidden with these methods 
-     *      can still be reedable by screen readers. 
-     * Note 3: if a link, form control, or other focusable element is given this style, the element would be focusable but not visible, 
-     *      keyboard users might be confused.    
-     * 
-     * @parm {element} node The node which should be checked if it is visually hidden or not.
-     * @return {bool} true if the node is visually hidden, false otherwise
-     *
-     * @memberOf VisUtil
-     */
-    public static isNodeVisuallyHiddenByClipPath(node: Node) : boolean {
-        if (!node || node.nodeType !== 1) return false;
-        
-        let elem = node as HTMLElement;
-        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
-        // true when we detect that the node is hidden. We have to set it to false so that we know
-        // the rules has already been checked.
-        const hidden = CacheUtil.getCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", undefined);
-        if (hidden === undefined) {
-            
-            const style = CSSUtil.getComputedStyle(elem);
-            let path = style['clip-path'];
-            if (!path || path['clip-path'] === 'none' || path['clip-path'].trime() === '')  {
-                CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
-                return false;
-            }
-
-            path = path.trim().replace(/\s+/g, ' ').toLowerCase();
-            
-            let index = path.startsWith("inset(") || path.startsWith("inset (");
-            if (index !== -1) {
-                let round_index = path.start.startsWith("round");
-                let str = path.substring(path.indexOf("("));
-                if (round_index !== -1)
-                    str = path.substring(path.indexOf("("), round_index-1);
-
-                let numbers = str.split(" ");
-                // When one value is specified, it applies the same inset to all four sides
-                if (numbers.length === 1)  
-                    return VisUtil.isHiddenFromClipPath(elem, numbers[0], numbers[0], numbers[0], numbers[0]);
-
-                // When two values are specified, the first value applies to the top and bottom, the second to the left and right.
-                if (numbers.length === 2)  
-                    return VisUtil.isHiddenFromClipPath(elem, numbers[0], numbers[1], numbers[0], numbers[1]);         
-                    
-                // When three values are specified, the first applies to the top, the second to the right and left, the third to the bottom.
-                if (numbers.length === 3)  
-                    return VisUtil.isHiddenFromClipPath(elem, numbers[0], numbers[1], numbers[1], numbers[2]);   
-
-                // When four values are specified, the values apply to the top, right, bottom, and left in that order (clockwise).
-                if (numbers.length === 4)  
-                    return VisUtil.isHiddenFromClipPath(elem, numbers[0], numbers[1], numbers[2], numbers[3]);   
-
-            }    
-                
-            index = path.startsWith("cycle(") || path.startsWith("cycle (");
-            if (index !== -1) {
-                
-                
-            }    
-            
-
-            // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
-            // the hidden CSS, property or attribute. Only keep checking until we are all the way back to the parentNode
-            // element.
-            let parentElement = DOMWalker.parentElement(elem);
-            if (!parentElement)
-                return false;
-
-            // Check upwards recursively
-            const hid = VisUtil.isNodeVisuallyHiddenByClipPath(parentElement);
-            CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", hid);
-            return hid;
-        }
-        return hidden;
-    }
-
-    private static isHiddenFromClipPath(elem, top, right = '0px', bottom = '0px', left = '0px') {
-        const style = CSSUtil.getComputedStyle(elem);
-        const width = parseInt(style.width);  //always in px
-        const height = parseInt(style.height); //always in px
-
-        // top
-        let top_value = parseInt(top);
-        if (isNaN(top_value)) return false;
-
-        if (top.endsWith("%"))
-            top_value = top_value * height;
-        else {
-            const pair = CSSUtil.getValueUnitPair(top);
-            if (!pair) return false;
-            top_value = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
-        }
-
-        // right
-        let right_value = parseInt(right);
-        if (isNaN(right_value)) return false;
-
-        if (right.endsWith("%"))
-            right_value = right_value * width;
-        else {
-            const pair = CSSUtil.getValueUnitPair(right);
-            if (!pair) return false;
-            right_value = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
-        }
-            
-        // bottom
-        let bottom_value = parseInt(bottom);
-        if (isNaN(bottom_value)) return false;
-
-        if (bottom.endsWith("%"))
-            bottom_value = bottom_value * height;
-        else {
-            const pair = CSSUtil.getValueUnitPair(bottom);
-            if (!pair) return false;
-            bottom_value = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
-        }
-
-        // left
-        let left_value = parseInt(left);
-        if (isNaN(left_value)) return false;
-
-        if (left.endsWith("%"))
-            left_value = left_value * width;
-        else {
-            const pair = CSSUtil.getValueUnitPair(left);
-            if (!pair) return false;
-            left_value = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
-        }
-
-        if (height - (top_value + bottom_value) < 5  || width - (right_value + left_value) < 5) 
-            return true;
-        
-        return false;
     }
 
     /**
