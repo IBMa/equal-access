@@ -477,7 +477,7 @@ export class CSSUtil {
      * @return value in pixels
      */
     public static convertValue2Pixels(unit, unitValue, elem) {
-        if (unitValue == 0) return 0;
+        if (unitValue === 0) return 0;
         if (!unit) unit = "px";
         const supportedUnits = {
             // absolute unit
@@ -512,7 +512,7 @@ export class CSSUtil {
                     getComputedStyle(elem).getPropertyValue("font-size")
                 ),
         };
-
+        
         if (unit in supportedUnits) return supportedUnits[unit](unitValue);
 
         return null;
@@ -872,14 +872,17 @@ export class CSSUtil {
     public static getValueUnitPair(valueUnitCombo) {
         if (!valueUnitCombo) return null;
 
-        valueUnitCombo = valueUnitCombo.trim().toLowerCase();
+        if (Number.isInteger(valueUnitCombo)) return ["px", valueUnitCombo];
+
         const value = parseInt(valueUnitCombo);
         if (isNaN(value)) return null;
 
-        let unit = valueUnitCombo.trim().match(/(\d+(\.\d+)?)\s*([^\d\s]+)/);
-        if (!unit) unit = "px";
-
-        return [value, unit];
+        valueUnitCombo = valueUnitCombo.trim().toLowerCase();
+        let match = valueUnitCombo.trim().match(/([a-z]+)$/);
+        let unit = 'px';
+        if (match) unit = match[1];
+        
+        return [unit, value];
     }
 
 }

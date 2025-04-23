@@ -51,16 +51,16 @@ export class ClipPathUtil {
             CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
             return false;
         }
-
+        
         path = path.trim().replace(/\s+/g, ' ').toLowerCase();
         
-        let index = path.indexOf("inset("); console.log("path=" + path +", index="+index);
+        let index = path.indexOf("inset(");
         if (index !== -1) { 
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             if (round_index !== -1)
                 str = path.substring(path.indexOf("(")+1, round_index-1);
-            console.log("str=" + str);
+            
             let numbers = str.split(" ");
             // When one value is specified, it applies the same inset to all four sides
             if (numbers.length === 1)  {
@@ -71,7 +71,7 @@ export class ClipPathUtil {
 
             // When two values are specified, the first value applies to the top and bottom, the second to the left and right.
             if (numbers.length === 2) { 
-                const ret = ClipPathUtil.isClippedByInset(elem, numbers[0], numbers[1], numbers[0], numbers[1]); 
+                const ret = ClipPathUtil.isClippedByInset(elem, numbers[0], numbers[1], numbers[0], numbers[1]);
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", ret);
                 return ret;         
             }
@@ -95,12 +95,12 @@ export class ClipPathUtil {
         index = path.indexOf("rect(");
         if (index !== -1) {
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             if (round_index !== -1)
                 str = path.substring(path.indexOf("(")+1, round_index-1);
 
             let numbers = str.split(" ");
-
+            
             /**
              * The first (top) and third (bottom) values are distances from the top edge of the containing block, 
              * and the second (right) and fourth (left) values are distances from the left edge of the containing block. 
@@ -118,7 +118,7 @@ export class ClipPathUtil {
             // for example, rect(10px 0 0 20px) is clamped to rect(10px 20px 10px 20px)
             if (numbers[2] < numbers[0] ) numbers[2] = numbers[0];
             if (numbers[1] < numbers[3] ) numbers[1] = numbers[3];
-
+            
             let top = parseInt(numbers[0]);
             if (isNaN(top)) {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
@@ -134,7 +134,7 @@ export class ClipPathUtil {
                     return false;
                 }
                 top = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
-            }
+            } 
             if (top >= height) {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                 return false;
@@ -194,7 +194,7 @@ export class ClipPathUtil {
                 }
                 bottom = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
             }
-            
+            console.log('top='+top+", bottom="+bottom+", left="+left+", right="+right);
             if ((bottom - top) <= ClipPathUtil.THRESHOLD  || (right - left) <= ClipPathUtil.THRESHOLD) {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", true);
                 return true;
@@ -207,7 +207,7 @@ export class ClipPathUtil {
         index = path.indexOf("xywh(");
         if (index !== -1) {
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             if (round_index !== -1)
                 str = path.substring(path.indexOf("(")+1, round_index-1);
 
@@ -301,9 +301,9 @@ export class ClipPathUtil {
             return false;                
         }
 
-        index = path.indexOf("cycle(");
+        index = path.indexOf("circle(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             let numbers = str.split(" ");
             
             let radius = parseInt(numbers[0]);
@@ -335,7 +335,7 @@ export class ClipPathUtil {
         
         index = path.indexOf("ellipse(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             let numbers = str.split(" ");
 
             // ellipse(closest-side farthest-side at 30% 40%);
@@ -390,7 +390,7 @@ export class ClipPathUtil {
 
             // ellipse(40% 50% at left);
             let at_index = path.indexOf("at");
-            str = path.substring(path.indexOf("(")+1);
+            str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             if (at_index !== -1)
                 str = path.substring(path.indexOf("(")+1, at_index-1);
 
@@ -428,31 +428,30 @@ export class ClipPathUtil {
 
         index = path.indexOf("polygon(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             let numbers = str.split(",");
-
+           
             // polygon(nonzero|evenodd, 0% 0%, 50% 50%, 0% 100%)
             if (numbers[0] === 'nonzero' || numbers[0] === 'evenodd')
-                numbers = numbers.shift();
+                numbers.shift();
 
             let y = 0;
             let x = 0;
             for (let i=0; i < numbers.length; i++) {
-                let coordnates = numbers[i].split(" ");
-                if (coordnates.length != 2 ) {
+                let coordinates = numbers[i].trim().split(" ");
+                if (coordinates.length != 2 ) {
                     CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                     return false;
                 }
                 if (i === 0) {
-                    x = coordnates[0];
-                    y = coordnates[1];
+                    x = coordinates[0];
+                    y = coordinates[1];
                 } else
-                    if (Math.abs(coordnates[0] - x) >= ClipPathUtil.THRESHOLD || Math.abs(coordnates[1] - y) >= ClipPathUtil.THRESHOLD) {
+                    if (Math.abs(coordinates[0] - x) >= ClipPathUtil.THRESHOLD || Math.abs(coordinates[1] - y) >= ClipPathUtil.THRESHOLD) {
                         CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                         return false;
                     }
-            }
-            
+            }   
             CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", true);
             return true;
         }      
@@ -465,7 +464,7 @@ export class ClipPathUtil {
         const style = CSSUtil.getComputedStyle(elem);
         const width = parseInt(style.width);  //always in px
         const height = parseInt(style.height); //always in px
-
+        
         // top
         let top_value = parseInt(top);
         if (isNaN(top_value)) return false;
