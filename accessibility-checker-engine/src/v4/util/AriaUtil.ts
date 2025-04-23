@@ -778,6 +778,55 @@ export class AriaUtil {
     }
 
     /**
+     * return if the element is owned or controlled by another element. 
+     * If an ancestor of an element is owned or controlled by another element, then the element is also considered as owned or controlled.
+     * an element can be owned or controlled by another element through aria-owns or aria-controls
+     *   when the DOM hierarchy cannot be used to represent the relationship.
+     * aria-owns attribute is used to define contextual relationship with a owning parent 
+     * aria-controls attribute is used to associate an element with the controlling element.
+     *  example elements with roles: combobox, scrollbar, tab, button, listbox, menu, menubar, radiogroup, tree, treegrid
+     * 
+     * when an element is owned or controlled by another element, its navigation may be controlled by the parent 
+     *  through aria-activedescendants attribute or roving tabindex
+     * 
+     * Note navigation with native combobox (input with a datalist) is in native focus navigation, not considered here   
+     * 
+     * @parm {element} element - The element to inspect
+     * @return {boolean} 
+     *
+     * @memberOf AriaUtil
+     */
+    public static isNavigationOwnedOrControlled(element : Element) {
+        if (!element) return false;
+        
+        let ownerElems: Element[] = CacheUtil.getCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", null);
+        if (ownerElems !== null && ownerElems.length > 0) {
+            if (CommonUtil.getAncestor(element, ownerElems))
+                return true;
+        }
+        let role = AriaUtil.getResolvedRole(element);
+        if (!role) return false;
+        
+        let id = element.getAttribute("id");
+        if (!id || id.trim().length === 0) return false;
+
+        const elem = element.ownerDocument.querySelector(`*[aria-controls~='${id}'], *[aria-owns~='${id}']`);
+        if (!elem) return false;
+
+        const containers = ['combobox', 'scrollbar', 'button', 'tab', 'listbox', 'menu', 'menubar', 'radiogroup', 'tree', 'treegrid'];
+        if (containers.includes(role)) {
+            if (ownerElems === null)
+                ownerElems = [];
+            
+            ownerElems.push(element);
+            CacheUtil.setCache(element.ownerDocument, "AriaUtil_NavigationOwnedOrControlled", ownerElems);            
+            return true;
+        }    
+        
+        return false;
+    }
+
+    /**
      * This function is responsible for finding a node which matches the role and is a sibling of the
      * provided element.
      *
@@ -1319,6 +1368,74 @@ export class AriaUtil {
             dupeMap[AriaUtil.getAriaLabel(ele)] = (dupeMap[AriaUtil.getAriaLabel(ele)] || 0) + 1;
         })
         return dupeMap;
+    }
+
+    /**
+     * return accessible names for all AT visible landmark elements 
+     * @param doc 
+     * @returns 
+     */
+    public static getLandmarkAccNames(doc) {
+        let nameMap = CacheUtil.getCache(doc, "AriaUtil_Landmark_AccNames", null);
+        if (nameMap && nameMap.length !== 0) 
+            return nameMap;
+
+        nameMap = [];
+        let landmarkElems = doc.querySelectorAll(
+            'aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], form,[role="form"], section,[role="region"], article,[role="article"], [role="search"],[role="application"],[role="document"]'
+        );
+
+        if (landmarkElems.length === 0) {
+            CacheUtil.setCache(doc, "AriaUtil_Landmark_AccNames", nameMap);
+            return nameMap;
+        }
+
+        landmarkElems.forEach(function (elem: Element) {
+            // ignore node that is AT hidden or in a dialog that is considered as a separate location from the rest of the main page
+            if (!VisUtil.isNodeHiddenFromAT(elem) && CommonUtil.getAncestor(elem, ["DIALOG"]) === null && AriaUtil.getAncestorWithRole(elem, "dialog", true) === null) {
+                let name = "";
+                let pair = AccNameUtil.computeAccessibleName(elem);
+                if (pair && pair.name && pair.name.trim().length > 0)
+                    name = pair.name.trim();
+                
+                const role = AriaUtil.getResolvedRole(elem);
+                nameMap.push({"elem" : elem, "role" : role, "name": name});    
+            }
+        })
+        CacheUtil.setCache(doc, "AriaUtil_Landmark_AccNames", nameMap);
+        return nameMap;
+    }
+
+    /**
+     * check if the given element with the landmark rolw is unique
+     * @param element 
+     * @param role: a specific landmark role, or "any" for all landmark role  
+     * @param considerNoneLabel: if consider the landmarks without a label
+     * @returns 
+     */
+    public static isLandmarkNameUnique(element, role, considerNoneLabel: boolean = false) {
+        const nameMap = AriaUtil.getLandmarkAccNames(element.ownerDocument);
+        let exist = null;
+        if (role === 'any')
+            exist = nameMap.find(entry => entry.elem === element);      
+        else    
+            exist = nameMap.find(entry => entry.elem === element && entry.role === role);
+
+        if (!exist) return null;
+
+        const name = exist.name;
+        if (!considerNoneLabel && name === '') return null;
+
+        for (let i=0; i < nameMap.length; i++) {
+            if (nameMap[i].elem === element) continue;     
+            if (name === nameMap[i].name) {
+                if (role === 'any')
+                    return true;
+                else if (nameMap[i].role === role)
+                    return true; 
+            }        
+        }
+        return false;
     }
 
     // Given an array of elements, return true if the elements have unique ARIA labels globally

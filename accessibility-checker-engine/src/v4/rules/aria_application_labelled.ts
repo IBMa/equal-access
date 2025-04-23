@@ -13,9 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { AriaUtil } from "../util/AriaUtil";
 import { AccNameUtil } from "../util/AccNameUtil";
-import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 
 export const aria_application_labelled: Rule = {
@@ -23,20 +21,20 @@ export const aria_application_labelled: Rule = {
     context: "aria:application",
     refactor: {
         "Rpt_Aria_ApplicationLandmarkLabel": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1"}
+            "Pass_0": "pass",
+            "Fail_1": "fail_no_label"}
     },
     help: {
         "en-US": {
-            "Pass_0": "aria_application_labelled.html",
-            "Fail_1": "aria_application_labelled.html",
+            "pass": "aria_application_labelled.html",
+            "fail_no_label": "aria_application_labelled.html",
             "group": "aria_application_labelled.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Element with \"application\" role does not have a label",
+            "pass": "The element with \"application\" role has a label that describes its purpose",
+            "fail_no_label": "Element with \"application\" role does not have a label",
             "group": "Each element with \"application\" role must have a label that describes its purpose"
         }
     },
@@ -53,9 +51,9 @@ export const aria_application_labelled: Rule = {
         
         const pair = AccNameUtil.computeAccessibleName(ruleContext);
         if (!pair) {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_no_label");
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }
