@@ -57,11 +57,11 @@ export class ClipPathUtil {
         let index = path.indexOf("inset(");
         if (index !== -1) { 
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
             if (round_index !== -1)
-                str = path.substring(path.indexOf("(")+1, round_index-1);
+                str = path.substring(path.indexOf("(")+1, round_index);
             
-            let numbers = str.split(" ");
+            let numbers = str.trim().split(" ");
             // When one value is specified, it applies the same inset to all four sides
             if (numbers.length === 1)  {
                 const ret = ClipPathUtil.isClippedByInset(elem, numbers[0], numbers[0], numbers[0], numbers[0]);
@@ -95,11 +95,11 @@ export class ClipPathUtil {
         index = path.indexOf("rect(");
         if (index !== -1) {
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
             if (round_index !== -1)
-                str = path.substring(path.indexOf("(")+1, round_index-1);
+                str = path.substring(path.indexOf("(")+1, round_index);
 
-            let numbers = str.split(" ");
+            let numbers = str.trim().split(" ");
             
             /**
              * The first (top) and third (bottom) values are distances from the top edge of the containing block, 
@@ -194,7 +194,7 @@ export class ClipPathUtil {
                 }
                 bottom = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
             }
-            console.log('top='+top+", bottom="+bottom+", left="+left+", right="+right);
+            
             if ((bottom - top) <= ClipPathUtil.THRESHOLD  || (right - left) <= ClipPathUtil.THRESHOLD) {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", true);
                 return true;
@@ -207,11 +207,11 @@ export class ClipPathUtil {
         index = path.indexOf("xywh(");
         if (index !== -1) {
             let round_index = path.indexOf("round");
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
             if (round_index !== -1)
-                str = path.substring(path.indexOf("(")+1, round_index-1);
+                str = path.substring(path.indexOf("(")+1, round_index);
 
-            let numbers = str.split(" ");
+            let numbers = str.trim().split(" ");
 
             let x = parseInt(numbers[0]);
             if (isNaN(x)) {
@@ -303,8 +303,8 @@ export class ClipPathUtil {
 
         index = path.indexOf("circle(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
-            let numbers = str.split(" ");
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
+            let numbers = str.trim().split(" ");
             
             let radius = parseInt(numbers[0]);
             if (isNaN(radius)) {
@@ -335,8 +335,8 @@ export class ClipPathUtil {
         
         index = path.indexOf("ellipse(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
-            let numbers = str.split(" ");
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
+            let numbers = str.trim().split(" ");
 
             // ellipse(closest-side farthest-side at 30% 40%);
             if (numbers.length > 3 && numbers[0] === 'closest-side' && numbers[1] === 'farthest-side' && numbers[2] === 'at') {
@@ -390,11 +390,11 @@ export class ClipPathUtil {
 
             // ellipse(40% 50% at left);
             let at_index = path.indexOf("at");
-            str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
+            str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
             if (at_index !== -1)
-                str = path.substring(path.indexOf("(")+1, at_index-1);
+                str = path.substring(path.indexOf("(")+1, at_index);
 
-            numbers = str.split(" ");
+            numbers = str.trim().split(" ");
             if (numbers.length !== 2) {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                 return false;
@@ -428,8 +428,8 @@ export class ClipPathUtil {
 
         index = path.indexOf("polygon(");
         if (index !== -1) {
-            let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
-            let numbers = str.split(",");
+            let str = path.substring(path.indexOf("(")+1, path.indexOf(")"));
+            let numbers = str.trim().split(",");
             
             // polygon(nonzero|evenodd, 0% 0%, 50% 50%, 0% 100%)
             if (numbers[0] === 'nonzero' || numbers[0] === 'evenodd')
@@ -437,6 +437,8 @@ export class ClipPathUtil {
 
             let y = 0;
             let x = 0;
+            let changed_x = false;
+            let changed_y = false;
             for (let i=0; i < numbers.length; i++) {
                 let coordinates = numbers[i].trim().split(" ");
                 if (coordinates.length != 2 ) {
@@ -446,10 +448,11 @@ export class ClipPathUtil {
 
                 let coordinate_xy = [0, 0];
                 for (let i =0; i < 2; i++) {
-                    if (isNaN(coordinates[i])) return false;
+                    let value = parseInt(coordinates[i]);
+                    if (isNaN(value)) return false;
 
                     if (coordinates[i].endsWith("%"))
-                        coordinate_xy[i] = (i === 0) ? coordinates[i] * width/100 : coordinates[i] * height/100;
+                        coordinate_xy[i] = (i === 0) ? value * width/100 : value * height/100;
                     else {
                         const pair = CSSUtil.getValueUnitPair(coordinates[i]);
                         if (!pair) return false;
@@ -459,12 +462,17 @@ export class ClipPathUtil {
                 if (i === 0) {
                     x = coordinate_xy[0];
                     y = coordinate_xy[1];
-                } else
-                    if (Math.abs(coordinate_xy[0] - x) >= ClipPathUtil.THRESHOLD || Math.abs(coordinate_xy[1] - y) >= ClipPathUtil.THRESHOLD) {
-                        CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
-                        return false;
-                    }
-            }   
+                } 
+
+                if (Math.abs(coordinate_xy[0] - x) >= ClipPathUtil.THRESHOLD) 
+                    changed_x = true;
+                if (Math.abs(coordinate_xy[1] - y) >= ClipPathUtil.THRESHOLD) 
+                    changed_y = true;
+            }
+            if (changed_x && changed_y) {
+                CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
+                return false;
+            }  
             CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", true);
             return true;
         }      
