@@ -1,11 +1,19 @@
 {
     "compilerOptions": {
+        "allowJs": true,
+        "target": "ES2017",
+        "removeComments": false,
+        "noEmitOnError": true,
+        "inlineSources": true,
+        "inlineSourceMap": true,
+        "moduleResolution": "node",
+        "alwaysStrict": true,
         "experimentalDecorators": true,
         "outDir": "../dist",
         "baseUrl": "",
         "module": "commonjs",
-        "allowJs": true,
-        "target": "ES6"
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true
     },
     "include": ["./**/*"],
     "exclude": ["./static"]

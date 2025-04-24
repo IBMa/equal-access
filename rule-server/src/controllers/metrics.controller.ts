@@ -17,12 +17,12 @@
 import { Query, Controller, Get, Route, Response } from 'tsoa';
 import { ApiError } from './apiError';
 import * as crypto from 'crypto';
-import { DB, eDB } from '../util/db';
+import { eDB, getDB } from "../util/db"
 
 
 @Route('/meter')
 export class MeterController extends Controller {
-    static dbConn = new DB(eDB.AAT);
+    static dbConn = getDB(eDB.AAT);
     @Get('v2')
     @Response<ApiError>('500', 'Internal Server Error')
     public async v2(
@@ -55,7 +55,7 @@ export class MeterController extends Controller {
                         "result": "OK"
                     });
                 }
-                await MeterController.dbConn.updateRecords([data]);        
+                await (await MeterController.dbConn).updateDocs([data]);        
             } catch (err) {
                 console.error(err);
             }
@@ -90,7 +90,7 @@ export class MeterController extends Controller {
                         "result": res[i]
                     });
                 }
-                await MeterController.dbConn.updateRecords([data]);        
+                await (await MeterController.dbConn).updateDocs([data]);        
             } catch (err) {
                 console.error(err);
             }

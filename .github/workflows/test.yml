@@ -474,6 +474,8 @@ jobs:
         working-directory: common/module
       - run: npm install
         working-directory: karma-accessibility-checker
+      - run: npm install --no-save forever
+        working-directory: karma-accessibility-checker
       - run: npm run setup
         working-directory: karma-accessibility-checker
       - run: sleep 10

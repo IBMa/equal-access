@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node --eval \"var path = require('path');var fs = require('fs-extra');var karmaibmaRoot = path.resolve(__dirname, '..', 'karma-ibma');var karmaibmaMovePath = path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) { try { fs.copySync(karmaibmaRoot, karmaibmaMovePath);} catch (e) {fs.removeSync(karmaibmaMovePath)}}\"",
-    "postuninstall": "node --eval \"var path=require('path'); var fs=require('fs-extra');var karmaibmaRoot=path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) {fs.removeSync(karmaibmaRoot);}\""
+    "postinstall": "node --eval \"var path = require('path');var karmaibmaRoot = path.resolve(__dirname, '..', 'karma-ibma');var karmaibmaMovePath = path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) { try { fs.copySync(karmaibmaRoot, karmaibmaMovePath);} catch (e) {fs.removeSync(karmaibmaMovePath)}}\"",
+    "postuninstall": "node --eval \"var path=require('path');var karmaibmaRoot=path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) {fs.removeSync(karmaibmaRoot);}\""
   },
   "keywords": [
     "ci",
@@ -26,16 +26,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "deep-diff": "1.0.2",
-    "fs": "0.0.2",
-    "fs-extra": "10.0.0",
     "js-yaml": "4.1.0",
-    "karma": "6.3.18",
-    "path": "0.12.7",
-    "promise": "8.1.0",
-    "request": "2.72.0",
-    "shelljs": "0.8.4",
-    "slack": "11.0.2",
-    "slack-node": "0.1.8"
+    "karma": "6.3.18"
   },
   "engines": {
     "node": ">=10"
