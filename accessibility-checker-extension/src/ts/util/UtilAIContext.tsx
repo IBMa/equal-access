@@ -123,6 +123,25 @@ export class UtilAIContext {
      *             can improve the accuracy or time by adding some.
      */
 
+    /*
+     *  AI Rule 5: a_text_purpose
+     *
+     *             Hyperlink has no link text, label or image with a text alternative
+     *             
+     *             There is no rule or ai context for this rule unless we find that we 
+     *             can improve the accuracy or time by adding some.
+     */
+
+    /*
+     *  AI Rule 6: html_lang_exists
+     *
+     *             Page detected as HTML, but does not have a 'lang' attribute
+     *             
+     *             There is no rule or ai context for this rule unless we find that we 
+     *             can improve the accuracy or time by adding some.
+     */
+    
+
     // other violation rules in demo:
     //      aria_widget_labelled
     //      Rpt_Aria_InvalidTabindexForActivedescendant
