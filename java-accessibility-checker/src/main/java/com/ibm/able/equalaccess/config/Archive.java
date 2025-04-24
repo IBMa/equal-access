@@ -34,6 +34,7 @@ public class Archive {
     public String version;
     public boolean latest;
     public boolean sunset;
+    public boolean hidden;
     public String helpPath;
     public String enginePath;
 }
