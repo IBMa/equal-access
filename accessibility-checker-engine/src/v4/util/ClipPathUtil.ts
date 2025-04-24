@@ -430,7 +430,7 @@ export class ClipPathUtil {
         if (index !== -1) {
             let str = path.substring(path.indexOf("(")+1, path.indexOf(")")-1);
             let numbers = str.split(",");
-           
+            
             // polygon(nonzero|evenodd, 0% 0%, 50% 50%, 0% 100%)
             if (numbers[0] === 'nonzero' || numbers[0] === 'evenodd')
                 numbers.shift();
@@ -443,11 +443,24 @@ export class ClipPathUtil {
                     CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                     return false;
                 }
+
+                let coordinate_xy = [0, 0];
+                for (let i =0; i < 2; i++) {
+                    if (isNaN(coordinates[i])) return false;
+
+                    if (coordinates[i].endsWith("%"))
+                        coordinate_xy[i] = (i === 0) ? coordinates[i] * width/100 : coordinates[i] * height/100;
+                    else {
+                        const pair = CSSUtil.getValueUnitPair(coordinates[i]);
+                        if (!pair) return false;
+                        coordinate_xy[i] = CSSUtil.convertValue2Pixels(pair[0], pair[1], elem);
+                    }
+                }
                 if (i === 0) {
-                    x = coordinates[0];
-                    y = coordinates[1];
+                    x = coordinate_xy[0];
+                    y = coordinate_xy[1];
                 } else
-                    if (Math.abs(coordinates[0] - x) >= ClipPathUtil.THRESHOLD || Math.abs(coordinates[1] - y) >= ClipPathUtil.THRESHOLD) {
+                    if (Math.abs(coordinate_xy[0] - x) >= ClipPathUtil.THRESHOLD || Math.abs(coordinate_xy[1] - y) >= ClipPathUtil.THRESHOLD) {
                         CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN_CLIPPATH", false);
                         return false;
                     }
