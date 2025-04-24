@@ -18,7 +18,7 @@
         "build:karma-accessibility-checker": "cd karma-accessibility-checker && npm run build",
         "build:rule-server": "cd rule-server && npm run build",
         "build:extension": "cd accessibility-checker-extension && npm run build:prod",
-        "start-server:rule-server":"cd rule-server && npm start",
+        "start-server:rule-server": "cd rule-server && npm start",
         "build:extension-local": "cd accessibility-checker-extension && npm run build:watch:local",
         "build:cypress-accessibility-checker": "cd cypress-accessibility-checker && npm run package:npm",
         "testqa": "npm-run-all install:rule-server start-server:rule-server install:extension build:extension-local",
