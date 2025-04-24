@@ -116,7 +116,7 @@ Flags:
         console.log("-----------------------");
         console.log();
         for (const archive of config.ruleArchiveSet) {
-            if (archive.sunset) continue;
+            if (archive.sunset || archive.hidden) continue;
             console.log(`${archive.name} [${archive.id}]`);
             for (const policy of archive.policies) {
                 console.log(`  - ${policy.name} [${policy.id}]`);
