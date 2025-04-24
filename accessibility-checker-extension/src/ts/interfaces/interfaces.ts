@@ -34,6 +34,7 @@ export interface IArchiveDefinition {
     version: string
     latest?: true
     sunset?: boolean
+    hidden?: boolean
     helpPath: string
     enginePath: string
 }
