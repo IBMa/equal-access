@@ -33,7 +33,6 @@ function notice(years) {
 
 // Load all the needed modules
 var gulp = require('gulp');
-var uglify = require("gulp-uglify");
 var ginsert = require('gulp-insert');
 
 // Pull in the code from src folder into karma-ibma under package

@@ -23,7 +23,6 @@
 // Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
-const request = require('request');
 const { ACConfigManager } = require('./common/config/ACConfigManager');
 const ACCommon = require("./ACCommon");
 
@@ -86,19 +85,21 @@ async function ACEngineLoaderAndConfig(logger, config) {
     var engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
     if (engineAge > 5000) {
         ACCommon.log.debug("Starting download of: " + engineDownloadURL + " to " + ACEngineRootFolder);
-        let engine = await new Promise((resolve, reject) => {
-            request.get({ 
-                url: engineDownloadURL, 
-                rejectUnauthorized: false
-            }, function (error, response, body) {
-                if (body) {
-                    resolve(body);
-                } else {
-                    ACCommon.log.error("[ERROR] Unable to load engine from "+engineDownloadURL);
-                    process.exit(-1);
+        let engine = "";
+        try {
+            let options = undefined;
+            if (new URL(engineDownloadURL).hostname === "localhost") {
+                process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+                options = {
+                    rejectUnauthorized: false
                 }
-            });
-        });
+            }
+            const resp = await fetch(engineDownloadURL, options);
+            engine = await resp.text();
+        } catch (err) {
+            ACCommon.log.error("[ERROR] Unable to load engine from "+engineDownloadURL);
+            process.exit(-1);
+        }
 
         fs.mkdirSync(ACEngineRootFolder, { recursive: true});
         fs.writeFileSync(ACEngineFullpath, engine);

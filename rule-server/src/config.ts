@@ -14,7 +14,6 @@
     limitations under the License.
  *****************************************************************************/
 
-import cfenv = require("cfenv");
 import { join } from "path";
 
 export class Config {
@@ -58,18 +57,13 @@ export class Config {
 
     public static bodyParserOptionsLimit: string = process.env.BODY_PARSER_OPTION_LIMIT || "5mb";
 
-    public static AAT_DB: string = process.env.ACS_AAT_EXTERNALDB_URL;
+    public static AAT_DB: string = process.env.AATCLOUDANT_URL;
+    public static AAT_DB_APIKEY = process.env.AATCLOUDANT_APIKEY;
     public static COUCHDB_USER = process.env.COUCHDB_USER || "admin";
     public static COUCHDB_PASSWORD = process.env.COUCHDB_PASSWORD || "couchadmin";
 }
 
-if (Config.__CLOUDFOUNDRY__) {
-    const appEnv = cfenv.getAppEnv();
-    const ENV_ENDPOINT = !process.env.VCAP_SERVICES ? null : appEnv.url.substring(0, appEnv.url.indexOf(Config.BASE_PATH));
-    Config.endpoint = ENV_ENDPOINT;
-    Config.deployedPort = appEnv.port;
-} else if (Config.__CODEENGINE__) {
-    Config.AAT_DB = process.env.AATCLOUDANT_URL
+if (Config.__CODEENGINE__) {
     if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-sandbox`)) {
         Config.endpoint = "https://able-sandbox.xbhbw9w198q.us-south.codeengine.appdomain.cloud"
     }
