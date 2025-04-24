@@ -162,8 +162,8 @@ export class ARIAMapper extends CommonMapper {
                 bounds: this.getBounds(node),
                 namespace: this.getNamespace(),
                 node: node,
-                role: this.getRole(node) || "none",
-                rolePath: parentInfo.rolePath+"/"+(this.getRole(node) || "none"),
+                role: this.getRole(node) || null,
+                rolePath: parentInfo.rolePath+"/"+(this.getRole(node) || null),
                 roleCount: {},
                 childrenCanHaveRole: parentInfo.childrenCanHaveRole
             });
@@ -196,7 +196,7 @@ export class ARIAMapper extends CommonMapper {
                     roleCount: {},
                     childrenCanHaveRole: true
                 };
-                while (parentInfo.role === "none" || parentInfo.role === "/none") {
+                while (parentInfo.role === null) {
                     parent = ARIAMapper.getAriaOwnedBy(parent) || DOMWalker.parentElement(parent) as HTMLElement;
                     parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
                     parentInfo = parentHierarchy[parentHierarchy.length-1];
@@ -221,7 +221,7 @@ export class ARIAMapper extends CommonMapper {
                     bounds: this.getBounds(elem),
                     namespace: this.getNamespace(),
                     node: elem,
-                    role: this.getRole(elem) || "none",
+                    role: this.getRole(elem) || null,
                     rolePath: "",
                     roleCount: {},
                     childrenCanHaveRole: true
@@ -230,14 +230,14 @@ export class ARIAMapper extends CommonMapper {
                 // Adjust role if we're within a presentational container
                 let presentationalContainer = !parentInfo.childrenCanHaveRole;
                 if (presentationalContainer) {
-                    nodeInfo.role = "none";
+                    nodeInfo.role = null;
                 } else {
                     nodeInfo.childrenCanHaveRole = parentInfo.childrenCanHaveRole 
                         && this.childrenCanHaveRole(elem, nodeInfo.role);
                 }
 
                 // Set the paths
-                if (nodeInfo.role !== "none") {
+                if (nodeInfo.role !== null) {
                     parentInfo.roleCount[nodeInfo.role] = (parentInfo.roleCount[nodeInfo.role] || 0) + 1; 
                     nodeInfo.rolePath = parentInfo.rolePath+"/"+nodeInfo.role+"["+parentInfo.roleCount[nodeInfo.role]+"]";
                 } else {
@@ -285,8 +285,8 @@ export class ARIAMapper extends CommonMapper {
         }
         this.pushHierarchy(node)
         for (let idx=0; idx<this.hierarchyResults.length; ++idx) {
-            if (this.hierarchyResults[idx].role[0] === "/") {
-                this.hierarchyResults[idx].role = this.hierarchyResults[idx].role.substring(1);
+            if (this.hierarchyResults[idx].role && this.hierarchyResults[idx].role[0] === "/") {
+                this.hierarchyResults[idx].role = (this.hierarchyResults[idx].role ? this.hierarchyResults[idx].role.substring(1) : null);
             }
         }
         return this.hierarchyResults;
@@ -299,7 +299,7 @@ export class ARIAMapper extends CommonMapper {
         nodeHierarchy = this.getNodeHierarchy(node);
         let nodeInfo = nodeHierarchy[nodeHierarchy.length-1];
         this.hierarchyRole.push(nodeInfo.role);
-        if (nodeInfo.role !== "none") {
+        if (nodeInfo.role !== null) {
             this.hierarchyPath.push(nodeInfo);
         }
 

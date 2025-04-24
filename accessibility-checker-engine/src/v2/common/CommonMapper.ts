@@ -67,9 +67,9 @@ export abstract class CommonMapper implements IMapper {
     }
 
     protected pushHierarchy(node: Node) {
-        let role : string = this.getRole(node) || "none";
+        let role : string = this.getRole(node) || null;
         this.hierarchyRole.push(role);
-        if (role !== "none") {
+        if (role !== null) {
             let parentPathInfo = this.hierarchyPath[this.hierarchyPath.length-1];
             parentPathInfo.roleCount[role] = (parentPathInfo.roleCount[role] || 0) + 1; 
             this.hierarchyPath.push({
@@ -94,7 +94,7 @@ export abstract class CommonMapper implements IMapper {
 
     protected popHierarchy() {
         let role = this.hierarchyRole.pop();
-        if (role !== "none") {
+        if (role !== null) {
             this.hierarchyPath.pop();
         }
         this.hierarchyResults.pop();
