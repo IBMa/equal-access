@@ -296,7 +296,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "window",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -493,7 +493,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "window",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -973,7 +973,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "form",
             roleType: "landmark",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -1028,7 +1028,7 @@ export class ARIADefinitions {
             reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
             htmlEquiv: "table",
             roleType: "widget",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -1191,7 +1191,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
@@ -1387,7 +1387,7 @@ export class ARIADefinitions {
             reqChildren: ["radio"],
             htmlEquiv: null,
             roleType: "widget",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-haspopup'] 
         },
@@ -1600,7 +1600,7 @@ export class ARIADefinitions {
             reqChildren: ["row", "rowgroup", "caption"], // rowgroup and caption are not required, but it is allowed
             htmlEquiv: "table",
             roleType: "structure",
-            nameRequired: true,
+            nameRequired: false,
             nameFrom: ["author"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },

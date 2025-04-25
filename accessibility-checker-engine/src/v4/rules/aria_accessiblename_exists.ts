@@ -16,10 +16,11 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { VisUtil } from "../util/VisUtil";
 import { AccNameUtil } from "../util/AccNameUtil";
+import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export const aria_accessiblename_exists: Rule = {
     id: "aria_accessiblename_exists",
-    context: "aria:columnheader, aria:form, aria:heading, aria:rowheader, aria:table, aria:graphics-document,aria:graphics-symbol, aria:img,aria:image, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak, doc-example",
+    context: "aria:columnheader, aria:heading, aria:rowheader, aria:graphics-document,aria:graphics-symbol, aria:img,aria:image, doc-backlink, doc-biblioentry, doc-biblioref, doc-glossref, doc-noteref, doc-pagebreak, doc-example",
     help: {
         "en-US": {
             "pass": "aria_accessiblename_exists.html",
@@ -75,6 +76,8 @@ export const aria_accessiblename_exists: Rule = {
         if (deprecatedAttributes && deprecatedAttributes.length > 0) return null;
 
         let role = AriaUtil.getResolvedRole(ruleContext);
+        if (!role || !ARIADefinitions.designPatterns[role] || !ARIADefinitions.designPatterns[role].nameRequired)
+            return null;
         
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
         if (!name_pair || !name_pair.name || name_pair.name.trim().length === 0) {

@@ -20,13 +20,14 @@ import Fetch from "../../util/fetch";
 export default class EngineCache {
     public static async getArchives() {
         try {
-            let archiveInfo = ((await chrome.storage.local.get(['archiveInfo'])) || {}).archiveInfo || { archives: [], ts: 0 };
+            // let archiveInfo = ((await chrome.storage.local.get(['archiveInfo'])) || {}).archiveInfo || { archives: [], ts: 0 };
             // If archive info is older than 30 minutes, or not there at all
-            let archives : IArchiveDefinition[] = archiveInfo.archives;
-            if (archives.length === 0 || !archiveInfo.ts || new Date().getTime()-new Date(archiveInfo.ts).getTime() >= 30*60*1000) {
-                archives = <IArchiveDefinition[]>await Fetch.json(chrome.runtime.getURL("archives.json"));
-            }
-            await chrome.storage.local.set({ archiveInfo: { archives, ts: new Date().getTime() }});
+            // let archives : IArchiveDefinition[] = archiveInfo.archives;
+            // if (archives.length === 0 || !archiveInfo.ts || new Date().getTime()-new Date(archiveInfo.ts).getTime() >= 30*60*1000) {
+            let archives = <IArchiveDefinition[]>await Fetch.json(chrome.runtime.getURL("archives.json"));
+            archives = archives.filter(archive => !archive.hidden);
+            // }
+            // await chrome.storage.local.set({ archiveInfo: { archives, ts: new Date().getTime() }});
             return archives;
         } catch (err) {
             console.error(err);

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <a tabindex="0">Ask Me</a>
+      <div role="none"
+          tabindex="0"
+          class="_yb_1of2ruh _yb_6p72fy  _yb_1q79mgk  _yb_1o0t4j7 _yb_wfiwn2"
+          id="ybarAccountProfile"> My div content
+    </div>
+
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["element_tabbable_role_valid"],
+        results: [
+        {
+            "ruleId": "element_tabbable_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/a[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "fail_no_valid_role",
+            "message": "The tabbable element does not have a valid widget role",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_tabbable_role_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "fail_no_valid_role",
+            "message": "The tabbable element does not have a valid widget role",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
