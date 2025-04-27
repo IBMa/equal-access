@@ -59,6 +59,8 @@ class BackgroundController extends Controller {
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
 
+    
+
     /***********************************************************
      * WebSocket components for AI building blocks
      */
@@ -116,7 +118,7 @@ class BackgroundController extends Controller {
             this.sendMessage(promptJSON, webSocket);
             return webSocket;
         })
-        .catch((error) => {
+        .catch((error: any) => {
             console.error('Error establishing WebSocket connection:', error);
             return error;
         });
@@ -528,7 +530,7 @@ class BackgroundController extends Controller {
         return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
             let modifyList = await this.getIgnore(url);
             for (const issue of issues) {
-                let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
+                let idx = modifyList.findIndex((baselineIssue: { ruleId: string; reasonId: string; path: { dom: string; }; messageArgs: string[]; }) => issueBaselineMatch(baselineIssue, issue));
                 if (bIgnore && idx === -1) {
                     // We want to set it and it's not there, so add it
                     modifyList.push(issue);

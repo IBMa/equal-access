@@ -273,6 +273,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         await this.aiProcessIssueData(issue);
     }
 
+    getPageText(pageText:string) {
+        return pageText;
+    }
+
     async aiProcessIssueData(issue: IIssue) {
         let ruleAIContext : any;
         if (issue.ruleId === "text_contrast_sufficient") {
@@ -281,6 +285,11 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             UtilAIContext.image_alt_valid_Context(issue).then(aiContext => {
                 ruleAIContext = aiContext;
             });
+        } else if (issue.ruleId === "html_lang_exists") {
+            console.log("Before promise call");
+            const result = await UtilAIContext.html_lang_exists_Context();
+            console.log("Promise resolved: \n", result);
+            ruleAIContext = result;
         }
         console.log("Func: aiProcessIssueData");
         // get help url
@@ -359,6 +368,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             const currentTab = tabs[0];
+            console.log("reportTreeGrid ***** active tab title = ", tabs[0].title);
             chrome.scripting.executeScript({
                 //@ts-ignore
                 target: { tabId: currentTab.id },
@@ -368,6 +378,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             }, (results) => {
                 if (results && results[0] && results[0].result) {
                     const htmlString = results[0].result;
+                    console.log("htmlString = ",htmlString);
                     // Process the HTML string (e.g., parse it using DOMParser if needed)
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlString, 'text/html');
@@ -392,11 +403,18 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                     }
                     // console.log("element = ",element);
                     if (element !== null) {
-                        // need to create parent so can use innerHTML on a detached element
-                        var tmp = document.createElement("div"); 
-                        tmp.appendChild(element);
-                        elementString = tmp.innerHTML;
-                        console.log("elementString = ",elementString);
+                        // check if element is <html>, <head> or <body>
+                        console.log(element.nodeName);
+                        const elementName = element.nodeName;
+                        if (elementName === "HTML" || elementName === "HEAD" || elementName === "BODY" ) {
+                            elementString = issue.snippet;
+                        } else {
+                            // need to create parent so can use innerHTML on a detached element
+                            var tmp = document.createElement("div"); 
+                            tmp.appendChild(element);
+                            elementString = tmp.innerHTML;
+                            console.log("elementString = ",elementString);
+                        }
                         return element!; // not used
                     }
                 } else {

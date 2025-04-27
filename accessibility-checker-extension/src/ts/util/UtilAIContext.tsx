@@ -70,7 +70,7 @@ export class UtilAIContext {
     
       
 
-    public static async image_alt_valid_Context(issue: IIssue) : Promise<string> {
+    public static async image_alt_valid_Context(issue: IIssue) : Promise<any> {
         let inputValues = issue.messageArgs; // ["ai-Context", imgSrc] note: first arg ignored
 
         // const keys = ["isBase64", "image"];
@@ -128,14 +128,63 @@ export class UtilAIContext {
      *
      *             Hyperlink has no link text, label or image with a text alternative
      *             
-     *             There is no rule or ai context for this rule unless we find that we 
-     *             can improve the accuracy or time by adding some.
+     *             
      */
+    
 
     /*
      *  AI Rule 6: html_lang_exists
      *
      *             Page detected as HTML, but does not have a 'lang' attribute
+     *             
+     *             We are going to start with to AI context items:
+     *             1. the code snippet for the HTML element, i.e., the opening tag and
+     *                its properties which will show the missing 'lang' attribute
+     *             2. all the text content will be extracted into a string that can be
+     *                analyzed by the 
+     */
+    public static html_lang_exists_Context() {
+        // we need to send AI model all the text on the page to determine the language
+        console.log("Func: html_lang_exists_Context");
+        
+        let pageText: string;
+        let jsonObject: any;
+
+        return new Promise ((resolve, _reject) => {
+            chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
+                const currentTab = tabs[0];
+                chrome.scripting.executeScript({
+                    //@ts-ignore
+                    target: { tabId: currentTab.id },
+                    func: () => {
+                        return document.documentElement.innerText;
+                    }
+                }).then (results => {
+                    if (results && results[0] && results[0].result) {
+                        pageText = results[0].result;
+                        // console.log("pageText = \n", pageText);
+                        pageText = pageText.replace(/\s+/g, ' ');
+                        // console.log("pageText = \n", pageText);
+                        let jsonString = `{"pageText": "${pageText}" }`;
+                        jsonObject = Object.assign({}, JSON.parse(jsonString));
+                        console.log("***** jsonObject ***** = \n", jsonObject);
+                        resolve(jsonObject); 
+                        console.log("jsonObject done");
+                    }
+                });
+            });
+        });
+    }
+       
+
+        
+    
+
+
+    /*
+     *  AI Rule 7: html_lang_valid
+     *
+     *             Page detected as HTML, but 'lang' attribute not valid
      *             
      *             There is no rule or ai context for this rule unless we find that we 
      *             can improve the accuracy or time by adding some.
