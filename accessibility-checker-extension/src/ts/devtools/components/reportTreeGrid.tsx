@@ -381,7 +381,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             }, (results) => {
                 if (results && results[0] && results[0].result) {
                     const htmlString = results[0].result;
-                    console.log("htmlString = ",htmlString);
+                    // console.log("htmlString = ",htmlString);
                     // Process the HTML string (e.g., parse it using DOMParser if needed)
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlString, 'text/html');

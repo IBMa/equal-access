@@ -141,58 +141,42 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
                 }
             }
             if (help1) {
-                console.log("\n\n**** START Setup for help1 URL ****\n")
-                console.log("JOHO File helpScreen.tsx help1 = \n", help1);
-                console.log("Count = ", help1.length);
+                // console.log("\n\n**** START Setup for help1 URL ****\n")
+                // console.log("JOHO File helpScreen.tsx help1 = \n", help1);
+                // console.log("Count = ", help1.length);
                 
                 // for testing while constructing the new url we will make a copy of help 1
 
                 // Step 0: Setup URL with parameters
-                console.log("\nStep 0: Setup URL with parameters");
                 const testHelp1 = help1;
                 // extract base url including hash
                 const hashIndex = testHelp1!.indexOf('#');
                 const help1BaseURL = testHelp1!.substring(0, hashIndex + 1);
-                console.log("help1BaseURL = \n", help1BaseURL);
-                console.log("Count = ", help1BaseURL.length);
 
                 // extract from help 1 url everything after the # - part A
                 const help1param1 = testHelp1?.substring(testHelp1.indexOf('#') + 1);
-                console.log("help1param1 (string) = \n", help1param1);
-                console.log("Count = ", help1param1.length); // ***** this is one count to match
-
-                // convert json object to string
-                const help1param2 = JSON.stringify(aiHelp);
-                console.log("help1param2 (string) = \n", help1param2);
-                console.log("Count = ", help1param2.length); // ***** this is one count to match
 
                 // append the aiHelp to the part A after the # prepended by an & (note: don't include the #)
                 let help1AllParams = "";
                 if (help1param1) {
                     help1AllParams = help1param1 + ('&' + JSON.stringify(aiHelp));
                 }
-                console.log("help1AllParams = \n", help1AllParams); // should find & between parameters
-                console.log("Count = ", help1AllParams.length);
 
-                const completeHelp1URL = help1BaseURL + help1AllParams;
-                console.log("\nComplete help1 URL with AI Help = \n", completeHelp1URL);
-                console.log("Count = ", completeHelp1URL.length); // ***** this is one count to match
+                // const completeHelp1URL = help1BaseURL + help1AllParams;
+                // console.log("\nComplete help1 URL with AI Help = \n", completeHelp1URL);
+                // console.log("Count = ", completeHelp1URL.length); // ***** this is one count to match
 
                 // Step 1: Compress Params
-                console.log("\nStep 1: Compress Params")
                 const compressedHelp1Params = LZString.compressToEncodedURIComponent(help1AllParams);
-                console.log("LZ compressedHelp1Params = \n", compressedHelp1Params);
-                console.log("Count = ", compressedHelp1Params.length);
                 
                 // Step 2: create url with compressed params
-                console.log("\nStep 2: create url with compressed params")
                 const help1URLCompressed = help1BaseURL + compressedHelp1Params;
-                console.log("**** Final help1URL is help1BaseURL + compressedHelp1Params = \n", help1URLCompressed);
-                console.log("Count = ", help1URLCompressed.length); // ***** this is one count to match
+                // console.log("**** Final help1URL is help1BaseURL + compressedHelp1Params = \n", help1URLCompressed);
+                // console.log("Count = ", help1URLCompressed.length); // ***** this is one count to match
                 
                 // if no AI just use help1
                 help1 = help1URLCompressed;
-                console.log("********** help1 = \n", help1);
+                // console.log("********** help1 = \n", help1);
             }
             if (help2)
                 console.log("JOHO file helpScreen help2 = \n", help2);
