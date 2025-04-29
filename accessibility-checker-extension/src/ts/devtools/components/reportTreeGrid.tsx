@@ -290,7 +290,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
             const result = await UtilAIContext.html_lang_exists_Context();
             console.log("Promise resolved: \n", result);
             ruleAIContext = result;
+        } else if (issue.ruleId === "a_text_purpose") {
+            ruleAIContext = UtilAIContext.a_text_purpose_Context(issue);
         }
+        console.log("ruleAIContext = ", ruleAIContext);
         console.log("Func: aiProcessIssueData");
         // get help url
         const str = issue.help;

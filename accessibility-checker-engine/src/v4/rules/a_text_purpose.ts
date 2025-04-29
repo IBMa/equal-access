@@ -49,7 +49,9 @@ export const a_text_purpose: Rule = {
     }],
     act: "c487ae",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLAnchorElement;
+
+        const linkURL =  new URL(ruleContext.href, window.location.href).href;
 
         //skip the check if the element is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || CommonUtil.isNodeDisabled(ruleContext)) {
@@ -64,7 +66,7 @@ export const a_text_purpose: Rule = {
             /**ARIAMapper.computeName(ruleContext).trim().length > 0*/
             || CommonUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
-            return RuleFail("fail_acc_name");
+            return RuleFail("fail_acc_name", ["ai-Context", linkURL]);
         } else {
             return RulePass("pass");
         }

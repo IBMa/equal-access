@@ -130,6 +130,26 @@ export class UtilAIContext {
      *             
      *             
      */
+    public static a_text_purpose_Context(issue: IIssue) : any {
+        let inputValues = issue.messageArgs; // ['ai-Context', linkURL]
+        
+        console.log("inputValues = ", inputValues);
+        const linkURL = inputValues[1];
+        console.log("linkURL = ", linkURL);
+        
+        if (issue.messageArgs.length > 1) { // want 2nd value
+            let jsonString = `{ "linkURL": "${linkURL}" }`;
+            console.log("jsonString = ", jsonString);
+            let jsonObject = Object.assign({}, JSON.parse(jsonString));
+            console.log("***** jsonObject ***** = \n", jsonObject);
+            // let aiContext = JSON.stringify(jsonObject);
+            // console.log("***** aiContext string ***** =\n", aiContext);
+            return jsonObject;
+        } else {
+            console.log("Error: cannot form a_text_purpose_Context");
+            return ("Error: cannot form a_text_purpose_Context");
+        }
+    }
     
 
     /*
@@ -164,6 +184,7 @@ export class UtilAIContext {
                         pageText = results[0].result;
                         // console.log("pageText = \n", pageText);
                         pageText = pageText.replace(/\s+/g, ' ');
+                        pageText = UtilAIContext.limitWords(pageText);
                         // console.log("pageText = \n", pageText);
                         let jsonString = `{"pageText": "${pageText}" }`;
                         jsonObject = Object.assign({}, JSON.parse(jsonString));
@@ -177,7 +198,13 @@ export class UtilAIContext {
     }
        
 
-        
+    public static limitWords(str: string) {
+        const words = str.trim().split(/\s+/);
+        if (words.length > 1000) {
+          return words.slice(0, 1000).join(" ");
+        }
+        return str;
+    }    
     
 
 
