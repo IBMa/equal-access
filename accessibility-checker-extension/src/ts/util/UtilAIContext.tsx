@@ -209,7 +209,7 @@ export class UtilAIContext {
 
 
     /*
-     *  AI Rule 7: html_lang_valid
+     *  AI Rule 7: aria_content_in_landmark
      *
      *             Page detected as HTML, but 'lang' attribute not valid
      *             
