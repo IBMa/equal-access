@@ -23,6 +23,7 @@ import EngineCache from "./util/engineCache";
 import { UtilIssue } from "../util/UtilIssue";
 import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
+
 export type TabChangeType = {
     tabId: number
     changeInfo: chrome.tabs.TabChangeInfo
@@ -53,9 +54,250 @@ class BackgroundController extends Controller {
             return senderTabId!;
         });
     }
+
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
+
+    
+
+    /***********************************************************
+     * WebSocket components for AI building blocks
+     */
+
+    // Use http or https based on the WebSocket URL
+    //const request = url.startsWith('wss://') ? https.request(requestOptions) : http.request(requestOptions);
+
+    // const token = 'd3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==';
+    // url with token
+    // const url = `wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==
+    
+    // In our plain JavaScript file, dispatch the custom event with the message data.
+    public sendResponseMessage = (message: string) => {
+        console.log("In function sendResponseMessage with message = \n", message);
+        message = this.jsonResponse(message);
+        const event = new CustomEvent('my-custom-event', { detail: message });
+        window.dispatchEvent(event);
+    };
+
+     // const aiHelp = {
+        //     "inaccessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+        //     "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+        //     "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+        //     "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        // }
+
+    public jsonResponse(message:string) {
+        console.log("************ Start jsonResponse **************");
+        console.log("message = \n", message);
+        let jsonObj = JSON.parse(message);
+        console.log("jsonObj = \n", jsonObj);
+        let response = 
+            {
+                "inaccessible_dom":jsonObj.data.input_dom, 
+                "accessible_dom":jsonObj.data.accessible_dom,
+                "accessible_source":jsonObj.data.accessible_source,
+                "change_summary":jsonObj.data.change_summary,
+                "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+            }
+        console.log("response = ", response);
+        const responseStr = JSON.stringify(response);
+        console.log("responseStr = ", responseStr);
+        console.log("************ End jsonResponse **************")
+        return responseStr;
+    }
+
+    public connect(promptJSON: string): any {
+        console.log("File: BackgroundController.ts Func: connect");
+        let webSocket = new WebSocket('wss://rms-proxy-prod.xbh3fvfhmve.us-south.codeengine.appdomain.cloud?token=d3N1c2VyOjFBKmIzJmNEJGVGZ0hAa1RrPzlDdjVpRFJHQFIhaA==');
+        this.waitForWebSocketConnection(webSocket)
+        .then(() => {
+            console.log('WebSocket connection established!');
+            console.log("promptJSON in connect: \n", promptJSON);
+            this.sendMessage(promptJSON, webSocket);
+            return webSocket;
+        })
+        .catch((error: any) => {
+            console.error('Error establishing WebSocket connection:', error);
+            return error;
+        });
+        /* Example input to the AI proxy server
+        {
+            "api": "/rms/api/V2/watsonx/checker_help",
+            "data": {
+            "dom": "<svg viewBox=\"0 0 600 400\" width=\"0\" height=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><filter id=\"protanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"deuteranopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter><filter id=\"tritanopia\"><feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0\"></feColorMatrix></filter></defs></svg>",
+            "wcg": "1.1.1",
+            "failure": "The SVG element has no accessible name",
+            "whatToDo": "What to do Ensure the _non-decorative_ SVG element has an _accessible name_ that is not empty: * Add an `aria-labelledby` attribute to the element that points to visible text on the page that is a meaningful label. * **Or**, add an `aria-label` attribute to the element. * **Or**, add a direct child `<title>` element. * **Or**, add an `xlink:title` attribute on a link. * **Or**, for text container elements, add the text content. * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label. As appropriate, ensure the _non-decorative_ SVG element has an _accessible description_ that is not empty, in the following priority: * Add an `aria-describedby` attribute to the element that points to visible text on the page that is a meaningful description. * **Or**, add a direct child `<desc>` element. * **Or**, for text container elements, add the text content. * **Or**, add a direct child `<title>` element that provides a tooltip, when ARIA label attributes are used to provide the accessible name. * **Or**, add a `xlink:title` attribute on a link, if not used to provide the accessible name. Ensure the _decorative_ SVG element use `aria-hidden` or `role=’none | presentation’` to provides a clear indication that the element is not visible, perceivable, or interactive to users. Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, in order to concatenate one of the other text alternatives with text from a separate element.",
+            "references": [
+                "https://www.ibm.com/able/requirements/requirements/#1_1_1",
+                "https://www.w3.org/TR/graphics-aria/",
+                "https://w3c.github.io/accname/#computation-steps",
+                "https://w3c.github.io/graphics-aam/#mapping_role_table",
+                "https://www.w3.org/TR/svg-aam-1.0/#mapping_role_table"
+            ],
+                "source_lang": "React.JS"
+            }
+        }
+        */
+        const pingJSON = {
+            "api":"/ping",
+            "data":{}
+          };
+        const ping = JSON.stringify(pingJSON); // Now jsonData is a valid JSON string
+
+        webSocket.onopen = () => {
+            console.log('websocket connection opened');
+            this.keepAlive(ping, webSocket);
+        };
+        /* response back from the AI proxy server
+        {
+            "status": 200,
+            "message": "Request successful",
+            "timestamp": "2025-03-05T00:03:52.280Z",
+            "meta": {
+                "rms_api_version": "2.0.0",
+                "model": "llama-3-405b-instruct",
+                "model_url": "https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx#llama-3-1",
+                "request_duration_ms": 32712
+            },
+            "data": {
+                "accessible_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>",
+                "accessible_source": "import React from 'react'; function AccessibleSVG() { return ( <svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg> ); } export default AccessibleSVG;",
+                "change_summary": "The original SVG element was inaccessible because it had no accessible name. To fix this, I added the aria-hidden attribute to the SVG element and set it to true, indicating that the element is not visible, perceivable, or interactive to users. This change makes the SVG element accessible by providing a clear indication of its purpose.",
+                "input_dom": "<svg viewBox='0 0 600 400' width='0' height='0' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><filter id='protanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='deuteranopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter><filter id='tritanopia'><feColorMatrix in='SourceGraphic' type='matrix' values='0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0'></feColorMatrix></filter></defs></svg>"
+            },
+            "input_token_count": 1170,
+            "generated_token_count": 801,
+            "disclaimer": "Please note that while we aim to provide accurate and helpful information, the use of AI-generated content is at your own risk, and IBM does not assume any liability for outcomes or actions taken based on this content."
+        }
+        */
+        webSocket.onmessage = (event:any) => {
+            const jsonData = event.data;
+            const jsonDataObj = JSON.parse(jsonData);
+            if (jsonDataObj !== undefined && jsonDataObj.meta !== undefined && jsonDataObj.meta.rms_api_version !== undefined) {
+                // extract needed data from AI server JSON response
+                // construct JSON of needed data to send to help.js
+                this.adjustJsonData(event);
+                console.log("Response message from server: \n", event.data);
+                this.sendResponseMessage(event.data); // send needed data JSON to help.js
+            }
+            if (jsonDataObj.api !== undefined) {
+                console.log("Ping message from server: \n", event.data);
+                this.sendMessage(event.data, webSocket);
+            }
+        };
+
+        webSocket.onclose = () => {
+            console.log('websocket connection closed');
+        };
+
+        webSocket.onerror = (event) => {
+            console.error("WebSocket error:", event);
+        };
+    }
+
+    disconnect(webSocket:WebSocket) {
+        if (webSocket) {
+            webSocket.close();
+            console.log('websocket connection disconnected');
+        }
+    }
+
+    adjustJsonData(evt: any) {
+        // data needed from the response
+        // 1. data.input_dom
+        // 2. data.accessible_dom
+        // 3. data.accessible_source
+        // 4. data.change_summary
+        // 5. disclaimer
+        const jsonData = evt.data;
+        const jsonDataObj = JSON.parse(jsonData);
+        if (jsonDataObj) {
+            const aiHelpJsonData = {
+                inaccessible_dom: jsonDataObj.data.input_dom,
+                accessible_dom: jsonDataObj.data.accessible_dom,
+                accessible_source: jsonDataObj.data.accessible_source,
+                change_summary: jsonDataObj.data.change_summary,
+                disclaimer: jsonDataObj.disclaimer
+            };
+            console.log(aiHelpJsonData);
+        }
+        // send aiHelpJsonData to help.js
+    }
+
+    
+
+    public sendMessage(message:string, webSocket:WebSocket) {
+        // let messageData = message;
+        console.log("in func sendMessage with message: ", message);
+        if (webSocket) {
+        //   const message = {
+        //     type: "message",
+        //     data: messageData
+        //   };
+      
+          // Check if the WebSocket is not busy (e.g., no pending messages)
+          
+          if (webSocket.bufferedAmount === 0) {
+            console.log("Buffered amt 0 so can send message");
+            // webSocket.send(JSON.stringify(message));
+            webSocket.send(message);
+          } else {
+            // If busy, wait for the buffer to clear
+            console.log("webSocket busy so add listener to wait for buffer to clear");
+            webSocket.addEventListener("bufferedamountlow", () => {
+            // webSocket.send(JSON.stringify(message));
+            webSocket.send(message);
+            });
+          }
+        } else {
+            console.log("Can't send message NO websocket");
+        }
+    }
+
+    keepAlive(message:string, webSocket:WebSocket) {
+        const TEN_SECONDS_MS = 10 * 1000;
+        const keepAliveIntervalId = setInterval(
+            () => {
+                if (webSocket) {
+                    this.sendMessage(message, webSocket);
+                } else {
+                    clearInterval(keepAliveIntervalId);
+                }
+            },
+            // It's important to pick an interval that's shorter than 30s, to
+            // avoid that the service worker becomes inactive.
+            TEN_SECONDS_MS
+        );
+    }
+
+    waitForWebSocketConnection(socket:WebSocket) {
+        return new Promise<void>((resolve, reject) => {
+          if (socket.readyState === WebSocket.OPEN) {
+            resolve();
+          } else {
+            const onOpen = () => {
+              socket.removeEventListener('open', onOpen);
+              resolve();
+            };
+      
+            const onError = (event:any) => {
+              socket.removeEventListener('error', onError);
+              reject(event);
+            };
+      
+            socket.addEventListener('open', onOpen);
+            socket.addEventListener('error', onError);
+          }
+        });
+    }
+      
+    /***********************************************************
+     * END of WebSocket components for AI building blocks
+     ***********************************************************/
+
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -152,6 +394,8 @@ class BackgroundController extends Controller {
             });
         });
     }
+
+     
 
     ///// Settings related functions /////////////////////////////////////////
     /**
@@ -286,7 +530,7 @@ class BackgroundController extends Controller {
         return this.hook("setIgnore", {url, issues, bIgnore}, async () => {
             let modifyList = await this.getIgnore(url);
             for (const issue of issues) {
-                let idx = modifyList.findIndex(baselineIssue => issueBaselineMatch(baselineIssue, issue));
+                let idx = modifyList.findIndex((baselineIssue: { ruleId: string; reasonId: string; path: { dom: string; }; messageArgs: string[]; }) => issueBaselineMatch(baselineIssue, issue));
                 if (bIgnore && idx === -1) {
                     // We want to set it and it's not there, so add it
                     modifyList.push(issue);
@@ -468,6 +712,7 @@ class BackgroundController extends Controller {
                         }
                     }
                 }
+                
 
                 console.info(`[INFO]: Scanning complete in ${report.totalTime}ms with ${report.ruleTime}ms in rules`);
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
@@ -488,6 +733,18 @@ class BackgroundController extends Controller {
                         return 0;
                     });
                 }
+                
+               
+                // console.info("JOHO HERE");
+                // this.connect();
+                
+                // this.keepAlive();
+                // // sendMessage(report.results[0].message);
+                // // sendMessage(JSON.stringify(report.results[0]));
+                // this.sendMessage("Hello from Joho");
+                // // disconnect();
+               
+                
 
                 getDevtoolsController(toolTabId, false, "remote").setReport(report);
                 getDevtoolsController(toolTabId, false, "remote").setScanningState("idle");

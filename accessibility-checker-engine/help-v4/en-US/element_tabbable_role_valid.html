@@ -19,12 +19,16 @@
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
-    <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+    <script defer type="module">
+        console.log("***** START LOAD IMPORTS *****");
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/ai-label.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="../common/help.js"></script>
+    <script  src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- NOTE: LZString is not getting loaded on time all the time -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script defer src="../common/help.js"></script>
 </head>
 <body>
     <div class="bx--grid toolHelp">
@@ -41,6 +45,29 @@
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
 <!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+<!-- AI info injection sites -->
+
+<div id="inA11yDOMCode"></div>
+
+<div id="summary"></div>
+
+<div id="a11yDOMCode"></div>
+
+<div id="sourceCode"></div>
+
+<!-- DONE with AI info injection sites -->
+
+</script></mark-down>
+
+<!-- End main panel -->
+    <div><p><br /></p></div>
+    <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
 <mark-down><script type="text/plain">
 
 ### Why is this important?

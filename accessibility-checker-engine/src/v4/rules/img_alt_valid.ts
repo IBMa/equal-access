@@ -52,7 +52,10 @@ export const img_alt_valid: Rule = {
     }],
     act: "23a2a8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLImageElement;
+        // JOHO - for AI need image src
+        // const imgSrc =  ruleContext.getAttribute('src');
+        const imgSrc =  new URL(ruleContext.src, window.location.href).href;
         // If not visible to the screen reader, ignore
         if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
@@ -75,14 +78,14 @@ export const img_alt_valid: Rule = {
                     if (role === 'presentation' || role === 'none')
                         return RulePass("pass");
                     
-                    return RuleFail("fail_no_alt");
+                    return RuleFail("fail_no_alt", ["ai-Context", imgSrc]);
                 }    
                 if (alt.length === 0)
                     return RulePass("pass"); 
             } else {
                 if (title.trim().length === 0) {
                     // title contains blank space only (title="  ")
-                    return RuleFail("fail_blank_title"); 
+                    return RuleFail("fail_blank_title", ["ai-Context", imgSrc]); 
                 }
                 // title contains some text (title="some text")
                 return RulePass("pass");
@@ -93,7 +96,7 @@ export const img_alt_valid: Rule = {
                 return RulePass("pass"); 
             } else {
                 // alt contains blank space only (alt=" ")
-                return RuleFail("fail_blank_alt"); 
+                return RuleFail("fail_blank_alt", ["ai-Context", imgSrc]); 
             }    
         }        
     }

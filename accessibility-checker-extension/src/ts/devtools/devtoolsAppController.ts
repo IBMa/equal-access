@@ -143,6 +143,7 @@ export class DevtoolsAppController {
     }
 
     public addSecondaryOpenListener(cb: (open: boolean) => void) {
+        console.log("JOHO func addSecondaryOpenListener");
         this.secondaryOpenListeners.push(cb);
     }
 
@@ -209,12 +210,14 @@ export class DevtoolsAppController {
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     private fireSecondaryView(view: eSecondaryView) {
+        console.log("fireSecondaryView with view = ", view);
         for (const listener of this.secondaryViewListeners) {
             listener(view);
         }
     }
 
     private fireSecondaryOpen(open: boolean) {
+        console.log("fireSecondaryOpen with view = ", open);
         for (const listener of this.secondaryOpenListeners) {
             listener(open);
         }

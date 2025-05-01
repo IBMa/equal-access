@@ -298,7 +298,7 @@ export const text_contrast_sufficient: Rule = {
                 return RulePotential("potential_graphic_background", [ratio.toFixed(2), size, weight]);;
             } else if (textShadow) {
                 // fire potential since a text with shadow may be still viewable, depending on the shadow efffects
-                return RulePotential("potential_text_shadow", [ratio.toFixed(2), size, weight]);;
+                return RulePotential("potential_text_shadow", [ratio.toFixed(2), size, weight]);
             } else {
                 if (fg.toHex() === bg.toHex()) {
                     return RulePotential("potential_same_color", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);

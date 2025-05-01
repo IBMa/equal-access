@@ -19,14 +19,57 @@
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
-    <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/code-snippet.min.js";
+    <script defer type="module">
+        console.log("***** START LOAD IMPORTS *****");
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/version/v2.25.2/ai-label.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/version/v1.35.0/list.min.js";
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="../common/help.js"></script>
+    <script  src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- NOTE: LZString is not getting loaded on time all the time -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script defer src="../common/help.js"></script> -->
+    <script>
+        console.log("***** START SEQUENTIAL IMPORTS *****");
+        (function() {
+      
+            // JS files that need to be loaded one after the other
+            var libs = [
+                'https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js',
+                '../common/help.js'
+            ];
+            
+            var injectLibFromStack = function(){
+                if(libs.length > 0){
+                    
+                    //grab the next item on the stack
+                    var nextLib = libs.shift();
+                    var headTag = document.getElementsByTagName('head')[0];
+                    
+                    //create a script tag with this library
+                    var scriptTag = document.createElement('script');
+                    scriptTag.src = nextLib;
+                    
+                    //when successful, inject the next script
+                    scriptTag.onload = function(e){
+                    console.log("---> loaded: " + e.target.src);
+                    injectLibFromStack();
+                    };    
+                    
+                    //append the script tag to the <head></head>
+                    headTag.appendChild(scriptTag);
+                    console.log("injecting: " + nextLib);
+                }
+                else return;
+            }
+            
+            //start script injection
+            injectLibFromStack();
+            })();
+        </script>
 </head>
 <body>
+    
     <div class="bx--grid toolHelp">
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
@@ -43,6 +86,31 @@
 <!-- Start main panel -->
 <mark-down><script type="text/plain">
 
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+<!-- AI info injection sites -->
+
+<div id="inA11yDOMCode"></div>
+
+<div id="summary"></div>
+
+<div id="a11yDOMCode"></div>
+
+<div id="sourceCode"></div>
+
+<!-- DONE with AI info injection sites -->
+
+</script></mark-down>
+
+<!-- End main panel -->
+    <div><p><br /></p></div>
+    <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### General guidance for this issue
+
 ### Why is this important?
 
 An SVG component with a graphics role can contain essential information as well as multiple shapes.
@@ -51,7 +119,7 @@ Providing a text alternative (accessible name and description) makes the equival
 With the explicit use of roles and attributes, the author provides a clear indication that the content should convey meaning via the accessibility name and description to assistive technology users.
 
 <!-- This is where the code snippet is injected -->
-<div id="locSnippet"></div>
+<!-- <div id="locSnippet"></div> -->
 
 ### What to do
     
@@ -76,7 +144,7 @@ perceivable, or interactive to users.
 Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
 in order to concatenate one of the other text alternatives with text from a separate element.
 
-    
+
 Example:
 
 ```
@@ -93,7 +161,7 @@ Example:
                 <!-- This is where the rule id is injected -->
                 <div id="ruleInfo"></div>
             </div>
-            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+            <!-- <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide"> -->
 <!-- Start side panel -->
 <mark-down><script type="text/plain">
 
@@ -113,6 +181,7 @@ Example:
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>
+
 <!-- End side panel -->
             </div>
         </div>

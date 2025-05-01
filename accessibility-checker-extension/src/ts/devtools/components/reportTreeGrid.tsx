@@ -36,10 +36,14 @@ import {
 import "./reportTreeGrid.scss";
 import { IIssue, UIIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
-import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController';
+import { ePanel, getDevtoolsController, ViewState, AiElementXpathState } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { UtilAIContext } from '../../util/UtilAIContext';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
+// import { web } from 'webpack';
+// import DomPathUtils from "../../contentScripts/DomPathUtils";
+
 
 export interface IRowGroup {
     id: string;
@@ -63,6 +67,7 @@ interface ReportTreeGridProps<RowType extends IRowGroup> {
 
 interface ReportTreeGridState {
     viewState?: ViewState
+    aiElementXpathState?: AiElementXpathState 
     expandedGroups: string[]
     selectedIssue: IIssue | null;
     tabRowId: string;
@@ -183,6 +188,19 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         }
     }
 
+    getInspectedDoc() {
+        chrome.devtools.inspectedWindow.eval(
+            "document",
+            function(result, isException) {
+                if (isException) {
+                    console.error("An error occurred:", isException);
+                } else {
+                    console.log("The document object:", result);
+                }
+            }
+        );
+    }
+
     scrollToRowId(rowId: string) {
         let elem = document.getElementById(rowId);
         if (elem) {
@@ -208,6 +226,242 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
 
     setIssue(issue: IIssue) {
         this.setState({ selectedIssue: issue });
+    }
+
+    extractURL(str: string) {
+        const regex = /https?:\/\/[^\s]+/g;
+        const matches = str.match(regex);
+        return matches ? matches[0] : null; 
+    }
+
+    /*
+     * outputPrompt: gather violation context data to send to the AI proxy server
+     */
+    async outputPrompt(issue: IIssue, element: string, checkpointNumber: string, whatToDo: string, refsString: string[], ruleAIContext: any) {
+        
+        console.log("Func: outputPrompt");
+        console.log("\n\nViolation Context in JSON to send to Websocket server\n\n");
+        let prompt = {
+            api: "/rms/api/V2/watsonx/checker_help",
+            data: {
+                ruleId: `${issue.ruleId}`,
+                aiContext: ruleAIContext,
+                dom: element,
+                wcg_req: `${checkpointNumber}`,
+                failure: `${issue.message}`,
+                whatToDo: `${whatToDo}`,
+                references: refsString,
+                source_lang: "React.JS"  
+            }
+        }
+        let promptJsonString = JSON.stringify(prompt);
+        promptJsonString = promptJsonString.replace(/\s+/g, ' ');
+        
+        console.log(promptJsonString);
+        
+        console.log("\n*************************************************************");
+        console.log("\n***** Initiate background websocket from reportTreeGrid *****\n");
+        console.log("\n*************************************************************\n\n")
+        this.bgcontroller.connect(promptJsonString);
+        // in background controller after get response from server disconnect
+        
+    }
+
+    // called from learn more onClick
+    async doAI(issue: IIssue) {
+        console.log("Func: doAI");
+        await this.aiProcessIssueData(issue);
+    }
+
+    getPageText(pageText:string) {
+        return pageText;
+    }
+
+    async aiProcessIssueData(issue: IIssue) {
+        let ruleAIContext : any;
+        if (issue.ruleId === "text_contrast_sufficient") {
+            ruleAIContext = UtilAIContext.text_contrast_sufficient_Context(issue);
+        } else if (issue.ruleId === "img_alt_valid") {
+            UtilAIContext.image_alt_valid_Context(issue).then(aiContext => {
+                ruleAIContext = aiContext;
+            });
+        } else if (issue.ruleId === "html_lang_exists") {
+            console.log("Before promise call");
+            const result = await UtilAIContext.html_lang_exists_Context();
+            console.log("Promise resolved: \n", result);
+            ruleAIContext = result;
+        } else if (issue.ruleId === "a_text_purpose") {
+            ruleAIContext = UtilAIContext.a_text_purpose_Context(issue);
+        }
+        console.log("ruleAIContext = ", ruleAIContext);
+        console.log("Func: aiProcessIssueData");
+        // get help url
+        const str = issue.help;
+        const splitWord = "html";
+        const index = str.indexOf(splitWord);
+        let before = "";
+        if (index !== -1) {
+            before = str.substring(0, index + splitWord.length);
+        }
+        let helpURL = before; // string before splitWord
+       
+        // fetch help url content
+        let helpHTML = '';
+        await fetch(helpURL)
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.text(); // Assuming the URL returns text content
+            })
+            .then(data => {
+                // 'data' now contains the content from the URL
+                helpHTML = data; 
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the data:', error);
+            });
+        
+        const cheerio = require('cheerio');
+        const $ = cheerio.load(helpHTML);
+        const scripts = $('mark-down script[type="text/plain"]');
+
+        // Get What to do and Requirement information
+        let whatToDo = '';
+        let aboutThisRequirement = '';
+
+        scripts.each((_index:any, script:any) => {
+            
+            const text = $(script).text();
+            const sections = text.split('###');
+
+             sections.forEach((section:any) => {
+                if (section.trim().startsWith('What to do')) {
+                whatToDo = section.trim(); // here is the What to do section
+                } else if (section.trim().startsWith('About this requirement')) {
+                aboutThisRequirement = section.trim(); // About this requirement section
+                }
+            });
+        });
+
+        // get checkpoint number(s)
+        let settings = await this.bgcontroller.getSettings();
+        let rulesets = await this.bgcontroller.getRulesets(this.devtoolsAppController.contentTabId!);
+        let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
+
+        let issueCheckpoints = [];
+        for (const checkpoint of ruleset!.checkpoints) {
+            // see if issue ruleId in checkpoint
+            for (const rule of checkpoint.rules!) {
+                if (issue.ruleId === rule.id) {
+                    issueCheckpoints.push(checkpoint);
+                }
+            }
+        }
+        // get the specific rule in each Checkpoint
+        let checkpointNumber = "";
+        for (const checkpoint of issueCheckpoints) {
+            checkpointNumber += checkpoint.num;
+        }
+
+        // Get the element from the xpath in the main page
+        
+        let element: Node | null;
+        let elementString: string = "";
+        
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            const currentTab = tabs[0];
+            console.log("reportTreeGrid ***** active tab title = ", tabs[0].title);
+            chrome.scripting.executeScript({
+                //@ts-ignore
+                target: { tabId: currentTab.id },
+                func: () => {
+                    return document.documentElement.outerHTML;
+                }
+            }, (results) => {
+                if (results && results[0] && results[0].result) {
+                    const htmlString = results[0].result;
+                    // console.log("htmlString = ",htmlString);
+                    // Process the HTML string (e.g., parse it using DOMParser if needed)
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlString, 'text/html');
+                    // Use the doc object
+                    // console.log("doc = ", doc);
+                    let xpath = issue.path.dom;
+                    xpath = xpath.replace(/\/svg\[/g, "/svg:svg[");
+                    // console.log("xpath = ",xpath);
+                    // element = document.evaluate(xpath, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    let nodes = (doc as Document).evaluate(xpath, doc, function(prefix) { 
+                        if (prefix === 'svg') {
+                            return 'http://www.w3.org/2000/svg';
+                        } else {
+                            return null;
+                        }
+                    }, XPathResult.ANY_TYPE, null);
+                    let domElement = nodes.iterateNext();
+                    if (domElement) {
+                        element = domElement;
+                    } else {
+                        element = null;
+                    }
+                    // console.log("element = ",element);
+                    if (element !== null) {
+                        // check if element is <html>, <head> or <body>
+                        console.log(element.nodeName);
+                        const elementName = element.nodeName;
+                        if (elementName === "HTML" || elementName === "HEAD" || elementName === "BODY" ) {
+                            elementString = issue.snippet;
+                        } else {
+                            // need to create parent so can use innerHTML on a detached element
+                            var tmp = document.createElement("div"); 
+                            tmp.appendChild(element);
+                            elementString = tmp.innerHTML;
+                            console.log("elementString = ",elementString);
+                        }
+                        return element!; // not used
+                    }
+                } else {
+                    return console.error('Could not retrieve document from tab.');
+                }
+            });
+        });
+
+        // Extract and format the urls relating to the issue requirements
+
+        const lines = aboutThisRequirement.split(/\r?\n/);
+
+        this.extractURL(aboutThisRequirement);
+
+        let reqURLs: string[] = []; 
+        // Using forEach
+        lines.forEach((line) => {
+            let url = this.extractURL(line);
+            if (url === null) {
+            } else {
+                if (url.endsWith(")")) {
+                    url = url.slice(0, -1); // Remove last character if it's ')'
+                }
+                // console.log("url = ",url);
+                // @ts-ignore
+                reqURLs.push(url);
+                // console.log("url = ",url);
+            }
+        }); 
+        elementString = elementString.replace(/\s+/g, ' ');
+        whatToDo = whatToDo.replace(/\s+/g, ' ');
+        // console.log("\n\nelementString\n\n",elementString);
+        // console.log("reqURLs = ", reqURLs);
+
+        /*
+         *  wait this all data is ready for outputPrompt
+         *  NOTE: most of the wait is to get the element / elementString
+         *        *** you cannot use a promise for this ***
+         */
+        
+        let refsString = reqURLs;
+        setTimeout(() => {
+            this.outputPrompt(issue, elementString, checkpointNumber, whatToDo, refsString, ruleAIContext);
+        }, 2000);
     }
 
     onGroup(groupId: string) {
@@ -553,6 +807,8 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         this.setState({ checkedIssues: modifyList });
     }
 
+
+
     ///////////////// Render ////////////
     render() {
         let content: React.ReactNode = <></>;
@@ -839,7 +1095,12 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                                             // tabIndex={focused ? 0 : -1}
                                             onClick={(evt: any) => {
                                                 evt.stopPropagation();
+                                                console.log("Learn more clicked which triggers the collection of AI data for prompt.");
+                                                console.log("thisIssue: ", thisIssue);
+                                                // when user as for learn more give them AI enhanced help
+                                                this.doAI(thisIssue);
                                                 this.onRow(group, thisIssue);
+                                                // JOHO can we put a timeout here? No it doesn't help
                                                 this.devtoolsAppController.setSecondaryView("help");
                                                 this.devtoolsAppController.openSecondary(`#${rowId} a`);
                                                 evt.preventDefault();
@@ -900,3 +1161,10 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
         return content;
     }
 }
+
+
+
+
+
+
+
