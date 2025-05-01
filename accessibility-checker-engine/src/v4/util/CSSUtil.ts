@@ -477,7 +477,8 @@ export class CSSUtil {
      * @return value in pixels
      */
     public static convertValue2Pixels(unit, unitValue, elem) {
-        if (unitValue == 0) return 0;
+        if (unitValue === 0) return 0;
+        if (!unit) unit = "px";
         const supportedUnits = {
             // absolute unit
             px: (value) => value,
@@ -511,7 +512,7 @@ export class CSSUtil {
                     getComputedStyle(elem).getPropertyValue("font-size")
                 ),
         };
-
+        
         if (unit in supportedUnits) return supportedUnits[unit](unitValue);
 
         return null;
@@ -861,6 +862,27 @@ export class CSSUtil {
         }
         CacheUtil.setCache(elem, "AriaUtil_AncestorWithStyles", undefined);
         return null;
+    }
+
+    /**
+     * return an array [value, Unit] from a value-unit combo string
+     * @param valueUnitCombo, such as 20px, 2rem 
+     * @returns 
+     */
+    public static getValueUnitPair(valueUnitCombo) {
+        if (!valueUnitCombo) return null;
+
+        if (Number.isInteger(valueUnitCombo)) return ["px", valueUnitCombo];
+
+        const value = parseInt(valueUnitCombo);
+        if (isNaN(value)) return null;
+
+        valueUnitCombo = valueUnitCombo.trim().toLowerCase();
+        let match = valueUnitCombo.trim().match(/([a-z]+)$/);
+        let unit = 'px';
+        if (match) unit = match[1];
+        
+        return [unit, value];
     }
 
 }
