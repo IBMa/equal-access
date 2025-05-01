@@ -17,6 +17,7 @@ import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
 import { AriaUtil } from "./AriaUtil";
 import { CSSUtil } from "./CSSUtil";
+import { ClipPathUtil } from "./ClipPathUtil";
 
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -200,6 +201,13 @@ export class VisUtil {
 
             // check content-visibility: if the content-visibility is hidden, then, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
+                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
+                return false;
+            }
+
+            // check hidden by clip-path
+            // TODO: need to check if hidden content contains focusable elements, similarly to offscreen content
+            if (ClipPathUtil.isNodeVisuallyHiddenByClipPath(node)) {
                 CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
                 return false;
             }
