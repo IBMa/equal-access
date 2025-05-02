@@ -492,7 +492,7 @@ export class AccNameUtil {
         let parent = elem.parentElement;
         if (parent) {
             // if the parent is a widget and has an aria label, then image/svg label is not necessary
-            if (AriaUtil.isWidget(parent) && AriaUtil.hasAriaLabel(parent))
+            if ((AriaUtil.isWidget(parent) || AriaUtil.containsPresentationalChildrenOnly(parent)) && AriaUtil.hasAriaLabel(parent))
                 return true; 
         }
         return false;
