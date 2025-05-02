@@ -116,8 +116,8 @@ export class ClipPathUtil {
 
             // to prevent the bottom edge from crossing over the top edge and right edge from crossing over the left edge. 
             // for example, rect(10px 0 0 20px) is clamped to rect(10px 20px 10px 20px)
-            if (numbers[2] < numbers[0] ) numbers[2] = numbers[0];
-            if (numbers[1] < numbers[3] ) numbers[1] = numbers[3];
+            numbers[2] = Math.max(numbers[0], numbers[2]);
+            numbers[1] = Math.max(numbers[1], numbers[3])
             
             let top = parseInt(numbers[0]);
             if (isNaN(top)) {

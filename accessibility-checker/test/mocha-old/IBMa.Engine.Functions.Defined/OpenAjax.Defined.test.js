@@ -14,9 +14,9 @@
     limitations under the License.
   *****************************************************************************/
 
-var expect = require('chai').expect;
-var aChecker = require("../../../src/");
-
+import * as aChecker from "../../../src/mjs/index.js";
+import { expect } from "chai";
+    
 // This Test Suite is to make sure all the objects/function in the OpenAjax namespace are
 // defined.
 // Need to do this check, to make sure the engine is loaded into the browser correctly by the karma plugin.

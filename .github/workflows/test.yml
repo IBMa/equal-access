@@ -135,15 +135,15 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
         working-directory: accessibility-checker
     
 ###############################################################################
@@ -154,7 +154,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [14.x, 18.x]
+          node-version: [18.x]
 
       steps:
       - uses: actions/checkout@v3
@@ -183,15 +183,15 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
         working-directory: accessibility-checker
 
 ###############################################################################
@@ -231,9 +231,9 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.URL.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.URL.test.mjs
         working-directory: accessibility-checker
 
 ###############################################################################
@@ -273,9 +273,9 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.Scans/**/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.Scans/**/*.test.mjs
         working-directory: accessibility-checker
-      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.ObjectStructure/**/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.ObjectStructure/**/*.test.mjs
         working-directory: accessibility-checker
         
 
@@ -473,6 +473,8 @@ jobs:
       - run: npm install
         working-directory: common/module
       - run: npm install
+        working-directory: karma-accessibility-checker
+      - run: npm install --no-save forever
         working-directory: karma-accessibility-checker
       - run: npm run setup
         working-directory: karma-accessibility-checker

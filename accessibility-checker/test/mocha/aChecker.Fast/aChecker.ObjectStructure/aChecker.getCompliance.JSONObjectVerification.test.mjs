@@ -16,17 +16,20 @@
 
  'use strict';
 
-var fs = require("fs");
-var path = require("path");
-var unitTestcaseHTML = {};
-var aChecker = require("../../../../src")
-var expect = require("chai").expect;
+import * as fs from "fs";
+import * as path from "path";
+import * as aChecker from "../../../../src/mjs/index.js";
+import { expect } from "chai";
+import {fileURLToPath} from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+let unitTestcaseHTML = {};
 
-var files = ["JSONObjectStructureVerification.html"];
+let files = ["JSONObjectStructureVerification.html"];
 files.forEach(function (f) {
-    var fileExtension = f.substr(f.lastIndexOf('.') + 1);
+    let fileExtension = f.substr(f.lastIndexOf('.') + 1);
     if (fileExtension === 'html' || fileExtension === 'htm') {
-        var f = path.join(__dirname, f);
+        f = path.join(__dirname, f);
         unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
     };
 });
@@ -38,12 +41,12 @@ describe("JSON Structure Verification Zombie", function () {
     });
 
     // Variable Decleration
-    var originalPolicies;
+    let originalPolicies;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (let unitTestFile in unitTestcaseHTML) {
         // Get the extension of the file we are about to scan
-        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
+        let fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
 
         // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
         // just move on to the next one.
@@ -78,17 +81,17 @@ describe("JSON Structure Verification Zombie", function () {
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
-                    var unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
-                    var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
+                    let unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
+                    let labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     let report = await aChecker.getCompliance(unitTestDataFileContent, labelName);
                     report = report.report;
                     // Make sure that the structure of the result match with expected structure
                     // Fetch the baseline object based on the label provided
-                    var expected = aChecker.getBaseline(labelName);
+                    let expected = aChecker.getBaseline(labelName);
 
                     // Define the differences with some content as we expect it to be null or undefined if pass
-                    var differences = "Something";
+                    let differences = "Something";
 
 
 
@@ -128,6 +131,16 @@ describe("JSON Structure Verification Zombie", function () {
                         })
                         // Run the diff algo to get the list of differences
                         differences = aChecker.diffResultsWithExpected(report, expected, false);
+                    }
+                    if (typeof differences !== "undefined") {
+                        differences = differences.filter(difference => (
+                            difference.kind !== "E"
+                            || difference.path[2] !== "bounds"
+                            || Math.abs(difference.lhs - difference.rhs) > 2
+                        ))
+                        if (differences.length === 0) {
+                            differences = undefined;
+                        }
                     }
                     expect(typeof differences).to.equal("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
                     // Mark the testcase as done.

@@ -15,7 +15,7 @@ export class ACBrowserManager {
         }
         if  (force || !ACBrowserManager.browserP) {
             let pupOptions: { 
-                headless?: boolean,
+                headless?: boolean | "shell",
                 ignoreHTTPSErrors?: boolean,
                 args?: string[]
             } = {

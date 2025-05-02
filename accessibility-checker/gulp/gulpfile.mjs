@@ -31,27 +31,45 @@ function notice(years) {
         " *****************************************************************************/\n";
 }
 
-const gulp = require("gulp"),
-    ginsert = require("gulp-insert"),
-    greplace = require("gulp-replace"),
-    terser = require("gulp-terser");
+import gulp from "gulp";
+import ginsert from "gulp-insert";
+// import greplace from "gulp-replace";
+import terser from "gulp-terser";
+import merge from "merge-stream";
 
 gulp.task("build-uglify", function () {
-    return gulp.src(["../src/**/lib/**/*.js", "../src/index.js", "!../src/node_modules/**"])
-        .pipe(terser())
-        .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
+    return gulp.src(["../src/**/lib/**/*.js", "../src/*/index.js", "!../src/node_modules/**"])
+        .pipe(terser({compress:{typeofs: false}}))
+        // .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
+        // .pipe(greplace('void 0===ace', "'undefined'===typeof ace"))
+        // .pipe(greplace('void 0!==ace', "'undefined'!==typeof ace"))
         .pipe(ginsert.prepend(notice("2016,2017,2018,2019")))
         .pipe(gulp.dest("../package"));
 
 })
 
 gulp.task("build-copy", function () {
-    return gulp.src([
-        "../src/**/bin/achecker.js",
-        "../src/package.json",
-        "../src/README.md",
-    ])
-    .pipe(gulp.dest("../package"));
+    return merge([
+        gulp.src([
+            "../src/bin/achecker.js",
+            "../src/mjs/index.d.ts",
+            "../src/package.json",
+            "../src/README.md",
+        ]).pipe(gulp.dest("../package")),
+
+        gulp.src([
+            "../src/mjs/package.json",
+        ]).pipe(gulp.dest("../package/mjs")),
+
+        gulp.src([
+            "../src/cjs/package.json",
+        ]).pipe(gulp.dest("../package/cjs")),
+
+        gulp.src([
+            "../src/bin/achecker.js"
+        ]).pipe(gulp.dest("../package/bin")),
+
+    ]);
 
 })
 

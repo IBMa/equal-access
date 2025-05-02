@@ -157,7 +157,7 @@ export type IConfigInternal = IConfig & {
     /**
      * (optional) If the tool allows, should we run headless
      */
-    headless?: boolean
+    headless?: "shell" | boolean
 
     /**
      * (optional) If the checker is going to instantiate Puppeteer, other browser args that
@@ -186,5 +186,4 @@ export type IConfigInternal = IConfig & {
     perfMetrics: boolean
 
     engineMode: "DEFAULT" | "REMOTE" | "INJECT"
-
 }

@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "moduleResolution": "node",
+        "lib": ["es2016", "esnext", "dom"],
+        "declaration": true,
+        "allowJs": true,
+        "removeComments": false,
+        "noEmitOnError": true,
+        "sourceMap": true,
+        //"alwaysStrict": true,
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "outDir": "src",
+        "target": "es2015"
+    },
+    "include": [
+        "src-ts/**/*.ts",
+        "src-ts/**/*.js"
+    ],
+    "exclude": [
+        "node_modules",
+        "coverage",
+        ".nyc_output"
+    ]
+}
