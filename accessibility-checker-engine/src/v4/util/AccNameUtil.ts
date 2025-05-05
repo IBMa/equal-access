@@ -481,4 +481,20 @@ export class AccNameUtil {
 
         return null;
     }
+
+    // if accessible name can be ignored for image or svg
+    public static isAccessibleNameIgnorable(elem: Element) : boolean {
+        if (!elem) return false;
+
+        const nodeName = elem.nodeName.toLowerCase();
+        if (nodeName !== 'img' && nodeName !== 'svg') return false;
+        
+        let parent = elem.parentElement;
+        if (parent) {
+            // if the parent is a widget and has an aria label, then image/svg label is not necessary
+            if ((AriaUtil.isWidget(parent) || AriaUtil.containsPresentationalChildrenOnly(parent)) && AriaUtil.hasAriaLabel(parent))
+                return true; 
+        }
+        return false;
+    }
 } 

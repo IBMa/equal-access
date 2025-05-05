@@ -49,7 +49,7 @@ export const svg_graphics_labelled: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the rule
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || VisUtil.isNodePresentational(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || VisUtil.isNodePresentational(ruleContext) || AccNameUtil.isAccessibleNameIgnorable(ruleContext)) return null;
 
         const name_pair = AccNameUtil.computeAccessibleName(ruleContext);
         if (name_pair && name_pair.name && name_pair.name.trim().length > 0)
