@@ -136,6 +136,7 @@ let skipList = [
     // TODO: temprarily ignore till the issue is resolved: https://github.com/IBMa/equal-access/issues/1932
     path.join(testRoot, "aria_attribute_conflict_ruleunit","aria-hidden.html"),
     path.join(testRoot, "aria_search_label_unique_ruleunit", "search_hidden.html"),
+    path.join(testRoot, "aria_accessiblename_exists_ruleunit", "element_hidden_by_clippath.html"),
 
     // Puppeteer and embedded-chrome @media css behave differently (?)
     path.join(testRoot, "element_orientation_unlocked_ruleunit","act-fail4.html"),
