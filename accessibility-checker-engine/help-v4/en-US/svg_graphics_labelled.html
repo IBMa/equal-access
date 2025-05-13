@@ -70,7 +70,7 @@ As appropriate, ensure the _non-decorative_ SVG element has an _accessible descr
 * **Or**, add a direct child `<title>` element that provides a tooltip, when ARIA label attributes are used to provide the accessible name.
 * **Or**, add a `xlink:title` attribute on a link, if not used to provide the accessible name.
 
-Ensure the _decorative_ SVG element use `aria-hidden` or `role=’none | presentation’` to provides a clear indication that the element is not visible, 
+Ensure the _decorative_ SVG element use `aria-hidden` or `role="none"` or  `role="presentation"` to provides a clear indication that the element is redundant with the nearby text or not visible, 
 perceivable, or interactive to users.
 
 Note: The `aria-labelledby` and `aria-describedby` properties can reference the element on which they are given, 
