@@ -38,12 +38,12 @@ export class BrowserWrapper {
     constructor() {
         this.homepage = `chrome-extension://${EXTENSION_ID}`;
         this.browser = launch({ 
-            headless: process.env.TRAVIS === "true" ? "new" : "new", 
-            ignoreHTTPSErrors: true,
+            headless: process.env.TRAVIS === "true" ? "shell" : "shell", 
             args: [
                 `--disable-extensions-except=${EXTENSION_PATH}`,
                 `--load-extension=${EXTENSION_PATH}`,
-                '--enable-automation'
+                '--enable-automation',
+                "--ignore-certificate-errors"
             ]
         }).then(async browser => {
             for (const key in PAGE_MAP) {

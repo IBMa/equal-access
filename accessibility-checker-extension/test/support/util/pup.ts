@@ -14,7 +14,7 @@ export namespace PupUtil {
             // Dealing with a page root
             const page = src as Page;
             if (selector.startsWith("//") || selector.startsWith("self:")) {
-                retVal = await page.waitForXPath(selector, {visible: true}) as ElementHandle<Element>;
+                retVal = await page.waitForSelector(selector, {visible: true}) as ElementHandle<Element>;
             } else {
                 retVal = await page.waitForSelector(selector, {visible: true})!;
             }
@@ -41,7 +41,7 @@ export namespace PupUtil {
     export async function elemNotVisible(page: Page, selector: string) {
         try {
             if (selector.startsWith("//")) {
-                await page.waitForXPath(selector, {timeout: 100, visible: true});
+                await page.waitForSelector(selector, {timeout: 100, visible: true});
             } else {
                 await page.waitForSelector(selector, {timeout: 100, visible: true});
             }
@@ -56,7 +56,7 @@ export namespace PupUtil {
         do {
             try {
                 if (selector.startsWith("//")) {
-                    await page.waitForXPath(selector, {timeout: 100, visible: true});
+                    await page.waitForSelector(selector, {timeout: 100, visible: true});
                 } else {
                     await page.waitForSelector(selector, {timeout: 100, visible: true});
                 }
@@ -71,7 +71,7 @@ export namespace PupUtil {
 
     export async function pathVisible(page: Page, selector: string) {
         if (selector.startsWith("//")) {
-            return await page.waitForXPath(selector, {visible: true});
+            return await page.waitForSelector(selector, {visible: true});
         } else {
             return await page.waitForSelector(selector, {visible: true});
         }
@@ -177,7 +177,7 @@ export namespace PupUtil {
     }
 
     export async function xpathClick(page: Page, xpath: string, waitElemSelector?: string) {
-        let elem = await page.waitForXPath(xpath, {visible: true}) as unknown as HTMLElement;
+        let elem = await page.waitForSelector(xpath, {visible: true}) as unknown as HTMLElement;
         await elem.click();
         if (waitElemSelector) {
             await elemVisible(page, waitElemSelector);
