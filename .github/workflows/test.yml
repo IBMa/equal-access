@@ -549,7 +549,7 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
-    - run: npm install
+    - run: npm install --loglevel verbose
       working-directory: accessibility-checker-extension/test
     - run: npm install
       working-directory: rule-server
