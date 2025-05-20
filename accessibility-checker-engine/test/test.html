@@ -5,15 +5,53 @@
     <title>test case</title>
     </head>
     <body>
+      <a href="https://ibm.com">Content</a>
+      <hr style="margin-top:50px;">
+    <div>Auto Scrollable w/o tabindex</div>  
+    <section id='section1'  style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;">
       <hr style="margin-top:50px;">
     <section id='section1'  style="height: 100px; width: 500px; overflow-x: hidden; overflow-y: hidden;">
-      <p>
-          Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
-          accessible.
-      </p>
-      
-  </section>
+  <div>Auto Scrollable w/o tabindex</div> 
+  <section id='section3' style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;">
+    <h1>WCAG Abstract (no tabindex)</h1>
+    <p>
+        Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
+        accessible. Following these guidelines will make content more accessible to a wider range of people with
+        disabilities, including accommodations for blindness and low vision, deafness and hearing loss, limited movement,
+        speech disabilities, photosensitivity, and combinations of these, and some accommodation for learning disabilities
+        and cognitive limitations; but will not address every user need for people with these disabilities. These guidelines
+        address accessibility of web content on desktops, laptops, tablets, and mobile devices. Following these guidelines
+        will also often make Web content more usable to users in general.
+    </p>
+</section>
+<hr style="margin-top:50px;">
+  <div>Auto Scrollable w/ tabindex='-1'</div> 
+  <section id='section3' tabindex='-1' style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;">
+    <h1>WCAG Abstract</h1>
+    <p>
+        Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
+        accessible. Following these guidelines will make content more accessible to a wider range of people with
+        disabilities, including accommodations for blindness and low vision, deafness and hearing loss, limited movement,
+        speech disabilities, photosensitivity, and combinations of these, and some accommodation for learning disabilities
+        and cognitive limitations; but will not address every user need for people with these disabilities. These guidelines
+        address accessibility of web content on desktops, laptops, tablets, and mobile devices. Following these guidelines
+        will also often make Web content more usable to users in general.
+    </p>
+</section>
+
   <hr style="margin-top:50px;">
+  <div>iframe w/o tabindex short content</div> 
+      <iframe id='section2' style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;"
+      srcdoc="Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
+      accessible." 
+      
+      >
+    </iframe>
+      
+    <hr style="margin-top:50px;">
+    <div>iframe w/o tabindex long content</div> 
+        <iframe id='section2' role='none' style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;"
+        srcdoc="Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
       <iframe id='section2' src='./test2.html' style="height: 100px; width: 500px; overflow-x: hidden; overflow-y: hidden;">
         
       </body>
@@ -26,11 +64,44 @@
     <h1>WCAG Abstract</h1>
     <p>
         Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
+
+        will also often make Web content more usable to users in general." 
+        
+        >
+      </iframe>
+
+      <hr style="margin-top:50px;">
+    <div>iframe w/ tabindex='-1'</div> 
+        <iframe id='section2' tabindex='-1' style="height: 100px; width: 500px; overflow-x: auto; overflow-y: auto;"
+        srcdoc="Web Content Accessibility Guidelines (WCAG) covers a wide range of recommendations for making Web content more
         accessible. Following these guidelines will make content more accessible to a wider range of people with
         disabilities, including accommodations for blindness and low vision, deafness and hearing loss, limited movement,
         speech disabilities, photosensitivity, and combinations of these, and some accommodation for learning disabilities
         and cognitive limitations; but will not address every user need for people with these disabilities. These guidelines
         address accessibility of web content on desktops, laptops, tablets, and mobile devices. Following these guidelines
+        will also often make Web content more usable to users in general." 
+        
+        >
+      </iframe>
+
+      <iframe role='none' src="./tinker.html">
+      </iframe>
+  
+
+<hr style="margin-top:50px;">
+<button aria-label="a test button">
+	<svg>
+	</svg>
+</button>
+
+<button aria-label="a test nutton"><img src="http://thinkingstiff.com/images/matt.jpg"></button>
+<button><img src="http://thinkingstiff.com/images/matt.jpg" alt="an image"></button>
+<button><img src="http://thinkingstiff.com/images/matt.jpg">Submit</button>
+<button><img src="http://thinkingstiff.com/images/matt.jpg" alt="">Submit</button>
+
+<button aria-label="a test nutton"><img src="http://thinkingstiff.com/images/matt.jpg" alt=""></button>
+<button aria-label="a test nutton"><img src="http://thinkingstiff.com/images/matt.jpg" role="none"></button>
+
         will also often make Web content more usable to users in general.
     </p>
 </section>
@@ -49,73 +120,6 @@
 <button aria-label="a test nutton"><img src="http://thinkingstiff.com/images/matt.jpg" alt=""></button>
 <button aria-label="a test nutton"><img src="http://thinkingstiff.com/images/matt.jpg" role="none"></button>
 
-<a href="http://ibm.com"><img src="http://thinkingstiff.com/images/matt.jpg" />Here</a>
-
-<a href="http://ibm.com"><img src="http://thinkingstiff.com/images/matt.jpg" alt="image" /></a>
-
-<ol>
-  <li>Option 1<img src="http://thinkingstiff.com/images/matt.jpg"></li>
-  <li>Option 2<img src="http://thinkingstiff.com/images/matt.jpg"></li>
-</ol>
-
-
-    </main>
-
-    <script>
-        UnitTest = {
-            ruleIds: ["element_scrollable_tabbable", "element_tabbable_role_valid"],
-            results: [  
-            {
-            "ruleId": "element_scrollable_tabbable",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/section[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "pass_tabbable",
-            "message": "The scrollable element is tabbable",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_valid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/section[2]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_no_valid_role",
-            "message": "The tabbable element does not have a valid widget role",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_valid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/section[3]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_no_valid_role",
-            "message": "The tabbable element does not have a valid widget role",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
-        ]
-        }
-    </script>
 </body>
 
 </html>   
