@@ -14,7 +14,7 @@ export namespace CarbonUtil {
         export async function activate(page: Page, txt: string) {
             let src : Page | ElementHandle<Node> = page;
             try {
-                let modal = await page.waitForXPath(`//div[contains(@class, 'cds--modal')][contains(@class, 'is-visible')]`, { timeout: 10 });
+                let modal = await page.waitForSelector(`//div[contains(@class, 'cds--modal')][contains(@class, 'is-visible')]`, { timeout: 10 });
                 if (modal) {
                     src = modal;
                 }
