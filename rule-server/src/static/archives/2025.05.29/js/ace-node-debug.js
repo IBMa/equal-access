@@ -25252,6 +25252,8 @@ var AccNameUtil = /** @class */ (function () {
         var nw = new DOMWalker_1.DOMWalker(elem);
         // Loop over all the childrens of the element to get the text
         while (nw.nextNode() && nw.node !== elem && nw.node !== elem.parentNode) {
+            if (nw.bEndTag)
+                continue;
             //while (walkChild) { 
             var walkChild = nw.node;
             if (walkChild.nodeType === 3) {
