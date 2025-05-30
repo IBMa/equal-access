@@ -462,6 +462,7 @@ export class AccNameUtil {
         let nw = new DOMWalker(elem);
         // Loop over all the childrens of the element to get the text
         while (nw.nextNode() && nw.node !== elem && nw.node !== elem.parentNode) {
+            if (nw.bEndTag) continue;
         //while (walkChild) { 
             const walkChild = nw.node; 
             if (walkChild.nodeType === 3) {
