@@ -19,7 +19,7 @@ export class ACBrowserManager {
                 ignoreHTTPSErrors?: boolean,
                 args?: string[]
             } = {
-                headless: ACBrowserManager.config.headless, 
+                headless: ACBrowserManager.config.headless as any, 
                 ignoreHTTPSErrors: ACBrowserManager.config.ignoreHTTPSErrors || false
             };
             if (ACBrowserManager.config.puppeteerArgs) {
