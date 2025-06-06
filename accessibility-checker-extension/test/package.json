@@ -16,7 +16,7 @@
     "accessibility-checker": "^4",
     "chai": "^5.0.3",
     "puppeteer": "^24.10.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
