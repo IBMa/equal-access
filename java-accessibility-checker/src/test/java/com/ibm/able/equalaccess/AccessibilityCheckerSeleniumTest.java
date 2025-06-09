@@ -274,7 +274,14 @@ public class AccessibilityCheckerSeleniumTest {
 
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_text.html").toFile(),
                 Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","element_inline2.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_inline_with_block.html").toFile()
+                Paths.get(testRootDir.getAbsolutePath(), "target_spacing_sufficient_ruleunit","link_inline_with_block.html").toFile(),
+
+                //deprecated
+                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "figure_with_caption.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabel-hidden.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabel.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabelHidden.html").toFile()
+      
             }));
 
             for (File testFile: testFiles) {

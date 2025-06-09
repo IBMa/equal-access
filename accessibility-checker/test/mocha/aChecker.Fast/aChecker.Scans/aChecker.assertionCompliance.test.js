@@ -77,7 +77,13 @@ var skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-5.html"),
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-6.html"),
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
-    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-8.html")
+    path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-8.html"),
+
+    path.join(testRoot, "figure_label_exists_ruleunit", "figure_with_caption.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabel-hidden.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabel.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabelHidden.html")
+    
 
 ]
 var skipMap = {}

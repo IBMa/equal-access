@@ -155,7 +155,14 @@ var skipList = [
 
     path.join(testRoot, "target_spacing_sufficient_ruleunit","link_text.html"),
     path.join(testRoot, "target_spacing_sufficient_ruleunit","element_inline2.html"),
-    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_inline_with_block.html")
+    path.join(testRoot, "target_spacing_sufficient_ruleunit","link_inline_with_block.html"),
+
+    //deprecated
+    path.join(testRoot, "figure_label_exists_ruleunit",  "figure_with_caption.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit",  "FigureLabel-hidden.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit",  "FigureLabel.html"),
+    path.join(testRoot, "figure_label_exists_ruleunit",  "FigureLabelHidden.html")
+        
 ]
 
 var skipMap = {}
