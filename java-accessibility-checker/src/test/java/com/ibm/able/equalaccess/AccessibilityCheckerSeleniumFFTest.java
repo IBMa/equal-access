@@ -236,12 +236,26 @@ public class AccessibilityCheckerSeleniumFFTest {
                 // path.join(testRootDir, "aria_banner_label_unique_ruleunit", "validLandMarks-testCaseFromAnn.html"),   
 
                 //deprecated
-                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "figure_with_caption.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabel-hidden.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabel.html").toFile(),
-                Paths.get(testRootDir.getAbsolutePath(), "figure_label_exists_ruleunit",  "FigureLabelHidden.html").toFile()
-      
-                   
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_fail1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_fail2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable3.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable4.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable5.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_inapplicable6.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_pass1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "act_pass2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "element_invisible.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "element_too_small1.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "element_too_small2.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "scrollable_element_tabbable.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "textarea_pass.html").toFile(),
+                Paths.get(testRootDir.getAbsolutePath(), "element_scrollable_tabbable_ruleunit", "textarea_pass2.html").toFile()
+            
+
             }));
 
             for (File testFile: testFiles) {

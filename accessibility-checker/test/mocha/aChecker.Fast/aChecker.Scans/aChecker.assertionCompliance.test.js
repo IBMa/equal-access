@@ -79,10 +79,25 @@ var skipList = [
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-7.html"),
     path.join(testRoot, "meta_redirect_optional_ruleunit", "act-inapplicable-8.html"),
 
-    path.join(testRoot, "figure_label_exists_ruleunit", "figure_with_caption.html"),
-    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabel-hidden.html"),
-    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabel.html"),
-    path.join(testRoot, "figure_label_exists_ruleunit", "FigureLabelHidden.html")
+    //deprecated
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_fail1.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_fail2.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable1.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable2.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable3.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable4.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable5.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_inapplicable6.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_pass1.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "act_pass2.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "element_invisible.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable1.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable2.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "element_too_small1.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "element_too_small2.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "scrollable_element_tabbable.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "textarea_pass.html"),
+    path.join(testRoot, "element_scrollable_tabbable_ruleunit", "textarea_pass2.html"),
     
 
 ]
