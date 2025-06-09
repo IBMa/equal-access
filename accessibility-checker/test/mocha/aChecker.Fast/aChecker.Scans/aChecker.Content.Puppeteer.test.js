@@ -172,7 +172,7 @@ var skipList = [
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "act_inapplicable5.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "act_inapplicable6.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "act_pass1.html"),
-    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules",, "element_scrollable_tabbable_ruleunit", "act_pass2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "act_pass2.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "element_invisible.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable1.html"),
     path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "element_scrollable_tabbable_ruleunit", "element_scrollable_unfocusable2.html"),

@@ -78,6 +78,7 @@ module.exports = function (config) {
             "test/client/aChecker.Content.test.js",
             "test/client/aChecker.assertionCompliance.test.js",
             "../accessibility-checker-engine/test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html",
+            "../accessibility-checker-engine/test/v2/checker/accessibility/rules/element_scrollable_tabbable_ruleunit/*.html",
             // 
             "test/client/**/aChecker.LocalFile.test.js",
             // host server was shutdown
