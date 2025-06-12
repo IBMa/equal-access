@@ -37,12 +37,15 @@ export const element_scrollable_tabbable: Rule = {
             "fail_scrollable": "The scrollable element <{0}> with non-interactive content is not tabbable"
         }
     },
-    rulesets: [{
+    /**
+     * deprecated on 6/10/2025 due to Browser support for auto-focus of a scrollable element 
+     * rulesets: [{
         id: ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         num: ["2.1.1"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
-    }],
+    }],*/
+    rulesets: [],
     act: ["0ssw9k"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
