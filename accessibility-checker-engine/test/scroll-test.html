@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+  <title>Keyboard scroll test</title>
+  <style>
+      div.scroll, button {
+          border: 1px solid lightgray;
+          margin-top: 1em;
+          border-radius: 0.5em;
+      }
+
+      div.scroll {
+          overflow: auto;
+          width: 20em;
+          height: 5em;
+          display: block;
+      }
+      div.long {
+          width: 10em;
+          height: 10em;
+      }
+  </style>
+</head>
+<body>
+<main>
+  <h1> Keyboard scroll test</h1>
+  <h2> Div without interactive content</h2>
+  <button>Start</button>
+  <div class="scroll">
+    <p>This is a tab focusable scroller...</p>
+    <div class="long"></div>
+    <p>You need to scroll down to see this line.</p>
+  </div>
+  <button>End</button>
+
+  <h2> Div with interactive content</h2>
+  <button>Start</button>
+  <div class="scroll">
+    <p>The div contains interactive content...</p>
+    <div class="long"></div>
+    <button type="button">my button</button>
+    <p>You need to scroll down to see this line.</p>
+  </div>
+  <button>End</button>
+</main>
+</body>
+</html>
+
+
+

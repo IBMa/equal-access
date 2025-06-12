@@ -212,16 +212,13 @@ export class AccNameUtil {
 
         // figure
         if (nodeName === "figure") {
-            // if the figure element has a figcaption as the first or last child
-            let caption = elem.firstElementChild;
-            if (!caption) {
-                caption = elem.lastElementChild;
-                if (caption && caption.nodeName.toLowerCase() === 'figcaption') {
-                    // figcaption can be mixed text
-                    const text = (caption as HTMLElement).innerText;
-                    if (text && text.trim().length > 0) 
-                        return {"name":CommonUtil.truncateText(text), "nameFrom": "figcaption"}; 
-                } 
+            // if the figure element has a figcaption as a child
+            let caption = CommonUtil.getChildByTagHidden(elem, "figcaption", true, false);
+            if (caption && caption.length > 0) {
+                // figcaption can be mixed text
+                const text = (caption[0] as HTMLElement).innerText;
+                if (text && text.trim().length > 0) 
+                    return {"name":CommonUtil.truncateText(text), "nameFrom": "figcaption"};  
             }        
         }
 

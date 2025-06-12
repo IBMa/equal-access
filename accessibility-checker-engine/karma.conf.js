@@ -62,7 +62,10 @@
                 //Disable  - due to a defect that needs to be addressed regarding visibility.
                 'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html',
                 // disable because the rule is turned off
-                'test/v2/checker/accessibility/rules/style_before_after_review_ruleunit/*'
+                'test/v2/checker/accessibility/rules/style_before_after_review_ruleunit/*',
+
+                // disable because the rule is turned off
+                'test/v2/checker/accessibility/rules/element_scrollable_tabbable_ruleunit/*'
             ],
     
             frameworks: ['jasmine'],
