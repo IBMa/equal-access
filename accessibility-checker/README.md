@@ -4,10 +4,12 @@ Automated accessibility testing for Node-based test environments.
 
 To get started using the deployed packages, download the [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker) from NPM.
 
-This tool is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
-The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains the need to integrate automated testing into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
 The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
+
+See the [Packages for test automation](https://github.com/IBMa/equal-access/wiki#packages-for-test-automation) in the Wiki for an overview.
 
 ## Features
 
@@ -35,30 +37,30 @@ Review the [accessibility-checker/src/README](src/README.md) for more informatio
 
 Review the [accessibility-checker/boilerplates/README](boilerplates/README.md) and see examples for the following:
 
-- [batch-scan](batch-scan): scan a set of local files
-- [cucumber-selenium](cucumber-selenium): Using [Cucumber](https://www.npmjs.com/package/cucumber) with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
-- [jest](jest): Using a [Jest](https://www.npmjs.com/package/jest) test environment
-- [jest-selenium](jest-selenium): Using a [Jest](https://www.npmjs.com/package/jest) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
-- [mocha-selenium](mocha-selenium): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser
-- [protractor](protractor): Using a [Protractor](https://www.npmjs.com/package/protractor) test environment
-- [webdriverio](webdriverio): Using a [Webdriverio](https://www.npmjs.com/package/webdriverio) test environment
+- [batch-scan](boilerplates/batch-scan): scan a set of local files
+- [cucumber-selenium](boilerplates/cucumber-selenium): Using [Cucumber](https://www.npmjs.com/package/cucumber) with [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser automation
+- [jest](boilerplates/jest): Using a [Jest](https://www.npmjs.com/package/jest) test environment
+- [jest-customRS](boilerplates/jest-customRS): Using a [Jest](https://www.npmjs.com/package/jest) test environment
+- [jest-puppeteer-ts](boilerplates/jest-puppeteer-ts): Using a [Jest](https://www.npmjs.com/package/jest) test environment with [Puppeteer](https://www.npmjs.com/package/puppeteer) controlled browser
+- [jest-selenium](boilerplates/jest-selenium): Using a [Jest](https://www.npmjs.com/package/jest) test environment with [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser automation
+- [mocha-puppeteer-ts](boilerplates/mocha-puppeteer-ts): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with a [Puppeteer](https://www.npmjs.com/package/puppeteer) controlled browser, and Typescript
+- [mocha-selenium](boilerplates/mocha-selenium): Using a [Mocha](https://www.npmjs.com/package/mocha) test environment with [Selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) browser automation
+- [protractor](boilerplates/protractor): Using a [Protractor](https://www.npmjs.com/package/protractor) test environment for Angular and AngularJS applications
+- [webdriverio](boilerplates/webdriverio): Using a [Webdriverio](https://www.npmjs.com/package/webdriverio) browser and mobile test automation framework
 - and others
 
 ## Baselines
 
-Baselines are a helpful feature of `accessibility-checker` that can also be used in the test environment. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for issues that have been determined to be the following:
+Baselines are a helpful feature of `accessibility-checker` that can be used in the test environment. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the baseline. If they differ, then the test will fail. 
+Many boilerplate examples above include _baselines_.
+This feature is useful for issues that have been determined to be of the following:
 
-- false positives
+- false positives determined to be ignored
 - `Needs review` issues resolved
 - issues scheduled to be fixed later
-- capturing new regression issues
+- new regression issues captured
 
-See the [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
-Review the examples of validating automated accessibility testing results against baseline files:
-
-- [jest baselines](jest/baselines)
-- [jest-selenium baselines](jest-selenium/baselines)
-- and others
+See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#baseline-basics) for an overview.
 
 ## Building and running locally
 

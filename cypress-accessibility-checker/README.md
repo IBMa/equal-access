@@ -14,6 +14,8 @@ The Toolkit provides the tools and guidance to create experiences that are delig
 The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains how to integrate this automated testing tool into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
 The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
 
+See the [Packages for test automation](https://github.com/IBMa/equal-access/wiki#packages-for-test-automation) in the Wiki for an overview.
+
 ## Requirements
 
 * [Node Version 18](https://nodejs.org/en/download/)
@@ -93,11 +95,22 @@ Examples of how to use each of the APIs below can be found in the `achecker.js` 
 
 Chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
+## Boilerplates
+
+Review the [cypress-accessibility-checker/boilerplates/README](boilerplates/README.md) and see examples.
+
 ### Using Baselines
 
-Baselines are a helpful feature of `accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a 'baseline' so that future scans will pass if they match the baseline. If they differ, then the test will fail. This feature is useful for things like false positives or issues you plan on not fixing.
+Baselines are a helpful feature of `cypress-accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the _baseline_. If they differ, then the test will fail.
+Many boilerplate examples include _baselines_.
+This feature is useful for issues that have been determined to be of the following:
 
-The baseline feature is documented and implemented as part of `accessibility-checker`. Please see the [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md) for details.
+- false positives determined to be ignored
+- `Needs review` issues resolved
+- issues scheduled to be fixed later
+- new regression issues captured
+
+See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#baseline-basics) for an overview.
 
 ## Development
 
