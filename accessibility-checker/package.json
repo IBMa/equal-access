@@ -13,7 +13,8 @@
     "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/common/report/genReport.ts)",
     "build:common": "shx rm -rf ./src-ts/lib/common && shx cp -R ../common/module/src ./src-ts/lib/common && npm run build:report",
     "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/*.js && cd package && npm pack",
-    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/*.js"
+    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.mjs && shx chmod u+x package/*.js",
+    "postinstall": "ibmtelemetry --config=telemetry.yml"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "node": ">=16"
   },
   "dependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "exceljs": "^4.3.0",

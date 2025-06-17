@@ -18,7 +18,8 @@
     "uploadCoverage": "gulp --gulpfile gulp/gulpfile.js --user $GSA_USER --pw $GSA_PASS uploadCoverage",
     "localDevInstall": "cd src && npm link && npm link karma-ibma",
     "coverage:istanbul": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel/register test/server/**/*.spec.js",
-    "coverage:nyc": "nyc npm run test:server:ava"
+    "coverage:nyc": "nyc npm run test:server:ava",
+    "postinstall": "ibmtelemetry --config=telemetry.yml"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "dependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
     "deep-diff": "1.0.2",
     "exceljs": "^4.3.0",
     "js-yaml": "4.1.0",
