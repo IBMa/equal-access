@@ -136,6 +136,10 @@ If you think you've found a bug, have questions or suggestions, open a [GitHub I
 
 If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
+## IBM Telemetry
+
+This package uses IBM Telemetry to collect de-identified and anonymized metrics data. By installing this package as a dependency you are agreeing to telemetry collection. To opt out, see [Opting out of IBM Telemetry data collection](https://github.com/ibm-telemetry/telemetry-js/tree/main#opting-out-of-ibm-telemetry-data-collection). For more information on the data being collected, please see the [IBM Telemetry documentation](https://github.com/ibm-telemetry/telemetry-js/tree/main#ibm-telemetry-collection-basics).
+
 ## License
 
 [![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)

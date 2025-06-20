@@ -128,3 +128,7 @@ At the end of the file, the constructor baseReporterDecorator, config, and other
 And we must also export this function, which will be called when Karma loads the reporter
 
 ```module.exports = ACReporter;```
+
+## IBM Telemetry
+
+This package uses IBM Telemetry to collect de-identified and anonymized metrics data. By installing this package as a dependency you are agreeing to telemetry collection. To opt out, see [Opting out of IBM Telemetry data collection](https://github.com/ibm-telemetry/telemetry-js/tree/main#opting-out-of-ibm-telemetry-data-collection). For more information on the data being collected, please see the [IBM Telemetry documentation](https://github.com/ibm-telemetry/telemetry-js/tree/main#ibm-telemetry-collection-basics).

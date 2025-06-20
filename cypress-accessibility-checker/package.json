@@ -10,7 +10,8 @@
         "build:common": "cd ../common/module && npm run build && cd ../../cypress-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
         "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
         "package:zip": "npm run package:common && cd package && npm pack",
-        "package:npm": "npm run package:common"
+        "package:npm": "npm run package:common",
+        "postinstall": "ibmtelemetry --config=telemetry.yml"
     },
     "repository": {
         "type": "git",
@@ -43,6 +44,7 @@
     },
     "dependencies": {
         "@cypress/request": "^3.0.0",
+        "@ibm/telemetry-js": "^1.9.1",
         "deep-diff": "^1.0.2",
         "exceljs": "^4.3.0",
         "js-yaml": "^4.1.0",
