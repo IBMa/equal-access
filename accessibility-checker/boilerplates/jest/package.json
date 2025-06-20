@@ -10,7 +10,7 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "accessibility-checker": "^3.1.45",
+    "accessibility-checker": "^4",
     "jest": "^29.6.3",
     "jest-environment-jsdom": "^29.6.3"
   }
