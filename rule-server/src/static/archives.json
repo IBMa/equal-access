@@ -5,6 +5,19 @@
         "path": "/archives/latest"
     },
     {
+        "id": "26June2025",
+        "name": "26 June 2025 Deployment (IBM 7.3)",
+        "version": "4.0.6",
+        "path": "/archives/2025.06.26"
+    },
+    {
+        "id": "26June2025_3",
+        "name": "26 June 2025 Deployment (IBM 7.3) (3.x)",
+        "version": "3.1.85",
+        "path": "/archives/2025.06.26",
+        "hidden": true
+    },
+    {
         "id": "29May2025",
         "name": "29 May 2025 Deployment (IBM 7.3)",
         "version": "4.0.5",
@@ -245,7 +258,8 @@
         "id": "09June2022",
         "name": "09 June 2022 Deployment (IBM 7.2)",
         "version": "3.1.31",
-        "path": "/archives/2022.06.09"
+        "path": "/archives/2022.06.09",
+        "hidden": true
     },
     {
         "id": "04May2022",
