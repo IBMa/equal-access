@@ -100,7 +100,8 @@ export interface IIssue {
         height: number
         width: number
     }
-    snippet: string
+    snippet: string,
+    source?: string;
     category: "Accessibility",
     help: string
 }

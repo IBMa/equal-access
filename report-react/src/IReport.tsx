@@ -46,6 +46,7 @@ export interface IReportItem {
     value: string[],
     message: string,
     snippet: string,
+    source?: string;
     help: string,
     isHidden?:boolean,
 }

@@ -77,6 +77,21 @@ class WrappedRule {
         return nodeSnippet;
     }
 
+    /**
+     * This function is responsible converting the node into a source line which can be added to report.
+     * @param {HTMLElement} node - The html element to convert into a source result
+     *
+     * @return {String} source - return the element source
+     *
+     * @memberOf this
+     */
+    static convertNodeToSource(node : Element) : string {
+        if (node) {
+            return node.getAttribute("ibm-a11y-debug");
+        }
+        return undefined;
+    }
+
     run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : Issue[] {
         const startTime = new Date().getTime();
         let results: RuleResult | RuleResult[];
@@ -113,7 +128,8 @@ class WrappedRule {
                 messageArgs: result.messageArgs,
                 apiArgs: result.apiArgs,
                 bounds: context["dom"].bounds,
-                snippet: WrappedRule.convertNodeToSnippet(context["dom"].node as Element)
+                snippet: WrappedRule.convertNodeToSnippet(context["dom"].node as Element),
+                source: WrappedRule.convertNodeToSource(context["dom"].node as Element)
             })
         }
         return retVal;

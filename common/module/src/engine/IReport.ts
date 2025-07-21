@@ -149,5 +149,6 @@ export type CompressedIssue = [ // results
     string, // snippet
     string, // help
     boolean, // ignored
-    string // message
+    string, // message
+    string // source
 ]
