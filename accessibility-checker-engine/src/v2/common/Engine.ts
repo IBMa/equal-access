@@ -81,15 +81,44 @@ class WrappedRule {
      * This function is responsible converting the node into a source line which can be added to report.
      * @param {HTMLElement} node - The html element to convert into a source result
      *
-     * @return {String} source - return the element source
+     * @return {String} source - return the source that created the node
      *
      * @memberOf this
      */
     static convertNodeToSource(node : Element) : string {
-        if (node) {
-            return node.getAttribute("ibm-a11y-debug");
-        }
-        return undefined;
+        const debug_directive: string = "ibm-a11y-debug";
+        if (!node) return undefined;
+        
+        /**
+         * traverse left then upward to find source info
+         * @param node 
+         * @returns location str 
+         */
+        const findSource = function (elem: Element | null) : string | null {
+            if (!elem) return undefined;
+            
+            let prev = elem.previousSibling;
+            while (prev) {
+                if (prev.nodeName.toLocaleLowerCase() === 'div' && prev.firstChild && prev.firstChild.nodeType === Node.COMMENT_NODE) {
+                    const comment = prev.firstChild.nodeValue;
+                    if (comment && comment.trim().startsWith(debug_directive)) {
+                        const source = comment.trim().substring(debug_directive.length+2).trim();
+                        if (source.includes('end')) 
+                            return undefined;
+                        return source;                    }    
+                }
+                prev = prev.previousSibling;
+            }
+            return findSource(elem.parentElement);
+        };
+
+        const location = node.getAttribute(debug_directive);
+        if (location)
+            return location.trim();  
+
+        //travese the document to get the location info
+        return findSource(node);
+
     }
 
     run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : Issue[] {
