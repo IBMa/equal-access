@@ -192,6 +192,7 @@ describe("JSON Structure Verification Selenium", function () {
                                         difference.kind !== "E"
                                         || difference.path[2] !== "bounds"
                                         || Math.abs(difference.lhs - difference.rhs) > 2
+                                        || !difference.path[3] || difference.path[3] !== "source"
                                     ))
                                     if (differences.length === 0) {
                                         differences = undefined;
