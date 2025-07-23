@@ -720,7 +720,8 @@ export class ACReporterXLSX implements IReporter {
                     this.get_element(item.snippet),
                     item.snippet.substring(0, 32767),
                     item.path.dom,
-                    item.help
+                    item.help,
+                    item.source
                     // engine_end_point + '/tools/help/' + item.ruleId
                 ]
 

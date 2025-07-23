@@ -85,7 +85,8 @@ export class ReporterManager {
                 result.snippet, // 7
                 result.help, // 8
                 result.ignored, // 9,
-                result.message // 10
+                result.message, // 10
+                result.source // 11
             ]
             for (let idx=0; idx<issue.length; ++idx) {
                 if (typeof issue[idx] === "string" && (issue[idx] as string).length > 32000) {
@@ -141,7 +142,8 @@ export class ReporterManager {
                 help: issue[8],
                 ignored: issue[9],
                 level: ReporterManager.valueToLevel(issue[2]),
-                node: null
+                node: null,
+                source: issue[11]
             }
             results.push(result);
             nls[result.ruleId] = nls[result.ruleId] || {};
@@ -246,6 +248,7 @@ export class ReporterManager {
                 resultsString += "- Message: " + issue.message +
                     "\n  Level: " + issue.level +
                     "\n  XPath: " + issue.path.dom +
+                    ((issue.source && issue.source.trim().length > 0) ? `\n Source: ${issue.source}` : "") +
                     "\n  Snippet: " + issue.snippet +
                     "\n  Help: " + issue.help +
                     "\n";
