@@ -100,6 +100,7 @@ export type Issue = RuleResult & {
     message: string,
     bounds?: Bounds,
     snippet: string,
+    source?: string,
     level?: string
 }
 
