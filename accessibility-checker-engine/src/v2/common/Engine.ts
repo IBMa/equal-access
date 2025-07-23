@@ -86,9 +86,9 @@ class WrappedRule {
      * @memberOf this
      */
     static convertNodeToSource(node : Element) : string {
-        const debug_directive: string = "ibm-a11y-debug";
         if (!node) return undefined;
         
+        const debug_directive: string = "ibm-a11y-debug";
         /**
          * traverse left then upward to find source info
          * @param node 
