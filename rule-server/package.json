@@ -13,7 +13,7 @@
     },
     "author": "",
     "dependencies": {
-        "@ibm-cloud/cloudant": "^0.12.2",
+        "@ibm-cloud/cloudant": "^0.12.6",
         "body-parser": "^1.20.3",
         "compression": "^1.8.1",
         "cors": "^2.8.5",
