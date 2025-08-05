@@ -11,7 +11,8 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "ibmtelemetry --config=telemetry.yml"
   },
   "keywords": [
     "a11y",
@@ -25,6 +26,7 @@
   "author": "IBM Accessibility",
   "license": "Apache-2.0",
   "dependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "exceljs": "^4.3.0",
