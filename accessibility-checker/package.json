@@ -30,6 +30,7 @@
     "puppeteer": "^22.14.0"
   },
   "devDependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
     "@playwright/test": "^1.21.1",
     "@types/node": "^20.17.24",
     "adm-zip": "^0.5.9",
