@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { CommonUtil } from "../util/CommonUtil";
 
@@ -26,14 +26,14 @@ export const table_aria_descendants: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "Table structure elements cannot specify an explicit 'role' within table containers",
-            "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within an ARIA role '{1}' per the ARIA in HTML specification"
+            "group": "Table structure elements should not specify an explicit 'role' within table containers",
+            "explicit_role": "An explicit ARIA 'role' is not recommended for <{0}> element within an ARIA role '{1}'"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
-        "level": eRulePolicy.VIOLATION,
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
@@ -44,6 +44,6 @@ export const table_aria_descendants: Rule = {
         if (parentRole === null || parentRole.length === 0)
             return;
 
-        return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
+        return RulePotential("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
     }
 }
