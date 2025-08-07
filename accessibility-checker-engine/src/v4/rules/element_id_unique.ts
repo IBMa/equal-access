@@ -20,9 +20,9 @@ export const element_id_unique: Rule = {
     context: "dom:*[id]",
     refactor: {
         "RPT_Elem_UniqueId": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2"
+            "Pass_0": "pass",
+            "Fail_1": "potential_empty",
+            "Fail_2": "potential_in_use"
         }
     },
     help: {
@@ -38,7 +38,7 @@ export const element_id_unique: Rule = {
             "group": "Element 'id' attribute values must be unique within a document",
             "pass": "Rule Passed",
             "potential_empty": "The <{0}> element has the id \"{1}\" that is empty",
-            "Potential_in_use": "The <{0}> element has the id \"{1}\" that is already in use"
+            "potential_in_use": "The <{0}> element has the id \"{1}\" that is already in use"
         }
     },
     rulesets: [{
