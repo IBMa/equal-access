@@ -1660,13 +1660,16 @@ export class AriaUtil {
                         }
                         break;
                     case "th":
-                        if (AriaUtil.getAncestorWithRole(ruleContext, "table", true) !== null || AriaUtil.getAncestorWithRole(ruleContext, "grid", true) !== null || AriaUtil.getAncestorWithRole(ruleContext, "treegrid", true) !== null) {
-                            const scope = CommonUtil.getScopeForTh(ruleContext);
-                            if (scope === 'column') tagProperty = specialTagProperties["des-table-grid-treegrid-column-scope"];
-                            else tagProperty = specialTagProperties["des-table-grid-treegrid-row-scope"];
-                        } else {
+                        const scope = CommonUtil.getScopeForTh(ruleContext);
+                        if (AriaUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
+                            if (scope === 'column') tagProperty = specialTagProperties["des-table-column-scope"];
+                            else tagProperty = specialTagProperties["des-table-row-scope"];
+                        } else if (AriaUtil.getAncestorWithRole(ruleContext, "grid", true) !== null || AriaUtil.getAncestorWithRole(ruleContext, "treegrid", true) !== null){
+                            if (scope === 'column') tagProperty = specialTagProperties["des-grid-treegrid-column-scope"];
+                            else tagProperty = specialTagProperties["des-grid-treegrid-row-scope"];
+                        } else
                             tagProperty = specialTagProperties["des-other"];
-                        }
+
                         break;
                     case "div":
                         let prt = ruleContext.parentElement;
