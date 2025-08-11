@@ -11,8 +11,9 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RuleContextHierarchy, RuleFail } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
 
 export const table_aria_descendants: Rule = {
@@ -42,6 +43,13 @@ export const table_aria_descendants: Rule = {
         let parentRole = CommonUtil.isTableDescendant(contextHierarchies);
         // cache the result
         if (parentRole === null || parentRole.length === 0)
+            return;
+
+        // ignore the redundancy cases: reported in the aria_role_redundant rule
+        const implicitRoles = AriaUtil.getImplicitRole(ruleContext);
+        const explicitRoles = AriaUtil.getRoles(ruleContext, false);;
+        if (implicitRoles && implicitRoles.length > 0 && explicitRoles && explicitRoles.length > 0 
+            && explicitRoles.some(item => implicitRoles.includes(item)))
             return;
 
         return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);

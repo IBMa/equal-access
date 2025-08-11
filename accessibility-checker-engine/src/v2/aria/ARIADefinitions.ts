@@ -2678,13 +2678,23 @@ export class ARIADefinitions {
             }
         },
         "th": {
-            "des-table-grid-treegrid-row-scope": {
+            "des-table-row-scope": {
                 implicitRole: ["rowheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "des-table-grid-treegrid-column-scope": {
+            "des-table-column-scope": {
                 implicitRole: ["columnheader", "cell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "des-grid-treegrid-row-scope": {
+                implicitRole: ["rowheader", "gridcell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "des-grid-treegrid-column-scope": {
+                implicitRole: ["columnheader", "gridcell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
