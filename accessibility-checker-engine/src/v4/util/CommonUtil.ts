@@ -1464,7 +1464,7 @@ export class CommonUtil {
 
         // scope is auto, default (without a scope) or invalid value.
         // if all the sibling elements are th, then return "columnheader" 
-        var siblings = element => [...element.parentElement.children].filter(node => node.nodeType === 1 && node.tagName != "TH");
+        var siblings = [...element.parentElement.children].filter(node => node.nodeType === 1 && node.tagName.toLowerCase() != "th");
         if (siblings === null || siblings.length === 0)
             return "column";
         else return "row";

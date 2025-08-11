@@ -38,8 +38,8 @@
         },
         "element_id_unique": {
             "0": "Element 'id' attribute values must be unique within a document",
-            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use",
-            "Pass_0": "Rule Passed"
+            "pass": "Rule Passed",
+            "potential_in_use": "The <{0}> element has the id \"{1}\" that is already in use"
         },
         "element_tabbable_unobscured": {
             "0": "When an element receives focus, it is not entirely covered by other content",
@@ -571,7 +571,7 @@
                 "width": 999
             },
             "category": "Accessibility",
-            "level": "violation",
+            "level": "potentialviolation",
             "message": "The <div> element has the id \"firstDiv\" that is already in use",
             "messageArgs": [
                 "div",
@@ -581,16 +581,16 @@
                 "aria": "/document[1]/main[1]",
                 "dom": "/html[1]/body[1]/div[2]/div[2]"
             },
-            "reasonId": "Fail_2",
+            "reasonId": "potential_in_use",
             "ruleId": "element_id_unique",
             "snippet": "<div id=\"firstDiv\">",
             "source": null,
             "value": [
                 "VIOLATION",
-                "FAIL"
+                "POTENTIAL"
             ],
             "ignored": true,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22The%20%3Cdiv%3E%20element%20has%20the%20id%20%5C%22firstDiv%5C%22%20that%20is%20already%20in%20use%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_2%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%22div%22%2C%22firstDiv%22%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22The%20%3Cdiv%3E%20element%20has%20the%20id%20%5C%22firstDiv%5C%22%20that%20is%20already%20in%20use%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22POTENTIAL%22%5D%2C%22reasonId%22%3A%22potential_in_use%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%22div%22%2C%22firstDiv%22%5D%7D"
         },
         {
             "apiArgs": [],
@@ -716,7 +716,7 @@
                 "aria": "/document[1]/main[1]",
                 "dom": "/html[1]/body[1]/div[2]/div[1]"
             },
-            "reasonId": "Pass_0",
+            "reasonId": "pass",
             "ruleId": "element_id_unique",
             "snippet": "<div id=\"firstDiv\">",
             "source": null,
@@ -725,7 +725,7 @@
                 "PASS"
             ],
             "ignored": false,
-            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22Pass_0%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%5D%7D"
+            "help": "https://able.ibm.com/rules/archives/preview/doc/en-US/element_id_unique.html#%7B%22message%22%3A%22Rule%20Passed%22%2C%22snippet%22%3A%22%3Cdiv%20id%3D%5C%22firstDiv%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22PASS%22%5D%2C%22reasonId%22%3A%22pass%22%2C%22ruleId%22%3A%22element_id_unique%22%2C%22msgArgs%22%3A%5B%5D%7D"
         },
         {
             "apiArgs": [],

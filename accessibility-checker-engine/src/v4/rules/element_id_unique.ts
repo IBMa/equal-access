@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RulePotential, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
@@ -20,25 +20,25 @@ export const element_id_unique: Rule = {
     context: "dom:*[id]",
     refactor: {
         "RPT_Elem_UniqueId": {
-            "Pass_0": "Pass_0",
-            "Fail_1": "Fail_1",
-            "Fail_2": "Fail_2"
+            "Pass_0": "pass",
+            "Fail_1": "potential_empty",
+            "Fail_2": "potential_in_use"
         }
     },
     help: {
         "en-US": {
             "group": "element_id_unique.html",
-            "Pass_0": "element_id_unique.html",
-            "Fail_1": "element_id_unique.html",
-            "Fail_2": "element_id_unique.html"
+            "pass": "element_id_unique.html",
+            "potential_empty": "element_id_unique.html",
+            "potential_in_use": "element_id_unique.html"
         }
     },
     messages: {
         "en-US": {
             "group": "Element 'id' attribute values must be unique within a document",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The <{0}> element has the id \"{1}\" that is empty",
-            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use"
+            "pass": "Rule Passed",
+            "potential_empty": "The <{0}> element has the id \"{1}\" that is empty",
+            "potential_in_use": "The <{0}> element has the id \"{1}\" that is already in use"
         }
     },
     rulesets: [{
@@ -49,9 +49,9 @@ export const element_id_unique: Rule = {
     }],
     act: [{
         "3ea0c8": {
-            "Pass_0": "pass",
-            "Fail_1": "pass",
-            "Fail_2": "fail"
+            "pass": "pass",
+            "potential_empty": "pass",
+            "potential_in_use": "fail"
         }
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
@@ -63,16 +63,16 @@ export const element_id_unique: Rule = {
         // for uniqueness.
         if (id === "") {
             //return new ValidationResult(false, [ruleContext], '', '', [ruleContext.nodeName.toLowerCase(), id]);
-            return RuleFail("Fail_1", [ruleContext.nodeName.toLowerCase(), id]);
+            return RulePotential("potential_empty", [ruleContext.nodeName.toLowerCase(), id]);
         }
 
         let element = FragmentUtil.getById(ruleContext, id);
         let passed = element === ruleContext;
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [ruleContext.nodeName.toLowerCase(), id]);
         if (!passed) {
-            return RuleFail("Fail_2", [ruleContext.nodeName.toLowerCase(), id]);
+            return RulePotential("potential_in_use", [ruleContext.nodeName.toLowerCase(), id]);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }

@@ -53,11 +53,12 @@ export const aria_role_redundant: Rule = {
             return null;
 
         // dependency check: if it's already failed in the parent relation, then skip this check
-        if (["td", "th", "tr"].includes(elemName)) {
+        // comment out to report the redundant role for table element: tr, td & th
+        /**if (["td", "th", "tr"].includes(elemName)) {
             let parentRole = TableUtil.isTableDescendant(contextHierarchies);
             if (parentRole !== null && parentRole.length > 0)
                 return null;
-        }
+        }*/
 
         let implicitRoles = AriaUtil.getImplicitRole(ruleContext);
         if (!implicitRoles || implicitRoles.length === 0)
