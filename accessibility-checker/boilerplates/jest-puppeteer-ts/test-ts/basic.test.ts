@@ -23,7 +23,7 @@ describe('Altoro Mutual', () => {
     let page: Page;
     beforeAll(async () => {
         page = await browser.newPage();
-        await page.goto('http://altoromutual.com/');
+        await page.goto('https://altoromutual.12mc9fdq8fib.us-south.codeengine.appdomain.cloud/');
     });
 
     afterAll(async () => {

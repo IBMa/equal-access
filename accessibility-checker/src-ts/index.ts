@@ -23,6 +23,8 @@ import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
 import { IBaselineReport } from "./lib/common/engine/IReport.js";
 import { BaselineManager } from "./lib/common/report/BaselineManager.js";
 import { ReporterManager } from "./lib/common/report/ReporterManager.js";
+export { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker.js";
+export { IBaselineReport } from "./lib/common/engine/IReport.js";
 
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
@@ -94,6 +96,10 @@ export function getConfig() : Promise<IConfig> {
 
 export function getConfigUnsupported() : Promise<IConfigInternal> {
     return ACConfigManager.getConfigUnsupported();
+}
+
+export function setConfig(config: IConfig) : Promise<void> {
+    return ACConfigManager.setConfig(config);
 }
 
 export async function close() {
