@@ -12,14 +12,14 @@ import { Page } from "puppeteer";
 
 async function toBeAccessible(node: Page) {
   let results = await getCompliance(node, this.currentTestName.replace(/[ \\/]/g, "_"));
-  if (assertCompliance(results.report) === 0) {
+  if (assertCompliance(results.report as ICheckerReport) === 0) {
     return {
       pass: true
     }
   } else {
     return {
       pass:false,
-      message: () => stringifyResults(results.report)
+      message: () => stringifyResults(results.report as ICheckerReport)
     }
   }
 }
