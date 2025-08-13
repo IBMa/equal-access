@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "13August2025",
+        "name": "13 August 2025 Deployment (IBM 7.3)",
+        "version": "4.0.8",
+        "path": "/archives/2025.08.13"
+    },
+    {
         "id": "24July2025",
         "name": "24 July 2025 Deployment (IBM 7.3)",
         "version": "4.0.7",
@@ -252,7 +258,8 @@
         "id": "10August2022",
         "name": "10 August 2022 Deployment (IBM 7.2)",
         "version": "3.1.35",
-        "path": "/archives/2022.08.10"
+        "path": "/archives/2022.08.10",
+        "hidden": true
     },
     {
         "id": "06July2022",
