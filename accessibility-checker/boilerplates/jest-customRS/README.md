@@ -1,6 +1,6 @@
 # Accessibility Checker Boilerplate: Jest with Custom Ruleset
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a Jest test framework using a custom ruleset for React components.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a [Jest](https://www.npmjs.com/package/jest) test framework using a custom ruleset for React components.
 
 ## Overview
 
@@ -13,7 +13,7 @@ This project provides a starting point for developers who want to include automa
 
 ## What's Different from Standard Jest Setup
 
-This boilerplate extends a standard Jest setup with:
+This boilerplate extends a standard [Jest](https://www.npmjs.com/package/jest) setup with:
 
 1. **Accessibility Checker Integration**: Imports and uses the `accessibility-checker` package to scan React components for accessibility issues
 2. **Custom Jest Matchers**: Provides a custom `toBeAccessible()` matcher for easy accessibility testing
@@ -23,15 +23,15 @@ This boilerplate extends a standard Jest setup with:
 
 ## Project Structure
 
-- `test/`: Test files using Jest and React Testing Library
+- `test/`: Test files using [Jest](https://www.npmjs.com/package/jest) and React Testing Library
 - `sample/`: Sample components for testing
-- `matchers/`: Custom Jest matchers for accessibility testing
+- `matchers/`: Custom [Jest](https://www.npmjs.com/package/jest) matchers for accessibility testing
 - `@types/`: TypeScript type definitions
 - `achecker.js`: Configuration for the accessibility checker
 - `package.json`: Project dependencies and scripts
 - `babel.config.js`: Babel configuration for transpiling React components
-- `jest.config.js`: Jest configuration
-- `setupAfterEnv.js`: Jest setup file that configures the testing environment
+- `jest.config.js`: [Jest](https://www.npmjs.com/package/jest) configuration
+- `setupAfterEnv.js`: [Jest](https://www.npmjs.com/package/jest) setup file that configures the testing environment
 
 ## Getting Started
 
@@ -50,7 +50,7 @@ This boilerplate extends a standard Jest setup with:
 The boilerplate demonstrates accessibility testing by:
 
 1. Using React Testing Library to render components
-2. Using custom Jest matchers to test accessibility compliance
+2. Using custom [Jest](https://www.npmjs.com/package/jest) matchers to test accessibility compliance
 3. Creating a custom ruleset that ignores specific rules
 4. Testing both simple HTML and complex React components
 

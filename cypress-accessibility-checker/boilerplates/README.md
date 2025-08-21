@@ -1,32 +1,32 @@
 # Accessibility Checker Boilerplate: Cypress
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with Cypress for automated accessibility testing of web applications.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with [Cypress](https://www.npmjs.com/package/cypress) for automated accessibility testing of web applications.
 
 ## Overview
 
 This project provides a starting point for developers who want to include automated accessibility testing in their web applications using:
 
 - **Cypress**: A next-generation front-end testing tool built for the modern web
-- **cypress-accessibility-checker**: A Cypress plugin for IBM's Accessibility Checker
+- **cypress-accessibility-checker**: A [Cypress](https://www.npmjs.com/package/cypress) plugin for IBM's Accessibility Checker
 
 ## What's Different from Standard Cypress Setup
 
-This boilerplate extends a standard Cypress setup with:
+This boilerplate extends a standard [Cypress](https://www.npmjs.com/package/cypress) setup with:
 
 1. **Accessibility Checker Integration**: Imports and uses the `cypress-accessibility-checker` plugin
 2. **Custom Cypress Commands**: Adds custom commands like `getCompliance()` and `assertCompliance()`
 3. **Baseline Support**: Demonstrates how to use baselines to track accessibility issues over time
-4. **Task Configuration**: Sets up Cypress tasks for accessibility checking
+4. **Task Configuration**: Sets up [Cypress](https://www.npmjs.com/package/cypress) tasks for accessibility checking
 5. **Sample HTML**: Includes sample HTML files with accessibility issues for testing
 
 ## Project Structure
 
-- `cypress/e2e/`: Cypress test files
+- `cypress/e2e/`: [Cypress](https://www.npmjs.com/package/cypress) test files
 - `cypress/fixtures/`: Test data files
 - `cypress/downloads/`: Downloaded files during test execution
 - `sample-html/`: Sample HTML files for testing
 - `baselines/`: Baseline files for comparison
-- `cypress.config.js`: Cypress configuration
+- `cypress.config.js`: [Cypress](https://www.npmjs.com/package/cypress) configuration
 - `package.json`: Project dependencies and scripts
 
 ## Getting Started
@@ -54,7 +54,7 @@ This boilerplate extends a standard Cypress setup with:
 
 The boilerplate demonstrates accessibility testing by:
 
-1. Using Cypress to visit web pages
+1. Using [Cypress](https://www.npmjs.com/package/cypress) to visit web pages
 2. Using the `getCompliance()` custom command to scan the page for accessibility issues
 3. Using the `assertCompliance()` command to compare results against baselines
 4. Demonstrating both with and without baseline comparisons
@@ -81,11 +81,11 @@ cy.visit('http://localhost:8080/sample-html/example-html-file.html')
 
 ## Cypress Configuration
 
-The Cypress configuration includes:
+The [Cypress](https://www.npmjs.com/package/cypress) configuration includes:
 
 - Setting up the accessibility checker plugin as a Cypress task
 - Configuring the base URL for tests
-- Other standard Cypress configuration options
+- Other standard [Cypress](https://www.npmjs.com/package/cypress) configuration options
 
 ## Using in Your Project
 

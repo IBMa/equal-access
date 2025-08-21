@@ -25,9 +25,8 @@ The browser extensions provide an integrated checking experience and visualizati
 * [Edge Add-on extension](https://microsoftedge.microsoft.com/addons/detail/ibm-equal-access-accessib/ompccpejakabkmfepbijnagedbdfldka) : web browser extension that integrates automated accessibility checking capabilities into the Edge Developer Tools.
 
 #### Automated testing packages
-* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works with test frameworks such as Selenium, Puppeteer, Playwright, and Zombie; and provides the ability to validate results against baseline files, and scan local files.
-* [Karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment.
-* [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the Cypress environment.
+* [Node accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing within a continuous integration pipeline, such as Travis CI for Node-based test environments, that works with test frameworks such as [Selenium](https://www.npmjs.com/package/selenium-webdriver), [Puppeteer](https://www.npmjs.com/package/puppeteer), and [Playwright](https://www.npmjs.com/package/playwright); and provides the ability to validate results against baseline files, and scan local files.
+* [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapper of the `accessibility-checker` in the [Cypress](https://www.npmjs.com/package/cypress) environment.
 
 ## Requirements for building the tools
 
@@ -65,8 +64,7 @@ Please review the README of the selected tool for more information specific to t
 
 * [accessibility-checker-extension/README](accessibility-checker-extension/README.md): A web developer tools browser extension that adds automated accessibility checking capabilities
 * [accessibility-checker/README](accessibility-checker/README.md): Automated accessibility testing for Node-based test environments, the ability to validate results against baseline files, and scan local files
-* [karma-accessibility-checker/README](karma-accessibility-checker/README.md): Automated accessibility testing for the Karma environment
-* [cypress-accessibility-checker/README](cypress-accessibility-checker/README.md): Wrapper of accessibility-checker for the Cypress environment
+* [cypress-accessibility-checker/README](cypress-accessibility-checker/README.md): Wrapper of accessibility-checker for the [Cypress](https://www.npmjs.com/package/cypress) environment
 
 #### Components
 
@@ -94,9 +92,8 @@ $ npm run build
   * ace-node-debug.js: uncompressed javascript library to be used in a NodeJS environment for development
   * ace-node.js: compressed javascript library to be used in a NodeJS environment for production
 * In the equal-access/accessibility-checker/package directory
-  * JavaScript source that can be installed or deployed as npm package that works with an HTML parsing engines, such as Selenium, Puppeteer, Playwright, or Zombie to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
-* In the equal-access/karma-accessibility-checker/package directory
-  * javascript source that can be used as a Karma plugin, see more [details](karma-accessibility-checker/README.md).
+  * JavaScript source that can be installed or deployed as npm package that works with an HTML parsing engines, such as [Selenium](https://www.npmjs.com/package/selenium-webdriver), [Puppeteer](https://www.npmjs.com/package/puppeteer), or [Playwright](https://www.npmjs.com/package/playwright) to allow developers to perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI. Please view more [details](accessibility-checker/src/README.md).
+
 
 ### Build each individual tool separately
 
@@ -106,7 +103,6 @@ Please check the README for each individual tool for its build instructions:
 * [accessibility-checker-extension/README](accessibility-checker-extension/README.md)
 * [accessibility-checker/README](accessibility-checker/README.md)
 * [cypress-accessibility-checker/README](accessibility-checker/README.md)
-* [karma-accessibility-checker/README](karma-accessibility-checker/README.md)
 
 ## Feedback and reporting bugs
 

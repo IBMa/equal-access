@@ -6,23 +6,23 @@ This directory contains boilerplate projects that demonstrate how to integrate I
 
 ### JUnit with Selenium WebDriver
 
-The [junit-selenium](junit-selenium/) boilerplate demonstrates how to use Java Accessibility Checker with JUnit and Selenium WebDriver. This combination is ideal for testing web applications across different browsers.
+The [junit-selenium](junit-selenium/) boilerplate demonstrates how to use Java Accessibility Checker with JUnit and [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/). This combination is ideal for testing web applications across different browsers.
 
 Key features:
 - Uses JUnit for test organization and assertions
-- Uses Selenium WebDriver for browser automation
+- Uses [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/) for browser automation
 - Demonstrates how to set up ChromeDriver for testing
 - Shows how to perform accessibility scans on web pages
 - Includes examples of asserting compliance and handling results
 
 ### JUnit with Playwright
 
-The [junit-playwright](junit-playwright/) boilerplate demonstrates how to use Java Accessibility Checker with JUnit and Microsoft Playwright. This combination provides a modern approach to browser automation with better cross-browser support.
+The [junit-playwright](junit-playwright/) boilerplate demonstrates how to use Java Accessibility Checker with JUnit and [Playwright](https://playwright.dev/). This combination provides a modern approach to browser automation with better cross-browser support.
 
 Key features:
 - Uses JUnit for test organization and assertions
-- Uses Microsoft Playwright for browser automation
-- Shows how to set up Playwright for testing
+- Uses [Playwright](https://playwright.dev/) for browser automation
+- Shows how to set up [Playwright](https://playwright.dev/) for testing
 - Demonstrates how to perform accessibility scans on web pages
 - Includes examples of asserting compliance and handling results
 
@@ -30,7 +30,7 @@ Key features:
 
 Both boilerplates demonstrate:
 
-1. **Setting up the testing environment**: Configuring the browser automation tool (Selenium or Playwright)
+1. **Setting up the testing environment**: Configuring the browser automation tool (Selenium or [Playwright](https://playwright.dev/))
 2. **Performing accessibility scans**: Using `AccessibilityChecker.getCompliance()` to scan web pages
 3. **Asserting compliance**: Using `AccessibilityChecker.assertCompliance()` to check for accessibility issues
 4. **Handling results**: Processing the scan results and making assertions
@@ -42,8 +42,8 @@ Both boilerplates demonstrate:
 
 - Java Development Kit (JDK) 17 or higher
 - Gradle build tool
-- For Selenium: Chrome browser and appropriate ChromeDriver
-- For Playwright: No additional browser installation required (automatically managed)
+- For [Selenium](https://www.selenium.dev/documentation/webdriver/): Chrome browser and appropriate ChromeDriver
+- For [Playwright](https://playwright.dev/): No additional browser installation required (automatically managed)
 
 ### Running the Tests
 
@@ -73,5 +73,5 @@ To adapt these boilerplates for your own project:
 - [Java Accessibility Checker Documentation](https://github.com/IBMa/equal-access/tree/master/java-accessibility-checker)
 - [JUnit Documentation](https://junit.org/junit4/)
 - [Selenium WebDriver Documentation](https://www.selenium.dev/documentation/en/)
-- [Microsoft Playwright Documentation](https://playwright.dev/java/)
+- [Playwright Documentation](https://playwright.dev/java/)
 - [IBM Equal Access Toolkit](https://www.ibm.com/able/toolkit)

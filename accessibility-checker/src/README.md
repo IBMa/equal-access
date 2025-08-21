@@ -5,7 +5,7 @@
 `accessibility-checker` is a NodeJS module that allows you to do the following:
 
 - perform integrated accessibility testing within a continuous integration pipeline, such as Travis CI
-- works with test frameworks (parsing engines), such as Selenium, Puppeteer, Playwright, and Zombie
+- works with test frameworks (parsing engines), such as [Selenium](https://www.npmjs.com/package/selenium-webdriver), [Puppeteer](https://www.npmjs.com/package/puppeteer), and [Playwright](https://www.npmjs.com/package/playwright)
 - allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string
 - aside from just performing accessibility scanning, it provides a framework to validate accessibility scan results against baseline files and/or simply failing the test cases based on the levels of violations found during the scan
 
@@ -129,8 +129,8 @@ $ achecker
 ### Prerequisites
 
 1. Install [NodeJS and NPM](https://nodejs.org/en/download/)
-2. Some testing framework (e.g., mocha, jasmine)
-3. Browser automation / parser (e.g., Selenium, Puppeteer, Playwright, Zombie)
+2. Some testing framework (e.g., [Mocha](https://www.npmjs.com/package/mocha), jasmine)
+3. Browser automation / parser (e.g., [Selenium](https://www.npmjs.com/package/selenium-webdriver), [Puppeteer](https://www.npmjs.com/package/puppeteer), [Playwright](https://www.npmjs.com/package/playwright))
 
 #### Install
 
@@ -267,11 +267,11 @@ Execute accessibility scan on provided content. `content` can be in the followin
 - Local file path (String)
 - URL (String)
 - Document node (HTMLDocument)
-- Selenium WebDriver (WebDriver)
-- Puppeteer page
-- Playwright page
+- [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) (WebDriver)
+- [Puppeteer](https://www.npmjs.com/package/puppeteer) page
+- [Playwright](https://www.npmjs.com/package/playwright) page
 
-Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using Puppeteer, aChecker.getCompliance expects the Page object.
+Note: When using [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) the aChecker.getCompliance API will only take [Selenium](https://www.npmjs.com/package/selenium-webdriver) (WebDriver) instance. When using [Puppeteer](https://www.npmjs.com/package/puppeteer), aChecker.getCompliance expects the Page object.
 
 Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
@@ -443,7 +443,7 @@ Retrieve the configuration object used by accessibility-checker. See aceconfig.j
 
 ### async aChecker.close()
 
-Close puppeteer pages and other resources that may be used by accessibility-checker.
+Close [Puppeteer](https://www.npmjs.com/package/puppeteer) pages and other resources that may be used by accessibility-checker.
 
 ## Errors
 
@@ -478,7 +478,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 ## Known issues and workarounds
 
 1. If you see `TypeError: ace.Checker is not a constructor`: 
-    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in [Jest](https://www.npmjs.com/package/jest) framework. 
 
 2. If your site has a `Content Security Policy`, the engine script may be
     prevented from loading. In the browser console, you'll see something like:

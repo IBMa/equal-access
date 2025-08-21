@@ -1,6 +1,6 @@
 # Accessibility Checker Boilerplate: WebdriverIO
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with WebdriverIO for automated accessibility testing.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with [WebdriverIO](https://www.npmjs.com/package/webdriverio) for automated accessibility testing.
 
 ## Overview
 
@@ -13,7 +13,7 @@ This project provides a starting point for developers who want to include automa
 
 ## What's Different from Standard WebdriverIO Setup
 
-This boilerplate extends a standard WebdriverIO setup with:
+This boilerplate extends a standard [WebdriverIO](https://www.npmjs.com/package/webdriverio) setup with:
 
 1. **Accessibility Checker Integration**: Imports and uses the `accessibility-checker` package to scan web pages for accessibility issues
 2. **TypeScript Support**: Includes TypeScript configuration for better developer experience
@@ -26,10 +26,10 @@ This boilerplate extends a standard WebdriverIO setup with:
 
 ## Project Structure
 
-- `test/specs/`: Test specification files using WebdriverIO and Mocha
+- `test/specs/`: Test specification files using [WebdriverIO](https://www.npmjs.com/package/webdriverio) and [Mocha](https://www.npmjs.com/package/mocha)
 - `test/pageobjects/`: Page object classes for better test organization
 - `achecker.js`: Configuration for the accessibility checker
-- `wdio.conf.ts`: WebdriverIO configuration
+- `wdio.conf.ts`: [WebdriverIO](https://www.npmjs.com/package/webdriverio) configuration
 - `tsconfig.json`: TypeScript configuration
 - `package.json`: Project dependencies and scripts
 
@@ -49,7 +49,7 @@ This boilerplate extends a standard WebdriverIO setup with:
 
 The boilerplate demonstrates accessibility testing by:
 
-1. Using WebdriverIO to navigate to web pages
+1. Using [WebdriverIO](https://www.npmjs.com/package/webdriverio) to navigate to web pages
 2. Implementing the page object pattern for better test organization
 3. Using accessibility-checker to scan pages for accessibility issues
 4. Logging accessibility compliance results

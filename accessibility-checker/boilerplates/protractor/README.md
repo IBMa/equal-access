@@ -4,9 +4,9 @@ This boilerplate demonstrates how to integrate IBM's Accessibility Checker with 
 
 ## Overview
 
-Protractor is a wrapper around Selenium WebDriver that provides an automated testing framework,
+Protractor is a wrapper around [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) that provides an automated testing framework,
 which simulates user interaction with an Angular web application for a range of browsers and mobile devices.
-It provides all features of Selenium WebDriver along with Angular specific features for seamless end to end testing.
+It provides all features of [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) along with Angular specific features for seamless end to end testing.
 
 This project provides a starting point for developers who want to include automated accessibility testing in their Angular applications using:
 

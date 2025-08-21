@@ -1,6 +1,6 @@
 # Accessibility Checker Boilerplate: Jest
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with Jest for automated accessibility testing of web content.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with [Jest](https://www.npmjs.com/package/jest) for automated accessibility testing of web content.
 
 ## Overview
 
@@ -16,7 +16,7 @@ This boilerplate extends a standard Jest setup with:
 
 1. **Custom Matcher**: Adds a `toBeAccessible()` matcher for easy accessibility testing
 2. **Baseline Support**: Demonstrates how to use baselines to track accessibility issues over time
-3. **Jest Configuration**: Configures Jest to use the custom matcher and handle accessibility testing
+3. **Jest Configuration**: Configures [Jest](https://www.npmjs.com/package/jest) to use the custom matcher and handle accessibility testing
 4. **Accessibility Configuration**: Includes an `achecker.js` configuration file that defines:
    - Rule archives to use
    - Policies to scan against
@@ -25,12 +25,12 @@ This boilerplate extends a standard Jest setup with:
 
 ## Project Structure
 
-- `test/`: Test files using Jest and the custom accessibility matcher
-- `matchers/`: Custom Jest matchers for accessibility testing
+- `test/`: Test files using [Jest](https://www.npmjs.com/package/jest) and the custom accessibility matcher
+- `matchers/`: Custom [Jest](https://www.npmjs.com/package/jest) matchers for accessibility testing
 - `baselines/`: Baseline files for comparison
 - `achecker.js`: Configuration for the accessibility checker
-- `jest.config.js`: Jest configuration
-- `setupAfterEnv.js`: Jest setup file that configures the testing environment
+- `jest.config.js`: [Jest](https://www.npmjs.com/package/jest) configuration
+- `setupAfterEnv.js`: [Jest](https://www.npmjs.com/package/jest) setup file that configures the testing environment
 - `package.json`: Project dependencies and scripts
 
 ## Getting Started
@@ -76,7 +76,7 @@ We can then add to the `document.body.innerHTML` in that test, following the lin
 
 ## Custom Matcher
 
-The boilerplate includes a custom Jest matcher `toBeAccessible()` that makes it easy to test for accessibility issues:
+The boilerplate includes a custom [Jest](https://www.npmjs.com/package/jest) matcher `toBeAccessible()` that makes it easy to test for accessibility issues:
 
 ```javascript
 // Test with baseline

@@ -27,7 +27,7 @@ This boilerplate extends a standard Karma setup with:
 
 ## Project Structure
 
-- `test/`: TypeScript test files using Mocha and expect.js
+- `test/`: TypeScript test files using [Mocha](https://www.npmjs.com/package/mocha) and expect.js
 - `src/`: Source HTML files to be tested
 - `achecker.js`: Configuration for the accessibility checker
 - `karma.conf.js`: Karma configuration

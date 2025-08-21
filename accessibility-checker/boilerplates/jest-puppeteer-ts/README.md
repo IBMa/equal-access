@@ -1,6 +1,6 @@
 # Accessibility Checker Boilerplate: Jest with Puppeteer and TypeScript
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a Jest test framework using Puppeteer for browser automation and TypeScript for type safety.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a [Jest](https://www.npmjs.com/package/jest) test framework using [Puppeteer](https://www.npmjs.com/package/puppeteer) for browser automation and TypeScript for type safety.
 
 ## Overview
 
@@ -13,11 +13,11 @@ This project provides a starting point for developers who want to include automa
 
 ## What's Different from Standard Jest/Puppeteer Setup
 
-This boilerplate extends a standard Jest and Puppeteer setup with:
+This boilerplate extends a standard [Jest](https://www.npmjs.com/package/jest) and [Puppeteer](https://www.npmjs.com/package/puppeteer) setup with:
 
 1. **Accessibility Checker Integration**: Imports and uses the `accessibility-checker` package to scan web pages for accessibility issues
 2. **TypeScript Support**: Includes TypeScript configuration and type definitions for better developer experience
-3. **Custom Jest Matchers**: Provides custom Jest matchers for accessibility testing
+3. **Custom Jest Matchers**: Provides custom [Jest](https://www.npmjs.com/package/jest) matchers for accessibility testing
 4. **Accessibility Configuration**: Includes an `achecker.js` configuration file that defines:
    - Rule archives to use
    - Policies to scan against
@@ -28,11 +28,11 @@ This boilerplate extends a standard Jest and Puppeteer setup with:
 
 - `test-ts/`: TypeScript source files for tests
 - `sample/`: Sample web application for testing
-- `matchers/`: Custom Jest matchers for accessibility testing
+- `matchers/`: Custom [Jest](https://www.npmjs.com/package/jest) matchers for accessibility testing
 - `achecker.js`: Configuration for the accessibility checker
 - `tsconfig.json`: TypeScript configuration
 - `package.json`: Project dependencies and scripts
-- `setupAfterEnv.ts`: Jest setup file that configures the testing environment
+- `setupAfterEnv.ts`: [Jest](https://www.npmjs.com/package/jest) setup file that configures the testing environment
 
 ## Getting Started
 
@@ -50,15 +50,15 @@ This boilerplate extends a standard Jest and Puppeteer setup with:
 
 The boilerplate demonstrates accessibility testing by:
 
-1. Using Puppeteer to load and interact with web pages
+1. Using [Puppeteer](https://www.npmjs.com/package/puppeteer) to load and interact with web pages
 2. Leveraging Jest's testing framework for assertions and test organization
 3. Integrating accessibility-checker to scan pages for accessibility issues
-4. Using custom Jest matchers to make assertions about accessibility compliance
+4. Using custom [Jest](https://www.npmjs.com/package/jest) matchers to make assertions about accessibility compliance
 
 Key features include:
 
 - TypeScript for improved code quality and developer experience
-- Custom Jest matchers for more readable test assertions
+- Custom [Jest](https://www.npmjs.com/package/jest) matchers for more readable test assertions
 - Configuration options for tailoring accessibility testing to your needs
 
 ## Learn More

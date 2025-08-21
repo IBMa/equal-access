@@ -1,6 +1,6 @@
 # Accessibility Checker Boilerplate: Mocha with Puppeteer and TypeScript
 
-This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a Mocha test framework using Puppeteer for browser automation and TypeScript for type safety.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with a [Mocha](https://www.npmjs.com/package/mocha) test framework using [Puppeteer](https://www.npmjs.com/package/puppeteer) for browser automation and TypeScript for type safety.
 
 ## Overview
 
@@ -13,7 +13,7 @@ This project provides a starting point for developers who want to include automa
 
 ## What's Different from Standard Mocha/Puppeteer Setup
 
-This boilerplate extends a standard Mocha and Puppeteer setup with:
+This boilerplate extends a standard [Mocha](https://www.npmjs.com/package/mocha) and [Puppeteer](https://www.npmjs.com/package/puppeteer) setup with:
 
 1. **Accessibility Checker Integration**: Imports and uses the `accessibility-checker` package to scan web pages for accessibility issues
 2. **TypeScript Support**: Includes TypeScript configuration and type definitions for better developer experience
