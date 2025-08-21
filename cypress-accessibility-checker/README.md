@@ -2,10 +2,10 @@
 
 Cypress plugin for automated accessibility testing.
 
-The [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker) is a wrapper of the `accessibility-checker` in the Cypress environment.
+The [Cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker) is a wrapper of the `accessibility-checker` in the [Cypress](https://www.npmjs.com/package/cypress) environment.
 The deployed package can be downloaded and installed from NPM.
 
-This plugin is a Cypress flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker).
+This plugin is a [Cypress](https://www.npmjs.com/package/cypress) flavor of the NodeJS version of `accessibility-checker` which is also [available on NPM](https://www.npmjs.com/package/accessibility-checker).
 The plugin works by injecting the automated accessibility-checker testing into [Cypress](https://docs.cypress.io/guides/overview/why-cypress), a next-generation front-end testing tool built for the modern web and scanning the page in context. 
 Please see the `Usage` section below for more details.
 
@@ -35,11 +35,11 @@ The configuration for the plugin is driven by a configuration file called `.ache
 
 ## Setup Cypress
 
-There are two setup steps you must complete in order for the Cypress tests to be able to use the commands.
+There are two setup steps you must complete in order for the [Cypress](https://www.npmjs.com/package/cypress) tests to be able to use the commands.
 
 ### 1. Add plugin
 
-In the Cypress config for your project, require the plugin and then register it with Cypress.
+In the [Cypress](https://www.npmjs.com/package/cypress) config for your project, require the plugin and then register it with [Cypress](https://www.npmjs.com/package/cypress).
 
 ```js
 const { defineConfig } = require('cypress')
@@ -57,7 +57,7 @@ module.exports = defineConfig({
 
 ### 2. Import commands
 
-In the `cypress/support/e2e.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with Cypress.
+In the `cypress/support/e2e.js` file located in your project, add the following import statement. This will import the accessibility checker commands and register them with [Cypress](https://www.npmjs.com/package/cypress).
 
 ```js
 import 'cypress-accessibility-checker';
@@ -67,7 +67,7 @@ If you do not want to include `cypress-accessibility-checker` globally, you may 
 
 ## Usage
 
-The commands map directly to the description of the APIs located in the  [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
+The commands map directly to the description of the APIs located in the  [accessibility-checker/src/README](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md). The names of the APIs within [Cypress](https://www.npmjs.com/package/cypress) are just slightly different so they are globally unique in the [Cypress](https://www.npmjs.com/package/cypress) namespace.
 
 The typical use case will be to get the accessibility compliance of a document and then assert the accessibility compliance against the configuration that is defined as part of the `.achecker.yml` file and any baselines that are defined. An example of how this looks is below:
 
@@ -93,7 +93,7 @@ Examples of how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
 
-Chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
+Chain the commands similar to other [Cypress](https://www.npmjs.com/package/cypress) commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
 ## Boilerplates
 
@@ -101,7 +101,7 @@ Review the [cypress-accessibility-checker/boilerplates/README](boilerplates/READ
 
 ### Using Baselines
 
-Baselines are a helpful feature of `cypress-accessibility-checker` that can also be used in this Cypress wrapper. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the _baseline_. If they differ, then the test will fail.
+Baselines are a helpful feature of `cypress-accessibility-checker` that can also be used in this [Cypress](https://www.npmjs.com/package/cypress) wrapper. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the _baseline_. If they differ, then the test will fail.
 Many boilerplate examples include _baselines_.
 This feature is useful for issues that have been determined to be of the following:
 
@@ -116,10 +116,10 @@ See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#
 
 ### Running `cypress-accessibility-checker` tests
 
-There is a suite of tests located in the `test/` directory which execute each of the added Cypress commands. You can run this test suite by doing one of the following:
+There is a suite of tests located in the `test/` directory which execute each of the added [Cypress](https://www.npmjs.com/package/cypress) commands. You can run this test suite by doing one of the following:
 
 * `npm test`: Executes the tests in a headless environment
-* `npm run test:open`: Opens the Cypress interactive mode. Run `npm run test:start-http` in order for the tests to work.
+* `npm run test:open`: Opens the [Cypress](https://www.npmjs.com/package/cypress) interactive mode. Run `npm run test:start-http` in order for the tests to work.
 
 ### Building
 

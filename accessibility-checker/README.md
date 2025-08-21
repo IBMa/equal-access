@@ -16,7 +16,7 @@ See the [Packages for test automation](https://github.com/IBMa/equal-access/wiki
 - Scan single or multiple files, directories, or URLs
 - Output scan results in JSON, CSV, HTML, or XLSX formats
 - Automate accessibility testing within a continuous integration pipeline, such as Travis CI
-- Integrate with Node-based test environments, such as Selenium, Puppeteer, Playwright, Jest, and Zombie
+- Integrate with Node-based test environments, such as [Selenium](https://www.npmjs.com/package/selenium-webdriver), [Puppeteer](https://www.npmjs.com/package/puppeteer), [Playwright](https://www.npmjs.com/package/playwright), and [Jest](https://www.npmjs.com/package/jest)
 - Validate test results against baselines
 - Set a target rule archive
 - Configure policies (rule sets) to scan
@@ -91,7 +91,7 @@ $ npm test
 ## Known issues and workarounds
 
 1. If you see `TypeError: ace.Checker is not a constructor`: 
-    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in [Jest](https://www.npmjs.com/package/jest) framework. 
 
 2. If your site has a `Content Security Policy`, the engine script may be
     prevented from loading. In the browser console, you'll see something like:

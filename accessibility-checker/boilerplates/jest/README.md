@@ -1,10 +1,60 @@
-# jest
+# Accessibility Checker Boilerplate: Jest
 
-Using a [Jest](https://www.npmjs.com/package/jest) testing framework with a baseline.
+This boilerplate demonstrates how to integrate IBM's Accessibility Checker with [Jest](https://www.npmjs.com/package/jest) for automated accessibility testing of web content.
 
-## Purpose of folders and files in this boilerplate
+## Overview
 
-## Baseline basics
+This project provides a starting point for developers who want to include automated accessibility testing in their web applications using:
+
+- **Jest**: A delightful JavaScript testing framework with a focus on simplicity
+- **JSDOM**: A JavaScript implementation of the DOM for use with Node.js
+- **Accessibility Checker**: IBM's tool for automated accessibility testing
+
+## What's Different from Standard Jest Setup
+
+This boilerplate extends a standard Jest setup with:
+
+1. **Custom Matcher**: Adds a `toBeAccessible()` matcher for easy accessibility testing
+2. **Baseline Support**: Demonstrates how to use baselines to track accessibility issues over time
+3. **Jest Configuration**: Configures [Jest](https://www.npmjs.com/package/jest) to use the custom matcher and handle accessibility testing
+4. **Accessibility Configuration**: Includes an `achecker.js` configuration file that defines:
+   - Rule archives to use
+   - Policies to scan against
+   - Violation levels that cause test failures
+   - Report formats and locations
+
+## Project Structure
+
+- `test/`: Test files using [Jest](https://www.npmjs.com/package/jest) and the custom accessibility matcher
+- `matchers/`: Custom [Jest](https://www.npmjs.com/package/jest) matchers for accessibility testing
+- `baselines/`: Baseline files for comparison
+- `achecker.js`: Configuration for the accessibility checker
+- `jest.config.js`: [Jest](https://www.npmjs.com/package/jest) configuration
+- `setupAfterEnv.js`: [Jest](https://www.npmjs.com/package/jest) setup file that configures the testing environment
+- `package.json`: Project dependencies and scripts
+
+## Getting Started
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run the tests**:
+   ```bash
+   npm test
+   ```
+
+## How It Works
+
+The boilerplate demonstrates accessibility testing by:
+
+1. Using JSDOM to create a virtual DOM environment
+2. Creating HTML content directly in the tests
+3. Using the custom `toBeAccessible()` matcher to test for accessibility issues
+4. Comparing results against baselines (if available)
+
+## Baseline Basics
 
 We have two tests - one referencing a baseline (stored at `baselines/IMG_BASELINE.json`) and one that does not.
 
@@ -24,4 +74,38 @@ At the time of this commit, if you look at the results for `Image missing alt wi
 
 We can then add to the `document.body.innerHTML` in that test, following the linked `help` above, to remove the violation. In this example, a simple way is to add an appropriate `alt` attribute.
 
-A useful exercise would be to extend this example to make use of the provided HelloWidget component.
+## Custom Matcher
+
+The boilerplate includes a custom [Jest](https://www.npmjs.com/package/jest) matcher `toBeAccessible()` that makes it easy to test for accessibility issues:
+
+```javascript
+// Test with baseline
+await expect(document).toBeAccessible("IMG_BASELINE")
+
+// Test without baseline
+await expect(document).toBeAccessible("IMG_NO_BASELINE")
+```
+
+The matcher:
+1. Uses accessibility-checker to scan the provided DOM node
+2. Compares the results against a baseline (if provided)
+3. Passes if no violations are found or if they match the baseline
+4. Fails with detailed information about violations if they exist
+
+## Configuration Options
+
+The `achecker.js` file contains various configuration options:
+
+- `ruleArchive`: Specifies which version of accessibility rules to use
+- `policies`: Defines which accessibility policies to check against (e.g., IBM_Accessibility)
+- `failLevels`: Determines which severity levels cause a test to fail
+- `reportLevels`: Controls which issues are included in reports
+- `outputFormat`: Specifies the format for results (JSON, CSV, etc.)
+- `baselineFolder`: Specifies where baseline files are stored
+
+## Learn More
+
+- [Jest Documentation](https://jestjs.io/)
+- [IBM Equal Access Toolkit](https://www.ibm.com/able/toolkit)
+- [Accessibility Checker GitHub](https://github.com/IBMa/equal-access)
+- [Accessibility Checker NPM Package](https://www.npmjs.com/package/accessibility-checker)
