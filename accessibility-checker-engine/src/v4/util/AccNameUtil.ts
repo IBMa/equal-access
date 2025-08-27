@@ -25,10 +25,21 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
+export type AccessibleNameResult = {
+    name: string, 
+    nameFrom: "ariaLabel" | "title" | "placeholder" | "label" 
+        | "value" | "internal" | "alt" | "text" | "legend" 
+        | "summary" | "figcaption" | "caption"
+        | "shadow" | "slot" | "shadow-host" | "content-slot"
+        | "content"
+        | "svglinkTitle" | "svgTitle" | "svgText" | "svgDesc"
+        | "aria-description"
+        | string // css-*
+}
 export class AccNameUtil {
     
     // calculate accessible name for a given node
-    public static computeAccessibleName(elem: Element) : any | null {
+    public static computeAccessibleName(elem: Element) : AccessibleNameResult | null {
         if (!elem) return null;
         const nodeName = elem.nodeName.toLowerCase();
 
@@ -92,7 +103,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForNativeElement(elem: Element) : any | null {
+    public static computeAccessibleNameForNativeElement(elem: Element) : AccessibleNameResult | null {
         const nodeName = elem.nodeName.toLowerCase();
         
         // labellable fields
@@ -294,7 +305,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForSVGElement(elem: Element) : any | null {
+    public static computeAccessibleNameForSVGElement(elem: Element) : AccessibleNameResult | null {
         // 1. a direct child or descendant title element 
         const svgTitles = elem.querySelectorAll(":scope > title");
         if (svgTitles && svgTitles.length > 0) {
@@ -357,7 +368,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for custom elements marked with aria
-    public static computeAccessibleNameFromContent(elem: Element) : any | null {
+    public static computeAccessibleNameFromContent(elem: Element) : AccessibleNameResult | null {
         const nodeName = elem.nodeName.toLowerCase();
         const role = AriaUtil.getResolvedRole(elem);
         
@@ -383,7 +394,7 @@ export class AccNameUtil {
         
         // slot element
         if (nodeName === "slot") {
-            pair = AccNameUtil.computeAccessibleNameForSlostElement(elem);
+            pair = AccNameUtil.computeAccessibleNameForSlotElement(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
                 return {"name": pair.name, "nameFrom": "slot"};
         }
@@ -398,7 +409,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name from CSS generated content
-    public static computeAccessibleNameForCSSPseudoElement(elem: Element, type:string) : any | null {
+    public static computeAccessibleNameForCSSPseudoElement(elem: Element, type:string) : AccessibleNameResult | null {
         const contentElem = elem.ownerDocument.defaultView.getComputedStyle(elem,type);
         if (contentElem) {
             let content = contentElem.content;
@@ -412,7 +423,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameForShadowHost(elem: Element) : any | null {
+    public static computeAccessibleNameForShadowHost(elem: Element) : AccessibleNameResult | null {
         let text = "";
         const shadowRoot = elem.shadowRoot;
         if (shadowRoot) {
@@ -431,7 +442,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameForSlostElement(elem: Element) : any | null {
+    public static computeAccessibleNameForSlotElement(elem: Element) : AccessibleNameResult | null {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
@@ -453,7 +464,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name from children content
-    public static computeAccessibleNameFromChildren(elem: Element) : any | null {
+    public static computeAccessibleNameFromChildren(elem: Element) : AccessibleNameResult | null {
         let text = "";
         //let walkChild = elem.firstChild;
         let nw = new DOMWalker(elem);

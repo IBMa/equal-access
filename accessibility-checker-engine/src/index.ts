@@ -21,6 +21,8 @@ export { Checker }
 export { ARIAMapper } from "./v2/aria/ARIAMapper";
 export { Config } from "./v2/config/Config";
 export { DOMWalker } from "./v2/dom/DOMWalker";
+export { SRController } from "./v4/simulator/SRController";
+export { SRWalker } from "./v4/simulator/SRWalker";
 
 String.prototype.startsWith = String.prototype.startsWith || function (str) {
     return this.indexOf(str) === 0;
