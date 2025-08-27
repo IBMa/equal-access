@@ -22,18 +22,50 @@ export namespace SRRenderer {
             //     (_itemWalker: SRWalker) => ""
             // ],
             "default": [
+                // DEBUG
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `!!<${itemWalker.getRole()}>${(itemWalker.getName()?.name+"")}!!` : `!!</${itemWalker.getRole()}>!!`
             ],
+
+            // DEBUG: Ignore because they're containers
             "article": [ CONTAINER_RESULT ],
             "banner": [ CONTAINER_RESULT ],
             "blockquote": [ CONTAINER_RESULT ],
+            "caption": [ CONTAINER_RESULT ],
+            "cell": [ CONTAINER_RESULT ],
+            "code": [ CONTAINER_RESULT ],
+            "columnheader": [ CONTAINER_RESULT ],
+            "complementary": [ CONTAINER_RESULT ],
+            "contentinfo": [ CONTAINER_RESULT ],
+            "figure": [ CONTAINER_RESULT ],
+            "form": [ CONTAINER_RESULT ],
+            "group": [ CONTAINER_RESULT ],
+            "list": [ CONTAINER_RESULT ],
+            "main": [ CONTAINER_RESULT ],
+            "mark": [ CONTAINER_RESULT ],
+            "navigation": [ CONTAINER_RESULT ],
+            "region": [ CONTAINER_RESULT ],
+            "row": [ CONTAINER_RESULT ],
+            "search": [ CONTAINER_RESULT ],
+            "table": [ CONTAINER_RESULT ],
+            "toolbar": [ CONTAINER_RESULT ],
+
+            // DEBUG: Ignore because screen reader don't announce these
+            "paragraph": [ IGNORE_RESULT ],
+            "rowgroup":  [ IGNORE_RESULT ],
+            "status": [ IGNORE_RESULT ],
+            "strong": [ IGNORE_RESULT ],
+            "subscript": [ IGNORE_RESULT ],
+            "superscript": [ IGNORE_RESULT ],
+            "tablist": [ IGNORE_RESULT ],
+            "tabpanel": [ IGNORE_RESULT ],
+            "term": [ IGNORE_RESULT ],
+            "time": [ IGNORE_RESULT ],
+
             "button":  [
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getName()?.name || ""}`: null,
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getName()?.name || ""}`: null,
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[button] ${itemWalker.getName()?.name || ""}` || "")
             ],
-            "caption": [ CONTAINER_RESULT ],
-            "cell": [ CONTAINER_RESULT ],
             "checkbox":  [
                 (itemWalker: SRWalker) => {
                     if (!itemWalker.isEndTag()) {
@@ -48,25 +80,18 @@ export namespace SRRenderer {
                     }
                 }
             ],
-            "code": [ CONTAINER_RESULT ],
-            "columnheader": [ CONTAINER_RESULT ],
-            "complementary": [ CONTAINER_RESULT ],
-            "contentinfo": [ CONTAINER_RESULT ],
             "deletion":  [
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[deleted]` || "")
             ],
             "document":  [
                 () => ""
             ],
-            "figure": [ CONTAINER_RESULT ],
-            "form": [ CONTAINER_RESULT ],
             "graphics-document": [
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && !itemWalker.getName()?.name && itemWalker.getName()?.name !== "" && "[Unlabeled graphic]") || null,
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getName()?.name === "")) ? "" : null,
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && itemWalker.getName()?.name && `[graphic] ${itemWalker.getName()?.name || ""}`) || null,
                 (itemWalker: SRWalker) => (itemWalker.isEndTag()) ? "" : null,
             ],
-            "group": [ CONTAINER_RESULT ],
             "heading":  [
                 (itemWalker: SRWalker) => {
                     let retVal = "";
@@ -106,7 +131,6 @@ export namespace SRRenderer {
                     return retVal;
                 }
             ],
-            "list": [ CONTAINER_RESULT ],
             "listitem": [
                 (itemWalker: SRWalker) => {
                     let isOrdered: boolean | undefined;
@@ -143,13 +167,9 @@ export namespace SRRenderer {
                     return retStr;
                 }
             ],
-            "main": [ CONTAINER_RESULT ],
-            "mark": [ CONTAINER_RESULT ],
             "meter": [
                 (itemWalker: SRWalker) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
             ],
-            "navigation": [ CONTAINER_RESULT ],
-            "paragraph": [ IGNORE_RESULT ],
             "progressbar": [
                 (itemWalker: SRWalker) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
             ],
@@ -162,13 +182,9 @@ export namespace SRRenderer {
                     }
                 }
             ],
-            "region": [ CONTAINER_RESULT ],
-            "row": [ CONTAINER_RESULT ],
-            "rowgroup":  [ IGNORE_RESULT ],
             "slider": [
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[slider, ${(itemWalker.getNode() as any).value}]` : ""
             ],
-            "search": [ CONTAINER_RESULT ],
             "searchbox": [
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[edit]` : ""
             ],
@@ -178,25 +194,15 @@ export namespace SRRenderer {
             "spinbutton": [
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[spinbutton, editable]` : ""
             ],
-            "status": [ IGNORE_RESULT ],
-            "strong": [ IGNORE_RESULT ],
-            "subscript": [ IGNORE_RESULT ],
-            "superscript": [ IGNORE_RESULT ],
             "tab": [
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[tab${(itemWalker.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected": ""}] ${itemWalker.getName()?.name || ""}`) || ""
             ],
-            "tablist": [ IGNORE_RESULT ],
-            "tabpanel": [ IGNORE_RESULT ],
-            "table": [ CONTAINER_RESULT ],
-            "term": [ IGNORE_RESULT ],
             "text": [
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `${(itemWalker.getName()?.name+"")}` : null
             ],
             "textbox":  [
                 (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[edit] ${itemWalker.getName()?.name || ""}`) || ""
             ],
-            "time": [ IGNORE_RESULT ],
-            "toolbar": [ CONTAINER_RESULT ],
         }
     };
 
@@ -206,6 +212,8 @@ export namespace SRRenderer {
         }
     } = {
         "default": {
+            "dl": [ CONTAINER_RESULT ],
+
             "br": [
                 (itemWalker: SRWalker) => {
                     try {
@@ -218,10 +226,6 @@ export namespace SRRenderer {
                         console.error(err);
                     }
                 }
-            ],
-            "dl": [
-                // Handled by containers
-                (_itemWalker: SRWalker) => ""
             ],
             "li": [
                 (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[bullet] ${(itemWalker.getName()?.name || "")}` : ""
