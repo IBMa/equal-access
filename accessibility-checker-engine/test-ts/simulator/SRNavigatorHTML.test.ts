@@ -836,7 +836,7 @@ line breaks.</pre>
             "[out of table] [table with 3 rows and 4 columns] [caption] Example Table Rowspan",
             "[out of caption] [row 1] [column 3] Header 1",
             "[column 4] Header 2",
-            "[Header 3, row 2 through 3] [column 1] Header Span",
+            "[Header 3, Header 4, row 2 through 3] [column 1] Header Span",
             "[Header Span, row 2] [column 2] Header 3",
             "[Header 1, column 3] Row 1, Cell 1",
             "[Header 2, column 4] Row 1, Cell 2",

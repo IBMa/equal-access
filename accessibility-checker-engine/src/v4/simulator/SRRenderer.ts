@@ -6,10 +6,35 @@ import { ContainerChanges, NavigationMode } from "./SRTypes";
 import { SRCursor } from "./SRCursor";
 import { SRTableUtil } from "./SRTableUtil";
 
+/**
+ * SRRenderer namespace provides functionality for simulating how screen readers
+ * announce content to users. It contains rules for rendering different types of
+ * elements and ARIA roles in various navigation modes.
+ *
+ * The renderer uses a rule-based system to determine what text should be announced
+ * when navigating to, within, or away from elements based on their roles and properties.
+ */
 export namespace SRRenderer {
+    /**
+     * Helper function that returns an empty string for container elements
+     * Container elements typically don't have their own announcement but contain other elements
+     */
     const CONTAINER_RESULT = (_itemWalker: SRCursor) => "";
+    
+    /**
+     * Helper function that returns an empty string for elements that screen readers typically ignore
+     */
     const IGNORE_RESULT = (_itemWalker: SRCursor) => "";
 
+    /**
+     * Rules for rendering elements based on their ARIA role
+     *
+     * This structure maps navigation modes and ARIA roles to arrays of rendering functions.
+     * Each function takes a cursor and returns the text that should be announced,
+     * or null/undefined if it doesn't apply.
+     *
+     * Functions are tried in order until one returns a non-null/undefined value.
+     */
     const renderRoleRules: {
         [mode: string]: {
             [role: string]: Array<(walker: SRCursor) => string | null>
@@ -208,6 +233,12 @@ export namespace SRRenderer {
         }
     };
 
+    /**
+     * Rules for rendering elements based on their HTML tag name
+     *
+     * Similar to renderRoleRules, but matches on element tag names instead of ARIA roles.
+     * Used as a fallback when an element doesn't have a specific ARIA role.
+     */
     const renderElemRules: {
         [mode: string]: {
             [role: string]: Array<(walker: SRCursor) => string | null>
@@ -235,38 +266,59 @@ export namespace SRRenderer {
         }
     }
 
+    /**
+     * Generates the announcement text when entering a table cell
+     *
+     * This function creates announcements for:
+     * - Row position and associated row headers
+     * - Column position and associated column headers
+     * - Cells that span multiple rows or columns
+     *
+     * @param newWalker - Cursor at the new cell position
+     * @param oldWalker - Cursor at the previous position
+     * @returns Announcement text for the table cell
+     */
     function renderEnterTableCell(newWalker: SRCursor, oldWalker: SRCursor) {
-        let oldTableNode = oldWalker.getCurrentOrParentByRoleClone(["table"]).getNode();
-        let newTableNode = newWalker.getCurrentOrParentByRoleClone(["table"]).getNode();
-
-        let newRowIdxs = SRTableUtil.getRowRange(newWalker);
-        let oldRowIdxs = SRTableUtil.getRowRange(oldWalker);
-        let newColIdxs = SRTableUtil.getColRange(newWalker);
-        let oldColIdxs = SRTableUtil.getColRange(oldWalker);
+        const newTableModel = SRTableUtil.getTableModel(newWalker);
+        const oldCellInfo = SRTableUtil.getCellModel(oldWalker, newTableModel);
+        const newCellInfo = SRTableUtil.getCellModel(newWalker, newTableModel);
+        if (!newCellInfo) return "";
 
         let retVal: string[] = [];
 
-        if (!oldTableNode || !oldTableNode.isSameNode(newTableNode) || !SRTableUtil.cellRangesOverlap(oldRowIdxs, newRowIdxs) || JSON.stringify(oldRowIdxs) !== JSON.stringify(newRowIdxs)) {
-            // If a change in row or a change in rowSpan            
-            let rowHeaders = SRTableUtil.getRowHeaders(newWalker);
+        // Announce row information if we've moved to a different row or the rowspan has changed
+        if (!oldCellInfo || oldCellInfo.rowIndexStart !== newCellInfo.rowIndexStart || oldCellInfo.rowspan !== newCellInfo.rowspan) {
+            // If a change in row or a change in rowSpan
+            let rowHeaders = SRTableUtil.getRowHeadersForCursor(newWalker, newTableModel);
             let headerInfoStr = rowHeaders && rowHeaders.trim().length > 0 ? `${rowHeaders}, ` : "";
-            retVal.push(`[${headerInfoStr}row ${newRowIdxs.start === newRowIdxs.end ? newRowIdxs.start : newRowIdxs.start + " through " + newRowIdxs.end}]`);
+            retVal.push(`[${headerInfoStr}row ${(newCellInfo.rowIndexStart+1)}${newCellInfo.rowspan > 1 ? " through " + (newCellInfo.rowIndexStart+newCellInfo.rowspan) : ""}]`);
         }
 
-        if (!oldTableNode || !oldTableNode.isSameNode(newTableNode) || !SRTableUtil.cellRangesOverlap(oldColIdxs, newColIdxs) || JSON.stringify(oldColIdxs) !== JSON.stringify(newColIdxs)) {
-            // If a change in column or a change in rowSpan
-            let columnHeaders = SRTableUtil.getColumnHeaders(newWalker);
+        // Announce column information if we've moved to a different column or the colspan has changed
+        if (!oldCellInfo || oldCellInfo.colIndexStart !== newCellInfo.colIndexStart || oldCellInfo.colspan !== newCellInfo.colspan) {
+            // If a change in column or a change in colspan
+            let columnHeaders = SRTableUtil.getColumnHeadersForCursor(newWalker, newTableModel);
             let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `${columnHeaders}, ` : "";
-            retVal.push(`[${headerInfoStr}column ${newColIdxs.start === newColIdxs.end ? newColIdxs.start : newColIdxs.start + " through " + newColIdxs.end}]`);
+            retVal.push(`[${headerInfoStr}column ${(newCellInfo.colIndexStart+1)}${newCellInfo.colspan > 1 ? " through " + (newCellInfo.colIndexStart+newCellInfo.colspan) : ""}]`);
         }
 
         return retVal.join(" ");
     }
 
+    /**
+     * Generates the announcement text when entering a table row
+     * Currently returns an empty string as row announcements are handled elsewhere
+     */
     const renderEnterTableRow = (newWalker: SRCursor, oldWalker: SRCursor) => {
         return "";
     }
 
+    /**
+     * Rules for what to announce when entering an element with a specific ARIA role
+     *
+     * These rules generate announcements for landmarks, regions, and other
+     * container elements when the user first navigates to them.
+     */
     const renderEnterRoleRules: {
         [mode: string]: {
             [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
@@ -371,6 +423,12 @@ export namespace SRRenderer {
         }
     };
 
+    /**
+     * Rules for what to announce when leaving an element with a specific ARIA role
+     *
+     * These rules generate announcements for when the user navigates out of
+     * landmarks, regions, and other container elements.
+     */
     const renderLeaveRoleRules: {
         [mode: string]: {
             [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
@@ -404,6 +462,12 @@ export namespace SRRenderer {
         }
     };
 
+    /**
+     * Rules for what to announce when entering an element with a specific HTML tag
+     *
+     * Similar to renderEnterRoleRules, but matches on element tag names instead of ARIA roles.
+     * Used as a fallback when an element doesn't have a specific ARIA role.
+     */
     const renderEnterElemRules: {
         [mode: string]: {
             [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
@@ -426,6 +490,12 @@ export namespace SRRenderer {
         }
     };
 
+    /**
+     * Rules for what to announce when leaving an element with a specific HTML tag
+     *
+     * Similar to renderLeaveRoleRules, but matches on element tag names instead of ARIA roles.
+     * Used as a fallback when an element doesn't have a specific ARIA role.
+     */
     const renderLeaveElemRules: {
         [mode: string]: {
             [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
@@ -441,35 +511,81 @@ export namespace SRRenderer {
         }
     };
 
+    /**
+     * Generates the announcement text when entering an element
+     *
+     * This function looks up the appropriate rule based on the element's role or tag name
+     * and applies it to generate the announcement text.
+     *
+     * @param mode - The current navigation mode
+     * @param walker - Cursor at the current position
+     * @param oldWalker - Optional cursor at the previous position
+     * @returns Announcement text for entering the element, or null if no rule applies
+     */
     export function renderEnter(mode: NavigationMode | "focus", walker: SRCursor, oldWalker?: SRCursor): string | null {
         const role = walker.getRole();
         const node = walker.getNode();
         const DEBUG = false; //node.nodeName === "MARK";
         DEBUG && console.log("-=-=-=-=-= renderEnter =-=-=-=-=-");
         DEBUG && console.log(role, node.nodeName);
+        
+        // If no role, use the element's tag name for lookup
         const nodeNameLookup = role === null ? node.nodeName.toLowerCase() : "ARIA";
+        
+        // Try to find a matching rule in this priority order:
+        // 1. Mode-specific role rule
+        // 2. Default role rule
+        // 3. Mode-specific element rule
+        // 4. Default element rule
         let rule = renderEnterRoleRules[mode]?.[role]
             || renderEnterRoleRules["default"]?.[role]
             || renderEnterElemRules[mode]?.[nodeNameLookup]
             || renderEnterElemRules["default"]?.[nodeNameLookup]
         ;
+        
         if (rule) return rule(walker, oldWalker);
         return null;
     }
 
+    /**
+     * Generates the announcement text when leaving an element
+     *
+     * Similar to renderEnter, but applies rules for leaving elements instead.
+     *
+     * @param mode - The current navigation mode
+     * @param walker - Cursor at the current position
+     * @param oldWalker - Optional cursor at the previous position
+     * @returns Announcement text for leaving the element, or null if no rule applies
+     */
     export function renderLeave(mode: NavigationMode, walker: SRCursor, oldWalker?: SRCursor): string | null  {
         const role = walker.getRole();
         const node = walker.getNode();
         const nodeNameLookup = role === null ? node.nodeName.toLowerCase() : "ARIA";
+        
+        // Find the appropriate rule using the same priority as renderEnter
         let rule = renderLeaveRoleRules[mode]?.[role]
             || renderLeaveRoleRules["default"]?.[role]
             || renderLeaveElemRules[mode]?.[nodeNameLookup]
             || renderLeaveElemRules["default"]?.[nodeNameLookup]
         ;
+        
         if (rule) return rule(walker, oldWalker);
         return null;
     }
 
+    /**
+     * Renders the current element and any container changes
+     *
+     * This function combines announcements for:
+     * - Containers being left
+     * - Containers being entered
+     * - The current element itself
+     *
+     * @param mode - The current navigation mode
+     * @param walker - Cursor at the current position
+     * @param containerChanges - Information about containers being entered or left
+     * @returns Combined announcement text
+     */
     export function renderCurrent(mode: NavigationMode, walker: SRCursor, containerChanges: ContainerChanges): string {
         let startOfRender = SRNavigator.jumpCurrent(mode, walker);
         let endOfRender = SRNavigator.jumpCurrentEnd(mode, walker);
@@ -477,6 +593,17 @@ export namespace SRRenderer {
         return (containerChanges.leaving || []).concat(containerChanges.entering || []).concat([renderStr]).join(" ").replace(/\s+/g, " ");
     }
 
+    /**
+     * Renders a range of elements between two cursors
+     *
+     * This function traverses the DOM from startOfRender to endOfRender,
+     * applying rendering rules to each element and combining the results.
+     *
+     * @param mode - The current navigation mode
+     * @param startOfRender - Cursor at the start of the range
+     * @param endOfRender - Cursor at the end of the range
+     * @returns Combined announcement text for the entire range
+     */
     export function renderRange(mode: NavigationMode, startOfRender: SRCursor, endOfRender: SRCursor) : string {
         let lastIterWalker = null;
         let iterWalker = startOfRender.clone();

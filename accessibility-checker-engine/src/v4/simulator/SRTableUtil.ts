@@ -7,66 +7,24 @@ import { SRCursor } from "./SRCursor";
  */
 export namespace SRTableUtil {
     /**
-     * Represents a range of cells (either rows or columns) in a table
-     * @property start - The starting index (1-based)
-     * @property end - The ending index (1-based)
+     * Represents a table cell with its position and spanning information
+     * @property rowIndexStart - The starting row index (0-based)
+     * @property colIndexStart - The starting column index (0-based)
+     * @property rowspan - Number of rows this cell spans
+     * @property colspan - Number of columns this cell spans
+     * @property cellCursor - SRCursor pointing to this cell
      */
-    export type CellRange = { start: number, end: number };
-
+    export type CellModel = { rowIndexStart: number, colIndexStart: number, rowspan: number, colspan: number, cellCursor: SRCursor }
+    
     /**
-     * Determines the column range for a given cell
-     * @param cursor - The SRCursor pointing to a cell or its contents
-     * @returns The column range object or null if not in a cell
+     * Represents a row in a table as an array of cell models
      */
-    export function getColRange(cursor: SRCursor) : CellRange | null {
-        let walkBack = SRTableUtil.getCurrentOrParentCellCursor(cursor);
-        if (!walkBack) return null;
-
-        // Determine how many columns this cell spans for later
-        let colSpan = getColSpan(walkBack);
-
-        let count = getColumnIndex(walkBack)+1;
-        return { start: count, end: count+colSpan-1 };
-    }
-
+    export type RowModel = CellModel[];
+    
     /**
-     * Determines the row range for a given cell
-     * @param cursor - The SRCursor pointing to a cell or a node within the cell
-     * @returns The row range object or null if not in a cell
+     * Represents a complete table as an array of rows
      */
-    export function getRowRange(cursor: SRCursor) : CellRange | null {
-        let walkBack = cursor.getCurrentOrParentByRoleClone(["cell", "rowheader", "columnheader"], ["TD","TH"]);
-        if (!walkBack) return null;
-
-        // Determine how many rows this cell spans for later
-        let rowSpan = 1;
-        if (walkBack) {
-            rowSpan = getRowSpan(walkBack);
-        } else {
-            walkBack = cursor.clone();
-        }
-
-        // Determine how many rows are before this row
-        let count = 0;
-        while (walkBack.getRole() !== "table") {
-            if (!walkBack.isEndTag() && walkBack.getRole() === "row") {
-                ++count;
-            }
-            walkBack.previous(() => true);
-        }
-        return { start: count, end: count+rowSpan-1 };
-    }
-
-    /**
-     * Checks if two cell ranges overlap
-     * @param one - First cell range
-     * @param two - Second cell range
-     * @returns True if the ranges overlap, false otherwise
-     */
-    export function cellRangesOverlap(one: CellRange, two: CellRange): boolean {
-        if (!(!!one && !!two)) return false;
-        return !(two.end < one.start || two.start > one.end);
-    }
+    export type TableModel = RowModel[];
 
     /**
      * Determines if the cursor is pointing to a cell element (TD or TH)
@@ -83,32 +41,6 @@ export namespace SRTableUtil {
     }
 
     /**
-     * Determines if the cursor is pointing to a row header element
-     * @param cursor - The SRCursor to check
-     * @returns true if the cursor is on a row header, false otherwise
-     */
-    export function isCursorRowHeaderRole(cursor: SRCursor) {
-        if (!cursor.getElement()) return false;
-        if (["rowheader"].includes(cursor.getRole())) {
-            return true;
-        }
-        return !cursor.getElement().hasAttribute("role") && ["TH"].includes(cursor.getElement().nodeName.toUpperCase());
-    }
-
-    /**
-     * Determines if the cursor is pointing to a column header element
-     * @param cursor - The SRCursor to check
-     * @returns true if the cursor is on a column header, false otherwise
-     */
-    export function isCursorColumnHeaderRole(cursor: SRCursor) {
-        if (!cursor.getElement()) return false;
-        if (["rowheader"].includes(cursor.getRole())) {
-            return true;
-        }
-        return !cursor.getElement().hasAttribute("role") && ["TH"].includes(cursor.getElement().nodeName.toUpperCase());
-    }
-
-    /**
      * Gets a cursor pointing to the current cell or the parent cell if the cursor
      * is inside a cell's content
      * @param cursor - The SRCursor to check
@@ -116,160 +48,6 @@ export namespace SRTableUtil {
      */
     export function getCurrentOrParentCellCursor(cursor: SRCursor) : SRCursor {
         return cursor.getCurrentOrParentByRoleClone(["cell", "rowheader", "columnheader"], ["TD","TH"]);
-    }
-
-    /**
-     * Gets the row headers associated with a cell
-     * First checks for explicit headers attribute, then looks for row headers in the same row
-     * @param cursor - The SRCursor pointing to a cell
-     * @returns A string containing the concatenated header names
-     */
-    export function getRowHeaders(cursor: SRCursor) {
-        let cell = cursor.getCurrentOrParentByRoleClone(["cell", "rowheader", "columnheader"], ["TH", "TD"]);
-        if (cell === null) return "";
-        let rowIdxs = SRTableUtil.getRowRange(cell);
-        let cellElem = cell.getElement();
-        let potentialHeaders: SRCursor[] = [];
-        if (cellElem.hasAttribute("headers")) {
-            potentialHeaders = cellElem.getAttribute("headers")
-                // Split the header attribute into ids
-                .split(" ")
-                // Get the node for each id
-                .map(id => document.getElementById(id))
-                // Get rid of bad mappings
-                .filter(node => !!node)
-                // Convert to SRCursors to that we can get accessible names
-                .map(node => new SRCursor(node))
-                // Remove headers that aren't in the same row (ignore column headers)
-            .filter(cursor => SRTableUtil.cellRangesOverlap(SRTableUtil.getRowRange(cursor), rowIdxs))
-        } else {
-            // Get all cells within the row
-            let rowcursor = cell.getCurrentOrParentByRoleClone(["row"]);
-            while (rowcursor.next(() => true) && rowcursor.getRole() !== "row") {
-                if (!cell.getNode().isSameNode(rowcursor.getNode()) && !rowcursor.isEndTag()) {
-                    const elem = rowcursor.getElement();
-                    if (!elem) continue;
-                    if (rowcursor.getRole() === "rowheader") {
-                        potentialHeaders.push(rowcursor.clone());
-                    } else if (!elem.hasAttribute("role") && elem.nodeName.toUpperCase() === "TH") {
-                        if (elem.getAttribute("scope") === "row" || elem.getAttribute("scope") === "axis") {
-                            potentialHeaders.push(rowcursor.clone());
-                        } else if (!elem.hasAttribute("scope") && isRowHeader(rowcursor)) {
-                            potentialHeaders.push(rowcursor.clone());
-                        }
-                    }
-                }
-            }
-        }
-        return potentialHeaders
-            // And then return the names of the headers
-            .map(cursor => cursor
-            .getName()?.name || "")
-            .map(s => s.trim())
-            .filter(s => s.length > 0)
-            .join(", ");
-    }
-
-    /**
-     * Gets the column headers associated with a cell
-     * First checks for explicit headers attribute, then looks for column headers in the same column
-     * @param cursor - The SRCursor pointing to a cell
-     * @returns A string containing the concatenated header names
-     */
-    export function getColumnHeaders(cursor: SRCursor) {
-        let cell = cursor.getCurrentOrParentByRoleClone(["cell", "rowheader", "columnheader"], ["TH", "TD"]);
-        if (cell === null) return "";
-        let colIdxs = SRTableUtil.getColRange(cell);
-        let cellElem = cell.getElement();
-        let potentialHeaders: SRCursor[] = [];
-        if (cellElem.hasAttribute("headers")) {
-            potentialHeaders = cellElem.getAttribute("headers")
-                // Split the header attribute into ids
-                .split(" ")
-                // Get the node for each id
-                .map(id => document.getElementById(id))
-                // Get rid of bad mappings
-                .filter(node => !!node)
-                // Convert to SRCursors to that we can get accessible names
-                .map(node => new SRCursor(node))
-        } else {
-            // Get all cells within the table
-            let tablecursor = cell.getCurrentOrParentByRoleClone(["table"]);
-            while (tablecursor.next(() => true) && tablecursor.getRole() !== "table") {
-                if (!cell.getNode().isSameNode(tablecursor.getNode()) && !tablecursor.isEndTag() && tablecursor.getNode().nodeType === 1) {
-                    const elem = tablecursor.getElement();
-                    if (tablecursor.getRole() === "columnheader") {
-                        potentialHeaders.push(tablecursor.clone());
-                    } else if (!elem.hasAttribute("role") && elem.nodeName.toUpperCase() === "TH") {
-                        if (elem.getAttribute("scope") === "col" || elem.getAttribute("scope") === "axis") {
-                            potentialHeaders.push(tablecursor.clone());
-                        } else if (!elem.hasAttribute("scope") && isColumnHeader(tablecursor)) {
-                            potentialHeaders.push(tablecursor.clone());
-                        }
-                    }
-                }
-            }
-        }
-        return potentialHeaders
-            // Remove headers that aren't in the same column (ignore column headers)
-            .filter(cursor => SRTableUtil.cellRangesOverlap(SRTableUtil.getColRange(cursor), colIdxs))
-            // And then return the names of the headers
-            .map(cursor => cursor.getName()?.name || "")
-            .map(s => s.trim())
-            .filter(s => s.length > 0)
-            .join(", ");
-    }
-
-    /**
-     * Determines if a TH element is functioning as a column header
-     * by checking if there are non-header cells in the same column
-     * @param cursorThNode - The SRCursor pointing to a TH element
-     * @param DEBUG - Optional debug flag
-     * @returns True if the element is functioning as a column header
-     */
-    function isColumnHeader(cursorThNode: SRCursor, DEBUG?: boolean) {
-        let colIdxs = SRTableUtil.getColRange(cursorThNode);
-        let thElement = cursorThNode.getElement();
-        let tablecursor = cursorThNode.getCurrentOrParentByRoleClone(["table"]);
-        while (tablecursor.next(() => true) && tablecursor.getRole() !== "table") {
-            if (tablecursor.isEndTag() || !isCursorCellRole(tablecursor)) continue;
-            if (!thElement.isSameNode(tablecursor.getElement()) && SRTableUtil.cellRangesOverlap(SRTableUtil.getColRange(tablecursor), colIdxs)) {
-                // This is in the same column, but not the same cell, if it's not blank and not a heading, then our original node is a heading
-                if (!isCursorColumnHeaderRole(tablecursor) && (tablecursor.getName()?.name || "").trim().length > 0) {
-                    return true;
-                }
-            }
-            // Skip the contents of the cell
-            tablecursor.setEndTag(true);
-            continue;
-        }
-        return false;
-    }
-
-    /**
-     * Determines if a TH element is functioning as a row header
-     * by checking if there are non-header cells in the same row
-     * @param cursorThNode - The SRCursor pointing to a TH element
-     * @returns True if the element is functioning as a row header
-     */
-    function isRowHeader(cursorThNode: SRCursor) {
-        // If the whole row is made of headers, then, no
-        let rowIdxs = SRTableUtil.getRowRange(cursorThNode);
-        let thElement = cursorThNode.getElement();
-        let rowcursor = cursorThNode.getCurrentOrParentByRoleClone(["row"]);
-        while (rowcursor.next(() => true) && rowcursor.getRole() !== "row") {
-            if (rowcursor.isEndTag() || !isCursorCellRole(rowcursor)) continue;
-            if (!thElement.isSameNode(rowcursor.getElement()) && SRTableUtil.cellRangesOverlap(SRTableUtil.getRowRange(rowcursor), rowIdxs)) {
-                // This is in the same row, but not the same cell, if it's not blank and not a heading, then our original node is a heading
-                if (!isCursorRowHeaderRole(rowcursor) && (rowcursor.getName()?.name || "").trim().length > 0) {
-                    return true;
-                }
-            }
-            // Skip the contents of the cell
-            rowcursor.setEndTag(true);
-            continue;
-        }
-        return false;
     }
 
     /**
@@ -301,95 +79,326 @@ export namespace SRTableUtil {
     }
 
     /**
-     * Gets the column index of a cell, accounting for rowspan effects from rows above
-     * @param cursor The cursor pointing to a cell or its contents
-     * @returns The column index (0-based) of the cell or -1 if not in a cell
+     * Builds a complete model of a table's structure, accounting for rowspan and colspan
+     *
+     * This function traverses the entire table and creates a data structure that represents
+     * the logical grid of cells, properly handling cells that span multiple rows or columns.
+     * The resulting model makes it easier to determine cell relationships and positions.
+     *
+     * @param inTableCursor - A cursor within the table
+     * @returns A TableModel representing the complete table structure, or null if not in a table
      */
-    export function getColumnIndex(cursor: SRCursor): number {
-        // Get the current cell or parent cell
-        let cellCursor = getCurrentOrParentCellCursor(cursor);
-        if (!cellCursor) return -1;
+    export function getTableModel(inTableCursor: SRCursor): TableModel {
+        // Get a cursor pointing to the table element
+        let tableCursor = inTableCursor.getCurrentOrParentByRoleClone(["table"]);
+        if (!tableCursor) return null;
+        let walkTableCursor = tableCursor.clone();
 
-        // Get the row index of the current cell
-        const rowRange = getRowRange(cellCursor);
-        if (!rowRange) return -1;
-        const rowIndex = rowRange.start;
+        let retVal: TableModel = [];  // The complete table model we're building
+        let curRow: RowModel = [];    // The current row being processed
+        let prevRow: RowModel;        // The previous row (needed for rowspan handling)
+        
+        // Walk through the table's DOM structure
+        while (walkTableCursor.next(() => true) && !walkTableCursor.getNode().isSameNode(tableCursor.getNode())) {
+            if (walkTableCursor.isEndTag() && walkTableCursor.getRole() === "row") {
+                // Reached the end of the row, push what we have and reset
+                retVal.push(curRow);
+                prevRow = curRow;
+                curRow = [];
 
-        // Get the table cursor
-        let tableCursor = cellCursor.getCurrentOrParentByRoleClone(["table"]);
-        if (!tableCursor) return -1;
-
-        // Create a map to track cells with rowspan that affect our target row
-        // Map structure: columnIndex -> ending row
-        const rowspanMap = new Map<number, number>();
-        let currentRowIndex = 0;
-        let inTargetRow = false;
-
-        // First pass: find all cells with rowspan that affect our target row
-        while (tableCursor.next(() => true) && tableCursor.getRole() !== "table") {
-            if (!tableCursor.isEndTag() && tableCursor.getRole() === "row") {
-                currentRowIndex++;
-                inTargetRow = currentRowIndex === rowIndex;
-                continue;
-            }
-
-            // Skip if not a cell or if we've passed our target row
-            if (tableCursor.isEndTag() || !isCursorCellRole(tableCursor) || currentRowIndex > rowIndex) {
-                continue;
-            }
-
-            // If we're in a row before our target and the cell has rowspan that extends to our target row
-            if (currentRowIndex < rowIndex) {
-                const rs = getRowSpan(tableCursor);
-                if (currentRowIndex + rs - 1 >= rowIndex) {
-                    // Calculate this cell's column index in its own row
-                    let colIndex = 0;
-                    let tempCursor = tableCursor.clone();
-                    tempCursor.previous(() => true);
-                    
-                    // Count cells to the left in the same row
-                    while (tempCursor.getRole() !== "row") {
-                        if (!tempCursor.isEndTag() && isCursorCellRole(tempCursor)) {
-                            colIndex += getColSpan(tempCursor);
-                        }
-                        tempCursor.previous(() => true);
-                    }
-                    
-                    // Add this cell to our rowspan map
-                    for (let i = 0; i < getColSpan(tableCursor); i++) {
-                        rowspanMap.set(colIndex + i, currentRowIndex + rs - 1);
-                    }
+                // Handle cells with rowspan from previous rows that affect this row
+                // This ensures cells spanning multiple rows are properly represented in the model
+                while (prevRow && curRow.length < prevRow.length &&
+                      ((prevRow[curRow.length].rowIndexStart + prevRow[curRow.length].rowspan - 1) >= retVal.length)) {
+                    curRow.push(prevRow[curRow.length]);
                 }
             }
-
-            // If we're in our target row and this is our target cell, calculate its column index
-            if (inTargetRow && tableCursor.getNode().isSameNode(cellCursor.getNode())) {
-                let colIndex = 0;
+            
+            // Process each cell in the row
+            if (!walkTableCursor.isEndTag() && isCursorCellRole(walkTableCursor)) {
+                const colspan = getColSpan(walkTableCursor);
+                // Create a cell model with position and spanning information
+                const cellInfo: CellModel = {
+                    rowIndexStart: retVal.length,
+                    colIndexStart: curRow.length,
+                    rowspan: getRowSpan(walkTableCursor),
+                    colspan,
+                    cellCursor: walkTableCursor.clone()
+                };
                 
-                // Account for cells with rowspan from above rows
-                for (let i = 0; i < 1000; i++) { // Safety limit
-                    if (rowspanMap.has(colIndex) && rowspanMap.get(colIndex)! >= rowIndex) {
-                        colIndex++;
-                    } else {
-                        break;
-                    }
+                // For cells with colspan, add the same cell info to multiple columns
+                for (let idx=0; idx<colspan; ++idx) {
+                    curRow.push(cellInfo);
                 }
                 
-                // Count cells to the left in the same row
-                let tempCursor = cellCursor.clone();
-                tempCursor.previous(() => true);
-                
-                while (tempCursor.getRole() !== "row") {
-                    if (!tempCursor.isEndTag() && isCursorCellRole(tempCursor)) {
-                        colIndex += getColSpan(tempCursor);
-                    }
-                    tempCursor.previous(() => true);
+                // Continue handling cells with rowspan from previous rows
+                while (prevRow && curRow.length < prevRow.length &&
+                      ((prevRow[curRow.length].rowIndexStart + prevRow[curRow.length].rowspan - 1) >= retVal.length)) {
+                    curRow.push(prevRow[curRow.length]);
                 }
-                
-                return colIndex;
             }
         }
-        
-        return -1;
+        return retVal;
+    }
+
+    /**
+     * Gets the cell model for a specific cell in the table
+     *
+     * This function finds the CellModel object that represents a specific cell,
+     * which contains information about its position and spanning.
+     *
+     * @param inCellCursor - A cursor pointing to a cell or its contents
+     * @param tableModel - Optional pre-built table model (will be created if not provided)
+     * @returns The CellModel for the specified cell, or null if not found
+     */
+    export function getCellModel(inCellCursor: SRCursor, tableModel?: TableModel) : CellModel {
+        let cellCursor = getCurrentOrParentCellCursor(inCellCursor);
+        if (!tableModel) {
+            tableModel = getTableModel(inCellCursor);
+        }
+        // Search through the table model to find the matching cell
+        for (let rowIndex = 0; rowIndex < tableModel.length; ++rowIndex) {
+            for (let colIndex = 0; colIndex < tableModel[rowIndex].length; ++colIndex) {
+                if (tableModel[rowIndex][colIndex].cellCursor.isSameNode(cellCursor)) {
+                    return tableModel[rowIndex][colIndex];
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if a cell spans a specific column
+     *
+     * @param cellModel - The cell model to check
+     * @param colIdx - The column index to check
+     * @returns True if the cell contains the specified column
+     */
+    export function cellModelContainsColumn(cellModel: CellModel, colIdx: number) {
+        return colIdx >= cellModel.colIndexStart && colIdx < cellModel.colIndexStart+cellModel.colspan;
+    }
+
+    /**
+     * Checks if a cell spans a specific row
+     *
+     * @param cellModel - The cell model to check
+     * @param rowIdx - The row index to check
+     * @returns True if the cell contains the specified row
+     */
+    export function cellModelContainsRow(cellModel: CellModel, rowIdx: number) {
+        return rowIdx >= cellModel.rowIndexStart && rowIdx < cellModel.rowIndexStart+cellModel.rowspan;
+    }
+
+    /**
+     * Gets the row headers associated with a cell
+     * First checks for explicit headers attribute, then looks for row headers in the same row
+     * @param cursor - The SRCursor pointing to a cell
+     * @returns A string containing the concatenated header names
+     */
+    export function getRowHeaders(cursor: SRCursor) {
+        return "";
+    }
+
+    /**
+     * Gets the column headers associated with a cell
+     * First checks for explicit headers attribute, then looks for column headers in the same column
+     * @param cursor - The SRCursor pointing to a cell
+     * @returns A string containing the concatenated header names
+     */
+    export function getColumnHeadersForCursor(inCellCursor: SRCursor, tableModel?: TableModel) {
+        if (!tableModel) {
+            tableModel = getTableModel(inCellCursor);
+            if (!tableModel) return "";
+        }
+        const cellModel = getCellModel(inCellCursor, tableModel);
+        if (!cellModel) return "";
+
+        const cellCursor = cellModel.cellCursor;
+        if (!cellCursor) return "";
+
+        const cellElem = cellCursor.getElement();
+        if (!cellElem) return "";
+
+        const colDatas: Array<{
+            potentialColHeaders: SRCursor[],
+            existsDataCell: boolean,
+            colIdx: number
+        }> = [];
+        for (let colIdx = cellModel.colIndexStart; colIdx < cellModel.colIndexStart+cellModel.colspan; ++colIdx) {
+            colDatas.push({
+                potentialColHeaders: [],
+                existsDataCell: false,
+                colIdx
+            });
+        }
+        let potentialHeaders: SRCursor[] = [];
+        if (cellElem.hasAttribute("headers")) {
+            potentialHeaders = cellElem.getAttribute("headers")
+                // Split the header attribute into ids
+                .split(" ")
+                // Get the node for each id
+                .map(id => document.getElementById(id))
+                // Get rid of bad mappings
+                .filter(node => !!node)
+                // Convert to SRCursors to that we can get accessible names
+                .map(node => new SRCursor(node))
+                // Remove headers that aren't in the same column (ignore column headers)
+                .filter(cursor => colDatas.some(colData => cellModelContainsColumn(SRTableUtil.getCellModel(cursor, tableModel), colData.colIdx)))
+        } else {
+            // Get all cells in this column
+            // Note - if everything in this column is empty or a header cell, this is probably not a heading
+            for (let rowIdx=0; rowIdx < tableModel.length; ++rowIdx) {
+                for (const colData of colDatas) {
+                    const colIdx = colData.colIdx;
+                    const checkInfo = tableModel[rowIdx][colIdx];
+                    const checkCursor = checkInfo.cellCursor;
+                    const checkCursorElem = checkCursor.getElement();
+                    // If this row/col isn't found, or is the same cursor as our original cell model, or already in our list, skip, but check if it's a data cell
+                    if (!checkInfo || !checkCursor || checkCursor.isSameNode(cellCursor) || potentialHeaders.some(c => checkCursor.isSameNode(c))) {
+                        colData.existsDataCell = colData.existsDataCell || (isDataCell(checkCursor) && (checkCursor.hasNonEmptyName() || colData.potentialColHeaders.length > 0));
+                        continue;
+                    }
+
+                    const c = checkCursor.clone();
+                    if (checkCursor.getRole() === "columnheader") {
+                        potentialHeaders.push(c);
+                        colData.potentialColHeaders.push(c);
+                    } else if (!checkCursorElem.hasAttribute("role") && checkCursorElem.nodeName.toUpperCase() === "TH") {
+                        if (checkCursorElem.getAttribute("scope") === "col" || checkCursorElem.getAttribute("scope") === "axis") {
+                            potentialHeaders.push(c);
+                            colData.potentialColHeaders.push(c);
+                        } else if (!checkCursorElem.hasAttribute("scope") && checkCursor.hasNonEmptyName()) {
+                            potentialHeaders.push(c);
+                            colData.potentialColHeaders.push(c);
+                        }
+                    } else {
+                        colData.existsDataCell = colData.existsDataCell || (isDataCell(checkCursor) && (checkCursor.hasNonEmptyName() || colData.potentialColHeaders.length > 0));
+                    }
+                }
+            }
+            for (const colData of colDatas) {
+                if (!colData.existsDataCell) {
+                    colData.potentialColHeaders = [];
+                }
+            }
+            potentialHeaders = potentialHeaders.filter(one => colDatas.some(colData => colData.potentialColHeaders.some(two => two.isSameNode(one))))
+        }
+        return potentialHeaders
+            // And then return the names of the headers
+            .map(cursor => cursor.getName()?.name || "")
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+            .join(", ");
+    }
+
+    /**
+     * Gets the row headers associated with a cell
+     * First checks for explicit headers attribute, then looks for row headers in the same row
+     * @param cursor - The SRCursor pointing to a cell
+     * @returns A string containing the concatenated header names
+     */
+    export function getRowHeadersForCursor(inCellCursor: SRCursor, tableModel?: TableModel) {
+        if (!tableModel) {
+            tableModel = getTableModel(inCellCursor);
+            if (!tableModel) return "";
+        }
+        const cellModel = getCellModel(inCellCursor, tableModel);
+        if (!cellModel) return "";
+
+        const cellCursor = cellModel.cellCursor;
+        if (!cellCursor) return "";
+
+        const cellElem = cellCursor.getElement();
+        if (!cellElem) return "";
+
+        const rowDatas: Array<{
+            potentialRowHeaders: SRCursor[],
+            existsDataCell: boolean,
+            rowIdx: number
+        }> = [];
+        for (let rowIdx = cellModel.rowIndexStart; rowIdx < cellModel.rowIndexStart+cellModel.rowspan; ++rowIdx) {
+            rowDatas.push({
+                potentialRowHeaders: [],
+                existsDataCell: false,
+                rowIdx
+            });
+        }
+
+        let potentialHeaders: SRCursor[] = [];
+        if (cellElem.hasAttribute("headers")) {
+            potentialHeaders = cellElem.getAttribute("headers")
+                // Split the header attribute into ids
+                .split(" ")
+                // Get the node for each id
+                .map(id => document.getElementById(id))
+                // Get rid of bad mappings
+                .filter(node => !!node)
+                // Convert to SRCursors to that we can get accessible names
+                .map(node => new SRCursor(node))
+                // Remove headers that aren't in the same row (ignore column headers)
+                .filter(cursor => rowDatas.some(rowData => cellModelContainsRow(SRTableUtil.getCellModel(cursor, tableModel), rowData.rowIdx)))
+        } else {
+            // Get all cells in the rows
+            // Note - if everything in the row is empty or a header cell, this is probably not a heading
+            let longestRow = rowDatas.reduce((prev, cur) => Math.max(prev, tableModel[cur.rowIdx].length), 0);
+            for (let colIdx=0; colIdx < longestRow; ++colIdx) {
+                for (const rowData of rowDatas) {
+                    const rowIdx = rowData.rowIdx;
+                    if (colIdx >= tableModel[rowIdx].length) continue;
+                    const checkInfo = tableModel[rowIdx][colIdx];
+                    const checkCursor = checkInfo.cellCursor;
+                    const checkCursorElem = checkCursor.getElement();
+                    // If this row/col isn't found, or is the same cursor as our original cell model, or already in our list, skip, but check if it's a data cell
+                    if (!checkInfo || !checkCursor || checkCursor.isSameNode(cellCursor) || potentialHeaders.some(c => checkCursor.isSameNode(c))) {
+                        rowData.existsDataCell = rowData.existsDataCell || (isDataCell(checkCursor) && (checkCursor.hasNonEmptyName() || rowData.potentialRowHeaders.length > 0));
+                        continue;
+                    }
+
+                    const c = checkCursor.clone();
+                    if (checkCursor.getRole() === "rowheader") {
+                        potentialHeaders.push(c);
+                        rowData.potentialRowHeaders.push(c);
+                    } else if (!checkCursorElem.hasAttribute("role") && checkCursorElem.nodeName.toUpperCase() === "TH") {
+                        if (checkCursorElem.getAttribute("scope") === "row" || checkCursorElem.getAttribute("scope") === "axis") {
+                            potentialHeaders.push(c);
+                            rowData.potentialRowHeaders.push(c);
+                        } else if (!checkCursorElem.hasAttribute("scope") && checkCursor.hasNonEmptyName()) {
+                            potentialHeaders.push(c);
+                            rowData.potentialRowHeaders.push(c);
+                        }
+                    } else {
+                        rowData.existsDataCell = rowData.existsDataCell || (isDataCell(checkCursor) && (checkCursor.hasNonEmptyName() || rowData.potentialRowHeaders.length > 0));
+                    }
+                }
+            }
+            for (const rowData of rowDatas) {
+                if (!rowData.existsDataCell) {
+                    rowData.potentialRowHeaders = [];
+                }
+            }
+            potentialHeaders = potentialHeaders.filter(one => rowDatas.some(rowData => rowData.potentialRowHeaders.some(two => two.isSameNode(one))))
+        }
+        return potentialHeaders
+            // And then return the names of the headers
+            .map(cursor => cursor.getName()?.name || "")
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+            .join(", ");
+    }
+
+    /**
+     * Determines if a cell is a data cell (not a header cell)
+     *
+     * A data cell is one with either:
+     * - An explicit ARIA role of "cell"
+     * - A TD element without an overriding role attribute
+     *
+     * @param checkCursor - The cursor to check
+     * @returns True if the cursor points to a data cell
+     */
+    export function isDataCell(checkCursor: SRCursor) {
+        const checkCursorElem = checkCursor.getElement();
+        if (!checkCursorElem) return false;
+        return checkCursor.getRole() === "cell" || (!checkCursorElem.hasAttribute("role") && checkCursorElem.nodeName.toUpperCase() === "TD");
     }
 }
