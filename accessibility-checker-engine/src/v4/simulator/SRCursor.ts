@@ -2,32 +2,47 @@ import { NodeWalker } from "../../v2/dom/NodeWalker";
 import { AccessibleNameResult, AccNameUtil } from "../util/AccNameUtil";
 import { AriaUtil } from "../util/AriaUtil";
 
-export type SRWalkerMatchFunc = (role: string, bStartTag: boolean, node: Node) => boolean;
+export type SRCursorMatchFunc = (role: string, bStartTag: boolean, node: Node) => boolean;
 
-export class SRWalker {
+export class SRCursor {
     private role: string;
     private name: AccessibleNameResult;
     private walker: NodeWalker;
     
     constructor(element : Node, bEnd? : boolean, root? : Node) {
         this.walker = new NodeWalker(element, bEnd);
+        if (element) {
+            this.refreshName();
+        }
     }
 
-    clone() : SRWalker {
-        let retVal = new SRWalker(this.walker.node, this.walker.bEndTag);
+    clone() : SRCursor {
+        let retVal = new SRCursor(this.walker.node, this.walker.bEndTag);
         retVal.role = this.role;
         retVal.name = this.name;
         return retVal;
     }
 
-    // set(other: SRWalker) {
+    // set(other: SRCursor) {
     //     this.role = other.role;
     //     this.name = other.name;
     //     this.walker.node = other.walker.node;
     //     this.walker.bEndTag = other.walker.bEndTag;
     // }
+    private refreshName() {
+        if (this.walker.node.nodeType === 1) {
+            this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
+            this.name = AccNameUtil.computeAccessibleName(this.walker.node as HTMLElement);
+        } else if (this.walker.node.nodeType === 3) {
+            this.role = "text";
+            this.name = { name: this.walker.node.textContent, nameFrom: "text" };
+        } else {
+            this.role = undefined;
+            this.name = undefined;
+        }
+    }
 
-    public next(matchingFunc: SRWalkerMatchFunc) : boolean {
+    public next(matchingFunc: SRCursorMatchFunc) : boolean {
         let bContinue = true;
         let foundNext = false;
         while (bContinue && !foundNext) {
@@ -42,16 +57,7 @@ export class SRWalker {
             }
         }
         if (foundNext) {
-            if (this.walker.node.nodeType === 1) {
-                this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
-                this.name = AccNameUtil.computeAccessibleName(this.walker.node as HTMLElement);
-            } else if (this.walker.node.nodeType === 3) {
-                this.role = "text";
-                this.name = { name: this.walker.node.textContent, nameFrom: "text" };
-            } else {
-                this.role = undefined;
-                this.name = undefined;
-            }
+            this.refreshName();
         } else {
             this.role = undefined;
             this.name = undefined;
@@ -59,7 +65,7 @@ export class SRWalker {
         return foundNext;
     }
 
-    public previous(matchingFunc: SRWalkerMatchFunc) : boolean {
+    public previous(matchingFunc: SRCursorMatchFunc) : boolean {
         let bContinue = true;
         let foundNext = false;
         while (bContinue && !foundNext) {
@@ -74,16 +80,7 @@ export class SRWalker {
             }
         }
         if (foundNext) {
-            if (this.walker.node.nodeType === 1) {
-                this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
-                this.name = AccNameUtil.computeAccessibleName(this.walker.node as HTMLElement);
-            } else if (this.walker.node.nodeType === 3) {
-                this.role = "text";
-                this.name = { name: this.walker.node.textContent, nameFrom: "text" };
-            } else {
-                this.role = undefined;
-                this.name = undefined;
-            }
+            this.refreshName();
         } else {
             this.role = undefined;
             this.name = undefined;
@@ -108,6 +105,25 @@ export class SRWalker {
         return true;
     }
 
+    public getCurrentOrParentByRole(roles: string[], elems?: string[]) {
+        const uppElems = elems ? elems.map(elem => elem.toUpperCase()) : [];
+        const matches = (walker: SRCursor) => {
+            const elem = walker.getElement();
+            return roles.includes(this.getRole())
+            || (elem && !elem.hasAttribute("role") && uppElems.includes(elem.nodeName.toUpperCase()));
+        }
+        while (!matches(this) && this.parent());
+        return matches(this);
+    }
+
+    public getCurrentOrParentByRoleClone(roles: string[], elems?: string[]) {
+        let retVal = this.clone();
+        if (retVal.getCurrentOrParentByRole(roles, elems)) {
+            return retVal;
+        }
+        return null;
+    }
+
     public getRole(): string | undefined {
         return this.role;
     }
@@ -124,6 +140,11 @@ export class SRWalker {
         return this.walker.node;
     }
 
+    public getElement() {
+        if (this.walker.node.nodeType !== 1) return undefined;
+        return this.walker.node as HTMLElement;
+    }
+
     public isEndTag() {
         return this.walker.bEndTag;
     }
@@ -134,7 +155,7 @@ export class SRWalker {
      * @param two 
      * @returns 0 if equal, -1 if one is before two, 1 if one is after two
      */
-    public static compare(one: SRWalker | null, two: SRWalker | null) {
+    public static compare(one: SRCursor | null, two: SRCursor | null) {
         const nodeOne = one?.walker?.node;
         const nodeTwo = two?.walker?.node;
         if (!nodeOne && !nodeTwo) return 0;
@@ -157,7 +178,7 @@ export class SRWalker {
         return 0;
     }
 
-    public contains(other: SRWalker) {
+    public contains(other: SRCursor) {
         return this.getNode().contains(other.getNode()) 
             && !this.getNode().isSameNode(other.getNode());
     }

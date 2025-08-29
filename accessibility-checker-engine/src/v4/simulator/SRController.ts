@@ -1,5 +1,5 @@
 
-import { SRWalker } from "./SRWalker";
+import { SRCursor } from "./SRCursor";
 import { SRRenderer } from "./SRRenderer";
 import { NavigationMode, NavigationResult } from "./SRTypes";
 import { SRNavigator } from "./SRNavigator";
@@ -10,7 +10,7 @@ import { SRNavigator } from "./SRNavigator";
  */
 export class SRController {
     /** The current point of regard */
-    private pointOfRegard: SRWalker;
+    private pointOfRegard: SRCursor;
     
     /**
      * Creates a new SRController
@@ -22,9 +22,9 @@ export class SRController {
     
     /**
      * Get the current point of regard
-     * @returns The current SRWalker representing the point of regard
+     * @returns The current SRCursor representing the point of regard
      */
-    public getPointOfRegard(): SRWalker {
+    public getPointOfRegard(): SRCursor {
         return this.pointOfRegard;
     }
     
@@ -35,7 +35,7 @@ export class SRController {
      */
     public setPointOfRegard(node: Node): NavigationResult {
         try {
-            this.pointOfRegard = new SRWalker(node);
+            this.pointOfRegard = new SRCursor(node);
             
             // Update container state
             const containerChanges = SRController.diffContainers("focus", this.pointOfRegard);
@@ -157,7 +157,7 @@ export class SRController {
      * @param oldWalker The previous node we were at
      * @returns Array of container change messages
      */
-    public static diffContainers(mode: NavigationMode | "focus", newWalker: SRWalker, oldWalker?: SRWalker): { leaving: string[], entering: string[] } {
+    public static diffContainers(mode: NavigationMode | "focus", newWalker: SRCursor, oldWalker?: SRCursor): { leaving: string[], entering: string[] } {
         const DEBUG = false; //(newWalker && newWalker.getNode().nodeName === "MARK") || (oldWalker && oldWalker.getNode().nodeName === "MARK");
         DEBUG && console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         DEBUG && console.log("A)", oldWalker.getNode().nodeName, newWalker.getNode().nodeName);
@@ -165,7 +165,7 @@ export class SRController {
         let entering: string[] = [];
         try {
             let walkNew = newWalker.clone();
-            let walkOld = oldWalker ? oldWalker.clone() : (new SRWalker(newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement));
+            let walkOld = oldWalker ? oldWalker.clone() : (new SRCursor(newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement));
             if (!walkNew.getNode().isSameNode(walkOld.getNode())) {
                 let commonParent = SRController.commonParent(walkNew, walkOld);
                 if (commonParent) {
@@ -197,13 +197,13 @@ export class SRController {
         };
     }
 
-    private static commonParent(walkerOne: SRWalker, walkerTwo: SRWalker): SRWalker {
+    private static commonParent(walkerOne: SRCursor, walkerTwo: SRCursor): SRCursor {
         if (walkerOne.contains(walkerTwo)) {
             return walkerOne.clone();
         } else if (walkerTwo.contains(walkerOne)) {
             return walkerTwo.clone(); 
         } else {
-            let commonParent: SRWalker = walkerOne.clone();
+            let commonParent: SRCursor = walkerOne.clone();
             while (!commonParent.contains(walkerTwo) && commonParent.parent());
             if (!commonParent.contains(walkerOne) || !commonParent.contains(walkerTwo)) {
                 return null;

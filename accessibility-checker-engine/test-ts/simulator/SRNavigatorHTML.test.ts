@@ -23,6 +23,7 @@
  */
 
 import * as ace from "../../src/index";
+import { writeFileSync } from "node:fs";
 
 describe('SRControllerHTML', function () {
     beforeEach(() => {
@@ -346,6 +347,140 @@ line breaks.</pre>
                 </tr>
             </tfoot>
         </table>
+
+        <table>
+            <caption>Example Table Colspan</caption>
+            <tr>
+                <th colspan="2">Header 1 & 2</th>
+                <th>Header 3</th>
+            </tr>
+            <tr>
+                <th>Header 4</th>
+                <th>Header 5</th>
+                <th>Header 6</th>
+            </tr>
+            <tr>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+                <td>Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+                <td>Row 2, Cell 3</td>
+            </tr>
+        </table>
+
+        <table>
+            <caption>Example Table Scope</caption>
+            <tr>
+                <th colspan="2" scope="col">Header 1 & 2</th>
+                <th scope="col">Header 3</th>
+            </tr>
+            <tr>
+                <th scope="col">Header 4</th>
+                <th scope="col">Header 5</th>
+                <th scope="col">Header 6</th>
+            </tr>
+            <tr>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+                <td>Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+                <td>Row 2, Cell 3</td>
+            </tr>
+        </table>
+
+        <table>
+            <caption>Example Table Headers</caption>
+            <tr>
+                <th colspan="2" id="head1_2">Header 1 & 2</th>
+                <th id="head3">Header 3</th>
+            </tr>
+            <tr>
+                <th id="head4">Header 4</th>
+                <th id="head5">Header 5</th>
+                <th id="head6">Header 6</th>
+            </tr>
+            <tr>
+                <td headers="head1_2 head4">Row 1, Cell 1</td>
+                <td headers="head1_2 head5">Row 1, Cell 2</td>
+                <td headers="head3 head6">Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <td headers="head1_2 head4">Row 2, Cell 1</td>
+                <td headers="head1_2 head5">Row 2, Cell 2</td>
+                <td headers="head3 head6">Row 2, Cell 3</td>
+            </tr>
+        </table>
+
+        <table>
+            <caption>Example Table Row Headers</caption>
+            <tr>
+                <th>RH-Header 1</th>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+                <td>Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <th>Header 2</th>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+                <td>Row 2, Cell 3</td>
+            </tr>
+            <tr>
+                <th>Header 3</th>
+                <td>Row 3, Cell 1</td>
+                <td>Row 3, Cell 2</td>
+                <td>Row 3, Cell 3</td>
+            </tr>
+        </table>
+
+        <table>
+            <caption>Example Table Row and Col Headers</caption>
+            <tr>
+                <th></th>
+                <th>Header 1</th>
+                <th>Header 2</th>
+                <th>Header 3</th>
+            </tr>
+            <tr>
+                <th>Header 4</th>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+                <td>Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <th>Header 5</th>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+                <td>Row 2, Cell 3</td>
+            </tr>
+        </table>
+
+        <table>
+            <caption>Example Table Rowspan</caption>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Header 1</th>
+                <th>Header 2</th>
+            </tr>
+            <tr>
+                <th rowspan="2">Header Span</th>
+                <th>Header 3</th>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+            </tr>
+            <tr>
+                <th>Header 4</th>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+            </tr>
+        </table>
     </div>
 
     <!-- Forms -->
@@ -503,7 +638,8 @@ line breaks.</pre>
         // let results = ace.SRController.renderAll("item");
         // results = results.map(result => (result.map(({nameInfo, role, tag}) => ({nameInfo: nameInfo.name, role, tag}))));
         let results = ace.SRController.renderAll("item");
-        expect(results).toEqual([
+
+        const expectedResult = [
             "[heading level 1] HTML Elements and ARIA Roles/Attributes Examples",
             "[heading level 2] Table of Contents",
             "[list with 3 items] [bullet] [same page link] HTML Elements (without roles)",
@@ -619,16 +755,95 @@ line breaks.</pre>
             "[heading level 3] Demarcating Edits",
             "[deleted] This text has been deleted",
             "[inserted] This text has been inserted",
+
             "[heading level 3] Table Content",
             "[table with 4 rows and 2 columns] [caption] Example Table",
             "[out of caption] [row 1] [column 1] Header 1",
             "[column 2] Header 2",
-            "[row 2] [Header 1] [column1] Row 1, Cell 1",
-            "[Header 2] [column2] Row 1, Cell 2",
-            "[row 3] [Header 1] [column1] Row 2, Cell 1",
-            "[Header 2] [column2] Row 2, Cell 2",
-            "[row 4] [Header 1] [column1] Footer 1",
-            "[Header 2] [column2] Footer 2",
+            "[row 2] [Header 1, column 1] Row 1, Cell 1",
+            "[Header 2, column 2] Row 1, Cell 2",
+            "[row 3] [Header 1, column 1] Row 2, Cell 1",
+            "[Header 2, column 2] Row 2, Cell 2",
+            "[row 4] [Header 1, column 1] Footer 1",
+            "[Header 2, column 2] Footer 2",
+
+            "[out of table] [table with 4 rows and 3 columns] [caption] Example Table Colspan",
+            "[out of caption] [row 1] [Header 4, Header 5, column 1 through 2] Header 1 & 2",
+            "[Header 6, column 3] Header 3",
+            "[row 2] [Header 1 & 2, column 1] Header 4",
+            "[Header 1 & 2, column 2] Header 5",
+            "[Header 3, column 3] Header 6",
+            "[row 3] [Header 1 & 2, Header 4, column 1] Row 1, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 1, Cell 2",
+            "[Header 3, Header 6, column 3] Row 1, Cell 3",
+            "[row 4] [Header 1 & 2, Header 4, column 1] Row 2, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 2, Cell 2",
+            "[Header 3, Header 6, column 3] Row 2, Cell 3",
+
+            "[out of table] [table with 4 rows and 3 columns] [caption] Example Table Scope",
+            "[out of caption] [row 1] [Header 4, Header 5, column 1 through 2] Header 1 & 2",
+            "[Header 6, column 3] Header 3",
+            "[row 2] [Header 1 & 2, column 1] Header 4",
+            "[Header 1 & 2, column 2] Header 5",
+            "[Header 3, column 3] Header 6",
+            "[row 3] [Header 1 & 2, Header 4, column 1] Row 1, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 1, Cell 2",
+            "[Header 3, Header 6, column 3] Row 1, Cell 3",
+            "[row 4] [Header 1 & 2, Header 4, column 1] Row 2, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 2, Cell 2",
+            "[Header 3, Header 6, column 3] Row 2, Cell 3",
+
+            "[out of table] [table with 4 rows and 3 columns] [caption] Example Table Headers",
+            "[out of caption] [row 1] [Header 4, Header 5, column 1 through 2] Header 1 & 2",
+            "[Header 6, column 3] Header 3",
+            "[row 2] [Header 1 & 2, column 1] Header 4",
+            "[Header 1 & 2, column 2] Header 5",
+            "[Header 3, column 3] Header 6",
+            "[row 3] [Header 1 & 2, Header 4, column 1] Row 1, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 1, Cell 2",
+            "[Header 3, Header 6, column 3] Row 1, Cell 3",
+            "[row 4] [Header 1 & 2, Header 4, column 1] Row 2, Cell 1",
+            "[Header 1 & 2, Header 5, column 2] Row 2, Cell 2",
+            "[Header 3, Header 6, column 3] Row 2, Cell 3",
+
+            "[out of table] [table with 3 rows and 4 columns] [caption] Example Table Row Headers",
+            "[out of caption] [row 1] [column 1] RH-Header 1",
+            "[column 2] Row 1, Cell 1",
+            "[column 3] Row 1, Cell 2",
+            "[column 4] Row 1, Cell 3",
+            "[row 2] [column 1] Header 2",
+            "[column 2] Row 2, Cell 1",
+            "[column 3] Row 2, Cell 2",
+            "[column 4] Row 2, Cell 3",
+            "[row 3] [column 1] Header 3",
+            "[column 2] Row 3, Cell 1",
+            "[column 3] Row 3, Cell 2",
+            "[column 4] Row 3, Cell 3",
+            
+            "[out of table] [table with 3 rows and 4 columns] [caption] Example Table Row and Col Headers",
+            "[out of caption] [row 1] [column 2] Header 1",
+            "[column 3] Header 2",
+            "[column 4] Header 3",
+            "[row 2] [column 1] Header 4",
+            "[Header 1, column 2] Row 1, Cell 1",
+            "[Header 2, column 3] Row 1, Cell 2",
+            "[Header 3, column 4] Row 1, Cell 3",
+            "[row 3] [column 1] Header 5",
+            "[Header 1, column 2] Row 2, Cell 1",
+            "[Header 2, column 3] Row 2, Cell 2",
+            "[Header 3, column 4] Row 2, Cell 3",
+
+            "[out of table] [table with 3 rows and 4 columns] [caption] Example Table Rowspan",
+            "[out of caption] [row 1] [column 3] Header 1",
+            "[column 4] Header 2",
+            "[Header 3, row 2 through 3] [column 1] Header Span",
+            "[Header Span, row 2] [column 2] Header 3",
+            "[Header 1, column 3] Row 1, Cell 1",
+            "[Header 2, column 4] Row 1, Cell 2",
+            "[Header Span, row 3] [column 2] Header 4",
+            "[Header 1, column 3] Row 2, Cell 1",
+            "[Header 2, column 4] Row 2, Cell 2",
+
             "[out of table] [heading level 3] Forms",
             "[grouping] Form Example",
             "Text Input: [edit] ",
@@ -654,19 +869,19 @@ line breaks.</pre>
             "Color: [clickable] [0% red 0% green 0% blue]",
             "[blank]",
             "Date:",
-            "[clickable] [spin button 0 / spin button 0 / spin button 0]",
+            "[clickable] [spin button, 0] / [spin button, 0] / [spin button, 0]",
             "[menu button] [subMenu] Show date picker",
             "[blank]",
             "[blank]",
             "Datetime-local:",
-            "[clickable] [spin button 0 / spin button 0 / spin button 0 spin button 0 : spin button 0 spin button 0]",
+            "[clickable] [spin button, 0] / [spin button, 0] / [spin button, 0] [spin button, 0] : [spin button, 0] [spin button, 0]",
             "[menu button] [subMenu] Show local date and time picker",
             "[blank]",
             "[blank]",
             "Email: [edit] ",
             "[blank]",
             "Month:",
-            "[clickable] [spin button 0 spin button 0]",
+            "[clickable] [spin button, 0] [spin button, 0]",
             "[menu button] [subMenu] Show month picker",
             "[blank]",
             "[blank]",
@@ -679,14 +894,14 @@ line breaks.</pre>
             "Tel: [edit] ",
             "[blank]",
             "Time:",
-            "[grouping clickable sping button 0 : spin button 0 spin button 0]",
+            "[grouping clickable [spin button, 0] : [spin button, 0] [spin button, 0]",
             "[menu button] [subMenu] Show time picker",
             "[out of grouping] [blank]",
             "[blank]",
             "URL: [edit] ",
             "[blank]",
             "Week:",
-            "[clickable] [spin button 0, spin button 0]",
+            "[clickable] [spin button, 0], [spin button, 0]",
             "[menu button] [subMenu] Show week picker",
             "[blank]",
             "[blank]",
@@ -713,7 +928,10 @@ line breaks.</pre>
             "[out of list] [heading level 3] Web Components",
             "Slot (used in Web Components):",
             "Template (not rendered until used):",
-        ])
+        ]
+        writeFileSync("testResult.json", JSON.stringify(results, null, 2));
+        writeFileSync("testExpected.json", JSON.stringify(expectedResult, null, 2));
+        expect(results).toEqual(expectedResult);
         // expect(results).toEqual([]);
     });
 });

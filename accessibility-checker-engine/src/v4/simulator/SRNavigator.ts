@@ -1,6 +1,6 @@
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { NavigationMode } from "./SRTypes";
-import { SRWalker, SRWalkerMatchFunc } from "./SRWalker";
+import { SRCursor, SRCursorMatchFunc } from "./SRCursor";
 
 export namespace SRNavigator {
     function isBlockElement(node: Node) {
@@ -12,7 +12,7 @@ export namespace SRNavigator {
         return ["block", "flex", "grid", "list-item"].includes(disp);
     }
 
-    function getStartFunc(mode: NavigationMode) : SRWalkerMatchFunc {
+    function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
         switch (mode) {
             case "link": 
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "link");
@@ -74,7 +74,7 @@ export namespace SRNavigator {
         }
     }
     
-    export function jumpCurrent(mode: NavigationMode, walker: SRWalker) : SRWalker {
+    export function jumpCurrent(mode: NavigationMode, walker: SRCursor) : SRCursor {
         const matchFunc = getStartFunc(mode);
         if (matchFunc(walker.getRole(), !walker.isEndTag(), walker.getNode())) {
             return walker.clone();
@@ -82,7 +82,7 @@ export namespace SRNavigator {
             return jumpPrevious(mode, walker);
         }
     }
-    export function jumpCurrentEnd(mode: NavigationMode, walker: SRWalker) : SRWalker {
+    export function jumpCurrentEnd(mode: NavigationMode, walker: SRCursor) : SRCursor {
         if (mode === "item") {
             return jumpNext(mode, walker);
         } else {
@@ -93,7 +93,7 @@ export namespace SRNavigator {
         }
     }
 
-    export function jumpNext(mode: NavigationMode, walker: SRWalker) : SRWalker {
+    export function jumpNext(mode: NavigationMode, walker: SRCursor) : SRCursor {
         let retVal = walker.clone();
         const matchFunc = getStartFunc(mode);
         if (retVal.next(matchFunc)) {
@@ -103,7 +103,7 @@ export namespace SRNavigator {
         }
     }
 
-    export function jumpPrevious(mode: NavigationMode, walker: SRWalker) : SRWalker {
+    export function jumpPrevious(mode: NavigationMode, walker: SRCursor) : SRCursor {
         let retVal = walker.clone();
         const matchFunc = getStartFunc(mode);
         if (retVal.previous(matchFunc)) {

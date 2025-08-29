@@ -3,27 +3,28 @@ import { VisUtil } from "../util/VisUtil";
 import { SRController } from "./SRController";
 import { SRNavigator } from "./SRNavigator";
 import { ContainerChanges, NavigationMode } from "./SRTypes";
-import { SRWalker } from "./SRWalker";
+import { SRCursor } from "./SRCursor";
+import { SRTableUtil } from "./SRTableUtil";
 
 export namespace SRRenderer {
-    const CONTAINER_RESULT = (_itemWalker: SRWalker) => "";
-    const IGNORE_RESULT = (_itemWalker: SRWalker) => "";
+    const CONTAINER_RESULT = (_itemWalker: SRCursor) => "";
+    const IGNORE_RESULT = (_itemWalker: SRCursor) => "";
 
     const renderRoleRules: {
         [mode: string]: {
-            [role: string]: Array<(walker: SRWalker) => string | null>
+            [role: string]: Array<(walker: SRCursor) => string | null>
         }
     } = {
         "default": {
             // "null": [ 
-            //     (_itemWalker: SRWalker) => ""
+            //     (_itemWalker: SRCursor) => ""
             // ],
             // "undefined": [ 
-            //     (_itemWalker: SRWalker) => ""
+            //     (_itemWalker: SRCursor) => ""
             // ],
             "default": [
                 // DEBUG
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `!!<${itemWalker.getRole()}>${(itemWalker.getName()?.name+"")}!!` : `!!</${itemWalker.getRole()}>!!`
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `!!<${itemWalker.getRole()}>${(itemWalker.getName()?.name+"")}!!` : `!!</${itemWalker.getRole()}>!!`
             ],
 
             // DEBUG: Ignore because they're containers
@@ -45,6 +46,7 @@ export namespace SRRenderer {
             "navigation": [ CONTAINER_RESULT ],
             "region": [ CONTAINER_RESULT ],
             "row": [ CONTAINER_RESULT ],
+            "rowheader": [ CONTAINER_RESULT ],
             "search": [ CONTAINER_RESULT ],
             "table": [ CONTAINER_RESULT ],
             "toolbar": [ CONTAINER_RESULT ],
@@ -62,12 +64,12 @@ export namespace SRRenderer {
             "time": [ IGNORE_RESULT ],
 
             "button":  [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getName()?.name || ""}`: null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getName()?.name || ""}`: null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[button] ${itemWalker.getName()?.name || ""}` || "")
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getName()?.name || ""}`: null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getName()?.name || ""}`: null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[button] ${itemWalker.getName()?.name || ""}` || "")
             ],
             "checkbox":  [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (!itemWalker.isEndTag()) {
                         const elem = itemWalker.getNode() as HTMLInputElement;
                         if (elem.getAttribute("aria-checked") === "mixed") {
@@ -81,19 +83,19 @@ export namespace SRRenderer {
                 }
             ],
             "deletion":  [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[deleted]` || "")
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[deleted]` || "")
             ],
             "document":  [
                 () => ""
             ],
             "graphics-document": [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && !itemWalker.getName()?.name && itemWalker.getName()?.name !== "" && "[Unlabeled graphic]") || null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getName()?.name === "")) ? "" : null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && itemWalker.getName()?.name && `[graphic] ${itemWalker.getName()?.name || ""}`) || null,
-                (itemWalker: SRWalker) => (itemWalker.isEndTag()) ? "" : null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && !itemWalker.getName()?.name && itemWalker.getName()?.name !== "" && "[Unlabeled graphic]") || null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getName()?.name === "")) ? "" : null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && itemWalker.getName()?.name && `[graphic] ${itemWalker.getName()?.name || ""}`) || null,
+                (itemWalker: SRCursor) => (itemWalker.isEndTag()) ? "" : null,
             ],
             "heading":  [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     let retVal = "";
                     if (!itemWalker.isEndTag()) {
                         retVal = `[heading level ${(itemWalker.getNode() as HTMLElement).ariaLevel || itemWalker.getNode().nodeName.substring(1)}]`;
@@ -106,15 +108,15 @@ export namespace SRRenderer {
                 }
             ],
             "img": [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && !itemWalker.getName()?.name && itemWalker.getName()?.name !== "" && "[Unlabeled graphic]") || null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && (itemWalker.getName()?.name === "")) ? "" : null,
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && itemWalker.getName()?.name && `[graphic] ${itemWalker.getName()?.name || ""}`) || null
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && !itemWalker.getName()?.name && itemWalker.getName()?.name !== "" && "[Unlabeled graphic]") || null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getName()?.name === "")) ? "" : null,
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && itemWalker.getName()?.name && `[graphic] ${itemWalker.getName()?.name || ""}`) || null
             ],
             "insertion":  [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[inserted]` || "")
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[inserted]` || "")
             ],
             "link": [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     let href: string = ((itemWalker.getNode() as any).href) || "";
                     let retVal = "";
                     if (!itemWalker.isEndTag()) {
@@ -132,7 +134,7 @@ export namespace SRRenderer {
                 }
             ],
             "listitem": [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     let isOrdered: boolean | undefined;
                     let walkParents = itemWalker.getNode().parentNode;
                     while (typeof isOrdered === "undefined" && walkParents) {
@@ -168,13 +170,13 @@ export namespace SRRenderer {
                 }
             ],
             "meter": [
-                (itemWalker: SRWalker) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
+                (itemWalker: SRCursor) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
             ],
             "progressbar": [
-                (itemWalker: SRWalker) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
+                (itemWalker: SRCursor) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
             ],
             "radio":  [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (!itemWalker.isEndTag()) {
                         return `[radio button, ${(itemWalker.getNode() as any).checked ? "checked": "not checked"}]`
                     } else {
@@ -183,39 +185,39 @@ export namespace SRRenderer {
                 }
             ],
             "slider": [
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[slider, ${(itemWalker.getNode() as any).value}]` : ""
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[slider, ${(itemWalker.getNode() as any).value}]` : ""
             ],
             "searchbox": [
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[edit]` : ""
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[edit]` : ""
             ],
             "separator":  [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[separator]` || "")
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[separator]` || "")
             ],
             "spinbutton": [
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[spinbutton, editable]` : ""
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[spinbutton, editable]` : ""
             ],
             "tab": [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[tab${(itemWalker.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected": ""}] ${itemWalker.getName()?.name || ""}`) || ""
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[tab${(itemWalker.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected": ""}] ${itemWalker.getName()?.name || ""}`) || ""
             ],
             "text": [
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `${(itemWalker.getName()?.name+"")}` : null
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `${(itemWalker.getName()?.name+"")}` : null
             ],
             "textbox":  [
-                (itemWalker: SRWalker) => (!itemWalker.isEndTag() && `[edit] ${itemWalker.getName()?.name || ""}`) || ""
+                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[edit] ${itemWalker.getName()?.name || ""}`) || ""
             ],
         }
     };
 
     const renderElemRules: {
         [mode: string]: {
-            [role: string]: Array<(walker: SRWalker) => string | null>
+            [role: string]: Array<(walker: SRCursor) => string | null>
         }
     } = {
         "default": {
             "dl": [ CONTAINER_RESULT ],
 
             "br": [
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     try {
                         let walk = itemWalker.clone();
                         // Walk until we hit the beginning of the page, find another BR, or find something with a name
@@ -228,75 +230,99 @@ export namespace SRRenderer {
                 }
             ],
             "li": [
-                (itemWalker: SRWalker) => !itemWalker.isEndTag() ? `[bullet] ${(itemWalker.getName()?.name || "")}` : ""
+                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[bullet] ${(itemWalker.getName()?.name || "")}` : ""
             ]
         }
     }
 
-    const renderEnterTableCell = (newWalker: SRWalker, oldWalker: SRWalker) => {
-        return "[header name, column X]";
+    function renderEnterTableCell(newWalker: SRCursor, oldWalker: SRCursor) {
+        let oldTableNode = oldWalker.getCurrentOrParentByRoleClone(["table"]).getNode();
+        let newTableNode = newWalker.getCurrentOrParentByRoleClone(["table"]).getNode();
+
+        let newRowIdxs = SRTableUtil.getRowRange(newWalker);
+        let oldRowIdxs = SRTableUtil.getRowRange(oldWalker);
+        let newColIdxs = SRTableUtil.getColRange(newWalker);
+        let oldColIdxs = SRTableUtil.getColRange(oldWalker);
+
+        let retVal: string[] = [];
+
+        if (!oldTableNode || !oldTableNode.isSameNode(newTableNode) || !SRTableUtil.cellRangesOverlap(oldRowIdxs, newRowIdxs) || JSON.stringify(oldRowIdxs) !== JSON.stringify(newRowIdxs)) {
+            // If a change in row or a change in rowSpan            
+            let rowHeaders = SRTableUtil.getRowHeaders(newWalker);
+            let headerInfoStr = rowHeaders && rowHeaders.trim().length > 0 ? `${rowHeaders}, ` : "";
+            retVal.push(`[${headerInfoStr}row ${newRowIdxs.start === newRowIdxs.end ? newRowIdxs.start : newRowIdxs.start + " through " + newRowIdxs.end}]`);
+        }
+
+        if (!oldTableNode || !oldTableNode.isSameNode(newTableNode) || !SRTableUtil.cellRangesOverlap(oldColIdxs, newColIdxs) || JSON.stringify(oldColIdxs) !== JSON.stringify(newColIdxs)) {
+            // If a change in column or a change in rowSpan
+            let columnHeaders = SRTableUtil.getColumnHeaders(newWalker);
+            let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `${columnHeaders}, ` : "";
+            retVal.push(`[${headerInfoStr}column ${newColIdxs.start === newColIdxs.end ? newColIdxs.start : newColIdxs.start + " through " + newColIdxs.end}]`);
+        }
+
+        return retVal.join(" ");
     }
 
-    const renderEnterTableRow = (newWalker: SRWalker, oldWalker: SRWalker) => {
-        return "[row Y]";
+    const renderEnterTableRow = (newWalker: SRCursor, oldWalker: SRCursor) => {
+        return "";
     }
 
     const renderEnterRoleRules: {
         [mode: string]: {
-            [role: string]: (walker: SRWalker, oldWalker: SRWalker) => string | null
+            [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
         }
     } = {
         "default": {
             "article":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `${itemWalker.getName()?.name || ""} [article landmark]`;
                 }
             , "banner":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `${itemWalker.getName()?.name || ""} [banner landmark]`;
                 }
             , "blockquote": 
-                (_itemWalker: SRWalker) => "[blockquote]"
+                (_itemWalker: SRCursor) => "[blockquote]"
             , "caption": 
-                (_itemWalker: SRWalker) => "[caption]"
+                (_itemWalker: SRCursor) => "[caption]"
             , "cell": renderEnterTableCell
             , "columnheader": renderEnterTableCell
             , "complementary":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `${itemWalker.getName()?.name || ""} [complementary landmark]`
                 }
             , "contentinfo":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `${itemWalker.getName()?.name || ""} [content info landmark]`
                 }
             , "figure": 
-                (_itemWalker: SRWalker) => "[figure]"
+                (_itemWalker: SRCursor) => "[figure]"
             , "form":
-                (_itemWalker: SRWalker) => {
+                (_itemWalker: SRCursor) => {
                     return `[grouping]`
                 }
             , "group":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `[grouping] ${itemWalker.getName()?.name || ""}`
                 }
             , "region":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     return `${itemWalker.getName()?.name || ""} [region]`;
                 }
             , "row": renderEnterTableRow
             , "rowheader": renderEnterTableCell
             , "search":
-                (itemWalker: SRWalker) => `${itemWalker.getName()?.name || ""} [search landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getName()?.name || ""} [search landmark]`
             , "toolbar":
-                (itemWalker: SRWalker) => `${itemWalker.getName()?.name || ""} [toolbar]`
+                (itemWalker: SRCursor) => `${itemWalker.getName()?.name || ""} [toolbar]`
             , "list":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     const node = itemWalker.getNode() as HTMLElement;
                     const descendantListItems = document.evaluate(".//li | .//*[@role='listitem']", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
                     const descendantListItemsInOtherLists = document.evaluate(
@@ -308,58 +334,84 @@ export namespace SRRenderer {
                     return `${addName}[list with ${numItems} items]`;
                 }
             , "main":
-                (itemWalker: SRWalker) => `${itemWalker.getName()?.name || ""} [main landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getName()?.name || ""} [main landmark]`
             , "navigation":
-                (itemWalker: SRWalker) => `${itemWalker.getName()?.name || ""} [navigation landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getName()?.name || ""} [navigation landmark]`
             , "table":
-                (_itemWalker: SRWalker) => {
-                    // TODO: table info
-                    return `[table with X rows and Y columns]`;
+                (itemWalker: SRCursor) => {
+                    let tableWalker = itemWalker.clone();
+                    // Get to the start of the table
+                    while (tableWalker.getRole() !== "table" && tableWalker.previous(() => true));
+                    // Set an end to the table
+                    let tableNode = tableWalker.getNode();
+                    let rows = 0;
+                    let cols = 0;
+                    // Sanity check that the table has content
+                    if (tableWalker.getNode().firstChild) {
+                        let firstRowComplete = false;
+                        while (tableWalker.next(() => true) && !tableWalker.getNode().isSameNode(tableNode)) {
+                            const role = tableWalker.getRole();
+                            if (!tableWalker.isEndTag()) {
+                                if (role === "row") {
+                                    ++rows;
+                                } else {
+                                    if (!firstRowComplete && ["cell", "rowheader", "columnheader"].includes(role)) {
+                                        const elem = tableWalker.getNode() as HTMLElement;
+                                        cols += parseInt(elem.getAttribute("colspan") || "1");
+                                    }
+                                }
+                            } else if (role === "row") {
+                                firstRowComplete = true;
+                            }
+                        }
+                    }
+                    
+                    return `[table with ${rows} rows and ${cols} columns]`;
                 }
         }
     };
 
     const renderLeaveRoleRules: {
         [mode: string]: {
-            [role: string]: (walker: SRWalker, oldWalker: SRWalker) => string | null
+            [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
         }
     } = {
         "default": {
             "group":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     else return "[out of grouping]";
                 }
             , "blockquote": 
-                (_itemWalker: SRWalker) => "[out of blockquote]"
+                (_itemWalker: SRCursor) => "[out of blockquote]"
             , "caption": 
-                (_itemWalker: SRWalker) => "[out of caption]"
+                (_itemWalker: SRCursor) => "[out of caption]"
             , "figure": 
-                (_itemWalker: SRWalker) => "[out of figure]"
+                (_itemWalker: SRCursor) => "[out of figure]"
             , "form": 
-                (_itemWalker: SRWalker) => "[out of grouping]"
+                (_itemWalker: SRCursor) => "[out of grouping]"
             , "list":
-                (_itemWalker: SRWalker) => `[out of list]`
+                (_itemWalker: SRCursor) => `[out of list]`
             , "region":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
                     else return "[out of region]";
                 }
             , "table": 
-                (_itemWalker: SRWalker) => "[out of table]"
+                (_itemWalker: SRCursor) => "[out of table]"
             , "toolbar":
-                (_itemWalker: SRWalker) => `[out of toolbar]`
+                (_itemWalker: SRCursor) => `[out of toolbar]`
         }
     };
 
     const renderEnterElemRules: {
         [mode: string]: {
-            [role: string]: (walker: SRWalker, oldWalker: SRWalker) => string | null
+            [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
         }
     } = {
         "default": {
             "dl":
-                (itemWalker: SRWalker) => {
+                (itemWalker: SRCursor) => {
                     const node = itemWalker.getNode() as HTMLElement;
                     const descendantListItems = document.evaluate(".//dt | .//dd", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
                     let numItems = descendantListItems.snapshotLength;
@@ -368,28 +420,28 @@ export namespace SRRenderer {
                     return `${addName}[list with ${numItems} items]`;
                 }
             , "figcaption": 
-                (_itemWalker: SRWalker) => "[caption]"
+                (_itemWalker: SRCursor) => "[caption]"
             , "mark": 
-                (_itemWalker: SRWalker) => "[highlighted]"
+                (_itemWalker: SRCursor) => "[highlighted]"
         }
     };
 
     const renderLeaveElemRules: {
         [mode: string]: {
-            [role: string]: (walker: SRWalker, oldWalker: SRWalker) => string | null
+            [role: string]: (walker: SRCursor, oldWalker: SRCursor) => string | null
         }
     } = {
         "default": {
             "dl":
-                (_itemWalker: SRWalker) => `[out of list]`
+                (_itemWalker: SRCursor) => `[out of list]`
             , "figcaption":
-                (_itemWalker: SRWalker) => `[out of caption]`
+                (_itemWalker: SRCursor) => `[out of caption]`
             , "mark":
-                (_itemWalker: SRWalker) => `[out of highlighted]`
+                (_itemWalker: SRCursor) => `[out of highlighted]`
         }
     };
 
-    export function renderEnter(mode: NavigationMode | "focus", walker: SRWalker, oldWalker?: SRWalker): string | null {
+    export function renderEnter(mode: NavigationMode | "focus", walker: SRCursor, oldWalker?: SRCursor): string | null {
         const role = walker.getRole();
         const node = walker.getNode();
         const DEBUG = false; //node.nodeName === "MARK";
@@ -405,7 +457,7 @@ export namespace SRRenderer {
         return null;
     }
 
-    export function renderLeave(mode: NavigationMode, walker: SRWalker, oldWalker?: SRWalker): string | null  {
+    export function renderLeave(mode: NavigationMode, walker: SRCursor, oldWalker?: SRCursor): string | null  {
         const role = walker.getRole();
         const node = walker.getNode();
         const nodeNameLookup = role === null ? node.nodeName.toLowerCase() : "ARIA";
@@ -418,14 +470,14 @@ export namespace SRRenderer {
         return null;
     }
 
-    export function renderCurrent(mode: NavigationMode, walker: SRWalker, containerChanges: ContainerChanges): string {
+    export function renderCurrent(mode: NavigationMode, walker: SRCursor, containerChanges: ContainerChanges): string {
         let startOfRender = SRNavigator.jumpCurrent(mode, walker);
         let endOfRender = SRNavigator.jumpCurrentEnd(mode, walker);
         let renderStr = SRRenderer.renderRange(mode, startOfRender, endOfRender);
         return (containerChanges.leaving || []).concat(containerChanges.entering || []).concat([renderStr]).join(" ").replace(/\s+/g, " ");
     }
 
-    export function renderRange(mode: NavigationMode, startOfRender: SRWalker, endOfRender: SRWalker) : string {
+    export function renderRange(mode: NavigationMode, startOfRender: SRCursor, endOfRender: SRCursor) : string {
         let lastIterWalker = null;
         let iterWalker = startOfRender.clone();
         let renderStrs = [];
@@ -474,7 +526,7 @@ export namespace SRRenderer {
                     iterWalker.setEndTag(true);
                 }
             }
-            bContinue = iterWalker.next(() => true) && SRWalker.compare(iterWalker, endOfRender) < 0;
+            bContinue = iterWalker.next(() => true) && SRCursor.compare(iterWalker, endOfRender) < 0;
         }
         let retVal = renderStrs.filter(s => s.trim().length > 0).join(" ");
         return retVal;
