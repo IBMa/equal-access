@@ -7,7 +7,7 @@
 
 'use strict';
 
-import { assertCompliance, getCompliance, stringifyResults } from "accessibility-checker";
+import { assertCompliance, getCompliance, stringifyResults, ICheckerReport } from "accessibility-checker";
 import { Page } from "puppeteer";
 
 async function toBeAccessible(node: Page) {
