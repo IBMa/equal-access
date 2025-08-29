@@ -259,7 +259,7 @@ function initializeDefaults(config: IConfigInternal) {
         const __dirname = path.dirname(__filename);
         packageDir = __dirname;
     }
-    while (!fs.existsSync(pathLib.join(packageDir, "package.json"))) {
+    while (!fs.existsSync(pathLib.join(packageDir, "package.json")) || (packageDir.endsWith("cjs") || packageDir.endsWith("mjs"))) {
         packageDir = pathLib.join(packageDir, "..");
     }
     const packageObject = JSON.parse(fs.readFileSync(pathLib.join(packageDir, 'package.json')).toString());
