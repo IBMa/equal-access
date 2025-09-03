@@ -165,6 +165,8 @@ module.exports = {
                     ignore: [
                         path.join("**", "ace-*.js"),
                         path.join("**", "doc"),
+                        path.join("**", "2020.*", "**", "*"),
+                        path.join("**", "2021.*", "**", "*"),
                     ]
                 }
             }
