@@ -929,8 +929,8 @@ line breaks.</pre>
             "Slot (used in Web Components):",
             "Template (not rendered until used):",
         ]
-        writeFileSync("testResult.json", JSON.stringify(results, null, 2));
-        writeFileSync("testExpected.json", JSON.stringify(expectedResult, null, 2));
+        writeFileSync("testResultHTML.json", JSON.stringify(results, null, 2));
+        writeFileSync("testExpectedHTML.json", JSON.stringify(expectedResult, null, 2));
         expect(results).toEqual(expectedResult);
         // expect(results).toEqual([]);
     });

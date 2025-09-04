@@ -23,6 +23,7 @@
  */
 
 import * as ace from "../../src/index";
+import { writeFileSync } from "node:fs";
 
 describe('SRControllerHTML', function () {
     beforeEach(() => {
@@ -591,7 +592,7 @@ describe('SRControllerHTML', function () {
         // let results = ace.SRController.renderAll("item");
         // results = results.map(result => (result.map(({nameInfo, role, tag}) => ({nameInfo: nameInfo.name, role, tag}))));
         let results = ace.SRController.renderAll("item");
-        expect(results).toEqual([
+        const expectedResult = [
             "[heading level 1] ARIA Design Patterns and Implementation Examples",
             "[heading level 2] Table of Contents",
             "[list with 5 items] [bullet] [same page link] Introduction to ARIA",
@@ -606,7 +607,7 @@ describe('SRControllerHTML', function () {
             "[heading level 2] ARIA Design Patterns",
             "The following examples demonstrate proper implementation of common UI patterns using ARIA roles, states, and properties according to the [link] ARIA Authoring Practices Guide .",
             "[heading level 3] Accordion",
-            "[heading level 3] [button] [expanded] Section 1",
+            "[heading level 3] [button, expanded] Section 1",
             "Section 1 [region] Content for section 1. This section is expanded by default.",
             "[out of region] [heading level 3] [collapsed] [button] Section 2",
             "[heading level 3] Button",
@@ -628,12 +629,15 @@ describe('SRControllerHTML', function () {
             "[menu button, collapsed] [subMenu] Menu Button",
             "[heading level 3] Combobox",
             "Choose an option:",
-            "[combo box, collapsed, has auto complete, editable, opens list, button] Show options",
+            "[combo box, collapsed, has auto complete, editable, opens list] [button] show options",
             "[heading level 2] ARIA States and Properties",
             "[heading level 3] Widget Attributes",
             "aria-autocomplete=\"inline\"",
             "TODO-MORE"
-        ])
+        ];
+        writeFileSync("testResultARIA.json", JSON.stringify(results, null, 2));
+        writeFileSync("testExpectedARIA.json", JSON.stringify(expectedResult, null, 2));
+        expect(results).toEqual(expectedResult);
         // expect(results).toEqual([]);
     });
 });

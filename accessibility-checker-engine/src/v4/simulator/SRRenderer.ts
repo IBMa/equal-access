@@ -60,6 +60,34 @@ export namespace SRRenderer {
             "cell": [ CONTAINER_RESULT ],
             "code": [ CONTAINER_RESULT ],
             "columnheader": [ CONTAINER_RESULT ],
+            "combobox": [
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.isEndTag()) return "";
+                    let state = "";
+                    let value = "";
+                    if (itemWalker.getNode().nodeName.toUpperCase() === "SELECT") {
+                        state = ", collapsed";
+
+                        const optionId = (itemWalker.getNode() as any).value;
+                        let valueElem = itemWalker.getElement().querySelector(`option[value='${optionId}']`);
+                        let temp = new SRCursor(valueElem, false);
+                        value = temp.getName()?.name ? ` ${temp.getName()?.name}` : "";
+                        return `[combo box${state}]${value}`;
+                    } else if (itemWalker.getNode().nodeName.toUpperCase() === "INPUT" && !itemWalker.getElement().hasAttribute("role")) {
+                        return `[combo box, has auto complete, editable, opens list]`;
+                    } else {
+                        const elem = itemWalker.getElement();
+                        if (elem.hasAttribute("aria-expanded")) {
+                            state = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
+                            if (elem.hasAttribute("aria-autocomplete")) {
+                                state += `, has auto complete`;
+                            }
+                            state += `, editable, opens list`
+                        }
+                        return `[combo box${state}]${value}`;
+                    }
+                }
+            ],
             "complementary": [ CONTAINER_RESULT ],
             "contentinfo": [ CONTAINER_RESULT ],
             "figure": [ CONTAINER_RESULT ],
@@ -69,6 +97,14 @@ export namespace SRRenderer {
             "main": [ CONTAINER_RESULT ],
             "mark": [ CONTAINER_RESULT ],
             "navigation": [ CONTAINER_RESULT ],
+            "option": [
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
+                        return "";
+                    }
+                    return "";
+                }
+            ],
             "region": [ CONTAINER_RESULT ],
             "row": [ CONTAINER_RESULT ],
             "rowheader": [ CONTAINER_RESULT ],
@@ -91,7 +127,15 @@ export namespace SRRenderer {
             "button":  [
                 (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getName()?.name || ""}`: null,
                 (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getName()?.name || ""}`: null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[button] ${itemWalker.getName()?.name || ""}` || "")
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.isEndTag()) return undefined;
+                    let expandStr = "";
+                    const elem = itemWalker.getElement();
+                    if (elem.hasAttribute("aria-expanded")) {
+                        expandStr = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
+                    }
+                    return `[button${expandStr}] ${itemWalker.getName()?.name || ""}`;
+                }
             ],
             "checkbox":  [
                 (itemWalker: SRCursor) => {
@@ -360,6 +404,9 @@ export namespace SRRenderer {
             , "group":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
+                    if (itemWalker.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
+                        return "";
+                    }
                     return `[grouping] ${itemWalker.getName()?.name || ""}`
                 }
             , "region":
@@ -438,6 +485,9 @@ export namespace SRRenderer {
             "group":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getName() === null) return;
+                    if (itemWalker.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
+                        return "";
+                    }
                     else return "[out of grouping]";
                 }
             , "blockquote": 
@@ -635,12 +685,12 @@ export namespace SRRenderer {
                         if (nodeType === 1 && elem.getAttribute("aria-haspopup") === "menu") {
                             s = "[subMenu] "+s;
                         }
-                        if (nodeType === 1 && elem.getAttribute("aria-expanded") === "false") {
-                            s = "[collapsed] "+s;
-                        }
-                        if (nodeType === 1 && elem.getAttribute("aria-expanded") === "true") {
-                            s = "[expanded] "+s;
-                        }
+                        // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "false") {
+                        //     s = "[collapsed] "+s;
+                        // }
+                        // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "true") {
+                        //     s = "[expanded] "+s;
+                        // }
                         if (s !== "") {
                             renderStrs.push(s);
                         }
