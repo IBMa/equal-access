@@ -1,6 +1,7 @@
 import { NodeWalker } from "../../v2/dom/NodeWalker";
 import { AccessibleNameResult, AccNameUtil } from "../util/AccNameUtil";
 import { AriaUtil } from "../util/AriaUtil";
+import { CommonUtil } from "../util/CommonUtil";
 
 /**
  * Function type for matching nodes during cursor navigation
@@ -197,11 +198,29 @@ export class SRCursor {
     }
 
     /**
-     * Gets the accessible name of the current node
+     * Gets the accessible name info for the current node
      * @returns The AccessibleNameResult object, or undefined if not available
      */
-    public getName(): AccessibleNameResult | undefined {
+    public getNameInfo(): AccessibleNameResult | undefined {
         return this.name;
+    }
+
+    /**
+     * Get the accessible name of the current node
+     */
+    public getName(): string | undefined {
+        // Handle one-off quirks in the name calculation
+        const nameInfo = this.getNameInfo();
+        if (nameInfo && nameInfo.name) {
+            return nameInfo.name;
+        }
+        const elem = this.getElement();
+        if (elem) {
+            const labelElem = CommonUtil.getLabelForElementHidden(elem, true);
+            if (labelElem) {
+                return labelElem.innerText || labelElem.textContent;
+            }
+        }
     }
 
     /**
@@ -293,7 +312,7 @@ export class SRCursor {
      * @returns true if the node has a non-empty accessible name
      */
     public hasNonEmptyName() {
-        return (this.getName()?.name || "").trim().length > 0;
+        return (this.getNameInfo()?.name || "").trim().length > 0;
     }
 
 }

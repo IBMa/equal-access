@@ -285,7 +285,7 @@ export namespace SRTableUtil {
         }
         return potentialHeaders
             // And then return the names of the headers
-            .map(cursor => cursor.getName()?.name || "")
+            .map(cursor => cursor.getNameInfo()?.name || "")
             .map(s => s.trim())
             .filter(s => s.length > 0)
             .join(", ");
@@ -380,7 +380,7 @@ export namespace SRTableUtil {
         }
         return potentialHeaders
             // And then return the names of the headers
-            .map(cursor => cursor.getName()?.name || "")
+            .map(cursor => cursor.getNameInfo()?.name || "")
             .map(s => s.trim())
             .filter(s => s.length > 0)
             .join(", ");

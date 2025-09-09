@@ -41,7 +41,7 @@ export class SRController {
             const containerChanges = SRController.diffContainers("focus", this.pointOfRegard);
             
             const role = this.pointOfRegard.getRole();
-            const name = this.pointOfRegard.getName()?.name;
+            const name = this.pointOfRegard.getNameInfo()?.name;
             
             return {
                 success: true,
@@ -85,7 +85,7 @@ export class SRController {
             } else {
                 this.pointOfRegard = nextJump;
                 const role = this.pointOfRegard.getRole();
-                const name = this.pointOfRegard.getName()?.name;
+                const name = this.pointOfRegard.getNameInfo()?.name;
                 
                 // Check for container changes
                 const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
