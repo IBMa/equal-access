@@ -1,6 +1,7 @@
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { NavigationMode } from "./SRTypes";
 import { SRCursor, SRCursorMatchFunc } from "./SRCursor";
+import { CommonUtil } from "../util/CommonUtil";
 
 export namespace SRNavigator {
     function isBlockElement(node: Node) {
@@ -16,6 +17,8 @@ export namespace SRNavigator {
         switch (mode) {
             case "link": 
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "link");
+            case "tab_focus": 
+                return (role: string, bStartTag: boolean, node: Node) => (node && node.nodeType === 1 && bStartTag && CommonUtil.isTabbable(node));
             case "heading":
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "heading");
             case "h1":

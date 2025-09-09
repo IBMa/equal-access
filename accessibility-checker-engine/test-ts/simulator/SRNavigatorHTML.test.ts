@@ -921,7 +921,86 @@ line breaks.</pre>
         ]
         writeFileSync("testResultHTML.json", JSON.stringify(results, null, 2));
         writeFileSync("testExpectedHTML.json", JSON.stringify(expectedResult, null, 2));
+
+        expect(ace.SRController.renderAll("heading")).toEqual([
+            "[heading level 1] HTML Elements and ARIA Roles/Attributes Examples",
+            "[heading level 2] Table of Contents",
+            "[heading level 2] HTML Elements (without roles)",
+            "[heading level 3] Document Structure",
+            "[heading level 3] Content Sectioning",
+            "[heading level 4] Article Example",
+            "[heading level 4] Aside Example",
+            "[heading level 1] Heading 1",
+            "[heading level 2] Heading 2",
+            "[heading level 3] Heading 3",
+            "[heading level 4] Heading 4",
+            "[heading level 5] Heading 5",
+            "[heading level 6] Heading 6",
+            "[heading level 4] Section Example",
+            "[heading level 3] Text Content",
+            "[heading level 3] Inline Text Semantics",
+            "[heading level 3] Image and Multimedia",
+            "[heading level 3] Embedded Content",
+            "[heading level 3] SVG and MathML",
+            "[heading level 3] Scripting",
+            "[heading level 3] Demarcating Edits",
+            "[heading level 3] Table Content",
+            "[heading level 3] Forms",
+            "[heading level 3] Interactive Elements",
+            "[heading level 3] Web Components"
+        ]);
+        expect(ace.SRController.renderAll("link")).toEqual([
+            "[list with 3 items] [same page link] HTML Elements (without roles)",
+            "[same page link] ARIA Roles",
+            "[same page link] ARIA Attributes",
+            "[out of list] [navigation landmark] [list with 2 items] [same page link] Navigation Link 1",
+            "[same page link] Navigation Link 2",
+            "[out of list] [same page link] This is a link",
+            "[same page link] Clickable area",
+        ]);
+        expect(ace.SRController.renderAll("tab_focus")).toEqual([
+            "[list with 3 items] [same page link] HTML Elements (without roles)",
+            "[same page link] ARIA Roles",
+            "[same page link] ARIA Attributes",
+            "[out of list] [navigation landmark] [list with 2 items] [same page link] Navigation Link 1",
+            "[same page link] Navigation Link 2",
+            "[out of list] [same page link] This is a link",
+            " Your browser does not support the audio element. ",
+            " Your browser does not support the video element. ",
+            " Your browser does not support the video element. ",
+            "[same page link] Clickable area",
+            " Your browser does not support the audio element. ",
+            "[grouping] Text Input: [edit] ",
+            "Password: [edit, protected]",
+            "[checkbox, not checked] Checkbox:",
+            "[radio button, not checked] Radio 1:",
+            "File: [button] File: [No file chosen]",
+            "Image input [button]",
+            "Button Input [button]",
+            "Submit [button]",
+            "Reset [button]",
+            "Color: [clickable] [0% red 0% green 0% blue]",
+            "Date: [clickable] [spin button, 0] / [spin button, 0] / [spin button, 0] [menu button] [subMenu] Show date picker",
+            "Datetime-local: [clickable] [spin button, 0] / [spin button, 0] / [spin button, 0] [spin button, 0] : [spin button, 0] [spin button, 0] [menu button] [subMenu] Show local date and time picker",
+            "Email: [edit] ",
+            "Month: [clickable] [spin button, 0] [spin button, 0] [menu button] [subMenu] Show month picker",
+            "Number: [spinbutton, editable]",
+            "Range: [slider, 50]",
+            "Search: [edit]",
+            "Tel: [edit] ",
+            "Time: [grouping clickable [spin button, 0] : [spin button, 0] [spin button, 0] [menu button] [subMenu] Show time picker [out of grouping]",
+            "URL: [edit] ",
+            "Week: [clickable] [spin button, 0], [spin button, 0] [menu button] [subMenu] Show week picker",
+            "Textarea: [edit, multiline] This is a textarea. [out of edit]",
+            "Select: [combo box, collapsed] Option 1",
+            "Datalist: [combo box, has auto complete, editable, opens list]",
+            "Button Element [button]",
+            "[out of grouping] [button, collapsed] Details Summary (Click to expand)",
+            "[out of grouping] [grouping] Close [button]",
+            "[out of grouping] [list with 2 items] Menu Item 1 [button]",
+            "Menu Item 2 [button]"
+        ]);
+
         expect(results).toEqual(expectedResult);
-        // expect(results).toEqual([]);
     });
 });
