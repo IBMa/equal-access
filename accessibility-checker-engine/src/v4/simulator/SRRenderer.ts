@@ -2,7 +2,7 @@ import { AriaUtil } from "../util/AriaUtil";
 import { VisUtil } from "../util/VisUtil";
 import { SRController } from "./SRController";
 import { SRNavigator } from "./SRNavigator";
-import { ContainerChanges, NavigationMode } from "./SRTypes";
+import { ContainerChanges, NavigationMode, RenderResult } from "./SRTypes";
 import { SRCursor } from "./SRCursor";
 import { SRTableUtil } from "./SRTableUtil";
 
@@ -57,7 +57,7 @@ export namespace SRRenderer {
             // ],
             "default": [
                 // DEBUG
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `!!<${itemWalker.getRole()}>${(itemWalker.getNameInfo()?.name+"")}!!` : `!!</${itemWalker.getRole()}>!!`
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `!!<${itemWalker.getRole()}>${(itemWalker.getNameInfo()?.name+"")}!!` : `!!</${itemWalker.getRole()}>!!`
             ],
 
             // DEBUG: Ignore because they're containers
@@ -133,8 +133,8 @@ export namespace SRRenderer {
             "time": [ IGNORE_RESULT ],
 
             "button":  [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getNameInfo()?.name || ""}`: null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getNameInfo()?.name || ""}`: null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ? `[toggle button, pressed] ${itemWalker.getNameInfo()?.name || ""}`: null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && (itemWalker.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ? `[toggle button, not pressed] ${itemWalker.getNameInfo()?.name || ""}`: null,
                 (itemWalker: SRCursor) => {
                     if (itemWalker.isEndTag()) return undefined;
                     let expandStr = "";
@@ -148,7 +148,7 @@ export namespace SRRenderer {
             ],
             "checkbox":  [
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag()) {
+                    if (itemWalker.isStartTag()) {
                         const elem = itemWalker.getNode() as HTMLInputElement;
                         if (elem.getAttribute("aria-checked") === "mixed") {
                             return `[checkbox, half checked]${padNameBefore(itemWalker)}`
@@ -161,24 +161,25 @@ export namespace SRRenderer {
                 }
             ],
             "deletion":  [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[deleted]` || "")
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && `[deleted]` || "")
             ],
             "document":  [
                 () => ""
             ],
+            "generic": [ IGNORE_RESULT ],
             "graphics-document": [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && !itemWalker.getNameInfo()?.name && itemWalker.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNameInfo()?.name === "")) ? "" : null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && itemWalker.getNameInfo()?.name && `[graphic] ${itemWalker.getNameInfo()?.name || ""}`) || null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && !itemWalker.getNameInfo()?.name && itemWalker.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && (itemWalker.getNameInfo()?.name === "")) ? "" : null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && itemWalker.getNameInfo()?.name && `[graphic] ${itemWalker.getNameInfo()?.name || ""}`) || null,
                 (itemWalker: SRCursor) => (itemWalker.isEndTag()) ? "" : null,
             ],
             "heading":  [
                 (itemWalker: SRCursor) => {
                     let retVal = "";
-                    if (!itemWalker.isEndTag()) {
+                    if (itemWalker.isStartTag()) {
                         retVal = `[heading level ${(itemWalker.getNode() as HTMLElement).ariaLevel || itemWalker.getNode().nodeName.substring(1)}]`;
                         let nameInfo = itemWalker.getNameInfo();
-                        if (nameInfo.nameFrom !== "content") {
+                        if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
                             retVal += ` ${itemWalker.getNameInfo()?.name || ""}`;
                         }
                     }
@@ -186,25 +187,39 @@ export namespace SRRenderer {
                 }
             ],
             "img": [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && !itemWalker.getNameInfo()?.name && itemWalker.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && (itemWalker.getNameInfo()?.name === "")) ? "" : null,
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && itemWalker.getNameInfo()?.name && `[graphic] ${itemWalker.getNameInfo()?.name || ""}`) || null
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.isEndTag()) {
+                        return "";
+                    } else {
+                        if (!itemWalker.getNameInfo()?.name && itemWalker.getNameInfo()?.name !== "") {
+                            return "[Unlabeled graphic]"
+                        } else if (itemWalker.getNameInfo()?.name === "") {
+                            return "";
+                        } else {
+                            return `[graphic] ${itemWalker.getNameInfo()?.name || ""}`
+                        }
+                    }
+                },
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && !itemWalker.getNameInfo()?.name && itemWalker.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && (itemWalker.getNameInfo()?.name === "")) ? "" : null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && itemWalker.getNameInfo()?.name && `[graphic] ${itemWalker.getNameInfo()?.name || ""}`) || null,
+                (itemWalker: SRCursor) => itemWalker.isEndTag() ? "" : null
             ],
             "insertion":  [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[inserted]` || "")
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && `[inserted]` || "")
             ],
             "link": [
                 (itemWalker: SRCursor) => {
                     let href: string = ((itemWalker.getNode() as any).href) || "";
                     let retVal = "";
-                    if (!itemWalker.isEndTag()) {
+                    if (itemWalker.isStartTag()) {
                         if (href.startsWith(document.location.href) && href.charAt(document.location.href.length) === "#") {
                             retVal = `[same page link]`;
                         } else {
                             retVal = `[link]`;
                         }
                         let nameInfo = itemWalker.getNameInfo();
-                        if (nameInfo.nameFrom !== "content") {
+                        if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
                             retVal += ` ${(nameInfo?.name || "")}`
                         }
                     }
@@ -232,17 +247,22 @@ export namespace SRRenderer {
                     }
                     let retStr = "";
                     if (!isOrdered) {
-                        retStr = !itemWalker.isEndTag() ? `[bullet] ${(itemWalker.getNameInfo()?.name || "")}` : "";
+                        const elem = itemWalker.getElement();
+                        if (elem.nodeName.toUpperCase() === "LI" && window.getComputedStyle(elem).listStyleType === "none") {
+                            retStr = itemWalker.isStartTag() ? `${(itemWalker.getNameInfo()?.name || "")}` : "";
+                        } else {
+                            retStr = itemWalker.isStartTag() ? `[bullet] ${(itemWalker.getNameInfo()?.name || "")}` : "";
+                        }
                     } else {
                         let walkBack = itemWalker.clone();
                         let count = 0;
                         while (walkBack.getRole() !== "list") {
-                            if (!walkBack.isEndTag() && walkBack.getRole() === "listitem") {
+                            if (walkBack.isStartTag() && walkBack.getRole() === "listitem") {
                                 ++count;
                             }
                             walkBack.previous(() => true);
                         }
-                        retStr = !itemWalker.isEndTag() ? `${count}. ${(itemWalker.getNameInfo()?.name || "")}` : "";
+                        retStr = itemWalker.isStartTag() ? `${count}. ${(itemWalker.getNameInfo()?.name || "")}` : "";
                     }
                     return retStr;
                 }
@@ -251,14 +271,16 @@ export namespace SRRenderer {
                 (itemWalker: SRCursor) => itemWalker.isEndTag() ? `[math content]` : ""
             ],
             "meter": [
-                (itemWalker: SRCursor) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]` : ""
             ],
+            "none": [ IGNORE_RESULT ],
+            "presentation": [ IGNORE_RESULT ],
             "progressbar": [
-                (itemWalker: SRCursor) => `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]`
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `[progress bar, ${((itemWalker.getNode() as HTMLInputElement).value)}]` : ""
             ],
             "radio":  [
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag()) {
+                    if (itemWalker.isStartTag()) {
                         return `[radio button, ${(itemWalker.getNode() as any).checked ? "checked": "not checked"}]${padNameBefore(itemWalker)}`
                     } else {
                         return "";
@@ -266,26 +288,26 @@ export namespace SRRenderer {
                 }
             ],
             "slider": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `${padNameAfter(itemWalker)}[slider, ${(itemWalker.getNode() as any).value}]` : ""
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `${padNameAfter(itemWalker)}[slider, ${(itemWalker.getNode() as any).value}]` : ""
             ],
             "searchbox": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `${padNameAfter(itemWalker)}[edit]` : ""
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `${padNameAfter(itemWalker)}[edit]` : ""
             ],
             "separator":  [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[separator]` || "")
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && `[separator]` || "")
             ],
             "spinbutton": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `${padNameAfter(itemWalker)}[spinbutton, editable]` : ""
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `${padNameAfter(itemWalker)}[spinbutton, editable]` : ""
             ],
             "tab": [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `[tab${(itemWalker.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected": ""}] ${itemWalker.getNameInfo()?.name || ""}`) || ""
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && `[tab${(itemWalker.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected": ""}] ${itemWalker.getNameInfo()?.name || ""}`) || ""
             ],
             "text": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `${(itemWalker.getNameInfo()?.name+"")}` : null
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `${(itemWalker.getNameInfo()?.name+"")}` : null
             ],
             "textbox":  [
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag()) {
+                    if (itemWalker.isStartTag()) {
                         if (itemWalker.getNode().nodeName.toUpperCase() === "INPUT") {
                             return `${padNameAfter(itemWalker)}[edit] ${itemWalker.getNameInfo()?.name || ""}`;
                         } else {
@@ -313,6 +335,11 @@ export namespace SRRenderer {
         }
     } = {
         "default": {
+            "body": [
+                (itemWalker: SRCursor) => {
+                    return itemWalker.isEndTag() ? `[End of document]` : `[Start of document${document.title.trim().length > 0 ? ": "+document.title.trim() : ""}]`
+                }
+            ],
             "dl": [ CONTAINER_RESULT ],
 
             "br": [
@@ -329,9 +356,9 @@ export namespace SRRenderer {
                 }
             ],
             "input": [
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "password" && `${padNameAfter(itemWalker)}[edit, protected]`) || null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "password" && `${padNameAfter(itemWalker)}[edit, protected]`) || null,
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "file") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "file") {
                         let value = (itemWalker.getElement() as HTMLInputElement)?.value || "";
                         value = value === "" ? "No file chosen" : value.substring("C:\\fakepath\\".length);
                         return `${padNameAfter(itemWalker)}[button] ${padNameAfter(itemWalker)}[${value}]`;
@@ -339,7 +366,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "color") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "color") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value;
                         const r = (Number(`0x${val.substring(1,3)}`)*100.0/Number("0xff")).toFixed(0);
                         const g = (Number(`0x${val.substring(3,5)}`)*100.0/Number("0xff")).toFixed(0);
@@ -349,7 +376,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "month") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "month") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value;
                         let y = "0";
                         let m = "0";
@@ -363,7 +390,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "date") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "date") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value;
                         let y = "0";
                         let m = "0";
@@ -379,7 +406,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "datetime-local") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "datetime-local") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value; // 2025-09-12T04:20
                         let y = "0";
                         let m = "0";
@@ -407,7 +434,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "time") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "time") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value; // 2025-09-12T04:20
                         let hour = "0";
                         let min = "0";
@@ -430,7 +457,7 @@ export namespace SRRenderer {
                     return null;
                 },
                 (itemWalker: SRCursor) => {
-                    if (!itemWalker.isEndTag() && itemWalker.getElement()?.getAttribute("type") === "week") {
+                    if (itemWalker.isStartTag() && itemWalker.getElement()?.getAttribute("type") === "week") {
                         const val = (itemWalker.getElement() as HTMLInputElement).value; // 2025-W38
                         let year = "0";
                         let week = "0";
@@ -443,22 +470,30 @@ export namespace SRRenderer {
                     } 
                     return null;
                 },
-                (itemWalker: SRCursor) => (!itemWalker.isEndTag() && `${padNameAfter(itemWalker)}[!!input!!]`) || null,
+                (itemWalker: SRCursor) => itemWalker.getElement()?.getAttribute("type") === "hidden" ? "" : null,
+                (itemWalker: SRCursor) => (itemWalker.isStartTag() && `!!${padNameAfter(itemWalker)}[input!!]${itemWalker.getElement().outerHTML}`) || null,
             ],
             "li": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[bullet] ${(itemWalker.getNameInfo()?.name || "")}` : ""
+                (itemWalker: SRCursor) => {
+                    const elem = itemWalker.getElement();
+                    if (window.getComputedStyle(elem).listStyleType === "none") {
+                        return itemWalker.isStartTag() ? `${(itemWalker.getNameInfo()?.name || "")}` : "";
+                    } else {
+                        return itemWalker.isStartTag() ? `[bullet] ${(itemWalker.getNameInfo()?.name || "")}` : "";
+                    }
+                }
             ],
             /// MATHML
             "mfrac": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[fraction]` : `[end fraction]`
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `[fraction]` : `[end fraction]`
             ],
             "msqrt": [
-                (itemWalker: SRCursor) => !itemWalker.isEndTag() ? `[square root]` : `[end root]`
+                (itemWalker: SRCursor) => itemWalker.isStartTag() ? `[square root]` : `[end root]`
             ],
             "mrow": [
                 (itemWalker: SRCursor) => {
                     // Only announce over on the end tag
-                    if (!itemWalker.isEndTag()) return undefined;
+                    if (itemWalker.isStartTag()) return undefined;
                     let fraction = itemWalker.getCurrentOrParentByRoleClone([], ["mfrac"]);
                     if (fraction && fraction.getElement().querySelectorAll("mrow")[0]?.isSameNode(itemWalker.getNode())) {
                         return "[over]";
@@ -540,12 +575,12 @@ export namespace SRRenderer {
             "article":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getNameInfo() === null) return;
-                    return `${itemWalker.getNameInfo()?.name || ""} [article landmark]`;
+                    return `${itemWalker.getNameInfo()?.name || ""} [article region]`;
                 }
             , "banner":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getNameInfo() === null) return;
-                    return `${itemWalker.getNameInfo()?.name || ""} [banner landmark]`;
+                    return `${itemWalker.getNameInfo()?.name || ""} [banner region]`;
                 }
             , "blockquote": 
                 (_itemWalker: SRCursor) => "[blockquote]"
@@ -556,12 +591,12 @@ export namespace SRRenderer {
             , "complementary":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getNameInfo() === null) return;
-                    return `${itemWalker.getNameInfo()?.name || ""} [complementary landmark]`
+                    return `${itemWalker.getNameInfo()?.name || ""} [complementary region]`
                 }
             , "contentinfo":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getNameInfo() === null) return;
-                    return `${itemWalker.getNameInfo()?.name || ""} [content info landmark]`
+                    return `${itemWalker.getNameInfo()?.name || ""} [content info region]`
                 }
             , "figure": 
                 (_itemWalker: SRCursor) => "[figure]"
@@ -589,7 +624,7 @@ export namespace SRRenderer {
             , "row": renderEnterTableRow
             , "rowheader": renderEnterTableCell
             , "search":
-                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [search landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [search region]`
             , "toolbar":
                 (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [toolbar]`
             , "list":
@@ -602,12 +637,13 @@ export namespace SRRenderer {
                     let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;
                     let addName = itemWalker.getNameInfo()?.name;
                     if (addName) { addName = addName + " " } else { addName = "" };
-                    return `${addName}[list with ${numItems} items]`;
+                    if (numItems === 0) return undefined;
+                    return `${addName}[list of ${numItems} items]`;
                 }
             , "main":
-                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [main landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [main region]`
             , "navigation":
-                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [navigation landmark]`
+                (itemWalker: SRCursor) => `${itemWalker.getNameInfo()?.name || ""} [navigation region]`
             , "table":
                 (itemWalker: SRCursor) => {
                     let tableWalker = itemWalker.clone();
@@ -622,7 +658,7 @@ export namespace SRRenderer {
                         let firstRowComplete = false;
                         while (tableWalker.next(() => true) && !tableWalker.getNode().isSameNode(tableNode)) {
                             const role = tableWalker.getRole();
-                            if (!tableWalker.isEndTag()) {
+                            if (tableWalker.isStartTag()) {
                                 if (role === "row") {
                                     ++rows;
                                 } else {
@@ -662,21 +698,58 @@ export namespace SRRenderer {
                     }
                     else return "[out of grouping]";
                 }
+            , "article":
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.getNameInfo() === null) return;
+                    return `[out of article region]`;
+                }
+            , "banner":
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.getNameInfo() === null) return;
+                    return `[out of banner region]`;
+                }
             , "blockquote": 
                 (_itemWalker: SRCursor) => "[out of blockquote]"
             , "caption": 
                 (_itemWalker: SRCursor) => "[out of caption]"
+            , "complementary":
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.getNameInfo() === null) return;
+                    return `[out of complementary region]`
+                }
+            , "contentinfo":
+                (itemWalker: SRCursor) => {
+                    if (itemWalker.getNameInfo() === null) return;
+                    return `[out of content info region]`
+                }
             , "figure": 
                 (_itemWalker: SRCursor) => "[out of figure]"
             , "form": 
                 (_itemWalker: SRCursor) => "[out of grouping]"
             , "list":
-                (_itemWalker: SRCursor) => `[out of list]`
+                (itemWalker: SRCursor) => {
+                    const node = itemWalker.getNode() as HTMLElement;
+                    const descendantListItems = document.evaluate(".//li | .//*[@role='listitem']", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                    const descendantListItemsInOtherLists = document.evaluate(
+                        ".//ul//li|.//ul//*[@role='listitem']|.//ol//li|.//ol//*[@role='listitem']|.//*[@role='list']//li|.//*[@role='list']//*[@role='listitem']",
+                        node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                    let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;
+                    let addName = itemWalker.getNameInfo()?.name;
+                    if (addName) { addName = addName + " " } else { addName = "" };
+                    if (numItems === 0) return undefined;
+                    return `[out of list]`;
+                }
             , "region":
                 (itemWalker: SRCursor) => {
                     if (itemWalker.getNameInfo() === null) return;
                     else return "[out of region]";
                 }
+            , "main":
+                (_itemWalker: SRCursor) => `[out of main region]`
+            , "navigation":
+                (_itemWalker: SRCursor) => `[out of navigation region]`
+            , "search":
+                (_itemWalker: SRCursor) => `[out of search region]`
             , "table": 
                 (_itemWalker: SRCursor) => "[out of table]"
             , "toolbar":
@@ -703,7 +776,7 @@ export namespace SRRenderer {
                     let numItems = descendantListItems.snapshotLength;
                     let addName = itemWalker.getNameInfo()?.name;
                     if (addName) { addName = addName + " " } else { addName = "" };
-                    return `${addName}[definition list with ${numItems} terms]`;
+                    return `${addName}[definition list of ${numItems} terms]`;
                 }
             , "figcaption": 
                 (_itemWalker: SRCursor) => "[caption]"
@@ -810,11 +883,16 @@ export namespace SRRenderer {
      * @param containerChanges - Information about containers being entered or left
      * @returns Combined announcement text
      */
-    export function renderCurrent(mode: NavigationMode, walker: SRCursor, containerChanges: ContainerChanges): string {
+    export function renderCurrent(mode: NavigationMode, walker: SRCursor, containerChanges: ContainerChanges): RenderResult | null {
         let startOfRender = SRNavigator.jumpCurrent(mode, walker);
+        if (!startOfRender) return null;
         let endOfRender = SRNavigator.jumpCurrentEnd(mode, walker);
         let renderStr = SRRenderer.renderRange(mode, startOfRender, endOfRender);
-        return (containerChanges.leaving || []).concat(containerChanges.entering || []).concat([renderStr]).join(" ").replace(/\s+/g, " ");
+        return {
+            start: startOfRender,
+            end: endOfRender,
+            message: (containerChanges.leaving || []).concat(containerChanges.entering || []).concat([renderStr]).join(" ").replace(/\s+/g, " ")
+        }
     }
 
     /**
@@ -834,63 +912,47 @@ export namespace SRRenderer {
         let renderStrs = [];
         let bContinue = true;
         while (bContinue) {
+            const elem = iterWalker.getElement();
             const role = iterWalker.getRole();
             const node = iterWalker.getNode();
             const nodeNameLookup = role === null ? node.nodeName.toLowerCase() : "ARIA";
-            const elem = node as HTMLElement;
             const nodeType = node.nodeType;
-            if (nodeType === 1 && VisUtil.isNodeHiddenFromAT(iterWalker.getNode() as HTMLElement)) {
-                iterWalker.setEndTag(true);
-            } else if (
-                elem 
-                && elem.nodeName.toUpperCase() === "LABEL" 
-                && elem.hasAttribute("for") 
-                && document.getElementById(elem.getAttribute("for"))
-                && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
-            ) {
-                // Skip labels that point to inputs
-                iterWalker.setEndTag(true);
-            } else {
-                if (lastIterWalker) {
-                    const containerChanges = SRController.diffContainers(mode, iterWalker, lastIterWalker);
-                    renderStrs = renderStrs.concat(containerChanges.leaving.filter(s => s.trim().length > 0));
-                    renderStrs = renderStrs.concat(containerChanges.entering.filter(s => s.trim().length > 0));
-                }
-                lastIterWalker = iterWalker.clone();
-                const rules = (renderRoleRules[mode]?.[role] || [])
-                    .concat((renderRoleRules.default?.[role] || []))
-                    .concat(renderElemRules[mode]?.[nodeNameLookup] || [])
-                    .concat(renderElemRules["default"]?.[nodeNameLookup] || [])
-                    .concat((role && role !== "null") ? renderRoleRules.default.default : []);
-                for (const rule of rules) {
-                    let s = rule(iterWalker);
-                    if (typeof s !== "undefined" && s !== null) {
-                        if (nodeType === 1 && elem.getAttribute("aria-haspopup") === "menu") {
-                            s = "[subMenu] "+s;
-                        }
-                        // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "false") {
-                        //     s = "[collapsed] "+s;
-                        // }
-                        // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "true") {
-                        //     s = "[expanded] "+s;
-                        // }
-                        if (s !== "") {
-                            renderStrs.push(s);
-                        }
-                        break;
+            if (lastIterWalker) {
+                const containerChanges = SRController.diffContainers(mode, iterWalker, lastIterWalker);
+                renderStrs = renderStrs.concat(containerChanges.leaving.filter(s => s.trim().length > 0));
+                renderStrs = renderStrs.concat(containerChanges.entering.filter(s => s.trim().length > 0));
+            }
+            lastIterWalker = iterWalker.clone();
+            const rules = (renderRoleRules[mode]?.[role] || [])
+                .concat((renderRoleRules.default?.[role] || []))
+                .concat(renderElemRules[mode]?.[nodeNameLookup] || [])
+                .concat(renderElemRules["default"]?.[nodeNameLookup] || [])
+                .concat((role && role !== "null") ? renderRoleRules.default.default : []);
+            for (const rule of rules) {
+                let s = rule(iterWalker);
+                if (typeof s !== "undefined" && s !== null) {
+                    if (nodeType === 1 && elem.getAttribute("aria-haspopup") === "menu") {
+                        s += "[subMenu] "+s;
                     }
-                }
-                if (AriaUtil.containsPresentationalChildrenOnly(iterWalker.getNode() as HTMLElement)
-                    || (["link", "heading"].includes(role) && iterWalker.getNameInfo().nameFrom !== "content")) 
-                {
-                    iterWalker.setEndTag(true);
-                } else if (elem && elem.nodeName.toUpperCase() === "MSUP") {
-                    iterWalker.setEndTag(true);
+                    if (s.trim().length > 0 && iterWalker.isStartTag() && !s.includes("[link") && nodeType === 1 && AriaUtil.getAncestorWithRole(elem, "link", true)) {
+                        s = "[link] "+s;
+                    }
+                    // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "false") {
+                    //     s = "[collapsed] "+s;
+                    // }
+                    // if (nodeType === 1 && elem.getAttribute("aria-expanded") === "true") {
+                    //     s = "[expanded] "+s;
+                    // }
+                    if (s !== "") {
+                        renderStrs.push(s);
+                    }
+                    break;
                 }
             }
-            bContinue = iterWalker.next(() => true) && SRCursor.compare(iterWalker, endOfRender) < 0;
+            bContinue = iterWalker.next(() => true, SRNavigator.getSkipFunc(mode)) && SRCursor.compare(iterWalker, endOfRender) < 0;
         }
         let retVal = renderStrs.filter(s => s.trim().length > 0).join(" ");
+        if (retVal === "[link]") return "";
         return retVal;
     }
 

@@ -1,15 +1,32 @@
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { NavigationMode } from "./SRTypes";
-import { SRCursor, SRCursorMatchFunc } from "./SRCursor";
+import { SRCursor, SRCursorMatchFunc, SRCursorSkipFunc } from "./SRCursor";
 import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
+import { AriaUtil } from "../util/AriaUtil";
+import { NodeWalker } from "../../v2/dom/NodeWalker";
 
 export namespace SRNavigator {
     function isBlockElement(node: Node) {
         if (node.nodeType !== 1) return false;
         if (node.nodeName.toLowerCase() === "br") return true;
         const elem = node as HTMLElement;
-        const disp = elem.ownerDocument.defaultView.getComputedStyle(elem)?.display;
+        const mywin = elem.ownerDocument.defaultView;
+        const disp = mywin.getComputedStyle(elem)?.display;
         if (disp && disp.startsWith("table")) return true;
+        if (disp === "block" && elem.style.display !== "block") {
+            // Is this block because it's a flex elem?
+            if (mywin.getComputedStyle(elem.parentElement).display === "flex") {
+                return false;
+            }
+        }
+        if (AriaUtil.getResolvedRole(elem, true) === "link") {
+            let temp = new NodeWalker(node, false);
+            temp.prevNode();
+            if (!isBlockElement(temp.node)) {
+                return true;
+            }
+        }
         return ["block", "flex", "grid", "list-item"].includes(disp);
     }
 
@@ -63,11 +80,12 @@ export namespace SRNavigator {
                     }
                     return false;
                 }
+            case "region":
+                return (role: string, bStartTag: boolean) => (bStartTag && ["main", "navigation"].includes(role));
             case "formcontrol":
             case "editbox":
             case "graphic":
             case "frame":
-            case "region":
             case "division":
             case "tabcontrol":
             case "separator":
@@ -76,6 +94,132 @@ export namespace SRNavigator {
                 throw new Error("NOT_IMPLEMENTED");
         }
     }
+
+    const SKIP_ITEM_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
+        const nodeType = cursor.getNode().nodeType;
+        const elem = cursor.getElement();
+        const cursorStart = cursor.clone();
+        cursorStart.setEndTag(false);
+
+        // Skip CDATA and comments completely
+        if ([4, 8].includes(nodeType)) return { skipCurrent: true, skipChildren: true };
+        // Only process elements and text
+        if (![1,3].includes(nodeType)) return { skipCurrent: true, skipChildren: false };
+        // For text elements, only render if they're not hidden
+        if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
+
+        // We have an element
+
+        // Make sure we're within the body element
+        if (!elem.closest("body")) return { skipCurrent: true, skipChildren: true };
+
+        // Make sure we're not in a script or style
+        if (elem.closest("script,style")) return { skipCurrent: true, skipChildren: true };
+
+        // Skip things hidden from the AT
+        if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
+        if (!VisUtil.isNodeVisible(elem)) return { skipCurrent: true, skipChildren: true };
+        if (elem.nodeName.toUpperCase() === "BODY") return { skipCurrent: false, skipChildren: false };
+
+        // Skip label fors - they'll be read with the related input
+        if (
+            elem.nodeName.toUpperCase() === "LABEL" 
+            && elem.hasAttribute("for") 
+            && document.getElementById(elem.getAttribute("for"))
+            && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
+        ) {
+            return { skipCurrent: true, skipChildren: true };
+        }
+
+        const role = cursorStart.getRole();
+
+        // If we have presentational children, read the element, skip the children
+        if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
+            return { skipCurrent: false, skipChildren: true };
+        }
+        if (["link", "heading"].includes(role) && (!cursorStart.getName() || (!["content", "text"].includes(cursorStart.getNameInfo().nameFrom)))) {
+            return { skipCurrent: false, skipChildren: true };
+        }
+        if (elem && elem.nodeName.toUpperCase() === "MSUP") {
+            return { skipCurrent: false, skipChildren: true };
+        }
+        if (elem.closest(".ibma-sr-overlay")) {
+            return { skipCurrent: true, skipChildren: true };
+        }
+        return null;
+    }
+
+    const SKIP_NESTED_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
+        const nodeType = cursor.getNode().nodeType;
+        const elem = cursor.getElement();
+        // Only visit elements and text nodes
+        if (nodeType !== 1 && nodeType !== 3) return { skipCurrent: true, skipChildren: false };
+        if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
+        // We have an elemenet
+        if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
+        // Skip label fors - they'll be read with the related input
+        if (
+            elem.nodeName.toUpperCase() === "LABEL" 
+            && elem.hasAttribute("for") 
+            && document.getElementById(elem.getAttribute("for"))
+            && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
+        ) {
+            return { skipCurrent: true, skipChildren: true };
+        }
+
+        const role = cursor.getRole();
+
+        // If we have presentational children, read the element, skip the children
+        if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
+            return { skipCurrent: false, skipChildren: true };
+        }
+        if (elem && elem.nodeName.toUpperCase() === "MSUP") {
+            return { skipCurrent: true, skipChildren: true };
+        }
+        if (elem.closest(".ibma-sr-overlay")) {
+            return { skipCurrent: true, skipChildren: true };
+        }
+        return null;
+    }
+
+    export function getSkipFunc(mode: NavigationMode) : SRCursorSkipFunc {
+        switch (mode) {
+            case "region":
+            case "item": 
+                return SKIP_ITEM_BEHAVIOR;
+            case "link": 
+            case "tab_focus": 
+            case "heading":
+            case "h1":
+            case "h2":
+            case "h3":
+            case "h4":
+            case "h5":
+            case "h6":
+                return SKIP_NESTED_BEHAVIOR;
+            case "radio":
+            case "button":
+            case "checkbox":
+            case "combo":       
+            case "list":
+            case "listitem":
+            case "article":
+            case "table":
+            case "paragraph":
+            case "dom":
+            case "formcontrol":
+            case "editbox":
+            case "graphic":
+            case "frame":
+            case "division":
+            case "tabcontrol":
+            case "separator":
+            case "clickable":
+            case "mouseover":
+                throw new Error("NOT_IMPLEMENTED");
+        }
+    }
+
     
     export function jumpCurrent(mode: NavigationMode, walker: SRCursor) : SRCursor {
         const matchFunc = getStartFunc(mode);
@@ -92,6 +236,11 @@ export namespace SRNavigator {
             let retVal = walker.clone();
             retVal.setEndTag(true);
             retVal.next(() => true);
+
+            let itemEnd = jumpNext("item", walker);
+            if (SRCursor.compare(itemEnd, retVal) < 0) {
+                return itemEnd;
+            }
             return retVal
         }
     }
@@ -99,7 +248,8 @@ export namespace SRNavigator {
     export function jumpNext(mode: NavigationMode, walker: SRCursor) : SRCursor {
         let retVal = walker.clone();
         const matchFunc = getStartFunc(mode);
-        if (retVal.next(matchFunc)) {
+        const skipFunc = getSkipFunc(mode);
+        if (retVal.next(matchFunc, skipFunc)) {
             return retVal;
         } else {
             return null;
@@ -109,7 +259,8 @@ export namespace SRNavigator {
     export function jumpPrevious(mode: NavigationMode, walker: SRCursor) : SRCursor {
         let retVal = walker.clone();
         const matchFunc = getStartFunc(mode);
-        if (retVal.previous(matchFunc)) {
+        const skipFunc = getSkipFunc(mode);
+        if (retVal.previous(matchFunc, skipFunc)) {
             return retVal;
         } else {
             return null;

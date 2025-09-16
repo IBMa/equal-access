@@ -45,14 +45,18 @@ export class SRController {
             
             return {
                 success: true,
-                message: SRRenderer.renderCurrent("focus", this.pointOfRegard, containerChanges),
+                renderingResult: SRRenderer.renderCurrent("focus", this.pointOfRegard, containerChanges),
                 role,
                 name
             };
         } catch (error) {
             return {
                 success: false,
-                message: `Failed to set point of regard: ${error.message}`
+                renderingResult: {
+                    start: this.pointOfRegard.clone(),
+                    end: this.pointOfRegard.clone(),
+                    message: `Failed to set point of regard: ${error.message}`
+                }
             };
         }
     }
@@ -71,8 +75,9 @@ export class SRController {
             while (bContinue && nextJump) {
                 nextJump = SRNavigator.jumpNext(mode, nextJump);
                 if (nextJump) {
-                    let message = SRRenderer.renderCurrent(mode, nextJump, {entering: [], leaving: []});
-                    bContinue = message.trim().length === 0;
+                    let renderingResult = SRRenderer.renderCurrent(mode, nextJump, {entering: [], leaving: []});
+                    // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
+                    bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
                 }
             }
             if (!nextJump) {
@@ -80,7 +85,11 @@ export class SRController {
                 this.pointOfRegard = oldPointOfRegard;
                 return {
                     success: false,
-                    message: `No next ${mode}`
+                    renderingResult: {
+                        start: oldPointOfRegard.clone(),
+                        end: oldPointOfRegard.clone(),
+                        message: `No next ${mode}`
+                    }
                 };
             } else {
                 this.pointOfRegard = nextJump;
@@ -89,20 +98,25 @@ export class SRController {
                 
                 // Check for container changes
                 const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
-                let message = SRRenderer.renderCurrent(mode, this.pointOfRegard, containerChanges);
+                let renderingResult = SRRenderer.renderCurrent(mode, this.pointOfRegard, containerChanges);
                 return {
                     success: true,
-                    message,
+                    renderingResult,
                     role,
                     name
                 };
             }
         } catch (error) {
+            console.error(error);
             // Restore the original point of regard
             this.pointOfRegard = oldPointOfRegard;
             return {
                 success: false,
-                message: `Navigation error: ${error.message}`
+                renderingResult: {
+                    start: oldPointOfRegard.clone(),
+                    end: oldPointOfRegard.clone(),
+                    message: `Navigation error: ${error.message}`
+                }
             };
         }
     }
@@ -112,44 +126,65 @@ export class SRController {
      * @param mode The navigation mode to use
      * @returns NavigationResult indicating success or failure
      */
-    // public jumpPrevious(mode: NavigationMode): NavigationResult {
-    //     const oldPointOfRegard = this.pointOfRegard.clone();
-    //     const oldNode = this.pointOfRegard.getNode();
+    public jumpPrevious(mode: NavigationMode): NavigationResult {
+        const oldPointOfRegard = this.pointOfRegard.clone();
         
-    //     try {
-    //         const success = SRNavigator.jumpPrevious(this.pointOfRegard, mode);
+        try {
+            let bContinue = true;
+            let prevJump = this.pointOfRegard.clone();
+            while (bContinue && prevJump) {
+                prevJump = SRNavigator.jumpPrevious(mode, prevJump);
+                if (prevJump) {
+                    let renderingResult = SRRenderer.renderCurrent(mode, prevJump, {entering: [], leaving: []});
+                    // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
+                    bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
+                }
+            }
             
-    //         if (!success) {
-    //             // Restore the original point of regard
-    //             this.pointOfRegard = oldPointOfRegard;
-    //             return {
-    //                 success: false,
-    //                 message: `No previous ${mode}`
-    //             };
-    //         } else {
-    //             const newNode = this.pointOfRegard.getNode();
-    //             const role = this.pointOfRegard.getRole();
-    //             const name = this.pointOfRegard.getName()?.name;
+            if (!prevJump) {
+                // Restore the original point of regard
+                this.pointOfRegard = oldPointOfRegard;
+                return {
+                    success: false,
+                    renderingResult: {
+                        start: oldPointOfRegard.clone(),
+                        end: oldPointOfRegard.clone(),
+                        message: `No previous ${mode}`
+                    }
+                };
+            } else {
+                this.pointOfRegard = prevJump;
+                const role = this.pointOfRegard.getRole();
+                const name = this.pointOfRegard.getNameInfo()?.name;
                 
-    //             // Check for container changes
-    //             const containerChanges = this.updateContainerState(newNode, oldNode);
-                
-    //             return {
-    //                 success: true,
-    //                 message: this.renderCurrent(mode, this.pointOfRegard, containerChanges),
-    //                 role,
-    //                 name
-    //             };
-    //         }
-    //     } catch (error) {
-    //         // Restore the original point of regard
-    //         this.pointOfRegard = oldPointOfRegard;
-    //         return {
-    //             success: false,
-    //             message: `Navigation error: ${error.message}`
-    //         };
-    //     }
-    // }
+                // Check for container changes
+                const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
+                let s = SRRenderer.renderEnter(mode, this.pointOfRegard);
+                if (containerChanges.entering[containerChanges.entering.length-1] !== s) {
+                    containerChanges.entering.push(s);
+                }
+                let renderingResult = SRRenderer.renderCurrent(mode, this.pointOfRegard, containerChanges);
+                return {
+                    success: true,
+                    renderingResult,
+                    role,
+                    name
+                };
+            }
+        } catch (error) {
+            console.error(error);
+            // Restore the original point of regard
+            this.pointOfRegard = oldPointOfRegard;
+            return {
+                success: false,
+                renderingResult: {
+                    start: oldPointOfRegard.clone(),
+                    end: oldPointOfRegard.clone(),
+                    message: `Navigation error: ${error.message}`
+                }
+            };
+        }
+    }
     
     /**
      * Determine the different in containers between the two nodes
@@ -215,11 +250,17 @@ export class SRController {
     public static renderAll(mode: NavigationMode): string[] {
         let ctrl = new SRController(document.body);
         let results: string[] = [];
+        // Handle the initial item first (if there is one)
+        let starterMsg = SRRenderer.renderCurrent(mode, ctrl.getPointOfRegard(), {entering: [], leaving: []});
+        if (starterMsg) {
+            results.push(starterMsg.message);
+        }
+
         let bContinue = true;
         while (bContinue) {
             let nextVal = ctrl.jumpNext(mode);
             if (nextVal.success) {
-                results.push(nextVal.message);
+                results.push(nextVal.renderingResult.message);
             } else {
                 bContinue = false;
             }

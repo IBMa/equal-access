@@ -1,3 +1,4 @@
+import { SRCursor } from "./SRCursor";
 
 /**
  * Result of a navigation operation
@@ -6,11 +7,20 @@ export interface NavigationResult {
     /** Whether the navigation was successful */
     success: boolean;
     /** The result text if successful, or error message if not */
-    message: string;
+    renderingResult: RenderResult
     /** The role of the element that was navigated to (if successful) */
     role?: string;
     /** The name of the element that was navigated to (if successful) */
     name?: string;
+}
+
+export interface RenderResult {
+    /** Start of range */
+    start: SRCursor;
+    /** End of Range */
+    end: SRCursor;
+    /** The result text if successful */
+    message: string;
 }
 
 /**

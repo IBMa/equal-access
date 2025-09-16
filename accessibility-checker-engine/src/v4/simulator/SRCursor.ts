@@ -12,6 +12,8 @@ import { CommonUtil } from "../util/CommonUtil";
  */
 export type SRCursorMatchFunc = (role: string, bStartTag: boolean, node: Node) => boolean;
 
+export type SRCursorSkipFunc = (cursor: SRCursor) => { skipCurrent: boolean, skipChildren: boolean} | null;
+
 /**
  * SRCursor (Screen Reader Cursor) class
  *
@@ -79,22 +81,38 @@ export class SRCursor {
      * @param matchingFunc - Function that determines if a node matches the search criteria
      * @returns true if a matching node was found, false otherwise
      */
-    public next(matchingFunc: SRCursorMatchFunc) : boolean {
-        let bContinue = true;
+    public next(matchingFunc: SRCursorMatchFunc, skipFunc?: SRCursorSkipFunc) : boolean {
         let foundNext = false;
-        while (bContinue && !foundNext) {
-            bContinue = this.walker.nextNode();
-            if (bContinue) {
+
+        // Get the skip info for the current spot
+        this.refreshName();
+        let { skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false };
+
+        do {
+            // Move as appropriate from the current spot
+            if (skipChildren && !this.walker.bEndTag) {
+                this.walker.bEndTag = true;
+            } else if (!this.walker.nextNode()) {
+                break;
+            }
+
+            // Update the skip info for the new spot
+            this.refreshName();
+            ({ skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false });
+
+            if (!skipCurrent) {
                 // Update role based on node type
                 if (this.walker.node.nodeType === 1) {
                     this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
                 } else if (this.walker.node.nodeType === 3) {
                     this.role = "text";
                 }
+
                 // Check if this node matches our criteria
                 foundNext = matchingFunc(this.role, !this.walker.bEndTag, this.walker.node);
             }
-        }
+        } while (!foundNext);
+
         if (foundNext) {
             this.refreshName();
         } else {
@@ -110,22 +128,38 @@ export class SRCursor {
      * @param matchingFunc - Function that determines if a node matches the search criteria
      * @returns true if a matching node was found, false otherwise
      */
-    public previous(matchingFunc: SRCursorMatchFunc) : boolean {
-        let bContinue = true;
+    public previous(matchingFunc: SRCursorMatchFunc, skipFunc?: SRCursorSkipFunc) : boolean {
         let foundNext = false;
-        while (bContinue && !foundNext) {
-            bContinue = this.walker.prevNode();
-            if (bContinue) {
+
+        // Get the skip info for the current spot
+        this.refreshName();
+        let { skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false };
+
+        do {
+            // Move as appropriate from the current spot
+            if (skipChildren && this.walker.bEndTag) {
+                this.walker.bEndTag = false;
+            } else if (!this.walker.prevNode()) {
+                break;
+            }
+
+            // Update the skip info for the new spot
+            this.refreshName();
+            ({ skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false });
+
+            if (!skipCurrent) {
                 // Update role based on node type
                 if (this.walker.node.nodeType === 1) {
                     this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
                 } else if (this.walker.node.nodeType === 3) {
                     this.role = "text";
                 }
+
                 // Check if this node matches our criteria
                 foundNext = matchingFunc(this.role, !this.walker.bEndTag, this.walker.node);
             }
-        }
+        } while (!foundNext);
+
         if (foundNext) {
             this.refreshName();
         } else {
@@ -254,6 +288,14 @@ export class SRCursor {
      */
     public isEndTag() {
         return this.walker.bEndTag;
+    }
+
+    /**
+     * Checks if the cursor is positioned at an end tag
+     * @returns true if at an end tag, false if at a start tag
+     */
+    public isStartTag() {
+        return !this.walker.bEndTag;
     }
 
     /**
