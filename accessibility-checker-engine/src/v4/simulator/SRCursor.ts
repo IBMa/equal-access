@@ -2,6 +2,8 @@ import { NodeWalker } from "../../v2/dom/NodeWalker";
 import { AccessibleNameResult, AccNameUtil } from "../util/AccNameUtil";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
+import { VisUtil } from "../util/VisUtil";
+import { SRUtil } from "./SRUtil";
 
 /**
  * Function type for matching nodes during cursor navigation
@@ -82,11 +84,17 @@ export class SRCursor {
      * @returns true if a matching node was found, false otherwise
      */
     public next(matchingFunc: SRCursorMatchFunc, skipFunc?: SRCursorSkipFunc) : boolean {
+        const DEBUG = false;
+
+        // const DEBUG = false;
         let foundNext = false;
 
         // Get the skip info for the current spot
         this.refreshName();
+        DEBUG && console.group(`next function`);
+        DEBUG && console.log(this.isEndTag()?"/":"", this.getNode());
         let { skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false };
+        DEBUG && console.log("skipCurrent:", skipCurrent, "skipChildren:", skipChildren);
 
         do {
             // Move as appropriate from the current spot
@@ -98,20 +106,27 @@ export class SRCursor {
 
             // Update the skip info for the new spot
             this.refreshName();
+            DEBUG && console.log(this.isEndTag()?"/":"", this.getNode());
             ({ skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false });
+            DEBUG && console.log("skipCurrent:", skipCurrent, "skipChildren:", skipChildren);
+
+            // Update role based on node type
+            if (this.walker.node.nodeType === 1) {
+                this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
+            } else if (this.walker.node.nodeType === 3) {
+                this.role = "text";
+            }
+            if (SRUtil.isModalDialogElement(this.getNode()) && this.isEndTag()) {
+                break;
+            }
 
             if (!skipCurrent) {
-                // Update role based on node type
-                if (this.walker.node.nodeType === 1) {
-                    this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
-                } else if (this.walker.node.nodeType === 3) {
-                    this.role = "text";
-                }
-
                 // Check if this node matches our criteria
                 foundNext = matchingFunc(this.role, !this.walker.bEndTag, this.walker.node);
             }
         } while (!foundNext);
+        DEBUG && console.log("foundNext:", foundNext, this.isEndTag()?"/":"", this.getNode());
+        DEBUG && console.groupEnd();
 
         if (foundNext) {
             this.refreshName();
@@ -129,15 +144,19 @@ export class SRCursor {
      * @returns true if a matching node was found, false otherwise
      */
     public previous(matchingFunc: SRCursorMatchFunc, skipFunc?: SRCursorSkipFunc) : boolean {
-        let foundNext = false;
+        const DEBUG = false;
+        let foundPrevious = false;
 
         // Get the skip info for the current spot
         this.refreshName();
+        DEBUG && console.group(`previous function`);
+        DEBUG && console.log(this.isEndTag(), this.getNode());
         let { skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false };
-
+        DEBUG && console.log(skipCurrent, skipChildren);
         do {
             // Move as appropriate from the current spot
             if (skipChildren && this.walker.bEndTag) {
+                DEBUG && console.log("Skipping node")
                 this.walker.bEndTag = false;
             } else if (!this.walker.prevNode()) {
                 break;
@@ -145,29 +164,34 @@ export class SRCursor {
 
             // Update the skip info for the new spot
             this.refreshName();
+            DEBUG && console.log(this.isEndTag(), this.getNode());
             ({ skipCurrent, skipChildren } = (skipFunc && skipFunc(this)) || { skipCurrent: false, skipChildren: false });
+            DEBUG && console.log(skipCurrent, skipChildren);
 
-            if (!skipCurrent) {
-                // Update role based on node type
-                if (this.walker.node.nodeType === 1) {
-                    this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
-                } else if (this.walker.node.nodeType === 3) {
-                    this.role = "text";
-                }
-
-                // Check if this node matches our criteria
-                foundNext = matchingFunc(this.role, !this.walker.bEndTag, this.walker.node);
+            // Update role based on node type
+            if (this.walker.node.nodeType === 1) {
+                this.role = AriaUtil.getResolvedRole(this.walker.node as HTMLElement, true);
+            } else if (this.walker.node.nodeType === 3) {
+                this.role = "text";
             }
-        } while (!foundNext);
-
-        if (foundNext) {
+            if (SRUtil.isModalDialogElement(this.getNode()) && !this.isEndTag()) {
+                break;
+            }
+            if (!skipCurrent) {
+                // Check if this node matches our criteria
+                foundPrevious = matchingFunc(this.role, !this.walker.bEndTag, this.walker.node);
+            }
+        } while (!foundPrevious);
+        DEBUG && console.log(this.isEndTag(), this.getNode());
+        DEBUG && console.groupEnd();
+        if (foundPrevious) {
             this.refreshName();
         } else {
             // Reset properties if no match was found
             this.role = undefined;
             this.name = undefined;
         }
-        return foundNext;
+        return foundPrevious;
     }
 
     /**

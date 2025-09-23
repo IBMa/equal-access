@@ -1,6 +1,21 @@
 import { SRController } from "./SRController";
 import { NavigationMode, NavigationResult } from "./SRTypes";
 
+function createDOMElement(elemName: string, attrs: { [attr: string]: string}, styles: Partial<CSSStyleDeclaration>) {
+    let retVal = document.createElement(elemName);
+    if (attrs) {
+        for (const key in attrs) {
+            retVal[key] = attrs[key];
+        }
+    }
+    if (styles) {
+        for (const key in styles) {
+            retVal.style[key] = styles[key];
+        }
+    }
+    return retVal;
+}
+
 /**
  * SROverlay class for creating a UI widget to control screen reader simulation
  * Provides buttons for navigation and displays results
@@ -22,7 +37,7 @@ export class SROverlay {
      * Creates a new SROverlay
      * @param controller The SRController instance to use for navigation
      */
-    constructor(private navigateNext: (mode: NavigationMode) => void, private navigatePrevious: (mode: NavigationMode) => void) {
+    constructor(private srViewer: SRViewer) {
         this.createOverlay();
     }
 
@@ -31,73 +46,117 @@ export class SROverlay {
      */
     private createOverlay(): void {
         // Create main container
-        this.container = document.createElement('div');
-        this.container.className = 'ibma-sr-overlay';
-        this.container.style.position = 'fixed';
-        this.container.style.bottom = '0';
-        this.container.style.left = '0';
-        this.container.style.width = '100%';
-        this.container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        this.container.style.color = 'white';
-        this.container.style.padding = '10px';
-        this.container.style.zIndex = '10000';
-        this.container.style.display = 'flex';
-        this.container.style.flexDirection = 'column';
-        this.container.style.gap = '10px';
+        this.container = createDOMElement("div", {
+            className: "ibma-sr-overlay"
+        }, {
+            position: 'fixed',
+            bottom: '0',
+            left: '0',
+            width: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            color: 'white',
+            padding: '10px',
+            zIndex: '10000',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px'
+        });
 
         // Create controls container
-        const controlsContainer = document.createElement('div');
-        controlsContainer.style.display = 'flex';
-        controlsContainer.style.flexWrap = 'wrap';
-        controlsContainer.style.gap = '10px';
+        const controlsContainer = createDOMElement("div", {}, { 
+            display: "flex", flexWrap: "wrap", gap: "10px"});
 
         // Create navigation mode groups
         this.navigationModes.forEach(navMode => {
-            const modeGroup = document.createElement('div');
-            modeGroup.style.display = 'flex';
-            modeGroup.style.alignItems = 'center';
-            modeGroup.style.gap = '5px';
-            modeGroup.style.margin = '0 10px';
+            const modeGroup = createDOMElement('div', {}, {
+                display: "flex",
+                alignItems: 'center',
+                gap: '5px',
+                margin: '0 10px'
+            });
 
-            const modeLabel = document.createElement('span');
-            modeLabel.textContent = navMode.label + ':';
-            modeGroup.appendChild(modeLabel);
+            modeGroup.appendChild(createDOMElement('span', {
+                textContent: navMode.label + ":"
+            }, {}));
 
             // Previous button
-            const prevButton = document.createElement('button');
-            prevButton.textContent = '◀ Prev';
-            prevButton.style.padding = '5px 10px';
-            prevButton.style.backgroundColor = '#444';
-            prevButton.style.color = 'white';
-            prevButton.style.border = 'none';
-            prevButton.style.borderRadius = '3px';
-            prevButton.style.cursor = 'pointer';
-            prevButton.addEventListener('click', () => this.navigatePrevious(navMode.mode));
+            const prevButton = createDOMElement('button', {
+                textContent: '◀ Prev'
+            }, {
+                padding: '5px 10px',
+                backgroundColor: '#444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '3px',
+                cursor: 'pointer'
+            });
+            prevButton.addEventListener('click', () => this.srViewer.navigatePrevious(navMode.mode));
             modeGroup.appendChild(prevButton);
 
             // Next button
-            const nextButton = document.createElement('button');
-            nextButton.textContent = 'Next ▶';
-            nextButton.style.padding = '5px 10px';
-            nextButton.style.backgroundColor = '#444';
-            nextButton.style.color = 'white';
-            nextButton.style.border = 'none';
-            nextButton.style.borderRadius = '3px';
-            nextButton.style.cursor = 'pointer';
-            nextButton.addEventListener('click', () => this.navigateNext(navMode.mode));
+            const nextButton = createDOMElement('button', {
+                textContent: 'Next ▶'
+            }, {
+                padding: '5px 10px',
+                backgroundColor: '#444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '3px',
+                cursor: 'pointer'
+            });
+            nextButton.addEventListener('click', () => this.srViewer.navigateNext(navMode.mode));
             modeGroup.appendChild(nextButton);
 
             controlsContainer.appendChild(modeGroup);
         });
+        let otherButtonGroup = createDOMElement('div', {}, {
+            display: "flex",
+            alignItems: 'center',
+            gap: '5px',
+            margin: '0 10px'
+        })
+        // Show all button
+        const showAllButton = createDOMElement('button', {
+            textContent: 'Show all'
+        }, {
+            padding: '5px 10px',
+            backgroundColor: '#444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '3px',
+            cursor: 'pointer'
+        });
+        showAllButton.addEventListener('click', () => this.srViewer.showAll(true));
+        otherButtonGroup.appendChild(showAllButton);
+
+        // Toggle Speech Button
+        const toggleSpeech = createDOMElement('button', {
+            textContent: 'Toggle speech'
+        }, {
+            padding: '5px 10px',
+            backgroundColor: '#444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '3px',
+            cursor: 'pointer'
+        });
+        toggleSpeech.addEventListener('click', () => this.srViewer.toggleSpeech());
+        otherButtonGroup.appendChild(toggleSpeech);
+        controlsContainer.appendChild(otherButtonGroup);
+
 
         // Create results display
-        this.resultsDisplay = document.createElement('div');
-        this.resultsDisplay.style.padding = '10px';
-        this.resultsDisplay.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-        this.resultsDisplay.style.borderRadius = '3px';
-        this.resultsDisplay.style.minHeight = '50px';
-        this.resultsDisplay.style.fontFamily = 'monospace';
-        this.resultsDisplay.textContent = 'Screen reader simulation results will appear here.';
+        this.resultsDisplay = createDOMElement('div', {
+            textContent: 'Screen reader simulation results will appear here.'
+        }, {
+            padding: '10px',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '3px',
+            minHeight: '100px',
+            maxHeight: '50vh',
+            fontFamily: 'monospace',
+            overflow: 'auto'
+        });
 
         // Add elements to container
         this.container.appendChild(controlsContainer);
@@ -117,15 +176,62 @@ export class SROverlay {
         let displayText = '';
         
         if (result.success) {
+            // console.log("???", result);
             displayText = `${direction.toUpperCase()} ${mode}: ${result.renderingResult.message}`;
         } else {
             displayText = `${direction.toUpperCase()} ${mode}: ${result.renderingResult.message}`;
         }
-        result.renderingResult.end.getElement()?.scrollIntoView();
-        result.renderingResult.start.getElement()?.scrollIntoView();
+        result.renderingResult.end?.getElement()?.scrollIntoView();
+        result.renderingResult.start?.getElement()?.scrollIntoView();
         window.scrollBy(0, -200);
         
+        this.resultsDisplay.innerHTML = "";
         this.resultsDisplay.textContent = displayText;
+        let inspectButton = createDOMElement("button", {
+            innerText: "Debug"
+        }, {
+        });
+        inspectButton.addEventListener("click", () => {
+            console.log(result.renderingResult.start?.getNode(), result.renderingResult.end?.getNode());
+        })
+        this.resultsDisplay.appendChild(inspectButton)
+    }
+
+    public displayAll(result: Array<{region: string, heading: string, item: string}>): void {
+        const table = createDOMElement("table", {}, {});
+        const headerRow = createDOMElement("tr", {}, {});
+        const headingLabels = ["Region", "Heading", "Item", "Tabbable"];
+        const headingFields = ["region", "heading", "item", "tab_focus"];
+        for (const headingLabel of headingLabels) {
+            headerRow.appendChild(createDOMElement("th", {
+                scope: "col",
+                innerText: headingLabel
+            }, {
+                textAlign: "left",
+                padding: ".25rem",
+                margin: "0rem",
+                color: "white"
+            }));
+            table.appendChild(headerRow);
+        }
+
+        for (const line of result) {
+            const dataRow = createDOMElement("tr", {}, {});
+            headingFields.forEach((field) => {
+                dataRow.appendChild(createDOMElement("td", {
+                    innerText: line[field]
+                }, {
+                    verticalAlign: "top",
+                    border: "solid white 1px",
+                    padding: ".25rem",
+                    margin: "0rem",
+                    color: "white"
+                }));
+            })
+            table.appendChild(dataRow);
+        }
+        this.resultsDisplay.innerHTML = "";
+        this.resultsDisplay.appendChild(table);
     }
 
     /**
@@ -148,6 +254,10 @@ export class SRViewer {
     private overlay: SROverlay;
     /** Flag to track if speech is active */
     private isStreaming: boolean = false;
+    /** Flag to set if showing all */
+    private isShowingAll: boolean = false;
+    /** Flag to set if it should be speaking */
+    private speechEnabled: boolean = false;
     /** Keyboard event handler */
     private keyboardHandler: (e: KeyboardEvent) => void;
     /** Focus event handler */
@@ -162,21 +272,28 @@ export class SRViewer {
         this.controller = new SRController(rootElement);
         
         // Create overlay UI
-        let myThis = this;
-        this.overlay = new SROverlay(
-            (mode: NavigationMode) => {
-                myThis.navigateNext(mode);
-            },
-            (mode: NavigationMode) => {
-                myThis.navigatePrevious(mode);
-            }
-        );
+        this.overlay = new SROverlay(this);
         
         // Set up keyboard handlers
         this.setupKeyboardHandlers();
         
         // Set up focus tracking
         this.setupFocusTracking();
+
+        // Set up mutation tracking
+        this.setupMutationTracking();
+    }
+
+    public showAll(bEnableAllMode?: boolean): void {
+        if (bEnableAllMode) {
+            this.isShowingAll = true;
+        }
+        const result = SRController.renderStructure();
+        this.overlay.displayAll(result);
+    }
+
+    public toggleSpeech() {
+        this.speechEnabled = !this.speechEnabled;
     }
 
     /**
@@ -184,6 +301,7 @@ export class SRViewer {
      * @param mode The navigation mode to use
      */
     public navigateNext(mode: NavigationMode): void {
+        this.isShowingAll = false;
         const result = this.controller.jumpNext(mode);
         this.overlay.displayResult(result, mode, 'next');
         this.speakResult(result);
@@ -194,6 +312,7 @@ export class SRViewer {
      * @param mode The navigation mode to use
      */
     public navigatePrevious(mode: NavigationMode): void {
+        this.isShowingAll = false;
         const result = this.controller.jumpPrevious(mode);
         this.overlay.displayResult(result, mode, 'previous');
         this.speakResult(result);
@@ -271,6 +390,7 @@ export class SRViewer {
     }
 
     private speakResult(result): void {
+        if (!this.speechEnabled) return;
         const utterance = new SpeechSynthesisUtterance(result.renderingResult.message);
         utterance.rate = 1.5;
         let myThis = this;
@@ -293,6 +413,39 @@ export class SRViewer {
     }
     
     /**
+     * Set up mutation tracking
+     */
+    private setupMutationTracking(): void {
+        const observer = new MutationObserver((mutations) => {
+            // console.log(this.isShowingAll, mutations.length);
+            if (this.isShowingAll) {
+                const outsideOverlay = mutations.filter(mutation => mutation.target.nodeType === 1 
+                    && !(mutation.target as HTMLElement).closest(".ibma-sr-overlay"))
+                if (outsideOverlay.length > 0) {
+                    // console.log("Mutations",outsideOverlay);
+                    observer.disconnect();
+                    let myThis = this;
+                    myThis.showAll();
+                    setTimeout(() => {
+                        myThis.showAll();
+                        observer.observe(document.documentElement, {
+                            attributes: true,
+                            childList: true,
+                            subtree: true
+                        });
+
+                    }, 1000);
+                }
+            }
+        });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            childList: true,
+            subtree: true
+        });
+    }
+
+    /**
      * Set up focus tracking to update the point of regard when focus changes
      */
     private setupFocusTracking(): void {
@@ -300,11 +453,10 @@ export class SRViewer {
             // Skip if the focus is on the overlay itself
             if (e.target instanceof HTMLElement) {
                 const target = e.target as HTMLElement;
-                if (this.overlay && target.closest('.sr-overlay')) {
+                if (this.overlay && target.closest('.ibma-sr-overlay')) {
                     return;
                 }
-                console.log("Setting focus");
-                
+                console.group("focusHandler");
                 // Update the point of regard to the newly focused element
                 const result = this.controller.setPointOfRegard(target);
                 
@@ -313,6 +465,7 @@ export class SRViewer {
                     this.overlay.displayResult(result, 'focus', 'focus');
                     this.speakResult(result);
                 }
+                console.groupEnd();
             }
         };
         
@@ -372,5 +525,3 @@ export class SRViewer {
         this.overlay.destroy();
     }
 }
-
-// Made with Bob

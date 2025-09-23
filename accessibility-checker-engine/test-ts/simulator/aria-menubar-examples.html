@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIA Menubar Examples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        .example {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        /* Basic menubar styles */
+        .menubar {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: white;
+        }
+        
+        .menubar > li {
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .menubar > li > a,
+        .menubar > li > button {
+            display: inline-block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .menubar > li > a:hover,
+        .menubar > li > button:hover,
+        .menubar > li > a:focus,
+        .menubar > li > button:focus {
+            background-color: #555;
+        }
+        
+        /* Submenu styles */
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #444;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            min-width: 200px;
+            z-index: 1;
+        }
+        
+        .submenu > li {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .submenu > li > a,
+        .submenu > li > button {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .submenu > li > a:hover,
+        .submenu > li > button:hover,
+        .submenu > li > a:focus,
+        .submenu > li > button:focus {
+            background-color: #666;
+        }
+        
+        /* Nested submenu styles */
+        .nested-submenu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background-color: #555;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            min-width: 200px;
+        }
+        
+        /* Icon menubar styles */
+        .icon-menubar > li > a,
+        .icon-menubar > li > button {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+        }
+        
+        /* Responsive menubar */
+        .responsive-menubar {
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .responsive-menubar {
+                flex-direction: column;
+            }
+            
+            .responsive-menubar .submenu {
+                position: static;
+                width: 100%;
+            }
+        }
+        
+        /* Show menus on focus for keyboard navigation */
+        .menubar > li > a:focus + .submenu,
+        .menubar > li > button:focus + .submenu,
+        .submenu > li > a:focus + .nested-submenu,
+        .submenu > li > button:focus + .nested-submenu {
+            display: block;
+        }
+        
+        /* For demonstration purposes - toggle submenu visibility */
+        .show-submenu {
+            display: block !important;
+        }
+        
+        /* Keyboard navigation instructions */
+        .keyboard-instructions {
+            background-color: #f8f8f8;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>ARIA Menubar Examples</h1>
+    <p>This page contains various examples of ARIA menubar implementations for testing purposes.</p>
+    
+    <div class="example">
+        <h2>Example 1: Basic Menubar</h2>
+        <p>A simple horizontal menubar with basic menu items.</p>
+        
+        <ul role="menubar" class="menubar" aria-label="Main Navigation">
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="0">Home</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">Products</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">Services</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">About</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">Contact</a>
+            </li>
+        </ul>
+        
+        <div class="keyboard-instructions">
+            <h3>Keyboard Navigation:</h3>
+            <ul>
+                <li>Left/Right Arrow: Move between menu items</li>
+                <li>Home/End: Move to first/last menu item</li>
+                <li>Enter/Space: Activate menu item</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h2>Example 2: Menubar with Dropdown Submenus</h2>
+        <p>A menubar with dropdown submenus that appear on focus/hover.</p>
+        
+        <ul role="menubar" class="menubar" aria-label="Main Navigation with Dropdowns">
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="0">Home</a>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Products</button>
+                <ul role="menu" class="submenu" aria-label="Product Menu">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Software</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Hardware</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Services</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Services</button>
+                <ul role="menu" class="submenu" aria-label="Services Menu">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Consulting</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Training</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Support</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">About</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">Contact</a>
+            </li>
+        </ul>
+        
+        <div class="keyboard-instructions">
+            <h3>Keyboard Navigation:</h3>
+            <ul>
+                <li>Left/Right Arrow: Move between menu items</li>
+                <li>Down Arrow: Open submenu</li>
+                <li>Up/Down Arrow: Navigate within submenu</li>
+                <li>Escape: Close submenu</li>
+                <li>Enter/Space: Activate menu item</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h2>Example 3: Nested Menubar (Multi-level)</h2>
+        <p>A menubar with multiple levels of nested submenus.</p>
+        
+        <ul role="menubar" class="menubar" aria-label="Multi-level Navigation">
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="0">Home</a>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Products</button>
+                <ul role="menu" class="submenu" aria-label="Product Categories">
+                    <li role="none">
+                        <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Software</button>
+                        <ul role="menu" class="nested-submenu" aria-label="Software Products">
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Desktop Applications</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Mobile Apps</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Web Services</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li role="none">
+                        <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Hardware</button>
+                        <ul role="menu" class="nested-submenu" aria-label="Hardware Products">
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Computers</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Peripherals</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Networking</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Services</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Resources</button>
+                <ul role="menu" class="submenu" aria-label="Resource Menu">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Documentation</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Tutorials</a>
+                    </li>
+                    <li role="none">
+                        <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Support</button>
+                        <ul role="menu" class="nested-submenu" aria-label="Support Options">
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Knowledge Base</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Community Forums</a>
+                            </li>
+                            <li role="none">
+                                <a href="#" role="menuitem" tabindex="-1">Contact Support</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">About</a>
+            </li>
+        </ul>
+        
+        <div class="keyboard-instructions">
+            <h3>Keyboard Navigation:</h3>
+            <ul>
+                <li>Left/Right Arrow: Move between top-level menu items</li>
+                <li>Down Arrow: Open submenu</li>
+                <li>Up/Down Arrow: Navigate within submenu</li>
+                <li>Right Arrow: Open nested submenu</li>
+                <li>Left Arrow: Close current submenu and go back one level</li>
+                <li>Escape: Close current submenu</li>
+                <li>Enter/Space: Activate menu item</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h2>Example 4: Menubar with Icons</h2>
+        <p>A menubar that includes icons alongside text labels.</p>
+        
+        <ul role="menubar" class="menubar icon-menubar" aria-label="Icon Navigation">
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="0">
+                    <span class="icon" aria-hidden="true">🏠</span>
+                    Home
+                </a>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                    <span class="icon" aria-hidden="true">📦</span>
+                    Products
+                </button>
+                <ul role="menu" class="submenu" aria-label="Product Menu with Icons">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">
+                            <span class="icon" aria-hidden="true">💻</span>
+                            Software
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">
+                            <span class="icon" aria-hidden="true">🖨️</span>
+                            Hardware
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">
+                            <span class="icon" aria-hidden="true">🔧</span>
+                            Services
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                    <span class="icon" aria-hidden="true">📚</span>
+                    Resources
+                </button>
+                <ul role="menu" class="submenu" aria-label="Resource Menu with Icons">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">
+                            <span class="icon" aria-hidden="true">📄</span>
+                            Documentation
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">
+                            <span class="icon" aria-hidden="true">🎓</span>
+                            Tutorials
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">
+                    <span class="icon" aria-hidden="true">ℹ️</span>
+                    About
+                </a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">
+                    <span class="icon" aria-hidden="true">📞</span>
+                    Contact
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <h2>Example 5: Responsive Menubar</h2>
+        <p>A menubar that adapts to different screen sizes (resize your browser to see the effect).</p>
+        
+        <ul role="menubar" class="menubar responsive-menubar" aria-label="Responsive Navigation">
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="0">Home</a>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Products</button>
+                <ul role="menu" class="submenu" aria-label="Product Menu">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Software</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Hardware</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Services</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Services</button>
+                <ul role="menu" class="submenu" aria-label="Services Menu">
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Consulting</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Training</a>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Support</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">About</a>
+            </li>
+            <li role="none">
+                <a href="#" role="menuitem" tabindex="-1">Contact</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <h2>Example 6: Menubar with Alternative Patterns</h2>
+        <p>A menubar that uses different patterns for menu items.</p>
+        
+        <div role="menubar" class="menubar" aria-label="Alternative Navigation">
+            <!-- Using div instead of li for menu items -->
+            <div role="none">
+                <a href="#" role="menuitem" tabindex="0">Home</a>
+            </div>
+            <div role="none">
+                <button role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Products</button>
+                <div role="menu" class="submenu" aria-label="Product Menu">
+                    <div role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Software</a>
+                    </div>
+                    <div role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Hardware</a>
+                    </div>
+                    <div role="none">
+                        <a href="#" role="menuitem" tabindex="-1">Services</a>
+                    </div>
+                </div>
+            </div>
+            <div role="none">
+                <!-- Using span with tabindex instead of a or button -->
+                <span role="menuitem" tabindex="-1" onclick="alert('Services clicked')">Services</span>
+            </div>
+            <div role="none">
+                <a href="#" role="menuitem" tabindex="-1">About</a>
+            </div>
+            <div role="none">
+                <a href="#" role="menuitem" tabindex="-1">Contact</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple script to toggle submenu visibility for demonstration purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to menu items with submenus
+            const menuItemsWithSubmenus = document.querySelectorAll('[aria-haspopup="true"]');
+            
+            menuItemsWithSubmenus.forEach(function(menuItem) {
+                menuItem.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    
+                    // Toggle aria-expanded attribute
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    
+                    // Toggle submenu visibility
+                    const submenu = this.nextElementSibling;
+                    submenu.classList.toggle('show-submenu');
+                });
+            });
+            
+            // Handle keyboard navigation
+            const menuItems = document.querySelectorAll('[role="menuitem"]');
+            
+            menuItems.forEach(function(menuItem) {
+                menuItem.addEventListener('keydown', function(event) {
+                    const key = event.key;
+                    
+                    // Handle different key presses for navigation
+                    switch (key) {
+                        case 'ArrowRight':
+                            // Move to next menu item at same level
+                            const nextItem = findNextSiblingMenuItem(this);
+                            if (nextItem) {
+                                nextItem.focus();
+                                event.preventDefault();
+                            }
+                            break;
+                            
+                        case 'ArrowLeft':
+                            // Move to previous menu item at same level
+                            const prevItem = findPrevSiblingMenuItem(this);
+                            if (prevItem) {
+                                prevItem.focus();
+                                event.preventDefault();
+                            }
+                            break;
+                            
+                        case 'ArrowDown':
+                            // Open submenu or move to first item in submenu
+                            if (this.getAttribute('aria-haspopup') === 'true') {
+                                this.setAttribute('aria-expanded', 'true');
+                                const submenu = this.nextElementSibling;
+                                submenu.classList.add('show-submenu');
+                                
+                                const firstSubmenuItem = submenu.querySelector('[role="menuitem"]');
+                                if (firstSubmenuItem) {
+                                    firstSubmenuItem.focus();
+                                    event.preventDefault();
+                                }
+                            }
+                            break;
+                            
+                        case 'ArrowUp':
+                            // Move to parent menu item or previous item in submenu
+                            const parentMenu = this.closest('[role="menu"]');
+                            if (parentMenu && parentMenu.previousElementSibling && parentMenu.previousElementSibling.getAttribute('role') === 'menuitem') {
+                                parentMenu.previousElementSibling.focus();
+                                event.preventDefault();
+                            }
+                            break;
+                            
+                        case 'Escape':
+                            // Close current submenu
+                            const currentMenu = this.closest('[role="menu"]');
+                            if (currentMenu && !currentMenu.classList.contains('menubar')) {
+                                currentMenu.classList.remove('show-submenu');
+                                const parentMenuItem = currentMenu.previousElementSibling;
+                                if (parentMenuItem) {
+                                    parentMenuItem.setAttribute('aria-expanded', 'false');
+                                    parentMenuItem.focus();
+                                    event.preventDefault();
+                                }
+                            }
+                            break;
+                            
+                        case 'Home':
+                            // Move to first menu item at same level
+                            const firstItem = findFirstSiblingMenuItem(this);
+                            if (firstItem) {
+                                firstItem.focus();
+                                event.preventDefault();
+                            }
+                            break;
+                            
+                        case 'End':
+                            // Move to last menu item at same level
+                            const lastItem = findLastSiblingMenuItem(this);
+                            if (lastItem) {
+                                lastItem.focus();
+                                event.preventDefault();
+                            }
+                            break;
+                    }
+                });
+            });
+            
+            // Helper functions for keyboard navigation
+            function findNextSiblingMenuItem(menuItem) {
+                const parent = menuItem.parentNode;
+                const siblings = Array.from(parent.parentNode.children);
+                const currentIndex = siblings.indexOf(parent);
+                
+                if (currentIndex < siblings.length - 1) {
+                    return siblings[currentIndex + 1].querySelector('[role="menuitem"]');
+                }
+                return null;
+            }
+            
+            function findPrevSiblingMenuItem(menuItem) {
+                const parent = menuItem.parentNode;
+                const siblings = Array.from(parent.parentNode.children);
+                const currentIndex = siblings.indexOf(parent);
+                
+                if (currentIndex > 0) {
+                    return siblings[currentIndex - 1].querySelector('[role="menuitem"]');
+                }
+                return null;
+            }
+            
+            function findFirstSiblingMenuItem(menuItem) {
+                const parent = menuItem.parentNode;
+                const siblings = Array.from(parent.parentNode.children);
+                return siblings[0].querySelector('[role="menuitem"]');
+            }
+            
+            function findLastSiblingMenuItem(menuItem) {
+                const parent = menuItem.parentNode;
+                const siblings = Array.from(parent.parentNode.children);
+                return siblings[siblings.length - 1].querySelector('[role="menuitem"]');
+            }
+        });
+    </script>
+</body>
+</html>

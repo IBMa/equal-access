@@ -1,8 +1,11 @@
 
 import { SRCursor } from "./SRCursor";
 import { SRRenderer } from "./SRRenderer";
-import { NavigationMode, NavigationResult } from "./SRTypes";
+import { NavigationMode, NavigationResult, RenderResult } from "./SRTypes";
 import { SRNavigator } from "./SRNavigator";
+import { CacheUtil } from "../util/CacheUtil";
+import { VisUtil } from "../util/VisUtil";
+import { SRUtil } from "./SRUtil";
 
 /**
  * SRController class for managing screen reader simulation
@@ -11,15 +14,51 @@ import { SRNavigator } from "./SRNavigator";
 export class SRController {
     /** The current point of regard */
     private pointOfRegard: SRCursor;
+    private mutationObserver: MutationObserver;
     
     /**
      * Creates a new SRController
      * @param rootElement The root element to start from (defaults to document.body)
      */
-    constructor(rootElement: Node = document.body) {
+    constructor(private rootElement: Node = document.body) {
         this.setPointOfRegard(rootElement);
+        this.setupMutationTracking();
+    }
+
+    public disconnect() {
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+        }
     }
     
+    /**
+     * Set up mutation tracking
+     * 
+     * In the event that the point of regard is removed from the DOM, we need to get up to the nearest parent that's not being removed
+     */
+    private setupMutationTracking(): void {
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+        }
+        const myThis = this;
+        const observer = new MutationObserver((mutations) => {
+            let porNode = myThis.pointOfRegard.getNode();
+            for (const removalMutation of mutations.filter(mutation => mutation.removedNodes?.length > 0)) {
+                removalMutation.removedNodes.forEach((removedNode) => {
+                    if (removedNode.isSameNode(porNode) || removedNode.contains(porNode)) {
+                        console.info("Adjusting PoR due to DOM mutation removing PoR", removalMutation.target, removedNode, porNode)
+                        porNode = removalMutation.target;
+                    }                    
+                })
+            };
+            this.setPointOfRegard(porNode);
+        });
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+    }
+
     /**
      * Get the current point of regard
      * @returns The current SRCursor representing the point of regard
@@ -34,6 +73,8 @@ export class SRController {
      * @returns NavigationResult indicating success or failure
      */
     public setPointOfRegard(node: Node): NavigationResult {
+        const DEBUG = false;
+        DEBUG && console.group("setPointOfRegard");
         try {
             this.pointOfRegard = new SRCursor(node);
             
@@ -58,6 +99,8 @@ export class SRController {
                     message: `Failed to set point of regard: ${error.message}`
                 }
             };
+        } finally {
+            DEBUG && console.groupEnd();
         }
     }
     
@@ -67,15 +110,20 @@ export class SRController {
      * @returns NavigationResult indicating success or failure
      */
     public jumpNext(mode: NavigationMode): NavigationResult {
+        CacheUtil.clearCaches(document.documentElement);
         const oldPointOfRegard = this.pointOfRegard.clone();
-        
+        const DEBUG = false;
+        DEBUG && console.group("jumpNext");
         try {
             let bContinue = true;
             let nextJump = this.pointOfRegard.clone();
+            let renderingResult;
             while (bContinue && nextJump) {
+                const lastJump = nextJump.clone();
                 nextJump = SRNavigator.jumpNext(mode, nextJump);
+                const containerChanges = SRController.diffContainers(mode, nextJump, lastJump);
                 if (nextJump) {
-                    let renderingResult = SRRenderer.renderCurrent(mode, nextJump, {entering: [], leaving: []});
+                    renderingResult = SRRenderer.renderCurrent(mode, nextJump, containerChanges);
                     // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
                     bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
                 }
@@ -83,12 +131,13 @@ export class SRController {
             if (!nextJump) {
                 // Restore the original point of regard
                 this.pointOfRegard = oldPointOfRegard;
+                let currentResult = SRRenderer.renderCurrent(mode, oldPointOfRegard, { leaving: [], entering: []});
                 return {
                     success: false,
                     renderingResult: {
                         start: oldPointOfRegard.clone(),
                         end: oldPointOfRegard.clone(),
-                        message: `No next ${mode}`
+                        message: `No next ${mode}. ${currentResult?.message || ""}`
                     }
                 };
             } else {
@@ -97,8 +146,7 @@ export class SRController {
                 const name = this.pointOfRegard.getNameInfo()?.name;
                 
                 // Check for container changes
-                const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
-                let renderingResult = SRRenderer.renderCurrent(mode, this.pointOfRegard, containerChanges);
+                DEBUG && console.log("New POR:", this.pointOfRegard.getNode(), renderingResult);
                 return {
                     success: true,
                     renderingResult,
@@ -118,6 +166,8 @@ export class SRController {
                     message: `Navigation error: ${error.message}`
                 }
             };
+        } finally {
+            console.groupEnd();
         }
     }
     
@@ -127,15 +177,19 @@ export class SRController {
      * @returns NavigationResult indicating success or failure
      */
     public jumpPrevious(mode: NavigationMode): NavigationResult {
+        CacheUtil.clearCaches(document.documentElement);
         const oldPointOfRegard = this.pointOfRegard.clone();
         
         try {
             let bContinue = true;
             let prevJump = this.pointOfRegard.clone();
+            let renderingResult;
             while (bContinue && prevJump) {
+                const lastJump = prevJump.clone();
                 prevJump = SRNavigator.jumpPrevious(mode, prevJump);
+                const containerChanges = SRController.diffContainers(mode, prevJump, lastJump);
                 if (prevJump) {
-                    let renderingResult = SRRenderer.renderCurrent(mode, prevJump, {entering: [], leaving: []});
+                    renderingResult = SRRenderer.renderCurrent(mode, prevJump, containerChanges);
                     // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
                     bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
                 }
@@ -144,12 +198,13 @@ export class SRController {
             if (!prevJump) {
                 // Restore the original point of regard
                 this.pointOfRegard = oldPointOfRegard;
+                let currentResult = SRRenderer.renderCurrent(mode, oldPointOfRegard, { leaving: [], entering: []});
                 return {
                     success: false,
                     renderingResult: {
                         start: oldPointOfRegard.clone(),
                         end: oldPointOfRegard.clone(),
-                        message: `No previous ${mode}`
+                        message: `No previous ${mode}. ${currentResult?.message || ""}`
                     }
                 };
             } else {
@@ -157,13 +212,12 @@ export class SRController {
                 const role = this.pointOfRegard.getRole();
                 const name = this.pointOfRegard.getNameInfo()?.name;
                 
-                // Check for container changes
-                const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
-                let s = SRRenderer.renderEnter(mode, this.pointOfRegard);
-                if (containerChanges.entering[containerChanges.entering.length-1] !== s) {
-                    containerChanges.entering.push(s);
-                }
-                let renderingResult = SRRenderer.renderCurrent(mode, this.pointOfRegard, containerChanges);
+                // // Check for container changes
+                // const containerChanges = SRController.diffContainers(mode, this.pointOfRegard, oldPointOfRegard);
+                // let s = SRRenderer.renderEnter(mode, this.pointOfRegard);
+                // if (containerChanges.entering[containerChanges.entering.length-1] !== s) {
+                //     containerChanges.entering.push(s);
+                // }
                 return {
                     success: true,
                     renderingResult,
@@ -193,14 +247,20 @@ export class SRController {
      * @returns Array of container change messages
      */
     public static diffContainers(mode: NavigationMode | "focus", newWalker: SRCursor, oldWalker?: SRCursor): { leaving: string[], entering: string[] } {
-        const DEBUG = false; //(newWalker && newWalker.getNode().nodeName === "MARK") || (oldWalker && oldWalker.getNode().nodeName === "MARK");
+        const DEBUG = false;
         DEBUG && console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         DEBUG && console.log("A)", oldWalker.getNode().nodeName, newWalker.getNode().nodeName);
         let leaving: string[] = [];
         let entering: string[] = [];
         try {
-            let walkNew = newWalker.clone();
-            let walkOld = oldWalker ? oldWalker.clone() : (new SRCursor(newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement));
+            const docRoot = newWalker ? 
+                (newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement) :
+                oldWalker ?
+                    (oldWalker.getNode().ownerDocument.body || oldWalker.getNode().ownerDocument.documentElement) :
+                    document.body || document.documentElement;
+
+            let walkNew = newWalker ? newWalker.clone() : (new SRCursor(docRoot));
+            let walkOld = oldWalker ? oldWalker.clone() : (new SRCursor(docRoot));
             if (!walkNew.getNode().isSameNode(walkOld.getNode())) {
                 let commonParent = SRController.commonParent(walkNew, walkOld);
                 if (commonParent) {
@@ -249,6 +309,12 @@ export class SRController {
 
     public static renderAll(mode: NavigationMode): string[] {
         let ctrl = new SRController(document.body);
+        let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
+        dialogs.forEach(dialog => {
+            if (SRUtil.isModalDialogElement(dialog)) {
+                ctrl.setPointOfRegard(dialog);
+            }
+        })
         let results: string[] = [];
         // Handle the initial item first (if there is one)
         let starterMsg = SRRenderer.renderCurrent(mode, ctrl.getPointOfRegard(), {entering: [], leaving: []});
@@ -266,5 +332,77 @@ export class SRController {
             }
         }
         return results;
+    }
+
+    public static renderAllDetail(mode: NavigationMode): RenderResult[] {
+        let ctrl = new SRController(document.body);
+        let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
+        dialogs.forEach(dialog => {
+            if (SRUtil.isModalDialogElement(dialog)) {
+                ctrl.setPointOfRegard(dialog);
+            }
+        })
+        let results: RenderResult[] = [];
+        // Handle the initial item first (if there is one)
+        let starterMsg = SRRenderer.renderCurrent(mode, ctrl.getPointOfRegard(), {entering: [], leaving: []});
+        if (starterMsg) {
+            results.push(starterMsg);
+        }
+
+        let bContinue = true;
+        while (bContinue) {
+            let nextVal = ctrl.jumpNext(mode);
+            if (nextVal.success) {
+                // mode === "item" && console.log(nextVal);
+                results.push(nextVal.renderingResult);
+            } else {
+                bContinue = false;
+            }
+        }
+        return results;
+    }
+
+    public static renderStructure(): Array<{region: string, heading: string, item: string, tab_focus: string }> {
+        let headings = SRController.renderAllDetail("heading");
+        let regions = SRController.renderAllDetail("region");
+        let items = SRController.renderAllDetail("item");
+        let tabbable = SRController.renderAllDetail("tab_focus");
+        let retVal: Array<{region: string, heading: string, item: string, tab_focus:  string}> = [];
+        while (regions.length > 0 || headings.length > 0 || items.length > 0 || tabbable.length > 0) {
+            // console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+            // Determine which of the modes has the earliest cursor
+            let next = regions[0]?.start;
+            if (headings.length > 0) {
+                if (!next || SRCursor.compare(headings[0].start, next) < 0) {
+                    next = headings[0].start;
+                }
+            }
+            if (items.length > 0) {
+                if (!next || SRCursor.compare(items[0].start, next) < 0) {
+                    next = items[0].start;
+                }
+            }
+            if (tabbable.length > 0) {
+                if (!next || SRCursor.compare(tabbable[0].start, next) < 0) {
+                    next = tabbable[0].start;
+                }
+            }
+            // console.log(next);
+            let nextItem = { region: "", heading: "", item: "", tab_focus: "" };
+            if (regions.length > 0 && SRCursor.compare(regions[0].start, next) === 0) {
+                nextItem.region = regions.shift().message;
+            }
+            if (headings.length > 0 && SRCursor.compare(headings[0].start, next) === 0) {
+                nextItem.heading = headings.shift().message;
+            }
+            if (items.length > 0 && SRCursor.compare(items[0].start, next) === 0) {
+                nextItem.item = items.shift().message;
+            }
+            if (tabbable.length > 0 && SRCursor.compare(tabbable[0].start, next) === 0) {
+                nextItem.tab_focus = tabbable.shift().message;
+            }
+            retVal.push(nextItem);
+        }
+        return retVal;
     }
 }

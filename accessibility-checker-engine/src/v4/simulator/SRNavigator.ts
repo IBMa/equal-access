@@ -16,7 +16,7 @@ export namespace SRNavigator {
         if (disp && disp.startsWith("table")) return true;
         if (disp === "block" && elem.style.display !== "block") {
             // Is this block because it's a flex elem?
-            if (mywin.getComputedStyle(elem.parentElement).display === "flex") {
+            if (elem.parentElement && mywin.getComputedStyle(elem.parentElement).display === "flex") {
                 return false;
             }
         }
@@ -81,7 +81,7 @@ export namespace SRNavigator {
                     return false;
                 }
             case "region":
-                return (role: string, bStartTag: boolean) => (bStartTag && ["main", "navigation"].includes(role));
+                return (role: string, bStartTag: boolean) => (bStartTag && ["main", "navigation", "banner", "search", "contentinfo"].includes(role));
             case "formcontrol":
             case "editbox":
             case "graphic":
@@ -96,57 +96,69 @@ export namespace SRNavigator {
     }
 
     const SKIP_ITEM_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
-        const nodeType = cursor.getNode().nodeType;
-        const elem = cursor.getElement();
-        const cursorStart = cursor.clone();
-        cursorStart.setEndTag(false);
+        const DEBUG = false;
+        DEBUG && console.group("SKIP_ITEM_BEHAVIOR");
+        try {
+            const nodeType = cursor.getNode().nodeType;
+            let elem = cursor.getElement();
+            const cursorStart = cursor.clone();
+            cursorStart.setEndTag(false);
 
-        // Skip CDATA and comments completely
-        if ([4, 8].includes(nodeType)) return { skipCurrent: true, skipChildren: true };
-        // Only process elements and text
-        if (![1,3].includes(nodeType)) return { skipCurrent: true, skipChildren: false };
-        // For text elements, only render if they're not hidden
-        if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
+            DEBUG && console.log(nodeType);
+            // Skip CDATA and comments completely
+            if ([4, 8].includes(nodeType)) return { skipCurrent: true, skipChildren: true };
+            // Only process elements and text
+            if (![1,3].includes(nodeType)) return { skipCurrent: true, skipChildren: false };
 
-        // We have an element
+            // For text elements, Consider with relation to their parent element
+            if (nodeType === 3) {
+                elem = cursor.getNode().parentElement;
+                if (!elem) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
+            }
+            // if (!elem) console.log(cursor.getNode());
 
-        // Make sure we're within the body element
-        if (!elem.closest("body")) return { skipCurrent: true, skipChildren: true };
+            // We have an element
 
-        // Make sure we're not in a script or style
-        if (elem.closest("script,style")) return { skipCurrent: true, skipChildren: true };
+            // Make sure we're within the body element
+            if (!elem.closest("body")) return { skipCurrent: true, skipChildren: false };
 
-        // Skip things hidden from the AT
-        if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
-        if (!VisUtil.isNodeVisible(elem)) return { skipCurrent: true, skipChildren: true };
-        if (elem.nodeName.toUpperCase() === "BODY") return { skipCurrent: false, skipChildren: false };
+            // Make sure we're not in a script or style
+            if (elem.closest("script,style")) return { skipCurrent: true, skipChildren: true };
 
-        // Skip label fors - they'll be read with the related input
-        if (
-            elem.nodeName.toUpperCase() === "LABEL" 
-            && elem.hasAttribute("for") 
-            && document.getElementById(elem.getAttribute("for"))
-            && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
-        ) {
-            return { skipCurrent: true, skipChildren: true };
+            // Skip things hidden from the AT
+            if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
+            if (!VisUtil.isNodeVisible(elem)) return { skipCurrent: true, skipChildren: true };
+            if (elem.nodeName.toUpperCase() === "BODY") return { skipCurrent: false, skipChildren: false };
+
+            // Skip label fors - they'll be read with the related input
+            if (
+                elem.nodeName.toUpperCase() === "LABEL" 
+                && elem.hasAttribute("for") 
+                && document.getElementById(elem.getAttribute("for"))
+                && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
+            ) {
+                return { skipCurrent: true, skipChildren: true };
+            }
+
+            const role = cursorStart.getRole();
+
+            // If we have presentational children, read the element, skip the children
+            if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
+                return { skipCurrent: false, skipChildren: true };
+            }
+            if (["link", "heading"].includes(role) && (!cursorStart.getName() || (!["content", "text"].includes(cursorStart.getNameInfo().nameFrom)))) {
+                return { skipCurrent: false, skipChildren: true };
+            }
+            if (elem && elem.nodeName.toUpperCase() === "MSUP") {
+                return { skipCurrent: false, skipChildren: true };
+            }
+            if (elem.closest(".ibma-sr-overlay")) {
+                return { skipCurrent: true, skipChildren: true };
+            }
+            return null;
+        } finally {
+            DEBUG && console.groupEnd();
         }
-
-        const role = cursorStart.getRole();
-
-        // If we have presentational children, read the element, skip the children
-        if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
-            return { skipCurrent: false, skipChildren: true };
-        }
-        if (["link", "heading"].includes(role) && (!cursorStart.getName() || (!["content", "text"].includes(cursorStart.getNameInfo().nameFrom)))) {
-            return { skipCurrent: false, skipChildren: true };
-        }
-        if (elem && elem.nodeName.toUpperCase() === "MSUP") {
-            return { skipCurrent: false, skipChildren: true };
-        }
-        if (elem.closest(".ibma-sr-overlay")) {
-            return { skipCurrent: true, skipChildren: true };
-        }
-        return null;
     }
 
     const SKIP_NESTED_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
@@ -246,13 +258,20 @@ export namespace SRNavigator {
     }
 
     export function jumpNext(mode: NavigationMode, walker: SRCursor) : SRCursor {
-        let retVal = walker.clone();
-        const matchFunc = getStartFunc(mode);
-        const skipFunc = getSkipFunc(mode);
-        if (retVal.next(matchFunc, skipFunc)) {
-            return retVal;
-        } else {
-            return null;
+        const DEBUG = false;
+        DEBUG && console.group("SRNavigator::jumpNext", walker.isEndTag()?"/":"", walker.getNode());
+        try {
+            let retVal = walker.clone();
+            const matchFunc = getStartFunc(mode);
+            const skipFunc = getSkipFunc(mode);
+            if (retVal.next(matchFunc, skipFunc)) {
+                DEBUG && console.log("SRNavigator::jumpNext result", retVal);
+                return retVal;
+            } else {
+                return null;
+            }
+        } finally {
+            console.groupEnd();
         }
     }
 

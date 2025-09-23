@@ -102,20 +102,71 @@ export class NodeWalker {
     }
 
     prevNode() {
-        if (this.bEndTag && this.node.lastChild) {
-            this.node = this.node.lastChild;
-            this.bEndTag = true;
-        } else if (this.node.previousSibling) {
-            this.node = this.node.previousSibling;
-            this.bEndTag = true;
-        } else if (this.node.parentNode) {
-            this.node = this.node.parentNode;
+        if (!this.node) {
             this.bEndTag = false;
-        } else {
             return false;
         }
-        if (this.bEndTag && (this.node.firstChild === null || typeof (this.node.firstChild) === 'undefined'))
-            this.bEndTag = false;
+        if (this.bEndTag) {
+            let iframeNode = (this.node as HTMLIFrameElement);
+            let elementNode = (this.node as HTMLElement);
+            let slotElement = (this.node as HTMLSlotElement)
+            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
+                && this.node.nodeName.toUpperCase() === "IFRAME"
+                && iframeNode.contentDocument
+                && iframeNode.contentDocument.documentElement)
+            {
+                let ownerElement = this.node;
+                this.node = iframeNode.contentDocument.documentElement;
+                (this.node as any).nwOwnerElement = ownerElement;
+            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
+                && elementNode.shadowRoot
+                && elementNode.shadowRoot.lastChild)
+            {
+                let ownerElement = this.node;
+                this.node = elementNode.shadowRoot;
+                (this.node as any).nwOwnerElement = ownerElement;
+            } else if (this.node.nodeType === 1
+                && elementNode.nodeName.toLowerCase() === "slot"
+                && slotElement.assignedNodes().length > 0)
+            {
+                let slotOwner = this.node;
+                this.node = slotElement.assignedNodes()[slotElement.assignedNodes().length-1];
+                (this.node as any).nwSlotOwner = slotOwner;
+                (this.node as any).nwSlotIndex = slotElement.assignedNodes().length-1;
+            } else if (this.node.lastChild) {
+                this.node = this.node.lastChild;
+            } else {
+                this.bEndTag = false;
+                return this.prevNode();
+            }        
+        } else {
+            if ((this.node as any).nwSlotOwner) {
+                let slotOwner = (this.node as any).nwSlotOwner;
+                let nextSlotIndex = (this.node as any).nwSlotIndex-1;
+                delete (this.node as any).nwSlotOwner;
+                delete (this.node as any).nwSlotIndex;
+                if (nextSlotIndex >= 0) {
+                    this.node = slotOwner.assignedNodes()[nextSlotIndex];
+                    (this.node as any).nwSlotOwner = slotOwner;
+                    (this.node as any).nwSlotIndex = nextSlotIndex;    
+                    this.bEndTag = true;
+                } else {
+                    this.node = slotOwner;
+                    this.bEndTag = false;
+                }
+            } else if ((this.node as any).nwOwnerElement) {
+                this.node = (this.node as any).nwOwnerElement;
+                this.bEndTag = false;
+            } else if (this.node.previousSibling) {
+                this.node = this.node.previousSibling;
+                this.bEndTag = true;
+            } else if (this.node.parentNode) {
+                this.node = this.node.parentNode;
+                this.bEndTag = false;
+            } else {
+                return false;
+            }
+        }
         return true;
     }
 }
