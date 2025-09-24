@@ -769,5 +769,3 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 ]
-
-// Made with Bob
