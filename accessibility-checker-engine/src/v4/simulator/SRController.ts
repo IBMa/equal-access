@@ -23,6 +23,9 @@ export class SRController {
     constructor(private rootElement: Node = document.body) {
         this.setPointOfRegard(rootElement);
         this.setupMutationTracking();
+        console.info(`[WARNING] The SRController is a new feature that is not yet "stable". What this means:
+* API subject to change, even between minor versions of the checker
+* Results should be considered experimental. There are a variety of known issues, but making this available for early experimentation / feedback.`);
     }
 
     public disconnect() {
