@@ -329,7 +329,7 @@ const filteredReport = {
                         while (tgt && tgt.nodeName.toLowerCase() !== "button") {
                             tgt = tgt.parentElement;
                         }
-                        if (tgt && tgt.getAttribute("class") === "cds--modal-close") {
+                        if (tgt && tgt.getAttribute("class")?.includes("cds--modal-close")) {
                             this.clearItem();
                             evt.preventDefault();
                             return false;
