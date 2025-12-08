@@ -46,7 +46,7 @@
   "dependencies": {
     "deep-diff": "1.0.2",
     "exceljs": "^4.3.0",
-    "js-yaml": "4.1.0",
+    "js-yaml": "4.1.1",
     "karma": "6.3.18",
     "karma-accessibility-checker": "file:package/karma-accessibility-checker"
   },
