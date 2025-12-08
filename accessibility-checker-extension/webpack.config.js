@@ -64,9 +64,16 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
+        fullySpecified: false,
     },
     module: {
         rules: [
+            {
+                test: /\.m?js$/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
             { test: /\.(js|ts|tsx)?$/, loader: "ts-loader", exclude: /node_modules/ },
             {
                 test: /\.scss$/,
@@ -165,6 +172,8 @@ module.exports = {
                     ignore: [
                         path.join("**", "ace-*.js"),
                         path.join("**", "doc"),
+                        path.join("**", "2020.*", "**", "*"),
+                        path.join("**", "2021.*", "**", "*"),
                     ]
                 }
             }
