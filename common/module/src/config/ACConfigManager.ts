@@ -422,6 +422,7 @@ async function processConfiguration(config?) : Promise<IConfigInternal> {
     } else {
         ACConfig = JSON.parse(JSON.stringify(ACConstants));
     }
+    ACConfig = JSON.parse(JSON.stringify(ACConfig));
 
     // In the case the ACConfig object is not defined, then define it with default config options so
     // it can be set in window.__karma__.config.ACConfig, so that we know even in the testcases, other
