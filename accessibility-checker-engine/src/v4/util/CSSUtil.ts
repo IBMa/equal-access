@@ -317,7 +317,7 @@ export class CSSUtil {
             }
 
             // Update cache with all styles (existing + new)
-            CacheUtil.setElementCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+            CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
         }
 
         return results;
@@ -363,7 +363,7 @@ export class CSSUtil {
         
         // Cache the result
         cachedStyles[cacheKey] = result;
-        CacheUtil.setElementCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+        CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
         
         return result;
     }
