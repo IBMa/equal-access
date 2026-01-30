@@ -67,6 +67,261 @@ export class CSSUtil {
         const win = doc.defaultView;
         return win.getComputedStyle(elem, pseudoElt);
     }
+    /**
+     * Helper function to check if a selector matches an element, with caching
+     * Caches selector match results at the element level to avoid re-checking
+     */
+    private static selectorMatchesElemCached(elem: HTMLElement, selector: string): boolean {
+        // Get or initialize the selector cache for this element
+        let elemSelectorCache = CacheUtil.getCache(elem, "RPTUtil_ElemSelectorCache", {});
+        
+        if (elemSelectorCache[selector] !== undefined) {
+            return elemSelectorCache[selector];
+        }
+        
+        // Not cached, perform the actual match
+        const matches = CSSUtil.selectorMatchesElem(elem, selector);
+        
+        // Cache the result
+        elemSelectorCache[selector] = matches;
+        CacheUtil.setCache(elem, "RPTUtil_ElemSelectorCache", elemSelectorCache);
+        
+        return matches;
+    }
+
+    /**
+     * Parse and cache all stylesheet rules at the document level
+     * Returns an array of parsed rule objects with selector and style information
+     */
+    private static getParsedStylesheetRules(ownerDoc: Document): Array<{
+        fullRuleSelector: string;
+        hasPseudoClass: boolean;
+        selMain: string;
+        selPseudo: string;
+        style: CSSStyleDeclaration;
+    }> {
+        // Check if we already have cached parsed rules for this document
+        const cachedRules = CacheUtil.getCache(ownerDoc, "RPTUtil_ParsedStylesheetRules", null);
+        if (cachedRules) {
+            return cachedRules;
+        }
+
+        const parsedRules = [];
+
+        // Iterate through all of the stylesheets and rules
+        for (let ssIndex = 0; ssIndex < ownerDoc.styleSheets.length; ++ssIndex) {
+            const sheet = ownerDoc.styleSheets[ssIndex] as CSSStyleSheet;
+            try {
+                if (sheet && sheet.cssRules) {
+                    for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                        const rule = sheet.cssRules[rIndex] as CSSStyleRule;
+                        const fullRuleSelector = rule.selectorText;
+                        if (fullRuleSelector) {
+                            const pseudoMatch = fullRuleSelector.match(/^(.*)(:[a-zA-Z-]*)$/);
+                            const hasPseudoClass = !!pseudoMatch;
+                            const selMain = hasPseudoClass ? pseudoMatch[1] : fullRuleSelector;
+                            const selPseudo = hasPseudoClass ? pseudoMatch[2] : "";
+
+                            parsedRules.push({
+                                fullRuleSelector,
+                                hasPseudoClass,
+                                selMain,
+                                selPseudo,
+                                style: rule.style
+                            });
+                        }
+                    }
+                }
+            } catch (err) {
+                if (
+                    !err.toString().includes("Cannot access rules") &&
+                    !err.toString().includes("SecurityError:")
+                ) {
+                    throw err;
+                }
+            }
+        }
+
+        // Cache the parsed rules at the document level
+        CacheUtil.setCache(ownerDoc, "RPTUtil_ParsedStylesheetRules", parsedRules);
+        return parsedRules;
+    }
+
+    /**
+     * Private helper method to fill style maps from a CSSStyleDeclaration
+     * Handles CSS property priorities and the "all" shorthand property
+     */
+    private static fillStyle(maps: any[], style: CSSStyleDeclaration): void {
+        for (let sIndex = 0; sIndex < style.length; ++sIndex) {
+            if (style[sIndex] === "all" && style[style[sIndex]]) {
+                for (const map of maps) {
+                    for (const key in map) {
+                        delete map[key];
+                    }
+                }
+                break;
+            } else {
+                const key = style[sIndex];
+                for (const map of maps) {
+                    let priority = style.getPropertyPriority(key);
+                    if (key in map && map[key].endsWith("!important")) {
+                        if (
+                            priority === "important" &&
+                            !map[key].startsWith("inherit") &&
+                            !map[key].startsWith("unset")
+                        )
+                            map[key] = style[key] + " !important";
+                        else continue;
+                    } else
+                        map[key] =
+                            style[key] +
+                            (priority === "important" ? " !important" : "");
+                }
+            }
+        }
+    }
+
+    /**
+     * Private helper method that consolidates the logic for getting defined styles
+     * Used by both getDefinedStyles and getDefinedStylesMultiple
+     */
+    private static getDefinedStylesInternal(
+        elem: HTMLElement,
+        pseudoClasses: string[]
+    ): { [pseudoClass: string]: any } {
+        const results = {};
+        const definedStylesMap = {};
+        const definedStylePseudoMap = {};
+
+        // Initialize result objects for all pseudo-classes
+        for (const pseudoClass of pseudoClasses) {
+            definedStylesMap[pseudoClass] = {};
+            definedStylePseudoMap[pseudoClass] = {};
+        }
+
+        // Get pre-parsed stylesheet rules from cache
+        const parsedRules = CSSUtil.getParsedStylesheetRules(elem.ownerDocument);
+
+        // Process each cached rule
+        for (const parsedRule of parsedRules) {
+            let selMain = parsedRule.selMain;
+            const selPseudo = parsedRule.selPseudo;
+            const hasPseudoClass = parsedRule.hasPseudoClass;
+
+            // Process for each pseudo-class
+            for (const pseudoClass of pseudoClasses) {
+                // Reset selMain for each pseudo-class in case it was modified
+                selMain = parsedRule.selMain;
+                
+                if (pseudoClass === ":focus" && selPseudo === ":focus") {
+                    // If this element has focus, remove focus-within from parents
+                    selMain = selMain.replace(
+                        /([ >][^+~ >]+):focus-within/g,
+                        "$1"
+                    );
+                }
+
+                const samePseudoClass = selPseudo === pseudoClass;
+
+                // Get styles of non-pseudo selectors - use cached selector matching
+                if (
+                    !hasPseudoClass &&
+                    CSSUtil.selectorMatchesElemCached(elem, selMain)
+                ) {
+                    CSSUtil.fillStyle(
+                        [definedStylesMap[pseudoClass], definedStylePseudoMap[pseudoClass]],
+                        parsedRule.style
+                    );
+                }
+
+                if (
+                    samePseudoClass &&
+                    CSSUtil.selectorMatchesElemCached(elem, selMain)
+                ) {
+                    CSSUtil.fillStyle([definedStylePseudoMap[pseudoClass]], parsedRule.style);
+                }
+            }
+        }
+
+        // Handle the element defined styles
+        for (const pseudoClass of pseudoClasses) {
+            CSSUtil.fillStyle([definedStylesMap[pseudoClass], definedStylePseudoMap[pseudoClass]], elem.style);
+        }
+
+        // Build results for all pseudo-classes
+        for (const pseudoClass of pseudoClasses) {
+            if (pseudoClass === "") {
+                results[pseudoClass] = definedStylesMap[pseudoClass];
+            } else {
+                // For pseudo-classes, return only styles that differ from default
+                let diffStyles = {};
+                for (const key in definedStylePseudoMap[pseudoClass]) {
+                    if (definedStylePseudoMap[pseudoClass][key] !== definedStylesMap[pseudoClass][key]) {
+                        diffStyles[key] = definedStylePseudoMap[pseudoClass][key];
+                    }
+                }
+                results[pseudoClass] = diffStyles;
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Returns the style defined for this element for multiple pseudo-classes in a single pass
+     *
+     * This is more efficient than calling getDefinedStyles multiple times as it only
+     * iterates through stylesheets once.
+     *
+     * @param {HTMLElement} elem
+     * @param {string[]} pseudoClasses - Array of pseudo-classes to retrieve. Use "" for default (no pseudo-class).
+     * @returns {Object} Object mapping each pseudo-class to its defined styles
+     */
+    public static getDefinedStylesMultiple(elem: HTMLElement, pseudoClasses: string[]) {
+        if (!elem) return null;
+
+        let results = {};
+
+        // Check cache first - see if we have all requested pseudo-classes cached
+        let cachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        let missingPseudoClasses = [];
+        
+        if (cachedStyles) {
+            // Check which pseudo-classes are already cached
+            for (const pseudoClass of pseudoClasses) {
+                if (cachedStyles[pseudoClass] !== undefined) {
+                    results[pseudoClass] = cachedStyles[pseudoClass];
+                } else {
+                    missingPseudoClasses.push(pseudoClass);
+                }
+            }
+            
+            // If all are cached, return immediately
+            if (missingPseudoClasses.length === 0) {
+                return results;
+            }
+        } else {
+            cachedStyles = {};
+            missingPseudoClasses = pseudoClasses;
+        }
+
+        // Only process missing pseudo-classes using the internal helper
+        if (missingPseudoClasses.length > 0) {
+            const newResults = CSSUtil.getDefinedStylesInternal(elem, missingPseudoClasses);
+            
+            // Merge new results with cached results
+            for (const pseudoClass of missingPseudoClasses) {
+                results[pseudoClass] = newResults[pseudoClass];
+                cachedStyles[pseudoClass] = newResults[pseudoClass];
+            }
+
+            // Update cache with all styles (existing + new)
+            CacheUtil.setElementCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+        }
+
+        return results;
+    }
 
     /**
      * Returns the style defined for this element
@@ -87,166 +342,46 @@ export class CSSUtil {
      * than when the pseudoClass does not match.
      */
     public static getDefinedStyles(elem: HTMLElement, pseudoClass?: string) {
-        // console.log("Function: getDefinedStyles");
         if (!elem) return null;
 
-        let definedStyles = {};
-        let definedStylePseudo = {};
-
-        function fillStyle(maps, style) {
-            for (let sIndex = 0; sIndex < style.length; ++sIndex) {
-                if (style[sIndex] === "all" && style[style[sIndex]]) {
-                    for (const map of maps) {
-                        for (const key in map) {
-                            delete map[key];
-                        }
-                    }
-                    break;
-                } else {
-                    const key = style[sIndex];
-                    for (const map of maps) {
-                        let priority = style.getPropertyPriority(key);
-                        if (key in map && map[key].endsWith("!important")) {
-                            if (
-                                priority === "important" &&
-                                !map[key].startsWith("inherit") &&
-                                !map[key].startsWith("unset")
-                            )
-                                //override !important only if it is also !important
-                                map[key] = style[key] + " !important";
-                            //don't override !important if it is not !important
-                            else continue;
-                        }
-                        //create/overide anyway
-                        else
-                            map[key] =
-                                style[key] +
-                                (priority === "important" ? " !important" : "");
-                    }
-                }
-            }
+        // Check cache first - use shared cache structure with getDefinedStylesMultiple
+        const cacheKey = pseudoClass || "";
+        let cachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        
+        if (cachedStyles && cachedStyles[cacheKey] !== undefined) {
+            return cachedStyles[cacheKey];
+        }
+        
+        // Initialize cache object if needed
+        if (!cachedStyles) {
+            cachedStyles = {};
         }
 
-        let storedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
-        if (!pseudoClass && storedStyles) {
-            definedStyles = storedStyles["definedStyles"];
-            definedStylePseudo = storedStyles["definedStylePseudo"];
-        } else {
-            // Iterate through all of the stylesheets and rules
-            for (
-                let ssIndex = 0;
-                ssIndex < elem.ownerDocument.styleSheets.length;
-                ++ssIndex
-            ) {
-                const sheet = elem.ownerDocument.styleSheets[
-                    ssIndex
-                ] as CSSStyleSheet;
-                try {
-                    if (sheet && sheet.cssRules) {
-                        // console.log("Got sheet");
-                        for (
-                            let rIndex = 0;
-                            rIndex < sheet.cssRules.length;
-                            ++rIndex
-                        ) {
-                            // console.log("Got rule: ", sheet.cssRules[rIndex]);
-                            const rule = sheet.cssRules[rIndex] as CSSStyleRule;
-                            const fullRuleSelector = rule.selectorText;
-                            if (fullRuleSelector) {
-                                const pseudoMatch =
-                                    fullRuleSelector.match(
-                                        /^(.*)(:[a-zA-Z-]*)$/
-                                    );
-                                const hasPseudoClass = !!pseudoMatch;
-                                let selMain = hasPseudoClass
-                                    ? pseudoMatch[1]
-                                    : fullRuleSelector;
-                                const selPseudo = hasPseudoClass
-                                    ? pseudoMatch[2]
-                                    : "";
-                                const samePseudoClass =
-                                    selPseudo === pseudoClass;
-                                if (pseudoClass && pseudoClass === ":focus") {
-                                    // If this element has focus, remove focus-within from parents
-                                    selMain = selMain.replace(
-                                        /([ >][^+~ >]+):focus-within/g,
-                                        "$1"
-                                    );
-                                }
-
-                                // Get styles of non-pseudo selectors
-                                if (
-                                    !hasPseudoClass &&
-                                    CSSUtil.selectorMatchesElem(elem, selMain)
-                                ) {
-                                    fillStyle(
-                                        [definedStyles, definedStylePseudo],
-                                        rule.style
-                                    );
-                                }
-
-                                if (
-                                    samePseudoClass &&
-                                    CSSUtil.selectorMatchesElem(elem, selMain)
-                                ) {
-                                    fillStyle([definedStylePseudo], rule.style);
-                                }
-                            }
-                        }
-                    }
-                } catch (err) {
-                    if (
-                        !err.toString().includes("Cannot access rules") &&
-                        !err.toString().includes("SecurityError:")
-                    ) {
-                        throw err;
-                    }
-                }
-            }
-            //
-
-            // Handled the stylesheets, now handle the element defined styles
-            fillStyle([definedStyles, definedStylePseudo], elem.style);
-            CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", {
-                definedStyles,
-                definedStylePseudo,
-            });
-        }
-        /**
-     * 'initial' sets the style back to default
-    for (const key in definedStyles) {
-        if (definedStyles[key] === "initial") {
-            delete definedStyles[key];
-        }
-    }
-    for (const key in definedStylePseudo) {
-        if (definedStylePseudo[key] === "initial") {
-            delete definedStylePseudo[key];
-        }
-    }
-    */
-
-        if (!pseudoClass) {
-            // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
-            return definedStyles;
-        } else {
-            for (const key in definedStylePseudo) {
-                if (definedStylePseudo[key] === definedStyles[key]) {
-                    delete definedStylePseudo[key];
-                }
-            }
-            // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStylePseudo, null, 2));
-            return definedStylePseudo;
-        }
+        // Use the internal helper method with a single pseudo-class
+        const results = CSSUtil.getDefinedStylesInternal(elem, [cacheKey]);
+        const result = results[cacheKey];
+        
+        // Cache the result
+        cachedStyles[cacheKey] = result;
+        CacheUtil.setElementCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+        
+        return result;
     }
 
     /**
      * Returns the media query defined for the document
-     * 
-     * 
-     * @param {Document} doc 
+     * Get media orientation transforms from stylesheets with caching
+     * Returns transform/rotate properties for elements within media queries
+     *
+     * @param {Document} doc
      */
     public static getMediaOrientationTransform(doc: Document) {
+        // Check if we already have cached media orientation transforms for this document
+        const cachedTransforms = CacheUtil.getCache(doc, "RPTUtil_MediaOrientationTransforms", null);
+        if (cachedTransforms) {
+            return cachedTransforms;
+        }
+
         let orientationTransforms = {}
 
         // Iterate through all of the stylesheets and rules
@@ -262,35 +397,39 @@ export class CSSUtil {
                                 const mediaList = rule.media;
                                 for (let i = 0; i < mediaList.length; i++) {
                                     if (!mediaList.item(i)) continue;
-                                    let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
+                                    const mediaKey = mediaList.item(i).toLocaleLowerCase();
+                                    let elem_transforms = orientationTransforms[mediaKey];
                                     if (!elem_transforms) elem_transforms = {};
                                     let styleRules = rule.cssRules;
-                                    for (let i = 0; i < styleRules.length; ++i) {
-                                        if (1 /* CSSRule.STYLE_RULE */ === styleRules[i].STYLE_RULE) {
-                                            const styleRule = styleRules[i] as CSSStyleRule;
+                                    for (let j = 0; j < styleRules.length; ++j) {
+                                        if (1 /* CSSRule.STYLE_RULE */ === styleRules[j].STYLE_RULE) {
+                                            const styleRule = styleRules[j] as CSSStyleRule;
                                             const selector = styleRule.selectorText;
                                             if (selector) {
                                                 let transforms = {};
                                                 const styles = styleRule.style;
                                                 for (let s = 0; s < styles.length; ++s) {
                                                     const key = styles[s];
-                                                    if (key.toLocaleLowerCase() === "transform") {
+                                                    const keyLower = key.toLocaleLowerCase();
+                                                    if (keyLower === "transform") {
                                                         if (key === "all" && styles[key]) {
-                                                            delete transforms[key];
+                                                            transforms = {};
                                                             break;
                                                         } else {
                                                             transforms[key] = styles[key];
                                                         }
-                                                    } else if (key.toLocaleLowerCase() === "rotate") {
+                                                    } else if (keyLower === "rotate") {
                                                         transforms[key] = styles[key];
                                                     }
-                                                    elem_transforms[selector] =
-                                                        transforms;
+                                                }
+                                                if (Object.keys(transforms).length > 0) {
+                                                    elem_transforms[selector] = transforms;
                                                 }
                                             }
                                         }
-                                        if (mediaList.item(i))
-                                            orientationTransforms[mediaList.item(i).toLocaleLowerCase()] = elem_transforms;
+                                    }
+                                    if (Object.keys(elem_transforms).length > 0) {
+                                        orientationTransforms[mediaKey] = elem_transforms;
                                     }
                                 }
                             }
@@ -306,6 +445,9 @@ export class CSSUtil {
                 }
             }
         }
+        
+        // Cache the media orientation transforms at the document level
+        CacheUtil.setCache(doc, "RPTUtil_MediaOrientationTransforms", orientationTransforms);
         return orientationTransforms;
     }
 
@@ -826,41 +968,75 @@ export class CSSUtil {
     }
 
     /**
-     * return the ancestor with the given style properties.
+     * Return the ancestor with the given style properties.
+     * Searches up the DOM tree to find an ancestor that has ALL specified style properties
+     * with values matching the criteria.
      *
-     * @parm {element} element - The element to start the node walk on to find parent node
-     * @parm {[string]} styleProps - The style properties and values of the parent to search for.
+     * @param {element} elem - The element to start the node walk on to find parent node
+     * @param {Object} styleProps - The style properties and values of the parent to search for.
      *         such as {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll']}
      *          or {"overflow":['*'], "overflow-x":['*']}, The '*' for any value to check the existence of the style prop.
-     * @parm {bool} excludedValues - style values that should be ignored.
-     * @return {node} walkNode - A parent node of the element, which has the style properties
-     * @memberOf AriaUtil
+     * @param {Array} excludedValues - style values that should be ignored.
+     * @return {Element|null} - An ancestor element that has all the specified style properties, or null if none found
+     * @memberOf CSSUtil
      */
     public static getAncestorWithStyles(elem, styleProps, excludedValues = []) {
+        // Create a cache key that includes the style properties being searched for
+        const cacheKey = "AriaUtil_AncestorWithStyles_" + JSON.stringify(styleProps) + "_" + JSON.stringify(excludedValues);
+        
+        // Check if we already have a cached result for this specific query
+        const cachedResult = CacheUtil.getCache(elem, cacheKey, null);
+        if (cachedResult !== null) {
+            return cachedResult === "NOT_FOUND" ? null : cachedResult;
+        }
+
+        // Start with the element itself (not just parent) to maintain backward compatibility
         let walkNode = elem;
         while (walkNode !== null) {
-            const node = CacheUtil.getCache(walkNode, "AriaUtil_AncestorWithStyles", null);
-            if (node) return node;
-
+            // Skip if not an HTMLElement (e.g., SVGElement)
+            // Use nodeType check instead of instanceof to work across different document contexts
+            if (walkNode.nodeType !== 1 || walkNode.namespaceURI === "http://www.w3.org/2000/svg") {
+                walkNode = DOMWalker.parentElement(walkNode);
+                continue;
+            }
+            
             const styles = CSSUtil.getDefinedStyles(walkNode);
-            for (const style in styleProps) {
-                let value = styles[style];
-                if (value) {
-                    value = value.split(" ")[0]; //get rid of !important
-                    if (!excludedValues.includes(value)) {
-                        if (styleProps[style].includes('*')) {
-                            CacheUtil.setCache(walkNode, "AriaUtil_AncestorWithStyles", walkNode);
-                            return walkNode;
-                        } else if (styleProps[style].includes(value)) {
-                            CacheUtil.setCache(walkNode, "AriaUtil_AncestorWithStyles", walkNode);
-                            return walkNode;
-                        }
-                    }
+            
+            // Check if ANY specified style property matches the criteria (OR logic)
+            for (const styleProp in styleProps) {
+                let value = styles[styleProp];
+                
+                if (!value) {
+                    // Property not defined on this element, try next property
+                    continue;
+                }
+                
+                // Remove !important suffix for comparison
+                value = value.split(" ")[0];
+                
+                // Check if value should be excluded
+                if (excludedValues.includes(value)) {
+                    continue;
+                }
+                
+                // Check if value matches the criteria
+                const acceptedValues = styleProps[styleProp];
+                if (acceptedValues.includes('*')) {
+                    // Any value is acceptable (just checking existence)
+                    CacheUtil.setCache(elem, cacheKey, walkNode);
+                    return walkNode;
+                } else if (acceptedValues.includes(value)) {
+                    // Value matches one of the accepted values
+                    CacheUtil.setCache(elem, cacheKey, walkNode);
+                    return walkNode;
                 }
             }
+            
             walkNode = DOMWalker.parentElement(walkNode);
         }
-        CacheUtil.setCache(elem, "AriaUtil_AncestorWithStyles", undefined);
+        
+        // No matching element or ancestor found - cache this result to avoid re-searching
+        CacheUtil.setCache(elem, cacheKey, "NOT_FOUND");
         return null;
     }
 

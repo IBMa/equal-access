@@ -45,83 +45,94 @@ export const element_tabbable_unobscured: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
 
+        // Early exit: check visibility and tabbability first
         if (!VisUtil.isNodeVisible(ruleContext) || !CommonUtil.isTabbable(ruleContext))
             return null;
         
-        const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
+        const nodeName = ruleContext.nodeName.toLocaleLowerCase();
           
-        //ignore certain elements
-        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null 
-            || nodeName === "body" || nodeName === "html" )
+        // Early exit: ignore certain elements
+        if (CommonUtil.getAncestor(ruleContext, ["pre", "code", "script", "meta"]) !== null
+            || nodeName === "body" || nodeName === "html")
             return null;
         
-        const mapper : DOMMapper = new DOMMapper();
-        const bounds = mapper.getUnadjustedBounds(ruleContext);;    
-        
-        //in case the bounds not available
-        if (!bounds) return null;
-        
-        //ignore if offscreen
-        if (bounds['height'] === 0 || bounds['width'] === 0 ) 
-            return null;
-
         const doc = ruleContext.ownerDocument;
-        if (!doc) {
-            return null;
-        }
+        if (!doc) return null;
+        
         const win = doc.defaultView;
-
-        if (!win) {
+        if (!win) return null;
+        
+        // Reuse single DOMMapper instance
+        const mapper: DOMMapper = new DOMMapper();
+        const bounds = mapper.getUnadjustedBounds(ruleContext);
+        
+        // Early exit: bounds not available or element has no dimensions
+        if (!bounds || bounds.height === 0 || bounds.width === 0)
             return null;
-        }
         
         const cStyle = win.getComputedStyle(ruleContext);
-
-        if (cStyle === null) 
+        if (!cStyle) return null;
+        
+        // Parse z-index once and cache
+        const zindex = parseInt(cStyle.zIndex === 'auto' || !cStyle.zIndex ? '0' : cStyle.zIndex);
+        
+        // More specific selector to reduce iteration
+        const elems = doc.querySelectorAll('body *:not(script):not(style):not(meta):not(link)');
+        if (!elems || elems.length === 0)
             return null;
-        
-        let zindex = cStyle.zIndex;   
-        if (!zindex || zindex === 'auto')
-            zindex = "0";
-        
-        const elems = doc.querySelectorAll('body *:not(script)');
-
-        if (!elems || elems.length == 0)
-            return;
          
-        let violations = [];
         let before = true;
-        elems.forEach(elem => {
+        const boundsRight = bounds.left + bounds.width;
+        const boundsBottom = bounds.top + bounds.height;
+        
+        // Check for obscuring elements
+        for (let i = 0; i < elems.length; i++) {
+            const elem = elems[i];
+            
             /**
-             *  the nodes returned from querySelectorAll is in document order
-             *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
+             * The nodes returned from querySelectorAll are in document order.
+             * If two elements overlap and z-index are not defined, then the node
+             * rendered earlier will be overlaid by the node rendered later.
              */
             if (ruleContext.contains(elem)) {
-                //the next node in elems will be after the target node (ruleContext). 
+                // The next node in elems will be after the target node (ruleContext)
                 before = false;
-            } else if (VisUtil.isNodeVisible(elem) && !elem.contains(ruleContext)) {
-                const bnds = mapper.getUnadjustedBounds(elem);
-                const zStyle = win.getComputedStyle(elem); 
-                let z_index = '0';
-                if (zStyle) {
-                    z_index = zStyle.zIndex;
-                    if (!z_index || isNaN(Number(z_index)))
-                        z_index = "0";
-                }
-                if (bnds.height !== 0 && bnds.width !== 0  
-                    && bnds.top <= bounds.top && bnds.left <= bounds.left && bnds.top + bnds.height >= bounds.top + bounds.height 
-                    && bnds.left + bnds.height >= bounds.left + bounds.width 
-                    && (before ? parseInt(zindex) < parseInt(z_index): parseInt(zindex) <= parseInt(z_index)))
-                {
-                    violations.push(elem); 
-                }
-            }  
-        });
-        
-        if (violations.length > 0) {
-            return RulePotential("potential_obscured", []);
-        }
+                continue;
+            }
             
+            // Skip if element contains ruleContext or is not visible
+            if (elem.contains(ruleContext) || !VisUtil.isNodeVisible(elem))
+                continue;
+            
+            const bnds = mapper.getUnadjustedBounds(elem);
+            
+            // Skip if no bounds or zero dimensions
+            if (!bnds || bnds.height === 0 || bnds.width === 0)
+                continue;
+            
+            // Quick bounds check: does elem completely cover ruleContext?
+            if (bnds.top > bounds.top || bnds.left > bounds.left)
+                continue;
+            
+            const bndsRight = bnds.left + bnds.width;
+            const bndsBottom = bnds.top + bnds.height;
+            
+            if (bndsRight < boundsRight || bndsBottom < boundsBottom)
+                continue;
+            
+            // Check z-index to determine if elem obscures ruleContext
+            const zStyle = win.getComputedStyle(elem);
+            if (!zStyle) continue;
+            
+            const elemZindex = parseInt(zStyle.zIndex === 'auto' || !zStyle.zIndex || isNaN(Number(zStyle.zIndex)) ? '0' : zStyle.zIndex);
+            
+            // If before ruleContext in DOM order, elem must have higher z-index to obscure
+            // If after ruleContext in DOM order, elem can obscure with equal or higher z-index
+            if ((before && elemZindex > zindex) || (!before && elemZindex >= zindex)) {
+                return RulePotential("potential_obscured", []);
+            }
+        }
+        
         return RulePass("pass");
     }
 }

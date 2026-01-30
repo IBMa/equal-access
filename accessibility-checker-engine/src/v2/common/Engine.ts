@@ -207,7 +207,7 @@ export class Engine implements IEngine {
             root = (root as Document).documentElement;
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
-        CacheUtil.clearCaches(root);
+        const numNodesVisited = CacheUtil.clearCaches(root);
         const walker = new DOMWalker(root, false, root, true);
         const retVal : Report = {
             results: [],
@@ -215,14 +215,24 @@ export class Engine implements IEngine {
             ruleTime: 0,
             totalTime: 0
         }
-        const start = new Date().getTime();
+        const start = new Date().getTime();        
         // Reset the role mappers
         for (const namespace in this.mappers) {
             this.mappers[namespace].reset(root);
         }
 
         // Initialize the context detector
+        let currentNodeCount = 0;
+        let lastReportedPercent = -1;
         do {
+            currentNodeCount++;
+            
+            // Report progress at each percentage milestone
+            const currentPercent = Math.floor((currentNodeCount / numNodesVisited) * 100);
+            if (currentPercent > lastReportedPercent) {
+                if (numNodesVisited > 100000) console.log(`Progress: ${currentPercent}% (${currentNodeCount}/${numNodesVisited} nodes)`);
+                lastReportedPercent = currentPercent;
+            }
             // Get the context information from the rule mappers
             const contextHierarchies : RuleContextHierarchy = {};
             for (const namespace in this.mappers) {
@@ -289,6 +299,7 @@ export class Engine implements IEngine {
                     }
                 }
             }
+            CacheUtil.clearElementCache(walker.elem());
         } while (walker.nextNode());
         CacheUtil.clearCaches(root);
         retVal.totalTime = new Date().getTime()-start;

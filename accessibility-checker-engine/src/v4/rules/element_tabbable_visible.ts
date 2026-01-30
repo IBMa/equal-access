@@ -47,42 +47,44 @@ export const element_tabbable_visible: Rule = {
         if (!CommonUtil.isTabbable(ruleContext))
             return null;
         
-        const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
+        const nodeName = ruleContext.nodeName.toLocaleLowerCase();
         const mapper : DOMMapper = new DOMMapper();
         const bounds = mapper.getUnadjustedBounds(ruleContext);
         
         //in case the bounds not available
         if (!bounds) return null;
         
-        // defined styles only give the styles that changed
-        const defined_styles = CSSUtil.getDefinedStyles(ruleContext);
-        const onfocus_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus");
+        // Get all needed styles in a single pass through stylesheets
+        const allStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, ["", ":focus"]);
+        const defined_styles = allStyles[""];
+        const onfocus_styles = allStyles[":focus"];
                 
         if (bounds['height'] === 0 || bounds['width'] === 0)
             return RulePotential("potential_visible", []);
 
         if (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
             && !onfocus_styles['clip']) {
-            /** 
-             * note that A user can select a checkbox and radio button by selecting the button or the label text. 
-             * When a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader. 
-             * The rule should be passed if the label text exists and the button on-focus style is defined by the user, 
-             * which likely incurs the changes of the label style.   
-             */ 
+            /**
+             * note that A user can select a checkbox and radio button by selecting the button or the label text.
+             * When a checkbox or radio button is clipped to 0 size, it is still available to a keyboard or a screen reader.
+             * The rule should be passed if the label text exists and the button on-focus style is defined by the user,
+             * which likely incurs the changes of the label style.
+             */
             if (nodeName === 'input' && (ruleContext.getAttribute('type')==='checkbox' || ruleContext.getAttribute('type')==='radio')) {
                 const label = CommonUtil.getLabelForElement(ruleContext);
                 if (label && !CommonUtil.isInnerTextEmpty(label)) {
-                    const focus_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus");
-                    const focus_visible_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-visible");
-                    const focus_within_styles = CSSUtil.getDefinedStyles(ruleContext, ":focus-within");
-                    const checked_styles = CSSUtil.getDefinedStyles(ruleContext, ":checked");
+                    // Get additional pseudo-class styles (reuse onfocus_styles from line 60)
+                    const pseudoStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, [":focus-visible", ":focus-within", ":checked"]);
+                    const focus_visible_styles = pseudoStyles[":focus-visible"];
+                    const focus_within_styles = pseudoStyles[":focus-within"];
+                    const checked_styles = pseudoStyles[":checked"];
                     
-                    if (focus_styles || focus_visible_styles || focus_within_styles || checked_styles)
+                    if (onfocus_styles || focus_visible_styles || focus_within_styles || checked_styles)
                         return RulePass("pass");
-                }     
-            }    
+                }
+            }
             return RulePotential("potential_visible", []);
-        }    
+        }
 
         if (bounds['top'] >= 0 && bounds['left'] >= 0)
             return RulePass("pass");
@@ -90,30 +92,30 @@ export const element_tabbable_visible: Rule = {
         const default_styles = getComputedStyle(ruleContext);
         
         let top = bounds['top'];
-        let left = bounds['left'];     
+        let left = bounds['left'];
        
         if (Object.keys(onfocus_styles).length === 0 ) {
-            // no onfocus position change, but could be changed from js 
+            // no onfocus position change, but could be changed from js
             return RulePotential("potential_visible", []);
-        } else {   
+        } else {
             // with onfocus position change
             var positions = ['absolute', 'fixed'];
             if (typeof onfocus_styles['top'] !== 'undefined') {
                 if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
                     top = onfocus_styles['top'].replace(/\D/g,'');
-                } else { 
+                } else {
                     // the position is undefined and the parent's position is 'relative'
-                    top = Number.MIN_VALUE;   
-                }     
-            } 
+                    top = Number.MIN_VALUE;
+                }
+            }
             if (typeof onfocus_styles['left'] !== 'undefined') {
                 if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
                     left = onfocus_styles['left'].replace(/\D/g,'');
-                } else { 
+                } else {
                     // the position is undefined and the parent's position is 'relative'
-                    left = Number.MIN_VALUE;   
-                }     
-            }    
+                    left = Number.MIN_VALUE;
+                }
+            }
         }
         
         if (top >= 0 && left >= 0)
