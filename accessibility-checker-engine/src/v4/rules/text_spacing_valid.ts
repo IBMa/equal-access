@@ -11,8 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleContext, RulePass, RuleFail, RuleContextHierarchy } from "../api/IRule";
-import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel, Rule, RuleResult, RuleContext, RulePass, RuleFail, RuleContextHierarchy } from "../api/IRule";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { CSSUtil } from "../util/CSSUtil";
@@ -75,12 +74,11 @@ function checkSpacingProperty(
     styleValue: string,
     fontSize: number,
     minRatio: number,
-    failMessage: string,
     allowUnitless: boolean = false
-): RuleResult {
+): boolean {
     // Check if !important is used
     if (element.style.getPropertyPriority(property) !== 'important') {
-        return RulePass("pass");
+        return true;
     }
 
     // Remove !important suffix
@@ -88,19 +86,19 @@ function checkSpacingProperty(
 
     // Check for initial or normal values (computed space is 0)
     if (cleanValue === 'initial' || cleanValue === 'normal') {
-        return RuleFail(failMessage);
+        return false;
     }
 
     // Parse the numeric value
     const numericValue = parseFloat(cleanValue);
     if (isNaN(numericValue)) {
-        return RulePass("pass");
+        return true;
     }
 
     // Match value and unit
     const parsedValue = cleanValue.trim().match(STYLE_VALUE_REGEX);
     if (!parsedValue) {
-        return RulePass("pass");
+        return true;
     }
 
     const [, value, unit] = parsedValue;
@@ -108,7 +106,7 @@ function checkSpacingProperty(
     // Handle unitless values (only for line-height)
     if (unit === '') {
         if (allowUnitless) {
-            return parseFloat(value) < minRatio ? RuleFail(failMessage) : RulePass("pass");
+            return parseFloat(value) < minRatio ? false : true;
         }
         // For other properties, zero value without unit is ignored
         if (parseFloat(value) === 0) {
@@ -124,10 +122,10 @@ function checkSpacingProperty(
     // Convert to pixels and check ratio
     const pixels = CSSUtil.convertValue2Pixels(unit, value, element);
     if (pixels !== null && pixels / fontSize < minRatio) {
-        return RuleFail(failMessage);
+        return false;
     }
 
-    return RulePass("pass");
+    return true;
 }
 
 export const text_spacing_valid: Rule = {
@@ -211,10 +209,9 @@ export const text_spacing_valid: Rule = {
                 'word-spacing',
                 wordStyle,
                 fontSize,
-                MIN_WORD_SPACING_RATIO,
-                'fail_word_spacing_style'
+                MIN_WORD_SPACING_RATIO
             );
-            if (result) results.push(result);
+            results.push(result ? RulePass("pass") : RuleFail('fail_word_spacing_style'));
         }
 
         // Check letter-spacing
@@ -226,10 +223,9 @@ export const text_spacing_valid: Rule = {
                 'letter-spacing',
                 letterStyle,
                 fontSize,
-                MIN_LETTER_SPACING_RATIO,
-                'fail_letter_spacing_style'
+                MIN_LETTER_SPACING_RATIO
             );
-            if (result) results.push(result);
+            results.push(result ? RulePass("pass") : RuleFail('fail_letter_spacing_style'));
         }
 
         // Check line-height (only if no scrollable ancestor)
@@ -247,10 +243,9 @@ export const text_spacing_valid: Rule = {
                 lineStyle,
                 fontSize,
                 MIN_LINE_HEIGHT_RATIO,
-                'fail_line_height_style',
                 true // Allow unitless values for line-height
             );
-            if (result) results.push(result);
+            results.push(result ? RulePass("pass") : RuleFail('fail_line_height_style'));
         }
 
         return results.length > 0 ? results : null;
