@@ -149,9 +149,8 @@ import { CacheUtil } from "../util/CacheUtil";
                     before = false;
                     continue;
                 }
-                // ignore ascendants of the element, not a target, or itself or its ascendant already checked   
-                if (elem.contains(ruleContext)  || !CommonUtil.isTarget(elem) 
-                   || checked.some(item => item.contains(elem))) 
+                // ignore ascendants of the element, or itself or its ascendant already checked   
+                if (elem.contains(ruleContext) || checked.some(item => item.contains(elem))) 
                     continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);

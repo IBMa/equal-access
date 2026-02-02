@@ -29,28 +29,37 @@ type PseudoClass =
     | ":focus-within";
 
 export class CSSUtil {
-    public static selectorMatchesElem(element, selector) {
+    public static selectorMatchesElem(element: Element, selector: string): boolean {
+        // Early return for empty selector (before try-catch for performance)
+        if (!selector || selector.length === 0 || selector.trim() === "") return false;
+
         try {
-            if (selector.trim() === "") return false;
+            // Modern standard method
             if (typeof element.matches === "function") {
                 return element.matches(selector);
             }
 
-            if (typeof element.matchesSelector === "function") {
-                return element.matchesSelector(selector);
+            // Vendor-prefixed fallbacks (older browsers)
+            if (typeof (element as any).webkitMatchesSelector === "function") {
+                return (element as any).webkitMatchesSelector(selector);
             }
 
-            // Native functions not there, fallback
-            let matches = (
-                element.document || element.ownerDocument
-            ).querySelectorAll(selector);
-            let i = 0;
-
-            while (i < matches.length && matches[i] !== element) {
-                ++i;
+            if (typeof (element as any).msMatchesSelector === "function") {
+                return (element as any).msMatchesSelector(selector);
             }
 
-            return i < matches.length;
+            // Legacy method (deprecated but kept for compatibility)
+            if (typeof (element as any).matchesSelector === "function") {
+                return (element as any).matchesSelector(selector);
+            }
+
+            // Fallback: use querySelectorAll and check if element is in results
+            const doc = element.ownerDocument || (element as any).document;
+            if (!doc) return false;
+
+            const matches = doc.querySelectorAll(selector);
+            // Use Array.from for better performance with modern engines
+            return Array.from(matches).includes(element);
         } catch (err) {
             // Bad selector? Doesn't match then...
             return false;
