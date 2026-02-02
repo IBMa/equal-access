@@ -144,13 +144,18 @@ import { CacheUtil } from "../util/CacheUtil";
                  *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
                  *  filter out the elements that’re descendant or ancestors of the target element, nor descendant of the target element's siblings
                  */
-                if (ruleContext.contains(elem)) {
-                    //the next node in elems will be after the target node (ruleContext). 
+                // Use compareDocumentPosition to check containment relationships
+                const position = ruleContext.compareDocumentPosition(elem);
+                
+                // DOCUMENT_POSITION_CONTAINED_BY (16): elem is contained by ruleContext
+                if (position & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                    //the next node in elems will be after the target node (ruleContext).
                     before = false;
                     continue;
                 }
-                // ignore ascendants of the element, or itself or its ascendant already checked   
-                if (elem.contains(ruleContext) || checked.some(item => item.contains(elem))) 
+                // DOCUMENT_POSITION_CONTAINS (8): elem contains ruleContext
+                // ignore ascendants of the element, or itself or its ascendant already checked
+                if ((position & Node.DOCUMENT_POSITION_CONTAINS) || checked.some(item => item.contains(elem)))
                     continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);

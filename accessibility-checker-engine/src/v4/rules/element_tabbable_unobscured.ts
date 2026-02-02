@@ -94,14 +94,19 @@ export const element_tabbable_unobscured: Rule = {
              * If two elements overlap and z-index are not defined, then the node
              * rendered earlier will be overlaid by the node rendered later.
              */
-            if (ruleContext.contains(elem)) {
+            // Use compareDocumentPosition to check containment relationships
+            const position = ruleContext.compareDocumentPosition(elem);
+            
+            // DOCUMENT_POSITION_CONTAINED_BY (16): elem is contained by ruleContext
+            if (position & Node.DOCUMENT_POSITION_CONTAINED_BY) {
                 // The next node in elems will be after the target node (ruleContext)
                 before = false;
                 continue;
             }
             
+            // DOCUMENT_POSITION_CONTAINS (8): elem contains ruleContext
             // Skip if element contains ruleContext or is not visible
-            if (elem.contains(ruleContext) || !VisUtil.isNodeVisible(elem))
+            if ((position & Node.DOCUMENT_POSITION_CONTAINS) || !VisUtil.isNodeVisible(elem))
                 continue;
             
             const bnds = mapper.getUnadjustedBounds(elem);
