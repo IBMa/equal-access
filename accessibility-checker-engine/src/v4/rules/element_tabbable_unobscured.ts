@@ -95,10 +95,12 @@ export const element_tabbable_unobscured: Rule = {
              * rendered earlier will be overlaid by the node rendered later.
              */
             // Use compareDocumentPosition to check containment relationships
+            // Note: compareDocumentPosition returns 0 when comparing a node to itself
             const position = ruleContext.compareDocumentPosition(elem);
             
             // DOCUMENT_POSITION_CONTAINED_BY (16): elem is contained by ruleContext
-            if (position & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+            // Also handle self-comparison (position === 0)
+            if (position === 0 || (position & Node.DOCUMENT_POSITION_CONTAINED_BY)) {
                 // The next node in elems will be after the target node (ruleContext)
                 before = false;
                 continue;

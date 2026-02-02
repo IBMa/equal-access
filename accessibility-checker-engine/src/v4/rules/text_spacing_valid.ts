@@ -203,7 +203,7 @@ export const text_spacing_valid: Rule = {
         let lineHeightPasses = true;
 
         // Check word-spacing (ignore 0px which represents default/normal)
-        if (computedWordSpacing && computedWordSpacing !== 'normal' && computedWordSpacing !== '0px') {
+        if (computedWordSpacing) {
             const wordValue = parseFloat(computedWordSpacing);
             if (!isNaN(wordValue)) {
                 const wordPixels = CSSUtil.convertValue2Pixels('px', wordValue.toString(), ruleContext);
@@ -214,7 +214,7 @@ export const text_spacing_valid: Rule = {
         }
 
         // Check letter-spacing (ignore 0px which represents default/normal)
-        if (computedLetterSpacing && computedLetterSpacing !== 'normal' && computedLetterSpacing !== '0px') {
+        if (computedLetterSpacing) {
             const letterValue = parseFloat(computedLetterSpacing);
             if (!isNaN(letterValue)) {
                 const letterPixels = CSSUtil.convertValue2Pixels('px', letterValue.toString(), ruleContext);
@@ -225,7 +225,7 @@ export const text_spacing_valid: Rule = {
         }
 
         // Check line-height
-        if (computedLineHeight && computedLineHeight !== 'normal') {
+        if (computedLineHeight) {
             const lineValue = parseFloat(computedLineHeight);
             if (!isNaN(lineValue)) {
                 // Line height can be unitless or in pixels
