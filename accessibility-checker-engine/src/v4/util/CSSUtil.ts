@@ -67,27 +67,6 @@ export class CSSUtil {
         const win = doc.defaultView;
         return win.getComputedStyle(elem, pseudoElt);
     }
-    /**
-     * Helper function to check if a selector matches an element, with caching
-     * Caches selector match results at the element level to avoid re-checking
-     */
-    private static selectorMatchesElemCached(elem: HTMLElement, selector: string): boolean {
-        // Get or initialize the selector cache for this element
-        let elemSelectorCache = CacheUtil.getCache(elem, "RPTUtil_ElemSelectorCache", {});
-        
-        if (elemSelectorCache[selector] !== undefined) {
-            return elemSelectorCache[selector];
-        }
-        
-        // Not cached, perform the actual match
-        const matches = CSSUtil.selectorMatchesElem(elem, selector);
-        
-        // Cache the result
-        elemSelectorCache[selector] = matches;
-        CacheUtil.setCache(elem, "RPTUtil_ElemSelectorCache", elemSelectorCache);
-        
-        return matches;
-    }
 
     /**
      * Parse and cache all stylesheet rules at the document level
@@ -201,63 +180,68 @@ export class CSSUtil {
 
         // Get pre-parsed stylesheet rules from cache
         const parsedRules = CSSUtil.getParsedStylesheetRules(elem.ownerDocument);
+        
+        // Check once if we need to handle :focus pseudo-class
+        const hasFocusPseudo = pseudoClasses.includes(":focus");
 
         // Process each cached rule
         for (const parsedRule of parsedRules) {
-            let selMain = parsedRule.selMain;
             const selPseudo = parsedRule.selPseudo;
             const hasPseudoClass = parsedRule.hasPseudoClass;
+            
+            // Handle :focus-within replacement once per rule if needed
+            let selMain = parsedRule.selMain;
+            if (hasFocusPseudo && selPseudo === ":focus") {
+                // If this element has focus, remove focus-within from parents
+                selMain = selMain.replace(
+                    /([ >][^+~ >]+):focus-within/g,
+                    "$1"
+                );
+            }
+            
+            // Cache selector matching result (only once per rule, not per pseudo-class)
+            const selectorMatches = CSSUtil.selectorMatchesElem(elem, selMain);
+            
+            // Only process if selector matches
+            if (selectorMatches) {
+                // Process for each pseudo-class
+                for (const pseudoClass of pseudoClasses) {
+                    // Cache map references to avoid repeated lookups
+                    const styleMap = definedStylesMap[pseudoClass];
+                    const pseudoMap = definedStylePseudoMap[pseudoClass];
+                    
+                    // Get styles of non-pseudo selectors
+                    if (!hasPseudoClass) {
+                        CSSUtil.fillStyle([styleMap, pseudoMap], parsedRule.style);
+                    }
 
-            // Process for each pseudo-class
-            for (const pseudoClass of pseudoClasses) {
-                // Reset selMain for each pseudo-class in case it was modified
-                selMain = parsedRule.selMain;
-                
-                if (pseudoClass === ":focus" && selPseudo === ":focus") {
-                    // If this element has focus, remove focus-within from parents
-                    selMain = selMain.replace(
-                        /([ >][^+~ >]+):focus-within/g,
-                        "$1"
-                    );
-                }
-
-                const samePseudoClass = selPseudo === pseudoClass;
-
-                // Get styles of non-pseudo selectors - use cached selector matching
-                if (
-                    !hasPseudoClass &&
-                    CSSUtil.selectorMatchesElemCached(elem, selMain)
-                ) {
-                    CSSUtil.fillStyle(
-                        [definedStylesMap[pseudoClass], definedStylePseudoMap[pseudoClass]],
-                        parsedRule.style
-                    );
-                }
-
-                if (
-                    samePseudoClass &&
-                    CSSUtil.selectorMatchesElemCached(elem, selMain)
-                ) {
-                    CSSUtil.fillStyle([definedStylePseudoMap[pseudoClass]], parsedRule.style);
+                    // Get styles for matching pseudo-class
+                    if (selPseudo === pseudoClass) {
+                        CSSUtil.fillStyle([pseudoMap], parsedRule.style);
+                    }
                 }
             }
         }
 
-        // Handle the element defined styles
+        // Handle element styles and build results in one pass
         for (const pseudoClass of pseudoClasses) {
-            CSSUtil.fillStyle([definedStylesMap[pseudoClass], definedStylePseudoMap[pseudoClass]], elem.style);
-        }
-
-        // Build results for all pseudo-classes
-        for (const pseudoClass of pseudoClasses) {
+            const styleMap = definedStylesMap[pseudoClass];
+            const pseudoMap = definedStylePseudoMap[pseudoClass];
+            
+            // Add element's inline styles
+            CSSUtil.fillStyle([styleMap, pseudoMap], elem.style);
+            
+            // Build results
             if (pseudoClass === "") {
-                results[pseudoClass] = definedStylesMap[pseudoClass];
+                results[pseudoClass] = styleMap;
             } else {
                 // For pseudo-classes, return only styles that differ from default
-                let diffStyles = {};
-                for (const key in definedStylePseudoMap[pseudoClass]) {
-                    if (definedStylePseudoMap[pseudoClass][key] !== definedStylesMap[pseudoClass][key]) {
-                        diffStyles[key] = definedStylePseudoMap[pseudoClass][key];
+                const diffStyles = {};
+                const keys = Object.keys(pseudoMap);
+                for (let i = 0; i < keys.length; i++) {
+                    const key = keys[i];
+                    if (pseudoMap[key] !== styleMap[key]) {
+                        diffStyles[key] = pseudoMap[key];
                     }
                 }
                 results[pseudoClass] = diffStyles;
