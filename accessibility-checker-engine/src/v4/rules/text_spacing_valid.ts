@@ -64,7 +64,6 @@ function removeImportantSuffix(styleValue: string): string {
  * @param styleValue - The current style value
  * @param fontSize - The computed font size in pixels
  * @param minRatio - The minimum ratio threshold
- * @param failMessage - The failure message key
  * @param allowUnitless - Whether unitless values are allowed (for line-height)
  * @returns RuleResult indicating pass or fail
  */
@@ -188,15 +187,71 @@ export const text_spacing_valid: Rule = {
             return null;
         }
 
-        // Get defined styles early to avoid unnecessary work
+        // Font size always resolved to 'px'
+        const computedStyle = getComputedStyle(ruleContext);
+        const fontSize = parseFloat(computedStyle.getPropertyValue('font-size'));
+
+        // Early exit optimization: Check if computed styles already pass
+        // If all three properties have passing values, we can skip the expensive getDefinedStyles call
+        const computedWordSpacing = computedStyle.getPropertyValue('word-spacing');
+        const computedLetterSpacing = computedStyle.getPropertyValue('letter-spacing');
+        const computedLineHeight = computedStyle.getPropertyValue('line-height');
+
+        // Check if computed values pass the requirements
+        let wordSpacingPasses = true;
+        let letterSpacingPasses = true;
+        let lineHeightPasses = true;
+
+        // Check word-spacing (ignore 0px which represents default/normal)
+        if (computedWordSpacing && computedWordSpacing !== 'normal' && computedWordSpacing !== '0px') {
+            const wordValue = parseFloat(computedWordSpacing);
+            if (!isNaN(wordValue)) {
+                const wordPixels = CSSUtil.convertValue2Pixels('px', wordValue.toString(), ruleContext);
+                if (wordPixels !== null && wordPixels / fontSize < MIN_WORD_SPACING_RATIO) {
+                    wordSpacingPasses = false;
+                }
+            }
+        }
+
+        // Check letter-spacing (ignore 0px which represents default/normal)
+        if (computedLetterSpacing && computedLetterSpacing !== 'normal' && computedLetterSpacing !== '0px') {
+            const letterValue = parseFloat(computedLetterSpacing);
+            if (!isNaN(letterValue)) {
+                const letterPixels = CSSUtil.convertValue2Pixels('px', letterValue.toString(), ruleContext);
+                if (letterPixels !== null && letterPixels / fontSize < MIN_LETTER_SPACING_RATIO) {
+                    letterSpacingPasses = false;
+                }
+            }
+        }
+
+        // Check line-height
+        if (computedLineHeight && computedLineHeight !== 'normal') {
+            const lineValue = parseFloat(computedLineHeight);
+            if (!isNaN(lineValue)) {
+                // Line height can be unitless or in pixels
+                const match = computedLineHeight.match(STYLE_VALUE_REGEX);
+                if (match) {
+                    const [, value, unit] = match;
+                    if (unit === '' || unit === 'px') {
+                        const ratio = unit === '' ? parseFloat(value) : parseFloat(value) / fontSize;
+                        if (ratio < MIN_LINE_HEIGHT_RATIO) {
+                            lineHeightPasses = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // If all computed values pass, we can skip the expensive getDefinedStyles check
+        if (wordSpacingPasses && letterSpacingPasses && lineHeightPasses) {
+            return null;
+        }
+
+        // Get defined styles to check for !important declarations
         const styles = CSSUtil.getDefinedStyles(ruleContext);
         if (Object.keys(styles).length === 0) {
             return null;
         }
-
-        // Font size always resolved to 'px'
-        const computedStyle = getComputedStyle(ruleContext);
-        const fontSize = parseFloat(computedStyle.getPropertyValue('font-size'));
 
         const results: RuleResult[] = [];
 
