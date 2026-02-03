@@ -40,7 +40,7 @@ function resolveInheritedStyle(element: HTMLElement, property: string, currentVa
             ['inherit', 'unset']
         );
         if (ancestor !== null) {
-            return CSSUtil.getDefinedStyles(ancestor)[property];
+            return CSSUtil.getDefinedStyles(ancestor, [property])[property];
         } else if (currentValue.startsWith('unset')) {
             return "initial";
         }
@@ -248,7 +248,7 @@ export const text_spacing_valid: Rule = {
         }
 
         // Get defined styles to check for !important declarations
-        const styles = CSSUtil.getDefinedStyles(ruleContext);
+        const styles = CSSUtil.getDefinedStyles(ruleContext, ["word-spacing", "letter-spacing", "line-height"]);
         if (Object.keys(styles).length === 0) {
             return null;
         }

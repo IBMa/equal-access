@@ -230,19 +230,19 @@ export class Engine implements IEngine {
             // Report progress at each percentage milestone
             const currentPercent = Math.floor((currentNodeCount / numNodesVisited) * 100);
             if (currentPercent > lastReportedPercent) {
-                if (numNodesVisited > 100000) {
+                if (numNodesVisited > 10000) {
                     // if (currentPercent > 6) break;
-                    console.group(`Progress: ${currentPercent}% (${currentNodeCount}/${numNodesVisited} nodes)`);
-                    const ruleTimes = retVal.results.reduce((prev, cur) => {
-                        prev[cur.ruleId] = (prev[cur.ruleId] || 0)+cur.ruleTime;
-                        return prev;
-                    }, {});
-                    for (const ruleId in ruleTimes) {
-                        if (ruleTimes[ruleId] > 1000) {
-                            console.log(`${ruleId}: ${ruleTimes[ruleId]}`);
-                        }
-                    }
-                    console.groupEnd();
+                    console.log(`Progress: ${currentPercent}% (${currentNodeCount}/${numNodesVisited} nodes)`);
+                    // const ruleTimes = retVal.results.reduce((prev, cur) => {
+                    //     prev[cur.ruleId] = (prev[cur.ruleId] || 0)+cur.ruleTime;
+                    //     return prev;
+                    // }, {});
+                    // for (const ruleId in ruleTimes) {
+                    //     if (ruleTimes[ruleId] > 10000) {
+                    //         console.log(`${ruleId}: ${ruleTimes[ruleId]}`);
+                    //     }
+                    // }
+                    // console.groupEnd();
                 }
                 lastReportedPercent = currentPercent;
             }
@@ -298,15 +298,13 @@ export class Engine implements IEngine {
                             // Wrapper shows error in console. Skip this rule as N/A
                             // We don't want to kill the engine
                         }
-                        let ruleTime = new Date().getTime()-start;
                         // If out of scope, it fulfills the dependency
                         if (results.length === 0) {
                             depMatch[matchingRule.rule.id] = true;
                         }
-                        retVal.ruleTime += ruleTime;
                         for (const result of results) {
                             retVal.results.push(result);
-                            // retVal.ruleTime += result.ruleTime;
+                            retVal.ruleTime += result.ruleTime;
                             retVal.numExecuted++;
                             if (result.value[1] === eRuleConfidence.PASS) {
                                 depMatch[result.ruleId] = true;

@@ -55,7 +55,7 @@ export const element_tabbable_visible: Rule = {
         if (!bounds) return null;
         
         // Get all needed styles in a single pass through stylesheets
-        const allStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, ["", ":focus"]);
+        const allStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, ["position", "clip"], ["", ":focus"]);
         const defined_styles = allStyles[""];
         const onfocus_styles = allStyles[":focus"];
                 
@@ -74,11 +74,12 @@ export const element_tabbable_visible: Rule = {
                 const label = CommonUtil.getLabelForElement(ruleContext);
                 if (label && !CommonUtil.isInnerTextEmpty(label)) {
                     // Get additional pseudo-class styles (reuse onfocus_styles from line 60)
-                    const pseudoStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, [":focus-visible", ":focus-within", ":checked"]);
+                    const pseudoStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, null, [":focus-visible", ":focus-within", ":checked", ":focus"]);
                     const focus_visible_styles = pseudoStyles[":focus-visible"];
                     const focus_within_styles = pseudoStyles[":focus-within"];
                     const checked_styles = pseudoStyles[":checked"];
-                    
+                    const onfocus_styles = pseudoStyles[":focus"];
+
                     if (onfocus_styles || focus_visible_styles || focus_within_styles || checked_styles)
                         return RulePass("pass");
                 }

@@ -175,6 +175,7 @@ export class CSSUtil {
      */
     private static getDefinedStylesInternal(
         elem: HTMLElement,
+        props: string[] | null,
         pseudoClasses: string[]
     ): { [pseudoClass: string]: any } {
         const results = {};
@@ -195,6 +196,9 @@ export class CSSUtil {
 
         // Process each cached rule
         for (const parsedRule of parsedRules) {
+            if (props !== null && !props.some(prop => !!parsedRule.style[prop])) {
+                continue;
+            }
             const selPseudo = parsedRule.selPseudo;
             const hasPseudoClass = parsedRule.hasPseudoClass;
             
@@ -268,16 +272,27 @@ export class CSSUtil {
      * iterates through stylesheets once.
      *
      * @param {HTMLElement} elem
+     * @param {string[]} props Properties for which we are looking for (allows us to skip elem matching unnecessarily)
      * @param {string[]} pseudoClasses - Array of pseudo-classes to retrieve. Use "" for default (no pseudo-class).
      * @returns {Object} Object mapping each pseudo-class to its defined styles
      */
-    public static getDefinedStylesMultiple(elem: HTMLElement, pseudoClasses: string[]) {
+    public static getDefinedStylesMultiple(elem: HTMLElement, props: string[] | null, pseudoClasses: string[]) {
         if (!elem) return null;
 
         let results = {};
 
+        // Create cache key that includes props filter
+        // Use "all" for null props, or sorted comma-separated list for specific props
+        const propsKey = props === null ? "all" : props.slice().sort().join(",");
+        
         // Check cache first - see if we have all requested pseudo-classes cached
-        let cachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        let allCachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        if (!allCachedStyles) {
+            allCachedStyles = {};
+        }
+        
+        // Get or create the cache bucket for this props filter
+        let cachedStyles = allCachedStyles[propsKey];
         let missingPseudoClasses = [];
         
         if (cachedStyles) {
@@ -301,7 +316,7 @@ export class CSSUtil {
 
         // Only process missing pseudo-classes using the internal helper
         if (missingPseudoClasses.length > 0) {
-            const newResults = CSSUtil.getDefinedStylesInternal(elem, missingPseudoClasses);
+            const newResults = CSSUtil.getDefinedStylesInternal(elem, props, missingPseudoClasses);
             
             // Merge new results with cached results
             for (const pseudoClass of missingPseudoClasses) {
@@ -310,7 +325,8 @@ export class CSSUtil {
             }
 
             // Update cache with all styles (existing + new)
-            CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+            allCachedStyles[propsKey] = cachedStyles;
+            CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", allCachedStyles);
         }
 
         return results;
@@ -331,32 +347,42 @@ export class CSSUtil {
      * and pseudo elements (e.g., ::before, ::after).
      *
      * @param {HTMLElement} elem
+     * @param {string[]} props Properties for which we are looking for (allows us to skip elem matching unnecessarily)
      * @param {string} [pseudoClass] If specified, will return values that are different
      * than when the pseudoClass does not match.
      */
-    public static getDefinedStyles(elem: HTMLElement, pseudoClass?: string) {
+    public static getDefinedStyles(elem: HTMLElement, props: string[], pseudoClass?: string) {
         if (!elem) return null;
 
-        // Check cache first - use shared cache structure with getDefinedStylesMultiple
-        const cacheKey = pseudoClass || "";
-        let cachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        // Create cache key that includes props filter
+        // Use "all" for null props, or sorted comma-separated list for specific props
+        const propsKey = props === null ? "all" : props.slice().sort().join(",");
+        const pseudoKey = pseudoClass || "";
         
-        if (cachedStyles && cachedStyles[cacheKey] !== undefined) {
-            return cachedStyles[cacheKey];
+        // Check cache first - use shared cache structure with getDefinedStylesMultiple
+        let allCachedStyles = CacheUtil.getCache(elem, "RPTUtil_DefinedStyles", null);
+        if (!allCachedStyles) {
+            allCachedStyles = {};
         }
         
-        // Initialize cache object if needed
+        // Get or create the cache bucket for this props filter
+        let cachedStyles = allCachedStyles[propsKey];
         if (!cachedStyles) {
             cachedStyles = {};
         }
+        
+        if (cachedStyles[pseudoKey] !== undefined) {
+            return cachedStyles[pseudoKey];
+        }
 
         // Use the internal helper method with a single pseudo-class
-        const results = CSSUtil.getDefinedStylesInternal(elem, [cacheKey]);
-        const result = results[cacheKey];
+        const results = CSSUtil.getDefinedStylesInternal(elem, props, [pseudoKey]);
+        const result = results[pseudoKey];
         
         // Cache the result
-        cachedStyles[cacheKey] = result;
-        CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", cachedStyles);
+        cachedStyles[pseudoKey] = result;
+        allCachedStyles[propsKey] = cachedStyles;
+        CacheUtil.setCache(elem, "RPTUtil_DefinedStyles", allCachedStyles);
         
         return result;
     }
@@ -671,7 +697,7 @@ export class CSSUtil {
         };
 
         // material icon font can be defined either by font-family: 'Material Icons' or by class="material-icons"
-        let styles = CSSUtil.getDefinedStyles(elem);
+        let styles = CSSUtil.getDefinedStyles(elem, ["font-family"]);
         let fontFamily = styles["font-family"];
 
         let found = false;
@@ -926,7 +952,10 @@ export class CSSUtil {
         if (roles && roles.length > 0) return false;
 
         // no user style to space control size, including use of font
-        const styles = CSSUtil.getDefinedStyles(element);
+        const styles = CSSUtil.getDefinedStyles(element, [
+            "line-height", "height", "width","min-height", "min-width",
+            "font-size","margin-top","margin-bottom", "margin-left", "margin-right"
+        ]);
         if (
             styles["line-height"] ||
             styles["height"] ||
@@ -993,7 +1022,7 @@ export class CSSUtil {
                 continue;
             }
             
-            const styles = CSSUtil.getDefinedStyles(walkNode);
+            const styles = CSSUtil.getDefinedStyles(walkNode, Object.keys(styleProps));
             
             // Check if ANY specified style property matches the criteria (OR logic)
             for (const styleProp in styleProps) {
