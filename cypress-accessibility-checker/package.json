@@ -31,10 +31,10 @@
     ],
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
-        "cypress": "^13.2.0"
+        "cypress": "^13.2.0 || ^15"
     },
     "devDependencies": {
-        "cypress": "^13.2.0",
+        "cypress": "^15.9.0",
         "eslint": "^8.4.1",
         "eslint-plugin-cypress": "^2.12.1",
         "http-server": "^14.1.1",
