@@ -28,7 +28,7 @@ All bugs or issues related to the karma-accessibility-checker code can be create
 
 ## Requirements
 
-* [Node Version 24](https://nodejs.org/en/download/).
+* [Node Version 22](https://nodejs.org/en/download/).
 
 ## Running Locally
 

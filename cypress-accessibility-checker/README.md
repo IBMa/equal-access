@@ -18,7 +18,7 @@ See the [Packages for test automation](https://github.com/IBMa/equal-access/wiki
 
 ## Requirements
 
-* [Node Version 24](https://nodejs.org/en/download/)
+* [Node Version 22](https://nodejs.org/en/download/)
 * Cypress 13 or 15 from [cypress.io](https://www.cypress.io/)
 
 ## Installation

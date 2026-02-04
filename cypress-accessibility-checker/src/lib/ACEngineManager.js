@@ -1,6 +1,3 @@
-// Load polyfill for Node.js 24 compatibility
-require("./util-polyfill");
-
 const ACConfigManager = require("./common/config/ACConfigManager").ACConfigManager;
 const request = require("@cypress/request");
 

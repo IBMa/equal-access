@@ -14,7 +14,4 @@
     limitations under the License.
   *****************************************************************************/
 
-// Load polyfill for Node.js 24 compatibility before any other modules
-require('./src/lib/util-polyfill');
-
 require('./src/commands');

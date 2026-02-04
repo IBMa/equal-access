@@ -19,7 +19,7 @@ The browser extensions provide an integrated checking experience and visualizati
 
 ## Requirements for building and running locally
 
-* [Node Version 24](https://nodejs.org/en/download/).
+* [Node Version 22](https://nodejs.org/en/download/).
 
 ### Install dependencies
 
