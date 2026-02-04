@@ -1,5 +1,5 @@
 const ACConfigManager = require("./common/config/ACConfigManager").ACConfigManager;
-const request = require("@cypress/request");
+const axios = require("axios");
 
 const ACEngineManager = {
     engineLoaded: false
@@ -42,14 +42,14 @@ const ACEngineManager = {
 
     , loadLocalEngine: (config) => {
         return new Promise((resolve, reject) => {
-            request.get(config.rulePack + "/ace-node.js", function (err, data) {
+            axios.get(config.rulePack + "/ace-node.js")
+                .then(response => {
                 const path = require("path");
                 const fs = require("fs");
-                err && console.error(err);
+                const data = response.data;
                 if (!data) {
-                    console.log("Cannot read: " + ACTasks.Config.rulePack + "/ace-node.js");
+                    console.log("Cannot read: " + config.rulePack + "/ace-node.js");
                 }
-                data = data.body;
                 let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
@@ -81,6 +81,10 @@ const ACEngineManager = {
                     }
                     resolve(ACEngineManager.ace);
                 });
+            })
+            .catch(err => {
+                console.error(err);
+                reject(err);
             });
         });
     }
