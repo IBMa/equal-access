@@ -43,7 +43,7 @@
         "start-server-and-test": "^2.0.0"
     },
     "dependencies": {
-        "@cypress/request": "^3.0.0",
+        "@cypress/request": "^3.0.6",
         "@ibm/telemetry-js": "^1.9.1",
         "deep-diff": "^1.0.2",
         "exceljs": "^4.3.0",
