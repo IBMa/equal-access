@@ -30,7 +30,7 @@ The browser extensions provide an integrated checking experience and visualizati
 
 ## Requirements for building the tools
 
-* [Node Version 18](https://nodejs.org/en/download/).
+* [Node Version 24](https://nodejs.org/en/download/).
 
 ### Clone Repository
 

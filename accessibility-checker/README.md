@@ -66,7 +66,7 @@ See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#
 
 ### Requirements
 
-- [Node Version 18](https://nodejs.org/en/download/)
+- [Node Version 24](https://nodejs.org/en/download/)
 
 ### Install
 
