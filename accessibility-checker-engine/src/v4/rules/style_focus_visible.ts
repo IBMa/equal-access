@@ -65,11 +65,13 @@ export const style_focus_visible: Rule = {
         if (!CommonUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
-        let normalStyles = CSSUtil.getDefinedStyles(ruleContext); // consider noth user-defined and browser default
+        // Get all styles in a single pass through stylesheets
+        const allStyles = CSSUtil.getDefinedStylesMultiple(ruleContext, null, ["", ":focus", ":focus-visible", ":focus-within"]);
+        let normalStyles = allStyles[""]; // consider both user-defined and browser default
         let focusStyles = []
-        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus"));
-        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus-visible"));
-        focusStyles.push(CSSUtil.getDefinedStyles(ruleContext, ":focus-within"));
+        focusStyles.push(allStyles[":focus"]);
+        focusStyles.push(allStyles[":focus-visible"]);
+        focusStyles.push(allStyles[":focus-within"]);
         
         // if focus style is defined
         let styleObj = focusStyles[0];

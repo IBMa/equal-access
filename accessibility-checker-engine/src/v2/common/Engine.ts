@@ -207,7 +207,7 @@ export class Engine implements IEngine {
             root = (root as Document).documentElement;
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
-        CacheUtil.clearCaches(root);
+        const numNodesVisited = CacheUtil.clearCaches(root);
         const walker = new DOMWalker(root, false, root, true);
         const retVal : Report = {
             results: [],
@@ -215,14 +215,37 @@ export class Engine implements IEngine {
             ruleTime: 0,
             totalTime: 0
         }
-        const start = new Date().getTime();
+        const start = new Date().getTime();        
         // Reset the role mappers
         for (const namespace in this.mappers) {
             this.mappers[namespace].reset(root);
         }
 
         // Initialize the context detector
+        let currentNodeCount = 0;
+        let lastReportedPercent = -1;
         do {
+            currentNodeCount++;
+            
+            // Report progress at each percentage milestone
+            const currentPercent = Math.floor((currentNodeCount / numNodesVisited) * 100);
+            if (currentPercent > lastReportedPercent) {
+                if (numNodesVisited > 10000) {
+                    // if (currentPercent > 6) break;
+                    console.log(`Progress: ${currentPercent}% (${currentNodeCount}/${numNodesVisited} nodes)`);
+                    // const ruleTimes = retVal.results.reduce((prev, cur) => {
+                    //     prev[cur.ruleId] = (prev[cur.ruleId] || 0)+cur.ruleTime;
+                    //     return prev;
+                    // }, {});
+                    // for (const ruleId in ruleTimes) {
+                    //     if (ruleTimes[ruleId] > 10000) {
+                    //         console.log(`${ruleId}: ${ruleTimes[ruleId]}`);
+                    //     }
+                    // }
+                    // console.groupEnd();
+                }
+                lastReportedPercent = currentPercent;
+            }
             // Get the context information from the rule mappers
             const contextHierarchies : RuleContextHierarchy = {};
             for (const namespace in this.mappers) {
@@ -268,6 +291,7 @@ export class Engine implements IEngine {
                     }
                     if (fulfillsDependencies) {
                         let results : Issue[] = [];
+                        let start = new Date().getTime();
                         try {
                             results = matchingRule.run(this, context, options, contextHierarchies);
                         } catch (err) {

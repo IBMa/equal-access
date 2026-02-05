@@ -45,13 +45,27 @@ export class CacheUtil {
         return value;
     }
 
+    public static getSetCache(cacheSpot: Element | Document | DocumentFragment, keyName, initFunc: () => any) {
+        if (!cacheSpot) return undefined;
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        if (cacheObj.aceCache === undefined) {
+            cacheObj.aceCache = {}
+        }
+        if (cacheObj.aceCache[keyName] === undefined || typeof cacheObj.aceCache[keyName] === "undefined") {
+            cacheObj.aceCache[keyName] = initFunc();
+        }
+        return cacheObj.aceCache[keyName]
+    }
 
-    public static clearCaches(cacheRoot: Node): void {
+    public static clearCaches(cacheRoot: Node): number {
+        let numNodesVisited = 0;
         delete (cacheRoot.ownerDocument as CacheDocument).aceCache;
         let nw = new DOMWalker(cacheRoot, false, cacheRoot, true);
         do {
+            ++numNodesVisited;
             delete (nw.node as CacheElement).aceCache;
             nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
         } while (nw.nextNode());
+        return numNodesVisited;
     }
 }

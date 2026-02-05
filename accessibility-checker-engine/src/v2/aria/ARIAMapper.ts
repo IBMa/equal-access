@@ -49,6 +49,8 @@ export class ARIAMapper extends CommonMapper {
     getAttributes(node: Node) : { [key:string]: string } {
         let retVal = {};
         if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
+            const cacheVal = CacheUtil.getCache(node as HTMLElement, "ARIAMapper::getAttributes", undefined);
+            if (typeof cacheVal !== "undefined") return cacheVal;
             const elem = node as Element;
             for (let idx=0; idx<elem.attributes.length; ++idx) {
                 const attrInfo = elem.attributes[idx];
@@ -58,31 +60,42 @@ export class ARIAMapper extends CommonMapper {
                 }
             }
 
-            let applyAttrRole= function(nodeName:string) {
-                if (!(nodeName in ARIAMapper.elemAttrValueCalculators)) return;
-                for (const attr in ARIAMapper.elemAttrValueCalculators[nodeName]) {
-                    if (!(attr in retVal)) {
-                        let value = ARIAMapper.elemAttrValueCalculators[nodeName][attr];
-                        if (typeof value != "undefined" && value !== null) {
-                            if (typeof value !== typeof "") {
-                                value = (value as NodeCalc)(elem);
-                            }
-                            retVal[attr] = value;
-                        }
-                    } 
-                }
-            }
-            applyAttrRole("global");
-            applyAttrRole(node.nodeName.toLowerCase());
+            // Optimize: Cache nodeName.toLowerCase() to avoid repeated calls
+            const nodeName = node.nodeName.toLowerCase();
+            
+            // Apply global attributes first
+            ARIAMapper.applyAttrRole(elem, "global", retVal);
+            // Apply element-specific attributes
+            ARIAMapper.applyAttrRole(elem, nodeName, retVal);
+            CacheUtil.setCache(node as HTMLElement, "ARIAMapper::getAttributes", retVal);
         } else if (node.nodeType === 3 /* Node.TEXT_NODE */) {
-            for (const attr in ARIAMapper.textAttrValueCalculators) {
-                let val = ARIAMapper.textAttrValueCalculators[attr](node);
-                if (typeof val != "undefined" && val !== null) {
+            const calculators = ARIAMapper.textAttrValueCalculators;
+            for (const attr in calculators) {
+                let val = calculators[attr](node);
+                if (typeof val !== "undefined" && val !== null) {
                     retVal[attr] = val;
                 }
             }
         }
         return retVal;
+    }
+
+    // Optimize: Move applyAttrRole outside getAttributes to avoid function recreation
+    private static applyAttrRole(elem: Element, nodeName: string, retVal: { [key:string]: string }): void {
+        const calculators = ARIAMapper.elemAttrValueCalculators;
+        if (!(nodeName in calculators)) return;
+        
+        for (const attr in calculators[nodeName]) {
+            if (!(attr in retVal)) {
+                let value = calculators[nodeName][attr];
+                if (typeof value !== "undefined" && value !== null) {
+                    if (typeof value !== "string") {
+                        value = (value as ElemCalc)(elem);
+                    }
+                    retVal[attr] = value;
+                }
+            }
+        }
     }
 
     static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
@@ -365,12 +378,13 @@ export class ARIAMapper extends CommonMapper {
             "level": "6"
         }
         , "input": {
-            // - type="checkbox" state set to "mixed" if the element's indeterminate IDL attribute 
+            // - type="checkbox" state set to "mixed" if the element's indeterminate IDL attribute
             // is true, or "true" if the element's checkedness is true, or "false" otherwise
-            // - type="radio" state set to "true" if the element's checkedness is true, or "false" 
-            // otherwise. 
-            "checked": elem => { 
-                if (elem.getAttribute("type") === "checkbox" || elem.getAttribute("type") === "radio") {
+            // - type="radio" state set to "true" if the element's checkedness is true, or "false"
+            // otherwise.
+            "checked": elem => {
+                const type = elem.getAttribute("type");
+                if (type === "checkbox" || type === "radio") {
                     return ""+(elem as HTMLInputElement).checked;
                 }
                 return null;
@@ -392,17 +406,17 @@ export class ARIAMapper extends CommonMapper {
         , "li": {
             // Number of li elements within the ol, ul, menu
             "setsize": elem => {
-                let parent = DOMUtil.getAncestor(elem, ["ol", "ul", "menu"]);
+                const parent = DOMUtil.getAncestor(elem, ["ol", "ul", "menu"]);
                 if (!parent) return null;
-                let lis = parent.querySelectorAll("li");
-                let otherlis = parent.querySelectorAll("ol li, ul li, menu li");
+                const lis = CacheUtil.getSetCache(parent, "elemAttrValueCalculators::lis", () => parent.querySelectorAll("li"));
+                const otherlis = CacheUtil.getSetCache(parent, "elemAttrValueCalculators::otherlis", () => parent.querySelectorAll("ol li, ul li, menu li"));
                 return ""+(lis.length-otherlis.length);
             }
             // Position of li element within the ol, ul, menu
             , "posinset": elem => {
-                let parent = DOMUtil.getAncestor(elem, ["ol", "ul", "menu"])
+                const parent = DOMUtil.getAncestor(elem, ["ol", "ul", "menu"])
                 if (!parent) return null;
-                let lis = parent.querySelectorAll("li");
+                const lis = CacheUtil.getSetCache(parent, "elemAttrValueCalculators::lis", () => parent.querySelectorAll("li"));
                 let num = 0;
                 for (let idx=0; idx<lis.length; ++idx) {
                     const li = lis[idx];
