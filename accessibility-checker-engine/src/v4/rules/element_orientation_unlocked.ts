@@ -105,7 +105,7 @@ export const element_orientation_unlocked: Rule = {
              * calculate the original page rotation transformation, example
              *  html { transform: rotate(2.5deg); }
             */
-            const definedStyle = CSSUtil.getDefinedStyles(ruleContext);
+            const definedStyle = CSSUtil.getDefinedStyles(ruleContext, ["transform"]);
             
             /** 
              * compensate the media orientation with the page orientation
