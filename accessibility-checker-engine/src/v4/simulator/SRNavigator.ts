@@ -4,7 +4,6 @@ import { SRCursor, SRCursorMatchFunc, SRCursorSkipFunc } from "./SRCursor";
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
 import { AriaUtil } from "../util/AriaUtil";
-import { NodeWalker } from "../../v2/dom/NodeWalker";
 
 export namespace SRNavigator {
     function isBlockElement(node: Node) {
@@ -21,7 +20,7 @@ export namespace SRNavigator {
             }
         }
         if (AriaUtil.getResolvedRole(elem, true) === "link") {
-            let temp = new NodeWalker(node, false);
+            let temp = new DOMWalker(node, false, undefined, false);
             temp.prevNode();
             if (!isBlockElement(temp.node)) {
                 return true;
@@ -50,6 +49,8 @@ export namespace SRNavigator {
                 return (role: string, bStartTag: boolean, node: Node) => (bStartTag && role === "heading" && (node as HTMLElement).ariaLevel === "5");
             case "h6":
                 return (role: string, bStartTag: boolean, node: Node) => (bStartTag && role === "heading" && (node as HTMLElement).ariaLevel === "6");
+            case "image":
+                return (role: string, bStartTag: boolean) => (bStartTag && ["img", "graphics-document"].includes(role));
             case "radio":
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "radio");
             case "button":
@@ -94,6 +95,10 @@ export namespace SRNavigator {
                 throw new Error("NOT_IMPLEMENTED");
         }
     }
+    const isInShadowDOM = (element: HTMLElement) => {
+        const root = element.getRootNode();
+        return root instanceof ShadowRoot;
+    }
 
     const SKIP_ITEM_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
         const DEBUG = false;
@@ -120,7 +125,7 @@ export namespace SRNavigator {
             // We have an element
 
             // Make sure we're within the body element
-            if (!elem.closest("body")) return { skipCurrent: true, skipChildren: false };
+            if (!elem.closest("body") && !isInShadowDOM(elem)) return { skipCurrent: true, skipChildren: false };
 
             // Make sure we're not in a script or style
             if (elem.closest("script,style")) return { skipCurrent: true, skipChildren: true };
@@ -208,6 +213,7 @@ export namespace SRNavigator {
             case "h4":
             case "h5":
             case "h6":
+            case "image":
                 return SKIP_NESTED_BEHAVIOR;
             case "radio":
             case "button":
@@ -245,10 +251,16 @@ export namespace SRNavigator {
         if (mode === "item") {
             return jumpNext(mode, walker);
         } else {
+            const nameInfo = walker.getNameInfo();
             let retVal = walker.clone();
-            retVal.setEndTag(true);
-            retVal.next(() => true);
-
+            if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
+                // Name is just from the item itself
+                retVal.next(() => true);
+            } else {
+                // Name is from the content
+                retVal.setEndTag(true);
+                retVal.next(() => true);
+            }
             let itemEnd = jumpNext("item", walker);
             if (SRCursor.compare(itemEnd, retVal) < 0) {
                 return itemEnd;

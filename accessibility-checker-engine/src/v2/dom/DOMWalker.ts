@@ -174,13 +174,20 @@ export class DOMWalker {
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
                     DOMWalker.assignSlots(this.node as ShadowRoot);
-                } else if (this.node.nodeType === 1 
+                } else if (this.node.nodeType === 1
                     && elementNode.nodeName.toLowerCase() === "slot"
-                    && slotElement.assignedNodes().length > 0) 
+                    && slotElement.assignedNodes().length > 0)
                 {
                     DBG && console.log("!!!Into slot");
                     this.node = slotElement.assignedNodes()[0];
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) 
+                } else if (this.node.nodeType === 1
+                    && elementNode.nodeName.toLowerCase() === "slot"
+                    && slotElement.assignedNodes().length === 0)
+                {
+                    DBG && console.log("!!!Empty slot - treat as leaf node, flip to end");
+                    // Empty slot - treat as self-closing leaf node
+                    this.bEndTag = true;
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */)
                     && DOMWalker.firstChildNotOwnedBySlot(this.node)) {
                     DBG && console.log("!!!First child");
                     this.node = DOMWalker.firstChildNotOwnedBySlot(this.node);
@@ -257,16 +264,22 @@ export class DOMWalker {
                     let ownerElement = this.node;
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
-                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                     && (this.considerHidden ? VisUtil.isNodeVisible(elementNode) : true)
                     && elementNode.shadowRoot
-                    && elementNode.shadowRoot.lastChild) 
+                    && elementNode.shadowRoot.lastChild)
                 {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
                     DOMWalker.assignSlots(this.node as ShadowRoot);
-                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) 
+                } else if (this.node.nodeType === 1
+                    && elementNode.nodeName.toLowerCase() === "slot"
+                    && (elementNode as HTMLSlotElement).assignedNodes().length === 0)
+                {
+                    // Empty slot - treat as self-closing leaf node
+                    this.bEndTag = false;
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11)
                     && DOMWalker.lastChildNotOwnedBySlot(this.node)) {
                     this.node = DOMWalker.lastChildNotOwnedBySlot(this.node);
                 } else {

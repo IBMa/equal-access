@@ -197,7 +197,7 @@ export class SROverlay {
         this.resultsDisplay.appendChild(inspectButton)
     }
 
-    public displayAll(result: Array<{region: string, heading: string, item: string}>): void {
+    public displayAll(result: Array<{ [key: string]: string }>): void {
         const table = createDOMElement("table", {}, {});
         const headerRow = createDOMElement("tr", {}, {});
         const headingLabels = ["Region", "Heading", "Item", "Tabbable"];
@@ -267,9 +267,9 @@ export class SRViewer {
      * Creates a new SRViewer
      * @param rootElement The root element to start from (defaults to document.body)
      */
-    constructor(rootElement: Node = document.body) {
+    constructor(_rootElement: Node = document.body) {
         // Create controller for the document body
-        this.controller = new SRController(rootElement);
+        this.controller = SRController.getController();
         
         // Create overlay UI
         this.overlay = new SROverlay(this);

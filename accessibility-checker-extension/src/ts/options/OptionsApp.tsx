@@ -64,6 +64,8 @@ interface OptionsAppState {
     modalDeploymentWithScans: boolean;
     modalGuidelinesWithScans: boolean;
     checkerViewAwareFirstTime: boolean;
+    // Labs options
+    enableScreenReaderEmulator: boolean;
     savePending: number;
 }
 
@@ -87,6 +89,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         modalDeploymentWithScans: false,
         modalGuidelinesWithScans: false,
         checkerViewAwareFirstTime: true,
+        // Labs options
+        enableScreenReaderEmulator: false,
         savePending: 0
     };
 
@@ -102,6 +106,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         let tabStopOutlines: boolean = false;
         let tabStopAlerts: boolean = true;
         let checkerViewAwareFirstTime: boolean = true;
+        let enableScreenReaderEmulator: boolean = false;
 
         let storedScansExist =  await this.existStoredScans();
 
@@ -112,6 +117,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopOutlines = settings.tabStopOutlines;
         tabStopAlerts = settings.tabStopAlerts;
         checkerViewAwareFirstTime = settings.checkerViewAwareFirstTime;
+        enableScreenReaderEmulator = settings.enableScreenReaderEmulator;
         if (selected_archive) {
             if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id && archive.name === selected_archive.name))) {
                 // do nothing
@@ -132,12 +138,13 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
         self.setState({
             lastSettings: settings,
-            archives: archives, 
-            selected_archive: selected_archive, 
+            archives: archives,
+            selected_archive: selected_archive,
             rulesets: rulesets,
             selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
             tabStopAlerts: tabStopAlerts, checkerViewAwareFirstTime: checkerViewAwareFirstTime,
+            enableScreenReaderEmulator: enableScreenReaderEmulator,
             storedScansExist: storedScansExist,
         });
 
@@ -278,6 +285,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         retVal.tabStopAlerts = this.state.tabStopAlerts;
         retVal.checkerViewAwareFirstTime = this.state.checkerViewAwareFirstTime;
         retVal.tabStopOutlines = this.state.tabStopOutlines;
+        retVal.enableScreenReaderEmulator = this.state.enableScreenReaderEmulator;
         return retVal;
     }
 
@@ -318,7 +326,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
-            checkerViewAwareFirstTime: false
+            checkerViewAwareFirstTime: false,
+            enableScreenReaderEmulator: false
         });
     };
 
@@ -625,6 +634,23 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 this.setState({ tabStopAlerts: value });
                             }} 
                         />
+                    </div>
+
+                    <h2>Labs <span style={{fontSize: "0.875rem", fontWeight: "normal", color: "#525252"}}>(Experimental features)</span></h2>
+                    <div>
+                        <div style={{marginTop: "1rem"}} />
+                        <Toggle
+                            aria-label="Enable Screen Reader Emulator"
+                            labelText="Screen Reader Emulator"
+                            id="screenReaderEmulatorToggle"
+                            toggled={this.state.enableScreenReaderEmulator}
+                            onToggle={(value: any) => {
+                                this.setState({ enableScreenReaderEmulator: value });
+                            }}
+                        />
+                        <p style={{marginTop: "0.5rem", fontSize: "0.875rem", color: "#525252"}}>
+                            Enable the Screen Reader Emulator panel in DevTools. This experimental feature allows you to test how screen readers interpret your content.
+                        </p>
                     </div>
                     <div style={{marginTop: "1.5rem"}} />
                     <ButtonSet>

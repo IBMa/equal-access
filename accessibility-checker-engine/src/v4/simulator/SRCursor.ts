@@ -1,8 +1,7 @@
-import { NodeWalker } from "../../v2/dom/NodeWalker";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { AccessibleNameResult, AccNameUtil } from "../util/AccNameUtil";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
-import { VisUtil } from "../util/VisUtil";
 import { SRUtil } from "./SRUtil";
 
 /**
@@ -32,7 +31,7 @@ export class SRCursor {
     /** The computed accessible name of the current node */
     private name: AccessibleNameResult;
     /** The underlying DOM walker that handles node traversal */
-    private walker: NodeWalker;
+    private walker: DOMWalker;
     
     /**
      * Creates a new SRCursor positioned at the specified element
@@ -40,7 +39,9 @@ export class SRCursor {
      * @param bEnd - Whether to position at the end tag (true) or start tag (false)
      */
     constructor(element : Node, bEnd? : boolean) {
-        this.walker = new NodeWalker(element, bEnd);
+        // Use DOMWalker with considerHidden=false to process all content (including hidden elements)
+        // This is important for screen reader simulation which needs to see all content
+        this.walker = new DOMWalker(element, bEnd, undefined, false);
         if (element) {
             this.refreshName();
         }
@@ -302,6 +303,7 @@ export class SRCursor {
      * @returns The current node as HTMLElement, or undefined if not an element
      */
     public getElement() {
+        if (!this.walker.node) return undefined;
         if (this.walker.node.nodeType !== 1) return undefined;
         return this.walker.node as HTMLElement;
     }

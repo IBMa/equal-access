@@ -1,5 +1,6 @@
 import { SRRendererRule } from "../SRRendererRule";
 import { SRCursor } from "../SRCursor";
+import { quoteNamePadAfter } from "./common";
 
 export let RULES: SRRendererRule[] = [
     // Single role rules - alphabetically sorted
@@ -125,10 +126,8 @@ export let RULES: SRRendererRule[] = [
                     ".//ul//li|.//ul//*[@role='listitem']|.//ol//li|.//ol//*[@role='listitem']|.//*[@role='list']//li|.//*[@role='list']//*[@role='listitem']",
                     node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
                 let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;
-                let addName = cursor.getNameInfo()?.name;
-                if (addName) { addName = addName + " " } else { addName = "" };
                 if (numItems === 0) return null;
-                return `[out of list]`;
+                return `[${quoteNamePadAfter(cursor)}out of list]`;
             }
         ]
     }),

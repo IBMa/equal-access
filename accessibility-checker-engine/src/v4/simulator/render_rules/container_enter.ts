@@ -1,6 +1,7 @@
 import { SRRendererRule } from "../SRRendererRule";
 import { SRCursor } from "../SRCursor";
 import { SRTableUtil } from "../SRTableUtil";
+import { quoteNamePadAfter, quoteNamePadBefore } from "./common";
 
 /**
  * Generates the announcement text when entering a table cell
@@ -25,7 +26,7 @@ function renderEnterTableCell(newCursor: SRCursor, oldCursor: SRCursor) {
     if (!oldCellInfo || oldCellInfo.colIndexStart !== newCellInfo.colIndexStart || oldCellInfo.colspan !== newCellInfo.colspan) {
         // If a change in column or a change in colspan
         let columnHeaders = SRTableUtil.getColumnHeadersForCursor(newCursor, newTableModel);
-        let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `${columnHeaders}, ` : "";
+        let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `“${columnHeaders}”, ` : "";
         retVal.push(`[${headerInfoStr}column ${(newCellInfo.colIndexStart+1)}${newCellInfo.colspan > 1 ? " through " + (newCellInfo.colIndexStart+newCellInfo.colspan) : ""}]`);
     }
 
@@ -43,7 +44,7 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `${cursor.getNameInfo()?.name || ""} [article region]`;
+                return `[${quoteNamePadAfter(cursor)}(cursor)article region]`;
             }
         ]
     }),
@@ -56,7 +57,7 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `${cursor.getNameInfo()?.name || ""} [banner region]`;
+                return `[${quoteNamePadAfter(cursor)}banner region]`;
             }
         ]
     }),
@@ -109,7 +110,7 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `${cursor.getNameInfo()?.name || ""} [complementary region]`;
+                return `[${quoteNamePadAfter(cursor)}complementary region]`;
             }
         ]
     }),
@@ -122,7 +123,7 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `${cursor.getNameInfo()?.name || ""} [content info region]`;
+                return `[${quoteNamePadAfter(cursor)}content info region]`;
             }
         ]
     }),
@@ -161,7 +162,7 @@ export let RULES: SRRendererRule[] = [
                 if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
                     return `[button, ${cursor.getElement().hasAttribute("open") ? "expanded": "collapsed"}]`;
                 } else {
-                    return `[grouping] ${cursor.getNameInfo()?.name || ""}`;
+                    return `[grouping${quoteNamePadBefore(cursor)}]`;
                 }
             }
         ]
@@ -200,10 +201,8 @@ export let RULES: SRRendererRule[] = [
                     ".//ul//li|.//ul//*[@role='listitem']|.//ol//li|.//ol//*[@role='listitem']|.//*[@role='list']//li|.//*[@role='list']//*[@role='listitem']",
                     node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
                 let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;
-                let addName = cursor.getNameInfo()?.name;
-                if (addName) { addName = addName + " " } else { addName = "" };
                 if (numItems === 0) return null;
-                return `${addName}[list of ${numItems} items]`;
+                return `[${quoteNamePadAfter(cursor)}list of ${numItems} items]`;
             }
         ]
     }),
@@ -214,7 +213,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region"],
         tests: [
-            (cursor: SRCursor) => `${cursor.getNameInfo()?.name || ""} [main region]`
+            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}main region]`
         ]
     }),
 
@@ -235,10 +234,8 @@ export let RULES: SRRendererRule[] = [
                 console.log("MENUBAR", cursor.isEndTag()?"/":"", cursor.getNode());
                 console.log(descendantListItems, descendantListItemsInOtherLists);//, descendantContainers, descendantContainers2)
                 let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;//-descendantContainers.snapshotLength+descendantContainers2.snapshotLength;
-                let addName = cursor.getNameInfo()?.name;
-                if (addName) { addName = addName + " " } else { addName = "" };
                 if (numItems === 0) return null;
-                return `${addName}[menubar with ${numItems} items]`;
+                return `[${quoteNamePadAfter(cursor)}menubar with ${numItems} items]`;
             }
         ]
     }),
@@ -249,7 +246,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region"],
         tests: [
-            (cursor: SRCursor) => `${cursor.getNameInfo()?.name || ""} [navigation region]`
+            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}navigation region]`
         ]
     }),
 
@@ -261,7 +258,7 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `${cursor.getNameInfo()?.name || ""} [region]`;
+                return `[${quoteNamePadAfter(cursor)}region]`;
             }
         ]
     }),
@@ -292,7 +289,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region"],
         tests: [
-            (cursor: SRCursor) => `${cursor.getNameInfo()?.name || ""} [search region]`
+            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}search region]`
         ]
     }),
 
@@ -341,7 +338,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region"],
         tests: [
-            (cursor: SRCursor) => `${cursor.getNameInfo()?.name || ""} [toolbar]`
+            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}toolbar]`
         ]
     }),
 
@@ -355,9 +352,7 @@ export let RULES: SRRendererRule[] = [
                 const node = cursor.getNode() as HTMLElement;
                 const descendantListItems = document.evaluate(".//dt", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
                 let numItems = descendantListItems.snapshotLength;
-                let addName = cursor.getNameInfo()?.name;
-                if (addName) { addName = addName + " " } else { addName = "" };
-                return `${addName}[definition list of ${numItems} terms]`;
+                return `[${quoteNamePadAfter(cursor)}definition list of ${numItems} terms]`;
             }
         ]
     }),

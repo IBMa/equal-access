@@ -29,7 +29,7 @@ export interface RenderResult {
 export type NavigationMode = "focus" | "item" | "link" | "heading" | "region" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | 
     "formcontrol" | "radio" | "button" | "checkbox" | "editbox" | "combo" | "graphic" | 
     "list" | "listitem" | "frame" | "article" | "paragraph" | "table" | "division" | 
-    "tabcontrol" | "separator" | "clickable" | "mouseover" | "dom" | "tab_focus";
+    "tabcontrol" | "separator" | "clickable" | "mouseover" | "dom" | "tab_focus" | "image";
 
 /**
  * Type for container changes

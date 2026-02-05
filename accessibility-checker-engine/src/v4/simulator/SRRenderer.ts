@@ -3,7 +3,6 @@ import { SRController } from "./SRController";
 import { SRNavigator } from "./SRNavigator";
 import { ContainerChanges, NavigationMode, RenderResult } from "./SRTypes";
 import { SRCursor } from "./SRCursor";
-import { SRTableUtil } from "./SRTableUtil";
 import { SR_RULES, CONTAINER_ENTER_RULES, CONTAINER_EXIT_RULES } from "./render_rules";
 
 /**

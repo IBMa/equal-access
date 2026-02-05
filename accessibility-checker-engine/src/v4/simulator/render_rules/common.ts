@@ -1,15 +1,33 @@
 import { SRCursor } from "../SRCursor";
 import { SRRendererRule } from "../SRRendererRule";
 
-function padNameAfter(cursor: SRCursor) {
-    return cursor.getName()?cursor.getName()+" ":"";
+/**
+ * Provide the name, surrounded by the quoteCharBefore and quoteCharAfter and followed by the padding if the name exists
+ * @param cursor The cursor for which to fetch the name
+ * @param padding String to add after, if the name exists
+ * @param quoteCharBefore The string to use as the leading quote, if the name exists
+ * @param quoteCharBefore The string to use as the trailing quote, if the name exists
+ * @returns 
+ */
+export function quoteNamePadAfter(cursor: SRCursor, padding?: string, quoteCharBefore?: string, quoteCharAfter?: string) {
+    return cursor.getName() 
+        ? `${quoteName(cursor)}${padding || ", "}`
+        : "";
 }
 
-function padNameBefore(cursor: SRCursor) {
-    return cursor.getName()?" "+cursor.getName():"";
+export function quoteNamePadBefore(cursor: SRCursor, padding?: string) {
+    return cursor.getName() 
+        ? `${padding || ", "}${quoteName(cursor)}`
+        : "";
 }
 
-export let RULES: SRRendererRule[] = [
+export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharAfter?: string) {
+    return cursor.getName() 
+        ? `${quoteCharBefore || '“'}${cursor.getName()}${quoteCharAfter || '”'}`
+        : "";
+}
+
+export const RULES: SRRendererRule[] = [
     // Single role rules - alphabetically sorted
     
     // Button role
@@ -19,9 +37,9 @@ export let RULES: SRRendererRule[] = [
         modes: ["item", "button", "tab_focus"],
         tests: [
             (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ?
-                `[toggle button, pressed] ${cursor.getNameInfo()?.name || ""}` : null,
+                `[toggle button, pressed${quoteNamePadBefore(cursor)}]` : null,
             (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ?
-                `[toggle button, not pressed] ${cursor.getNameInfo()?.name || ""}` : null,
+                `[toggle button, not pressed${quoteNamePadBefore(cursor)}]` : null,
             (cursor: SRCursor) => {
                 if (cursor.isEndTag()) return undefined;
                 let expandStr = "";
@@ -32,7 +50,7 @@ export let RULES: SRRendererRule[] = [
                 if (elem.hasAttribute("aria-expanded")) {
                     expandStr += `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                 }
-                return `${cursor.getNameInfo()?.name || ""} [button${expandStr}]`;
+                return `[${quoteNamePadAfter(cursor)}button${expandStr}]`;
             },
             (cursor: SRCursor) => { if (cursor.isEndTag()) return ""; }
         ]
@@ -48,9 +66,15 @@ export let RULES: SRRendererRule[] = [
                 if (cursor.isStartTag()) {
                     const elem = cursor.getNode() as HTMLInputElement;
                     if (elem.getAttribute("aria-checked") === "mixed") {
-                        return `[checkbox, half checked]${padNameBefore(cursor)}`
+                        return `[checkbox, half checked${quoteNamePadBefore(cursor)}]`
                     } else {
-                        return `[checkbox, ${elem.checked ? "checked" : "not checked"}]${padNameBefore(cursor)}`
+                        let bChecked = false;
+                        if (elem.hasAttribute("aria-checked")) {
+                            bChecked = elem.getAttribute("aria-checked") === "true";
+                        } else {
+                            bChecked = elem.checked;
+                        }
+                        return `[checkbox, ${bChecked ? "checked" : "not checked"}${quoteNamePadBefore(cursor)}]`
                     }
                 } else {
                     return "";
@@ -68,17 +92,15 @@ export let RULES: SRRendererRule[] = [
             (cursor: SRCursor) => {
                 if (cursor.isEndTag()) return "";
                 let state = "";
-                let value = "";
                 if (cursor.getNode().nodeName.toUpperCase() === "SELECT") {
                     state = ", collapsed";
 
                     const optionId = (cursor.getNode() as any).value;
                     let valueElem = cursor.getElement().querySelector(`option[value='${optionId}']`);
                     let temp = new SRCursor(valueElem, false);
-                    value = temp.getNameInfo()?.name ? ` ${temp.getNameInfo()?.name}` : "";
-                    return `${padNameAfter(cursor)}[combo box${state}]${value}`;
+                    return `[${quoteNamePadAfter(cursor)}combo box${state}${quoteNamePadBefore(temp, ", ")}]`;
                 } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT" && !cursor.getElement().hasAttribute("role")) {
-                    return `${padNameAfter(cursor)}[combo box, has auto complete, editable, opens list]`;
+                    return `[${quoteNamePadAfter(cursor)}combo box, has auto complete, editable, opens list]`;
                 } else {
                     const elem = cursor.getElement();
                     if (elem.hasAttribute("aria-expanded")) {
@@ -88,7 +110,7 @@ export let RULES: SRRendererRule[] = [
                         }
                         state += `, editable, opens list`
                     }
-                    return `[combo box${state}]${value}`;
+                    return `[combo box${state}]`;
                 }
             }
         ]
@@ -123,7 +145,7 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                return cursor.isEndTag() ? `[End of dialog]` : `[Start of dialog:${padNameBefore(cursor)}`;
+                return cursor.isEndTag() ? `[End of dialog]` : `[Start of dialog${quoteNamePadBefore(cursor)}`;
             }
         ]
     }),
@@ -142,11 +164,11 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["graphics-document"],
         elems: [],
-        modes: ["item"],
+        modes: ["item", "image"],
         tests: [
             (cursor: SRCursor) => (cursor.isStartTag() && !cursor.getNameInfo()?.name && cursor.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
             (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNameInfo()?.name === "")) ? "" : null,
-            (cursor: SRCursor) => (cursor.isStartTag() && cursor.getNameInfo()?.name && `[graphic] ${cursor.getNameInfo()?.name || ""}`) || null,
+            (cursor: SRCursor) => (cursor.isStartTag() && cursor.getNameInfo()?.name && `[graphic${quoteNamePadBefore(cursor)}]`) || null,
             (cursor: SRCursor) => (cursor.isEndTag()) ? "" : null
         ]
     }),
@@ -158,15 +180,15 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                let retVal = "";
                 if (cursor.isStartTag()) {
-                    retVal = `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
                     let nameInfo = cursor.getNameInfo();
                     if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
-                        retVal += ` ${cursor.getNameInfo()?.name || ""}`;
+                        return `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}${quoteNamePadBefore(cursor)}]`;
+                    } else {
+                        return `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
                     }
                 }
-                return retVal;
+                return "";
             }
         ]
     }),
@@ -178,15 +200,10 @@ export let RULES: SRRendererRule[] = [
         modes: ["heading", "h1", "h2", "h3", "h4", "h5", "h6"],
         tests: [
             (cursor: SRCursor) => {
-                let retVal = "";
                 if (cursor.isStartTag()) {
-                    let nameInfo = cursor.getNameInfo();
-                    if (nameInfo) {
-                        retVal = `${cursor.getNameInfo()?.name || ""} `;
-                    }
-                    retVal += `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
+                    return `[${quoteNamePadAfter(cursor)}heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
                 }
-                return retVal;
+                return "";
             }
         ]
     }),
@@ -195,7 +212,7 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["img"],
         elems: [],
-        modes: ["item"],
+        modes: ["item", "image"],
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.isEndTag()) {
@@ -206,7 +223,7 @@ export let RULES: SRRendererRule[] = [
                     } else if (cursor.getNameInfo()?.name === "") {
                         return "";
                     } else {
-                        return `[graphic] ${cursor.getNameInfo()?.name || ""}`
+                        return `[graphic${quoteNamePadBefore(cursor)}]`
                     }
                 }
             }
@@ -227,21 +244,22 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["link"],
         elems: [],
-        modes: ["item", "link", "tab_focus", "region"],
+        modes: ["item", "region", "link", "tab_focus"],
         tests: [
             (cursor: SRCursor) => {
                 let href: string = ((cursor.getNode() as any).href) || "";
                 let retVal = "";
                 if (cursor.isStartTag()) {
                     if (href.startsWith(document.location.href) && href.charAt(document.location.href.length) === "#") {
-                        retVal = `[same page link]`;
+                        retVal = `[same page link`;
                     } else {
-                        retVal = `[link]`;
+                        retVal = `[link`;
                     }
                     let nameInfo = cursor.getNameInfo();
                     if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
-                        retVal += ` ${(nameInfo?.name || "")}`
+                        retVal += quoteNamePadBefore(cursor);
                     }
+                    retVal += "]";
                 }
                 return retVal;
             }
@@ -329,11 +347,12 @@ export let RULES: SRRendererRule[] = [
                         expandStr += `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                     }
 
-                    retVal = `[menu${expandStr}]`;
+                    retVal = `[menu${expandStr}`;
                     let nameInfo = cursor.getNameInfo();
                     if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
-                        retVal += ` ${(nameInfo?.name || "")}`
+                        retVal += quoteNamePadBefore(cursor);
                     }
+                    retVal += "]";
                 }
                 return retVal;
             }
@@ -368,7 +387,13 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.isStartTag()) {
-                    return `[radio button, ${(cursor.getNode() as any).checked ? "checked" : "not checked"}]${padNameBefore(cursor)}`
+                    let bChecked = false;
+                    if (cursor.getElement().hasAttribute("aria-checked")) {
+                        bChecked = cursor.getElement().getAttribute("aria-checked") === "true";
+                    } else {
+                        bChecked = (cursor.getNode() as any).checked;
+                    }
+                    return `[radio button, ${bChecked ? "checked" : "not checked"}${quoteNamePadBefore(cursor)}]`
                 } else {
                     return "";
                 }
@@ -382,7 +407,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => cursor.isStartTag() ? `${padNameAfter(cursor)}[edit]` : ""
+            (cursor: SRCursor) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}edit]` : ""
         ]
     }),
 
@@ -402,7 +427,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => cursor.isStartTag() ? `${padNameAfter(cursor)}[slider, ${(cursor.getNode() as any).value}]` : ""
+            (cursor: SRCursor) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}slider, ${(cursor.getNode() as any).value}]` : ""
         ]
     }),
 
@@ -412,7 +437,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => cursor.isStartTag() ? `${padNameAfter(cursor)}[spinbutton, editable]` : ""
+            (cursor: SRCursor) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}spinbutton, editable]` : ""
         ]
     }),
 
@@ -422,7 +447,7 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && `[tab${(cursor.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected" : ""}] ${cursor.getNameInfo()?.name || ""}`) || ""
+            (cursor: SRCursor) => (cursor.isStartTag() && `[tab${(cursor.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected" : ""}${quoteNamePadBefore(cursor)}]`) || ""
         ]
     }),
 
@@ -433,11 +458,11 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                    if (cursor.getNameInfo() === null) return null;
+                if (cursor.getNameInfo() === null) return null;
                 if (cursor.isStartTag()) {
-                    return `[group start, ${cursor.getNameInfo()?.name || ""}]`;
+                    return `[group start${quoteNamePadBefore(cursor)}]`;
                 } else {
-                    return `[group end, ${cursor.getNameInfo()?.name || ""}]`;
+                    return `[group end${quoteNamePadBefore(cursor)}]`;
                 }
             }
         ]
@@ -450,11 +475,11 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                    if (cursor.getNameInfo() === null) return null;
+                if (cursor.getNameInfo() === null) return null;
                 if (cursor.isStartTag()) {
-                    return `[Tab panel start, ${cursor.getNameInfo()?.name || ""}]`;
+                    return `[Tab panel start${quoteNamePadBefore(cursor)}]`;
                 } else {
-                    return `[Tab panel end, ${cursor.getNameInfo()?.name || ""}]`;
+                    return `[Tab panel end${quoteNamePadBefore(cursor)}]`;
                 }
             }
         ]
@@ -501,9 +526,9 @@ export let RULES: SRRendererRule[] = [
                         placeholder = `, placeholder: ${elem.getAttribute("placeholder")}`
                     }
                     if (elem.nodeName.toUpperCase() === "INPUT") {
-                        return `${padNameAfter(cursor)}[edit${placeholder}]`;
+                        return `[${quoteNamePadAfter(cursor)}edit${placeholder}]`;
                     } else {
-                        return `${padNameAfter(cursor)}[edit, multiline]`;
+                        return `[${quoteNamePadAfter(cursor)}edit, multiline]`;
                     }
                 } else if (elem.nodeName.toUpperCase() === "TEXTAREA") {
                     return "[out of edit]";
@@ -558,12 +583,12 @@ export let RULES: SRRendererRule[] = [
         elems: ["INPUT"],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "password" && `${padNameAfter(cursor)}[edit, protected]`) || null,
+            (cursor: SRCursor) => (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "password" && `[${quoteNamePadAfter(cursor)}edit, protected]`) || null,
             (cursor: SRCursor) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "file") {
                     let value = (cursor.getElement() as HTMLInputElement)?.value || "";
                     value = value === "" ? "No file chosen" : value.substring("C:\\fakepath\\".length);
-                    return `${padNameAfter(cursor)}[button] ${padNameAfter(cursor)}[${value}]`;
+                    return `[${quoteNamePadAfter(cursor)}button] [${quoteNamePadAfter(cursor)}${value}]`;
                 }
                 return null;
             },
@@ -573,7 +598,7 @@ export let RULES: SRRendererRule[] = [
                     const r = (Number(`0x${val.substring(1, 3)}`) * 100.0 / Number("0xff")).toFixed(0);
                     const g = (Number(`0x${val.substring(3, 5)}`) * 100.0 / Number("0xff")).toFixed(0);
                     const b = (Number(`0x${val.substring(5)}`) * 100.0 / Number("0xff")).toFixed(0);
-                    return `${padNameAfter(cursor)}[clickable] [${r}% red ${g}% green ${b}% blue]`;
+                    return `[${quoteNamePadAfter(cursor)}clickable] [${r}% red ${g}% green ${b}% blue]`;
                 }
                 return null;
             },
@@ -587,7 +612,7 @@ export let RULES: SRRendererRule[] = [
                         y = "" + date.getFullYear();
                         m = "" + (date.getMonth() + 1);
                     }
-                    return `${padNameAfter(cursor)}[clickable] [spin button, ${m}] [spin button, ${y}] [menu button] [subMenu] Show month picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] [spin button, ${y}] [menu button] [subMenu] Show month picker`;
                 }
                 return null;
             },
@@ -603,7 +628,7 @@ export let RULES: SRRendererRule[] = [
                         m = "" + (date.getMonth() + 1);
                         day = "" + (date.getDate());
                     }
-                    return `${padNameAfter(cursor)}[clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [menu button] [subMenu] Show date picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [menu button] [subMenu] Show date picker`;
                 }
                 return null;
             },
@@ -631,7 +656,7 @@ export let RULES: SRRendererRule[] = [
                         min = "" + date.getMinutes();
                         ampm = date.getHours() >= 12 ? "pm" : "am";
                     }
-                    return `${padNameAfter(cursor)}[clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}]  [menu button] [subMenu] Show local date and time picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}]  [menu button] [subMenu] Show local date and time picker`;
                 }
                 return null;
             },
@@ -654,7 +679,7 @@ export let RULES: SRRendererRule[] = [
                         min = date[1];
                         ampm = hours >= 12 ? "pm" : "am";
                     }
-                    return `${padNameAfter(cursor)}[grouping clickable [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}] [menu button] [subMenu] Show time picker [out of grouping]`;
+                    return `[${quoteNamePadAfter(cursor)}grouping clickable [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}] [menu button] [subMenu] Show time picker [out of grouping]`;
                 }
                 return null;
             },
@@ -668,12 +693,12 @@ export let RULES: SRRendererRule[] = [
                         year = date[0];
                         week = date[1];
                     }
-                    return `${padNameAfter(cursor)}[clickable] [spin button, ${week}], [spin button, ${year}] [menu button] [subMenu] Show week picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${week}], [spin button, ${year}] [menu button] [subMenu] Show week picker`;
                 }
                 return null;
             },
             (cursor: SRCursor) => cursor.getElement()?.getAttribute("type") === "hidden" ? "" : null,
-            (cursor: SRCursor) => (cursor.isStartTag() && `!!${padNameAfter(cursor)}[input!!]${cursor.getElement().outerHTML}`) || null
+            (cursor: SRCursor) => (cursor.isStartTag() && `!![${quoteNamePadAfter(cursor)}input!!]${cursor.getElement().outerHTML}`) || null
         ]
     }),
 

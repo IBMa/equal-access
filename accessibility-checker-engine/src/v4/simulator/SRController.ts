@@ -4,23 +4,32 @@ import { SRRenderer } from "./SRRenderer";
 import { NavigationMode, NavigationResult, RenderResult } from "./SRTypes";
 import { SRNavigator } from "./SRNavigator";
 import { CacheUtil } from "../util/CacheUtil";
-import { VisUtil } from "../util/VisUtil";
 import { SRUtil } from "./SRUtil";
+import { VisUtil } from "../util/VisUtil";
 
 /**
  * SRController class for managing screen reader simulation
  * Maintains a point of regard and provides navigation functions
  */
 export class SRController {
+    public static singleton;
+    public static getController() {
+        if (!this.singleton) {
+            this.singleton = new SRController();
+        }
+        return this.singleton;
+    }
+
     /** The current point of regard */
     private pointOfRegard: SRCursor;
     private mutationObserver: MutationObserver;
+    private liveListeners: Array<(result: string) => Promise<void>> = [];
     
     /**
      * Creates a new SRController
      * @param rootElement The root element to start from (defaults to document.body)
      */
-    constructor(private rootElement: Node = document.body) {
+    private constructor(private rootElement: Node = document.body) {
         this.setPointOfRegard(rootElement);
         this.setupMutationTracking();
         console.info(`[WARNING] The SRController is a new feature that is not yet "stable". What this means:
@@ -34,6 +43,33 @@ export class SRController {
         }
     }
     
+    private findAllShadowRoots(root: Document | DocumentFragment | Node = document): Node[] {
+        const shadowRoots: Node[] = [];
+
+        // Get all elements in the current root
+        const walker = document.createTreeWalker(
+            root,
+            NodeFilter.SHOW_ELEMENT,
+            null
+        );
+
+        let node: Node | null;
+        while (node = walker.nextNode()) {
+            const element = node as Element;
+
+            // Check if this element has an open shadow root
+            if (element.shadowRoot) {
+                shadowRoots.push(element.shadowRoot);
+
+                // Recursively search inside this shadow root
+                const nestedShadowRoots = this.findAllShadowRoots(element.shadowRoot);
+                shadowRoots.push(...nestedShadowRoots);
+            }
+        }
+
+        return shadowRoots;
+    }
+
     /**
      * Set up mutation tracking
      * 
@@ -55,11 +91,120 @@ export class SRController {
                 })
             };
             this.setPointOfRegard(porNode);
+            
+            for (const mutation of mutations) {
+                if (mutation.addedNodes) {
+                    mutation.addedNodes.forEach(addedNode => {
+                        // Add observation of new shadow roots
+                        let allRoots = this.findAllShadowRoots(addedNode);
+                        for (const root of allRoots) {
+                            observer.observe(root, {
+                                childList: true,
+                                subtree: true,
+                                characterData: true
+                            });
+                        }
+                    });
+                }
+
+                const node = mutation.target;
+                const elem = node.nodeType === 1 ? node as HTMLElement : node.parentElement;
+                if (elem 
+                    && !elem.closest(`[aria-busy="true"]`)
+                    && elem.getAttribute("aria-busy") !== "true"
+                ) {
+                    // Identify the live region container
+                    const liveRegionElem = 
+                        // The element itself is a live region container
+                        ((
+                            ["polite", "assertive"].includes(elem.getAttribute("aria-live"))
+                                || elem.nodeName.toUpperCase() === "OUTPUT"
+                                || ["status", "log", "progressbar", "alert", "timer"].includes(elem.getAttribute("role"))
+                        ) && elem) 
+                        // Or get the nearest ancestor
+                        || elem.closest(`[aria-live="polite"],[aria-live="assertive"],output,[role="status"],[role="log"],[role="progressbar"],[role="alert"],[role="timer"]`);
+
+                    let isMutationRelevant = false;
+                    let relevance = ["additions", "text"];
+                    if (liveRegionElem) {
+                        // Determine what kinds of changes are 'relevant'
+                        const relevantElem = elem.closest("[aria-relevant]");
+                        if (relevantElem) {
+                            relevance = relevantElem.getAttribute("aria-relevant").split(/ +/g);
+                        }
+
+                        if (liveRegionElem.getAttribute("role") === "log") {
+                            relevance = ["additions"];
+                        }
+                        if (liveRegionElem.hasAttribute("aria-relevant")) {
+                            relevance = liveRegionElem.getAttribute("aria-relevant").split(/ +/g);
+                        }
+                        if (relevance.includes("all")) {
+                            relevance = ["additions", "removals", "text"];
+                        }
+                        isMutationRelevant = (mutation.target.nodeType === 3 && relevance.includes("text"))
+                            || (mutation.addedNodes.length > 0 && relevance.includes("additions"))
+                            || (mutation.removedNodes.length > 0 && relevance.includes("removals"));
+                    }
+                    
+
+                    if (liveRegionElem && isMutationRelevant) {
+                        const isAtomic = liveRegionElem.getAttribute("aria-atomic") === "true" || ["alert", "status", "timer", "marquee"].includes(liveRegionElem.getAttribute("role"));
+                        // Read the whole region if atomic
+                        if (!isAtomic && mutation.type === "characterData" && mutation.target.nodeType === 3 && !VisUtil.isNodeHiddenFromAT(mutation.target.parentElement)) {
+                            for (const liveListener of this.liveListeners) {
+                                liveListener(mutation.target.nodeValue);
+                            }
+                        } else {
+                            let liveTarget = isAtomic ? liveRegionElem : mutation.target;
+                            if ((liveTarget as any).liveAnnounce) {
+                                clearTimeout((liveTarget as any).liveAnnounce);
+                            }
+                            (liveTarget as any).liveAnnounce = setTimeout(() => {
+                                let results = [];
+                                let isRemoval = (relevance.includes("removals") && mutation.removedNodes.length > 0);
+                                if (isAtomic || isRemoval) {
+                                    let liveCursor = new SRCursor(liveTarget, false);
+                                    let liveCursorEnd = new SRCursor(liveTarget, true);
+                                    liveCursorEnd.next(() => true);
+                                    results.push((isRemoval?"[removed] ":"")+SRRenderer.renderRange("item", liveCursor, liveCursorEnd));
+                                } else if (relevance.includes("additions") && mutation.addedNodes.length > 0) {
+                                    mutation.addedNodes.forEach(addedNode => {
+                                        // Just render the additions
+                                        let liveCursor = new SRCursor(addedNode, false);
+                                        let liveCursorEnd = new SRCursor(addedNode, true);
+                                        liveCursorEnd.next(() => true);
+                                        results.push(SRRenderer.renderRange("item", liveCursor, liveCursorEnd));
+                                    });
+                                }
+                                for (const liveListener of this.liveListeners) {
+                                    liveListener(results.join("\n"));
+                                }
+                            }, 100);
+                        }
+                    }
+                }
+            }
         });
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true
-        });
+
+        // Need to observe all of the shadow roots
+        let allRoots = this.findAllShadowRoots(document.documentElement);
+        allRoots.push(document.documentElement);
+        for (const root of allRoots) {
+            observer.observe(root, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+    }
+
+    public addLiveListener(listener: (result: string) => Promise<void>) {
+        this.liveListeners.push(listener);
+    }
+
+    public removeLiveListener(removeListener: (result: string) => Promise<void>) {
+        this.liveListeners = this.liveListeners.filter(listener => listener !== removeListener);
     }
 
     /**
@@ -311,7 +456,7 @@ export class SRController {
     }
 
     public static renderAll(mode: NavigationMode): string[] {
-        let ctrl = new SRController(document.body);
+        let ctrl = SRController.getController();
         let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
         dialogs.forEach(dialog => {
             if (SRUtil.isModalDialogElement(dialog)) {
@@ -338,7 +483,8 @@ export class SRController {
     }
 
     public static renderAllDetail(mode: NavigationMode): RenderResult[] {
-        let ctrl = new SRController(document.body);
+        let ctrl = SRController.getController();
+        ctrl.setPointOfRegard(document.body);
         let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
         dialogs.forEach(dialog => {
             if (SRUtil.isModalDialogElement(dialog)) {
@@ -365,44 +511,32 @@ export class SRController {
         return results;
     }
 
-    public static renderStructure(): Array<{region: string, heading: string, item: string, tab_focus: string }> {
-        let headings = SRController.renderAllDetail("heading");
-        let regions = SRController.renderAllDetail("region");
-        let items = SRController.renderAllDetail("item");
-        let tabbable = SRController.renderAllDetail("tab_focus");
-        let retVal: Array<{region: string, heading: string, item: string, tab_focus:  string}> = [];
-        while (regions.length > 0 || headings.length > 0 || items.length > 0 || tabbable.length > 0) {
-            // console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-            // Determine which of the modes has the earliest cursor
-            let next = regions[0]?.start;
-            if (headings.length > 0) {
-                if (!next || SRCursor.compare(headings[0].start, next) < 0) {
-                    next = headings[0].start;
+    public static renderStructure(): Array<{ [key: string]: string }> {
+        const modes: NavigationMode[] = [ "region", "heading", "item", "tab_focus", "image" ];
+        let details = modes.map(modeLabel => SRController.renderAllDetail(modeLabel));
+        let retVal: Array<{ [key: string]: string }> = [];
+        while (details.some(detail => detail.length > 0)) {
+            let next = details[0][0]?.start;
+            modes.forEach((mode, idx) => {
+                if (details[idx].length > 0) {
+                    if (!next || SRCursor.compare(details[idx][0].start, next) < 0) {
+                        next = details[idx][0].start;
+                    }
                 }
-            }
-            if (items.length > 0) {
-                if (!next || SRCursor.compare(items[0].start, next) < 0) {
-                    next = items[0].start;
+            });
+
+            let nextItem: { [key: string]: string } = {};
+            modes.forEach((mode, idx) => {
+                nextItem[mode] = "";
+                if (details[idx].length > 0 && SRCursor.compare(details[idx][0].start, next) === 0) {
+                    nextItem[mode] = details[idx].shift().message;
                 }
-            }
-            if (tabbable.length > 0) {
-                if (!next || SRCursor.compare(tabbable[0].start, next) < 0) {
-                    next = tabbable[0].start;
-                }
-            }
-            // console.log(next);
-            let nextItem = { region: "", heading: "", item: "", tab_focus: "" };
-            if (regions.length > 0 && SRCursor.compare(regions[0].start, next) === 0) {
-                nextItem.region = regions.shift().message;
-            }
-            if (headings.length > 0 && SRCursor.compare(headings[0].start, next) === 0) {
-                nextItem.heading = headings.shift().message;
-            }
-            if (items.length > 0 && SRCursor.compare(items[0].start, next) === 0) {
-                nextItem.item = items.shift().message;
-            }
-            if (tabbable.length > 0 && SRCursor.compare(tabbable[0].start, next) === 0) {
-                nextItem.tab_focus = tabbable.shift().message;
+            });
+
+            const elem = next.getElement();
+            const selector = elem && SRUtil.getUniqueSelector(elem);
+            if (selector && document.querySelector(selector)) {
+                nextItem.selector = selector;
             }
             retVal.push(nextItem);
         }
