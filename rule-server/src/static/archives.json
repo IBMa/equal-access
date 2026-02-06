@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "06February2026",
+        "name": "06 February 2026 Deployment (IBM 7.3)",
+        "version": "4.0.11",
+        "path": "/archives/2026.02.06"
+    },
+    {
         "id": "03September2025",
         "name": "03 September 2025 Deployment (IBM 7.3)",
         "version": "4.0.9",
