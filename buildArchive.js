@@ -26,10 +26,9 @@ function myExec(cmd) {
             }
             if (stderr) {
                 console.error(stderr);
-                return;
             }
             resolve(stdout);
-        });    
+        });
     });
 }
 
@@ -44,7 +43,9 @@ const archiveDir = `${now.getFullYear()}.${(""+(now.getMonth()+1)).padStart(2,'0
 const archiveId = `${paddedDate}${monthStr}${now.getFullYear()}`;
 (async () => {
     // **Pull from Git**: Ensure we have the latest from Git
-    await myExec("git pull");
+    await myExec("git fetch");
+    await myExec("git pull origin main-4.x");
+    await myExec("git merge origin/main-4.x")
     // **Install**: In `accessibility-checker-engine` and `rule-server` run `npm install`
     await myExec("pushd accessibility-checker-engine && npm install && popd");
     await myExec("pushd rule-server && npm install && popd");
