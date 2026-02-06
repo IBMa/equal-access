@@ -122,6 +122,7 @@ export class CommonUtil {
         // Using https://allyjs.io/data-tables/focusable.html
         // Handle the explicit cases first
         if (!VisUtil.isNodeVisible(element)) return false;
+        if (element.hasAttribute("inert") || DOMUtil.getAncestorWithAttribute(element, "inert", "")) return false;
         if (element.hasAttribute("tabindex")) {
             return parseInt(element.getAttribute("tabindex")) >= 0;
         }

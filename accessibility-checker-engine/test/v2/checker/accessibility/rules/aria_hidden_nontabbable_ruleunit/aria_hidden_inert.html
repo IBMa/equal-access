@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <title>aria_hidden_nontabbale, inert</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <main>
+        <h1>Test of aria-hidden with inert</h1>
+        <div>
+            <a href="#">Link before</a>
+            <div inert aria-hidden="true">
+                <button>Test</button>
+            </div>
+            <a href="#">Link after</a>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_hidden_nontabbable"],
+            results: [
+          {
+            "ruleId": "aria_hidden_nontabbable",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/generic[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_nontabbable",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/button[1]",
+              "aria": "/document[1]/main[1]/generic[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ],
+        };
+    </script>
+</body>
+
+</html>
