@@ -122,6 +122,7 @@ export class CommonUtil {
         // Using https://allyjs.io/data-tables/focusable.html
         // Handle the explicit cases first
         if (!VisUtil.isNodeVisible(element)) return false;
+        if (element.hasAttribute("inert") || DOMUtil.getAncestorWithAttribute(element, "inert", "")) return false;
         if (element.hasAttribute("tabindex")) {
             return parseInt(element.getAttribute("tabindex")) >= 0;
         }
@@ -1472,15 +1473,13 @@ export class CommonUtil {
 
     public static getControlOfLabel(node: Node) {
         // Handle the easy case of label -> for
-        let labelAncestor = CommonUtil.getAncestor(node, "label");
-        if (labelAncestor) {
-            if (labelAncestor.hasAttribute("for")) {
-                return FragmentUtil.getById(node, labelAncestor.getAttribute("for"));
-            }
+        const labelAncestor = CommonUtil.getAncestor(node, "label");
+        if (labelAncestor && labelAncestor.hasAttribute("for")) {
+            return FragmentUtil.getById(node, labelAncestor.getAttribute("for"));
         }
 
         // Create a dictionary containing ids of parent nodes
-        let idDict = {};
+        const idDict = {};
         let parentWalk = node;
         while (parentWalk) {
             if (parentWalk.nodeType === 1 /* Node.ELEMENT_NODE */) {
@@ -1492,14 +1491,27 @@ export class CommonUtil {
             parentWalk = DOMWalker.parentNode(parentWalk);
         }
 
+        // Early return if no ancestor IDs found
+        if (Object.keys(idDict).length === 0) {
+            return null;
+        }
+
+        // Cache aria-labelledby attribute if node is an element
+        const nodeAriaLabelledBy = node.nodeType === 1 ? (node as Element).getAttribute("aria-labelledby") : null;
+
         // Iterate through controls that use aria-labelledby and see if any of them reference one of my ancestor ids
-        const inputsUsingLabelledBy = node.ownerDocument.querySelectorAll("*[aria-labelledby]");
+        const inputsUsingLabelledBy = CacheUtil.getSetCache(
+            node.ownerDocument, 
+            "CommonUtil::getControlOfLabel", 
+            () =>  node.ownerDocument.querySelectorAll("*[aria-labelledby]")
+        );
+
         for (let idx = 0; idx < inputsUsingLabelledBy.length; ++idx) {
             const inputUsingLabelledBy = inputsUsingLabelledBy[idx];
             const ariaLabelledBy = inputUsingLabelledBy.getAttribute("aria-labelledby");
             const sp = ariaLabelledBy.split(" ");
             for (const id of sp) {
-                if (id in idDict && !CommonUtil.isIdReferToSelf(node, (node as Element).getAttribute("aria-labelledby"))) {
+                if (id in idDict && !CommonUtil.isIdReferToSelf(node, nodeAriaLabelledBy)) {
                     return inputUsingLabelledBy;
                 }
             }
@@ -1535,7 +1547,9 @@ export class CommonUtil {
         // the node has already been checked. Only set it to false if the setting is undefined or null
         // as if it is defined we do not wnat to reset it. As if it is true then we should make use of it
         // to speed up the check.
-        let PT_NODE_DISABLED = CacheUtil.getCache(node, "PT_NODE_DISABLED", false);
+        let PT_NODE_DISABLED = CacheUtil.getCache(node, "PT_NODE_DISABLED", undefined);
+        if (typeof PT_NODE_DISABLED !== "undefined") return PT_NODE_DISABLED;
+        PT_NODE_DISABLED = false;
 
         // Check the nodeType of this node, if this node is a text node then
         // we get the parentnode and set that as the node as a text nodes,

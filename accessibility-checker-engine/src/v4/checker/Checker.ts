@@ -17,7 +17,6 @@
 import { Rule as RuleV4, eRulePolicy } from "../api/IRule";
 import { Engine } from "../../v2/common/Engine";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
-import { StyleMapper } from "../../v2/style/StyleMapper";
 import { a11yRulesets } from "../rulesets";
 import * as checkRulesV4 from "../rules";
 import { Guideline, eGuidelineCategory } from "../api/IGuideline";
@@ -104,7 +103,6 @@ export class Checker implements IChecker {
         let engine = this.engine = new Engine();
 
         engine.addMapper(new ARIAMapper());
-        engine.addMapper(new StyleMapper());
 
         engine.addRules(checkRules);
         engine.addNlsMap(checkNls);

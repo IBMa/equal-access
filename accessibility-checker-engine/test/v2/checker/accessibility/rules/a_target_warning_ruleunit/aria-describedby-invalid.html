@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2026- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>aria-describedby invalid test cases</title>
+</head>
+
+<body>
+    <h2>Test case: aria-describedby-invalid.html</h2>
+    
+    <p>Testing aria-describedby without proper warning text (should trigger potential warnings)</p>
+
+    <!-- Hidden element without warning text -->
+    <div hidden>
+        <span id="no-warning">This is additional information</span>
+        <span id="external-info">External resource</span>
+    </div>
+
+    <!-- Test 1: Link with aria-describedby but no warning text (should trigger POTENTIAL) -->
+    <a href="https://example.com" target="_blank" aria-describedby="no-warning">
+        Example Link 1
+    </a>
+
+    <!-- Test 2: Link with aria-describedby pointing to non-existent ID (should trigger POTENTIAL) -->
+    <a href="https://example.com" target="_blank" aria-describedby="non-existent-id">
+        Example Link 2
+    </a>
+
+    <!-- Test 3: Link with target="_blank" but no warning at all (should trigger POTENTIAL) -->
+    <a href="https://example.com" target="_blank">
+        Example Link 3
+    </a>
+
+    <!-- Test 4: Link with aria-describedby but empty referenced element (should trigger POTENTIAL) -->
+    <span id="empty-desc"></span>
+    <a href="https://example.com" target="_blank" aria-describedby="empty-desc">
+        Example Link 4
+    </a>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["a_target_warning"],
+            results: [{
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "POTENTIAL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[1]",
+                    "aria": "/document[1]/link[1]"
+                },
+                "reasonId": "potential_warn",
+                "message": "Inform the user when their input action will open a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "POTENTIAL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[2]",
+                    "aria": "/document[1]/link[2]"
+                },
+                "reasonId": "potential_warn",
+                "message": "Inform the user when their input action will open a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "POTENTIAL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[3]",
+                    "aria": "/document[1]/link[3]"
+                },
+                "reasonId": "potential_warn",
+                "message": "Inform the user when their input action will open a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "POTENTIAL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[4]",
+                    "aria": "/document[1]/link[4]"
+                },
+                "reasonId": "potential_warn",
+                "message": "Inform the user when their input action will open a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }]
+        }
+    </script>
+</body>
+
+</html>

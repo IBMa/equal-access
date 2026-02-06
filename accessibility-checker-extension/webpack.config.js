@@ -65,9 +65,16 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
+        fullySpecified: false,
     },
     module: {
         rules: [
+            {
+                test: /\.m?js$/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
             { test: /\.(js|ts|tsx)?$/, loader: "ts-loader", exclude: /node_modules/ },
             {
                 test: /\.scss$/,

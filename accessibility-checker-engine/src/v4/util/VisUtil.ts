@@ -122,13 +122,14 @@ export class VisUtil {
             return false;
         }
 
-        if (CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined) !== undefined) {
-            return CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
+        let cacheVal = CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
+        if (cacheVal !== undefined) {
+            return cacheVal;
         }
         // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
         // true when we detect that the node is hidden. We have to set it to false so that we know
         // the rules has already been checked.
-        CacheUtil.setCache(node, "PT_NODE_HIDDEN", CacheUtil.getCache(node, "PT_NODE_HIDDEN", false));
+        cacheVal = CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
 
         // Check if this node is visible, we check couple of CSS properties and hidden attribute.
         // area, param and audio elements we do not check if they are hidden as it does not apply to them.
@@ -153,13 +154,12 @@ export class VisUtil {
             // In the case that defaultView does not exists return true to identify that this
             // node is visible, because were not able to detect if it was not.
             else {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
-                return true;
+                return CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
             }
 
             // Get the hidden element property and hidden attribute
             let hiddenAttribute = node.getAttribute("hidden");
-            let hiddenPropertyCustom = CacheUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
+            let hiddenPropertyCustom = cacheVal;
             // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
             // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
@@ -173,8 +173,7 @@ export class VisUtil {
                 (hiddenAttribute === null || hiddenAttribute === undefined) &&
                 !hiddenPropertyCustom // This covers false, null or undefined
             ) {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
-                return true;
+                return CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
             }
 
             // In the case that the compStyle is defined we check the following:
@@ -195,21 +194,18 @@ export class VisUtil {
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
                 // properties is a lot faster performance whise. For Hash map we need to store based on xpath, and to calculate
                 // xpath it is more performance impact.
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
-                return false;
+                return CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
             }
 
             // check content-visibility: if the content-visibility is hidden, then, return false as the element is not visible
             if (VisUtil.isContentHidden(node)) {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
-                return false;
+                return CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
             }
 
             // check hidden by clip-path
             // TODO: need to check if hidden content contains focusable elements, similarly to offscreen content
             if (ClipPathUtil.isNodeVisuallyHiddenByClipPath(node)) {
-                CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
-                return false;
+                return CacheUtil.setCache(node, "PT_NODE_HIDDEN", false);
             }
         }
 
@@ -239,13 +235,11 @@ export class VisUtil {
             // }
 
             // Check upwards recursively
-            CacheUtil.setCache(node, "PT_NODE_HIDDEN", nodeVisible);
-            return nodeVisible;
+            return CacheUtil.setCache(node, "PT_NODE_HIDDEN", nodeVisible);
         }
 
         // Return true (node is visible)
-        CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
-        return true;
+        return CacheUtil.setCache(node, "PT_NODE_HIDDEN", true);
     }
 
     /**
@@ -276,9 +270,9 @@ export class VisUtil {
         const hidden = CacheUtil.getCache(elem, "PT_NODE_VISUALLY_HIDDEN", undefined);
         if (hidden === undefined) {
             // defined styles only give the styles that changed
-            const defined_styles = CSSUtil.getDefinedStyles(elem);
-            if ((defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)')
-                || (defined_styles['opacity'] && parseFloat(defined_styles['opacity']) < 0.1))  {
+            const comp_styles = CSSUtil.getComputedStyle(elem);
+            if ((comp_styles['position']==='absolute' && comp_styles['clip'] && (comp_styles['clip'] as any).replaceAll(' ', '')==='rect(0px,0px,0px,0px)')
+                || (comp_styles['opacity'] && parseFloat(comp_styles['opacity']) < 0.1))  {
                 CacheUtil.setCache(elem, "PT_NODE_VISUALLY_HIDDEN", true);
                 return true;
             }

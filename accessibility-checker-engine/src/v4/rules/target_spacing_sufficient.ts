@@ -11,11 +11,12 @@
     limitations under the License.
  *****************************************************************************/
 
-    import { CommonUtil } from "../util/CommonUtil";
-    import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
-    import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-    import { DOMMapper } from "../../v2/dom/DOMMapper";
-    import { CSSUtil } from "../util/CSSUtil";
+import { CommonUtil } from "../util/CommonUtil";
+import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RuleFail, RulePotential } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { CSSUtil } from "../util/CSSUtil";
+import { CacheUtil } from "../util/CacheUtil";
     
     export const target_spacing_sufficient: Rule = {
         id: "target_spacing_sufficient",
@@ -99,12 +100,12 @@
                     return RulePass("pass_default");
             }
 
-            var doc = ruleContext.ownerDocument;
+            let doc = ruleContext.ownerDocument;
             if (!doc) {
                 return null;
             }
             
-            var cStyle = getComputedStyle(ruleContext);
+            let cStyle = getComputedStyle(ruleContext);
             if (cStyle === null) 
                 return null;
             
@@ -112,38 +113,57 @@
             if (!zindex || isNaN(Number(zindex)))
                 zindex = "0";
             
-            //select all elements except itself and descendants
-            var elems = doc.querySelectorAll('body *:not(script):not(style)');
-            if (!elems || elems.length === 0)
+            // Get the list of target elements
+            let targetElems = CacheUtil.getCache(doc.documentElement, "target_spacing_sufficient::targets", undefined);
+            if (typeof targetElems === "undefined") {
+                targetElems = [];
+                //select all elements except itself and descendants
+                let elems = doc.querySelectorAll('body *:not(script):not(style)');
+                for (let i=0; i < elems.length; i++) {
+                    const elem = elems[i] as HTMLElement;
+                    if (CommonUtil.isTarget(elem)) {
+                        targetElems.push(elem);
+                    }
+                }
+                CacheUtil.setCache(doc.documentElement, "target_spacing_sufficient::targets", targetElems);
+            }
+
+            if (!targetElems || targetElems.length === 0)
                 return;
-            
+
             let before = true;
             let minX = 24;
             let minY = 24;
             let adjacentX = null;
             let adjacentY = null;
             let checked = []; //contains a list of elements that have been checked so their descendants don't need to be checked again
-            for (let i=0; i < elems.length; i++) {
-                const elem = elems[i] as HTMLElement;
+            for (let i=0; i < targetElems.length; i++) {
+                const elem = targetElems[i] as HTMLElement;
                 /**
                  *  the nodes returned from querySelectorAll is in document order
                  *  if two elements overlap and z-index are not defined, then the node rendered earlier will be overlaid by the node rendered later
                  *  filter out the elements that’re descendant or ancestors of the target element, nor descendant of the target element's siblings
                  */
-                if (ruleContext.contains(elem)) {
-                    //the next node in elems will be after the target node (ruleContext). 
+                // Use compareDocumentPosition to check containment relationships
+                // Note: compareDocumentPosition returns 0 when comparing a node to itself
+                const position = ruleContext.compareDocumentPosition(elem);
+                
+                // DOCUMENT_POSITION_CONTAINED_BY (16): elem is contained by ruleContext
+                // Also handle self-comparison (position === 0)
+                if (position === 0 || (position & Node.DOCUMENT_POSITION_CONTAINED_BY)) {
+                    //the next node in elems will be after the target node (ruleContext).
                     before = false;
                     continue;
                 }
-                // ignore ascendants of the element, not a target, or itself or its ascendant already checked   
-                if (elem.contains(ruleContext)  || !CommonUtil.isTarget(elem) 
-                   || checked.some(item => item.contains(elem))) 
+                // DOCUMENT_POSITION_CONTAINS (8): elem contains ruleContext
+                // ignore ascendants of the element, or itself or its ascendant already checked
+                if ((position & Node.DOCUMENT_POSITION_CONTAINS) || checked.some(item => item.contains(elem)))
                     continue;
 
                 const bnds = mapper.getUnadjustedBounds(elem);
                 if (!bnds) continue;
                 
-                var zStyle = getComputedStyle(elem); 
+                let zStyle = getComputedStyle(elem); 
                 let z_index = '0';
                 if (zStyle) {
                     z_index = zStyle.zIndex;

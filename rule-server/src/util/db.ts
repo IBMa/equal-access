@@ -8,11 +8,11 @@
  * disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  *****************************************************************************/
 
-import { join } from "path";
+import { join } from "node:path";
 import { Config } from "../config";
-import { CouchDBWrap } from "../service-util/util/CouchDBWrap";
-import { ICloudant } from "../service-util/util/ICloudant";
-import { existsSync, readdirSync, statSync } from "fs";
+import { CouchDBWrap } from "../service-util/util/CouchDBWrap.js";
+import { ICloudant } from "../service-util/util/ICloudant.js";
+import { existsSync, readdirSync, statSync } from "node:fs";
 
 export enum eDB {
     AAT
@@ -36,7 +36,7 @@ export async function getDB(db: eDB): Promise<ICloudant> {
             const dbName = dbNameMap[db];
             if (db === eDB.AAT) {
                 if (Config.__CLOUD__ || (Config.AAT_DB && Config.AAT_DB_APIKEY)) {
-                    const { CloudantDBWrap } = await import("../service-util/util/CloudantDBWrap");
+                    const { CloudantDBWrap } = await import("../service-util/util/CloudantDBWrap.js");
                     retVal = new CloudantDBWrap(CloudantDBWrap.createConnection(Config.AAT_DB, Config.AAT_DB_APIKEY), dbName);
                 } else {
                     let dbURL = "http://" + Config.COUCHDB_USER + ":" + Config.COUCHDB_PASSWORD + "@localhost:5984";
