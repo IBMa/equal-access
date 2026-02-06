@@ -13,6 +13,7 @@
 
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
@@ -66,6 +67,21 @@ export const a_target_warning: Rule = {
             let textStr = CommonUtil.getInnerText(ruleContext);
             if (ruleContext.hasAttribute("title"))
                 textStr += " " + ruleContext.getAttribute("title");
+            
+            // Check aria-describedby for warning text
+            if (ruleContext.hasAttribute("aria-describedby")) {
+                let describedbyIds = ruleContext.getAttribute("aria-describedby").trim().split(/\s+/);
+                for (let id of describedbyIds) {
+                    let referencedElem = FragmentUtil.getById(ruleContext, id);
+                    if (referencedElem) {
+                        let describedText = CommonUtil.getInnerText(referencedElem);
+                        if (describedText && describedText.trim().length > 0) {
+                            textStr += " " + describedText;
+                        }
+                    }
+                }
+            }
+            
             for (let i = 0; !passed && i < params.paramWinText.value.length; ++i)
                 if (textStr.indexOf(params.paramWinText.value[i]) != -1) passed = true;
         }
