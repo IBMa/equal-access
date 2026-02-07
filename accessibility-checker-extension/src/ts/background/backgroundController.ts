@@ -56,6 +56,7 @@ class BackgroundController extends Controller {
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
+    private metricsSR = new ACMetricsLogger("ac-extension-emulator");
 
     /**
      * Used by the tab controller to initialize the tab when the first scan is performed on that tab
@@ -519,6 +520,9 @@ class BackgroundController extends Controller {
                 await myExecuteScript2(contentTabId, (contentTabId: number) => {
                     if (!(<any>window).aceIBMaSRController) {
                         (<any>window).aceIBMaSRController = (<any>window).aceIBMa_preview.SRController.getController();
+                        let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                        this.metricsSR.profileV2(1, browser, "");
+                        this.metricsSR.sendLogsV2();
                         (<any>window).aceIBMaSRController.addLiveListener((result: string) => {
                             // BG_onSRLive
                             chrome.runtime.sendMessage({
