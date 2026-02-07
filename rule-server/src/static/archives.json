@@ -5,10 +5,17 @@
         "path": "/archives/latest"
     },
     {
+        "id": "07February2026",
+        "name": "07 February 2026 Deployment (IBM 7.3)",
+        "version": "4.0.12",
+        "path": "/archives/2026.02.07"
+    },
+    {
         "id": "06February2026",
         "name": "06 February 2026 Deployment (IBM 7.3)",
         "version": "4.0.11",
-        "path": "/archives/2026.02.06"
+        "path": "/archives/2026.02.06",
+        "hidden": true
     },
     {
         "id": "03September2025",
@@ -240,31 +247,36 @@
         "id": "27January2023",
         "name": "27 January 2023 Deployment (IBM 7.2)",
         "version": "3.1.43",
-        "path": "/archives/2023.01.27"
+        "path": "/archives/2023.01.27",
+        "hidden": true
     },
     {
         "id": "11January2023",
         "name": "11 January 2023 Deployment (IBM 7.2)",
         "version": "3.1.42",
-        "path": "/archives/2023.01.11"
+        "path": "/archives/2023.01.11",
+        "hidden": true
     },
     {
         "id": "08November2022",
         "name": "08 November 2022 Deployment (IBM 7.2)",
         "version": "3.1.41",
-        "path": "/archives/2022.11.08"
+        "path": "/archives/2022.11.08",
+        "hidden": true
     },
     {
         "id": "13October2022",
         "name": "13 October 2022 Deployment (IBM 7.2)",
         "version": "3.1.39",
-        "path": "/archives/2022.10.13"
+        "path": "/archives/2022.10.13",
+        "hidden": true
     },
     {
         "id": "21September2022",
         "name": "21 September 2022 Deployment (IBM 7.2)",
         "version": "3.1.38",
-        "path": "/archives/2022.09.21"
+        "path": "/archives/2022.09.21",
+        "hidden": true
     },
     {
         "id": "10August2022",
