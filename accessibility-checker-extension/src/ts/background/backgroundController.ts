@@ -56,58 +56,73 @@ class BackgroundController extends Controller {
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
+    private metricsSR = new ACMetricsLogger("ac-extension-emulator");
+
     /**
-     * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
+     * Used by the tab controller to initialize the tab when the first scan is performed on that tab
+     * 
      * @param tabId 
+     * @param archiveId If not specified, will use an archive from options. Otherwise will load the
+     * specified archiveId as aceIBMa_archiveId
      * @returns 
      */
-    public async initTab(tabId: number) {
+    public async initTab(tabId: number, archiveId?: string) {
         // Only allow one init at a time
         await this.sync;
-        return this.sync = this.hook("initTab", tabId, async () => {
-            // Determine if the engine is already loaded with this archive
-            let settings = await this.getSettings();
-            let archiveId = settings.selected_archive.id;
-            let isAlreadyLoaded = await myExecuteScript2(tabId, (archiveId: string) => {
-                return typeof (window as any).aceIBMa !== "undefined" 
-                    && (window as any).aceIBMa.archiveId === archiveId;
-            }, [archiveId]);
-            if (isAlreadyLoaded) {
-                return;
+        return this.sync = this.hook("initTab", { tabId, archiveId }, async () => {
+            
+
+            async function loadArchiveHelper(archiveId: string, windowAttr: string) {
+                let isAlreadyLoaded = await myExecuteScript2(tabId, (archiveId: string, windowAttr: string) => {
+                    return typeof (window as any)[windowAttr] !== "undefined" 
+                        && (window as any)[windowAttr].archiveId === archiveId;
+                }, [archiveId, windowAttr]);
+                if (isAlreadyLoaded) {
+                    return;
+                }
+
+                // Move any existing object out of the way
+                await myExecuteScript2(tabId, () => {
+                    // Move the current "ace" to a temp object
+                    if (typeof (window as any).ace !== "undefined") {
+                        (window as any).aceIBMaTemp = (window as any).ace;
+                    }
+                });
+
+                // Switch to the appropriate engine for this archiveId and load as "ace"
+                let engineFile = await EngineCache.getEngine(archiveId);
+                await new Promise((resolve, reject) => {
+                    myExecuteScript({
+                        target: { tabId: tabId, frameIds: [0] },
+                        files: [engineFile]
+                    }, function (res: any) {
+                        if (chrome.runtime.lastError) {
+                            reject(chrome.runtime.lastError.message);
+                        }
+                        resolve(res);
+                    });
+                });
+
+                // Move ace to aceIBMa and move the old ace back
+                await myExecuteScript2(tabId, (windowAttr: string) => {
+                    ((window as any)[windowAttr] = (window as any).ace);
+                    if (typeof (window as any).aceIBMaTemp !== "undefined") {
+                        (window as any).ace = (window as any).aceIBMaTemp;
+                        delete (window as any).aceIBMaTemp;
+                    } else {
+                        delete (window as any).ace;
+                    }
+                }, [windowAttr])
             }
 
-            // Move any existing object out of the way
-            await myExecuteScript2(tabId, () => {
-                // delete (window as any).aceIBMa;
-                if (typeof (window as any).ace !== "undefined") {
-                    (window as any).aceIBMaTemp = (window as any).ace;
-                }
-            });
-
-            // Switch to the appropriate engine for this archiveId
-            let engineFile = await EngineCache.getEngine(archiveId);
-            await new Promise((resolve, reject) => {
-                myExecuteScript({
-                    target: { tabId: tabId, frameIds: [0] },
-                    files: [engineFile]
-                }, function (res: any) {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError.message);
-                    }
-                    resolve(res);
-                });
-            });
-
-            // Move ace to aceIBMa and move the old ace back
-            await myExecuteScript2(tabId, () => {
-                ((window as any).aceIBMa = (window as any).ace);
-                if (typeof (window as any).aceIBMaTemp !== "undefined") {
-                    (window as any).ace = (window as any).aceIBMaTemp;
-                    delete (window as any).aceIBMaTemp;
-                } else {
-                    delete (window as any).ace;
-                }
-            })
+            if (archiveId) {
+                await loadArchiveHelper(archiveId, `aceIBMa_${archiveId}`);
+            } else {
+                // Determine if the engine is already loaded with this archive
+                let settings = await this.getSettings();
+                let archiveId = settings.selected_archive.id;
+                await loadArchiveHelper(archiveId, "aceIBMa");
+            }
         });
     }
 
@@ -496,6 +511,163 @@ class BackgroundController extends Controller {
         });
     }
 
+    ///// SR functions ////////////////////////////////////////////////////////
+
+    private async initSRController(contentTabId: number) {
+        await this.initTab(contentTabId!, "preview");
+        await new Promise<void>(resolve => {
+            setTimeout(async () => {
+                await myExecuteScript2(contentTabId, (contentTabId: number) => {
+                    if (!(<any>window).aceIBMaSRController) {
+                        (<any>window).aceIBMaSRController = (<any>window).aceIBMa_preview.SRController.getController();
+                        let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                        this.metricsSR.profileV2(1, browser, "");
+                        this.metricsSR.sendLogsV2();
+                        (<any>window).aceIBMaSRController.addLiveListener((result: string) => {
+                            // BG_onSRLive
+                            chrome.runtime.sendMessage({
+                                "content": {
+                                    contentTabId,
+                                    result
+                                },
+                                "dest": "background",
+                                "type": "BG_onSRLive"
+                            });
+                        })
+                    }
+                }, [contentTabId]);
+                resolve();
+            }, 100);
+        });
+    }
+
+
+    /**
+     * Listener for options settings
+     */
+    public async addSRLiveListener(contentTabId: number, listener: ListenerType<string>) {
+        this.addEventListener(async (msg: {contentTabId: number, result: string }) => {
+            if (msg.contentTabId === contentTabId) {
+                listener(msg.result);
+            }
+        }, `BG_onSRLive`);
+    }
+
+    /**
+     * Get the renderStructure for the currently loaded engine
+     */
+    public async renderStructure(contentTabId: number) {
+        return this.hook("renderStructure", contentTabId, async () => {
+            await this.initSRController(contentTabId!);
+            return await myExecuteScript2(contentTabId, () => {
+                let retVal = (<any>window).aceIBMa_preview.SRController.renderStructure();
+                return retVal;
+            });
+        });
+    }
+
+    /**
+     * jumpNext
+     */
+    public async jumpNext(contentTabId: number, mode: string) {
+        return this.hook("jumpNext", { contentTabId, mode }, async () => {
+            await this.initSRController(contentTabId!);
+            return await myExecuteScript2(contentTabId, (mode: string) => {
+                return (<any>window).aceIBMaSRController.jumpNext(mode);
+            }, [mode]);
+        });
+    }
+
+    /**
+     * jumpPrevious
+     */
+    public async jumpPrevious(contentTabId: number, mode: string) {
+        return this.hook("jumpPrevious", { contentTabId, mode }, async () => {
+            await this.initSRController(contentTabId!);
+            return await myExecuteScript2(contentTabId, (mode: string) => {
+                return (<any>window).aceIBMaSRController.jumpPrevious(mode);
+            }, [mode]);
+        });
+    }
+
+    public async activatePointOfRegard(contentTabId: number) {
+        return this.hook("activatePointOfRegard", contentTabId, async () => {
+            await this.initSRController(contentTabId!);
+            return await myExecuteScript2(contentTabId, () => {
+                const controller = (<any>window).aceIBMaSRController;
+                const currentElement = controller.getPointOfRegard().getElement() as HTMLElement;
+        
+                if (currentElement) {
+                    // Focus the element first
+                    if (currentElement.focus) {
+                        currentElement.focus();
+                    }
+                    
+                    // Simulate a click on the element
+                    currentElement.click();
+                    return new Promise(resolve => setTimeout(() => {
+                        controller.setPointOfRegard(document.activeElement);
+                        resolve((<any>window).aceIBMaSRController.renderCurrent("item"));
+                    },0));
+                } else {
+                    return (<any>window).aceIBMaSRController.renderCurrent("item");
+                }
+            });
+        })
+    }
+
+    public async resetSRController(contentTabId: number) {
+        return this.hook("resetSRController", contentTabId, async () => {
+            await this.initSRController(contentTabId!);
+            return await myExecuteScript2(contentTabId, () => {
+                const controller = (<any>window).aceIBMaSRController;
+                controller.setPointOfRegard(document.body);
+            });
+        });
+    }
+
+    public async highlightSelector(contentTabId: number, selector: string) {
+        return this.hook("highlightSelector", { contentTabId, selector }, async () => {
+            // Attach debugger
+            chrome.debugger.attach({ tabId: contentTabId }, "1.3", () => {
+                // Send CDP command to highlight
+                chrome.debugger.sendCommand({ tabId: contentTabId }, "DOM.getDocument", {}, (root: any) => {
+                    chrome.debugger.sendCommand({ tabId: contentTabId }, "DOM.querySelector", {
+                        nodeId: root.root.nodeId,
+                        selector: selector
+                    }, (result: any) => {
+                        chrome.debugger.sendCommand({ tabId: contentTabId }, "Overlay.highlightNode", {
+                            nodeId: result.nodeId,
+                            highlightConfig: {
+                                showInfo: true,
+                                contentColor: { r: 111, g: 168, b: 220, a: 0.66 }
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    public async inspectSelector(contentTabId: number, selector: string) {
+        return this.hook("inspectSelector", { contentTabId, selector }, async () => {
+            // Attach debugger
+            chrome.debugger.attach({ tabId: contentTabId }, "1.3", () => {
+                // Send CDP command to highlight
+                chrome.debugger.sendCommand({ tabId: contentTabId }, "DOM.getDocument", {}, (root: any) => {
+                    chrome.debugger.sendCommand({ tabId: contentTabId }, "DOM.querySelector", {
+                        nodeId: root.root.nodeId,
+                        selector: selector
+                    }, (result: any) => {
+                        chrome.debugger.sendCommand({ tabId: contentTabId }, "DOM.setInspectedNode", {
+                            nodeId: result.nodeId
+                        });
+                    });
+                });
+            });
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -529,18 +701,25 @@ class BackgroundController extends Controller {
                 },
                 "BG_initTab": async (msgBody) => {
                     if (msgBody.content !== null) {
-                        return self.initTab(msgBody.content);
+                        return self.initTab(msgBody.content.tabId, msgBody.content.archiveId);
                     }
                 },
                 "BG_getTabInfo": async(msgBody, senderTabId) => {
                     return self.getTabInfo((msgBody && msgBody.content) || senderTabId!)
                 },
+                "BG_resetSRController": async (msgBody) => self.resetSRController(msgBody.content),
                 "BG_getScreenshot": async(msgBody, senderTabId) => {
                     return self.getScreenshot((msgBody && msgBody.content) || senderTabId!)
                 },
                 "BG_getArchiveDefForVersion": async(msgBody) => {
                     return self.getArchiveDefForVersion(msgBody.content);
-                }
+                },
+                "BG_renderStructure": async (msgBody) => self.renderStructure(msgBody.content),
+                "BG_jumpNext": async (msgBody) => self.jumpNext(msgBody.content.contentTabId, msgBody.content.mode),
+                "BG_jumpPrevious": async (msgBody) => self.jumpPrevious(msgBody.content.contentTabId, msgBody.content.mode),
+                "BG_activatePointOfRegard": async (msgBody) => self.activatePointOfRegard(msgBody.content),
+                "BG_highlightSelector": async (msgBody) => self.highlightSelector(msgBody.content.contentTabId, msgBody.content.selector),
+                "BG_inspectSelector": async (msgBody) => self.inspectSelector(msgBody.content.contentTabId, msgBody.content.selector)
             }
 
             // Hook the above definitions
@@ -560,6 +739,14 @@ class BackgroundController extends Controller {
                 })
             });
 
+            // Listen for SRLive messages
+            chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+                if (message.type === 'BG_onSRLive') {
+                    const { contentTabId } = message.content;
+                    self.notifyEventListeners("BG_onSRLive", contentTabId, message.content);
+                }
+            });
+
             CommonMessaging.initRelays();
         }
     }
@@ -574,6 +761,7 @@ class BackgroundController extends Controller {
         if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopAlerts = true; }
         if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopFirstTime = true; }
         if (!("checkerViewAwareFirstTime" in settings)) { (settings as ISettings).checkerViewAwareFirstTime = true; }
+        if (!("enableScreenReaderEmulator" in settings)) { (settings as ISettings).enableScreenReaderEmulator = false; }
 
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";

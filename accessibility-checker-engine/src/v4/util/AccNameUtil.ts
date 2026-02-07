@@ -25,10 +25,106 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
+export type AccessibleNameResult = {
+    name: string, 
+    nameFrom: "ariaLabel" | "title" | "placeholder" | "label" 
+        | "value" | "internal" | "alt" | "text" | "legend" 
+        | "summary" | "figcaption" | "caption"
+        | "shadow" | "slot" | "shadow-host" | "content-slot"
+        | "content"
+        | "svglinkTitle" | "svgTitle" | "svgText" | "svgDesc"
+        | "aria-description"
+        | string // css-*
+}
 export class AccNameUtil {
-    
+    /**
+     * Computes the accessible name for an SVG element according to W3C specification
+     * Following the Accessible Name and Description Computation 1.1 algorithm
+     * https://www.w3.org/TR/accname-1.1/
+     * 
+     * @param elem The SVG element
+     * @returns The accessible name result or null if no accessible name is found
+     */
+    public static computeAccessibleNameForSVGElementW3C(elem: Element): AccessibleNameResult | null {
+        if (!elem || elem.nodeName.toLowerCase() !== 'svg') return null;
+
+        // Step 1: Check for aria-labelledby (already handled by main computeAccessibleName function)
+        // Step 2: Check for aria-label (already handled by main computeAccessibleName function)
+
+        // Step 3: Check for title element
+        const svgTitles = elem.querySelectorAll(":scope > title");
+        if (svgTitles && svgTitles.length > 0) {
+            let text = "";
+            svgTitles.forEach(svgTitle => {
+                if (svgTitle && !VisUtil.isNodeHiddenFromAT(svgTitle) && !VisUtil.isNodePresentational(svgTitle)) {
+                    const title = svgTitle.textContent;
+                    if (title && title.trim() !== '')
+                        text += title.trim();
+                }
+            });
+            if (text && text.trim() !== '')
+                return { "name": text.trim(), "nameFrom": "svgTitle" };
+        }
+
+        // Step 4: Check for text content in SVG text elements
+        let textContent = "";
+        const textElements = elem.querySelectorAll("text, textPath, tspan");
+        if (textElements && textElements.length > 0) {
+            textElements.forEach(textElement => {
+                if (!VisUtil.isNodeHiddenFromAT(textElement) && !VisUtil.isNodePresentational(textElement)) {
+                    const content = textElement.textContent;
+                    if (content && content.trim() !== '')
+                        textContent += " " + content.trim();
+                }
+            });
+            if (textContent.trim() !== '')
+                return { "name": CommonUtil.truncateText(textContent.trim()), "nameFrom": "svgText" };
+        }
+
+        // Step 5: Check for xlink:title attribute on links within SVG
+        const links = elem.querySelectorAll("a");
+        for (let i = 0; i < links.length; i++) {
+            const link = links[i];
+            if (!VisUtil.isNodeHiddenFromAT(link) && !VisUtil.isNodePresentational(link)) {
+                const xlinkTitle = link.getAttribute("xlink:title");
+                if (xlinkTitle && xlinkTitle.trim() !== '')
+                    return { "name": CommonUtil.truncateText(xlinkTitle), "nameFrom": "svglinkTitle" };
+            }
+        }
+
+        // Step 6: Check for aria-describedby or aria-description
+        let description = AriaUtil.getAriaDescription(elem);
+        if (description && description.trim() !== '')
+            return { "name": CommonUtil.truncateText(description), "nameFrom": "aria-description" };
+
+        // Step 7: Check for desc element
+        const descElements = elem.querySelectorAll(":scope > desc");
+        if (descElements && descElements.length > 0) {
+            let descText = "";
+            descElements.forEach(descElement => {
+                if (!VisUtil.isNodeHiddenFromAT(descElement) && !VisUtil.isNodePresentational(descElement)) {
+                    const desc = descElement.textContent;
+                    if (desc && desc.trim() !== '')
+                        descText += " " + desc.trim();
+                }
+            });
+            if (descText.trim() !== '')
+                return { "name": descText.trim(), "nameFrom": "svgDesc" };
+        }
+
+        // Step 8: Check for title attribute
+        if (elem.hasAttribute("title")) {
+            const title = elem.getAttribute("title");
+            if (title && title.trim() !== '')
+                return { "name": CommonUtil.truncateText(title), "nameFrom": "title" };
+        }
+
+        // No accessible name found
+        return null;
+    }
+
     // calculate accessible name for a given node
-    public static computeAccessibleName(elem: Element) : any | null {
+    public static computeAccessibleName(elem: Element) : AccessibleNameResult | null {
         if (!elem) return null;
         const nodeName = elem.nodeName.toLowerCase();
 
@@ -92,7 +188,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForNativeElement(elem: Element) : any | null {
+    public static computeAccessibleNameForNativeElement(elem: Element) : AccessibleNameResult | null {
         const nodeName = elem.nodeName.toLowerCase();
         
         // labellable fields
@@ -286,7 +382,7 @@ export class AccNameUtil {
 
         // svg
         if (nodeName === "svg") {
-            const pair = AccNameUtil.computeAccessibleNameForSVGElement(elem);
+            const pair = AccNameUtil.computeAccessibleNameForSVGElementW3C(elem);
             if (pair && pair.name && pair.name.trim().length > 0) 
                 return pair;
         }
@@ -294,7 +390,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for native elements
-    public static computeAccessibleNameForSVGElement(elem: Element) : any | null {
+    public static computeAccessibleNameForSVGElement(elem: Element) : AccessibleNameResult | null {
         // 1. a direct child or descendant title element 
         const svgTitles = elem.querySelectorAll(":scope > title");
         if (svgTitles && svgTitles.length > 0) {
@@ -357,10 +453,9 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for custom elements marked with aria
-    public static computeAccessibleNameFromContent(elem: Element) : any | null {
+    public static computeAccessibleNameFromContent(elem: Element) : AccessibleNameResult | null {
         const nodeName = elem.nodeName.toLowerCase();
         const role = AriaUtil.getResolvedRole(elem);
-        
         /** for acc name from content, the content from CSS pseudo-elements 
          *  :before and :after pseudo elements [CSS2] can provide textual content for elements that have a content model.
          * For :before or :after pseudo elements, user agents must prepend CSS textual content, without a space, 
@@ -383,7 +478,7 @@ export class AccNameUtil {
         
         // slot element
         if (nodeName === "slot") {
-            pair = AccNameUtil.computeAccessibleNameForSlostElement(elem);
+            pair = AccNameUtil.computeAccessibleNameForSlotElement(elem);
             if (pair && pair.name && pair.name.trim().length > 0)
                 return {"name": pair.name, "nameFrom": "slot"};
         }
@@ -398,7 +493,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name from CSS generated content
-    public static computeAccessibleNameForCSSPseudoElement(elem: Element, type:string) : any | null {
+    public static computeAccessibleNameForCSSPseudoElement(elem: Element, type:string) : AccessibleNameResult | null {
         const contentElem = elem.ownerDocument.defaultView.getComputedStyle(elem,type);
         if (contentElem) {
             let content = contentElem.content;
@@ -412,7 +507,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameForShadowHost(elem: Element) : any | null {
+    public static computeAccessibleNameForShadowHost(elem: Element) : AccessibleNameResult | null {
         let text = "";
         const shadowRoot = elem.shadowRoot;
         if (shadowRoot) {
@@ -431,7 +526,7 @@ export class AccNameUtil {
     }
 
     // calculate accessible name for SLOT element
-    public static computeAccessibleNameForSlostElement(elem: Element) : any | null {
+    public static computeAccessibleNameForSlotElement(elem: Element) : AccessibleNameResult | null {
         //if no assignedNode, check its own text 
         let text = "";
         if (!(elem as HTMLSlotElement).assignedNodes() || (elem as HTMLSlotElement).assignedNodes().length === 0) {
@@ -453,8 +548,9 @@ export class AccNameUtil {
     }
 
     // calculate accessible name from children content
-    public static computeAccessibleNameFromChildren(elem: Element) : any | null {
+    public static computeAccessibleNameFromChildren(elem: Element) : AccessibleNameResult | null {
         let text = "";
+
         //let walkChild = elem.firstChild;
         let nw = new DOMWalker(elem);
         // Loop over all the childrens of the element to get the text
@@ -465,13 +561,19 @@ export class AccNameUtil {
             if (walkChild.nodeType === 3) {
                 // for the text node, get the parentnode to check visibility
                 const parent = walkChild.parentElement;
-                if (!VisUtil.isNodeHiddenFromAT(parent) && !VisUtil.isNodePresentational(parent) && walkChild.nodeValue && walkChild.nodeValue.trim().length > 0) 
+                if (!VisUtil.isNodeHiddenFromAT(parent) && !VisUtil.isNodePresentational(parent) && walkChild.nodeValue && walkChild.nodeValue.trim().length > 0) {
                     text += " " + walkChild.nodeValue.trim();
+                }
 
             } else if (walkChild.nodeType === 1 && !VisUtil.isNodeHiddenFromAT(walkChild as HTMLElement) && !VisUtil.isNodePresentational(walkChild as HTMLElement)) {
                 const pair = AccNameUtil.computeAccessibleName(walkChild as Element);
-                if (pair && pair.name && pair.name.length > 0) 
+                if (pair && pair.name && pair.name.length > 0) {
                     text += " " + pair.name.trim();
+                }
+                // Skip children if this element only has presentational children
+                if (AriaUtil.containsPresentationalChildrenOnly(nw.node as HTMLElement)) {
+                    nw.bEndTag = true;
+                }
             }
         }
         if (text.trim().length > 0)

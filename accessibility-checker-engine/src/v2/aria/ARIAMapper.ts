@@ -344,7 +344,7 @@ export class ARIAMapper extends CommonMapper {
     // https://www.w3.org/TR/html-aam-1.0/#mapping-html-to-accessibility-apis
     public static elemAttrValueCalculators: { [nodeName:string]: { [attr:string]: string | ElemCalc }} = {
         "global": {
-            "name": AccNameUtil.computeAccessibleName  //ARIAMapper.computeName
+            "name": elem => AccNameUtil.computeAccessibleName(elem)?.name  //ARIAMapper.computeName
         }
         , "datalist": {
             // set to "true" if the datalist's selection model allows multiple option elements to be

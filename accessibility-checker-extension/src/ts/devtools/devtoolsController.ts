@@ -617,6 +617,49 @@ export class DevtoolsController extends Controller {
         }
     }
 
+    /**
+     * Focus an element in the elements panel
+     * @param path 
+     */
+    public async inspectSelector(selector: string) {
+        await this.hook("inspectSelector", selector, async () => {
+            // We've already selected that...
+            // let curSelectedPath = await this.getSelectedElementPath();
+            // if (path === curSelectedPath) return;
+            let script = `
+                function selectorToElem(srcPath) {
+                    let doc = document;
+                    let element = doc.querySelector(srcPath);
+                    if (element) {
+                        inspect(element);
+                        let elementRect = element.getBoundingClientRect();
+                        let absoluteElementTop = elementRect.top + window.pageYOffset;
+                        let middle = absoluteElementTop - 100;
+                        // this is to scroll the element on the web page into view
+                        element.ownerDocument.defaultView.scrollTo({
+                            top: middle,
+                            behavior: 'smooth'
+                        });
+                        return true;
+                    }
+                    return;
+                }
+                selectorToElem(\`${selector}\`);
+            `;
+            await new Promise<void>((resolve, _reject) => {
+                chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
+                    if (isException) {
+                        console.error(isException);
+                    }
+                    if (!result) {
+                        console.log('Could not select element, it may have moved');
+                    }
+                    resolve();
+                });
+            });
+        });
+    }
+
     ///// Export report functions /////////////////////////////////////////
 
     public async exportXLS(type: "last" | "all" | "selected") {
@@ -783,6 +826,7 @@ export class DevtoolsController extends Controller {
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content.path, msgBody.content.fromElemChange),
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
                 "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content),
+                "DT_inspectSelector": async(msgBody) => self.inspectSelector(msgBody.content),
                 "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content),
                 "DT_setScanningState": async(msgBody) => self.setScanningState(msgBody.content),
                 "DT_setActivePanel": async(msgBody) => self.setActivePanel(msgBody.content),

@@ -37,6 +37,7 @@ module.exports = {
         popup: path.join(sourceRootPath, 'ts', 'popup', 'index.tsx'),
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
         devtoolsMain: path.join(sourceRootPath, 'ts', 'devtools', 'indexMain.tsx'),
+        devtoolsSR: path.join(sourceRootPath, 'ts', 'devtools', 'indexSR.tsx'),
         devtoolsElements: path.join(sourceRootPath, 'ts', 'devtools', 'indexElements.tsx'),
         viewKCM: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewKCM.ts'),
         viewInspect: path.join(sourceRootPath, 'ts', 'contentScripts', 'viewInspect.ts'),
@@ -127,6 +128,13 @@ module.exports = {
             filename: 'devtoolsElements.html',
             title: 'Accessibility Checker Extension',
             chunks: ['devtoolsElements']
+        }),
+        new HtmlWebpackPlugin({
+            template: path.join(sourceRootPath, 'html', 'devtoolsSR.html'),
+            inject: 'body',
+            filename: 'devtoolsSR.html',
+            title: 'Accessibility Checker Extension',
+            chunks: ['devtoolsSR']
         }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'reports.html'),

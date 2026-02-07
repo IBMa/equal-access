@@ -17,8 +17,11 @@
 import Config from "../util/config";
 import { getTabIdSync } from "../util/tabId";
 import { getDevtoolsController } from "./devtoolsController";
+import { getBGController } from "../background/backgroundController";
+
+const isDev = Config.workspace && Config.workspace === "development";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
-let devStr = (Config.workspace && Config.workspace === "development" && " (dev)") || "";
+let devStr = (isDev && " (dev)") || "";
 let devtoolsController = getDevtoolsController(getTabIdSync()!, false, "local", getTabIdSync()!);
 
 chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+devStr+localStr,
@@ -34,7 +37,7 @@ chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+devStr
     }
 );
 
-chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "devtoolsMain.html", 
+chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "devtoolsMain.html",
     function(newPanel) {
         newPanel.onShown.addListener(() => {
             devtoolsController.setActivePanel("main");
@@ -44,4 +47,17 @@ chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "d
         });
     }
 );
+
+// Create Screen Reader Emulator panel based on user settings
+(async () => {
+    const bgController = getBGController();
+    const settings = await bgController.getSettings();
+    
+    if (settings.enableScreenReaderEmulator) {
+        chrome.devtools.panels.create("Screen Reader Emulator"+devStr+localStr, "", "devtoolsSR.html",
+            function() {
+            }
+        );
+    }
+})();
 
