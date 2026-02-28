@@ -78,47 +78,215 @@ class WrappedRule {
     }
 
     /**
-     * This function is responsible converting the node into a source line which can be added to report.
-     * @param {HTMLElement} node - The html element to convert into a source result
+     * This function is responsible for finding the source location for a node, which can be added to a report.
+     * Supports debug directives in the following forms:
+     *   1. An attribute on the element itself:
+     *        ibm-a11y-debug="file.ts:10:5"
+     *   2. A comment node preceding the element (as a sibling or ancestor sibling):
+     *        <!-- ibm-a11y-debug: file.ts:10:5 -->
+     *   3. A wrapper element (e.g. div) whose first non-whitespace child is such a comment node.
+     *   4. An ancestor element that carries the ibm-a11y-debug attribute.
      *
-     * @return {String} source - return the source that created the node
+     * Traversal: checks the node itself for an inline attribute, then scans previous siblings at
+     * each ancestor level upward (also checking each ancestor element's own inline attribute),
+     * stopping if a blank or 'end' marker is found.
+     *
+     * @param {Node} node - The DOM node to find source info for
+     * @return {string | null} - The source location string, or null if not found
      *
      * @memberOf this
      */
-    static convertNodeToSource(node : Element) : string {
-        if (!node) return undefined;
-        
-        const debug_directive: string = "ibm-a11y-debug";
+    static convertNodeToSource(node: Node): string {
+        if (!node) return null;
+
+        const DEBUG_DIRECTIVE = "ibm-a11y-debug";
+
         /**
-         * traverse left then upward to find source info
-         * @param node 
-         * @returns location str 
+         * Typed result from extractDirective to avoid sentinel string collisions.
+         *   { found: false }            — no directive on this node
+         *   { found: true, stop: true } — directive is a scope-end marker (blank or 'end')
+         *   { found: true, stop: false, source: string } — valid source location
          */
-        const findSource = function (elem: Element | null) : string | null {
-            if (!elem) return undefined;
-            
-            let prev = elem.previousSibling;
-            while (prev) {
-                if (prev.nodeName.toLocaleLowerCase() === 'div' && prev.firstChild && prev.firstChild.nodeType === Node.COMMENT_NODE) {
-                    const comment = prev.firstChild.nodeValue;
-                    if (comment && comment.trim().startsWith(debug_directive)) {
-                        const source = comment.trim().substring(debug_directive.length+2).trim();
-                        if (source.includes('end')) 
-                            return undefined;
-                        return source;                    }    
-                }
-                prev = prev.previousSibling;
+        type DirectiveResult =
+            | { found: false }
+            | { found: true; stop: true }
+            | { found: true; stop: false; source: string };
+
+        /**
+         * Parses a source string into a DirectiveResult.
+         * The source is the final resolved value — after any ':' separator has already been stripped.
+         * A blank value or the exact word 'end' (case-insensitive) is a stop marker.
+         */
+        const parseSource = function (source: string): DirectiveResult {
+            if (!source || source.toLowerCase() === 'end') {
+                return { found: true, stop: true };
             }
-            return findSource(elem.parentElement);
+            return { found: true, stop: false, source };
         };
 
-        const location = node.getAttribute(debug_directive);
-        if (location)
-            return location.trim();  
+        /**
+         * Extracts the debug-directive comment value from a node.
+         * Handles:
+         *   - A comment node directly
+         *   - A wrapper element (e.g. <div>) whose first non-whitespace child is a comment node
+         *
+         * Returns { found: true, stop: true } if the directive is blank or exactly 'end',
+         * returns { found: true, stop: false, source } if a valid source is found,
+         * or returns { found: false } if no directive is present on this node.
+         */
+        const extractDirective = function (elem: Node | null): DirectiveResult {
+            if (!elem) return { found: false };
 
-        //travese the document to get the location info
+            let commentValue: string | null = null;
+
+            if (elem.nodeType === Node.COMMENT_NODE) {
+                // Direct comment node
+                commentValue = elem.nodeValue;
+            } else if (elem.nodeType === Node.ELEMENT_NODE) {
+                // Element wrapper (e.g. <div><!-- ibm-a11y-debug: ... --></div>)
+                // Find the first non-whitespace child node
+                let child = elem.firstChild;
+                while (child) {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        // Skip pure whitespace text nodes
+                        if (child.nodeValue && child.nodeValue.trim().length > 0) {
+                            // Non-whitespace text before a comment — not a directive wrapper
+                            break;
+                        }
+                    } else if (child.nodeType === Node.COMMENT_NODE) {
+                        commentValue = child.nodeValue;
+                        break;
+                    } else {
+                        // Any other node type before a comment — not a directive wrapper
+                        break;
+                    }
+                    child = child.nextSibling;
+                }
+            }
+
+            if (commentValue !== null) {
+                const trimmed = commentValue.trim();
+                // Match exactly "ibm-a11y-debug" followed by end-of-string, whitespace, or ':'
+                // This prevents "ibm-a11y-debug-extra" from being treated as a directive.
+                if (trimmed === DEBUG_DIRECTIVE ||
+                    trimmed.startsWith(DEBUG_DIRECTIVE + ':') ||
+                    trimmed.startsWith(DEBUG_DIRECTIVE + ' ') ||
+                    trimmed.startsWith(DEBUG_DIRECTIVE + '\t')) {
+                    // Strip the directive name and optional leading whitespace
+                    const afterDirective = trimmed.substring(DEBUG_DIRECTIVE.length).trimStart();
+                    // Strip a single leading ':' separator if present
+                    // (e.g. "ibm-a11y-debug: file.ts:10:5" → afterDirective = ": file.ts:10:5")
+                    const source = afterDirective.startsWith(':')
+                        ? afterDirective.substring(1).trim()
+                        : afterDirective.trim();
+                    return parseSource(source);
+                }
+            }
+
+            return { found: false };
+        };
+
+        /**
+         * Returns the ibm-a11y-debug attribute value from an element node as a DirectiveResult,
+         * or { found: false } if absent. Recognises the 'end' stop marker just like comment directives.
+         * The attribute value is the source directly (no ':' prefix), e.g. ibm-a11y-debug="file.ts:10:5".
+         */
+        const getInlineAttr = function (n: Node): DirectiveResult {
+            if (n.nodeType !== Node.ELEMENT_NODE) return { found: false };
+            const val = (n as Element).getAttribute(DEBUG_DIRECTIVE);
+            if (val === null) return { found: false };
+            // Attribute value is the source directly — no ':' separator to strip
+            return parseSource(val.trim());
+        };
+
+        /**
+         * Traverses left (previous siblings) then upward (parent) to find source info.
+         * Does NOT check the starting element itself — only its preceding siblings and ancestors.
+         * This avoids misidentifying a content node as its own source directive.
+         *
+         * At each ancestor level the function also checks the ancestor element's own inline
+         * ibm-a11y-debug attribute, so that a parent element can annotate all its descendants.
+         *
+         * Sibling scanning stops at the first node that is recognised as a directive (found or stop).
+         * Non-directive nodes (real content elements, text nodes) are skipped so that a directive
+         * placed further back in the sibling list is still found even if content nodes intervene.
+         * However, traversal does NOT cross element boundaries when scanning siblings — only
+         * comment nodes and dedicated wrapper elements (whose sole first child is a comment) are
+         * treated as transparent.
+         *
+         * Shadow DOM traversal: uses DOMWalker.parentNode() to cross shadow boundaries correctly,
+         * including slotted content and nested Shadow DOM (shadow-in-shadow). When the parent
+         * chain reaches a ShadowRoot, DOMWalker.parentNode() automatically resolves it to the
+         * shadow host element in the outer DOM. A plain DocumentFragment with no host returns
+         * null from DOMWalker.parentNode(), stopping traversal.
+         *
+         * Sibling traversal uses DOMWalker.previousSiblingNotOwnedBySlot() to skip nodes that
+         * are assigned to slots (and therefore logically belong to a different part of the tree).
+         *
+         * Uses an iterative approach (rather than recursion) to safely handle deeply nested
+         * DOM structures without risk of stack overflow.
+         *
+         * @param elem - The node whose context we are searching
+         * @returns The source location string, or null if not found
+         */
+        const findSource = function (elem: Node | null): string | null {
+            let current = elem;
+            while (current) {
+                // Scan previous siblings for a debug directive comment or wrapper element.
+                // Use previousSiblingNotOwnedBySlot to skip nodes assigned to slots, which
+                // logically belong to a different part of the composed tree.
+                // Only comment nodes and dedicated wrapper elements are considered directives;
+                // all other node types are skipped (they do not block further scanning).
+                let prev = DOMWalker.previousSiblingNotOwnedBySlot(current);
+                while (prev) {
+                    const result = extractDirective(prev);
+                    if (result.found) {
+                        if (result.stop) return null;
+                        return (result as { found: true; stop: false; source: string }).source;
+                    }
+                    prev = DOMWalker.previousSiblingNotOwnedBySlot(prev);
+                }
+
+                // No directive found among siblings — move up to parent.
+                // Use DOMWalker.parentNode() instead of node.parentNode directly so that:
+                //   1. Shadow DOM boundaries are crossed automatically (ShadowRoot → host element),
+                //      supporting both regular and nested Shadow DOM (shadow-in-shadow).
+                //   2. Slotted nodes are re-parented to their slot owner rather than their
+                //      light-DOM parent, matching the composed (rendered) tree structure.
+                //   3. Nodes with an ownerElement (e.g. iframe document roots) are re-parented
+                //      to their owner element.
+                const parent = DOMWalker.parentNode(current);
+
+                if (!parent || parent.nodeType === Node.DOCUMENT_NODE) {
+                    // Reached the top of the tree (or a plain DocumentFragment with no host)
+                    // without finding a directive.
+                    return null;
+                }
+
+                // Check the parent element's own inline attribute before continuing upward.
+                // This allows a containing element to annotate all its descendants.
+                // An 'end' inline attribute on the parent stops traversal entirely.
+                const parentAttrResult = getInlineAttr(parent);
+                if (parentAttrResult.found) {
+                    if (parentAttrResult.stop) return null;
+                    return (parentAttrResult as { found: true; stop: false; source: string }).source;
+                }
+
+                current = parent;
+            }
+            return null;
+        };
+
+        // First, check for an inline attribute directive on the element itself.
+        // An 'end' attribute on the element itself stops traversal (returns null).
+        const selfAttrResult = getInlineAttr(node);
+        if (selfAttrResult.found) {
+            if (selfAttrResult.stop) return null;
+            return (selfAttrResult as { found: true; stop: false; source: string }).source;
+        }
+
+        // Then traverse the DOM to find a preceding comment directive or ancestor attribute
         return findSource(node);
-
     }
 
     run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : Issue[] {
