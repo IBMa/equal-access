@@ -97,6 +97,7 @@ class WrappedRule {
      * @memberOf this
      */
     static convertNodeToSource(node: Node, enabled: boolean=false): string {
+        //console.log("Source Map enabled:", enabled);
         if (!enabled || !node) return null;
         
         const DEBUG_DIRECTIVE = "ibm-a11y-debug";
@@ -326,7 +327,7 @@ class WrappedRule {
                 apiArgs: result.apiArgs,
                 bounds: context["dom"].bounds,
                 snippet: WrappedRule.convertNodeToSnippet(context["dom"].node as Element),
-                source: WrappedRule.convertNodeToSource(context["dom"].node as Element, engine.sourceMapEnabled)
+                source: WrappedRule.convertNodeToSource(context["dom"].node as Element, engine.isSourceMapEnabled())
             })
         }
         return retVal;
@@ -557,6 +558,10 @@ export class Engine implements IEngine {
         this.sourceMapEnabled = enable;
     }
 
+    isSourceMapEnabled() : boolean {
+        return this.sourceMapEnabled;
+    }
+    
     _sortRules() {
         for (const role in this.inclRules) {
             this.inclRules[role].sort((ruleA: WrappedRule, ruleB: WrappedRule) => {

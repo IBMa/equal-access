@@ -227,6 +227,10 @@ export class Checker implements IChecker {
         this.engine.enableSourceMap(enable);
     }
 
+    isSourceMapEnabled() : boolean {
+        return this.engine.isSourceMapEnabled();
+    }
+
     /**
      * Perform a check of the specified node/document
      * @param node DOMNode or Document on which to run the check
