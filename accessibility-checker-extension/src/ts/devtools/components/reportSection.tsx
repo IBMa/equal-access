@@ -22,7 +22,8 @@ import {
     Column, 
     Dropdown,
     Grid,
-    MultiSelect
+    MenuButton,
+    MenuItemSelectable
 } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 
@@ -54,7 +55,8 @@ interface ReportSectionState {
     viewState?: ViewState,
     canScan: boolean,
     filterShown: boolean,
-    ignoredIssues: UIIssue[]
+    ignoredIssues: UIIssue[],
+    filterMenuOpen: boolean
 }
 
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
@@ -63,14 +65,15 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
 
     state: ReportSectionState = {
-        report: null,        
+        report: null,
         selectedPath: null,
         reportViewState: "Element roles",
         reportFilterState: null,
         focusMode: false,
         canScan: true,
         filterShown: true,
-        ignoredIssues: []
+        ignoredIssues: [],
+        filterMenuOpen: false
     }
 
     async componentDidMount(): Promise<void> {
@@ -243,46 +246,43 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                 />
                             }
                         </div>
-                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
-                            {
-                                <MultiSelect
-                                    className="viewMulti"
-                                    ariaLabel="Issue type filter"
-                                    label="Filter"
-                                    size="sm" 
-                                    hideLabel={true}
-                                    disabled={totalCount === 0}
-                                    id="filterSelection"
-                                    items={filterItems}
-                                    itemToString={(item:any) => (item ? item.text : '')}
-                                    itemToElement={(item:any) => {
-                                            if (item && item.id === "0") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
-                                            } else if (item && item.id === "1") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
-                                            } else if (item && item.id === "2") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
-                                            } else if (item && item.id === "3") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
-                                            }
-                                            return <></>
-                                        }
-                                    }
-                                    light={false}
-                                    type="default"
-                                    selectedItems={levelSelectedItems}
-                                    initialSelectedItems={levelSelectedItems}
-                                    onChange={async (evt: any) => {
-                                        let checked = this.devtoolsAppController.getLevelFilters();
-                                        if (evt.selectedItems != undefined) {
-                                            checked["Violation"] = evt.selectedItems.some((item: any) => item.text === "Violations");
-                                            checked["Needs review"] = evt.selectedItems.some((item: any) => item.text === "Needs review");
-                                            checked["Recommendation"] = evt.selectedItems.some((item: any) => item.text === "Recommendations");
-                                            checked["Hidden"] = evt.selectedItems.some((item: any) => item.text === "Hidden");
-                                        }
-                                        this.devtoolsAppController.setLevelFilters(checked);
-                                    }}
-                                />
+                        <div style={{flex: "1 1 0", margin: "-1px 0px"}}  >
+
+                    {
+                        <MenuButton label="Filters" className="viewMulti"
+                                                            ariaLabel="Issue type filter" size="sm"  disabled={totalCount===0}
+                                                            open={this.state.filterMenuOpen}
+                                                            onClick={() => this.setState({ filterMenuOpen: !this.state.filterMenuOpen })}
+                                                            onClose={() => {}}>
+                            <MenuItemSelectable
+                                label={<span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} Violations</span> as any}
+                                selected={this.devtoolsAppController.getLevelFilter("Violation")}
+                                onChange={(checked: boolean) => {
+                                    this.devtoolsAppController.setLevelFilter("Violation", checked);
+                                }}
+                            />
+                            <MenuItemSelectable
+                                label={<span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} Needs review</span> as any}
+                                selected={this.devtoolsAppController.getLevelFilter("Needs review")}
+                                onChange={(checked: boolean) => {
+                                    this.devtoolsAppController.setLevelFilter("Needs review", checked);
+                                }}
+                            />
+                            <MenuItemSelectable
+                                label={<span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} Recommendations</span> as any}
+                                selected={this.devtoolsAppController.getLevelFilter("Recommendation")}
+                                onChange={(checked: boolean) => {
+                                    this.devtoolsAppController.setLevelFilter("Recommendation", checked);
+                                }}
+                            />
+                            <MenuItemSelectable
+                                label={<span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} Hidden</span> as any}
+                                selected={this.devtoolsAppController.getLevelFilter("Hidden")}
+                                onChange={(checked: boolean) => {
+                                    this.devtoolsAppController.setLevelFilter("Hidden", checked);
+                                }}
+                            />
+                        </MenuButton>
                             }
                         </div>
                         <div style={{flex: "1 1 0", margin: "-1px 0px"}}>
