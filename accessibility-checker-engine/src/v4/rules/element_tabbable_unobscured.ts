@@ -16,6 +16,7 @@ import { Rule, RuleResult, RuleContext, RulePass, RuleContextHierarchy, RulePote
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../util/VisUtil";
 import { DOMMapper } from "../../v2/dom/DOMMapper";
+import { ColorUtil } from "../util/ColorUtil";
 
 export const element_tabbable_unobscured: Rule = {
     id: "element_tabbable_unobscured",
@@ -136,8 +137,19 @@ export const element_tabbable_unobscured: Rule = {
             // If before ruleContext in DOM order, elem must have higher z-index to obscure
             // If after ruleContext in DOM order, elem can obscure with equal or higher z-index
             if ((before && elemZindex > zindex) || (!before && elemZindex >= zindex)) {
-                // If element has no content and no background/background-color, skip it
-                if (!CommonUtil.hasInnerContent(elem) && !zStyle.background && !zStyle.backgroundColor) {
+                // Check if element has opaque background
+                let hasOpaqueBackground = false;
+                if (zStyle.background && zStyle.background !== 'none') {
+                    const bgColor = ColorUtil.Color(zStyle.background);
+                    hasOpaqueBackground = bgColor && (bgColor.alpha === undefined || bgColor.alpha > 0);
+                }
+                if (!hasOpaqueBackground && zStyle.backgroundColor) {
+                    const bgColor = ColorUtil.Color(zStyle.backgroundColor);
+                    hasOpaqueBackground = bgColor && (bgColor.alpha === undefined || bgColor.alpha > 0);
+                }
+                
+                // If element has no content and no opaque background, skip it
+                if (!CommonUtil.hasInnerContentHidden(elem) && !hasOpaqueBackground) {
                     continue;
                 }
                 return RulePotential("potential_obscured", []);
