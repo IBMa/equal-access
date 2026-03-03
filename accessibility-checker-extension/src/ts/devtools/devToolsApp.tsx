@@ -95,6 +95,18 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         }
     }
 
+    handleModalClose = () => {
+        let devtoolsAppController = getDevtoolsAppController();
+        if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
+            devtoolsAppController.closeSecondary();
+            setTimeout(() => {
+                devtoolsAppController.setSecondaryView("splash");
+            }, 1500);
+        } else {
+            this.devtoolsAppController.closeSecondary();
+        }
+    }
+
     render() {
         
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
@@ -138,26 +150,20 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                 : ReactDOM.createPortal(
                     
                     <div className={`secondaryDialog ${BrowserDetection.isDarkMode()?"cds--g90":"cds--g10"}`}>
-                        <ComposedModal 
-                            open={this.state.secondaryOpen} 
-                            onClose={() => {
-                                let devtoolsAppController = getDevtoolsAppController();
-                                if (devtoolsAppController.getSecondaryView() === "checkerViewAware") {
-                                    devtoolsAppController.closeSecondary();
-                                    setTimeout(() => {
-                                        devtoolsAppController.setSecondaryView("splash");
-                                    }, 1500);
-                                } else {
-                                    this.devtoolsAppController.closeSecondary();
-                                }
-                            }}
+                        <ComposedModal
+                            open={this.state.secondaryOpen}
+                            onClose={this.handleModalClose}
                             style={{height: "100%"}}
                             isFullWidth={true}
                             size="lg"
                             selectorPrimaryFocus=".secondaryDialog button"
                         >
 
-                            <ModalHeader style={{marginBottom: "2rem"}}/>
+                            <ModalHeader
+                                closeButtonLabel="Close"
+                                buttonOnClick={this.handleModalClose}
+                                style={{marginBottom: "2rem"}}
+                            />
                             <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
                                     {secondaryPanelModal}
                             </ModalBody>

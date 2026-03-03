@@ -210,12 +210,28 @@
     .viewMulti {
         float:right;
         width: 230px;
+        margin-bottom: 0.5rem;
         .cds--list-box {
             max-height: 2rem;
         }   
         .cds--list-box__field {
             background-color: #f4f4f4;
             border: solid #a8a8a8 1px;
+        }
+        .cds--btn {
+            color: black;
+            background: #f4f4f4;
+            border: 0.5px solid black;
+            align-items: center;
+            min-height: 18px;
+            max-height: 32px;
+        }
+        .cds--btn--disabled {
+            background: #c6c6c6;
+        }
+        .cds--btn:hover {
+            background: #e8e8e8;
+            color: black;
         }
     }
     .iconGroup{
