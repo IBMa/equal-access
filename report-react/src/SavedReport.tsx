@@ -20,7 +20,7 @@ import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
-import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme,Dropdown,MultiSelect,CopyButton} from '@carbon/react';
+import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme, Dropdown, MenuButton, MenuItemSelectable, CopyButton } from '@carbon/react';
 import { UtilIssueReact } from "./util/UtilIssueReact";
 import { Violation16,NeedsReview16,Recommendation16,ViewOff16 } from "./util/UtilImages";
 import ReportElements from "./report/ReportElements";
@@ -33,15 +33,11 @@ interface SavedReportProps {
 interface SavedReportState {
     selectedItem: IReportItem | null;
     reportViewState:'Requirements'|'Rules'|'Element roles';
-    selectedItems: Array<{ id: string; text: string }>; 
-
+    filterViolations: boolean;
+    filterNeedsReview: boolean;
+    filterRecommendations: boolean;
+    filterHidden: boolean;
 }
-const filterItems = [
-    { id: '0', text: 'Violations' },
-    { id: '1', text: 'Needs review' },
-    { id: '2', text: 'Recommendations' },
-    { id: '3', text: 'Hidden' },
-]
 const viewItems = ["Element roles", "Requirements","Rules"];
 
 
@@ -49,8 +45,10 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
     state: SavedReportState = {
         selectedItem: null,
         reportViewState: "Element roles",
-        selectedItems: filterItems.filter(item => item.id!=='3'), 
-
+        filterViolations: true,
+        filterNeedsReview: true,
+        filterRecommendations: true,
+        filterHidden: false,
     }
 
 
@@ -62,17 +60,15 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
         this.setState({ selectedItem: null });
     }
   
-    handleFilterChange = (selectedItems: Array<{ id: string; text: string }>) => {
-       this.setState({selectedItems})
-       
-      };
       handleCardClick=(filterItem:string)=>{
-        if(this.state.selectedItems.some((item)=>item.text===filterItem)){
-            let updatedFilter=this.state.selectedItems.filter((item)=>item.text!==filterItem);
-            this.setState({selectedItems:updatedFilter});
-        }else{
-            let updatedFilter=filterItems.filter((item)=>item.text===filterItem)[0]
-            this.setState({selectedItems:[...this.state.selectedItems,updatedFilter]})
+        if(filterItem === "Violations") {
+            this.setState({ filterViolations: !this.state.filterViolations });
+        } else if(filterItem === "Needs review") {
+            this.setState({ filterNeedsReview: !this.state.filterNeedsReview });
+        } else if(filterItem === "Recommendations") {
+            this.setState({ filterRecommendations: !this.state.filterRecommendations });
+        } else if(filterItem === "Hidden") {
+            this.setState({ filterHidden: !this.state.filterHidden });
         }
       }
     copyToClipboard = () => {
@@ -118,39 +114,36 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
         }
         let total=violations+needReview+recommendation;
 
-        const selectedFilters = this.state.selectedItems.map(item => item.text);
-        
-    
 const filteredReport = {
     ...this.props.reportData.report,
     results: this.props.reportData.report.results
         .map(issue => {
             // Check if the issue is hidden
-            const isHidden = this.props.reportData?.report?.ignored?.some(ignoredIssue => 
+            const isHidden = this.props.reportData?.report?.ignored?.some(ignoredIssue =>
                 issueBaselineMatch(issue as any, ignoredIssue)
             );
             // Add the hidden flag to each issue
             return {
                 ...issue,
-                isHidden: isHidden 
+                isHidden: isHidden
             };
         })
         .filter(issue => {
             // show issues based on selected filter
-            if (issue.isHidden && selectedFilters.includes("Hidden")) {
+            if (issue.isHidden && this.state.filterHidden) {
                 return true;
             }
-            if (selectedFilters.includes("Violations") && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !issue.isHidden) {
+            if (this.state.filterViolations && issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL" && !issue.isHidden) {
                 return true;
             }
-            if (selectedFilters.includes("Needs review") && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !issue.isHidden) {
+            if (this.state.filterNeedsReview && issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL") && !issue.isHidden) {
                 return true;
             }
-            if (selectedFilters.includes("Recommendations") && issue.value[0] === "RECOMMENDATION" && !issue.isHidden) {
+            if (this.state.filterRecommendations && issue.value[0] === "RECOMMENDATION" && !issue.isHidden) {
                 return true;
             }
 
-            return false; 
+            return false;
         })
 };
 
@@ -217,18 +210,18 @@ const filteredReport = {
                         </div>
                         </Column>
                             <Column sm={4} md={4} lg={4}>
-                                <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.selectedItems.some((item)=>item.text==="Violations")}
+                                <ScoreCard count={violations} title="Violations" icon={Violation16} checked={this.state.filterViolations}
                                     handleCardClick={this.handleCardClick}>
                                     Accessibility failures that need to be corrected
                                 </ScoreCard>
                             </Column>
                             <Column sm={4} md={4} lg={4}>
-                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16} checked={this.state.selectedItems.some((item)=>item.text==="Needs review")}  handleCardClick={this.handleCardClick}>
+                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16} checked={this.state.filterNeedsReview} handleCardClick={this.handleCardClick}>
                                     Issues that may not be a violation; manual review is needed
                                 </ScoreCard>
                             </Column>
                             <Column sm={4} md={4} lg={4}>
-                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16} checked={this.state.selectedItems.some((item)=>item.text==="Recommendations")}  handleCardClick={this.handleCardClick}>
+                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16} checked={this.state.filterRecommendations} handleCardClick={this.handleCardClick}>
                                     Opportunities to apply best practices to further improve accessibility
                                 </ScoreCard>
                             </Column>
@@ -251,7 +244,7 @@ const filteredReport = {
                                     className="viewMulti"
                                     ariaLabel="Select report view"
                                     id="reportView"
-                                    size="sm" 
+                                    size="sm"
                                     items={viewItems}
                                     light={false}
                                     type="default"
@@ -262,35 +255,37 @@ const filteredReport = {
                                         this.setState({ reportViewState: evt.selectedItem });
                                     }}
                                 />
-                                    <MultiSelect
-                                    className="viewMulti"
-                                    ariaLabel="Issue type filter"
-                                    label="Filter"
-                                    size="sm" 
-                                    hideLabel={true}
-                                    id="filterSelection"
-                                    items={filterItems}
-                                    itemToString={(item:any) => (item ? item.text : '')}
-                                    itemToElement={(item:any) => {
-                                            if (item && item.id === "0") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} {item.text}</span>
-                                            } else if (item && item.id === "1") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} {item.text}</span>
-                                            } else if (item && item.id === "2") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} {item.text}</span>   
-                                            } else if (item && item.id === "3") {
-                                                return <span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} {item.text}</span>
-                                            }
-                                            return <></>
-                                        }
-                                    }
-                                    light={false}
-                                    type="default"
-                                    selectedItems={this.state.selectedItems}
-                                    initialSelectedItems={this.state.selectedItems}
-                                    onChange={(event: { selectedItems: Array<{ id: string; text: string }> }) => this.handleFilterChange(event.selectedItems)}
-
-                                />
+                                    <MenuButton label="Filters" className="viewMulti"
+                                        ariaLabel="Issue type filter" size="sm">
+                                        <MenuItemSelectable
+                                            label={<span>{UtilIssueReact.valueSingToIcon("Violation", "reportSecIcon")} Violations</span> as any}
+                                            selected={this.state.filterViolations}
+                                            onChange={(checked: boolean) => {
+                                                this.setState({ filterViolations: checked });
+                                            }}
+                                        />
+                                        <MenuItemSelectable
+                                            label={<span>{UtilIssueReact.valueSingToIcon("Needs review", "reportSecIcon")} Needs review</span> as any}
+                                            selected={this.state.filterNeedsReview}
+                                            onChange={(checked: boolean) => {
+                                                this.setState({ filterNeedsReview: checked });
+                                            }}
+                                        />
+                                        <MenuItemSelectable
+                                            label={<span>{UtilIssueReact.valueSingToIcon("Recommendation", "reportSecIcon")} Recommendations</span> as any}
+                                            selected={this.state.filterRecommendations}
+                                            onChange={(checked: boolean) => {
+                                                this.setState({ filterRecommendations: checked });
+                                            }}
+                                        />
+                                        <MenuItemSelectable
+                                            label={<span>{UtilIssueReact.valueSingToIcon("ViewOff", "reportSecIcon")} Hidden</span> as any}
+                                            selected={this.state.filterHidden}
+                                            onChange={(checked: boolean) => {
+                                                this.setState({ filterHidden: checked });
+                                            }}
+                                        />
+                                    </MenuButton>
                                 </div>
 
 </div>
