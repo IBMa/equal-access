@@ -63,12 +63,29 @@
 }
 
 .viewMulti {
-    float:right;
+    float: right;
+    margin-left: auto;
     width: 230px;
-    .cds--list-box {
-        max-height: 2rem;
-        border: solid $gray-40 1px;
-    }   
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    .cds--btn {
+        color: black;
+        background: $gray-10;
+        border: 0.5px solid black;
+        align-items: center;
+        min-height: 18px;
+        max-height: 32px;
+    }
+    .cds--btn--disabled {
+        background: $gray-30;
+    }
+    .cds--btn:hover {
+        background: $gray-20;
+        color: black;
+    }
+    .cds--dropdown {
+        border-top: solid 0.5px;
+    }
 }
 
 .reportFilterSection {
