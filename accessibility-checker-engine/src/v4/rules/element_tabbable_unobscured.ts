@@ -136,6 +136,10 @@ export const element_tabbable_unobscured: Rule = {
             // If before ruleContext in DOM order, elem must have higher z-index to obscure
             // If after ruleContext in DOM order, elem can obscure with equal or higher z-index
             if ((before && elemZindex > zindex) || (!before && elemZindex >= zindex)) {
+                // If element has no content and no background/background-color, skip it
+                if (!CommonUtil.hasInnerContent(elem) && !zStyle.background && !zStyle.backgroundColor) {
+                    continue;
+                }
                 return RulePotential("potential_obscured", []);
             }
         }
