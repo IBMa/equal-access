@@ -60,7 +60,6 @@ const ACEngineManager = {
                 if (fs.existsSync(engineFilename)) {
                     if (fs.readFileSync(engineFilename).toString() === data) {
                         try {
-                            err && console.log(err);
                             ACEngineManager.ace = require(nodePath);
                             ACEngineManager.checker = new ACEngineManager.ace.Checker();
                             return resolve(ACEngineManager.ace);
