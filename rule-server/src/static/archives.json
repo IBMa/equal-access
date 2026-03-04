@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "04March2026",
+        "name": "04 March 2026 Deployment (IBM 7.3)",
+        "version": "4.0.13",
+        "path": "/archives/2026.03.04"
+    },
+    {
         "id": "07February2026",
         "name": "07 February 2026 Deployment (IBM 7.3)",
         "version": "4.0.12",
@@ -235,13 +241,15 @@
         "id": "09March2023",
         "name": "09 March 2023 Deployment (IBM 7.2)",
         "version": "3.1.46",
-        "path": "/archives/2023.03.09"
+        "path": "/archives/2023.03.09",
+        "hidden": true
     },
     {
         "id": "23February2023",
         "name": "23 February 2023 Deployment (IBM 7.2)",
         "version": "3.1.45",
-        "path": "/archives/2023.02.23"
+        "path": "/archives/2023.02.23",
+        "hidden": true
     },
     {
         "id": "27January2023",
