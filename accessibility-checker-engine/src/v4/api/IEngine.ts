@@ -42,6 +42,10 @@ export interface IEngine {
     addNlsMap(map: NlsMap);
 
     addHelpMap(map: NlsMap);
+
+    enableSourceMap(enable: boolean);
+
+    isSourceMapEnabled(): boolean;
 }
 
 export type NlsMap = {
