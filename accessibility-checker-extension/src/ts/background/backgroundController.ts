@@ -514,15 +514,13 @@ class BackgroundController extends Controller {
     ///// SR functions ////////////////////////////////////////////////////////
 
     private async initSRController(contentTabId: number) {
+        const myThis = this;
         await this.initTab(contentTabId!, "preview");
         await new Promise<void>(resolve => {
             setTimeout(async () => {
-                await myExecuteScript2(contentTabId, (contentTabId: number) => {
+                const bInitialized = await myExecuteScript2(contentTabId, (contentTabId: number) => {
                     if (!(<any>window).aceIBMaSRController) {
                         (<any>window).aceIBMaSRController = (<any>window).aceIBMa_preview.SRController.getController();
-                        let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
-                        this.metricsSR.profileV2(1, browser, "");
-                        this.metricsSR.sendLogsV2();
                         (<any>window).aceIBMaSRController.addLiveListener((result: string) => {
                             // BG_onSRLive
                             chrome.runtime.sendMessage({
@@ -533,9 +531,16 @@ class BackgroundController extends Controller {
                                 "dest": "background",
                                 "type": "BG_onSRLive"
                             });
-                        })
+                        });
+                        return true;
                     }
+                    return false;
                 }, [contentTabId]);
+                if (bInitialized) {
+                    let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+                    myThis.metricsSR.profileV2(1, browser, "");
+                    myThis.metricsSR.sendLogsV2();
+                }
                 resolve();
             }, 100);
         });
