@@ -1,5 +1,8 @@
 import { SRCursor } from "../SRCursor";
 import { SRRendererRule } from "../SRRendererRule";
+import { AriaUtil } from "../../util/AriaUtil";
+import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
+import { DOMWalker } from "../../../v2/dom/DOMWalker";
 
 /**
  * Provide the name, surrounded by the quoteCharBefore and quoteCharAfter and followed by the padding if the name exists
@@ -22,9 +25,34 @@ export function quoteNamePadBefore(cursor: SRCursor, padding?: string) {
 }
 
 export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharAfter?: string) {
-    return cursor.getName() 
-        ? `${quoteCharBefore || '“'}${cursor.getName()}${quoteCharAfter || '”'}`
+    return cursor.getName()
+        ? `${quoteCharBefore || '"'}${cursor.getName()}${quoteCharAfter || '"'}`
         : "";
+}
+
+/**
+ * Check if a listitem contains interactive/widget elements
+ * Screen readers typically don't read the accessible name of a listitem when it contains interactive elements
+ * Uses DOMWalker to properly traverse shadow DOM and other complex structures
+ */
+function listitemContainsInteractiveElement(cursor: SRCursor): boolean {
+    const elem = cursor.getElement();
+    if (!elem) return false;
+    
+    // Use DOMWalker to traverse the entire subtree including shadow DOM
+    const walker = new DOMWalker(elem, false, elem, false);
+    
+    // Walk through all descendants
+    while (walker.nextNode()) {
+        // Only check element nodes at start tags
+        if (walker.node.nodeType === 1 && !walker.bEndTag) {
+            const role = AriaUtil.getResolvedRole(walker.node as HTMLElement);
+            if (role && ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].roleType === 'widget') {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 export const RULES: SRRendererRule[] = [
@@ -290,13 +318,19 @@ export const RULES: SRRendererRule[] = [
                     }
                     walkParents = walkParents.parentNode;
                 }
+                
+                // Check if listitem contains interactive elements
+                // Screen readers don't read the accessible name when interactive elements are present
+                const hasInteractiveContent = listitemContainsInteractiveElement(cursor);
+                const nameToUse = hasInteractiveContent ? "" : (cursor.getNameInfo()?.name || "");
+                
                 let retStr = "";
                 if (!isOrdered) {
                     const elem = cursor.getElement();
                     if (elem.nodeName.toUpperCase() === "LI" && window.getComputedStyle(elem).listStyleType === "none") {
-                        retStr = cursor.isStartTag() ? `${(cursor.getNameInfo()?.name || "")}` : "";
+                        retStr = cursor.isStartTag() ? `${nameToUse}` : "";
                     } else {
-                        retStr = cursor.isStartTag() ? `[bullet] ${(cursor.getNameInfo()?.name || "")}` : "";
+                        retStr = cursor.isStartTag() ? `[bullet] ${nameToUse}` : "";
                     }
                 } else {
                     let walkBack = cursor.clone();
@@ -307,7 +341,7 @@ export const RULES: SRRendererRule[] = [
                         }
                         walkBack.previous(() => true);
                     }
-                    retStr = cursor.isStartTag() ? `${count}. ${(cursor.getNameInfo()?.name || "")}` : "";
+                    retStr = cursor.isStartTag() ? `${count}. ${nameToUse}` : "";
                 }
                 return retStr;
             }
@@ -708,11 +742,16 @@ export const RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
+                // Check if listitem contains interactive elements
+                // Screen readers don't read the accessible name when interactive elements are present
+                const hasInteractiveContent = listitemContainsInteractiveElement(cursor);
+                const nameToUse = hasInteractiveContent ? "" : (cursor.getNameInfo()?.name || "");
+                
                 const elem = cursor.getElement();
                 if (window.getComputedStyle(elem).listStyleType === "none") {
-                    return cursor.isStartTag() ? `${(cursor.getNameInfo()?.name || "")}` : "";
+                    return cursor.isStartTag() ? `${nameToUse}` : "";
                 } else {
-                    return cursor.isStartTag() ? `[bullet] ${(cursor.getNameInfo()?.name || "")}` : "";
+                    return cursor.isStartTag() ? `[bullet] ${nameToUse}` : "";
                 }
             }
         ]
