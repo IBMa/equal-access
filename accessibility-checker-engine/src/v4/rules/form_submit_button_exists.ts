@@ -50,7 +50,6 @@ export const form_submit_button_exists: Rule = {
         let passed = false;
         if (ruleContext.firstChild) {
             // submit buttons are usually at the bottom - walk backwards
-            //let nw = new NodeWalker(ruleContext, true);
             let nw = new DOMWalker(ruleContext, true);
             while (!passed && nw.prevNode() && nw.node != ruleContext) {
                 if (!nw.bEndTag) {

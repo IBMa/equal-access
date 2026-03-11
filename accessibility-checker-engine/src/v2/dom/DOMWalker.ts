@@ -275,6 +275,13 @@ export class DOMWalker {
                     DOMWalker.assignSlots(this.node as ShadowRoot);
                 } else if (this.node.nodeType === 1
                     && elementNode.nodeName.toLowerCase() === "slot"
+                    && (elementNode as HTMLSlotElement).assignedNodes().length > 0)
+                {
+                    // Enter slot with assigned nodes - go to last assigned node
+                    let slotElement = elementNode as HTMLSlotElement;
+                    this.node = slotElement.assignedNodes()[slotElement.assignedNodes().length - 1];
+                } else if (this.node.nodeType === 1
+                    && elementNode.nodeName.toLowerCase() === "slot"
                     && (elementNode as HTMLSlotElement).assignedNodes().length === 0)
                 {
                     // Empty slot - treat as self-closing leaf node
@@ -288,6 +295,16 @@ export class DOMWalker {
             } else {
                 if (this.atRoot()) {
                     return false;
+                } else if ((this.node as any).slotOwner) {
+                    let slotOwner = (this.node as any).slotOwner;
+                    let prevSlotIndex = (this.node as any).slotIndex - 1;
+                    if (prevSlotIndex >= 0) {
+                        this.node = slotOwner.assignedNodes()[prevSlotIndex];
+                        this.bEndTag = true;
+                    } else {
+                        this.node = slotOwner;
+                        this.bEndTag = false;
+                    }
                 } else if (DOMWalker.previousSiblingNotOwnedBySlot(this.node)) {
                     this.node = DOMWalker.previousSiblingNotOwnedBySlot(this.node);
                     this.bEndTag = true;

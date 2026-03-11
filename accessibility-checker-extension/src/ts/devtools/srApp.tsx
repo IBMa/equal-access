@@ -813,7 +813,6 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
                         <ListItem>Focus sync</ListItem>
                         <ListItem>Emulate: Show point-of-regard on the website</ListItem>
                         <ListItem>Emulate: General keyboard interactions</ListItem>
-                        <ListItem>Emulate: Something odd with previous not providing expected results</ListItem>
                         <ListItem>Review: Seems to get stuck sometimes - hard to determine long processing vs stuck</ListItem>
                         <ListItem>Review: Auto-update Review panel due to DOM/page changes?</ListItem>
                     </UnorderedList>

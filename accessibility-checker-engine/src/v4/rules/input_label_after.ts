@@ -68,7 +68,6 @@ export const input_label_after: Rule = {
         if (value === -2) {
             // input nested in label
             passed = false;
-            //let walkNode = new NodeWalker(labelElem);
             let walkNode = new DOMWalker(labelElem);
             walkNode.node = ruleContext;
             while (!passed && walkNode.nextNode()) {
