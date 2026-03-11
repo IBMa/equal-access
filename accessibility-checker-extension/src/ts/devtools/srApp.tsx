@@ -21,6 +21,7 @@ import {
     Column,
     Grid,
     Button,
+    ButtonSet,
     Layer,
     Tile,
     DataTable,
@@ -34,7 +35,7 @@ import {
     // CodeSnippet,
     SkeletonText
 } from "@carbon/react";
-import { ArrowLeft, ArrowRight, PlayOutline, StopOutline, TableOfContents, Template, Link as LinkIcon, VolumeMute, VolumeUp, Renew, WatsonHealthMagnify, Reset } from '@carbon/icons-react';
+import { ArrowLeft, ArrowRight, PlayOutline, StopOutline, TableOfContents, Template, Link as LinkIcon, VolumeMute, VolumeUp, Renew, WatsonHealthMagnify, Reset, Keyboard, KeyboardOff } from '@carbon/icons-react';
 
 import "../styles/index.scss";
 import "./srApp.scss";
@@ -45,8 +46,6 @@ import { UnorderedList } from '@carbon/react';
 import { ListItem } from '@carbon/react';
 import { Accordion } from '@carbon/react';
 import { AccordionItem } from '@carbon/react';
-import { ContentSwitcher } from '@carbon/react';
-import { Switch } from '@carbon/react';
 import { CheckboxGroup } from '@carbon/react';
 import { Checkbox } from '@carbon/react';
 
@@ -97,7 +96,8 @@ interface SRAppState {
     lastAction: string;
     error: string | null;
     uiMode: "emulate" | "review";
-    columnVisibility: { [key: string]: boolean }
+    columnVisibility: { [key: string]: boolean };
+    keyboardCaptureEnabled: boolean;
 }
 
 export class SRApp extends React.Component<SRAppProps, SRAppState> {
@@ -106,6 +106,7 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
     private keyboardHandler: null | ((e: KeyboardEvent) => void) = null;
     private streamingTimeout?: NodeJS.Timeout;
+    private keyboardCaptureButtonRef = React.createRef<HTMLButtonElement>();
 
 
     // // Navigation modes configuration
@@ -134,7 +135,8 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
                 heading: true,
                 item: true,
                 tab_focus: true
-            }
+            },
+            keyboardCaptureEnabled: false
         };
     }
 
@@ -183,6 +185,24 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
      */
     private setupKeyboardHandlers(): void {
         this.keyboardHandler = (e: KeyboardEvent) => {
+            // F2 key toggles keyboard capture mode in emulate mode
+            if (this.state.uiMode === "emulate" && e.key === 'F2') {
+                e.preventDefault();
+                e.stopPropagation();
+                this.setState({ keyboardCaptureEnabled: !this.state.keyboardCaptureEnabled }, () => {
+                    // Focus the keyboard capture button after toggling
+                    if (this.keyboardCaptureButtonRef.current) {
+                        this.keyboardCaptureButtonRef.current.focus();
+                    }
+                });
+                return;
+            }
+            
+            // Only handle keyboard events in emulate mode with capture enabled
+            if (this.state.uiMode !== "emulate" || !this.state.keyboardCaptureEnabled) {
+                return;
+            }
+            
             // // Don't capture keyboard events when focus is in form controls
             // const target = e.target as HTMLElement;
             // if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
@@ -410,6 +430,17 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
         return (
             <div className="sr-navigation-row">
                 <div>
+                    <Button
+                        ref={this.keyboardCaptureButtonRef}
+                        hasIconOnly
+                        tooltipAlignment="start"
+                        iconDescription={this.state.keyboardCaptureEnabled ? "Disable keyboard capture (F2)" : "Enable keyboard capture (F2)"}
+                        renderIcon={this.state.keyboardCaptureEnabled ? Keyboard : KeyboardOff}
+                        kind={this.state.keyboardCaptureEnabled ? "secondary" : "tertiary"}
+                        size="sm"
+                        onClick={() => this.setState({ keyboardCaptureEnabled: !this.state.keyboardCaptureEnabled })}
+                    />
+                    <span style={{display: "inline-block", minWidth: buttonSpace}}> </span>
                     <Button
                         hasIconOnly
                         tooltipAlignment="start"
@@ -673,6 +704,21 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
         return (
             <div>
                 <h2>Screen Reader Output</h2>
+                {this.state.keyboardCaptureEnabled && (
+                    <div
+                        role="status"
+                        aria-live="polite"
+                        style={{
+                            padding: "0.5rem 1rem",
+                            marginBottom: "1rem",
+                            backgroundColor: "var(--cds-layer-accent)",
+                            border: "1px solid var(--cds-border-strong)",
+                            borderRadius: "4px"
+                        }}
+                    >
+                        <strong>Keyboard capture active.</strong> Press F2 to disable and return to normal navigation.
+                    </div>
+                )}
                 <div>
                     Last action: {this.state.currentDirection} {this.state.currentMode}
                 </div>
@@ -781,17 +827,31 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
                         <div className="sr-simulator-container" style={{ width: "calc(100% - 1rem)", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                             {warnNotice}
                             <Tile className="sr-results-tile">
-                                <ContentSwitcher onChange={(e: { index: number, name: "emulate" | "review", text: string }) => {
-                                    const { name } = e;
-                                    this.setState({ uiMode: name, currentResult: [] });
-                                    if (name === "review") {
-                                        this.showAll();
-                                    }
-                                    this.bgController.resetSRController(this.devtoolsAppController.toolTabId);
-                                }}>
-                                    <Switch name="review" text="Review" />
-                                    <Switch name="emulate" text="Emulate" />
-                                </ContentSwitcher>
+                                <div role="group" aria-label="Screen reader mode selection">
+                                    <ButtonSet>
+                                        <Button
+                                            kind={this.state.uiMode === "review" ? "primary" : "secondary"}
+                                            aria-pressed={this.state.uiMode === "review"}
+                                            onClick={() => {
+                                                this.setState({ uiMode: "review", currentResult: [] });
+                                                this.showAll();
+                                                this.bgController.resetSRController(this.devtoolsAppController.toolTabId);
+                                            }}
+                                        >
+                                            Review
+                                        </Button>
+                                        <Button
+                                            kind={this.state.uiMode === "emulate" ? "primary" : "secondary"}
+                                            aria-pressed={this.state.uiMode === "emulate"}
+                                            onClick={() => {
+                                                this.setState({ uiMode: "emulate", currentResult: [] });
+                                                this.bgController.resetSRController(this.devtoolsAppController.toolTabId);
+                                            }}
+                                        >
+                                            Emulate
+                                        </Button>
+                                    </ButtonSet>
+                                </div>
                                 <div style={{ marginTop: "1rem "}} />
                                 {this.state.uiMode === "review" && this.renderStructureControls()}
                                 {this.state.uiMode === "emulate" && this.renderEmulationControls()}
