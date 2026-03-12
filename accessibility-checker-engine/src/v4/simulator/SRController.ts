@@ -17,7 +17,7 @@ export class SRController {
         if (!this.singleton) {
             this.singleton = new SRController();
         }
-        return this.singleton;
+        return this.singleton as SRController;
     }
 
     /** The current point of regard */

@@ -580,7 +580,8 @@ export const RULES: SRRendererRule[] = [
         modes: ["item", "tab_focus"],
         tests: [
             (cursor: SRCursor) => {
-                return cursor.isEndTag() ? `[End of document]` : `[Start of document${document.title.trim().length > 0 ? ": " + document.title.trim() : ""}]`
+                const titleStr = cursor.getNode().ownerDocument.title;
+                return cursor.isEndTag() ? `[End of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]` : `[Start of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]`
             }
         ]
     }),

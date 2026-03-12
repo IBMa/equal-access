@@ -335,8 +335,63 @@ export class SRCursor {
         const nodeTwo = two?.walker?.node;
         if (!nodeOne && !nodeTwo) return 0;
         if (!nodeOne) return 1;
-        if (!nodeTwo) return -1
+        if (!nodeTwo) return -1;
+        
         let docPosition = nodeOne.compareDocumentPosition(nodeTwo);
+        
+        // Handle disconnected nodes (different documents or shadow DOMs)
+        if (docPosition & 0x1) {
+            // Nodes are disconnected - they're in different trees (iframe or shadow DOM)
+            // Build ancestor chains using DOMWalker.parentNode (handles shadow DOM & iframes)
+            let ancestorsOne: Node[] = [nodeOne];
+            let ancestorsTwo: Node[] = [nodeTwo];
+            
+            let current: Node | null = nodeOne;
+            while (current = DOMWalker.parentNode(current)) {
+                ancestorsOne.push(current);
+            }
+            
+            current = nodeTwo;
+            while (current = DOMWalker.parentNode(current)) {
+                ancestorsTwo.push(current);
+            }
+            
+            // Reverse so root is first
+            ancestorsOne.reverse();
+            ancestorsTwo.reverse();
+            
+            // Find where the paths diverge
+            let commonDepth = 0;
+            while (commonDepth < ancestorsOne.length &&
+                   commonDepth < ancestorsTwo.length &&
+                   ancestorsOne[commonDepth] === ancestorsTwo[commonDepth]) {
+                commonDepth++;
+            }
+            
+            // If one path is a prefix of the other, handle containment
+            if (commonDepth === ancestorsOne.length) {
+                // nodeOne is an ancestor of nodeTwo
+                return one.walker.bEndTag ? 1 : -1;
+            }
+            if (commonDepth === ancestorsTwo.length) {
+                // nodeTwo is an ancestor of nodeOne
+                return two.walker.bEndTag ? -1 : 1;
+            }
+            
+            // Compare the nodes where paths diverge
+            if (commonDepth > 0) {
+                let childOne = ancestorsOne[commonDepth];
+                let childTwo = ancestorsTwo[commonDepth];
+                
+                let childPosition = childOne.compareDocumentPosition(childTwo);
+                if (childPosition & 0x2) return 1;  // childTwo precedes childOne
+                if (childPosition & 0x4) return -1; // childOne precedes childTwo
+            }
+            
+            // No common ancestor found - shouldn't happen in a well-formed document
+            return 0;
+        }
+        
         if (docPosition & 0x8) {
             // one is contained within two
             // if two is an end tag, one is before, otherwise, one is after
