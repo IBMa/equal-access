@@ -1300,7 +1300,10 @@ export class AriaUtil {
 
                     let labelID = elements[i].getAttribute("aria-labelledby");
                     let labelNode = FragmentUtil.getById(elements[i], labelID);
-                    let label = labelNode && !DOMUtil.sameNode(labelNode, elements[i]) ? CommonUtil.getInnerText(labelNode) : "";
+                    let label = "";
+                    if (labelNode && !DOMUtil.sameNode(labelNode, elements[i])) {
+                        label = AriaUtil.getTextContentExcludingScripts(labelNode);
+                    }
                     let normalizedLabel = CommonUtil.normalizeSpacing(label).toLowerCase();
                     hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
                     uniqueAriaLabels[normalizedLabel] = true;
@@ -1317,6 +1320,54 @@ export class AriaUtil {
         return !hasDuplicateLabels;
     }
 
+    /**
+     * Get text content from an element, excluding script and style elements
+     * This is a simplified version that doesn't go through full accessible name computation
+     * to avoid circular dependencies when called from getAriaLabel
+     *
+     * Note: When an element is referenced by aria-labelledby, its content is included
+     * even if the element is hidden (per ARIA spec)
+     */
+    private static getTextContentExcludingScripts(elem: Element): string {
+        if (!elem) return "";
+        
+        let text = "";
+        let nw = new DOMWalker(elem);
+        
+        while (nw.nextNode() && nw.node !== elem && nw.node !== elem.parentNode) {
+            if (nw.bEndTag) continue;
+            
+            const node = nw.node;
+            const nodeName = node.nodeName ? node.nodeName.toLowerCase() : "";
+            
+            // Skip script and style elements
+            if (nodeName === 'script' || nodeName === 'style') {
+                nw.bEndTag = true; // Skip children
+                continue;
+            }
+            
+            if (node.nodeType === 3) { // Text node
+                // Include text even from hidden elements when referenced by aria-labelledby
+                if (node.nodeValue && node.nodeValue.trim().length > 0) {
+                    text += " " + node.nodeValue.trim();
+                }
+            } else if (node.nodeType === 1) { // Element node
+                // Handle images - get alt text
+                if (nodeName === 'img' && (node as Element).hasAttribute('alt')) {
+                    text += " " + (node as Element).getAttribute('alt').trim();
+                    nw.bEndTag = true; // Skip children of img
+                }
+                // Handle input with type="image" - get alt text
+                else if (nodeName === 'input' && (node as Element).getAttribute('type') === 'image' && (node as Element).hasAttribute('alt')) {
+                    text += " " + (node as Element).getAttribute('alt').trim();
+                    nw.bEndTag = true; // Skip children
+                }
+            }
+        }
+        
+        return text.trim();
+    }
+
     public static getAriaLabel(ele) {
         if (ele.hasAttribute) {
             if (ele.hasAttribute("aria-labelledby")) {
@@ -1325,8 +1376,11 @@ export class AriaUtil {
                 for (let j = 0, length = labelIDs.length; j < length; ++j) {
                     let labelID = labelIDs[j];
                     let labelNode = FragmentUtil.getById(ele, labelID);
-                    let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? CommonUtil.getInnerText(labelNode) : "";
-                    normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                    if (labelNode && !DOMUtil.sameNode(labelNode, ele)) {
+                        // Use our helper to get text content without circular dependency
+                        let label = AriaUtil.getTextContentExcludingScripts(labelNode);
+                        normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                    }
                 }
                 return normalizedLabel.trim();
             } else if (ele.hasAttribute("aria-label")) {
@@ -1345,9 +1399,11 @@ export class AriaUtil {
             for (let j = 0, length = labelIDs.length; j < length; ++j) {
                 let labelID = labelIDs[j];
                 let labelNode = FragmentUtil.getById(ele, labelID);
-                let label = labelNode && !DOMUtil.sameNode(labelNode, ele) ? CommonUtil.getInnerText(labelNode) : "";
-                if (label && label.trim().length > 0)
-                    normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                if (labelNode && !DOMUtil.sameNode(labelNode, ele)) {
+                    let label = AriaUtil.getTextContentExcludingScripts(labelNode);
+                    if (label && label.trim().length > 0)
+                        normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                }
             }
             if (normalizedLabel.trim().length > 0)
                 return normalizedLabel.trim();
@@ -1478,8 +1534,10 @@ export class AriaUtil {
                     for (let j = 0, length = labelIDs.length; j < length; ++j) {
                         let labelID = labelIDs[j];
                         let labelNode = FragmentUtil.getById(elements[i], labelID);
-                        let label = labelNode && !DOMUtil.sameNode(labelNode, elements[i]) ? CommonUtil.getInnerText(labelNode) : "";
-                        normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                        if (labelNode && !DOMUtil.sameNode(labelNode, elements[i])) {
+                            let label = AriaUtil.getTextContentExcludingScripts(labelNode);
+                            normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                        }
                     }
                     hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
                     uniqueAriaLabels[normalizedLabel] = true;

@@ -85,7 +85,7 @@ export class SRController {
             for (const removalMutation of mutations.filter(mutation => mutation.removedNodes?.length > 0)) {
                 removalMutation.removedNodes.forEach((removedNode) => {
                     if (removedNode.isSameNode(porNode) || removedNode.contains(porNode)) {
-                        console.info("Adjusting PoR due to DOM mutation removing PoR", removalMutation.target, removedNode, porNode)
+                        console.info("Adjusting PoR due to DOM mutation removing PoR");//, removalMutation.target, removedNode, porNode)
                         porNode = removalMutation.target;
                     }                    
                 })

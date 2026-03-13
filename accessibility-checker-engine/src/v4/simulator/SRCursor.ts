@@ -308,6 +308,13 @@ export class SRCursor {
         return this.walker.node as HTMLElement;
     }
 
+    public getParentElement() {
+        if (!this.walker.node) return null;
+        let retVal = this.clone();
+        retVal.walker.node = DOMWalker.parentElement(retVal.walker.node);
+        return retVal;
+    }
+
     /**
      * Checks if the cursor is positioned at an end tag
      * @returns true if at an end tag, false if at a start tag
