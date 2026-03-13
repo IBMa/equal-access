@@ -29,7 +29,7 @@ export namespace SRNavigator {
         return ["block", "flex", "grid", "list-item"].includes(disp);
     }
 
-    function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
+    export function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
         switch (mode) {
             case "link": 
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "link");
