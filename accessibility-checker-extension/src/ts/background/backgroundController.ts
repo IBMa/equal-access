@@ -56,7 +56,7 @@ class BackgroundController extends Controller {
     
     private sync = Promise.resolve();
     private metrics = new ACMetricsLogger("ac-extension");
-    private metricsSR = new ACMetricsLogger("ac-extension-emulator");
+    private metricsSR = new ACMetricsLogger("ac-extension-simulator");
 
     /**
      * Used by the tab controller to initialize the tab when the first scan is performed on that tab
@@ -520,7 +520,7 @@ class BackgroundController extends Controller {
             setTimeout(async () => {
                 const bInitialized = await myExecuteScript2(contentTabId, (contentTabId: number) => {
                     if (!(<any>window).aceIBMaSRController) {
-                        (<any>window).aceIBMaSRController = (<any>window).aceIBMa_preview.SRController.getController();
+                        (<any>window).aceIBMaSRController = (<any>window).aceIBMa_preview.SRController.getController((<any>window).document);
                         (<any>window).aceIBMaSRController.addLiveListener((result: string) => {
                             // BG_onSRLive
                             chrome.runtime.sendMessage({
@@ -565,7 +565,7 @@ class BackgroundController extends Controller {
         return this.hook("renderStructure", contentTabId, async () => {
             await this.initSRController(contentTabId!);
             return await myExecuteScript2(contentTabId, () => {
-                let retVal = (<any>window).aceIBMa_preview.SRController.renderStructure();
+                let retVal = (<any>window).aceIBMa_preview.SRController.renderStructure(window.document);
                 return retVal;
             });
         });
@@ -766,7 +766,7 @@ class BackgroundController extends Controller {
         if (!("tabStopAlerts" in settings)) { (settings as ISettings).tabStopAlerts = true; }
         if (!("tabStopFirstTime" in settings)) { (settings as ISettings).tabStopFirstTime = true; }
         if (!("checkerViewAwareFirstTime" in settings)) { (settings as ISettings).checkerViewAwareFirstTime = true; }
-        if (!("enableScreenReaderEmulator" in settings)) { (settings as ISettings).enableScreenReaderEmulator = false; }
+        if (!("enableScreenReaderSimulator" in settings)) { (settings as ISettings).enableScreenReaderSimulator = false; }
 
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";

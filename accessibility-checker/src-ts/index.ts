@@ -16,8 +16,9 @@
 
 import { ACBrowserManager } from "./lib/ACBrowserManager.js";
 import { ACEngineManager } from "./lib/ACEngineManager.js";
-import { getComplianceHelper } from "./lib/ACHelper.js";
+import { getComplianceHelper, getSimulationHelper } from "./lib/ACHelper.js";
 import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker.js";
+import { ISimulatorStructure } from "./lib/api/ISimulator.js";
 import { ACConfigManager } from "./lib/common/config/ACConfigManager.js";
 import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
 import { IBaselineReport } from "./lib/common/engine/IReport.js";
@@ -57,6 +58,17 @@ export function getCompliance(content: any,
     }
 }
 
+export function getSimulation(content: any, label: string, callback?: (report: ISimulatorStructure) => void) : Promise<ISimulatorStructure>
+{
+    if (callback) {
+        getSimulationHelper(content, label)
+            .then((result) => {
+                callback(result);
+            });
+    } else {
+        return getSimulationHelper(content, label);
+    }
+}
 /**
  * This function is responsible for comparing the scan results with baseline or checking that there are
  * no violations which fall into the failsLevels levels. In the case a baseline is found then baseline will

@@ -1,21 +1,6 @@
 import { SRController } from "./SRController";
 import { NavigationMode, NavigationResult } from "./SRTypes";
 
-function createDOMElement(elemName: string, attrs: { [attr: string]: string}, styles: Partial<CSSStyleDeclaration>) {
-    let retVal = document.createElement(elemName);
-    if (attrs) {
-        for (const key in attrs) {
-            retVal[key] = attrs[key];
-        }
-    }
-    if (styles) {
-        for (const key in styles) {
-            retVal.style[key] = styles[key];
-        }
-    }
-    return retVal;
-}
-
 /**
  * SROverlay class for creating a UI widget to control screen reader simulation
  * Provides buttons for navigation and displays results
@@ -41,12 +26,28 @@ export class SROverlay {
         this.createOverlay();
     }
 
+
+    private createDOMElement(elemName: string, attrs: { [attr: string]: string}, styles: Partial<CSSStyleDeclaration>) {
+        let retVal = this.srViewer.viewerDoc.createElement(elemName);
+        if (attrs) {
+            for (const key in attrs) {
+                retVal[key] = attrs[key];
+            }
+        }
+        if (styles) {
+            for (const key in styles) {
+                retVal.style[key] = styles[key];
+            }
+        }
+        return retVal;
+    }
+
     /**
      * Creates the overlay UI elements and adds them to the DOM
      */
     private createOverlay(): void {
         // Create main container
-        this.container = createDOMElement("div", {
+        this.container = this.createDOMElement("div", {
             className: "ibma-sr-overlay"
         }, {
             position: 'fixed',
@@ -63,24 +64,24 @@ export class SROverlay {
         });
 
         // Create controls container
-        const controlsContainer = createDOMElement("div", {}, { 
+        const controlsContainer = this.createDOMElement("div", {}, { 
             display: "flex", flexWrap: "wrap", gap: "10px"});
 
         // Create navigation mode groups
         this.navigationModes.forEach(navMode => {
-            const modeGroup = createDOMElement('div', {}, {
+            const modeGroup = this.createDOMElement('div', {}, {
                 display: "flex",
                 alignItems: 'center',
                 gap: '5px',
                 margin: '0 10px'
             });
 
-            modeGroup.appendChild(createDOMElement('span', {
+            modeGroup.appendChild(this.createDOMElement('span', {
                 textContent: navMode.label + ":"
             }, {}));
 
             // Previous button
-            const prevButton = createDOMElement('button', {
+            const prevButton = this.createDOMElement('button', {
                 textContent: '◀ Prev'
             }, {
                 padding: '5px 10px',
@@ -94,7 +95,7 @@ export class SROverlay {
             modeGroup.appendChild(prevButton);
 
             // Next button
-            const nextButton = createDOMElement('button', {
+            const nextButton = this.createDOMElement('button', {
                 textContent: 'Next ▶'
             }, {
                 padding: '5px 10px',
@@ -109,14 +110,14 @@ export class SROverlay {
 
             controlsContainer.appendChild(modeGroup);
         });
-        let otherButtonGroup = createDOMElement('div', {}, {
+        let otherButtonGroup = this.createDOMElement('div', {}, {
             display: "flex",
             alignItems: 'center',
             gap: '5px',
             margin: '0 10px'
         })
         // Show all button
-        const showAllButton = createDOMElement('button', {
+        const showAllButton = this.createDOMElement('button', {
             textContent: 'Show all'
         }, {
             padding: '5px 10px',
@@ -130,7 +131,7 @@ export class SROverlay {
         otherButtonGroup.appendChild(showAllButton);
 
         // Toggle Speech Button
-        const toggleSpeech = createDOMElement('button', {
+        const toggleSpeech = this.createDOMElement('button', {
             textContent: 'Toggle speech'
         }, {
             padding: '5px 10px',
@@ -146,7 +147,7 @@ export class SROverlay {
 
 
         // Create results display
-        this.resultsDisplay = createDOMElement('div', {
+        this.resultsDisplay = this.createDOMElement('div', {
             textContent: 'Screen reader simulation results will appear here.'
         }, {
             padding: '10px',
@@ -163,7 +164,7 @@ export class SROverlay {
         this.container.appendChild(this.resultsDisplay);
 
         // Add to document
-        document.body.appendChild(this.container);
+        this.srViewer.viewerDoc.body.appendChild(this.container);
     }
 
     /**
@@ -187,7 +188,7 @@ export class SROverlay {
         
         this.resultsDisplay.innerHTML = "";
         this.resultsDisplay.textContent = displayText;
-        let inspectButton = createDOMElement("button", {
+        let inspectButton = this.createDOMElement("button", {
             innerText: "Debug"
         }, {
         });
@@ -198,12 +199,12 @@ export class SROverlay {
     }
 
     public displayAll(result: Array<{ [key: string]: string }>): void {
-        const table = createDOMElement("table", {}, {});
-        const headerRow = createDOMElement("tr", {}, {});
+        const table = this.createDOMElement("table", {}, {});
+        const headerRow = this.createDOMElement("tr", {}, {});
         const headingLabels = ["Region", "Heading", "Item", "Tabbable"];
         const headingFields = ["region", "heading", "item", "tab_focus"];
         for (const headingLabel of headingLabels) {
-            headerRow.appendChild(createDOMElement("th", {
+            headerRow.appendChild(this.createDOMElement("th", {
                 scope: "col",
                 innerText: headingLabel
             }, {
@@ -216,9 +217,9 @@ export class SROverlay {
         }
 
         for (const line of result) {
-            const dataRow = createDOMElement("tr", {}, {});
+            const dataRow = this.createDOMElement("tr", {}, {});
             headingFields.forEach((field) => {
-                dataRow.appendChild(createDOMElement("td", {
+                dataRow.appendChild(this.createDOMElement("td", {
                     innerText: line[field]
                 }, {
                     verticalAlign: "top",
@@ -262,14 +263,16 @@ export class SRViewer {
     private keyboardHandler: (e: KeyboardEvent) => void;
     /** Focus event handler */
     private focusHandler: (e: FocusEvent) => void;
+    viewerDoc: HTMLDocument;
 
     /**
      * Creates a new SRViewer
      * @param rootElement The root element to start from (defaults to document.body)
      */
-    constructor(_rootElement: Node = document.body) {
+    constructor(rootElement: Node = document.body) {
+        this.viewerDoc = rootElement.ownerDocument;
         // Create controller for the document body
-        this.controller = SRController.getController();
+        this.controller = SRController.getController(this.viewerDoc);
         
         // Create overlay UI
         this.overlay = new SROverlay(this);
@@ -288,7 +291,7 @@ export class SRViewer {
         if (bEnableAllMode) {
             this.isShowingAll = true;
         }
-        const result = SRController.renderStructure();
+        const result = SRController.renderStructure(this.viewerDoc);
         this.overlay.displayAll(result);
     }
 
@@ -351,7 +354,7 @@ export class SRViewer {
                 case 'Enter':
                     e.preventDefault();
                     this.activateCurrentElement();
-                    this.controller.setPointOfRegard(document.activeElement);
+                    this.controller.setPointOfRegard(this.viewerDoc.activeElement);
                     break;
                 case 'H':
                 case 'h':
@@ -386,7 +389,7 @@ export class SRViewer {
         };
         
         // Add the event listener
-        document.addEventListener('keydown', this.keyboardHandler);
+        this.viewerDoc.addEventListener('keydown', this.keyboardHandler);
     }
 
     private speakResult(result): void {
@@ -428,7 +431,7 @@ export class SRViewer {
                     myThis.showAll();
                     setTimeout(() => {
                         myThis.showAll();
-                        observer.observe(document.documentElement, {
+                        observer.observe(this.viewerDoc.documentElement, {
                             attributes: true,
                             childList: true,
                             subtree: true
@@ -438,7 +441,7 @@ export class SRViewer {
                 }
             }
         });
-        observer.observe(document.documentElement, {
+        observer.observe(this.viewerDoc.documentElement, {
             attributes: true,
             childList: true,
             subtree: true
@@ -470,7 +473,7 @@ export class SRViewer {
         };
         
         // Add the focus event listener to the document
-        document.addEventListener('focusin', this.focusHandler);
+        this.viewerDoc.addEventListener('focusin', this.focusHandler);
     }
     
     /**
@@ -515,8 +518,8 @@ export class SRViewer {
      */
     public destroy(): void {
         // Remove event listeners
-        document.removeEventListener('keydown', this.keyboardHandler);
-        document.removeEventListener('focusin', this.focusHandler);
+        this.viewerDoc.removeEventListener('keydown', this.keyboardHandler);
+        this.viewerDoc.removeEventListener('focusin', this.focusHandler);
         
         // Stop any active speech
         this.stopSpeech();
