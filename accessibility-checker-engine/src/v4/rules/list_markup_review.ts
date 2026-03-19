@@ -88,7 +88,6 @@ export const list_markup_review: Rule = {
                 if (!passed) {
                     // Ensure that there's some sort of block level element before this
                     // Avoid failures due to things like <i>Some sentence</i>. New sentence.
-                    //let nw = new NodeWalker(walkNode);
                     let nw = new DOMWalker(walkNode);
                     while (!passed && nw.prevNode()) {
                         let nodeName = nw.node.nodeName.toLowerCase();

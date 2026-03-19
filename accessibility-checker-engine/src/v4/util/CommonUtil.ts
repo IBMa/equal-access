@@ -398,7 +398,6 @@ export class CommonUtil {
             }
             // Build a nodewalter based of the root node, this node walter will be use loop over all the nodes
             // and build the roles to Element coralation
-            //let nw = new NodeWalker(root);
             let nw = new DOMWalker(root);
             // Loop over the entire doc/list of nodes to build the role to element map
             // Note: This will build an roleToElems hash which is in the following format.
@@ -714,7 +713,6 @@ export class CommonUtil {
     public static isDisabledByFirstChildFormElement(element) {
         let formElements = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
         if (element.firstChild != null) {
-            //let nw = new NodeWalker(element);
             let nw = new DOMWalker(element);
             while (nw.nextNode()) {
                 if (formElements.includes(nw.node.nodeName.toLowerCase())) {
@@ -735,7 +733,6 @@ export class CommonUtil {
             // Get the parentNode
             root = DOMWalker.parentNode(root);
         }
-        //let nw = new NodeWalker(root);
         let nw = new DOMWalker(root);
         while (nw.nextNode()) {
             // check the element whose 'aria-describedby' equals to the id
@@ -1028,7 +1025,6 @@ export class CommonUtil {
     public static isFirstFormElement(parentNode, element) {
         //let formElementsRequiringLabel = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
         if (parentNode.firstChild != null) {
-            //let nw = new NodeWalker(parentNode);
             let nw = new DOMWalker(parentNode);
             while (nw.nextNode()) {
                 if (CommonUtil.form_labelable_elements.indexOf(nw.node.nodeName.toLowerCase()) !== -1) {
@@ -1226,7 +1222,6 @@ export class CommonUtil {
         if (element.nodeType === 3) return element.nodeValue();
 
         let text = "";
-        //let nw = new NodeWalker(element);
         let nw = new DOMWalker(element);
         // Loop over all the childrens of the element to get the text
         while (nw.nextNode() && nw.node !== element && nw.node !== element.parentNode) {
@@ -1290,7 +1285,6 @@ export class CommonUtil {
         let hasContent = (text !== null && text.trim().length > 0);
 
         if (element.firstChild !== null) {
-            //let nw = new NodeWalker(element);
             let nw = new DOMWalker(element);
             while (!hasContent && nw.nextNode()) {
                 hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
@@ -1331,7 +1325,6 @@ export class CommonUtil {
         if (childElement != null) {
             // Get the nodewalter of the element node, so that we can loop over it and verify
             // that the elements under the element are not completly hidden.
-            //let nw = new NodeWalker(element);
             let nw = new DOMWalker(element);
             // Loop over all the nodes until there are no more nodes or we have determine that there is content under
             // this parent element.
@@ -1397,7 +1390,6 @@ export class CommonUtil {
         let hasContent = (text != null && text.trim().length > 0) || CommonUtil.attributeNonEmpty(element, "alt");
 
         if (element.firstChild != null) {
-            //let nw = new NodeWalker(element);
             let nw = new DOMWalker(element);
             while (!hasContent && nw.nextNode() && nw.node != element) {
                 hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
@@ -1664,7 +1656,6 @@ export class CommonUtil {
             (parseInt(element.getAttribute("tabindex")) != -1)) {
             return false;
         }
-        //let nw = new NodeWalker(element);
         let nw = new DOMWalker(element);
         while (nw.nextNode()) {
             let child = nw.elem();

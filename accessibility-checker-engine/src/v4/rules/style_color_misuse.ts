@@ -115,7 +115,6 @@ export const style_color_misuse: Rule = {
             passed = nodeName in goodTagNames ||
                 CommonUtil.getAncestor(ruleContext, goodTagNames) !== null;
             if (!passed && ruleContext.hasChildNodes()) {
-                //let nw = new NodeWalker(ruleContext);
                 let nw = new DOMWalker(ruleContext);
                 while (!passed && nw.nextNode() && nw.node !== ruleContext) {
                     passed = nw.node.nodeName.toLowerCase() in goodTagNames;

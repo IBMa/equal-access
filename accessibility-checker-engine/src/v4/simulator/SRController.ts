@@ -17,7 +17,7 @@ export class SRController {
         if (!this.singleton) {
             this.singleton = new SRController(ctrlDoc.body);
         }
-        return this.singleton;
+        return this.singleton as SRController;
     }
 
     /** The current point of regard */
@@ -87,7 +87,7 @@ export class SRController {
             for (const removalMutation of mutations.filter(mutation => mutation.removedNodes?.length > 0)) {
                 removalMutation.removedNodes.forEach((removedNode) => {
                     if (removedNode.isSameNode(porNode) || removedNode.contains(porNode)) {
-                        console.info("Adjusting PoR due to DOM mutation removing PoR", removalMutation.target, removedNode, porNode)
+                        console.info("Adjusting PoR due to DOM mutation removing PoR");//, removalMutation.target, removedNode, porNode)
                         porNode = removalMutation.target;
                     }                    
                 })
@@ -271,8 +271,14 @@ export class SRController {
             while (bContinue && nextJump) {
                 const lastJump = nextJump.clone();
                 nextJump = SRNavigator.jumpNext(mode, nextJump);
-                const containerChanges = SRController.diffContainers(mode, nextJump, lastJump);
                 if (nextJump) {
+                    let containerChanges = SRController.diffContainers(mode, nextJump, lastJump);
+                    if (mode === "item" && !SRNavigator.getStartFunc(mode)(nextJump.getRole(), !nextJump.isEndTag(), nextJump.getNode())) {
+                        containerChanges = {
+                            entering: [],
+                            leaving: []
+                        }
+                    }
                     renderingResult = SRRenderer.renderCurrent(mode, nextJump, containerChanges);
                     // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
                     bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
@@ -337,8 +343,14 @@ export class SRController {
             while (bContinue && prevJump) {
                 const lastJump = prevJump.clone();
                 prevJump = SRNavigator.jumpPrevious(mode, prevJump);
-                const containerChanges = SRController.diffContainers(mode, prevJump, lastJump);
                 if (prevJump) {
+                    let containerChanges = SRController.diffContainers(mode, prevJump, lastJump);
+                    if (mode === "item" && !SRNavigator.getStartFunc(mode)(prevJump.getRole(), !prevJump.isEndTag(), prevJump.getNode())) {
+                        containerChanges = {
+                            entering: [],
+                            leaving: []
+                        }
+                    }
                     renderingResult = SRRenderer.renderCurrent(mode, prevJump, containerChanges);
                     // Keep going if the landing point is empty, unless it's certain nav modes (e.g., region)
                     bContinue = renderingResult.message.trim().length === 0 && !["region"].includes(mode);
@@ -403,7 +415,7 @@ export class SRController {
         let leaving: string[] = [];
         let entering: string[] = [];
         try {
-            const docRoot = newWalker ? 
+            const docRoot = newWalker ?
                 (newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement) :
                 oldWalker ?
                     (oldWalker.getNode().ownerDocument.body || oldWalker.getNode().ownerDocument.documentElement) :
@@ -424,7 +436,7 @@ export class SRController {
                     entering = entering.filter(s => s && s.trim().length > 0).map(s => s.trim());;
 
                     while (commonParent.contains(walkOld)) {
-                        DEBUG && console.log("Leaving:", walkNew.getNode().nodeName);
+                        DEBUG && console.log("Leaving:", walkOld.getNode().nodeName);
                         leaving.push(SRRenderer.renderLeave(mode, walkOld, walkOld));
                         walkOld.parent();
                     }

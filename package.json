@@ -18,6 +18,7 @@
         "build:karma-accessibility-checker": "cd karma-accessibility-checker && npm run build",
         "build:rule-server": "cd rule-server && npm run build",
         "build:extension": "cd accessibility-checker-extension && npm run build:prod",
+        "build:extension:engine_preview": "cd accessibility-checker-engine && npm run build && cd .. && cp accessibility-checker-engine/dist/ace.js accessibility-checker-extension/dist/archives/preview/js/ace.js",
         "start-server:rule-server": "cd rule-server && npm start",
         "build:extension-local": "cd accessibility-checker-extension && npm run build:watch:local",
         "build:cypress-accessibility-checker": "cd cypress-accessibility-checker && npm run package:npm",

@@ -78,7 +78,6 @@ export const img_alt_redundant: Rule = {
         } else {
             let passed = true;
             //alt is non-zero, but no link text - ensure adjacent link text isn't redundant
-            //let walk = new NodeWalker(aNode);
             let walk = new DOMWalker(aNode);
             while (passed && walk.prevNode()) {
                 // Get the node and nodeName
@@ -97,7 +96,6 @@ export const img_alt_redundant: Rule = {
             if (!passed) {
                 return RuleFail("Fail_2");
             }
-            //walk = new NodeWalker(aNode, true);
             walk = new DOMWalker(aNode, true);
             while (passed && walk.nextNode()) {
                 // Get the node and nodeName

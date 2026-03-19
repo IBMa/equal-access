@@ -29,7 +29,7 @@ export namespace SRNavigator {
         return ["block", "flex", "grid", "list-item"].includes(disp);
     }
 
-    function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
+    export function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
         switch (mode) {
             case "link": 
                 return (role: string, bStartTag: boolean) => (bStartTag && role === "link");
@@ -103,6 +103,7 @@ export namespace SRNavigator {
     const SKIP_ITEM_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
         const DEBUG = false;
         DEBUG && console.group("SKIP_ITEM_BEHAVIOR");
+        let retVal: { skipCurrent: boolean, skipChildren: boolean} | null = null;
         try {
             const nodeType = cursor.getNode().nodeType;
             let elem = cursor.getElement();
@@ -111,29 +112,66 @@ export namespace SRNavigator {
 
             DEBUG && console.log(nodeType);
             // Skip CDATA and comments completely
-            if ([4, 8].includes(nodeType)) return { skipCurrent: true, skipChildren: true };
+            if ([4, 8].includes(nodeType)) return retVal = { skipCurrent: true, skipChildren: true };
             // Only process elements and text
-            if (![1,3].includes(nodeType)) return { skipCurrent: true, skipChildren: false };
+            if (![1,3].includes(nodeType)) return retVal = { skipCurrent: true, skipChildren: false };
 
             // For text elements, Consider with relation to their parent element
             if (nodeType === 3) {
                 elem = cursor.getNode().parentElement;
-                if (!elem) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
+                if (!elem) return retVal = VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
             }
             // if (!elem) console.log(cursor.getNode());
 
             // We have an element
 
             // Make sure we're within the body element
-            if (!elem.closest("body") && !isInShadowDOM(elem)) return { skipCurrent: true, skipChildren: false };
+            if (!elem.closest("body") && !isInShadowDOM(elem)) return retVal = { skipCurrent: true, skipChildren: false };
 
             // Make sure we're not in a script or style
-            if (elem.closest("script,style")) return { skipCurrent: true, skipChildren: true };
+            if (elem.closest("script,style")) return retVal = { skipCurrent: true, skipChildren: true };
 
-            // Skip things hidden from the AT
-            if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
-            if (!VisUtil.isNodeVisible(elem)) return { skipCurrent: true, skipChildren: true };
-            if (elem.nodeName.toUpperCase() === "BODY") return { skipCurrent: false, skipChildren: false };
+            // For text nodes, we need to check visibility in context of parent heading/link
+            // So we'll handle text node visibility checks below with the element visibility checks
+            
+            // Skip things hidden from the AT, UNLESS we're inside a heading or link
+            // (headings and links should include their full accessible name, including hidden parts)
+            // BUT only if the heading/link uses nameFrom="content" (not aria-label/aria-labelledby)
+            const parentHeadingOrLink = cursorStart.getCurrentOrParentByRoleClone(["heading", "link"]);
+            
+            // Special case: if current element itself is a heading or link AND we're NOT inside another heading/link,
+            // apply normal skip rules
+            const currentRole = AriaUtil.getResolvedRole(elem);
+            const isCurrentHeadingOrLink = currentRole === "heading" || currentRole === "link";
+            
+            if (!parentHeadingOrLink) {
+                // Not inside any heading/link - apply normal skip rules
+                if (VisUtil.isNodeHiddenFromAT(elem)) return retVal = { skipCurrent: true, skipChildren: nodeType === 1 };
+                if (!VisUtil.isNodeVisible(elem)) return retVal = { skipCurrent: true, skipChildren: nodeType === 1 };
+            } else {
+                // Check if the parent heading/link uses aria-label or aria-labelledby
+                const parentElem = parentHeadingOrLink.getElement();
+                const nameInfo = parentHeadingOrLink.getNameInfo();
+                
+                // If nameFrom is NOT "content" or "text", skip all content (it's using aria-label/aria-labelledby)
+                if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
+                    // Parent uses aria-label/aria-labelledby - skip all content including nested headings/links
+                    if (VisUtil.isNodeHiddenFromAT(elem)) return retVal = { skipCurrent: true, skipChildren: true };
+                    if (!VisUtil.isNodeVisible(elem)) return retVal = { skipCurrent: true, skipChildren: true };
+                } else if (isCurrentHeadingOrLink) {
+                    // Current element is a heading/link inside another heading/link with content-based name
+                    // Don't skip it - let it through so its content can be read
+                    // (The logic at line 183 will handle whether to skip its children)
+                } else {
+                    // nameFrom is "content", so include hidden content but skip hidden images/graphics
+                    const role = AriaUtil.getResolvedRole(elem);
+                    if ((role === "img" || role === "graphics-document") && VisUtil.isNodeHiddenFromAT(elem)) {
+                        return retVal = { skipCurrent: true, skipChildren: true };
+                    }
+                    // Don't skip other hidden content - it should be included in the accessible name
+                }
+            }
+            if (elem.nodeName.toUpperCase() === "BODY") return retVal = { skipCurrent: false, skipChildren: false };
 
             // Skip label fors - they'll be read with the related input
             if (
@@ -142,26 +180,34 @@ export namespace SRNavigator {
                 && document.getElementById(elem.getAttribute("for"))
                 && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
             ) {
-                return { skipCurrent: true, skipChildren: true };
+                return retVal = { skipCurrent: true, skipChildren: true };
             }
 
             const role = cursorStart.getRole();
 
             // If we have presentational children, read the element, skip the children
             if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
-                return { skipCurrent: false, skipChildren: true };
+                return retVal = { skipCurrent: false, skipChildren: true };
             }
+            // Skip children of headings/links that don't use content-based names
+            // UNLESS we're inside another heading/link that DOES use content-based names
             if (["link", "heading"].includes(role) && (!cursorStart.getName() || (!["content", "text"].includes(cursorStart.getNameInfo().nameFrom)))) {
-                return { skipCurrent: false, skipChildren: true };
+                // Check if we're inside a parent heading/link with content-based name
+                if (parentHeadingOrLink && parentHeadingOrLink.getNameInfo() && ["content", "text"].includes(parentHeadingOrLink.getNameInfo().nameFrom)) {
+                    // Don't skip children - we're nested inside a content-based heading/link
+                } else {
+                    return retVal = { skipCurrent: false, skipChildren: true };
+                }
             }
             if (elem && elem.nodeName.toUpperCase() === "MSUP") {
-                return { skipCurrent: false, skipChildren: true };
+                return retVal = { skipCurrent: false, skipChildren: true };
             }
             if (elem.closest(".ibma-sr-overlay")) {
-                return { skipCurrent: true, skipChildren: true };
+                return retVal = { skipCurrent: true, skipChildren: true };
             }
-            return null;
+            return retVal = null;
         } finally {
+            DEBUG && console.log("SKIP_ITEM retVal:", retVal);
             DEBUG && console.groupEnd();
         }
     }
