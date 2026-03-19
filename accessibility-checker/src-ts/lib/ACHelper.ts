@@ -9,7 +9,7 @@ import { ReporterManager } from "./common/report/ReporterManager.js";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI.js";
 import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport.js";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
-import { ISimulatorStructure } from "./api/ISimulator.js";
+import { ISimulatorStructure } from "./common/engine/ISimulator.js";
 
 declare var after;
 

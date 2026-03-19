@@ -18,7 +18,7 @@ import { ACBrowserManager } from "./lib/ACBrowserManager.js";
 import { ACEngineManager } from "./lib/ACEngineManager.js";
 import { getComplianceHelper, getSimulationHelper } from "./lib/ACHelper.js";
 import { eAssertResult, ICheckerReport, ICheckerResult, ReportResult } from "./lib/api/IChecker.js";
-import { ISimulatorStructure } from "./lib/api/ISimulator.js";
+import { ISimulatorStructure } from "./lib/common/engine/ISimulator.js";
 import { ACConfigManager } from "./lib/common/config/ACConfigManager.js";
 import { IConfig, IConfigInternal } from "./lib/common/config/IConfig.js";
 import { IBaselineReport } from "./lib/common/engine/IReport.js";
