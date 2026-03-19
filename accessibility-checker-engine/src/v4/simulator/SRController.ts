@@ -13,9 +13,9 @@ import { VisUtil } from "../util/VisUtil";
  */
 export class SRController {
     public static singleton;
-    public static getController() {
+    public static getController(ctrlDoc: HTMLDocument = document) {
         if (!this.singleton) {
-            this.singleton = new SRController();
+            this.singleton = new SRController(ctrlDoc.body);
         }
         return this.singleton as SRController;
     }
@@ -24,12 +24,14 @@ export class SRController {
     private pointOfRegard: SRCursor;
     private mutationObserver: MutationObserver;
     private liveListeners: Array<(result: string) => Promise<void>> = [];
+    private ctrlDoc;
     
     /**
      * Creates a new SRController
      * @param rootElement The root element to start from (defaults to document.body)
      */
     private constructor(private rootElement: Node = document.body) {
+        this.ctrlDoc = rootElement.ownerDocument;
         this.setPointOfRegard(rootElement);
         this.setupMutationTracking();
         console.info(`[WARNING] The SRController is a new feature that is not yet "stable". What this means:
@@ -47,7 +49,7 @@ export class SRController {
         const shadowRoots: Node[] = [];
 
         // Get all elements in the current root
-        const walker = document.createTreeWalker(
+        const walker = this.ctrlDoc.createTreeWalker(
             root,
             NodeFilter.SHOW_ELEMENT,
             null
@@ -188,8 +190,8 @@ export class SRController {
         });
 
         // Need to observe all of the shadow roots
-        let allRoots = this.findAllShadowRoots(document.documentElement);
-        allRoots.push(document.documentElement);
+        let allRoots = this.findAllShadowRoots(this.ctrlDoc.documentElement);
+        allRoots.push(this.ctrlDoc.documentElement);
         for (const root of allRoots) {
             observer.observe(root, {
                 childList: true,
@@ -258,7 +260,7 @@ export class SRController {
      * @returns NavigationResult indicating success or failure
      */
     public jumpNext(mode: NavigationMode): NavigationResult {
-        CacheUtil.clearCaches(document.documentElement);
+        CacheUtil.clearCaches(this.ctrlDoc.documentElement);
         const oldPointOfRegard = this.pointOfRegard.clone();
         const DEBUG = false;
         DEBUG && console.group("jumpNext");
@@ -331,7 +333,7 @@ export class SRController {
      * @returns NavigationResult indicating success or failure
      */
     public jumpPrevious(mode: NavigationMode): NavigationResult {
-        CacheUtil.clearCaches(document.documentElement);
+        CacheUtil.clearCaches(this.ctrlDoc.documentElement);
         const oldPointOfRegard = this.pointOfRegard.clone();
         
         try {
@@ -469,7 +471,7 @@ export class SRController {
 
     public static renderAll(mode: NavigationMode): string[] {
         let ctrl = SRController.getController();
-        let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
+        let dialogs = ctrl.ctrlDoc.body.querySelectorAll("dialog,[role='dialog']");
         dialogs.forEach(dialog => {
             if (SRUtil.isModalDialogElement(dialog)) {
                 ctrl.setPointOfRegard(dialog);
@@ -494,10 +496,10 @@ export class SRController {
         return results;
     }
 
-    public static renderAllDetail(mode: NavigationMode): RenderResult[] {
-        let ctrl = SRController.getController();
-        ctrl.setPointOfRegard(document.body);
-        let dialogs = document.body.querySelectorAll("dialog,[role='dialog']");
+    public static renderAllDetail(doc: HTMLDocument, mode: NavigationMode): RenderResult[] {
+        let ctrl = SRController.getController(doc);
+        ctrl.setPointOfRegard(doc.body);
+        let dialogs = doc.body.querySelectorAll("dialog,[role='dialog']");
         dialogs.forEach(dialog => {
             if (SRUtil.isModalDialogElement(dialog)) {
                 ctrl.setPointOfRegard(dialog);
@@ -523,9 +525,9 @@ export class SRController {
         return results;
     }
 
-    public static renderStructure(): Array<{ [key: string]: string }> {
+    public static renderStructure(doc: HTMLDocument): Array<{ [key: string]: string }> {
         const modes: NavigationMode[] = [ "region", "heading", "item", "tab_focus", "image" ];
-        let details = modes.map(modeLabel => SRController.renderAllDetail(modeLabel));
+        let details = modes.map(modeLabel => SRController.renderAllDetail(doc, modeLabel));
         let retVal: Array<{ [key: string]: string }> = [];
         while (details.some(detail => detail.length > 0)) {
             let next = details[0][0]?.start;
@@ -547,7 +549,7 @@ export class SRController {
 
             const elem = next.getElement();
             const selector = elem && SRUtil.getUniqueSelector(elem);
-            if (selector && document.querySelector(selector)) {
+            if (selector && doc.querySelector(selector)) {
                 nextItem.selector = selector;
             }
             retVal.push(nextItem);
