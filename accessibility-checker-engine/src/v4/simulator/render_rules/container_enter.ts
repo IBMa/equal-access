@@ -2,6 +2,8 @@ import { SRRendererRule } from "../SRRendererRule";
 import { SRCursor } from "../SRCursor";
 import { SRTableUtil } from "../SRTableUtil";
 import { quoteNamePadAfter, quoteNamePadBefore } from "./common";
+import { AriaUtil } from "../../util/AriaUtil";
+import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
 
 /**
  * Generates the announcement text when entering a table cell
@@ -197,10 +199,41 @@ export let RULES: SRRendererRule[] = [
             (cursor: SRCursor) => {
                 const node = cursor.getNode() as HTMLElement;
                 const descendantListItems = document.evaluate(".//li | .//*[@role='listitem']", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                const descendantListItemsInOtherLists = document.evaluate(
-                    ".//ul//li|.//ul//*[@role='listitem']|.//ol//li|.//ol//*[@role='listitem']|.//*[@role='list']//li|.//*[@role='list']//*[@role='listitem']",
-                    node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                let numItems = descendantListItems.snapshotLength-descendantListItemsInOtherLists.snapshotLength;
+                
+                // Count items, excluding those in other lists or within presentational containers
+                let numItems = 0;
+                for (let i = 0; i < descendantListItems.snapshotLength; i++) {
+                    const item = descendantListItems.snapshotItem(i) as HTMLElement;
+                    
+                    // Walk up ancestors to check for both nested lists and presentational containers
+                    let isInOtherList = false;
+                    let hasPresentationalAncestor = false;
+                    let ancestor = item.parentElement;
+                    
+                    while (ancestor && ancestor !== node) {
+                        // Check if ancestor is another list
+                        const ancestorRole = AriaUtil.getResolvedRole(ancestor);
+                        if (ancestorRole === "list" ||
+                            ancestor.nodeName.toUpperCase() === "UL" ||
+                            ancestor.nodeName.toUpperCase() === "OL") {
+                            isInOtherList = true;
+                            break;
+                        }
+                        
+                        // Check if ancestor has presentational children
+                        if (ancestorRole && ARIADefinitions.designPatterns[ancestorRole]?.presentationalChildren) {
+                            hasPresentationalAncestor = true;
+                            break;
+                        }
+                        
+                        ancestor = ancestor.parentElement;
+                    }
+                    
+                    if (!isInOtherList && !hasPresentationalAncestor) {
+                        numItems++;
+                    }
+                }
+                
                 if (numItems === 0) return null;
                 return `[${quoteNamePadAfter(cursor)}list of ${numItems} items]`;
             }

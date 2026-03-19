@@ -94,7 +94,6 @@ export namespace SRRenderer {
      * @returns Combined announcement text for the entire range
      */
     export function renderRange(mode: NavigationMode, startOfRender: SRCursor, endOfRender: SRCursor) : string {
-        let lastIterWalker = null;
         let iterWalker = startOfRender.clone();
         let renderStrs = [];
         let bContinue = true;
@@ -102,19 +101,11 @@ export namespace SRRenderer {
             const elem = iterWalker.getElement();
             const node = iterWalker.getNode();
             const nodeType = node.nodeType;
-            if (lastIterWalker) {
-                const DEBUG = false;
-                DEBUG && console.log(mode);
-                const containerChanges = SRController.diffContainers(mode, iterWalker, lastIterWalker);
-                renderStrs = renderStrs.concat(containerChanges.leaving.filter(s => s.trim().length > 0));
-                renderStrs = renderStrs.concat(containerChanges.entering.filter(s => s.trim().length > 0));
-            }
-            lastIterWalker = iterWalker.clone();
             for (const rule of SR_RULES) {
                 let s = rule.test(mode, iterWalker);
                 if (typeof s !== "undefined" && s !== null) {
-                    if (nodeType === 1 && elem.getAttribute("aria-haspopup") === "menu") {
-                        s += "[subMenu] "+s;
+                    if (nodeType === 1 && !iterWalker.isEndTag() && elem.getAttribute("aria-haspopup") === "menu") {
+                        s = "[subMenu] "+s;
                     }
                     if (s.trim().length > 0 && iterWalker.isStartTag() && !s.includes("[link") && nodeType === 1 && AriaUtil.getAncestorWithRole(elem, "link", true)) {
                         if (mode === "item") {

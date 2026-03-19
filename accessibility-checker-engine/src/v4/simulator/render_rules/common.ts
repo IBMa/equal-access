@@ -1,5 +1,9 @@
 import { SRCursor } from "../SRCursor";
 import { SRRendererRule } from "../SRRendererRule";
+import { AriaUtil } from "../../util/AriaUtil";
+import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
+import { DOMWalker } from "../../../v2/dom/DOMWalker";
+import { VisUtil } from "../../util/VisUtil";
 
 /**
  * Provide the name, surrounded by the quoteCharBefore and quoteCharAfter and followed by the padding if the name exists
@@ -22,9 +26,48 @@ export function quoteNamePadBefore(cursor: SRCursor, padding?: string) {
 }
 
 export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharAfter?: string) {
-    return cursor.getName() 
-        ? `${quoteCharBefore || '“'}${cursor.getName()}${quoteCharAfter || '”'}`
+    return cursor.getName()
+        ? `${quoteCharBefore || '"'}${cursor.getName()}${quoteCharAfter || '"'}`
         : "";
+}
+
+/**
+ * Check if a listitem contains interactive/widget elements
+ * Screen readers typically don't read the accessible name of a listitem when it contains interactive elements
+ * Uses DOMWalker to properly traverse shadow DOM and other complex structures
+ */
+function listitemContainsInteractiveElement(cursor: SRCursor): boolean {
+    const elem = cursor.getElement();
+    if (!elem) return false;
+    
+    // Use DOMWalker to traverse the entire subtree including shadow DOM
+    const walker = new DOMWalker(elem, false, elem, false);
+    
+    // Walk through all descendants
+    while (walker.nextNode()) {
+        // Only check element nodes at start tags
+        if (walker.node.nodeType === 1 && !walker.bEndTag) {
+            const role = AriaUtil.getResolvedRole(walker.node as HTMLElement);
+            if (role && ARIADefinitions.designPatterns[role] && ARIADefinitions.designPatterns[role].roleType === 'widget') {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function canAccessFrame(iframe) {
+    try {
+        // This throws a DOMException for cross-origin frames
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        return doc !== null;
+    } catch (e) {
+        return false;
+        // if (e instanceof DOMException && e.name === 'SecurityError') {
+        //     return false; // Cross-origin, access blocked
+        // }
+        // throw e; // Re-throw unexpected errors
+    }
 }
 
 export const RULES: SRRendererRule[] = [
@@ -44,7 +87,7 @@ export const RULES: SRRendererRule[] = [
                 if (cursor.isEndTag()) return undefined;
                 let expandStr = "";
                 const elem = cursor.getElement();
-                if (elem.getAttribute("aria-haspopup") === "true") {
+                if (["menu", "true"].includes(elem.getAttribute("aria-haspopup"))) {
                     expandStr += ", menu";
                 }
                 if (elem.hasAttribute("aria-expanded")) {
@@ -166,7 +209,17 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "image"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && !cursor.getNameInfo()?.name && cursor.getNameInfo()?.name !== "" && "[Unlabeled graphic]") || null,
+            (cursor: SRCursor) => {
+                if (cursor.isStartTag() && !cursor.getNameInfo()?.name && cursor.getNameInfo()?.name !== "") {
+                    // Don't announce unlabeled graphics that are hidden inside links or headings
+                    const parentHeadingOrLink = cursor.getCurrentOrParentByRoleClone(["heading", "link"]);
+                    if (parentHeadingOrLink && VisUtil.isNodeHiddenFromAT(cursor.getElement())) {
+                        return "";
+                    }
+                    return "[Unlabeled graphic]";
+                }
+                return null;
+            },
             (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNameInfo()?.name === "")) ? "" : null,
             (cursor: SRCursor) => (cursor.isStartTag() && cursor.getNameInfo()?.name && `[graphic${quoteNamePadBefore(cursor)}]`) || null,
             (cursor: SRCursor) => (cursor.isEndTag()) ? "" : null
@@ -219,6 +272,12 @@ export const RULES: SRRendererRule[] = [
                     return "";
                 } else {
                     if (!cursor.getNameInfo()?.name && cursor.getNameInfo()?.name !== "") {
+                        // Don't announce unlabeled graphics that are hidden inside links or headings
+                        // (these were only included because of the SKIP_ITEM_BEHAVIOR change)
+                        const parentHeadingOrLink = cursor.getCurrentOrParentByRoleClone(["heading", "link"]);
+                        if (parentHeadingOrLink && VisUtil.isNodeHiddenFromAT(cursor.getElement())) {
+                            return "";
+                        }
                         return "[Unlabeled graphic]"
                     } else if (cursor.getNameInfo()?.name === "") {
                         return "";
@@ -290,13 +349,21 @@ export const RULES: SRRendererRule[] = [
                     }
                     walkParents = walkParents.parentNode;
                 }
+                
+                // Check if listitem contains interactive elements
+                // Screen readers don't read the accessible name when interactive elements are present
+                const hasInteractiveContent = listitemContainsInteractiveElement(cursor);
+                const nameToUse = hasInteractiveContent ? "" : (cursor.getNameInfo()?.name || "");
+                
                 let retStr = "";
                 if (!isOrdered) {
                     const elem = cursor.getElement();
-                    if (elem.nodeName.toUpperCase() === "LI" && window.getComputedStyle(elem).listStyleType === "none") {
-                        retStr = cursor.isStartTag() ? `${(cursor.getNameInfo()?.name || "")}` : "";
+                    if ((elem.nodeName.toUpperCase() === "LI" && window.getComputedStyle(elem).listStyleType === "none")
+                        || elem.nodeName.toUpperCase() !== "LI")
+                    {
+                        retStr = cursor.isStartTag() ? `${nameToUse}` : "";
                     } else {
-                        retStr = cursor.isStartTag() ? `[bullet] ${(cursor.getNameInfo()?.name || "")}` : "";
+                        retStr = cursor.isStartTag() ? `[bullet] ${nameToUse}` : "";
                     }
                 } else {
                     let walkBack = cursor.clone();
@@ -307,7 +374,7 @@ export const RULES: SRRendererRule[] = [
                         }
                         walkBack.previous(() => true);
                     }
-                    retStr = cursor.isStartTag() ? `${count}. ${(cursor.getNameInfo()?.name || "")}` : "";
+                    retStr = cursor.isStartTag() ? `${count}. ${nameToUse}` : "";
                 }
                 return retStr;
             }
@@ -492,8 +559,8 @@ export const RULES: SRRendererRule[] = [
         modes: ["item", "link", "tab_focus", "region"],
         tests: [
             (cursor: SRCursor) => {
-                if (cursor.isEndTag() || !cursor.getNode().parentElement) return null;
-                const elem = cursor.getNode().parentElement;
+                if (cursor.isEndTag() || !cursor.getParentElement()?.getElement()) return null;
+                const elem = cursor.getParentElement()?.getElement();
                 if (elem.ownerDocument.defaultView.getComputedStyle(elem).textDecorationLine === "line-through") {
                     return `[strikethrough] ${(cursor.getNameInfo()?.name + "")} [end strikethrough]`;
                 }
@@ -546,7 +613,20 @@ export const RULES: SRRendererRule[] = [
         modes: ["item", "tab_focus"],
         tests: [
             (cursor: SRCursor) => {
-                return cursor.isEndTag() ? `[End of document]` : `[Start of document${document.title.trim().length > 0 ? ": " + document.title.trim() : ""}]`
+                const titleStr = cursor.getNode().ownerDocument.title;
+                return cursor.isEndTag() ? `[End of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]` : `[Start of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]`
+            }
+        ]
+    }),
+
+    new SRRendererRule({
+        roles: [],
+        elems: ["IFRAME"],
+        modes: ["item", "tab_focus"],
+        tests: [
+            (cursor: SRCursor) => {
+                const accessWarning = canAccessFrame(cursor.getNode()) ? "" : "{Emulator unable to access frame}"
+                return cursor.isEndTag() ? "" : accessWarning;
             }
         ]
     }),
@@ -708,11 +788,16 @@ export const RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
+                // Check if listitem contains interactive elements
+                // Screen readers don't read the accessible name when interactive elements are present
+                const hasInteractiveContent = listitemContainsInteractiveElement(cursor);
+                const nameToUse = hasInteractiveContent ? "" : (cursor.getNameInfo()?.name || "");
+                
                 const elem = cursor.getElement();
                 if (window.getComputedStyle(elem).listStyleType === "none") {
-                    return cursor.isStartTag() ? `${(cursor.getNameInfo()?.name || "")}` : "";
+                    return cursor.isStartTag() ? `${nameToUse}` : "";
                 } else {
-                    return cursor.isStartTag() ? `[bullet] ${(cursor.getNameInfo()?.name || "")}` : "";
+                    return cursor.isStartTag() ? `[bullet] ${nameToUse}` : "";
                 }
             }
         ]

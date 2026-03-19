@@ -71,7 +71,6 @@ export const widget_tabbable_single: Rule = {
         //skip the count if the element requires presentational children only
         let name = [];
         if (count < 2 && !AriaUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
-            //let nw = new NodeWalker(ruleContext);
             let nw = new DOMWalker(ruleContext);
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {

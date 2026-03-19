@@ -119,7 +119,7 @@ export class DOMWalker {
     }
 
     atRoot() : boolean {
-        if ((this as any).ownerElement) return false;
+        if ((this.node as any).ownerElement) return false;
         if (this.root === this.node) {
             return true;
         } else if (this.root.isSameNode) {
@@ -180,13 +180,6 @@ export class DOMWalker {
                 {
                     DBG && console.log("!!!Into slot");
                     this.node = slotElement.assignedNodes()[0];
-                } else if (this.node.nodeType === 1
-                    && elementNode.nodeName.toLowerCase() === "slot"
-                    && slotElement.assignedNodes().length === 0)
-                {
-                    DBG && console.log("!!!Empty slot - treat as leaf node, flip to end");
-                    // Empty slot - treat as self-closing leaf node
-                    this.bEndTag = true;
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */)
                     && DOMWalker.firstChildNotOwnedBySlot(this.node)) {
                     DBG && console.log("!!!First child");
@@ -275,10 +268,11 @@ export class DOMWalker {
                     DOMWalker.assignSlots(this.node as ShadowRoot);
                 } else if (this.node.nodeType === 1
                     && elementNode.nodeName.toLowerCase() === "slot"
-                    && (elementNode as HTMLSlotElement).assignedNodes().length === 0)
+                    && (elementNode as HTMLSlotElement).assignedNodes().length > 0)
                 {
-                    // Empty slot - treat as self-closing leaf node
-                    this.bEndTag = false;
+                    // Enter slot with assigned nodes - go to last assigned node
+                    let slotElement = elementNode as HTMLSlotElement;
+                    this.node = slotElement.assignedNodes()[slotElement.assignedNodes().length - 1];
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11)
                     && DOMWalker.lastChildNotOwnedBySlot(this.node)) {
                     this.node = DOMWalker.lastChildNotOwnedBySlot(this.node);
@@ -288,6 +282,16 @@ export class DOMWalker {
             } else {
                 if (this.atRoot()) {
                     return false;
+                } else if ((this.node as any).slotOwner) {
+                    let slotOwner = (this.node as any).slotOwner;
+                    let prevSlotIndex = (this.node as any).slotIndex - 1;
+                    if (prevSlotIndex >= 0) {
+                        this.node = slotOwner.assignedNodes()[prevSlotIndex];
+                        this.bEndTag = true;
+                    } else {
+                        this.node = slotOwner;
+                        this.bEndTag = false;
+                    }
                 } else if (DOMWalker.previousSiblingNotOwnedBySlot(this.node)) {
                     this.node = DOMWalker.previousSiblingNotOwnedBySlot(this.node);
                     this.bEndTag = true;

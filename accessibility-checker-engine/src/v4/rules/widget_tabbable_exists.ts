@@ -79,7 +79,6 @@ export const widget_tabbable_exists: Rule = {
         // If node has children, look for tab stops in the children
         // skip the count if the element requires presentational children only
         if (count < 1 && !AriaUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
-            //let nw = new NodeWalker(ruleContext);
             let nw = new DOMWalker(ruleContext);
             while (count < 1 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && CommonUtil.isTabbable(nw.node)) {

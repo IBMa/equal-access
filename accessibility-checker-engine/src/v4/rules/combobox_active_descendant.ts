@@ -76,7 +76,6 @@ export const combobox_active_descendant: Rule = {
 
         // examine the children
         if (popupElement) {
-            //let nw = new NodeWalker(popupElement);
             let nw = new DOMWalker(popupElement);
             while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                 if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {

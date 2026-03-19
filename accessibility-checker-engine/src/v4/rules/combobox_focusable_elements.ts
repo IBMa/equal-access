@@ -78,7 +78,6 @@ export const combobox_focusable_elements: Rule = {
             passed = !CommonUtil.isTabbable(popupElement) && !AriaUtil.getAriaAttribute(popupElement, "aria-activedescendant");;
             // if any child of popupElement has "aria-autocomplete"
             if (passed && popupElement.children && popupElement.children.length > 0) {
-                //let nw = new NodeWalker(popupElement);
                 let nw = new DOMWalker(popupElement);
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
