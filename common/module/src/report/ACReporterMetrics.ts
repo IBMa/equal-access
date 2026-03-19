@@ -18,7 +18,7 @@ import { fetch_get } from "../api-ext/Fetch.js";
 import { IConfigInternal } from "../config/IConfig.js";
 import { Guideline } from "../engine/IGuideline.js";
 import { CompressedReport } from "../engine/IReport.js";
-import { GenSummReturn, IReporter, IReporterStored } from "./ReporterManager.js";
+import { GenSummReturn, IReporter, IReporterStored, ISimulatorMeta } from "./ReporterManager.js";
 
 /*******************************************************************************
  * NAME: ACMetricsLogger.js
@@ -81,6 +81,17 @@ export class ACReporterMetrics implements IReporter {
             // Add the time it took for the testcase to run to the global array, indexed by the profile
             this.scanTimesV2[profile] = this.scanTimesV2[profile] || [];
             this.scanTimesV2[profile].push(storedReport.engineReport.summary.scanTime);
+        }
+    };
+
+    public addSimulatorResult(config: IConfigInternal, simMeta: ISimulatorMeta): void {
+        if (!config.label || !config.label.includes("IBMa-Node-TeSt")) {
+            // URI encode the profile text provided
+            let profile = encodeURIComponent(simMeta.simProfile);
+
+            // Add the time it took for the testcase to run to the global array, indexed by the profile
+            this.scanTimesV2[profile] = this.scanTimesV2[profile] || [];
+            this.scanTimesV2[profile].push(simMeta.simTime);
         }
     };
 

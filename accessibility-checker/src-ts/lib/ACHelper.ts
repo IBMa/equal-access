@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, join, resolve as pathResolve } from "path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve as pathResolve } from "node:path";
 import { ICheckerReport, ICheckerResult } from "./api/IChecker.js";
 import { ACBrowserManager } from "./ACBrowserManager.js";
 import { ACEngineManager } from "./ACEngineManager.js";
@@ -9,6 +9,7 @@ import { ReporterManager } from "./common/report/ReporterManager.js";
 import { IAbstractAPI } from "./common/api-ext/IAbstractAPI.js";
 import { EngineSummaryCounts, IBaselineReport, IEngineReport } from "./common/engine/IReport.js";
 import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js";
+import { ISimulatorStructure } from "./common/engine/ISimulator.js";
 
 declare var after;
 
@@ -140,6 +141,49 @@ function areValidPolicy(valPolicies, curPol) {
     }
 }
 
+// Since we need to handle multiple variation of possible ways to scan items, we need to handle
+// each one differently as each one requires specific actions/setup.
+// Handle the following:
+//  Single node (HTMLElement)
+//  Multiple node (Array of HTMLElements)
+//  Local file (String)
+//  URL (String)
+//  document
+
+async function getParsed(content) {
+    if (!content) return null;
+
+    // Handle local file and URL's
+    if (typeof content === "string") {
+        // Since this is a string, we consider this as either URL or local file
+        // so build an iframe based on this and get the frame doc and then scan this.
+        return ACBrowserManager.buildIframeAndGetDoc(content);
+    } else if (ACEngineManager.isSelenium(content) || ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content) || ACEngineManager.isWebDriverIO(content)) {
+
+    }
+    // Handle Array of nodes
+    else if (content instanceof Array) {
+        // TODO: Supporting Array of nodes, possible future enhancenment
+    }
+    // Handle single node (HTMLElement)
+    else if (content.nodeType === 1) {
+        // In the case this is a node, there is nothing special that needs to be done at this time,
+        // the engine will be able to handle this. Adding this block here as we may need to add some filtering
+        // of rules or rule sets for this case depending on if a special ruleset needs to be created or not.
+        content = content;
+    }
+    // handle scanning document
+    else if (content.nodeType === 9) {
+        // In the case this is a document element, simply send the document object to the engine for now
+        // we will need to do some filtering to remove any karma related aspects, which requires to do a
+        // document clone, and then string the karma scripts that are added and then send this document
+        // to the engine.
+        // TODO: Investigate best approach to perform filtering
+        content = content;
+    }
+    return content;
+}
+
 export async function getComplianceHelper(content, label) : Promise<ICheckerResult> {
     await initialize();
     Config.DEBUG && console.log("START 'aChecker.getCompliance' function");
@@ -147,58 +191,6 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
         console.error("aChecker: Unable to get compliance of null or undefined object")
         //return null;
         throw new Error("aChecker: Unable to get compliance of null or undefined object");
-    }
-
-    // Variable Decleration
-    let URL;
-
-    // Since we need to handle multiple variation of possible ways to scan items, we need to handle
-    // each one differently as each one requires specific actions/setup.
-    // Handle the following:
-    //  Single node (HTMLElement)
-    //  Multiple node (Array of HTMLElements)
-    //  Local file (String)
-    //  URL (String)
-    //  document
-
-    async function getParsed(content) {
-        if (!content) return null;
-
-        // Handle local file and URL's
-        if (typeof content === "string") {
-            let isURLRegex = /^(ftp|http|https):\/\//;
-
-            if (isURLRegex.test(content)) {
-                URL = content;
-            }
-
-            // Since this is a string, we consider this as either URL or local file
-            // so build an iframe based on this and get the frame doc and then scan this.
-            return ACBrowserManager.buildIframeAndGetDoc(content);
-        } else if (ACEngineManager.isSelenium(content) || ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content) || ACEngineManager.isWebDriverIO(content)) {
-
-        }
-        // Handle Array of nodes
-        else if (content instanceof Array) {
-            // TODO: Supporting Array of nodes, possible future enhancenment
-        }
-        // Handle single node (HTMLElement)
-        else if (content.nodeType === 1) {
-            // In the case this is a node, there is nothing special that needs to be done at this time,
-            // the engine will be able to handle this. Adding this block here as we may need to add some filtering
-            // of rules or rule sets for this case depending on if a special ruleset needs to be created or not.
-            content = content;
-        }
-        // handle scanning document
-        else if (content.nodeType === 9) {
-            // In the case this is a document element, simply send the document object to the engine for now
-            // we will need to do some filtering to remove any karma related aspects, which requires to do a
-            // document clone, and then string the karma scripts that are added and then send this document
-            // to the engine.
-            // TODO: Investigate best approach to perform filtering
-            content = content;
-        }
-        return content;
     }
 
     let parsed = await getParsed(content);
@@ -639,6 +631,174 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
         return {
             "report": finalReport
         };
+    } catch (err) {
+        console.error(err);
+        return Promise.reject(err);
+    };
+}
+
+
+///////////
+
+export async function getSimulationHelper(content, label) : Promise<ISimulatorStructure> {
+    await initialize();
+    Config.DEBUG && console.log("START 'aChecker.getSimulationHelper' function");
+    if (!content) {
+        console.error("aChecker: Unable to get simulation of null or undefined object")
+        //return null;
+        throw new Error("aChecker: Unable to get simulation of null or undefined object");
+    }
+
+    let parsed = await getParsed(content);
+    if (!parsed) {
+        console.error("Invalid content: " + content);
+        throw new Error("Invalid content: " + content);
+    }
+    await ACEngineManager.loadEngine(parsed);
+
+    if (ACEngineManager.isSelenium(parsed)) {
+        Config.DEBUG && console.log("getSimulationHelper:Selenium");
+        return await getSimulationHelperSelenium(label, parsed);
+    } else if (ACEngineManager.isPuppeteer(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Puppeteer");
+        return await getSimulationHelperPuppeteer(label, parsed);
+    } else if (ACEngineManager.isPlaywright(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Playwright");
+        return await getSimulationHelperPuppeteer(label, parsed);
+    } else if (ACEngineManager.isWebDriverIO(parsed)) {
+        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Playwright");
+        return await getSimulationHelperWebDriverIO(label, parsed);
+    } else {
+        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Local");
+        return await getSimulationHelperLocal(label, parsed);
+    }
+}
+
+async function getSimulationHelperSelenium(label: string, parsed) : Promise<ISimulatorStructure> {
+    try {
+        let startScan = Date.now();
+        // NOTE: Engine should already be loaded
+        let browser = parsed;
+        // Selenium
+        let scriptStr =
+            `let cb = arguments[arguments.length - 1];
+try {
+    const SRController = window.ace_ibma.SRController;
+    setTimeout(function() {
+        SRController.renderStructure(window.document).then(function(result) {
+            cb(result);
+        })
+    },0)
+} catch (e) {
+cb(e);
+}`
+        let manage = browser.manage();
+        if (manage.timeouts) {
+            manage.timeouts().setScriptTimeout(60000);
+        } else if (manage.setTimeouts) {
+            manage.setTimeouts({
+                "script": 60000
+            })
+        }
+
+        let result : ISimulatorStructure = await browser.executeAsyncScript(scriptStr);
+
+        // If there is something to report...
+        if (result) {
+            // Add URL to the result object
+            const url = await browser.getCurrentUrl();
+            const title = await browser.getTitle();
+            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, result);
+        }
+        
+        return result;
+    } catch (err) {
+        console.error(err);
+        return Promise.reject(err);
+    };
+}
+
+
+async function getSimulationHelperWebDriverIO(label: string, parsed) : Promise<ISimulatorStructure> {
+    try {
+        const startScan = Date.now();
+        // NOTE: Engine should already be loaded
+        const page = parsed;
+        let result : ISimulatorStructure = await page.executeAsync(({}, done) => {
+            const SRController = new (window as any).ace_ibma.SRController;
+            return new Promise<Report>((resolve, reject) => {
+                setTimeout(function () {
+                    SRController.renderStructure(window.document).then(function(result) {
+                        resolve(result);
+                        done(result);
+                    })
+                }, 0)
+            })
+        }, {});
+
+        if (result) {
+            const url = await page.execute(() => document.location.href);
+            const title = await page.execute(() => (document.location as any).title);
+            const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
+            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, origResult);
+        }
+        page.aceBusy = false;
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return Promise.reject(err);
+    };
+}
+
+async function getSimulationHelperPuppeteer(label: string, parsed) : Promise<ISimulatorStructure> {
+    try { 
+        const startScan = Date.now();
+        // NOTE: Engine should already be loaded
+        const page = parsed;
+        let result : ISimulatorStructure = await page.evaluate(({ }) => {  
+            const SRController = new (window as any).ace_ibma.SRController;
+            return new Promise<Report>((resolve, reject) => {
+                setTimeout(function () {
+                    SRController.renderStructure(window.document).then(function(result) {
+                        resolve(result);
+                    })
+                }, 0)
+            })
+        }, { });
+
+        // If there is something to report...
+        if (result) {
+            const url = await page.evaluate("document.location.href");
+            const title = await page.evaluate("document.location.title");
+            const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
+
+            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, origResult);
+        }
+        
+        page.aceBusy = false;
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return Promise.reject(err);
+    };
+}
+
+async function getSimulationHelperLocal(label: string, parsed) : Promise<ISimulatorStructure> {
+    try {
+        let startScan = Date.now();
+        const SRController = new (window as any).ace_ibma.SRController;
+        let result : ISimulatorStructure = await SRController.renderStructure(window.document);
+
+        // If there is something to report...
+        if (result) {
+            let url = parsed.location && parsed.location.href;
+            const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
+            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, parsed.title, label, origResult);
+        }
+
+        return result;
     } catch (err) {
         console.error(err);
         return Promise.reject(err);

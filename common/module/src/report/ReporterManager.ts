@@ -24,6 +24,7 @@ import { ACReporterXLSX } from "./ACReporterXLSX.js";
 import { Guideline } from "../engine/IGuideline.js";
 import { eRuleConfidence, eRulePolicy } from "../engine/IRule.js";
 import { ACReporterMetrics } from "./ACReporterMetrics.js";
+import { ISimulatorStructure } from "../engine/ISimulator.js";
 
 export interface IReporterStored {
     startScan: number,
@@ -34,6 +35,15 @@ export interface IReporterStored {
     engineReport: IBaselineReport
 }
 
+export interface ISimulatorMeta {
+    simTime: number,
+    url: string,
+    pageTitle: string,
+    label: string,
+    simProfile: string,
+    simResult: ISimulatorStructure
+}
+
 export type GenSummReturn = { 
     summaryPath: string, 
     summary: string | Buffer | ((filename?: string) => Promise<void>)
@@ -42,6 +52,7 @@ export interface IReporter {
     name(): string
     generateReport(config: IConfigInternal, rulesets: Guideline[], reportData: IReporterStored): { reportPath: string, report: string } | void;
     generateSummary(config: IConfigInternal, rulesets: Guideline[], endReport: number, summaryData: CompressedReport[]): Promise<GenSummReturn>;
+    // addSimulatorResult(config: IConfigInternal, simMeta: ISimulatorMeta): void;
 };
 
 /**
@@ -53,6 +64,7 @@ export class ReporterManager {
     private static rulesets: Guideline[];
     private static absAPI: IAbstractAPI;
     private static reporters: IReporter[] = [];
+    private static metrics: ACReporterMetrics = null;
     private static reports: CompressedReport[] = []
     private static nlsData: {
         [ruleId: string]: {
@@ -181,7 +193,8 @@ export class ReporterManager {
         ReporterManager.absAPI = absAPI;
         ReporterManager.rulesets = rulesets;
         if (config.perfMetrics) {
-            ReporterManager.reporters.push(new ACReporterMetrics(config.toolName, config.policies));
+            ReporterManager.metrics = new ACReporterMetrics(config.toolName, config.policies);
+            ReporterManager.reporters.push(ReporterManager.metrics);
         }
 
         if (!config.outputFormat.includes("disable")) {
@@ -304,6 +317,19 @@ export class ReporterManager {
         }
         let retVal = ReporterManager.returnReporter.generateReport(ReporterManager.config, ReporterManager.rulesets, storedReport);
         if (retVal) return JSON.parse(retVal.report);
+    }
+
+    public static addSimulatorResult(simProfile: string, simTime: number, url: string, pageTitle: string, label: string, simResult: ISimulatorStructure): void {
+        let simMeta : ISimulatorMeta = {
+            simTime,
+            url,
+            pageTitle,
+            label,
+            simProfile,
+            simResult
+        };
+
+        ReporterManager.metrics.addSimulatorResult(ReporterManager.config, simMeta);
     }
 
     public static async generateSummaries(endReport?: number) {

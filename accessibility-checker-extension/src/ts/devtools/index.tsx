@@ -48,13 +48,13 @@ chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "d
     }
 );
 
-// Create Screen Reader Emulator panel based on user settings
+// Create Screen Reader Simulator panel based on user settings
 (async () => {
     const bgController = getBGController();
     const settings = await bgController.getSettings();
     
-    if (settings.enableScreenReaderEmulator) {
-        chrome.devtools.panels.create("Screen Reader Emulator"+devStr+localStr, "", "devtoolsSR.html",
+    if (settings.enableScreenReaderSimulator) {
+        chrome.devtools.panels.create("Screen Reader Simulator"+devStr+localStr, "", "devtoolsSR.html",
             function() {
             }
         );

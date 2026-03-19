@@ -47,7 +47,7 @@ export interface ISettings {
     tabStopAlerts: boolean
     tabStopFirstTime: boolean
     checkerViewAwareFirstTime: boolean
-    enableScreenReaderEmulator: boolean
+    enableScreenReaderSimulator: boolean
 }
 
 export interface ISessionState {

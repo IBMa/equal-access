@@ -120,6 +120,17 @@ let ACCommands = module.exports = {
         }
     },
 
+    getSimulation: function (content, label, callback) {
+        if (callback) {
+            ACCommands.getSimulationHelper(content, label)
+                .then((result) => {
+                    callback(result);
+                });
+        } else {
+            return ACCommands.getSimulationHelper(content, label);
+        }
+    },
+
     getComplianceHelper: function (content, label) {
         ACCommands.DEBUG && console.log("START 'ACCommands.getComplianceHelper' function");
         if (!content) {
@@ -137,6 +148,19 @@ let ACCommands = module.exports = {
 
         ACCommands.DEBUG && console.log("getComplianceHelper:Cypress");
         return ACCommands.getComplianceHelperCypress(label, content, curPol);
+    },
+
+    getSimulationHelper: function (content, label) {
+        ACCommands.DEBUG && console.log("START 'ACCommands.getSimulationHelper' function");
+        if (!content) {
+            console.error("aChecker: Unable to get simulation of null or undefined object")
+            return null;
+        }
+
+        // Get the Data when the scan is started
+        // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
+        ACCommands.DEBUG && console.log("getSimulationHelper:Cypress");
+        return ACCommands.getSimulationHelperCypress(label, content);
     },
 
     getComplianceHelperCypress: (label, parsed, curPol) => {
@@ -158,6 +182,18 @@ let ACCommands = module.exports = {
                     report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                     return report;
                 })
+        } catch (err) {
+            console.error(err);
+            return Promise.reject(err);
+        };
+    },
+
+    getSimulationHelperCypress: (label, parsed) => {
+        try {
+            const SRController = ACEngineManager.ace.SRController;
+            return new Cypress.Promise((resolve, reject) => {
+                SRController.renderStructure(parsed).then((result) => resolve(result));
+            })
         } catch (err) {
             console.error(err);
             return Promise.reject(err);
