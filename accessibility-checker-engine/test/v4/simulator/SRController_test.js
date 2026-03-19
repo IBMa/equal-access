@@ -56,7 +56,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Collect all item mode announcements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -78,7 +78,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Collect all item mode announcements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -104,7 +104,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Collect all item mode announcements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -123,7 +123,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Collect all item mode announcements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -142,7 +142,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Find the button entry
             let buttonEntry = result.find(r => r.item && r.item.includes('Infrastructure'));
@@ -166,7 +166,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should have entries for different modes
             let modes = ['item', 'heading', 'region', 'tab_focus', 'image'];
@@ -183,7 +183,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Find heading entries
             let headingEntries = result.filter(r => r.heading && r.heading.trim().length > 0);
@@ -203,7 +203,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Find region entries
             let regionEntries = result.filter(r => r.region && r.region.trim().length > 0);
@@ -227,7 +227,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should have item mode entries for table content
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -244,7 +244,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should have entries for form elements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -261,7 +261,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should have entries for ARIA widgets
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -278,7 +278,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should still process the structure
             expect(result.length).toBeGreaterThan(0);
@@ -290,7 +290,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should find the deep content
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -303,7 +303,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should process mixed inline content
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -322,7 +322,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Collect all item mode announcements
             let allItemText = result.map(r => r.item || '').join(' ');
@@ -344,7 +344,7 @@ describe('SRController.renderStructure', function() {
                 + "</div>";
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
-            let result = ace.SRController.renderStructure();
+            let result = ace.SRController.renderStructure(document);
             
             // Should process nested structure correctly
             let allItemText = result.map(r => r.item || '').join(' ');
