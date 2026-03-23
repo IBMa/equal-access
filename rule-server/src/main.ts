@@ -18,7 +18,6 @@ import compression from "compression";
 import express from "express";
 import fs from "fs";
 import https from "https";
-import mkdirp from "mkdirp";
 import path from "path";
 import bodyParser from "body-parser";
 
@@ -116,7 +115,7 @@ export class Server {
                     // If files does not exist or don't have read access to it, create one and use.
                     if (err) {
                         // no-op if the directory already exists
-                        mkdirp(path.dirname(Config.certPEMPath), null);
+                        fs.mkdirSync(path.dirname(Config.certPEMPath), { recursive: true });
                         let pem = require("pem");
 
                         // Auto generate a self signed certificate
