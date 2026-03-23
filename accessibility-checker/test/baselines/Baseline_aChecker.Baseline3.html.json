@@ -19,7 +19,7 @@
     "scanID": "e3e7fd60-1302-4720-a0bc-8a642fb49dbc",
     "pageScanSummary": [
         {
-            "label": "able-test.mybluemix.net/able/toolkit",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit",
             "counts": {
                 "violation": 5,
                 "potentialviolation": 21,
@@ -27,7 +27,7 @@
             }
         },
         {
-            "label": "able-test.mybluemix.net/able/toolkit/plan/overview",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/plan/overview",
             "counts": {
                 "violation": 1,
                 "potentialviolation": 33,
@@ -35,7 +35,7 @@
             }
         },
         {
-            "label": "able-test.mybluemix.net/able/toolkit/design/overview",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/design/overview",
             "counts": {
                 "violation": 4,
                 "potentialviolation": 31,
@@ -43,7 +43,7 @@
             }
         },
         {
-            "label": "able-test.mybluemix.net/able/toolkit/develop/overview",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/develop/overview",
             "counts": {
                 "violation": 1,
                 "potentialviolation": 36,
@@ -51,7 +51,7 @@
             }
         },
         {
-            "label": "able-test.mybluemix.net/able/toolkit/verify/overview",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/verify/overview",
             "counts": {
                 "violation": 1,
                 "potentialviolation": 29,
@@ -59,7 +59,7 @@
             }
         },
         {
-            "label": "able-test.mybluemix.net/able/toolkit/launch/overview",
+            "label": "able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/launch/overview",
             "counts": {
                 "violation": 1,
                 "potentialviolation": 25,

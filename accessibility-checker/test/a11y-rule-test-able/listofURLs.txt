@@ -1,6 +1,6 @@
-https://able-test.mybluemix.net/able/toolkit
-https://able-test.mybluemix.net/able/toolkit/plan/overview
-https://able-test.mybluemix.net/able/toolkit/design/overview
-https://able-test.mybluemix.net/able/toolkit/develop/overview
-https://able-test.mybluemix.net/able/toolkit/verify/overview
-https://able-test.mybluemix.net/able/toolkit/launch/overview
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/plan/overview
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/design/overview
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/develop/overview
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/verify/overview
+https://able-site-test.s3-web.us-south.cloud-object-storage.appdomain.cloud/able/toolkit/launch/overview
