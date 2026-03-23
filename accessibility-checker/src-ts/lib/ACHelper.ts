@@ -217,7 +217,7 @@ export async function getComplianceHelper(content, label) : Promise<ICheckerResu
         Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
         return await getComplianceHelperPuppeteer(label, parsed, curPol);
     } else if (ACEngineManager.isWebDriverIO(parsed)) {
-        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Playwright");
+        Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:WebDriverIO");
         return await getComplianceHelperWebDriverIO(label, parsed, curPol);
     } else {
         Config.DEBUG && console.log("ACHelper.ts:getComplianceHelper:Local");
@@ -666,7 +666,7 @@ export async function getSimulationHelper(content, label) : Promise<ISimulatorSt
         Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Playwright");
         return await getSimulationHelperPuppeteer(label, parsed);
     } else if (ACEngineManager.isWebDriverIO(parsed)) {
-        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Playwright");
+        Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:WebDriverIO");
         return await getSimulationHelperWebDriverIO(label, parsed);
     } else {
         Config.DEBUG && console.log("ACHelper.ts:getSimulationHelper:Local");
@@ -685,9 +685,12 @@ async function getSimulationHelperSelenium(label: string, parsed) : Promise<ISim
 try {
     const SRController = window.ace_ibma.SRController;
     setTimeout(function() {
-        SRController.renderStructure(window.document).then(function(result) {
+        try {
+            const result = SRController.renderStructure(window.document);
             cb(result);
-        })
+        } catch(error) {
+            cb(error);
+        }
     },0)
 } catch (e) {
 cb(e);
@@ -725,13 +728,17 @@ async function getSimulationHelperWebDriverIO(label: string, parsed) : Promise<I
         // NOTE: Engine should already be loaded
         const page = parsed;
         let result : ISimulatorStructure = await page.executeAsync(({}, done) => {
-            const SRController = new (window as any).ace_ibma.SRController;
+            const SRController = (window as any).ace_ibma.SRController;
             return new Promise<Report>((resolve, reject) => {
                 setTimeout(function () {
-                    SRController.renderStructure(window.document).then(function(result) {
+                    try {
+                        const result = SRController.renderStructure(window.document);
                         resolve(result);
                         done(result);
-                    })
+                    } catch(error) {
+                        reject(error);
+                        done(error);
+                    }
                 }, 0)
             })
         }, {});
@@ -752,20 +759,23 @@ async function getSimulationHelperWebDriverIO(label: string, parsed) : Promise<I
 }
 
 async function getSimulationHelperPuppeteer(label: string, parsed) : Promise<ISimulatorStructure> {
-    try { 
+    try {
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let result : ISimulatorStructure = await page.evaluate(({ }) => {  
-            const SRController = new (window as any).ace_ibma.SRController;
-            return new Promise<Report>((resolve, reject) => {
+        let result : ISimulatorStructure = await page.evaluate(() => {
+            const SRController = (window as any).ace_ibma.SRController;
+            return new Promise<ISimulatorStructure>((resolve, reject) => {
                 setTimeout(function () {
-                    SRController.renderStructure(window.document).then(function(result) {
+                    try {
+                        const result = SRController.renderStructure(window.document);
                         resolve(result);
-                    })
+                    } catch(error) {
+                        reject(error);
+                    }
                 }, 0)
             })
-        }, { });
+        });
 
         // If there is something to report...
         if (result) {
@@ -788,8 +798,8 @@ async function getSimulationHelperPuppeteer(label: string, parsed) : Promise<ISi
 async function getSimulationHelperLocal(label: string, parsed) : Promise<ISimulatorStructure> {
     try {
         let startScan = Date.now();
-        const SRController = new (window as any).ace_ibma.SRController;
-        let result : ISimulatorStructure = await SRController.renderStructure(window.document);
+        const SRController = (window as any).ace_ibma.SRController;
+        let result : ISimulatorStructure = SRController.renderStructure(window.document);
 
         // If there is something to report...
         if (result) {

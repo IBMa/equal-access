@@ -192,7 +192,12 @@ let ACCommands = module.exports = {
         try {
             const SRController = ACEngineManager.ace.SRController;
             return new Cypress.Promise((resolve, reject) => {
-                SRController.renderStructure(parsed).then((result) => resolve(result));
+                try {
+                    const result = SRController.renderStructure(parsed);
+                    resolve(result);
+                } catch (error) {
+                    reject(error);
+                }
             })
         } catch (err) {
             console.error(err);
