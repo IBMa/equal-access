@@ -120,6 +120,31 @@ let ACCommands = module.exports = {
         }
     },
 
+    /**
+     * EXPERIMENTAL: This function generates a screen reader simulation of the provided content.
+     * The simulation represents how a screen reader would announce page elements, including
+     * regions, headings, interactive elements, and images.
+     *
+     * WARNING: This API is experimental and subject to change. The output format and behavior
+     * may be modified in future releases.
+     *
+     * Supported context types:
+     *    Single node (HTMLElement)
+     *    Local file path (String)
+     *    URL (String)
+     *    document node
+     *    data stream for html content (String)
+     *
+     * @param {(String|HTMLElement|DocumentNode)} content - Provide the context to simulate, which includes the items from above.
+     * @param {String} label - Provide a label for the simulation that is being performed
+     * @param {Function} callback - (optional) Provide callback function which will be executed once the simulation is generated.
+     *
+     * @return Promise with an array of screen reader announcement objects, or N/A if callback is provided
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
     getSimulation: function (content, label, callback) {
         if (callback) {
             ACCommands.getSimulationHelper(content, label)

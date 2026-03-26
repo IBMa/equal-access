@@ -441,6 +441,29 @@ Returns `String` representation of the scan results which can be logged to the c
 
 Retrieve the configuration object used by accessibility-checker. See aceconfig.js / .achecker.yml above for details
 
+### async aChecker.getSimulation(`content`, `label` : string) - **EXPERIMENTAL**
+
+> **⚠️ EXPERIMENTAL FEATURE**: This API is experimental and subject to change. The output format and behavior may be modified in future releases.
+
+Generate a screen reader simulation of the page content. This provides a representation of how a screen reader would announce the page elements, including regions, headings, interactive elements, and images.
+
+- `content` - Same types as `getCompliance`: HTML content (String), Single node/widget (HTMLElement), Local file path (String), URL (String), Document node (HTMLDocument), [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) (WebDriver), [Puppeteer](https://www.npmjs.com/package/puppeteer) page, or [Playwright](https://www.npmjs.com/package/playwright) page
+- `label` - (String) unique label to identify this simulation
+
+Returns a promise with an array of objects representing the screen reader output. Each object contains:
+- `region` - ARIA region announcements
+- `heading` - Heading level and text
+- `item` - The main announcement text
+- `tab_focus` - Text announced when element receives keyboard focus
+- `image` - Image alternative text announcements
+- `selector` - CSS selector for the element
+
+Example usage:
+```javascript
+const simulation = await aChecker.getSimulation(page, 'my-page-label');
+// Returns array of screen reader announcements
+```
+
 ### async aChecker.close()
 
 Close [Puppeteer](https://www.npmjs.com/package/puppeteer) pages and other resources that may be used by accessibility-checker.

@@ -60,6 +60,35 @@ Key features include:
 - TypeScript for improved code quality and developer experience
 - Custom [Jest](https://www.npmjs.com/package/jest) matchers for more readable test assertions
 - Configuration options for tailoring accessibility testing to your needs
+- **Screen reader simulation testing** - Uses the experimental `getSimulation` API to verify screen reader output
+
+## Screen Reader Simulation (Experimental)
+
+> **⚠️ EXPERIMENTAL FEATURE**: The `getSimulation` API is experimental and subject to change. The output format and behavior may be modified in future releases.
+
+This boilerplate demonstrates how to use the `getSimulation` method to test screen reader output. The method generates a simulation of how a screen reader would announce page elements, including:
+
+- ARIA regions and landmarks
+- Heading levels and text
+- Interactive elements (links, buttons, form fields)
+- Image alternative text
+- Keyboard focus announcements
+
+Example usage from `test-ts/basic.test.ts`:
+
+```typescript
+import { getSimulation } from "accessibility-checker";
+
+test('SR simulation has not regressed', async() => {
+    const simulation = await getSimulation(page, 'test_name');
+    expect(simulation).toEqual([
+        { "region": "", "heading": "", "item": "[Start of document: ...]", ... },
+        // ... more simulation output
+    ]);
+})
+```
+
+This allows you to create regression tests that ensure the screen reader experience remains consistent across code changes.
 
 ## Learn More
 
