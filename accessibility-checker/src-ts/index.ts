@@ -58,6 +58,29 @@ export function getCompliance(content: any,
     }
 }
 
+/**
+ * EXPERIMENTAL: This function generates a screen reader simulation of the provided content.
+ * The simulation represents how a screen reader would announce page elements, including
+ * regions, headings, interactive elements, and images.
+ *
+ * WARNING: This API is experimental and subject to change. The output format and behavior
+ * may be modified in future releases.
+ *
+ * Supported context types:
+ *    Single node (HTMLElement)
+ *    Local file path (String)
+ *    URL (String)
+ *    document node
+ *    data stream for html content (String)
+ *    Puppeteer Page
+ *    Playwright Page
+ *    Selenium WebDriver
+ *
+ * @param {(String|HTMLElement|DocumentNode|Puppeteer Page|Playwright Page|Selenium WebDriver)} content - Provide the context to simulate
+ * @param {String} label - Provide a label for the simulation that is being performed
+ * @param {Function} callback - (optional) Provide callback function which will be executed once the simulation is generated.
+ * @return Promise with the ISimulatorStructure containing an array of screen reader announcements
+ */
 export function getSimulation(content: any, label: string, callback?: (report: ISimulatorStructure) => void) : Promise<ISimulatorStructure>
 {
     if (callback) {

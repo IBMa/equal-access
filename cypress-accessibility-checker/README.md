@@ -92,6 +92,9 @@ Examples of how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.diffResultsWithExpected(actual, expected, clean)`
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
+- `cy.getSimulation(label)` - **EXPERIMENTAL**
+  - > **⚠️ EXPERIMENTAL FEATURE**: This API is experimental and subject to change. The output format and behavior may be modified in future releases.
+  - Generate a screen reader simulation of the current page. Returns an array of objects representing how a screen reader would announce page elements, including regions, headings, interactive elements, and images.
 
 Chain the commands similar to other [Cypress](https://www.npmjs.com/package/cypress) commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 
