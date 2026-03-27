@@ -94,6 +94,10 @@ function sendResultsToReporter(profile, startScan, url, title, label, report) {
     return ACTasks.sendResultsToReporter(profile, startScan, url, title, label, report);
 }
 
+function sendSimulationToReporter(profile, startScan, url, title, label, simulation) {
+    return ACTasks.sendSimulationToReporter(profile, startScan, url, title, label, simulation);
+}
+
 function getDiffResults({ label }) {
     return BaselineManager.getDiffResults(label);
 }
@@ -107,6 +111,8 @@ module.exports = ({ task, data }) => {
     switch (task) {
         case 'sendResultsToReporter':
             return sendResultsToReporter(data.profile, data.startScan, data.url, data.title, data.label, data.report)
+        case 'sendSimulationToReporter':
+            return sendSimulationToReporter(data.profile, data.startScan, data.url, data.title, data.label, data.simulation)
         case 'assertCompliance':
             return assertCompliance(data);
         case 'getBaseline':

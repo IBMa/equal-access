@@ -433,7 +433,7 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
                 });
                 origReport.screenshot = image;
             }
-            finalReport = ReporterManager.addEngineReport("Puppeteer", startScan, url, title, label, origReport);
+            finalReport = ReporterManager.addEngineReport("WebDriverIO", startScan, url, title, label, origReport);
         }
         page.aceBusy = false;
 
@@ -747,7 +747,7 @@ async function getSimulationHelperWebDriverIO(label: string, parsed) : Promise<I
             const url = await page.execute(() => document.location.href);
             const title = await page.execute(() => (document.location as any).title);
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
-            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, origResult);
+            ReporterManager.addSimulatorResult("WebDriverIO-simulator", startScan-Date.now(), url, title, label, origResult);
         }
         page.aceBusy = false;
 
@@ -783,7 +783,7 @@ async function getSimulationHelperPuppeteer(label: string, parsed) : Promise<ISi
             const title = await page.evaluate("document.location.title");
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
 
-            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, origResult);
+            ReporterManager.addSimulatorResult("Puppeteer-simulator", startScan-Date.now(), url, title, label, origResult);
         }
         
         page.aceBusy = false;
@@ -805,7 +805,7 @@ async function getSimulationHelperLocal(label: string, parsed) : Promise<ISimula
         if (result) {
             let url = parsed.location && parsed.location.href;
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
-            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, parsed.title, label, origResult);
+            ReporterManager.addSimulatorResult("Native-simulator", startScan-Date.now(), url, parsed.title, label, origResult);
         }
 
         return result;

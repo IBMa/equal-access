@@ -94,6 +94,59 @@ Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
 });
 
 /**
+ * EXPERIMENTAL: Get screen reader simulation of a cypress object
+ *
+ * WARNING: This API is experimental and subject to change. The output format and behavior
+ * may be modified in future releases.
+ *
+ * This can be called with a single parameter - getSimulation("SCAN_LABEL"),
+ * which will simulate the current document. Otherwise, pass a cypress object
+ * (document) and a label
+ */
+Cypress.Commands.add("getSimulation", (cyObj, scanLabel) => {
+    let scanObj = cyObj;
+    let label = scanLabel;
+    let startScan = new Date().getTime();
+    let url;
+    let title;
+    let simulation;
+    return init().then(() => {
+        if (typeof cyObj === "string") {
+            return cy.document({ log: false })
+                .then(doc => {
+                    scanObj = doc;
+                    label = cyObj;
+                })
+        }
+    }).then(() => {
+        return cy.wrap(ACCommands.getSimulation(scanObj, label), { log: false });
+    }).then(simulationResult => {
+        simulation = simulationResult;
+        // To write metrics to disk, we have to be outside of the browser, so that's a task
+        return cy.title({ log: false });
+    }).then(pageTitle => {
+        title = pageTitle;
+        return cy.url({ log: false });
+    }).then(pageUrl => {
+        url = pageUrl;
+        return cy.task('accessibilityChecker', {
+            task: 'sendSimulationToReporter',
+            data: { profile: `${Cypress.browser.displayName} ${Cypress.browser.version}`, startScan, url, title, label, simulation }
+        }, { log: false }).then((updSimulation) => {
+            Cypress.log({
+                name: 'getSimulation',
+                displayName: 'getSimulation',
+                message: ` ${updSimulation.length} announcements`,
+                consoleProps: () => {
+                    return updSimulation
+                },
+            })
+            return cy.wrap(updSimulation, { log: false });
+        });
+    });
+});
+
+/**
  * Asserts accessibility compliance against a baseline or failure level of violation.  If a failure
  * is logged then the test will have an assertion fail.
  */

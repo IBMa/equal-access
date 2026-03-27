@@ -132,6 +132,29 @@ let ACTasks = module.exports = {
     },
 
     /**
+     * This function is responsible for sending the simulation results to the reporter for metrics tracking.
+     *
+     * @param {String} profile - Browser profile information
+     * @param {Number} startScan - Timestamp when scan started
+     * @param {String} url - URL of the page
+     * @param {String} title - Title of the page
+     * @param {String} label - Label for the simulation
+     * @param {Object} simulation - Simulation results from the scan
+     *
+     * @return {Object} simulation - Returns the simulation object
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
+    sendSimulationToReporter: function (profile, startScan, url, title, label, simulation) {
+        return ACTasks.initialize().then(() => {
+            ReporterManager.addSimulatorResult(profile, startScan, url, title, label, simulation);
+            return simulation;
+        });
+    },
+
+    /**
      * This function is responsible for printing the scan results to console.
      *
      * @param {Object} results - Provide the results from the scan.
