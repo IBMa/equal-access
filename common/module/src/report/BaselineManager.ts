@@ -17,7 +17,7 @@
 import { IAbstractAPI } from "../api-ext/IAbstractAPI.js";
 import { IConfigInternal, eAssertResult } from "../config/IConfig.js";
 import { IBaselineReport } from "../engine/IReport.js";
-import * as DeepDiff from "deep-diff";
+import * as DiffUtil from "./DiffUtil.js";
 
 export type RefactorMap = {
     [oldRuleId: string]: {
@@ -211,9 +211,9 @@ export class BaselineManager {
         }
 
         // Run Deep diff function to compare the actual and expected values.
-        let diff = DeepDiff.diff;
+        let diff = DiffUtil.diff;
         if (!diff) {
-            diff = DeepDiff.default.diff;
+            diff = DiffUtil.default.diff;
         }
         let differences = diff(actual, expected);
         if (differences) {

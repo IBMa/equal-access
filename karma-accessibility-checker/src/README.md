@@ -426,7 +426,7 @@ Retrieve the diff results for a specified scan (denoted by its label) when API `
 - `label` - (String) label to use when getting the diff results. The label should match the one provided for aChecker.getCompliance(...).
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
-Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
+The diff object follows the deep-diff format with difference types: N (new), D (deleted), E (edited), A (array change).
 
 Returns `undefined` if there are no differences.
 
@@ -450,7 +450,7 @@ Compare provided `actual` and `expected` objects and get the differences between
 - `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance compare of only `xpath` and `ruleID`.
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
-Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
+The diff object follows the deep-diff format with difference types: N (new), D (deleted), E (edited), A (array change).
 
 Returns `undefined` if there are no differences.
 
