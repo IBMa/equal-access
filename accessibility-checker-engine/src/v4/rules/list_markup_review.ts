@@ -15,27 +15,181 @@ import { Rule, RuleResult, RuleContext, RulePotential, RuleContextHierarchy } fr
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { AriaUtil } from "../util/AriaUtil";
 import { CommonUtil } from "../util/CommonUtil";
-import { DOMWalker } from "../../v2/dom/DOMWalker";
 import { VisUtil } from "../util/VisUtil";
+
+// Matches unordered list item prefixes: •, ◦, ▪, ▸, ►, ✓, ✗, ✦, –, —, *, -, o
+const UNORDERED_BULLET_PATTERN = /^[ \t]*[•◦▪▸►✓✗✦\-–—*o][ \t]+\S/;
+
+// Matches ordered list item prefixes: 1. 1) (1) a. a) (a) A. A) i. ii. iii. etc.
+const ORDERED_ITEM_PATTERN = /^[ \t]*(?:\(?\d+[.)]\)?|\(?[a-zA-Z][.)]\)?|\(?(?:i{1,3}|iv|vi{0,3}|ix|xi{0,3}|xiv|xv)[.)]\)?)[ \t]+\S/i;
+
+const LIST_ITEM_PATTERN = new RegExp(
+    UNORDERED_BULLET_PATTERN.source + "|" + ORDERED_ITEM_PATTERN.source
+);
+
+// Block-level elements that act as boundaries between independent content groups
+const BLOCK_ELEMENTS = new Set([
+    "blockquote", "center", "dir", "div", "form",
+    "h1", "h2", "h3", "h4", "h5", "h6",
+    "hr", "br", "menu", "p", "pre", "table",
+    "section", "article", "aside", "nav", "header", "footer",
+    "figure", "figcaption", "details", "summary", "dialog"
+]);
+
+// Inline elements whose text content is treated as part of the surrounding text run
+const INLINE_ELEMENTS = new Set([
+    "a", "abbr", "acronym", "b", "bdo", "big", "br", "button", "cite",
+    "code", "dfn", "em", "i", "img", "input", "kbd", "label", "map",
+    "object", "output", "q", "samp", "select", "small", "span",
+    "strong", "sub", "sup", "textarea", "time", "tt", "u", "var"
+]);
+
+// Returns the combined text of a node and its inline descendants, normalised to single spaces
+function getShallowText(node: Node): string {
+    let text = "";
+    node.childNodes.forEach((child) => {
+        if (child.nodeType === Node.TEXT_NODE) {
+            text += child.nodeValue ?? "";
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+            const tag = (child as Element).nodeName.toLowerCase();
+            if (INLINE_ELEMENTS.has(tag)) {
+                text += getShallowText(child);
+            }
+        }
+    });
+    return text.replace(/\s+/g, " ");
+}
+
+// Returns trimmed non-empty lines from a node, splitting on newlines and <br> boundaries
+function getLinesFromNode(node: Node): string[] {
+    const lines: string[] = [];
+
+    function walk(n: Node) {
+        if (n.nodeType === Node.TEXT_NODE) {
+            (n.nodeValue ?? "").split(/\r?\n/).forEach(p => {
+                const trimmed = p.trim();
+                if (trimmed.length > 0) lines.push(trimmed);
+            });
+        } else if (n.nodeType === Node.ELEMENT_NODE) {
+            const tag = (n as Element).nodeName.toLowerCase();
+            if (tag === "br") {
+                lines.push("\x00");
+                return;
+            }
+            if (BLOCK_ELEMENTS.has(tag)) return;
+            n.childNodes.forEach(walk);
+        }
+    }
+
+    walk(node);
+    return lines.filter(l => l !== "\x00");
+}
+
+// Returns the maximum number of consecutive list-item-like lines found among
+// the direct children of parent, treating <br> and whitespace-only text as separators
+function maxConsecutiveListItems(parent: Element): number {
+    let maxRun = 0;
+    let currentRun = 0;
+    let currentLineText = "";  // accumulate text across inline siblings until <br>
+
+    parent.childNodes.forEach((child) => {
+        const tag = child.nodeName.toLowerCase();
+
+        if (tag === "br") {
+            // test the accumulated line
+            const trimmed = currentLineText.trim();
+            if (trimmed.length > 0) {
+                if (LIST_ITEM_PATTERN.test(trimmed)) {
+                    maxRun = Math.max(maxRun, ++currentRun);
+                } else {
+                    currentRun = 0;
+                }
+            }
+            currentLineText = "";
+            return;
+        }
+
+        if (child.nodeType === Node.TEXT_NODE) {
+            const raw = child.nodeValue ?? "";
+            if (raw.trim().length === 0) return;
+            // if there are embedded newlines, flush on each
+            const segs = raw.split(/\r?\n/);
+            segs.forEach((seg, i) => {
+                if (i > 0) {
+                    const trimmed = currentLineText.trim();
+                    if (trimmed.length > 0) {
+                        if (LIST_ITEM_PATTERN.test(trimmed)) {
+                            maxRun = Math.max(maxRun, ++currentRun);
+                        } else {
+                            currentRun = 0;
+                        }
+                    }
+                    currentLineText = "";
+                }
+                currentLineText += seg;
+            });
+            return;
+        }
+
+        if (child.nodeType === Node.ELEMENT_NODE) {
+            const elem = child as Element;
+            if (BLOCK_ELEMENTS.has(tag)) {
+                // flush current line before block boundary
+                const trimmed = currentLineText.trim();
+                if (trimmed.length > 0 && LIST_ITEM_PATTERN.test(trimmed)) {
+                    maxRun = Math.max(maxRun, ++currentRun);
+                }
+                currentLineText = "";
+                currentRun = 0;
+                return;
+            }
+            if (INLINE_ELEMENTS.has(tag)) {
+                currentLineText += getShallowText(elem);
+            } else {
+                currentRun = 0;
+                currentLineText = "";
+            }
+        }
+    });
+
+    // flush any remaining line at end of container
+    const trimmed = currentLineText.trim();
+    if (trimmed.length > 0 && LIST_ITEM_PATTERN.test(trimmed)) {
+        maxRun = Math.max(maxRun, ++currentRun);
+    }
+
+    return maxRun;
+}
+
+// Returns true if 2+ consecutive <br>-separated lines within element match the list-item pattern
+function hasBrSeparatedListLines(element: Element): boolean {
+    let run = 0;
+    for (const line of getLinesFromNode(element)) {
+        if (LIST_ITEM_PATTERN.test(line)) {
+            if (++run >= 2) return true;
+        } else {
+            run = 0;
+        }
+    }
+    return false;
+}
 
 export const list_markup_review: Rule = {
     id: "list_markup_review",
     context: "dom:*",
     refactor: {
         "RPT_List_UseMarkup": {
-            // "Pass_0": "Pass_0",
-            "Potential_1": "Potential_1"}
+            "Potential_1": "Potential_1"
+        }
     },
     help: {
         "en-US": {
-            // "pass": "list_markup_review.html",
             "potential_list": "list_markup_review.html",
             "group": "list_markup_review.html"
         }
     },
     messages: {
         "en-US": {
-            // "pass": "Proper HTML elements are used to create a list",
             "potential_list": "Verify this is a list and if so, modify to use proper HTML elements for the list",
             "group": "Proper HTML elements should be used to create a list"
         }
@@ -49,65 +203,50 @@ export const list_markup_review: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        const nodeName = ruleContext.nodeName.toLowerCase();
 
-        // Extract the nodeName of the context node
-        let nodeName = ruleContext.nodeName.toLowerCase();
-
-        //skip the check if the element is hidden or disabled
         if (CommonUtil.isNodeDisabled(ruleContext) || VisUtil.hiddenByDefaultElements.includes(nodeName))
             return null;
 
-        // Don't trigger if we're not in the body or if we're in a script
-        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null) 
+        if (CommonUtil.getAncestor(ruleContext, ["body"]) === null)
             return null;
 
-        // ignore script, label and their child elements
-        if (CommonUtil.getAncestor(ruleContext, ["script", 'label']) !== null)
+        if (CommonUtil.getAncestor(ruleContext, ["script", "style", "label"]) !== null)
             return null;
 
-        // ignore all widgets and their children, and certain structure roles
-        let roles = AriaUtil.getRolesWithTypes(ruleContext, ["widget"]);
-        // add some structure roles
-        CommonUtil.concatUniqueArrayItemList(["caption", "code", "columnheader",  "figure", "list", "listitem", "math", "meter", "columnheader", "rowheader"], roles);
-        if (AriaUtil.getAncestorWithRoles(ruleContext, roles) !== null) 
+        // Only check block-level and table-cell elements first —
+        // td/th must be checked before the ancestor role check since
+        // table/row/cell ARIA roles would otherwise cause an early exit
+        if (nodeName === "td" || nodeName === "th") {
+            if (maxConsecutiveListItems(ruleContext) >= 2)
+                return RulePotential("potential_list");
+            if (hasBrSeparatedListLines(ruleContext))
+                return RulePotential("potential_list");
             return null;
-
-        let passed = true;
-        let walkNode = ruleContext.firstChild as Node;
-        while (passed && walkNode) {
-            // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
-            // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
-            // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
-            // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something changes, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
-            // if.
-            if (walkNode.nodeName == "#text") {
-                let txtVal = walkNode.nodeValue;
-                let failure = /^[ \t\r\n]*[( ]*[1-9]*[\*\-).][ \t][A-Z,a-z]+/.test(txtVal);
-                passed = !failure;
-                if (!passed) {
-                    // Ensure that there's some sort of block level element before this
-                    // Avoid failures due to things like <i>Some sentence</i>. New sentence.
-                    let nw = new DOMWalker(walkNode);
-                    while (!passed && nw.prevNode()) {
-                        let nodeName = nw.node.nodeName.toLowerCase();
-                        if (["blockquote", "center", "dir", "div", "form", "h1",
-                            "h2", "h3", "h4", "h5", "h6", "hr", "br", "menu", "p",
-                            "pre"].includes(nodeName)) {
-                            break;
-                        }
-                        if (nodeName == "#text") {
-                            let txt = nw.node.nodeValue;
-                            passed = txt.length > 0 && ![" ", "\t", "\n"].includes(txt.charAt(txt.length - 1));
-                        }
-                    }
-                }
-            }
-            walkNode = walkNode.nextSibling;
         }
 
-        if (passed) return null;
-        if (!passed) return RulePotential("potential_list");
+        // Skip elements that already have semantic list, widget, or structural roles
+        const roles = AriaUtil.getRolesWithTypes(ruleContext, ["widget"]);
+        CommonUtil.concatUniqueArrayItemList(
+            ["caption", "code", "columnheader", "figure", "list", "listitem", "math", "meter", "rowheader"],
+            roles
+        );
+        if (AriaUtil.getAncestorWithRoles(ruleContext, roles) !== null)
+            return null;
 
+        // Only check block-level elements to avoid duplicate reports
+        if (!BLOCK_ELEMENTS.has(nodeName) && nodeName !== "body" && nodeName !== "li")
+            return null;
+
+        if (["ul", "ol", "dl", "menu"].includes(nodeName))
+            return null;
+
+        if (maxConsecutiveListItems(ruleContext) >= 2)
+            return RulePotential("potential_list");
+
+        if (hasBrSeparatedListLines(ruleContext))
+            return RulePotential("potential_list");
+
+        return null;
     }
 }
