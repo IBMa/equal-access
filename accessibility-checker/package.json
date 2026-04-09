@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "chromedriver": "*",
-    "deep-diff": "^1.0.2",
+    "microdiff": "^1.4.0",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
     "puppeteer": "^22.14.0"

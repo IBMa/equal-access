@@ -164,8 +164,9 @@ async function ACEngineLoaderAndConfig(logger, config) {
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ReporterManager.js")));
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ACHelper.js")));
 
-    // Load a deep-diff util from a node module into the browser, so we can use a well defined diff tool
-    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(require.resolve('deep-diff'), '..','dist', 'deep-diff.min.js')));
+    // Load microdiff and DiffUtil wrapper for browser compatibility
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "microdiff-browser.js")));
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "DiffUtil.js")));
 
     ACCommon.log.debug("END 'ACEngineLoaderAndConfig' function");
 }

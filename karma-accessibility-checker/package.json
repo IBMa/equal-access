@@ -44,11 +44,12 @@
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "dependencies": {
-    "deep-diff": "1.0.2",
+    "microdiff": "^1.4.0",
     "exceljs": "^4.3.0",
     "js-yaml": "4.1.1",
     "karma": "6.3.18",
-    "karma-accessibility-checker": "file:package/karma-accessibility-checker"
+    "karma-accessibility-checker": "file:package/karma-accessibility-checker",
+    "microdiff": "^1.5.0"
   },
   "devDependencies": {
     "adm-zip": "^0.5.9",
