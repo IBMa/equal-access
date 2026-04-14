@@ -122,8 +122,10 @@ export class ACReporterMetrics implements IReporter {
                     // Increment the num Profile
                     ++numProfiles;
 
+                    let toolName = this.toolName + (profile.includes("simulator") ? "-simulator" : "");
+
                     // Start building the Query string to be sent to the metrics server
-                    let qs = "?t=" + this.toolName + "&tag=" + profile + "&a=" + accountId + "&pol=" + this.policies + "&st=";
+                    let qs = "?t=" + toolName + "&tag=" + profile + "&a=" + accountId + "&pol=" + this.policies + "&st=";
 
                     subScanTimes.forEach(function (t) {
                         qs += t;

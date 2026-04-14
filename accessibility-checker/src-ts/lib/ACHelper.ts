@@ -12,6 +12,7 @@ import { BaselineManager, RefactorMap } from "./common/report/BaselineManager.js
 import { ISimulatorStructure } from "./common/engine/ISimulator.js";
 
 declare var after;
+declare var afterAll;
 
 let loggerCreate = function (type) {
     return logger;
@@ -76,47 +77,55 @@ async function initialize() {
     BaselineManager.initialize(Config, absAPI, refactorMap);
 }
 
-(async () => {
-    try {
-        // If cucumber is the platform...
-        let module = (await import("cucumber"!));
-        let {AfterAll} = require('cucumber');
-        if (module.default.AfterAll) {
-            module.default.AfterAll(function (done) {
-                // const rulePack = `${Config.rulePack}`;
-                initialize()
-                    .then(() => ReporterManager.generateSummaries())
-                    .then(() => ACBrowserManager.close())
-                    .then(done);
-            });
+// Register hooks synchronously to avoid "Cannot add a hook after tests have started running" error
+// Try Jest's afterAll first (most common in modern test suites)
+if (typeof (afterAll) !== "undefined") {
+    afterAll(async () => {
+        await initialize();
+        await ReporterManager.generateSummaries();
+        await ACBrowserManager.close();
+    });
+} else if (typeof (after) !== "undefined") {
+    // Try Mocha's after
+    after(function (done) {
+        if (Config) {
+            if (this.timeout) {
+                this.timeout(300000);
+            }
+            initialize()
+                .then(() => ReporterManager.generateSummaries())
+                .then(() => ACBrowserManager.close())
+                .then(done);
+        } else {
+            done();
         }
-    } catch (e) {
-        if (typeof (after) !== "undefined") {
-            after(function (done) {
-                if (Config) {
-                    if (this.timeout) {
-                        this.timeout(300000);
-                    }
-                    // const rulePack = `${Config.rulePack}/ace`;
+    });
+} else {
+    // Try Cucumber asynchronously (it's loaded via dynamic import)
+    (async () => {
+        try {
+            let module = (await import("cucumber"!));
+            let {AfterAll} = require('cucumber');
+            if (module.default.AfterAll) {
+                module.default.AfterAll(function (done) {
                     initialize()
                         .then(() => ReporterManager.generateSummaries())
                         .then(() => ACBrowserManager.close())
                         .then(done);
-                } else {
-                    done();
-                }
-            });
-        } else {
+                });
+            }
+        } catch (e) {
+            // Fallback to process exit handler if no test framework detected
             process.on('beforeExit', async function () {
                 if (Config) {
-                    initialize()
-                        .then(() => ReporterManager.generateSummaries())
-                    ACBrowserManager.close();
+                    await initialize();
+                    await ReporterManager.generateSummaries();
+                    await ACBrowserManager.close();
                 }
             });
         }
-    }
-})();
+    })();
+}
 
 function areValidPolicy(valPolicies, curPol) {
     let isValPol = false;
@@ -711,7 +720,7 @@ cb(e);
             // Add URL to the result object
             const url = await browser.getCurrentUrl();
             const title = await browser.getTitle();
-            ReporterManager.addSimulatorResult("Selenium-simulator", startScan-Date.now(), url, title, label, result);
+            ReporterManager.addSimulatorResult("Selenium-simulator", Date.now()-startScan, url, title, label, result);
         }
         
         return result;
@@ -747,7 +756,7 @@ async function getSimulationHelperWebDriverIO(label: string, parsed) : Promise<I
             const url = await page.execute(() => document.location.href);
             const title = await page.execute(() => (document.location as any).title);
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
-            ReporterManager.addSimulatorResult("WebDriverIO-simulator", startScan-Date.now(), url, title, label, origResult);
+            ReporterManager.addSimulatorResult("WebDriverIO-simulator", Date.now()-startScan, url, title, label, origResult);
         }
         page.aceBusy = false;
 
@@ -783,7 +792,7 @@ async function getSimulationHelperPuppeteer(label: string, parsed) : Promise<ISi
             const title = await page.evaluate("document.location.title");
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
 
-            ReporterManager.addSimulatorResult("Puppeteer-simulator", startScan-Date.now(), url, title, label, origResult);
+            ReporterManager.addSimulatorResult("Puppeteer-simulator", Date.now()-startScan, url, title, label, origResult);
         }
         
         page.aceBusy = false;
@@ -805,7 +814,7 @@ async function getSimulationHelperLocal(label: string, parsed) : Promise<ISimula
         if (result) {
             let url = parsed.location && parsed.location.href;
             const origResult: ISimulatorStructure = JSON.parse(JSON.stringify(result));
-            ReporterManager.addSimulatorResult("Native-simulator", startScan-Date.now(), url, parsed.title, label, origResult);
+            ReporterManager.addSimulatorResult("Native-simulator", Date.now()-startScan, url, parsed.title, label, origResult);
         }
 
         return result;
