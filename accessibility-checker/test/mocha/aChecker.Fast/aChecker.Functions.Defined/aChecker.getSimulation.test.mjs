@@ -188,4 +188,4 @@ describe("aChecker.getSimulation function tests", function () {
     });
 });
 
-// Made with Bob
+
