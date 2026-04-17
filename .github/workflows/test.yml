@@ -530,6 +530,50 @@ jobs:
         working-directory: cypress-accessibility-checker/test
 
 ###############################################################################
+# Vitest test
+####
+  vitest-checker-test-basic:
+      runs-on: ubuntu-22.04
+
+      strategy:
+        matrix:
+          node-version: [22.x]
+
+      steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm install
+        working-directory: rule-server
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
+      - run: npm install
+        working-directory: common/module
+      - run: npm install
+        working-directory: vitest-accessibility-checker
+      - run: npm run build:common
+        working-directory: vitest-accessibility-checker
+      - run: npm run test:start-http &
+        working-directory: vitest-accessibility-checker
+      - run: npx vitest run
+        working-directory: vitest-accessibility-checker/test
+      - run: npm run test
+        working-directory: vitest-accessibility-checker/boilerplates/vitest
+
+###############################################################################
 # Extension Build verification and test
 ####
   extension-test:

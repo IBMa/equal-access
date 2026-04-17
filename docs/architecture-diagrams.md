@@ -16,6 +16,7 @@ graph TB
         NodeChecker[accessibility-checker<br/>Node.js Package]
         CypressChecker[cypress-accessibility-checker<br/>Cypress Plugin]
         KarmaChecker[karma-accessibility-checker<br/>Karma Plugin]
+        VitestChecker[vitest-accessibility-checker<br/>Vitest Plugin]
     end
     
     subgraph "Java Testing Tools"
@@ -30,6 +31,7 @@ graph TB
         Jest[Jest]
         Cypress[Cypress]
         Karma[Karma]
+        Vitest[Vitest]
         JUnit[JUnit]
     end
     
@@ -49,6 +51,7 @@ graph TB
     CDN -->|loads engine| NodeChecker
     CDN -->|loads engine| CypressChecker
     CDN -->|loads engine| KarmaChecker
+    CDN -->|loads engine| VitestChecker
     CDN -->|loads engine| JavaChecker
     
     RuleServer -->|serves help files| Extensions
@@ -56,6 +59,7 @@ graph TB
     CommonModule -->|config & reporting<br/>components| NodeChecker
     CommonModule -->|config & reporting<br/>components| CypressChecker
     CommonModule -->|config & reporting<br/>components| KarmaChecker
+    CommonModule -->|config & reporting<br/>components| VitestChecker
     
     ReportReact -->|HTML report<br/>generation| CommonModule
     CommonModule -->|includes| ReportReact
@@ -69,6 +73,8 @@ graph TB
     CypressChecker -->|integrates with| Cypress
     
     KarmaChecker -->|integrates with| Karma
+    
+    VitestChecker -->|integrates with| Vitest
     
     JavaChecker -->|integrates with| Selenium
     JavaChecker -->|integrates with| JUnit
@@ -365,7 +371,59 @@ graph TB
     style Engine fill:#e1f5ff,stroke:#0062ff,stroke-width:2px
 ```
 
-## 7. java-accessibility-checker Architecture
+## 7. vitest-accessibility-checker Architecture
+
+```mermaid
+graph TB
+    subgraph "Vitest Plugin"
+        VitestPlugin[vitest-accessibility-checker<br/>Plugin Entry Point]
+        PluginConfig[Plugin Configuration<br/>Vitest Integration]
+        Setup[Browser Setup<br/>Engine Loader]
+    end
+    
+    subgraph "Browser-Side"
+        Helper[ACHelper<br/>Browser Context API]
+        TestFunctions[Test Helper Functions<br/>getCompliance, assertCompliance]
+    end
+    
+    subgraph "Engine Integration"
+        Engine[accessibility-checker-engine<br/>ace.js]
+    end
+    
+    subgraph "Reporting"
+        ReportGen[Report Generation<br/>HTML/JSON/CSV/XLSX]
+        BaselineComp[Baseline Comparison]
+    end
+    
+    subgraph "Common Module"
+        CommonLib[common/module<br/>Shared Types & Reports]
+    end
+    
+    subgraph "Vitest Framework"
+        VitestCore[Vitest Test Runner]
+        VitestBrowser[Vitest Browser Mode]
+    end
+    
+    VitestPlugin --> PluginConfig
+    VitestPlugin --> Setup
+    
+    Setup --> Helper
+    Helper --> TestFunctions
+    TestFunctions --> Engine
+    
+    Helper --> ReportGen
+    Helper --> BaselineComp
+    
+    VitestPlugin --> CommonLib
+    
+    VitestCore --> VitestPlugin
+    VitestBrowser --> Helper
+    
+    style VitestPlugin fill:#e8eaf6,stroke:#3f51b5,stroke-width:3px
+    style Engine fill:#e1f5ff,stroke:#0062ff,stroke-width:2px
+```
+
+## 8. java-accessibility-checker Architecture
 
 ```mermaid
 graph TB
@@ -415,12 +473,12 @@ graph TB
     style ACEngine fill:#e1f5ff,stroke:#0062ff,stroke-width:2px
 ```
 
-## 8. Data Flow: Accessibility Scan Process
+## 9. Data Flow: Accessibility Scan Process
 
 ```mermaid
 sequenceDiagram
     participant User
-    participant Tool as Testing Tool<br/>(Node/Cypress/Karma/Java/Extension)
+    participant Tool as Testing Tool<br/>(Node/Cypress/Karma/Vitest/Java/Extension)
     participant Engine as accessibility-checker-engine
     participant Rules as Rule Server
     participant Reporter as Report Generator
@@ -441,7 +499,7 @@ sequenceDiagram
     Tool-->>User: Return Results<br/>(Pass/Fail + Reports)
 ```
 
-## 9. Component Dependencies
+## 10. Component Dependencies
 
 ```mermaid
 graph LR
@@ -459,6 +517,7 @@ graph LR
         Node[accessibility-checker]
         Cypress[cypress-accessibility-checker]
         Karma[karma-accessibility-checker]
+        Vitest[vitest-accessibility-checker]
         Java[java-accessibility-checker]
         Extension[accessibility-checker-extension]
     end
@@ -466,6 +525,7 @@ graph LR
     Engine --> Node
     Engine --> Cypress
     Engine --> Karma
+    Engine --> Vitest
     Engine --> Java
     Engine -.bundled with.-> Extension
     Engine --> RuleServer
@@ -474,6 +534,7 @@ graph LR
     Common --> Node
     Common --> Cypress
     Common --> Karma
+    Common --> Vitest
     
     RuleServer -.help files.-> Extension
     RuleServer -.serves rules.-> Node
@@ -515,6 +576,7 @@ graph LR
 - **Node.js Tools**: Integration with popular test frameworks (Jest, Selenium, Puppeteer, Playwright)
 - **Cypress Plugin**: Adapted code for Cypress environment with common components
 - **Karma Plugin**: Framework/reporter/preprocessor for Karma test runner
+- **Vitest Plugin**: Browser-mode plugin for Vitest test runner with common components
 - **Java Package**: Uses Rhino JavaScript engine to run core engine in JVM
 
 ### 5. **Flexible Rule Distribution**
@@ -536,5 +598,6 @@ graph LR
 ### 8. **Code Adaptation vs Wrapping**
 - **Cypress**: Contains adapted/copied code from accessibility-checker, tweaked for Cypress
 - **Karma**: Independent implementation with shared common components
+- **Vitest**: Independent implementation for browser-mode testing with shared common components
 - **Java**: Independent implementation using Rhino to execute JavaScript engine
 - All tools share common components for consistency

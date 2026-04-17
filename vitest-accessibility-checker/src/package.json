@@ -1,0 +1,44 @@
+{
+  "name": "vitest-accessibility-checker",
+  "version": "3.0.0",
+  "description": "Accessibility Checker for Vitest",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./commands": "./commands.js"
+  },
+  "scripts": {
+    "postinstall": "ibmtelemetry --config=telemetry.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/IBMa/equal-access/vitest-accessibility-checker"
+  },
+  "keywords": [
+    "ci",
+    "integration",
+    "continuous",
+    "accessibility-checker",
+    "vitest",
+    "vitest-plugin",
+    "vitest-accessibility-checker",
+    "a11y",
+    "accessibility",
+    "IBMa"
+  ],
+  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "peerDependencies": {
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0"
+  },
+  "dependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
+    "axios": "^1.7.9",
+    "exceljs": "^4.3.0",
+    "js-yaml": "^4.1.0",
+    "microdiff": "^1.4.0",
+    "string-hash": "^1.1.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
