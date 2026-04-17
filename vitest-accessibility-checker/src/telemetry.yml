@@ -7,5 +7,3 @@ collect:
   - node.version
   - os.platform
   - os.arch
-
-# Made with Bob
