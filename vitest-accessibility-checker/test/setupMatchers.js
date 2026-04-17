@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import { getCompliance, assertCompliance, stringifyResults } from 'vitest-accessibility-checker/commands';
+import { getCompliance, assertCompliance, stringifyResults } from '../src/commands.js';
 
 expect.extend({
     async toBeAccessible(label) {

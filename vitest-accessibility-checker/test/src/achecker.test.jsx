@@ -7,7 +7,7 @@
 
 import { expect, test, describe } from 'vitest'
 import { page } from '@vitest/browser/context'
-import { getCompliance, assertCompliance, getBaseline, getDiffResults } from 'vitest-accessibility-checker/commands'
+import { getCompliance, assertCompliance, getBaseline, getDiffResults } from '../../src/commands.js'
 
 describe('Accessibility checker tests', () => {
 
