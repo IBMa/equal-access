@@ -10,3 +10,5 @@ coverage/
 # Build outputs
 dist/
 build/
+
+__screenshots__

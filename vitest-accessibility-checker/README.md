@@ -38,9 +38,53 @@ export default defineConfig({
 })
 ```
 
-### 2. Write Tests
+### 2. Setup Custom Matcher (Optional)
 
-Use the accessibility checker functions in your tests:
+Create a setup file to extend Vitest's expect with accessibility matchers:
+
+```javascript
+// setupMatchers.js
+import { expect } from 'vitest'
+import { toBeAccessible } from 'vitest-accessibility-checker'
+
+expect.extend({
+  toBeAccessible
+})
+```
+
+Add it to your vitest config:
+
+```javascript
+export default defineConfig({
+  test: {
+    setupFiles: ['./setupMatchers.js'],
+    browser: {
+      enabled: true,
+      name: 'chromium',
+      provider: 'playwright'
+    }
+  }
+})
+```
+
+### 3. Write Tests
+
+#### Using Custom Matcher
+
+```javascript
+import { expect, test } from 'vitest'
+import { render } from 'vitest-browser-react'
+import MyComponent from './MyComponent'
+
+test('component is accessible', async () => {
+  const { container } = await render(<MyComponent />)
+  
+  // Use custom matcher
+  await expect(container).toBeAccessible('MyComponent')
+})
+```
+
+#### Using Direct API
 
 ```javascript
 import { expect, test } from 'vitest'
@@ -64,6 +108,29 @@ test('component passes accessibility check', async () => {
   
   // Assert no violations (throws if violations found)
   await assertCompliance(container, 'MyComponent')
+})
+```
+
+#### Testing with Inline HTML
+
+You can also test accessibility by rendering HTML directly:
+
+```javascript
+import { expect, test } from 'vitest'
+import { getCompliance } from 'vitest-accessibility-checker'
+
+test('page structure is accessible', async () => {
+  // Render HTML directly in the document
+  document.body.innerHTML = `
+    <main>
+      <h1>Page Title</h1>
+      <img src="test.jpg" alt="Description" />
+      <button>Click me</button>
+    </main>
+  `
+  
+  const report = await getCompliance(document.body, 'page-structure')
+  expect(report.results).toHaveLength(0)
 })
 ```
 

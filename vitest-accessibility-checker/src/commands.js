@@ -59,12 +59,13 @@ async function getCompliance(content, label) {
             }
         })
     });
-    
     if (!response.ok) {
         throw new Error(`Failed to send results to reporter: ${response.statusText}`);
     }
     
-    return report;
+    // Return the updated report from the reporter (includes baseline comparison, etc.)
+    const updatedReport = await response.json();
+    return updatedReport;
 }
 
 /**

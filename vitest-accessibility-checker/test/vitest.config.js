@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitest/config';
-import { accessibilityChecker } from '../src/index.js';
+import { accessibilityCheckerPlugin } from '../src/index.js';
 
 export default defineConfig({
-    plugins: [accessibilityChecker()],
+    plugins: [accessibilityCheckerPlugin()],
     test: {
         browser: {
             enabled: true,

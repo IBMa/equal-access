@@ -525,8 +525,6 @@ jobs:
         working-directory: vitest-accessibility-checker
       - run: npm run build:common
         working-directory: vitest-accessibility-checker
-      - run: npm run test:start-http &
-        working-directory: vitest-accessibility-checker
       - run: npx vitest run
         working-directory: vitest-accessibility-checker/test
       - run: npm run test
