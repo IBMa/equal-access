@@ -523,6 +523,8 @@ jobs:
         working-directory: common/module
       - run: npm install
         working-directory: vitest-accessibility-checker
+      - run: npx playwright install chromium
+        working-directory: vitest-accessibility-checker
       - run: npm run build:common
         working-directory: vitest-accessibility-checker
       - run: npx vitest run
