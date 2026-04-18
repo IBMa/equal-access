@@ -8,6 +8,8 @@
 import { expect, test, describe, beforeEach } from 'vitest'
 import { getCompliance, assertCompliance, getBaseline, getDiffResults } from '../../src/commands.js'
 
+// Note: toBeAccessible matcher is set up in setupMatchers.js
+
 // Helper function to render HTML in the document
 function renderHTML(html) {
     document.body.innerHTML = html
@@ -236,6 +238,47 @@ describe('Accessibility checker tests', () => {
         result.forEach((obj) => {
             expect(obj.kind).not.toBeNull()
             expect(obj.kind).not.toBeUndefined()
+        })
+    })
+
+    describe('toBeAccessible() custom matcher', () => {
+        test('Passes when there are no violations', async () => {
+            renderHTML(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Vitest accessibility-checker test page</title>
+                </head>
+                <body>
+                    <div role="main">
+                        <h1>Test</h1>
+                        <img src="no-missing-alt.jpg" alt="Some kind of image" />
+                    </div>
+                </body>
+                </html>
+            `)
+            
+            // Use the custom matcher
+            await expect(document.body).toBeAccessible('toBeAccessible no violations')
+        })
+
+        test('Fails when there are violations', async () => {
+            renderHTML(`
+                <html>
+                <head>
+                    <title>Vitest accessibility-checker test page</title>
+                </head>
+                <body>
+                    <h1>Test</h1>
+                    <img src="missing-alt.jpg" />
+                </body>
+                </html>
+            `)
+            
+            // This should fail because of missing alt attribute
+            await expect(async () => {
+                await expect(document.body).toBeAccessible('toBeAccessible with violations')
+            }).rejects.toThrow()
         })
     })
 })

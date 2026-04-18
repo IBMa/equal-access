@@ -8,32 +8,10 @@
 'use strict';
 
 import { expect } from 'vitest';
-import { getCompliance, assertCompliance, stringifyResults } from 'vitest-accessibility-checker/commands';
+import { toBeAccessible } from 'vitest-accessibility-checker/matchers';
 
 // Extend Vitest's expect with custom accessibility matcher
 expect.extend({
-  async toBeAccessible(node, label) {
-    const { isNot } = this;
-    
-    // Use test name if label not provided
-    const testLabel = label || this.task.name.replace(/[ \\/]/g, "_");
-    
-    // Get compliance results
-    const report = await getCompliance(node, testLabel);
-    // Check if there are violations
-    const numFailing = await assertCompliance(report);
-    const pass = numFailing === 0;
-    
-    return {
-      pass,
-      message: () => {
-        if (pass) {
-          return `Expected element ${isNot ? 'not ' : ''}to be accessible, but it passed all checks`;
-        } else {
-          return stringifyResults(report);
-        }
-      }
-    };
-  }
+  toBeAccessible
 });
 

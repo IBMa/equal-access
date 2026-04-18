@@ -38,9 +38,40 @@ export default defineConfig({
 })
 ```
 
-### 2. Write Tests
+### 2. Setup Custom Matcher (Optional but Recommended)
 
-Use the accessibility checker functions in your tests:
+Create a setup file to extend Vitest's expect with the `toBeAccessible` matcher:
+
+```javascript
+// setupMatchers.js
+import { expect } from 'vitest'
+import { toBeAccessible } from 'vitest-accessibility-checker/matchers'
+
+expect.extend({
+  toBeAccessible
+})
+```
+
+Add it to your vitest config:
+
+```javascript
+export default defineConfig({
+  test: {
+    setupFiles: ['./setupMatchers.js'],
+    browser: {
+      enabled: true,
+      name: 'chromium',
+      provider: 'playwright'
+    }
+  }
+})
+```
+
+### 3. Write Tests
+
+#### Using the Custom Matcher (Recommended)
+
+The `toBeAccessible` matcher provides the cleanest syntax:
 
 ```javascript
 import { expect, test } from 'vitest'
@@ -50,60 +81,143 @@ import MyComponent from './MyComponent'
 test('component is accessible', async () => {
   const { container } = await render(<MyComponent />)
   
-  // Get compliance report using window.aChecker
-  const result = await window.aChecker.getCompliance(container, 'MyComponent')
+  // Use the custom matcher - simple and clean!
+  await expect(container).toBeAccessible('MyComponent')
+})
+```
+
+#### Using Direct API Calls
+
+You can also use the API functions directly:
+
+```javascript
+import { expect, test } from 'vitest'
+import { render } from 'vitest-browser-react'
+import { getCompliance, assertCompliance } from 'vitest-accessibility-checker/commands'
+import MyComponent from './MyComponent'
+
+test('component is accessible', async () => {
+  const { container } = await render(<MyComponent />)
+  
+  // Get compliance report
+  const report = await getCompliance(container, 'MyComponent')
   
   // Check for violations
-  const violations = result.report.results.filter(r => r.level === 'violation')
+  const violations = report.results.filter(r => r.level === 'violation')
   expect(violations).toHaveLength(0)
 })
 
 test('component passes accessibility check', async () => {
   const { container } = await render(<MyComponent />)
   
-  // Assert no violations (throws if violations found)
-  const result = await window.aChecker.getCompliance(container, 'MyComponent')
-  window.aChecker.assertCompliance(result.report)
+  // Get report and assert compliance
+  const report = await getCompliance(container, 'MyComponent')
+  const rc = await assertCompliance(report)
+  expect(rc).toBe(0)
+})
+```
+
+#### Testing with Inline HTML
+
+You can also test accessibility by rendering HTML directly:
+
+```javascript
+import { expect, test } from 'vitest'
+import { getCompliance } from 'vitest-accessibility-checker/commands'
+
+test('page structure is accessible', async () => {
+  // Render HTML directly in the document
+  document.body.innerHTML = `
+    <main>
+      <h1>Page Title</h1>
+      <img src="test.jpg" alt="Description" />
+      <button>Click me</button>
+    </main>
+  `
+  
+  const report = await getCompliance(document.body, 'page-structure')
+  expect(report.results).toHaveLength(0)
 })
 ```
 
 ## API
 
-All functions are available via `window.aChecker` in the browser context:
+### Custom Matcher
 
-### `window.aChecker.getCompliance(content, label)`
+#### `expect(element).toBeAccessible(label)`
+
+Custom Vitest matcher that scans an element and asserts it has no accessibility violations.
+
+- **element**: DOM element or document to scan
+- **label**: String label for this scan
+- **Throws**: Assertion error if violations found
+- **Returns**: Promise<void>
+
+**Example:**
+```javascript
+await expect(document.body).toBeAccessible('HomePage')
+```
+
+### Direct API Functions
+
+All functions can be imported from `vitest-accessibility-checker/commands`:
+
+#### `getCompliance(content, label)`
 
 Scans the provided content and returns a compliance report.
 
 - **content**: DOM element or document to scan
 - **label**: String label for this scan
-- **Returns**: Promise<{report, iframe}> - Object containing the accessibility report
+- **Returns**: Promise<Report> - Accessibility report with results array
 
-### `window.aChecker.assertCompliance(report)`
+**Example:**
+```javascript
+import { getCompliance } from 'vitest-accessibility-checker/commands'
 
-Checks a report and throws an error if violations are found based on failLevels configuration.
+const report = await getCompliance(document.body, 'MyPage')
+console.log(report.results) // Array of accessibility issues
+```
+
+#### `assertCompliance(report)`
+
+Checks a report and returns a status code based on violations and baseline comparison.
 
 - **report**: Report object from getCompliance
-- **Returns**: number - 0 if passes, 1 if fails baseline, 2 if fails on failLevels
-- **Throws**: Error if violations found
+- **Returns**: Promise<number> - 0 if passes, 1 if fails baseline, 2 if fails on failLevels
 
-### `window.aChecker.getBaseline(label)`
+**Example:**
+```javascript
+import { getCompliance, assertCompliance } from 'vitest-accessibility-checker/commands'
+
+const report = await getCompliance(document.body, 'MyPage')
+const rc = await assertCompliance(report)
+expect(rc).toBe(0) // Assert no violations
+```
+
+#### `getBaseline(label)`
 
 Gets the baseline for a specific label.
 
 - **label**: String label for the baseline
-- **Returns**: Object - Baseline data
+- **Returns**: Promise<Object> - Baseline data
 
-### `window.aChecker.getDiffResults(label)`
+#### `getDiffResults(label, actual)`
 
-Gets diff results between current and baseline for a label.
+Gets diff results between current scan and baseline.
 
 - **label**: String label for comparison
-- **Returns**: Object - Diff results
+- **actual**: Current report object
+- **Returns**: Promise<Array> - Array of diff objects with 'kind' property
 
-### `window.aChecker.stringifyResults(report)`
+#### `getConfig()`
 
-Converts a report to a formatted string.
+Gets the current accessibility checker configuration.
+
+- **Returns**: Promise<Object> - Configuration object
+
+#### `stringifyResults(report)`
+
+Converts a report to a formatted string for display.
 
 - **report**: Report object
 - **Returns**: String - Formatted report string
