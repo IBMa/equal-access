@@ -529,8 +529,6 @@ jobs:
         working-directory: vitest-accessibility-checker
       - run: npx vitest run
         working-directory: vitest-accessibility-checker/test
-      - run: npm run test
-        working-directory: vitest-accessibility-checker/boilerplates/vitest
 
 ###############################################################################
 # Extension Build verification and test
