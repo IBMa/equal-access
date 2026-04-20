@@ -315,10 +315,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
       id: setup-chrome
     - name: Setup and start rule server
       uses: ./.github/actions/setup-rule-server
@@ -356,10 +356,10 @@ jobs:
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
         install-chromedriver: true
       id: setup-chrome
     - name: Setup and start rule server
@@ -387,10 +387,10 @@ jobs:
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
         install-chromedriver: true
       id: setup-chrome
     - name: Setup and start rule server

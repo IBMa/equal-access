@@ -77,10 +77,13 @@
             <artifactId>rhino</artifactId>
             <version>1.7.14.1</version>
         </dependency>
+        <!-- Selenium 4.23.0 has built-in CDP support up to Chrome 127, but works with Chrome up to 147.
+             Chrome 149+ causes CDP errors. Keep chrome-version in .github/workflows/test.yml at 147.
+             When upgrading Selenium, test and update chrome-version accordingly. -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.28.0</version>
+            <version>4.23.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
