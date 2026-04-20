@@ -1,196 +1,130 @@
 # vitest-accessibility-checker
 
-Accessibility testing plugin for Vitest that integrates IBM Equal Access Accessibility Checker.
+Automated accessibility testing plugin for Vitest that integrates IBM Equal Access Accessibility Checker.
 
-## Installation
+To get started using the deployed package, download [vitest-accessibility-checker](https://www.npmjs.com/package/vitest-accessibility-checker) from NPM.
 
-```bash
-npm install --save-dev vitest-accessibility-checker
-```
+This package is a supporting component of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
+The Toolkit provides the tools and guidance to create experiences that are delightful for people of all abilities.
+The guidance is organized by phase, such as Plan, Design, Develop, and Verify, and explains the need to integrate automated testing into the [Verify phase](https://www.ibm.com/able/toolkit/verify/overview).
+The Toolkit is a major part of the accessibility information and applications at [ibm.com/able](https://ibm.com/able/).
+
+See the [Packages for test automation](https://github.com/IBMa/equal-access/wiki#packages-for-test-automation) in the Wiki for an overview.
+
+## Features
+
+- Integrate accessibility testing with Vitest's browser mode
+- Test React components directly with vitest-browser-react
+- Run tests in real browsers via Playwright
+- Custom Vitest matchers for clean test syntax
+- Output scan results in JSON, CSV, HTML, or XLSX formats
+- Validate test results against baselines
+- Set a target rule archive
+- Configure policies (rule sets) to scan
+- Set violation levels that trigger test failures
+- Set violation levels that should be reported
 
 ## Usage
 
-### 1. Configure Vitest
+Review the [vitest-accessibility-checker/src/README](src/README.md) for usage documentation and API reference.
 
-Add the plugin to your `vitest.config.js`:
+## Boilerplate
 
-```javascript
-import { defineConfig } from 'vitest/config'
-import { accessibilityCheckerPlugin } from 'vitest-accessibility-checker'
+Review the [vitest-accessibility-checker/boilerplates/vitest](boilerplates/vitest) directory for a complete example project demonstrating:
 
-export default defineConfig({
-  plugins: [
-    accessibilityCheckerPlugin({
-      // Optional configuration
-      ruleArchive: "latest",
-      policies: ["IBM_Accessibility"],
-      failLevels: ["violation"],
-      reportLevels: ["violation", "potentialviolation", "recommendation", "potentialrecommendation", "manual"]
-    })
-  ],
-  test: {
-    browser: {
-      enabled: true,
-      name: 'chromium',
-      provider: 'playwright'
-    }
-  }
-})
+- Vitest configuration with accessibility checker plugin
+- React component testing with vitest-browser-react
+- Custom matcher setup
+- Baseline testing
+- Configuration options
+
+## Baselines
+
+Baselines are a helpful feature of `vitest-accessibility-checker` that can be used in the test environment. The concept involves capturing a scan result as a _baseline_ so that future scans will pass if they match the baseline. If they differ, then the test will fail.
+
+This feature is useful for issues that have been determined to be of the following:
+
+- false positives determined to be ignored
+- `Needs review` issues resolved
+- issues scheduled to be fixed later
+- new regression issues captured
+
+See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#baseline-basics) for an overview.
+
+## Architecture
+
+The vitest-accessibility-checker follows the Cypress pattern where the accessibility engine runs in the browser context:
+
+### Browser Context
+- **ACBrowserHelper.js**: Runs accessibility scans using the ace engine in the browser
+- **commands.js**: Provides browser-side API functions (getCompliance, assertCompliance, etc.)
+- **setup.js**: Loads the ace engine and helper into the browser before tests run
+
+### Node.js Context
+- **plugin.js**: Vitest plugin that sets up the HTTP server and injects browser scripts
+- **ACTasks.js**: Handles HTTP requests from browser and processes results using ReporterManager
+- **ReporterManager**: Generates reports, compares with baselines, and writes output files
+
+### Communication
+Browser and Node.js communicate via HTTP requests to `/__accessibility-checker-task__` endpoint.
+
+## Building and running locally
+
+### Requirements
+
+- [Node Version 22](https://nodejs.org/en/download/)
+
+### Install
+
+```bash
+$ npm install
 ```
 
-### 2. Setup Custom Matcher (Optional)
+### Build & Package
 
-Create a setup file to extend Vitest's expect with accessibility matchers:
-
-```javascript
-// setupMatchers.js
-import { expect } from 'vitest'
-import { toBeAccessible } from 'vitest-accessibility-checker'
-
-expect.extend({
-  toBeAccessible
-})
+```bash
+$ npm install
+$ npm run build:common
+$ npm run package
 ```
 
-Add it to your vitest config:
+### Test
 
-```javascript
-export default defineConfig({
-  test: {
-    setupFiles: ['./setupMatchers.js'],
-    browser: {
-      enabled: true,
-      name: 'chromium',
-      provider: 'playwright'
-    }
-  }
-})
+```bash
+$ npm test
 ```
 
-### 3. Write Tests
-
-#### Using Custom Matcher
-
-```javascript
-import { expect, test } from 'vitest'
-import { render } from 'vitest-browser-react'
-import MyComponent from './MyComponent'
-
-test('component is accessible', async () => {
-  const { container } = await render(<MyComponent />)
-  
-  // Use custom matcher
-  await expect(container).toBeAccessible('MyComponent')
-})
+Run tests in the test directory:
+```bash
+$ cd test
+$ npm install
+$ npx vitest run
 ```
 
-#### Using Direct API
-
-```javascript
-import { expect, test } from 'vitest'
-import { render } from 'vitest-browser-react'
-import { getCompliance, assertCompliance } from 'vitest-accessibility-checker'
-import MyComponent from './MyComponent'
-
-test('component is accessible', async () => {
-  const { container } = await render(<MyComponent />)
-  
-  // Get compliance report
-  const report = await getCompliance(container, 'MyComponent')
-  
-  // Check for violations
-  const violations = report.results.filter(r => r.level === 'violation')
-  expect(violations).toHaveLength(0)
-})
-
-test('component passes accessibility check', async () => {
-  const { container } = await render(<MyComponent />)
-  
-  // Assert no violations (throws if violations found)
-  await assertCompliance(container, 'MyComponent')
-})
+Run boilerplate tests:
+```bash
+$ cd boilerplates/vitest
+$ npm install
+$ npm run test:browser
 ```
 
-#### Testing with Inline HTML
+## Known issues and workarounds
 
-You can also test accessibility by rendering HTML directly:
+1. **Browser not found error**: If you see "Executable doesn't exist" errors, install Playwright browsers:
+   ```bash
+   npx playwright install chromium
+   ```
 
-```javascript
-import { expect, test } from 'vitest'
-import { getCompliance } from 'vitest-accessibility-checker'
+2. **Content Security Policy**: If your site has a CSP, the engine script may be prevented from loading. You can configure a different rule server via your config file (e.g., `ruleServer: "https://able.ibm.com/rules"`).
 
-test('page structure is accessible', async () => {
-  // Render HTML directly in the document
-  document.body.innerHTML = `
-    <main>
-      <h1>Page Title</h1>
-      <img src="test.jpg" alt="Description" />
-      <button>Click me</button>
-    </main>
-  `
-  
-  const report = await getCompliance(document.body, 'page-structure')
-  expect(report.results).toHaveLength(0)
-})
-```
+3. **Port conflicts**: The plugin uses an HTTP server for browser-Node communication. If you encounter port conflicts, the server will automatically try the next available port.
 
-## API
+## Feedback and reporting bugs
 
-### `getCompliance(content, label)`
+If you think you've found a bug, have questions or suggestions, open a [GitHub Issue](https://github.com/IBMa/equal-access/issues/new/choose), tagged with `vitest-accessibility-checker`.
 
-Scans the provided content and returns a compliance report.
-
-- **content**: DOM element or document to scan
-- **label**: String label for this scan
-- **Returns**: Promise<Report> - Accessibility report
-
-### `assertCompliance(content, label)`
-
-Scans content and throws an error if violations are found.
-
-- **content**: DOM element or document to scan
-- **label**: String label for this scan
-- **Throws**: Error if violations found
-
-### `getComplianceHelper(content, label)`
-
-Returns enhanced report with categorized results.
-
-- **content**: DOM element or document to scan
-- **label**: String label for this scan
-- **Returns**: Promise<Object> - Enhanced report with violations, recommendations, etc.
-
-## Configuration
-
-Create an `.achecker.yml` or `achecker.js` file in your project root:
-
-```yaml
-# .achecker.yml
-ruleArchive: latest
-policies:
-  - IBM_Accessibility
-failLevels:
-  - violation
-reportLevels:
-  - violation
-  - potentialviolation
-  - recommendation
-  - potentialrecommendation
-  - manual
-outputFolder: results
-outputFormat:
-  - json
-  - html
-label: vitest-accessibility-tests
-```
-
-## Reports
-
-Reports are generated in the `results` folder (configurable) with:
-- JSON reports for each scan
-- HTML summary report
-- Baseline comparison (if enabled)
+If you are an IBM employee, feel free to ask questions in the IBM internal Slack channel `#accessibility-at-ibm`.
 
 ## License
 
-Apache-2.0 - See LICENSE in the equal-access repository
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
