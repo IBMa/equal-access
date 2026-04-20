@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.23.0</version>
+            <version>4.28.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
