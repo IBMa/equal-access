@@ -1,0 +1,14 @@
+# Accessibility checker results
+results/
+
+# Node modules
+node_modules/
+
+# Test coverage
+coverage/
+
+# Build outputs
+dist/
+build/
+
+__screenshots__

@@ -1,0 +1,9 @@
+version: 1
+projectId: IBMa.equal-access
+endpoint: https://metric-api.service.cloud.ibm.com/v1/metrics
+collect:
+  - npm.package.name
+  - npm.package.version
+  - node.version
+  - os.platform
+  - os.arch
