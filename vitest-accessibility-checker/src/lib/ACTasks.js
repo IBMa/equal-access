@@ -168,6 +168,9 @@ async function handleTask(task, data) {
                 return await getBaseline(data);
             case 'getDiffResults':
                 return await getDiffResults(data);
+            case 'generateSummaries':
+                await onRunComplete();
+                return { success: true };
             default:
                 throw new Error(`Unknown task: ${task}`);
         }
@@ -185,7 +188,7 @@ async function onRunComplete() {
     
     try {
         // Generate final summary reports
-        await ReporterManager.generateSummary();
+        await ReporterManager.generateSummaries();
     } catch (err) {
         console.error('Error generating summary:', err);
     }

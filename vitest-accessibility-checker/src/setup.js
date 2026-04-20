@@ -20,7 +20,7 @@
  *              Loads the ace engine and helper in the browser context
  *******************************************************************************/
 
-import { beforeAll } from 'vitest';
+import { beforeAll, afterAll } from 'vitest';
 
 // Global promise to track initialization
 let initPromise = null;
@@ -67,8 +67,6 @@ async function initializeAccessibilityChecker() {
                 throw new Error('ace engine failed to initialize');
             }
             
-            console.log('ace engine loaded successfully');
-            
             // Load the ACBrowserHelper
             const helperUrl = new URL('./lib/ACBrowserHelper.js', import.meta.url).href;
             const helperResponse = await fetch(helperUrl);
@@ -99,5 +97,26 @@ async function initializeAccessibilityChecker() {
 beforeAll(async () => {
     await initializeAccessibilityChecker();
 }, 30000); // 30 second timeout for initialization
+
+// Register afterAll hook to generate summary reports after all tests complete
+afterAll(async () => {
+    try {
+        // Call Node.js side to generate summary reports
+        const response = await fetch('/__accessibility-checker-task__', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                task: 'generateSummaries',
+                data: {}
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('Failed to generate accessibility summary reports');
+        }
+    } catch (err) {
+        console.error('Error generating accessibility summary reports:', err);
+    }
+}, 10000); // 10 second timeout for summary generation
 
 
