@@ -1,0 +1,135 @@
+{
+    "results": [],
+    "numExecuted": 85,
+    "nls": {
+        "WCAG20_Html_HasLang": {
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Pass_0": "Page language detected as \"{0}\""
+        },
+        "RPT_Html_SkipNav": {
+            "0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Doc_HasTitle": {
+            "0": "The page should have a title that correctly identifies the subject of the page",
+            "Pass_0": "Rule Passed"
+        },
+        "html_lang_valid": {
+            "0": "The default human language of the page must be valid and specified in accordance with BCP 47",
+            "Pass_0": "Rule Passed"
+        },
+        "HAAC_BackgroundImg_HasTextOrTitle": {
+            "0": "Background images that convey important information must have a text alternative that describes the image",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_List_UseMarkup": {
+            "0": "Use proper HTML list elements to create lists",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Text_SensoryReference": {
+            "0": "Instructions must be meaningful without shape or location words",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_Emoticons": {
+            "0": "Emoticons must have a short text alternative that describes their purpose",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_LetterSpacing": {
+            "0": "Use CSS 'letter-spacing' to control spacing within a word",
+            "Pass_0": "Rule Passed"
+        },
+        "text_quoted_correctly": {
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
+            "Pass_0": "Rule Passed"
+        },
+        "IBMA_Color_Contrast_WCAG2AA_PV": {
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
+            "0": "All content must reside within an element with a landmark role",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Title_Valid": {
+            "0": "Page <title> should be a descriptive title, rather than a filename",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
+            "0": "Pages must provide a way to skip directly to the main content",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
+            "0": "The description of a hyperlink used to skip content must communicate where it links to",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Block_ShouldBeHeading": {
+            "0": "Heading text must use a heading element",
+            "Pass_0": "Rule Passed"
+        },
+        "HAAC_Application_Role_Text": {
+            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_ValidRole": {
+            "0": "Elements must have a valid 'role' per WAI-ARIA specification",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
+            "0": "An element with a WAI-ARIA role must contain required children",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_MissingKeyboardHandler": {
+            "0": "Interactive WAI_ARIA UI components must provide keyboard access",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Header_HasContent": {
+            "0": "Heading elements must provide descriptive text",
+            "Pass_0": "Rule Passed"
+        },
+        "IBMA_Color_Contrast_WCAG2AA": {
+            "0": "The contrast ratio of text with its background must meet WCAG AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Headers_FewWords": {
+            "0": "Heading elements must not be used for presentation",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_HasAlt": {
+            "0": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_PresentationImgHasNonNullAlt": {
+            "0": "Image designated as decorative must have 'alt=\"\"",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Img_AltCommonMisuse": {
+            "0": "'alt' attribute value must be a good inline replacement for the image",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Media_AltBrief": {
+            "0": "Alternative text in 'alt' attribute should be brief (<150 characters)",
+            "Pass_0": "Rule Passed"
+        }
+    },
+    "summary": {
+        "counts": {
+            "violation": 0,
+            "potentialviolation": 0,
+            "ignored": 0
+        },
+        "scanTime": 10,
+        "ruleArchive": "Latest Deployment (latest)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation"
+        ],
+        "startScan": 1601305147365,
+        "URL": "http://localhost:8080/test/sample-html/no-violations.html"
+    },
+    "scanID": "25bdec16-c677-4773-afdb-56319dffc0b7",
+    "toolID": "cypress-accessibility-checker-v3.0.0",
+    "label": "no-violations"
+}

@@ -10,6 +10,7 @@
         "build-debug": "npm run prebuild && npx webpack --config webpack-debug.config.js && shx cp dist/index.d.ts dist/ace-debug.d.ts && cat dist/ace-debug.js ace-window-add.js >dist/ace-window-debug.js && cat dist/ace-debug.js ace-sr-add.js >dist/ace-sr-debug.js",
         "prebuild": "ts-node src/genRuleIndex.ts",
         "test": "npm run prebuild && karma start",
+        "test:sr": "npm run prebuild && karma start karma-sr.conf.js",
         "serve": "serve .",
         "build:help": "ts-node src/genHelp.ts",
         "build:all": "npm run build && npm run build-node && npm run build-debug && npm run build-node-debug && npm run build:help && shx cp ./src/package.json ./dist/ && shx cp ./README-NPM.md ./dist/README.md"

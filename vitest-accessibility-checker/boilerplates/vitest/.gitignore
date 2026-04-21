@@ -1,0 +1,27 @@
+# Accessibility checker results
+results/
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

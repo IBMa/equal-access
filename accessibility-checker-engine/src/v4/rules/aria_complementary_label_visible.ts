@@ -42,7 +42,7 @@ export const aria_complementary_label_visible: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.4.1"],
+        "num": ["1.3.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],

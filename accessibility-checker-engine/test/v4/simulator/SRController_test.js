@@ -352,5 +352,3 @@ describe('SRController.renderStructure', function() {
         });
     });
 });
-
-// Made with Bob

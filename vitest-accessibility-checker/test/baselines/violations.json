@@ -1,0 +1,135 @@
+{
+    "results": [
+        {
+            "ruleId": "skip_main_exists",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[2]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 22,
+                "height": 896,
+                "width": 414
+            },
+            "snippet": "<body>",
+            "source": null,
+            "category": "Accessibility",
+            "level": "violation",
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/preview/skip_main_exists.html#%7B%22message%22%3A%22The%20page%20does%20not%20provide%20a%20way%20to%20quickly%20navigate%20to%20the%20main%20content%20(ARIA%20%5C%22main%5C%22%20landmark%20or%20a%20skip%20link)%22%2C%22snippet%22%3A%22%3Cbody%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22skip_main_exists%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "ruleId": "aria_content_in_landmark",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[2]/body[1]/h1[1]",
+                "aria": "/document[1]/heading[2]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "Content is not within a landmark element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 22,
+                "height": 37,
+                "width": 414
+            },
+            "snippet": "<h1>",
+            "source": null,
+            "category": "Accessibility",
+            "level": "violation",
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/preview/aria_content_in_landmark.html#%7B%22message%22%3A%22Content%20is%20not%20within%20a%20landmark%20element%22%2C%22snippet%22%3A%22%3Ch1%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22Fail_1%22%2C%22ruleId%22%3A%22aria_content_in_landmark%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        },
+        {
+            "ruleId": "img_alt_valid",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[2]/body[1]/img[1]",
+                "aria": "/document[1]/img[3]"
+            },
+            "ruleTime": 0,
+            "reasonId": "fail_no_alt",
+            "message": "The image has neither an accessible name nor is marked as decorative or redundant",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 94,
+                "height": 0,
+                "width": 0
+            },
+            "snippet": "<img src=\"missing-alt.jpg\">",
+            "source": null,
+            "category": "Accessibility",
+            "level": "violation",
+            "ignored": false,
+            "help": "https://able.ibm.com/rules/preview/img_alt_valid.html#%7B%22message%22%3A%22The%20image%20has%20neither%20an%20accessible%20name%20nor%20is%20marked%20as%20decorative%20or%20redundant%22%2C%22snippet%22%3A%22%3Cimg%20src%3D%5C%22missing-alt.jpg%5C%22%3E%22%2C%22value%22%3A%5B%22VIOLATION%22%2C%22FAIL%22%5D%2C%22reasonId%22%3A%22fail_no_alt%22%2C%22ruleId%22%3A%22img_alt_valid%22%2C%22msgArgs%22%3A%5B%5D%7D"
+        }
+    ],
+    "numExecuted": 19,
+    "ruleTime": 0,
+    "nls": {
+        "skip_main_exists": {
+            "0": "Pages must provide a way to skip directly to the main content",
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
+        },
+        "aria_content_in_landmark": {
+            "0": "All content must reside within an element with a landmark role",
+            "Fail_1": "Content is not within a landmark element"
+        },
+        "img_alt_valid": {
+            "0": "Images must have accessible names unless they are decorative or redundant",
+            "fail_no_alt": "The image has neither an accessible name nor is marked as decorative or redundant"
+        }
+    },
+    "summary": {
+        "counts": {
+            "ignored": 0,
+            "elements": 3,
+            "elementsViolation": 3,
+            "elementsViolationReview": 3,
+            "violation": 3,
+            "potentialviolation": 0,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 0,
+            "pass": null
+        },
+        "scanTime": 1,
+        "ruleArchive": "Preview Rules (preview)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation",
+            "recommendation",
+            "potentialrecommendation",
+            "manual"
+        ],
+        "startScan": 1776471968776,
+        "URL": "http://localhost:63316/__vitest_test__/__test__/48d2a7ef-1354-4634-9980-5a3aef0352ea/%2FUsers%2Fthbrunet%2FTom%2FGit%2Fequal-access%2Fvitest-accessibility-checker%2Ftest%2Fsrc%2Fachecker.test.jsx"
+    },
+    "scanID": "a9786325-d85a-4414-9790-884043da066d",
+    "toolID": "vitest-accessibility-checker-v3.0.0",
+    "label": "violations"
+}
