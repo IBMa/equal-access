@@ -192,6 +192,7 @@ export class ReporterManager {
         ReporterManager.config = config;
         ReporterManager.absAPI = absAPI;
         ReporterManager.rulesets = rulesets;
+        ReporterManager.reporters = [];
         if (config.perfMetrics) {
             ReporterManager.metrics = new ACReporterMetrics(config.toolName, config.policies);
             ReporterManager.reporters.push(ReporterManager.metrics);

@@ -1,0 +1,7 @@
+node_modules/
+package/
+*.log
+.DS_Store
+coverage/
+dist/
+src/lib/common/

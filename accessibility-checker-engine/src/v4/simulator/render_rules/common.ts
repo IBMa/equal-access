@@ -333,7 +333,7 @@ export const RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 let isOrdered: boolean | undefined;
-                let walkParents = cursor.getNode().parentNode;
+                let walkParents = DOMWalker.parentNode(cursor.getNode());
                 while (typeof isOrdered === "undefined" && walkParents) {
                     if (walkParents.nodeType === 1) {
                         const elem = walkParents as HTMLElement;
@@ -347,7 +347,7 @@ export const RULES: SRRendererRule[] = [
                             isOrdered = true;
                         }
                     }
-                    walkParents = walkParents.parentNode;
+                    walkParents = DOMWalker.parentNode(walkParents);
                 }
                 
                 // Check if listitem contains interactive elements
@@ -602,6 +602,97 @@ export const RULES: SRRendererRule[] = [
                 } else {
                     return "";
                 }
+            }
+        ]
+    }),
+
+    // Treeitem role
+    new SRRendererRule({
+        roles: ["treeitem"],
+        elems: [],
+        modes: ["item", "tab_focus"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (cursor.isEndTag()) return "";
+                
+                const elem = cursor.getElement();
+                
+                // Build the announcement string without the name (let content render separately)
+                let announcement = `[treeview item`;
+                
+                // Add selected state if present
+                if (elem.getAttribute("aria-selected") === "true") {
+                    announcement += ", selected";
+                }
+                
+                // Add expanded/collapsed state if present
+                if (elem.hasAttribute("aria-expanded")) {
+                    announcement += elem.getAttribute("aria-expanded") === "true" ? ", expanded" : ", collapsed";
+                }
+                
+                // Add level if explicitly set or calculate from nesting
+                let level = elem.getAttribute("aria-level");
+                if (level) {
+                    announcement += `, level ${level}`;
+                } else {
+                    // Calculate level by counting parent treeitems or groups using DOMWalker for shadow DOM support
+                    let calculatedLevel = 1;
+                    let parent = DOMWalker.parentElement(elem);
+                    while (parent) {
+                        const parentRole = AriaUtil.getResolvedRole(parent);
+                        if (parentRole === "group" || parentRole === "tree") {
+                            // Check if this group is inside a treeitem
+                            let groupParent = DOMWalker.parentElement(parent);
+                            while (groupParent) {
+                                const groupParentRole = AriaUtil.getResolvedRole(groupParent);
+                                if (groupParentRole === "treeitem") {
+                                    calculatedLevel++;
+                                    break;
+                                } else if (groupParentRole === "tree") {
+                                    break;
+                                }
+                                groupParent = DOMWalker.parentElement(groupParent);
+                            }
+                        }
+                        parent = DOMWalker.parentElement(parent);
+                    }
+                    if (calculatedLevel > 1) {
+                        announcement += `, level ${calculatedLevel}`;
+                    }
+                }
+                
+                // Add position information (aria-posinset/aria-setsize or calculate)
+                let position = elem.getAttribute("aria-posinset");
+                let setSize = elem.getAttribute("aria-setsize");
+                
+                if (!position || !setSize) {
+                    // Calculate position by counting siblings with same role using DOMWalker for shadow DOM support
+                    let pos = 0;
+                    let total = 0;
+                    const parent = DOMWalker.parentElement(elem);
+                    if (parent) {
+                        // Iterate through children to count treeitems
+                        let child = DOMWalker.firstChildNotOwnedBySlot(parent);
+                        while (child) {
+                            if (child.nodeType === 1) { // Element node
+                                const childElem = child as HTMLElement;
+                                if (AriaUtil.getResolvedRole(childElem) === "treeitem") {
+                                    total++;
+                                    if (childElem === elem) {
+                                        pos = total;
+                                    }
+                                }
+                            }
+                            child = child.nextSibling;
+                        }
+                    }
+                    position = pos.toString();
+                    setSize = total.toString();
+                }
+                
+                announcement += `, ${position} of ${setSize}] `;
+                
+                return announcement;
             }
         ]
     }),

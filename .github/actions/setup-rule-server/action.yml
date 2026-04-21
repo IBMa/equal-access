@@ -1,0 +1,50 @@
+name: 'Setup and Start Rule Server'
+description: 'Install, build, and start the rule server for testing'
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '22.x'
+  os:
+    description: 'Operating system (ubuntu or windows)'
+    required: false
+    default: 'ubuntu'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install rule server dependencies
+      shell: bash
+      run: npm install
+      working-directory: rule-server
+    
+    - name: Build rule server
+      shell: bash
+      run: npm run build
+      working-directory: rule-server
+    
+    - name: Start rule server (Ubuntu)
+      if: inputs.os == 'ubuntu'
+      shell: bash
+      run: node main.js &
+      working-directory: rule-server/dist
+    
+    - name: Start rule server (Windows)
+      if: inputs.os == 'windows'
+      shell: cmd
+      run: cmd /c "START /b node main.js"
+      working-directory: rule-server/dist
+      env:
+        __NODB__: true
+    
+    - name: Wait for rule server (Ubuntu)
+      if: inputs.os == 'ubuntu'
+      shell: bash
+      run: sleep 10
+      working-directory: rule-server/dist
+    
+    - name: Wait for rule server (Windows)
+      if: inputs.os == 'windows'
+      shell: cmd
+      run: |
+        ping 127.0.0.1 -n 6 > nul
+        sleep 10
