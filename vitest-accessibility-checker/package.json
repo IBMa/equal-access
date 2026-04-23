@@ -36,17 +36,17 @@
   },
   "devDependencies": {
     "@vitest/browser": "^2.0.0",
-    "@vitest/ui": "^2.0.0",
+    "@vitest/ui": "^4.1.5",
     "eslint": "^8.4.1",
     "http-server": "^14.1.1",
     "playwright": "^1.40.0",
     "prettier": "^2.5.1",
     "shx": "^0.3.3",
-    "vitest": "^2.0.0"
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
-    "axios": "^1.7.9",
+    "axios": "^1.15.2",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
     "microdiff": "^1.4.0",
