@@ -91,9 +91,15 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["form"],
         elems: [],
-        modes: ["item"],
+        modes: ["item", "region", "formcontrol"],
         tests: [
-            (_cursor: SRCursor) => "[out of grouping]"
+            (cursor: SRCursor) => {
+                if (cursor.getNameInfo() === null) {
+                    return "[out of section]";
+                } else {
+                    return `[out of form]`
+                }
+            }
         ]
     }),
 
@@ -159,6 +165,16 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (_cursor: SRCursor) => `[out of navigation region]`
+        ]
+    }),
+
+    // radiogroup role
+    new SRRendererRule({
+        roles: ["radiogroup"],
+        elems: [],
+        modes: ["item", "region", "tab_focus"],
+        tests: [
+            (_cursor: SRCursor) => "[out of grouping]"
         ]
     }),
 

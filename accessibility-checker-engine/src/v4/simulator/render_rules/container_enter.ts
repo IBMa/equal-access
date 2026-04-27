@@ -9,18 +9,22 @@ import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
  * Generates the announcement text when entering a table cell
  */
 function renderEnterTableCell(newCursor: SRCursor, oldCursor: SRCursor) {
+    // We seem to be at the newline text node after the cell
+    if (oldCursor && oldCursor.getNode()?.nodeName === "#text") {
+        oldCursor = oldCursor.clone();
+        oldCursor.previous(() => true)
+    }
     const newTableModel = SRTableUtil.getTableModel(newCursor);
     const oldCellInfo = SRTableUtil.getCellModel(oldCursor, newTableModel);
     const newCellInfo = SRTableUtil.getCellModel(newCursor, newTableModel);
     if (!newCellInfo) return "";
-
     let retVal: string[] = [];
 
     // Announce row information if we've moved to a different row or the rowspan has changed
     if (!oldCellInfo || oldCellInfo.rowIndexStart !== newCellInfo.rowIndexStart || oldCellInfo.rowspan !== newCellInfo.rowspan) {
         // If a change in row or a change in rowSpan
         let rowHeaders = SRTableUtil.getRowHeadersForCursor(newCursor, newTableModel);
-        let headerInfoStr = rowHeaders && rowHeaders.trim().length > 0 ? `${rowHeaders}, ` : "";
+        let headerInfoStr = rowHeaders && rowHeaders.trim().length > 0 ? `"${rowHeaders}", ` : "";
         retVal.push(`[${headerInfoStr}row ${(newCellInfo.rowIndexStart+1)}${newCellInfo.rowspan > 1 ? " through " + (newCellInfo.rowIndexStart+newCellInfo.rowspan) : ""}]`);
     }
 
@@ -28,7 +32,7 @@ function renderEnterTableCell(newCursor: SRCursor, oldCursor: SRCursor) {
     if (!oldCellInfo || oldCellInfo.colIndexStart !== newCellInfo.colIndexStart || oldCellInfo.colspan !== newCellInfo.colspan) {
         // If a change in column or a change in colspan
         let columnHeaders = SRTableUtil.getColumnHeadersForCursor(newCursor, newTableModel);
-        let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `“${columnHeaders}”, ` : "";
+        let headerInfoStr = columnHeaders && columnHeaders.trim().length > 0 ? `"${columnHeaders}", ` : "";
         retVal.push(`[${headerInfoStr}column ${(newCellInfo.colIndexStart+1)}${newCellInfo.colspan > 1 ? " through " + (newCellInfo.colIndexStart+newCellInfo.colspan) : ""}]`);
     }
 
@@ -146,7 +150,13 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region", "formcontrol"],
         tests: [
-            (_cursor: SRCursor) => "[grouping]"
+            (cursor: SRCursor) => {
+                if (cursor.getNameInfo() === null) {
+                    return "[section]";
+                } else {
+                    return `[${quoteNamePadAfter(cursor)}form region]`
+                }
+            }
         ]
     }),
 
@@ -283,6 +293,20 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Radio group role
+    new SRRendererRule({
+        roles: ["radiogroup"],
+        elems: [],
+        modes: ["item", "region", "tab_focus"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (cursor.getNameInfo() === null) return null;
+                
+                return `[grouping${quoteNamePadBefore(cursor)}]`;
+            }
+        ]
+    }),
+
     // Region role
     new SRRendererRule({
         roles: ["region"],
@@ -360,7 +384,7 @@ export let RULES: SRRendererRule[] = [
                     }
                 }
                 
-                return `[table with ${rows} rows and ${cols} columns]`;
+                return `[table with ${rows} ${rows === 1 ? "row" : "rows"} and ${cols} ${cols === 1 ? "column" : "columns"}${quoteNamePadBefore(cursor)}]`;
             }
         ]
     }),

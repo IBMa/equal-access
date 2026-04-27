@@ -6,7 +6,7 @@ export class SRRendererRule {
         modes: NavigationMode[],
         roles: string[],
         elems: string[],
-        tests: Array<(cursor: SRCursor, oldCursor?: SRCursor) => string | null>
+        tests: Array<(cursor: SRCursor, oldCursor?: SRCursor, mode?: NavigationMode) => string | null>
     }) {
 
     }
@@ -19,7 +19,7 @@ export class SRRendererRule {
             )
         ) {
             for (const test of this.ruleDefinition.tests) {
-                let s = test(cursor, oldCursor);
+                let s = test(cursor, oldCursor, mode);
                 if (typeof s === "string") return s;
             }
         }
