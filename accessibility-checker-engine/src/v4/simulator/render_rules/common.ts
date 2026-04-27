@@ -20,18 +20,38 @@ export function quoteNamePadAfter(cursor: SRCursor, padding?: string, quoteCharB
         : "";
 }
 
+/**
+ * Provide the name, surrounded by quotes and preceded by the padding if the name exists
+ * @param cursor The cursor for which to fetch the name
+ * @param padding String to add before, if the name exists (defaults to ", ")
+ * @returns The quoted name with leading padding, or empty string if no name exists
+ */
 export function quoteNamePadBefore(cursor: SRCursor, padding?: string) {
-    return cursor.getName() 
+    return cursor.getName()
         ? `${padding || ", "}${quoteName(cursor)}`
         : "";
 }
 
+/**
+ * Provide the name surrounded by quote characters
+ * @param cursor The cursor for which to fetch the name
+ * @param quoteCharBefore The string to use as the leading quote (defaults to ")
+ * @param quoteCharAfter The string to use as the trailing quote (defaults to ")
+ * @returns The quoted name, or empty string if no name exists
+ */
 export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharAfter?: string) {
     return cursor.getName()
         ? `${quoteCharBefore || '"'}${cursor.getName()}${quoteCharAfter || '"'}`
         : "";
 }
 
+/**
+ * Generate the screen reader announcement for a link element
+ * Distinguishes between same-page links (anchors) and regular links
+ * @param cursor The cursor positioned at the link element
+ * @param mode The navigation mode (affects announcement order)
+ * @returns The formatted link announcement string
+ */
 export function getLinkAnnouncement(cursor: SRCursor, mode?: NavigationMode): string {
     let href: string = ((cursor.getNode() as any).href) || "";
     let announceStr = "";
@@ -51,6 +71,13 @@ export function getLinkAnnouncement(cursor: SRCursor, mode?: NavigationMode): st
     return `[${announceStr}]`;
 }
 
+/**
+ * Get the description text from aria-describedby references
+ * Resolves all IDs in aria-describedby and concatenates their text content
+ * @param elem The element with aria-describedby attribute
+ * @param mode The navigation mode (returns empty string in "item" mode)
+ * @returns The formatted description text with leading comma and quotes, or empty string
+ */
 function getDescribedByAnnouncements(elem: HTMLElement, mode?: string): string {
     if (mode === "item") return "";
     const describedBy = elem.getAttribute("aria-describedby");
@@ -121,6 +148,12 @@ function listitemContainsInteractiveElement(cursor: SRCursor): boolean {
     return false;
 }
 
+/**
+ * Check if an iframe's content can be accessed (not cross-origin)
+ * Attempts to access the iframe's document to determine if it's accessible
+ * @param iframe The iframe element to check
+ * @returns true if the iframe content is accessible, false if cross-origin or blocked
+ */
 function canAccessFrame(iframe) {
     try {
         // This throws a DOMException for cross-origin frames
