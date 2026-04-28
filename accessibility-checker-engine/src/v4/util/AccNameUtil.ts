@@ -569,9 +569,10 @@ export class AccNameUtil {
                 const pair = AccNameUtil.computeAccessibleName(walkChild as Element);
                 if (pair && pair.name && pair.name.length > 0) {
                     text += " " + pair.name.trim();
+                    nw.bEndTag = true;
                 }
                 // Skip children if this element only has presentational children
-                if (AriaUtil.containsPresentationalChildrenOnly(nw.node as HTMLElement)) {
+                else if (AriaUtil.containsPresentationalChildrenOnly(nw.node as HTMLElement)) {
                     nw.bEndTag = true;
                 }
             }

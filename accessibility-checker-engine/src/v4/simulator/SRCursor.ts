@@ -248,6 +248,20 @@ export class SRCursor {
         return null;
     }
 
+    public getCurrentOrParentTabbableClone() {
+        let retVal = this.clone();
+        while (retVal) {
+            const elem = retVal.getElement();
+            if (retVal.isStartTag() && elem && CommonUtil.isTabbable(elem)) {
+                return retVal;
+            }
+            if (!retVal.parent(false)) {
+                break;
+            }
+        }
+        return null;
+    }
+
     /**
      * Gets the ARIA role of the current node
      * @returns The ARIA role as a string, or undefined if not available

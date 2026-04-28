@@ -1379,12 +1379,12 @@ export class AriaUtil {
                     if (labelNode && !DOMUtil.sameNode(labelNode, ele)) {
                         // Use our helper to get text content without circular dependency
                         let label = AriaUtil.getTextContentExcludingScripts(labelNode);
-                        normalizedLabel += CommonUtil.normalizeSpacing(label).toLowerCase();
+                        normalizedLabel += CommonUtil.normalizeSpacing(label);
                     }
                 }
                 return normalizedLabel.trim();
             } else if (ele.hasAttribute("aria-label")) {
-                return CommonUtil.normalizeSpacing(ele.getAttribute("aria-label")).toLowerCase().trim();
+                return CommonUtil.normalizeSpacing(ele.getAttribute("aria-label")).trim();
             }
         }
         return "";
@@ -1603,10 +1603,10 @@ export class AriaUtil {
                 let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
                 switch (tagName) { // special cases
                     case "a":
-                        CommonUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                        ruleContext.hasAttribute("href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                         break;
                     case "area":
-                        CommonUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                        ruleContext.hasAttribute("href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                         break;
                     case "figure": {
                         let fcs = CommonUtil.getChildByTag(ruleContext, "figcaption");
