@@ -1,9 +1,9 @@
 import { AriaUtil } from "../util/AriaUtil";
-import { SRController } from "./SRController";
 import { SRNavigator } from "./SRNavigator";
 import { ContainerChanges, NavigationMode, RenderResult } from "./SRTypes";
 import { SRCursor } from "./SRCursor";
 import { SR_RULES, CONTAINER_ENTER_RULES, CONTAINER_EXIT_RULES } from "./render_rules";
+import { getLinkAnnouncement } from "./render_rules/common";
 
 /**
  * SRRenderer namespace provides functionality for simulating how screen readers
@@ -71,10 +71,31 @@ export namespace SRRenderer {
      * @returns Combined announcement text
      */
     export function renderCurrent(mode: NavigationMode, walker: SRCursor, containerChanges: ContainerChanges): RenderResult | null {
+        const DEBUG = false;//mode === "tab_focus" && document.getElementById("fixture")?.getAttribute("class") === "tomtest";
         let startOfRender = SRNavigator.jumpCurrent(mode, walker);
         if (!startOfRender) return null;
-        let endOfRender = SRNavigator.jumpCurrentEnd(mode, startOfRender);
-        let renderStr = SRRenderer.renderRange(mode, startOfRender, endOfRender);
+
+        let endOfRenders = SRNavigator.jumpCurrentEnd(mode, startOfRender);
+        if (!endOfRenders || endOfRenders.length === 0) {
+            endOfRenders = [null];
+        }
+        DEBUG && console.log("AAAA", startOfRender.isStartTag(), startOfRender.getNode());
+        DEBUG && console.log("BBBB", endOfRenders.map(val => val && val.isStartTag()), endOfRenders.map(val => val && val.getNode()));
+
+        let endOfRender = endOfRenders[endOfRenders.length - 1];
+        let renderStr = "";
+        for (let candidateEnd of endOfRenders) {
+            let candidateRenderStr = SRRenderer.renderRange(mode, startOfRender, candidateEnd);
+            if (candidateRenderStr.trim().length > 0) {
+                endOfRender = candidateEnd;
+                renderStr = candidateRenderStr;
+                break;
+            }
+        }
+        if (renderStr === "") {
+            renderStr = SRRenderer.renderRange(mode, startOfRender, endOfRender);
+        }
+        DEBUG && console.log("CCCC", renderStr);
         return {
             start: startOfRender,
             end: endOfRender,
@@ -95,36 +116,53 @@ export namespace SRRenderer {
      */
     export function renderRange(mode: NavigationMode, startOfRender: SRCursor, endOfRender: SRCursor) : string {
         let iterWalker = startOfRender.clone();
-        let renderStrs = [];
+        let elemStrs: string[] = [];
         let bContinue = true;
+        let currentLink: Node = null;
         while (bContinue) {
             const elem = iterWalker.getElement();
             const node = iterWalker.getNode();
             const nodeType = node.nodeType;
+            let renderStrs: string[] = [];
+            let linkParent = AriaUtil.getAncestorWithRole(node, "link", true);
+            if (linkParent && !["content", "text"].includes(new SRCursor(linkParent).getNameInfo()?.nameFrom)) {
+                // We don't consider links that announce themselves
+                linkParent = null;
+            }
             for (const rule of SR_RULES) {
                 let s = rule.test(mode, iterWalker);
-                if (typeof s !== "undefined" && s !== null) {
+                if (typeof s !== "undefined" && s !== null && s.trim().length > 0) {
                     if (nodeType === 1 && !iterWalker.isEndTag() && elem.getAttribute("aria-haspopup") === "menu") {
                         s = "[subMenu] "+s;
                     }
-                    if (s.trim().length > 0 && iterWalker.isStartTag() && !s.includes("[link") && nodeType === 1 && AriaUtil.getAncestorWithRole(elem, "link", true)) {
-                        if (mode === "item") {
-                            s = "[link] "+s;
-                        } else {
-                            s = s + " [link]";
+                    // Handle links
+                    if (mode === "tab_focus") {
+                        // We're in link mode
+                        if (currentLink && (!linkParent || (linkParent && currentLink !== linkParent))) {
+                            // We've added a string within a link (currentLink), but now we've left the link or moved to a new link
+                            s = `${s} ${getLinkAnnouncement(new SRCursor(currentLink, false))}`;
                         }
+                    } else {
+                        if (linkParent && (!currentLink || (currentLink !== linkParent))) {
+                            // We're in a link, and we haven't announced this link, or we've moved to a new link
+                            s = `${getLinkAnnouncement(new SRCursor(linkParent, false))} ${s}`;
+                        } 
+
                     }
                     if (s !== "") {
-                        renderStrs.push(s);
+                        currentLink = linkParent;
+                        elemStrs.push(s);
                     }
                     break;
                 }
             }
+            elemStrs.push(renderStrs.filter(s => s.trim().length > 0).join(" "))
             bContinue = iterWalker.next(() => true, SRNavigator.getSkipFunc(mode)) && SRCursor.compare(iterWalker, endOfRender) < 0;
         }
-        let retVal = renderStrs.filter(s => s.trim().length > 0).join(" ");
-        retVal = retVal.replace(/\[link\]( \[link\])+/g, "[link]");
-        if (retVal === "[link]") return "";
+        if (mode === "tab_focus" && currentLink) {
+            elemStrs.push(`${getLinkAnnouncement(new SRCursor(currentLink, false))}`);
+        }
+        let retVal = elemStrs.filter(s => s.trim().length > 0).join(" ");
         return retVal;
     }
 

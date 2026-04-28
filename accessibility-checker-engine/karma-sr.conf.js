@@ -36,6 +36,18 @@ module.exports = (config) => {
         files: [
             // Only include SR simulator tests
             { pattern: 'test/v4/simulator/*_test.js', watched: true }
+            // { pattern: 'test/v4/simulator/Button_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Checkbox_test.js', watched: true }, // Issues: description, checkbox in label
+            // { pattern: 'test/v4/simulator/Form_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Heading_test.js', watched: true }, // Issues: empty heading, double accessible name
+            // { pattern: 'test/v4/simulator/Link_test.js', watched: true }, // Issues: empty href, block in link
+            // { pattern: 'test/v4/simulator/List_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Navigation_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Radio_test.js', watched: true }, // Issues: description, radio in label
+            // { pattern: 'test/v4/simulator/Region_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Table_test.js', watched: true },
+            // { pattern: 'test/v4/simulator/Textbox_test.js', watched: true }, // Issues: contenteditable (#2533)
+            // { pattern: 'test/v4/simulator/Tree_test.js', watched: true }
         ],
         exclude: [],
 

@@ -4,6 +4,7 @@ import { AriaUtil } from "../../util/AriaUtil";
 import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
 import { DOMWalker } from "../../../v2/dom/DOMWalker";
 import { VisUtil } from "../../util/VisUtil";
+import { NavigationMode } from "../SRTypes";
 
 /**
  * Provide the name, surrounded by the quoteCharBefore and quoteCharAfter and followed by the padding if the name exists
@@ -19,16 +20,107 @@ export function quoteNamePadAfter(cursor: SRCursor, padding?: string, quoteCharB
         : "";
 }
 
+/**
+ * Provide the name, surrounded by quotes and preceded by the padding if the name exists
+ * @param cursor The cursor for which to fetch the name
+ * @param padding String to add before, if the name exists (defaults to ", ")
+ * @returns The quoted name with leading padding, or empty string if no name exists
+ */
 export function quoteNamePadBefore(cursor: SRCursor, padding?: string) {
-    return cursor.getName() 
+    return cursor.getName()
         ? `${padding || ", "}${quoteName(cursor)}`
         : "";
 }
 
+/**
+ * Provide the name surrounded by quote characters
+ * @param cursor The cursor for which to fetch the name
+ * @param quoteCharBefore The string to use as the leading quote (defaults to ")
+ * @param quoteCharAfter The string to use as the trailing quote (defaults to ")
+ * @returns The quoted name, or empty string if no name exists
+ */
 export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharAfter?: string) {
     return cursor.getName()
         ? `${quoteCharBefore || '"'}${cursor.getName()}${quoteCharAfter || '"'}`
         : "";
+}
+
+/**
+ * Generate the screen reader announcement for a link element
+ * Distinguishes between same-page links (anchors) and regular links
+ * @param cursor The cursor positioned at the link element
+ * @param mode The navigation mode (affects announcement order)
+ * @returns The formatted link announcement string
+ */
+export function getLinkAnnouncement(cursor: SRCursor, mode?: NavigationMode): string {
+    let href: string = ((cursor.getNode() as any).href) || "";
+    let announceStr = "";
+    if (href.startsWith(document.location.href) && href.charAt(document.location.href.length) === "#") {
+        announceStr = `same page link`;
+    } else {
+        announceStr = `link`;
+    }
+    let nameInfo = cursor.getNameInfo();
+    if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
+        if (mode === "tab_focus") {
+            return `[${quoteNamePadAfter(cursor)}${announceStr}]`;
+        } else {
+            return `[${announceStr}${quoteNamePadBefore(cursor)}]`;
+        }
+    }
+    return `[${announceStr}]`;
+}
+
+/**
+ * Get the description text from aria-describedby references
+ * Resolves all IDs in aria-describedby and concatenates their text content
+ * @param elem The element with aria-describedby attribute
+ * @param mode The navigation mode (returns empty string in "item" mode)
+ * @returns The formatted description text with leading comma and quotes, or empty string
+ */
+function getDescribedByAnnouncements(elem: HTMLElement, mode?: string): string {
+    if (mode === "item") return "";
+    const describedBy = elem.getAttribute("aria-describedby");
+    if (!describedBy) return "";
+
+    const descriptionText = describedBy
+        .split(/\s+/)
+        .map(id => document.getElementById(id)?.textContent?.trim())
+        .filter(text => !!text)
+        .join(" ");
+
+    return (descriptionText && descriptionText.length > 0) ? `, "${descriptionText}"` : "";
+}
+
+/**
+ * Get state announcements for disabled, readonly, required, and invalid attributes
+ * @param elem The element to check for state attributes
+ * @returns A string with state announcements (e.g., ", disabled", ", read only", ", required", ", invalid")
+ */
+function getStateAnnouncements(elem: HTMLElement): string {
+    let states = "";
+    
+    // Check for disabled state (both attribute and aria-disabled)
+    if (elem.hasAttribute("disabled") || elem.getAttribute("aria-disabled") === "true") {
+        states += ", disabled";
+    }
+    
+    // Check for readonly state (both attribute and aria-readonly)
+    if (elem.hasAttribute("readonly") || elem.getAttribute("aria-readonly") === "true") {
+        states += ", read only";
+    }
+    
+    // Check for required state (both attribute and aria-required)
+    if (elem.hasAttribute("required") || elem.getAttribute("aria-required") === "true") {
+        states += ", required";
+    }
+
+    // Check for invalid state (aria-invalid)
+    if (elem.getAttribute("aria-invalid") === "true") {
+        states += ", invalid";
+    }
+    
+    return states;
 }
 
 /**
@@ -56,6 +148,12 @@ function listitemContainsInteractiveElement(cursor: SRCursor): boolean {
     return false;
 }
 
+/**
+ * Check if an iframe's content can be accessed (not cross-origin)
+ * Attempts to access the iframe's document to determine if it's accessible
+ * @param iframe The iframe element to check
+ * @returns true if the iframe content is accessible, false if cross-origin or blocked
+ */
 function canAccessFrame(iframe) {
     try {
         // This throws a DOMException for cross-origin frames
@@ -93,6 +191,7 @@ export const RULES: SRRendererRule[] = [
                 if (elem.hasAttribute("aria-expanded")) {
                     expandStr += `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                 }
+                expandStr += getStateAnnouncements(elem);
                 return `[${quoteNamePadAfter(cursor)}button${expandStr}]`;
             },
             (cursor: SRCursor) => { if (cursor.isEndTag()) return ""; }
@@ -105,11 +204,12 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "checkbox", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag()) {
                     const elem = cursor.getNode() as HTMLInputElement;
+                    let stateStr = "";
                     if (elem.getAttribute("aria-checked") === "mixed") {
-                        return `[checkbox, half checked${quoteNamePadBefore(cursor)}]`
+                        stateStr = "half checked";
                     } else {
                         let bChecked = false;
                         if (elem.hasAttribute("aria-checked")) {
@@ -117,8 +217,10 @@ export const RULES: SRRendererRule[] = [
                         } else {
                             bChecked = elem.checked;
                         }
-                        return `[checkbox, ${bChecked ? "checked" : "not checked"}${quoteNamePadBefore(cursor)}]`
+                        stateStr = bChecked ? "checked" : "not checked";
                     }
+                    stateStr += getStateAnnouncements(cursor.getElement());
+                    return `[checkbox, ${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
                 } else {
                     return "";
                 }
@@ -138,10 +240,14 @@ export const RULES: SRRendererRule[] = [
                 if (cursor.getNode().nodeName.toUpperCase() === "SELECT") {
                     state = ", collapsed";
 
-                    const optionId = (cursor.getNode() as any).value;
-                    let valueElem = cursor.getElement().querySelector(`option[value='${optionId}']`);
-                    let temp = new SRCursor(valueElem, false);
-                    return `[${quoteNamePadAfter(cursor)}combo box${state}${quoteNamePadBefore(temp, ", ")}]`;
+                    const selectElem = cursor.getElement() as HTMLSelectElement;
+                    let valueElem = selectElem.selectedIndex >= 0 ? selectElem.options[selectElem.selectedIndex] : null;
+                    let valueStr = "";
+                    if (valueElem) {
+                        let temp = new SRCursor(valueElem, false);
+                        valueStr = quoteNamePadBefore(temp, ", ");
+                    }
+                    return `[${quoteNamePadAfter(cursor)}combo box${state}${valueStr}]`;
                 } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT" && !cursor.getElement().hasAttribute("role")) {
                     return `[${quoteNamePadAfter(cursor)}combo box, has auto complete, editable, opens list]`;
                 } else {
@@ -230,18 +336,34 @@ export const RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["heading"],
         elems: [],
-        modes: ["item"],
+        modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                if (cursor.isStartTag()) {
-                    let nameInfo = cursor.getNameInfo();
-                    if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
-                        return `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}${quoteNamePadBefore(cursor)}]`;
-                    } else {
-                        return `[heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
-                    }
+            (cursor: SRCursor, _oldCursor: SRCursor, mode: NavigationMode) => {
+                if (mode === "tab_focus" && cursor.isStartTag()) return "";
+                if (mode === "item" && cursor.isEndTag()) return "";
+                let level: string;
+                const node = cursor.getElement();
+                if (node.ariaLevel) {
+                    // Explicit aria-level attribute
+                    level = node.ariaLevel;
+                } else if (node.getAttribute('role') === 'heading') {
+                    // role="heading" without aria-level defaults to 2
+                    level = '2';
+                } else {
+                    // Native heading element (h1-h6), extract number from tag name
+                    level = node.nodeName.substring(1);
                 }
-                return "";
+
+                let nameInfo = cursor.getNameInfo();
+                if ((!nameInfo || ["content", "text"].includes(nameInfo.nameFrom)) && !(node.textContent || "").trim()) {
+                    return "";
+                }
+
+                if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
+                    return `[heading level ${level}${quoteNamePadBefore(cursor)}]`;
+                } else {
+                    return `[heading level ${level}]`;
+                }
             }
         ]
     }),
@@ -254,7 +376,26 @@ export const RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.isStartTag()) {
-                    return `[${quoteNamePadAfter(cursor)}heading level ${(cursor.getNode() as HTMLElement).ariaLevel || cursor.getNode().nodeName.substring(1)}]`;
+                    const node = cursor.getNode() as HTMLElement;
+                    let level: string;
+                    
+                    if (node.ariaLevel) {
+                        // Explicit aria-level attribute
+                        level = node.ariaLevel;
+                    } else if (node.getAttribute('role') === 'heading') {
+                        // role="heading" without aria-level defaults to 2
+                        level = '2';
+                    } else {
+                        // Native heading element (h1-h6), extract number from tag name
+                        level = node.nodeName.substring(1);
+                    }
+
+                    let nameInfo = cursor.getNameInfo();
+                    if ((!nameInfo || ["content", "text"].includes(nameInfo.nameFrom)) && !(node.textContent || "").trim()) {
+                        return "";
+                    }
+                    
+                    return `[${quoteNamePadAfter(cursor)}heading level ${level}]`;
                 }
                 return "";
             }
@@ -305,22 +446,11 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "region", "link", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                let href: string = ((cursor.getNode() as any).href) || "";
-                let retVal = "";
-                if (cursor.isStartTag()) {
-                    if (href.startsWith(document.location.href) && href.charAt(document.location.href.length) === "#") {
-                        retVal = `[same page link`;
-                    } else {
-                        retVal = `[link`;
-                    }
-                    let nameInfo = cursor.getNameInfo();
-                    if (nameInfo && !["content", "text"].includes(nameInfo.nameFrom)) {
-                        retVal += quoteNamePadBefore(cursor);
-                    }
-                    retVal += "]";
+            (cursor: SRCursor, _oldCursor: SRCursor, mode: NavigationMode) => {
+                if (cursor.isStartTag() && !["content", "text"].includes(cursor.getNameInfo()?.nameFrom)) {
+                    return getLinkAnnouncement(cursor, mode);
                 }
-                return retVal;
+                return null;
             }
         ]
     }),
@@ -333,6 +463,7 @@ export const RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 let isOrdered: boolean | undefined;
+                let parentListElem: HTMLElement | undefined;
                 let walkParents = DOMWalker.parentNode(cursor.getNode());
                 while (typeof isOrdered === "undefined" && walkParents) {
                     if (walkParents.nodeType === 1) {
@@ -340,11 +471,14 @@ export const RULES: SRRendererRule[] = [
                         if (elem.hasAttribute("role")) {
                             if (elem.getAttribute("role") === "list") {
                                 isOrdered = false;
+                                parentListElem = elem;
                             }
                         } else if (elem.nodeName.toUpperCase() === "UL") {
                             isOrdered = false;
+                            parentListElem = elem;
                         } else if (elem.nodeName.toUpperCase() === "OL") {
                             isOrdered = true;
+                            parentListElem = elem;
                         }
                     }
                     walkParents = DOMWalker.parentNode(walkParents);
@@ -366,14 +500,31 @@ export const RULES: SRRendererRule[] = [
                         retStr = cursor.isStartTag() ? `[bullet] ${nameToUse}` : "";
                     }
                 } else {
-                    let walkBack = cursor.clone();
-                    let count = 0;
-                    while (walkBack.getRole() !== "list") {
-                        if (walkBack.isStartTag() && walkBack.getRole() === "listitem") {
-                            ++count;
-                        }
-                        walkBack.previous(() => true);
+                    // For ordered lists, count sibling listitems and account for start attribute
+                    let count = 1; // Start at 1 by default
+                    
+                    // Get the start attribute if it exists on the <ol> element
+                    if (parentListElem && parentListElem.nodeName.toUpperCase() === 'OL' &&
+                        parentListElem.hasAttribute('start')) {
+                        const startValue = parseInt(parentListElem.getAttribute('start') || '1', 10);
+                        count = isNaN(startValue) ? 1 : startValue;
                     }
+                    
+                    // Count previous sibling listitems at the same level using DOMWalker
+                    const currentElem = cursor.getElement();
+                    let sibling = DOMWalker.previousSiblingNotOwnedBySlot(currentElem);
+                    while (sibling) {
+                        // Only count direct siblings that are listitems (element nodes only)
+                        if (sibling.nodeType === 1) {
+                            const siblingElem = sibling as HTMLElement;
+                            if (siblingElem.getAttribute('role') === 'listitem' ||
+                                siblingElem.nodeName.toUpperCase() === 'LI') {
+                                count++;
+                            }
+                        }
+                        sibling = DOMWalker.previousSiblingNotOwnedBySlot(sibling);
+                    }
+                    
                     retStr = cursor.isStartTag() ? `${count}. ${nameToUse}` : "";
                 }
                 return retStr;
@@ -452,7 +603,7 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag()) {
                     let bChecked = false;
                     if (cursor.getElement().hasAttribute("aria-checked")) {
@@ -460,7 +611,8 @@ export const RULES: SRRendererRule[] = [
                     } else {
                         bChecked = (cursor.getNode() as any).checked;
                     }
-                    return `[radio button, ${bChecked ? "checked" : "not checked"}${quoteNamePadBefore(cursor)}]`
+                    let stateStr = getStateAnnouncements(cursor.getElement());
+                    return `[radio button, ${bChecked ? "checked" : "not checked"}${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
                 } else {
                     return "";
                 }
@@ -494,7 +646,7 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}slider, ${(cursor.getNode() as any).value}]` : ""
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}slider, ${(cursor.getNode() as any).value}${getDescribedByAnnouncements(cursor.getElement(), mode)}]` : ""
         ]
     }),
 
@@ -504,7 +656,7 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}spinbutton, editable]` : ""
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}spinbutton, editable${getDescribedByAnnouncements(cursor.getElement(), mode)}]` : ""
         ]
     }),
 
@@ -580,31 +732,40 @@ export const RULES: SRRendererRule[] = [
     }),
 
     // Textbox role
-    new SRRendererRule({
-        roles: ["textbox"],
-        elems: [],
-        modes: ["item", "tab_focus"],
-        tests: [
-            (cursor: SRCursor) => {
-                const elem = cursor.getElement();
-                if (cursor.isStartTag()) {
-                    let placeholder = "";
+        new SRRendererRule({
+            roles: ["textbox"],
+            elems: [],
+            modes: ["item", "tab_focus"],
+            tests: [
+                (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                    const elem = cursor.getElement();
+                    if (cursor.isEndTag()) {
+                        return mode === "item" && elem.nodeName.toUpperCase() === "TEXTAREA" ? "[out of edit]" : "";
+                    }
+    
+                    if (!cursor.isStartTag()) {
+                        return "";
+                    }
+    
+                    let attributes = "";
                     if (elem.hasAttribute("placeholder")) {
-                        placeholder = `, placeholder: ${elem.getAttribute("placeholder")}`
+                        attributes += `, placeholder: ${elem.getAttribute("placeholder")}`;
                     }
-                    if (elem.nodeName.toUpperCase() === "INPUT") {
-                        return `[${quoteNamePadAfter(cursor)}edit${placeholder}]`;
-                    } else {
-                        return `[${quoteNamePadAfter(cursor)}edit, multiline]`;
+                    attributes += getStateAnnouncements(elem);
+    
+                    const isMultiline = elem.nodeName.toUpperCase() === "TEXTAREA" || elem.getAttribute("aria-multiline") === "true";
+                    const describedBy = getDescribedByAnnouncements(elem, mode);
+    
+                    if (isMultiline) {
+                        const textContent = mode === "tab_focus" ? elem.textContent?.trim() : "";
+                        const contentSuffix = textContent ? ` ${textContent}` : "";
+                        return `[${quoteNamePadAfter(cursor)}edit, multiline${attributes}${describedBy}]${contentSuffix}`;
                     }
-                } else if (elem.nodeName.toUpperCase() === "TEXTAREA") {
-                    return "[out of edit]";
-                } else {
-                    return "";
+    
+                    return `[${quoteNamePadAfter(cursor)}edit${attributes}${describedBy}]`;
                 }
-            }
-        ]
-    }),
+            ]
+        }),
 
     // Treeitem role
     new SRRendererRule({
@@ -754,26 +915,26 @@ export const RULES: SRRendererRule[] = [
         elems: ["INPUT"],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "password" && `[${quoteNamePadAfter(cursor)}edit, protected]`) || null,
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "password" && `[${quoteNamePadAfter(cursor)}edit, protected${getDescribedByAnnouncements(cursor.getElement(), mode)}]`) || null,
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "file") {
                     let value = (cursor.getElement() as HTMLInputElement)?.value || "";
                     value = value === "" ? "No file chosen" : value.substring("C:\\fakepath\\".length);
-                    return `[${quoteNamePadAfter(cursor)}button] [${quoteNamePadAfter(cursor)}${value}]`;
+                    return `[${quoteNamePadAfter(cursor)}button${getDescribedByAnnouncements(cursor.getElement(), mode)}] [${quoteNamePadAfter(cursor)}${value}]`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "color") {
                     const val = (cursor.getElement() as HTMLInputElement).value;
                     const r = (Number(`0x${val.substring(1, 3)}`) * 100.0 / Number("0xff")).toFixed(0);
                     const g = (Number(`0x${val.substring(3, 5)}`) * 100.0 / Number("0xff")).toFixed(0);
                     const b = (Number(`0x${val.substring(5)}`) * 100.0 / Number("0xff")).toFixed(0);
-                    return `[${quoteNamePadAfter(cursor)}clickable] [${r}% red ${g}% green ${b}% blue]`;
+                    return `[${quoteNamePadAfter(cursor)}clickable${getDescribedByAnnouncements(cursor.getElement(), mode)}] [${r}% red ${g}% green ${b}% blue]`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "month") {
                     const val = (cursor.getElement() as HTMLInputElement).value;
                     let y = "0";
@@ -783,11 +944,11 @@ export const RULES: SRRendererRule[] = [
                         y = "" + date.getFullYear();
                         m = "" + (date.getMonth() + 1);
                     }
-                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] [spin button, ${y}] [menu button] [subMenu] Show month picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable${getDescribedByAnnouncements(cursor.getElement(), mode)}] [spin button, ${m}] [spin button, ${y}] [menu button] [subMenu] Show month picker`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "date") {
                     const val = (cursor.getElement() as HTMLInputElement).value;
                     let y = "0";
@@ -799,11 +960,11 @@ export const RULES: SRRendererRule[] = [
                         m = "" + (date.getMonth() + 1);
                         day = "" + (date.getDate());
                     }
-                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [menu button] [subMenu] Show date picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable${getDescribedByAnnouncements(cursor.getElement(), mode)}] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [menu button] [subMenu] Show date picker`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "datetime-local") {
                     const val = (cursor.getElement() as HTMLInputElement).value; // 2025-09-12T04:20
                     let y = "0";
@@ -827,11 +988,11 @@ export const RULES: SRRendererRule[] = [
                         min = "" + date.getMinutes();
                         ampm = date.getHours() >= 12 ? "pm" : "am";
                     }
-                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}]  [menu button] [subMenu] Show local date and time picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable${getDescribedByAnnouncements(cursor.getElement(), mode)}] [spin button, ${m}] / [spin button, ${day}] / [spin button, ${y}] [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}]  [menu button] [subMenu] Show local date and time picker`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "time") {
                     const val = (cursor.getElement() as HTMLInputElement).value; // 2025-09-12T04:20
                     let hour = "0";
@@ -850,11 +1011,11 @@ export const RULES: SRRendererRule[] = [
                         min = date[1];
                         ampm = hours >= 12 ? "pm" : "am";
                     }
-                    return `[${quoteNamePadAfter(cursor)}grouping clickable [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}] [menu button] [subMenu] Show time picker [out of grouping]`;
+                    return `[${quoteNamePadAfter(cursor)}grouping clickable${getDescribedByAnnouncements(cursor.getElement(), mode)} [spin button, ${hour}] : [spin button, ${min}] [spin button, ${ampm}] [menu button] [subMenu] Show time picker [out of grouping]`;
                 }
                 return null;
             },
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag() && cursor.getElement()?.getAttribute("type") === "week") {
                     const val = (cursor.getElement() as HTMLInputElement).value; // 2025-W38
                     let year = "0";
@@ -864,7 +1025,7 @@ export const RULES: SRRendererRule[] = [
                         year = date[0];
                         week = date[1];
                     }
-                    return `[${quoteNamePadAfter(cursor)}clickable] [spin button, ${week}], [spin button, ${year}] [menu button] [subMenu] Show week picker`;
+                    return `[${quoteNamePadAfter(cursor)}clickable${getDescribedByAnnouncements(cursor.getElement(), mode)}] [spin button, ${week}], [spin button, ${year}] [menu button] [subMenu] Show week picker`;
                 }
                 return null;
             },
