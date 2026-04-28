@@ -636,7 +636,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         />
                     </div>
 
-                    <h2>Labs <span style={{fontSize: "0.875rem", fontWeight: "normal", color: "#525252"}}>(Experimental features)</span></h2>
+                    {/* <h2>Labs <span style={{fontSize: "0.875rem", fontWeight: "normal", color: "#525252"}}>(Experimental features)</span></h2>
                     <div>
                         <div style={{marginTop: "1rem"}} />
                         <Toggle
@@ -651,7 +651,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         <p style={{marginTop: "0.5rem", fontSize: "0.875rem", color: "#525252"}}>
                             Enable the Screen Reader Simulator panel in DevTools. This experimental feature allows you to test how screen readers interpret your content.
                         </p>
-                    </div>
+                    </div> */}
                     <div style={{marginTop: "1.5rem"}} />
                     <ButtonSet>
                         <Button

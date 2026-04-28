@@ -42,10 +42,10 @@ import "./srApp.scss";
 import { ePanel, getDevtoolsController } from './devtoolsController';
 import { getDevtoolsAppController } from './devtoolsAppController';
 import { getBGController } from '../background/backgroundController';
-import { UnorderedList } from '@carbon/react';
-import { ListItem } from '@carbon/react';
-import { Accordion } from '@carbon/react';
-import { AccordionItem } from '@carbon/react';
+// import { UnorderedList } from '@carbon/react';
+// import { ListItem } from '@carbon/react';
+// import { Accordion } from '@carbon/react';
+// import { AccordionItem } from '@carbon/react';
 import { CheckboxGroup } from '@carbon/react';
 import { Checkbox } from '@carbon/react';
 
@@ -807,17 +807,19 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
                 title="Experimental"
                 subtitle="This feature is experimental. Results are in early development stages. No assessment of compliance should be made based on these results."
             />
-            <Accordion align="start">
+            <div>
+                See <a href="https://github.com/IBMa/equal-access/issues?q=is%3Aissue%20state%3Aopen%20label%3Aengine-simulator" target="_blank" rel="noopener noreferrer">known issues</a>
+            </div>
+            {/* <Accordion align="start">
                 <AccordionItem title="Known Issues/TODOs">
                     <UnorderedList>
                         <ListItem>Focus sync</ListItem>
                         <ListItem>Emulate: Show point-of-regard on the website</ListItem>
                         <ListItem>Emulate: General keyboard interactions</ListItem>
-                        <ListItem>Review: Seems to get stuck sometimes - hard to determine long processing vs stuck</ListItem>
                         <ListItem>Review: Auto-update Review panel due to DOM/page changes?</ListItem>
                     </UnorderedList>
                 </AccordionItem>
-            </Accordion>
+            </Accordion> */}
         </>;
         return (
             <Theme theme={BrowserDetection.isDarkMode()?"g100":"white"} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>

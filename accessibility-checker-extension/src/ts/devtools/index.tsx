@@ -17,7 +17,7 @@
 import Config from "../util/config";
 import { getTabIdSync } from "../util/tabId";
 import { getDevtoolsController } from "./devtoolsController";
-import { getBGController } from "../background/backgroundController";
+// import { getBGController } from "../background/backgroundController";
 
 const isDev = Config.workspace && Config.workspace === "development";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
@@ -49,15 +49,15 @@ chrome.devtools.panels.create("Accessibility Assessment"+devStr+localStr, "", "d
 );
 
 // Create Screen Reader Simulator panel based on user settings
-(async () => {
-    const bgController = getBGController();
-    const settings = await bgController.getSettings();
+// (async () => {
+//     const bgController = getBGController();
+//     const settings = await bgController.getSettings();
     
-    if (settings.enableScreenReaderSimulator) {
-        chrome.devtools.panels.create("Screen Reader Simulator"+devStr+localStr, "", "devtoolsSR.html",
-            function() {
-            }
-        );
+    // if (settings.enableScreenReaderSimulator) {
+chrome.devtools.panels.create("Screen Reader Simulator"+devStr+localStr, "", "devtoolsSR.html",
+    function() {
     }
-})();
+);
+    // }
+// })();
 
