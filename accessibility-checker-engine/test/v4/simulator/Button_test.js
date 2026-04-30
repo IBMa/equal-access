@@ -218,6 +218,66 @@ describe('Button Component Screen Reader Tests', function() {
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
+
+        it("Should render button with aria-describedby announcement", function() {
+            let fixture = `
+                <div id="fixture">
+                    <div>
+                        <button aria-describedby="description" aria-labelledby="tooltip" type="button">
+                            <code id="description">node -v</code>
+                        </button>
+                        <span aria-hidden="true" id="tooltip" role="tooltip">
+                            Copy to clipboard
+                        </span>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = ace.SRController.renderStructure(document);
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": `["Copy to clipboard", button, "node -v"]`, "tab_focus": "", "image": "", "selector": "#fixture > div" },
+                { "region": "", "heading": "", "item": "", "tab_focus": "[\"Copy to clipboard\", button, \"node -v\"]", "image": "", "selector": "#fixture > div > button" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should render two buttons with aria-describedby announcement", function() {
+            let fixture = `
+                <div id="fixture">
+                    <div>
+                        <button aria-describedby="description" aria-labelledby="tooltip" type="button">
+                            <code id="description">node -v</code>
+                        </button>
+                        <span aria-hidden="true" id="tooltip" role="tooltip">
+                            Copy to clipboard one
+                        </span>
+                    </div>
+                    <div>
+                        <button aria-describedby="description2" aria-labelledby="tooltip2" type="button">
+                            <code id="description2">node -v</code>
+                        </button>
+                        <span aria-hidden="true" id="tooltip2" role="tooltip">
+                            Copy to clipboard two
+                        </span>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = ace.SRController.renderStructure(document);
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": `["Copy to clipboard one", button, "node -v"]`, "tab_focus": "", "image": "", "selector": "#fixture > div:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "", "tab_focus": "[\"Copy to clipboard one\", button, \"node -v\"]", "image": "", "selector": "#fixture > div:nth-of-type(1) > button" },
+                { "region": "", "heading": "", "item": `["Copy to clipboard two", button, "node -v"]`, "tab_focus": "", "image": "", "selector": "#fixture > div:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "", "tab_focus": "[\"Copy to clipboard two\", button, \"node -v\"]", "image": "", "selector": "#fixture > div:nth-of-type(2) > button" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
     });
 
     describe("Multiple Buttons", function() {
