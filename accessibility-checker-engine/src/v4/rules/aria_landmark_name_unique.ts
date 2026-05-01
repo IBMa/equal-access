@@ -46,13 +46,13 @@ export const aria_landmark_name_unique: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next"],
-        "num": ["2.4.1"], //remapped to 2.4.1 to be consistent with all landmark region rules
+        "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     },
     {
         "id": ["WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.4.1"],
+        "num": ["1.3.1"],
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],

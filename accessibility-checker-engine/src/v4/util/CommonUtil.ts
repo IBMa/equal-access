@@ -79,7 +79,10 @@ export class CommonUtil {
         "select": function (element): boolean {
             return !element.hasAttribute("disabled");
         },
-        "textarea": true,
+        "textarea": function (element): boolean {
+            if (element.hasAttribute("disabled") || element.getAttribute("type") === "hidden") return false;
+            return true;
+        },
         /**"div": function (element) {
             return element.hasAttribute("contenteditable");
         },*/

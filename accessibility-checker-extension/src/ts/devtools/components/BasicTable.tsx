@@ -69,12 +69,9 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
 
     render() {
         let content = <></>;
-        let myHeaders : Array<{key: string, header:string}> = JSON.parse(JSON.stringify(this.props.headers));
-        if (this.props.onRow) {
-            myHeaders.push(
-                { header: 'Detail', key: "" }
-            )
-        }
+        let myHeaders = this.props.onRow
+            ? [...this.props.headers, { header: 'Detail', key: "" }]
+            : this.props.headers;
 
         if (!this.props.data) {
             content = <div>
@@ -117,7 +114,6 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         getTableContainerProps,
                         getToolbarProps,
                         getBatchActionProps,
-                        selectAll
                     }: {
                         rows: any,
                         headers: Array<{key: string, header: string}>,
@@ -131,10 +127,6 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         getBatchActionProps: any,
                         selectAll: any
                     }) => {
-                        if (!this.state.init) {
-                            selectAll();
-                            this.setState({ init: true })
-                        }
                         let totals: any[] = [];
                         while (totals.length < headers.length-1) {
                             totals.push(null);
@@ -198,12 +190,13 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                                                     { hasBatchActions && <TableSelectRow {...getSelectionProps({ row })} />}
                                                     {row.cells.map((cell: any) => {
                                                         if ((cell.id as string).endsWith(":") && this.props.onRow) {
-                                                            return <TableCell key="rowReport" className="rowReport" onClick={() => this.props.onRow && this.props.onRow(cell.id)}><ChooseItem /></TableCell>;
-                                                        } else if (this.props.fieldMapper) {
-                                                            return <TableCell key={cell.id}>{this.props.fieldMapper(row.id, cell.id.split(":")[1], cell.value)}</TableCell>
-                                                        } else {
-                                                            return <TableCell key={cell.id}>{cell.value || ""}</TableCell>
+                                                            return <TableCell key={`${row.id}:detail`} className="rowReport" onClick={() => this.props.onRow && this.props.onRow(row.id)}><ChooseItem /></TableCell>;
                                                         }
+                                                        if (this.props.fieldMapper) {
+                                                            const mappedValue = this.props.fieldMapper(row.id, cell.id.split(":")[1], cell.value);
+                                                            return <TableCell key={cell.id}>{mappedValue !== undefined ? mappedValue : ""}</TableCell>
+                                                        }
+                                                        return <TableCell key={cell.id}>{cell.value || ""}</TableCell>
                                                     })}
                                                 </TableRow>
                                             })}

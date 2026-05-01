@@ -1,0 +1,55 @@
+{
+  "name": "vitest-accessibility-checker",
+  "version": "3.0.0",
+  "description": "Accessibility Checker for Vitest",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run build:common && vitest run",
+    "test:ui": "npm run build:common && vitest --ui",
+    "test:start-http": "http-server -c-1 --silent",
+    "build:common": "cd ../common/module && npm run build && cd ../../vitest-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
+    "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R src/* package/ && cp README.md package/",
+    "package:zip": "npm run package:common && cd package && npm pack",
+    "package:npm": "npm run package:common",
+    "postinstall": "ibmtelemetry --config=telemetry.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/IBMa/equal-access/vitest-accessibility-checker"
+  },
+  "keywords": [
+    "ci",
+    "integration",
+    "continuous",
+    "accessibility-checker",
+    "vitest",
+    "vitest-plugin",
+    "vitest-accessibility-checker",
+    "a11y",
+    "accessibility",
+    "IBMa"
+  ],
+  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "peerDependencies": {
+    "vitest": "^2.0.0 || ^3.0.0"
+  },
+  "devDependencies": {
+    "@vitest/browser": "^2.0.0",
+    "@vitest/ui": "^2.0.0",
+    "eslint": "^8.4.1",
+    "http-server": "^14.1.1",
+    "playwright": "^1.40.0",
+    "prettier": "^2.5.1",
+    "shx": "^0.3.3",
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "@ibm/telemetry-js": "^1.9.1",
+    "axios": "^1.7.9",
+    "exceljs": "^4.3.0",
+    "js-yaml": "^4.1.0",
+    "microdiff": "^1.4.0",
+    "string-hash": "^1.1.3"
+  }
+}

@@ -42,13 +42,13 @@ export const aria_search_label_unique: Rule = {
      * deprecated the rule on 01/27/2025
      * rulesets: [{
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
-        "num": ["2.4.1"],
+        "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],*/
     rulesets: [{
         "id": [],
-        "num": ["2.4.1"],
+        "num": ["1.3.1"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],

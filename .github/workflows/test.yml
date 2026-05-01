@@ -14,24 +14,21 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
     - run: curl --insecure https://localhost:9445/tools/api/pub/meter/v2
       
     - run: google-chrome --version
@@ -58,12 +55,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -74,14 +71,11 @@ jobs:
       working-directory: report-react
     - run: npm run build:all
       working-directory: accessibility-checker-engine
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
     - run: npm install
       working-directory: accessibility-checker
     - run: npm run build
@@ -102,28 +96,23 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: cmd /c "START /b node main.js"
-        working-directory: rule-server/dist
-        env: 
-          __NODB__: true
-      - run: ping 127.0.0.1 -n 6 > nul
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: windows
       - run: netstat -o -n -a | findstr 9445
       # - run: curl -X GET "http://localhost:9445/rules/archives.json"
-      - run: sleep 10
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -154,24 +143,21 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: node main.js &
-        working-directory: rule-server/dist
-      - run: sleep 10
-        working-directory: rule-server/dist
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -202,24 +188,21 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: node main.js &
-        working-directory: rule-server/dist
-      - run: sleep 10
-        working-directory: rule-server/dist
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -244,24 +227,21 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: node main.js &
-        working-directory: rule-server/dist
-      - run: sleep 10
-        working-directory: rule-server/dist
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -287,24 +267,21 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
 
     - run: npm install
       working-directory: accessibility-checker-engine
@@ -328,29 +305,26 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
       id: setup-chrome
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
 
     - run: npm install
       working-directory: accessibility-checker-engine
@@ -374,28 +348,25 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
         install-chromedriver: true
       id: setup-chrome
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
     - name: Test package
       run: mvn --batch-mode test -Dtest="AccessibilityCheckerSeleniumTest"
       working-directory: java-accessibility-checker
@@ -408,28 +379,25 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Latest Chrome
+    - name: Chrome 147 (stable with Selenium 4.23.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: latest
+        chrome-version: 147
         install-chromedriver: true
       id: setup-chrome
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
+    - name: Setup and start rule server
+      uses: ./.github/actions/setup-rule-server
+      with:
+        node-version: ${{ matrix.node-version }}
+        os: ubuntu
     - name: Test package
       run: mvn --batch-mode test -Dtest="AccessibilityCheckerPlaywrightTest"
       working-directory: java-accessibility-checker
@@ -445,26 +413,23 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
           # test-file: [karma.conf1.js, karma.conf1b.js, karma.conf2.js, karma.conf2b.js, karma.conf3.js] // conf1 and conf2 fail a lot
           test-file: [karma.conf1b.js, karma.conf2b.js, karma.conf3.js]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: node main.js &
-        working-directory: rule-server/dist
-      - run: sleep 10
-        working-directory: rule-server/dist
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -495,24 +460,21 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - run: npm install
-        working-directory: rule-server
-      - run: npm run build
-        working-directory: rule-server
-      - run: node main.js &
-        working-directory: rule-server/dist
-      - run: sleep 10
-        working-directory: rule-server/dist
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
 
       - run: npm install
         working-directory: accessibility-checker-engine
@@ -530,6 +492,45 @@ jobs:
         working-directory: cypress-accessibility-checker/test
 
 ###############################################################################
+# Vitest test
+####
+  vitest-checker-test-basic:
+      runs-on: ubuntu-22.04
+
+      strategy:
+        matrix:
+          node-version: [24.x]
+
+      steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Setup and start rule server
+        uses: ./.github/actions/setup-rule-server
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ubuntu
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
+      - run: npm install
+        working-directory: common/module
+      - run: npm install
+        working-directory: vitest-accessibility-checker
+      - run: npx playwright install chromium
+        working-directory: vitest-accessibility-checker
+      - run: npm run build:common
+        working-directory: vitest-accessibility-checker
+      - run: npx vitest run
+        working-directory: vitest-accessibility-checker/test
+
+###############################################################################
 # Extension Build verification and test
 ####
   extension-test:
@@ -537,12 +538,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -553,9 +554,11 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: npm ci
       working-directory: accessibility-checker-extension/test
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
+    - name: Setup and start rule server (build only)
+      shell: bash
+      run: |
+        npm install
+        npm run build
       working-directory: rule-server
     - run: sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.js
       working-directory: accessibility-checker-extension/node_modules/exceljs/dist
@@ -588,19 +591,21 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
+    - name: Setup and start rule server (build only)
+      shell: bash
+      run: |
+        npm install
+        npm run build
       working-directory: rule-server
     - run: gitactions/publish/rules.sh
       env: 

@@ -17,12 +17,12 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
@@ -56,12 +56,12 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
@@ -81,12 +81,12 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
@@ -106,12 +106,12 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [22.x]
+          node-version: [24.x]
 
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
@@ -125,7 +125,34 @@ jobs:
       - run: npm run package:npm
         working-directory: cypress-accessibility-checker
       - run: gitactions/publish/cypress-achecker.sh
-        env: 
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  vitest-accessibility-checker-publish:
+      runs-on: ubuntu-22.04
+
+      strategy:
+        matrix:
+          node-version: [24.x]
+
+      steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: report-react
+      - run: npm install
+        working-directory: common/module
+      - run: npm install
+        working-directory: vitest-accessibility-checker
+      - run: npm run build:common
+        working-directory: vitest-accessibility-checker
+      - run: npm run package:npm
+        working-directory: vitest-accessibility-checker
+      - run: gitactions/publish/vitest-achecker.sh
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   extension-build:
@@ -133,12 +160,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
@@ -205,12 +232,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
@@ -229,10 +256,10 @@ jobs:
       packages: write
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options

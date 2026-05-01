@@ -187,5 +187,3 @@ describe("aChecker.getSimulation function tests", function () {
         expect(result).to.be.an("array");
     });
 });
-
-// Made with Bob

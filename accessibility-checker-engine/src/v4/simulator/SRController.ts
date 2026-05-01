@@ -540,19 +540,23 @@ export class SRController {
             });
 
             let nextItem: { [key: string]: string } = {};
+            let hasValue = false;
             modes.forEach((mode, idx) => {
                 nextItem[mode] = "";
                 if (details[idx].length > 0 && SRCursor.compare(details[idx][0].start, next) === 0) {
                     nextItem[mode] = details[idx].shift().message;
+                    hasValue = nextItem[mode] !== "";
                 }
             });
 
-            const elem = next.getElement();
-            const selector = elem && SRUtil.getUniqueSelector(elem);
-            if (selector && doc.querySelector(selector)) {
-                nextItem.selector = selector;
+            if (hasValue) {
+                const elem = next.getElement();
+                const selector = elem && SRUtil.getUniqueSelector(elem);
+                if (selector && doc.querySelector(selector)) {
+                    nextItem.selector = selector;
+                }
+                retVal.push(nextItem);
             }
-            retVal.push(nextItem);
         }
         return retVal;
     }

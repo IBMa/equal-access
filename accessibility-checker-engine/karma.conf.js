@@ -59,6 +59,7 @@
                 // each file acts as entry point for the webpack configuration
             ],
             exclude: [
+                'test/v4/simulator/*_test.js',
                 //Disable  - due to a defect that needs to be addressed regarding visibility.
                 'test/v2/checker/accessibility/rules/a_text_purpose_ruleunit/A-hasTextEmbedded.html',
                 // disable because the rule is turned off
