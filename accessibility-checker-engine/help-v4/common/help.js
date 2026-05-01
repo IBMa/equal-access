@@ -63,11 +63,11 @@ customElements.define(
             setTimeout(() => {
                 let converted = marked.parse(this.textContent);
                 this.innerHTML = converted
-                    .replace(/<(\/?)ul>/g, "<$1bx-unordered-list>")
-                    .replace(/<(\/?)li>/g, "<$1bx-list-item>")
+                    .replace(/<(\/?)ul>/g, "<$1cds-unordered-list>")
+                    .replace(/<(\/?)li>/g, "<$1cds-list-item>")
                     .replace(/<a href/g, "<a target='_blank' rel='noopener noreferrer' href")
-                    .replace(/<pre>[ \r\n]*<code>/g, "<code-snippet>")
-                    .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
+                    .replace(/<pre>[ \r\n]*<code>/g, "<cds-code-snippet type='multi'>")
+                    .replace(/<\/code>[ \r\n]*<\/pre>/g, "</cds-code-snippet>");
                 }, 0)
         }
         // childrenAvailableCallback() {

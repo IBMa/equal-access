@@ -79,17 +79,21 @@ export function getLinkAnnouncement(cursor: SRCursor, mode?: NavigationMode): st
  * @returns The formatted description text with leading comma and quotes, or empty string
  */
 function getDescribedByAnnouncements(elem: HTMLElement, mode?: string): string {
-    if (mode === "item") return "";
     const describedBy = elem.getAttribute("aria-describedby");
     if (!describedBy) return "";
-
-    const descriptionText = describedBy
+    const descriptionElems = describedBy
         .split(/\s+/)
-        .map(id => document.getElementById(id)?.textContent?.trim())
+        .map(id => document.getElementById(id))
+        .filter(descElem => !!descElem) as HTMLElement[];
+
+    const descriptionText = descriptionElems
+        .map(descElem => descElem.textContent?.trim())
         .filter(text => !!text)
         .join(" ");
 
-    return (descriptionText && descriptionText.length > 0) ? `, "${descriptionText}"` : "";
+    if (!descriptionText || descriptionText.length === 0) return "";
+    if (mode === "item") return `, \u0001${descriptionText}\u0002`;
+    return `, "${descriptionText}"`;
 }
 
 /**
@@ -181,7 +185,7 @@ export const RULES: SRRendererRule[] = [
                 `[toggle button, pressed${quoteNamePadBefore(cursor)}]` : null,
             (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ?
                 `[toggle button, not pressed${quoteNamePadBefore(cursor)}]` : null,
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isEndTag()) return undefined;
                 let expandStr = "";
                 const elem = cursor.getElement();
@@ -192,7 +196,7 @@ export const RULES: SRRendererRule[] = [
                     expandStr += `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                 }
                 expandStr += getStateAnnouncements(elem);
-                return `[${quoteNamePadAfter(cursor)}button${expandStr}]`;
+                return `[${quoteNamePadAfter(cursor)}button${expandStr}${getDescribedByAnnouncements(elem, mode)}]`;
             },
             (cursor: SRCursor) => { if (cursor.isEndTag()) return ""; }
         ]

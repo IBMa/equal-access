@@ -719,8 +719,14 @@ export class AriaUtil {
         let walkNode = element;
         while (walkNode !== null) {
             let role = AriaUtil.getResolvedRole(walkNode);
-            if (role !== null && roleNames.includes(role))
-                return walkNode;
+            if (
+                role !== null &&
+                (
+                    roleNames.includes(role) ||
+                    (roleNames.includes("*") && !["presentation", "none"].includes(role))
+                )
+            )
+            return walkNode;
             walkNode = DOMWalker.parentNode(walkNode);
         }
         return null;
