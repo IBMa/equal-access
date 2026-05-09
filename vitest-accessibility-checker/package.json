@@ -36,13 +36,13 @@
   },
   "devDependencies": {
     "@vitest/browser": "^2.0.0",
-    "@vitest/ui": "^2.0.0",
+    "@vitest/ui": "^4.1.5",
     "eslint": "^8.4.1",
     "http-server": "^14.1.1",
     "playwright": "^1.40.0",
     "prettier": "^2.5.1",
     "shx": "^0.3.3",
-    "vitest": "^2.0.0"
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
