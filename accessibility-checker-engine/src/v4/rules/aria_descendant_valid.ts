@@ -26,6 +26,7 @@ export const aria_descendant_valid: Rule = {
             "group": "aria_descendant_valid.html",
             "pass": "aria_descendant_valid.html",
             "potential_child_implicit_role": "aria_descendant_valid.html",
+            "recommendation_no_impact_role": "aria_descendant_valid.html",
             "fail_child_explicit_role": "aria_descendant_valid.html"
         }
     },
@@ -34,6 +35,7 @@ export const aria_descendant_valid: Rule = {
             "group": "Browsers ignore the explicit and implicit ARIA roles of the descendants of certain elements",
             "pass": "The element contains valid descendants",
             "potential_child_implicit_role": "The element with role \"{0}\" contains descendants with implicit roles \"{1}\" which are ignored by browsers",
+            "recommendation_no_impact_role": "The element with role \"{0}\" contains descendants with roles \"{1}\" which are ignored by browsers",
             "fail_child_explicit_role": "The element with role \"{0}\" contains descendants with roles \"{1}\" which are ignored by browsers"
         }
     },
@@ -41,7 +43,14 @@ export const aria_descendant_valid: Rule = {
         "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
         "num": ["4.1.2"],
         "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["pass", "potential_child_implicit_role", "fail_child_explicit_role"]
+    },{
+        "id": ["IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_1", "WCAG_2_0", "WCAG_2_2"],
+        "num": ["4.1.2"],
+        "level": eRulePolicy.RECOMMENDATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE,
+        reasonCodes: ["recommendation_no_impact_role"]
     }],
     // TODO: ACT: Verify mapping
     act: ["307n5z"],
@@ -65,7 +74,7 @@ export const aria_descendant_valid: Rule = {
         if (!roles || roles.length === 0) 
             return null;
 
-        let tagName = ruleContext.tagName.toLowerCase();
+        // let tagName = ruleContext.tagName.toLowerCase();
         // get all the children from accessibility tree, 
         // including ones with aria-owns    
         let directATChildren = AriaUtil.getDirectATChildren(ruleContext);
@@ -73,6 +82,7 @@ export const aria_descendant_valid: Rule = {
             // the element with at least one non-presentational children
             let explicitRoles = new Array();
             let implicitRoles = new Array();
+            let noImpactRoles = new Array();
             for (let j=0; j < directATChildren.length; j++) {
                 // ignore <img> and <svg>
                 const tag = directATChildren[j].nodeName.toLowerCase();
@@ -81,14 +91,22 @@ export const aria_descendant_valid: Rule = {
                 // get explicit role if exists
                 let childRoles = AriaUtil.getRoles(directATChildren[j], false);
                 if (childRoles && childRoles.length > 0) {
-                    explicitRoles.push(childRoles.join(", "));
+                    // separate case for role="code"
+                    if (childRoles.includes("code")) {
+                        noImpactRoles.push(childRoles.filter(role => role === "code").join(", "));
+                    }
+                    explicitRoles.push(childRoles.filter(role => role !== "code").join(", "));
                 } else {
                     // get implicit role if exists
                     childRoles =  AriaUtil.getImplicitRole(directATChildren[j]);
+                    // separate case for role="code"
+                    if (childRoles.includes("code")) {
+                        noImpactRoles.push(childRoles.filter(role => role === "code").join(", "));
+                    }
                     if (childRoles && childRoles.length > 0)
-                        implicitRoles.push(childRoles.join(", "));
+                        implicitRoles.push(childRoles.filter(role => role !== "code").join(", "));
                 }
-            } 
+            }
             
             if (explicitRoles.length > 0) {
                 let retValues = [];
@@ -108,10 +126,20 @@ export const aria_descendant_valid: Rule = {
                     retToken.push(roles.join(", "));
                     retToken.push(implicitRoles[i]);
                     retValues.push(RulePotential("potential_child_implicit_role", retToken));
-                } 
+                }
                 return retValues;
             }
 
+            if (noImpactRoles.length > 0) {
+                let retValues = [];
+                for (let i=0; i < noImpactRoles.length; i++) {
+                    let retToken = new Array();
+                    retToken.push(roles.join(", "));
+                    retToken.push(noImpactRoles[i]);
+                    retValues.push(RulePotential("recommendation_no_impact_role", retToken));
+                }
+                return retValues;
+            }
         } else
             return RulePass("pass");       
     }
