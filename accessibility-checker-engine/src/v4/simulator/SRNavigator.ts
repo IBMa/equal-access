@@ -97,7 +97,7 @@ export namespace SRNavigator {
             const bElem = b.getElement();
             const aTabindex = getExplicitTabindex(aElem) || 0;
             const bTabindex = getExplicitTabindex(bElem) || 0;
-            if (aTabindex !== bTabindex) return aTabindex - bTabindex;
+            if (aTabindex !== bTabindex) return bTabindex - aTabindex;
             return SRCursor.compare(a, b);
         });
 
