@@ -20,6 +20,10 @@
  * Includes tests for option exposure and announcement
  */
 
+// !!!NOTE!!! This test suite is currently disabled. 
+// - Item and tab behavior for combobox's are inconsistent between screen readers. 
+//   Need to define what behavior we want
+
 let ace = require('../../../src/index');
 
 // Helper function to trim region fields in results
