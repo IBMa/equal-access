@@ -24,7 +24,8 @@ const UNORDERED_BULLET_PATTERN = /^[ \t]*[•◦▪▸►✓✗✦\-–—*o][ \
 const ORDERED_ITEM_PATTERN = /^[ \t]*(?:\(?\d+[.)]\)?|\(?[a-zA-Z][.)]\)?|\(?(?:i{1,3}|iv|vi{0,3}|ix|xi{0,3}|xiv|xv)[.)]\)?)[ \t]+\S/i;
 
 const LIST_ITEM_PATTERN = new RegExp(
-    UNORDERED_BULLET_PATTERN.source + "|" + ORDERED_ITEM_PATTERN.source
+    UNORDERED_BULLET_PATTERN.source + "|" + ORDERED_ITEM_PATTERN.source,
+    "i"
 );
 
 // Block-level elements that act as boundaries between independent content groups
@@ -33,7 +34,9 @@ const BLOCK_ELEMENTS = new Set([
     "h1", "h2", "h3", "h4", "h5", "h6",
     "hr", "br", "menu", "p", "pre", "table",
     "section", "article", "aside", "nav", "header", "footer",
-    "figure", "figcaption", "details", "summary", "dialog"
+    "figure", "figcaption", "details", "summary", "dialog",
+    "script", "style", "label",
+    "ul", "ol", "dl", "li", "dt", "dd"
 ]);
 
 // Inline elements whose text content is treated as part of the surrounding text run
@@ -71,12 +74,25 @@ function getLinesFromNode(node: Node): string[] {
                 if (trimmed.length > 0) lines.push(trimmed);
             });
         } else if (n.nodeType === Node.ELEMENT_NODE) {
-            const tag = (n as Element).nodeName.toLowerCase();
+            const elem = n as Element;
+            const tag = elem.nodeName.toLowerCase();
             if (tag === "br") {
                 lines.push("\x00");
                 return;
             }
             if (BLOCK_ELEMENTS.has(tag)) return;
+            
+            // Skip elements with list-related or widget roles
+            const role = elem.getAttribute("role");
+            if (role) {
+                const roles = AriaUtil.getRolesWithTypes(elem, ["widget"]);
+                CommonUtil.concatUniqueArrayItemList(
+                    ["caption", "code", "columnheader", "figure", "list", "listitem", "math", "meter", "rowheader"],
+                    roles
+                );
+                if (roles.length > 0) return;
+            }
+            
             n.childNodes.forEach(walk);
         }
     }
