@@ -307,7 +307,13 @@ export class ACEngineManager {
 
     static isPlaywright(content) {
         if (content && content.constructor) {
-            return !!content.constructor.toString().match(/class Page /);
+            const constructorStr = content.constructor.toString();
+            const isMatch = !!constructorStr.match(/class _?Page /);
+            // console.log('[DEBUG] isPlaywright check:', {
+            //     constructorStr: constructorStr.substring(0, 100),
+            //     isMatch
+            // });
+            return isMatch;
         }
         return false;
     }
@@ -323,7 +329,13 @@ export class ACEngineManager {
 
     static isWebDriverIO(content) {
         if (content && content.constructor) {
-            return content.constructor.toString().indexOf("Browser") !== -1;
+            const constructorStr = content.constructor.toString();
+            const isMatch = constructorStr.indexOf("Browser") !== -1;
+            // console.log('[DEBUG] isWebDriverIO check:', {
+            //     constructorStr: constructorStr.substring(0, 100),
+            //     isMatch
+            // });
+            return isMatch;
         }
         return false;
     }

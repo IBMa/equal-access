@@ -51,10 +51,10 @@ describe('Textbox Component Screen Reader Tests', function() {
     describe("Implicit Textbox Role - Input Text", function() {
         
         it("Should render basic text input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='name'>Name:</label>"
-                + "<input type='text' id='name'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='name'>Name:</label>
+                <input type='text' id='name'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -68,10 +68,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render text input with value", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='username'>Username:</label>"
-                + "<input type='text' id='username' value='john_doe'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='username'>Username:</label>
+                <input type='text' id='username' value='john_doe'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -85,10 +85,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render text input with placeholder", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='email'>Email:</label>"
-                + "<input type='text' id='email' placeholder='Enter your email'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='email'>Email:</label>
+                <input type='text' id='email' placeholder='Enter your email'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -101,11 +101,45 @@ describe('Textbox Component Screen Reader Tests', function() {
             ]);
         });
 
+        it("Should NOT announce missing placeholder text", function() {
+            let fixture = `<div id='fixture'>
+                <label for='search'>Search:</label>
+                <input type='text' id='search'>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimItems(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": `["Search:", edit]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Search:", edit]`, "image": "", "selector": "#search" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should render empty placeholder attribute", function() {
+            let fixture = `<div id='fixture'>
+                <label for='field'>Field:</label>
+                <input type='text' id='field' placeholder=''>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimItems(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": `["Field:", edit]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Field:", edit]`, "image": "", "selector": "#field" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
         it("Should render disabled text input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='disabled'>Disabled field:</label>"
-                + "<input type='text' id='disabled' disabled>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='disabled'>Disabled field:</label>
+                <input type='text' id='disabled' disabled>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -118,10 +152,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render readonly text input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='readonly'>Read-only field:</label>"
-                + "<input type='text' id='readonly' value='Cannot edit' readonly>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='readonly'>Read-only field:</label>
+                <input type='text' id='readonly' value='Cannot edit' readonly>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -135,10 +169,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render required text input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='required'>Required field:</label>"
-                + "<input type='text' id='required' required>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='required'>Required field:</label>
+                <input type='text' id='required' required>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -152,9 +186,9 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render text input with aria-label", function() {
-            let fixture = "<div id='fixture'>"
-                + "<input type='text' aria-label='Search query'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <input type='text' aria-label='Search query'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -206,10 +240,10 @@ describe('Textbox Component Screen Reader Tests', function() {
     describe("Implicit Textbox Role - Textarea", function() {
         
         it("Should render basic textarea", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='comments'>Comments:</label>"
-                + "<textarea id='comments'></textarea>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='comments'>Comments:</label>
+                <textarea id='comments'></textarea>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -240,10 +274,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render disabled textarea", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='disabled-area'>Disabled:</label>"
-                + "<textarea id='disabled-area' disabled></textarea>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='disabled-area'>Disabled:</label>
+                <textarea id='disabled-area' disabled></textarea>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -256,10 +290,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render readonly textarea", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='readonly-area'>Read-only:</label>"
-                + "<textarea id='readonly-area' readonly>Cannot edit this</textarea>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='readonly-area'>Read-only:</label>
+                <textarea id='readonly-area' readonly>Cannot edit this</textarea>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -386,10 +420,10 @@ describe('Textbox Component Screen Reader Tests', function() {
     describe("Other Input Types", function() {
         
         it("Should render email input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='email'>Email:</label>"
-                + "<input type='email' id='email'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='email'>Email:</label>
+                <input type='email' id='email'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -403,10 +437,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render password input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='pwd'>Password:</label>"
-                + "<input type='password' id='pwd'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='pwd'>Password:</label>
+                <input type='password' id='pwd'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -420,10 +454,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render tel input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='phone'>Phone:</label>"
-                + "<input type='tel' id='phone'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='phone'>Phone:</label>
+                <input type='tel' id='phone'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -437,10 +471,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render url input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='website'>Website:</label>"
-                + "<input type='url' id='website'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='website'>Website:</label>
+                <input type='url' id='website'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -454,10 +488,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render search input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='search'>Search:</label>"
-                + "<input type='search' id='search'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='search'>Search:</label>
+                <input type='search' id='search'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -471,10 +505,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render number input", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='age'>Age:</label>"
-                + "<input type='number' id='age'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='age'>Age:</label>
+                <input type='number' id='age'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -491,9 +525,9 @@ describe('Textbox Component Screen Reader Tests', function() {
     describe("Textbox Edge Cases", function() {
         
         it("Should render textbox without label", function() {
-            let fixture = "<div id='fixture'>"
-                + "<input type='text'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <input type='text'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -507,10 +541,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render textbox with tabindex=-1 (not in tab order)", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='notab'>Not tabbable:</label>"
-                + "<input type='text' id='notab' tabindex='-1'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='notab'>Not tabbable:</label>
+                <input type='text' id='notab' tabindex='-1'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -523,10 +557,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render textbox with maxlength", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='limited'>Limited input:</label>"
-                + "<input type='text' id='limited' maxlength='10'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='limited'>Limited input:</label>
+                <input type='text' id='limited' maxlength='10'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -540,10 +574,10 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render textbox with autocomplete", function() {
-            let fixture = "<div id='fixture'>"
-                + "<label for='auto'>Auto-complete:</label>"
-                + "<input type='text' id='auto' autocomplete='name'>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <label for='auto'>Auto-complete:</label>
+                <input type='text' id='auto' autocomplete='name'>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -574,16 +608,16 @@ describe('Textbox Component Screen Reader Tests', function() {
         });
 
         it("Should render multiple textboxes in a form", function() {
-            let fixture = "<div id='fixture'>"
-                + "<form>"
-                + "<label for='first'>First name:</label>"
-                + "<input type='text' id='first'>"
-                + "<label for='last'>Last name:</label>"
-                + "<input type='text' id='last'>"
-                + "<label for='note'>Note:</label>"
-                + "<textarea id='note'></textarea>"
-                + "</form>"
-                + "</div>";
+            let fixture = `<div id='fixture'>
+                <form>
+                    <label for='first'>First name:</label>
+                    <input type='text' id='first'>
+                    <label for='last'>Last name:</label>
+                    <input type='text' id='last'>
+                    <label for='note'>Note:</label>
+                    <textarea id='note'></textarea>
+                </form>
+            </div>`;
             document.body.insertAdjacentHTML('afterbegin', fixture);
             
             let result = trimItems(ace.SRController.renderStructure(document));
@@ -594,7 +628,8 @@ describe('Textbox Component Screen Reader Tests', function() {
                 { "region": "", "heading": "", "item": "", "tab_focus": `["First name:", edit]`, "image": "", "selector": "#first" },
                 { "region": "", "heading": "", "item": "", "tab_focus": `["Last name:", edit]`, "image": "", "selector": "#last" },
                 { "region": "", "heading": "", "item": "", "tab_focus": `["Note:", edit, multiline]`, "image": "", "selector": "#note" },
-                { "region": "", "heading": "", "item": "[out of section] [End of document]", "tab_focus": "", "image": "" }
+                { "region": "", "heading": "", "item": "[out of section]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
     });
