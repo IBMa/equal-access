@@ -331,10 +331,10 @@ export class ACEngineManager {
         if (content && content.constructor) {
             const constructorStr = content.constructor.toString();
             const isMatch = constructorStr.indexOf("Browser") !== -1;
-            console.log('[DEBUG] isWebDriverIO check:', {
-                constructorStr: constructorStr.substring(0, 100),
-                isMatch
-            });
+            // console.log('[DEBUG] isWebDriverIO check:', {
+            //     constructorStr: constructorStr.substring(0, 100),
+            //     isMatch
+            // });
             return isMatch;
         }
         return false;
