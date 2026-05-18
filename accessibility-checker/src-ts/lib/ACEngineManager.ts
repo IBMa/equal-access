@@ -308,11 +308,11 @@ export class ACEngineManager {
     static isPlaywright(content) {
         if (content && content.constructor) {
             const constructorStr = content.constructor.toString();
-            const isMatch = !!constructorStr.match(/class Page /);
-            console.log('[DEBUG] isPlaywright check:', {
-                constructorStr: constructorStr.substring(0, 100),
-                isMatch
-            });
+            const isMatch = !!constructorStr.match(/class _?Page /);
+            // console.log('[DEBUG] isPlaywright check:', {
+            //     constructorStr: constructorStr.substring(0, 100),
+            //     isMatch
+            // });
             return isMatch;
         }
         return false;
