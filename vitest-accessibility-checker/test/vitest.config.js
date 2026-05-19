@@ -1,16 +1,21 @@
 import { defineConfig } from 'vitest/config';
 import { accessibilityCheckerPlugin } from '../src/index.js';
+import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig({
     plugins: [accessibilityCheckerPlugin()],
     test: {
         browser: {
             enabled: true,
-            name: 'chromium',
-            provider: 'playwright',
+            instances: [
+                {
+                    browser: 'chromium',
+                    provider: playwright(),
+                }
+            ],
             headless: true,
         },
-        setupFiles: ['./setupMatchers.js'],
+        setupFiles: ['./test/setupMatchers.js'],
     },
 });
 

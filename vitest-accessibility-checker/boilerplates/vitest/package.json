@@ -14,11 +14,11 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "vite-accessibility-checker": "*",
+    "vitest-accessibility-checker": "*",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/browser-playwright": "^4.1.4",
+    "@vitest/browser-playwright": "^4.1.6",
     "vite": "^8.0.8",
-    "vitest": "^4.1.4",
+    "vitest": "^4.1.6",
     "vitest-browser-react": "^2.2.0"
   }
 }
