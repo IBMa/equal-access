@@ -10,7 +10,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  *****************************************************************************/
-@import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
+@import url('https://unpkg.com/carbon-components@10.58.15/css/carbon-components.min.css');
 
 html, body, .toolHelp .bx--row:nth-child(2) {
     height: 100%;

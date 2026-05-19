@@ -11,7 +11,7 @@
     limitations under the License.
  *****************************************************************************/
 @import url("https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css");
-@import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
+@import url('https://unpkg.com/carbon-components@10.58.15/css/carbon-components.min.css');
 @import url("https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/themes.css");
 
 bx-list-item>code, p>code, td>code {
