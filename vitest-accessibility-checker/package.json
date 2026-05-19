@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run build:common && vitest run",
-    "test:ui": "npm run build:common && vitest --ui",
+    "test": "npm run build:common && vitest run --config=test/vitest.config.js",
+    "test:ui": "npm run build:common && vitest --ui --config=test/vitest.config.js",
     "test:start-http": "http-server -c-1 --silent",
     "build:common": "cd ../common/module && npm run build && cd ../../vitest-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
     "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R src/* package/ && cp README.md package/",
@@ -32,17 +32,19 @@
   ],
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "vitest": "^2.0.0 || ^3.0.0"
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "@vitest/browser": "^2.0.0",
-    "@vitest/ui": "^2.0.0",
+    "@vitest/browser": "^4.1.6",
+    "@vitest/browser-playwright": "^4.1.6",
+    "@vitest/ui": "^4.1.6",
     "eslint": "^8.4.1",
     "http-server": "^14.1.1",
     "playwright": "^1.40.0",
     "prettier": "^2.5.1",
     "shx": "^0.3.3",
-    "vitest": "^2.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^4.1.6"
   },
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
