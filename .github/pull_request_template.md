@@ -1,28 +1,26 @@
 <!-- For instructions regarding the PR title, see the bottom of the PR template -->
 
-<!-- Specify what this PR is doing. Remove all that do not apply -->
-* New Rule(s): **List rule IDs**
-* New or modified help files: **List rule IDs**
-* Rule bug: **List rule IDs**
-* Extension UI bug
-* Automated tool bug
-* Other (Provide information)
+<!-- Specify what this PR is doing. Provide details if not already covered in the related issue -->
+### Summary
+* [ ] New or modified checker rule(s)
+* [ ] New or modified help files
+* [ ] Simulator updates
+* [ ] Extension UI changes
+* [ ] Automated tool changes
+* [ ] Other (Provide information)
 
 ### This PR is related to the following issue(s): 
 <!-- Provide each ticket on a new line with "Fixes" to close when the PR closes (e.g., Fixes #000) -->
 - 
 
 ### Testing reference: 
-<!-- Provide testing file(s) or/and code sandbox link(s). Also, provide details on the expected behavior -->
+<!-- Provide information on how what testing you performed (if you performed manual checks, please give an idea of what you checked). -->
 - 
 
 ### I have conducted the following for this PR: 
-- [ ] I validated this code in Chrome and FF 
-- [ ] I validated this fix in my local env
-- [ ] I provided details for testing
-- [ ] This PR has been reviewed and is ready for test  
+- [ ] I validated this fix in my local env and provided testing information above
 - [ ] I understand that the title of this PR will be used for the next release notes.
-
+- [ ] I added `I agree to the DCO at https://developercertificate.org/ for this contribution.` as a comment after creating the pull request.
 
 ### Assets to aide review attached
 <!-- DO NOT EDIT THIS SECTION. This section is for IBM internal review only. Specify the additional artifacts that should be reviewed alongside this PR. -->
@@ -35,7 +33,6 @@
 - [ ] Peer review complete
 - [ ] Secondary review complete
 - [ ] Staging deployment verified
-
       
 <!--
 -- TITLE INSTRUCTIONS START: DO NOT EDIT THIS SECTION --

@@ -66,6 +66,28 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
         this.devtoolsController.setStoredReportsMetaLabel(idx, newValue);
     }
 
+    // Define fieldMapper as a class method to prevent recreation on every render
+    fieldMapper = (rowId: string, cellId: string, cellValue: string) => {
+        if (cellId === "timestamp") {
+            let d: Date = new Date(cellValue);
+            return `${d.toLocaleString()}`;
+        } else if (cellId === "label") {
+            return <TextInput
+                style={{minWidth: "8rem"}}
+                id={`label_${rowId}`}
+                labelText=""
+                aria-label="Scan label"
+                value={cellValue || ""}
+                size="sm"
+                onChange={(evt: any) => {
+                    this.updateLabel(parseInt(rowId), evt.target.value);
+                }}
+            />
+        }
+        // Always return a valid value, never undefined
+        return cellValue || "";
+    }
+
     render() {
         let detailRow = typeof this.state.detailSelectedRow !== "undefined" && this.state.storedReports[this.state.detailSelectedRow] || undefined;
         return (
@@ -112,30 +134,10 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                             ]}
                             data={this.state.storedReports}
                             className="StoredReportsTable"
-                            hideHeaders={false}
-                            hideToolbar={false}
                             onRow={async (rowId: string) => {
                                 this.setState({ detailSelectedRow: parseInt(rowId)})
                             }}
-                            fieldMapper={(rowId, cellId, cellValue) => {
-                                if (cellId === "timestamp") {
-                                    let d : Date = new Date(cellValue);
-                                    return `${d.toLocaleString()}`;
-                                } else if (cellId === "label") {
-                                    return <TextInput
-                                        style={{minWidth: "8rem"}}
-                                        id={`label_${rowId}`}
-                                        labelText=""
-                                        aria-label="Scan label"
-                                        value={cellValue}
-                                        size="sm"
-                                        onChange={(evt: any) => {
-                                            this.updateLabel(parseInt(rowId), evt.target.value);
-                                        }}
-                                    />
-                                }
-                                return cellValue;
-                            }}
+                            fieldMapper={this.fieldMapper}
                         />
                     </div>
                     { this.state.deleteSelectedRows && <>

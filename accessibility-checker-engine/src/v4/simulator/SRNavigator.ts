@@ -7,6 +7,11 @@ import { VisUtil } from "../util/VisUtil";
 import { AriaUtil } from "../util/AriaUtil";
 
 export namespace SRNavigator {
+    /**
+     * Determine if a node is a block-level element based on its display property
+     * @param node The DOM node to check
+     * @returns true if the node is a block-level element, false otherwise
+     */
     function isBlockElement(node: Node) {
         if (node.nodeType !== 1) return false;
         if (node.nodeName.toLowerCase() === "br") return true;
@@ -59,6 +64,12 @@ export namespace SRNavigator {
         };
     }
 
+    /**
+     * Collect all tabbable elements in tab order (positive tabindex first, then document order)
+     * @param matchFunc Function to match tabbable elements
+     * @param rootNode Optional root node to start collection from (defaults to document body)
+     * @returns Array of cursors pointing to tabbable elements in tab order
+     */
     function collectTabFocusCursors(matchFunc: SRCursorMatchFunc, rootNode?: Node): SRCursor[] {
         const root = (rootNode?.ownerDocument || document).body || rootNode;
         if (!root) return [];
@@ -86,17 +97,28 @@ export namespace SRNavigator {
             const bElem = b.getElement();
             const aTabindex = getExplicitTabindex(aElem) || 0;
             const bTabindex = getExplicitTabindex(bElem) || 0;
-            if (aTabindex !== bTabindex) return aTabindex - bTabindex;
+            if (aTabindex !== bTabindex) return bTabindex - aTabindex;
             return SRCursor.compare(a, b);
         });
 
         return positiveResults.concat(normalResults);
     }
 
+    /**
+     * Find the index of a cursor in an array of tab focus cursors
+     * @param cursors Array of cursors to search
+     * @param walker The cursor to find
+     * @returns The index of the cursor, or -1 if not found
+     */
     function findTabFocusIndex(cursors: SRCursor[], walker: SRCursor): number {
         return cursors.findIndex(cursor => SRCursor.compare(cursor, walker) === 0);
     }
 
+    /**
+     * Get the match function for identifying start positions in a given navigation mode
+     * @param mode The navigation mode (e.g., "link", "heading", "button", etc.)
+     * @returns A function that matches elements appropriate for the navigation mode
+     */
     export function getStartFunc(mode: NavigationMode) : SRCursorMatchFunc {
         switch (mode) {
             case "link":
@@ -168,11 +190,22 @@ export namespace SRNavigator {
                 throw new Error("NOT_IMPLEMENTED");
         }
     }
+    /**
+     * Check if an element is within a Shadow DOM
+     * @param element The element to check
+     * @returns true if the element is in a Shadow DOM, false otherwise
+     */
     const isInShadowDOM = (element: HTMLElement) => {
         const root = element.getRootNode();
         return root instanceof ShadowRoot;
     }
 
+    /**
+     * Determine skip behavior for item navigation mode
+     * Handles complex visibility rules including hidden content in headings/links
+     * @param cursor The cursor at the current position
+     * @returns Object indicating whether to skip current node and/or its children, or null for default behavior
+     */
     const SKIP_ITEM_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
         const DEBUG = false;
         DEBUG && console.group("SKIP_ITEM_BEHAVIOR");
@@ -302,6 +335,12 @@ export namespace SRNavigator {
         }
     }
 
+    /**
+     * Determine skip behavior for nested navigation modes (link, heading, image, etc.)
+     * Simpler than SKIP_ITEM_BEHAVIOR as it doesn't need complex heading/link content rules
+     * @param cursor The cursor at the current position
+     * @returns Object indicating whether to skip current node and/or its children, or null for default behavior
+     */
     const SKIP_NESTED_BEHAVIOR = (cursor: SRCursor) : { skipCurrent: boolean, skipChildren: boolean} | null => {
         const nodeType = cursor.getNode().nodeType;
         const elem = cursor.getElement();
@@ -335,6 +374,11 @@ export namespace SRNavigator {
         return null;
     }
 
+    /**
+     * Get the skip function for a given navigation mode
+     * @param mode The navigation mode
+     * @returns A function that determines which nodes to skip during navigation
+     */
     export function getSkipFunc(mode: NavigationMode) : SRCursorSkipFunc {
         switch (mode) {
             case "region":
@@ -375,6 +419,12 @@ export namespace SRNavigator {
     }
 
     
+    /**
+     * Jump to the current position or the previous matching element if current doesn't match
+     * @param mode The navigation mode
+     * @param walker The cursor at the current position
+     * @returns A cursor at the current or previous matching position
+     */
     export function jumpCurrent(mode: NavigationMode, walker: SRCursor) : SRCursor {
         const matchFunc = mode === "tab_focus" ? getTabFocusStartFunc(true) : getStartFunc(mode);
         if (matchFunc(walker.getRole(), !walker.isEndTag(), walker.getNode())) {
@@ -383,6 +433,12 @@ export namespace SRNavigator {
             return jumpPrevious(mode, walker);
         }
     }
+    /**
+     * Jump to the end of the current element and return all intermediate item positions
+     * @param mode The navigation mode
+     * @param walker The cursor at the current position
+     * @returns Array of cursors representing positions from current to end
+     */
     export function jumpCurrentEnd(mode: NavigationMode, walker: SRCursor) : SRCursor[] {
         if (mode === "item") {
             const itemEnd = jumpNext(mode, walker);
@@ -410,6 +466,12 @@ export namespace SRNavigator {
         }
     }
 
+    /**
+     * Jump to the next matching element in the given navigation mode
+     * @param mode The navigation mode
+     * @param walker The cursor at the current position
+     * @returns A cursor at the next matching position, or null if none found
+     */
     export function jumpNext(mode: NavigationMode, walker: SRCursor) : SRCursor {
         const DEBUG = false;
         DEBUG && console.group("SRNavigator::jumpNext", walker.isEndTag()?"/":"", walker.getNode());
@@ -446,6 +508,17 @@ export namespace SRNavigator {
         }
     }
 
+    /**
+     * Navigates to the previous element in screen reader navigation based on the specified mode.
+     *
+     * For tab_focus mode, this function attempts to move to the previous tabbable element by:
+     * 1. First trying to move backward using the mode's match and skip functions
+     * 2. If that fails, collecting all tab focus cursors and finding the previous one in the tab order
+     *
+     * @param mode - The navigation mode (e.g., "tab_focus") that determines how to navigate
+     * @param walker - The current cursor position in the screen reader navigation
+     * @returns A new cursor positioned at the previous element, or null if no previous element exists
+     */
     export function jumpPrevious(mode: NavigationMode, walker: SRCursor) : SRCursor {
         if (mode === "tab_focus") {
             let retVal = walker.clone();

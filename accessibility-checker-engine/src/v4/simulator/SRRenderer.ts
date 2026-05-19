@@ -163,6 +163,12 @@ export namespace SRRenderer {
             elemStrs.push(`${getLinkAnnouncement(new SRCursor(currentLink, false))}`);
         }
         let retVal = elemStrs.filter(s => s.trim().length > 0).join(" ");
+        retVal = retVal.replace(/, \u0001([^\u0002]+)\u0002/g, (match, describedByText) => {
+            const quotedText = `"${describedByText}"`;
+            const unmarkedRetVal = retVal.replace(match, "");
+            return unmarkedRetVal.includes(quotedText) || unmarkedRetVal.includes(describedByText) ? "" : `, ${quotedText}`;
+        });
+        retVal = retVal.replace(/[\u0001\u0002]/g, "");
         return retVal;
     }
 

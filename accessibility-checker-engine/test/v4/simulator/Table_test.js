@@ -282,7 +282,7 @@ describe('Table Component Screen Reader Tests', function() {
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
                 { "region": "", "heading": "", "item": "[table with 3 rows and 3 columns]", "tab_focus": "", "image": "", "selector": "#fixture > table" },
-                { "region": "", "heading": "", "item": "[row 1] [column 1]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[row 1] [column 1] [blank]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(1)" },
                 { "region": "", "heading": "", "item": "[column 2] 2023", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(2)" },
                 { "region": "", "heading": "", "item": "[column 3] 2024", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(3)" },
                 { "region": "", "heading": "", "item": "[row 2] [column 1] Sales", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > th" },
@@ -461,7 +461,7 @@ describe('Table Component Screen Reader Tests', function() {
                 { "region": "", "heading": "", "item": "[table with 2 rows and 2 columns]", "tab_focus": "", "image": "", "selector": "#fixture > table" },
                 { "region": "", "heading": "", "item": "[row 1] [column 1] Col1", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(1)" },
                 { "region": "", "heading": "", "item": "[column 2] Col2", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(2)" },
-                { "region": "", "heading": "", "item": "[row 2] [\"Col1\", column 1]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[row 2] [\"Col1\", column 1] [blank]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1)" },
                 { "region": "", "heading": "", "item": "[\"Col2\", column 2] Data", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2)" },
                 { "region": "", "heading": "", "item": "[out of table]", "tab_focus": "", "image": "" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
@@ -507,6 +507,68 @@ describe('Table Component Screen Reader Tests', function() {
                 { "region": "", "heading": "", "item": "[table with 1 row and 2 columns]", "tab_focus": "", "image": "", "selector": "#fixture > table" },
                 { "region": "", "heading": "", "item": "[row 1] [column 1] Header 1", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr > th:nth-of-type(1)" },
                 { "region": "", "heading": "", "item": "[column 2] Header 2", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr > th:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "[out of table]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should announce blank table headers", function() {
+            let fixture = `<div id='fixture'>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Column 2</th>
+                    </tr>
+                    <tr>
+                        <td>Data 1</td>
+                        <td>Data 2</td>
+                    </tr>
+                </table>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": "[table with 2 rows and 2 columns]", "tab_focus": "", "image": "", "selector": "#fixture > table" },
+                { "region": "", "heading": "", "item": "[row 1] [column 1] [blank]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[column 2] Column 2", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "[row 2] [column 1] Data 1", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[\"Column 2\", column 2] Data 2", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "[out of table]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should announce multiple blank table headers", function() {
+            let fixture = `<div id='fixture'>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Name</th>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td>B</td>
+                        <td>John</td>
+                    </tr>
+                </table>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": "[table with 2 rows and 3 columns]", "tab_focus": "", "image": "", "selector": "#fixture > table" },
+                { "region": "", "heading": "", "item": "[row 1] [column 1] [blank]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[column 2] [blank]", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "[column 3] Name", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(1) > th:nth-of-type(3)" },
+                { "region": "", "heading": "", "item": "[row 2] [column 1] A", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1)" },
+                { "region": "", "heading": "", "item": "[column 2] B", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2)" },
+                { "region": "", "heading": "", "item": "[\"Name\", column 3] John", "tab_focus": "", "image": "", "selector": "#fixture > table > tbody > tr:nth-of-type(2) > td:nth-of-type(3)" },
                 { "region": "", "heading": "", "item": "[out of table]", "tab_focus": "", "image": "" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
