@@ -808,7 +808,10 @@ export class SRApp extends React.Component<SRAppProps, SRAppState> {
                 subtitle="This feature is experimental. Results are in early development stages. No assessment of compliance should be made based on these results."
             />
             <div>
-                See <a href="https://github.com/IBMa/equal-access/issues?q=is%3Aissue%20state%3Aopen%20label%3Aengine-simulator" target="_blank" rel="noopener noreferrer">known issues</a>
+                See <a href="https://github.com/IBMa/equal-access/issues?q=is%3Aissue%20state%3Aopen%20label%3Aengine-simulator" target="_blank" rel="noopener noreferrer">known issues</a>.
+            </div>
+            <div>
+                See the <a href="https://www.ibm.com/able/toolkit/verify/overview/" target="_blank" rel="noopener noreferrer">Verify</a> section of the IBM Equal Access Toolkit for more information on performing verification testing.
             </div>
             {/* <Accordion align="start">
                 <AccordionItem title="Known Issues/TODOs">
