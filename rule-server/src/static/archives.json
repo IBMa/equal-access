@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "19May2026",
+        "name": "19 May 2026 Deployment (IBM 7.3)",
+        "version": "4.0.18",
+        "path": "/archives/2026.05.19"
+    },
+    {
         "id": "28April2026",
         "name": "28 April 2026 Deployment (IBM 7.3)",
         "version": "4.0.17",
@@ -241,7 +247,8 @@
         "id": "15May2023",
         "name": "15 May 2023 Deployment (IBM 7.2)",
         "version": "3.1.48",
-        "path": "/archives/2023.05.15"
+        "path": "/archives/2023.05.15",
+        "hidden": true
     },
     {
         "id": "31March2023",
