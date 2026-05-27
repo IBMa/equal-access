@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "Accessibility Checker for Vitest",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "lint": "eslint .",
     "test": "npm run build:common && vitest run --config=test/vitest.config.js",
