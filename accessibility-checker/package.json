@@ -27,7 +27,7 @@
     "microdiff": "^1.4.0",
     "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
-    "puppeteer": "^22.14.0"
+    "puppeteer": "^25.1.0"
   },
   "devDependencies": {
     "@ibm/telemetry-js": "^1.9.1",

@@ -158,7 +158,7 @@ export namespace PupUtil {
     export async function elemClear(page: Page, elemSelector: string, waitElemSelector?: string) {
         let elem = await elemVisible(page, elemSelector)!
         if (elem) {
-            await elem.click({ clickCount: 3 })
+            await elem.click({ count: 3 })
             await page.keyboard.press('Backspace');
             if (waitElemSelector) {
                 await elemVisible(page, waitElemSelector);
