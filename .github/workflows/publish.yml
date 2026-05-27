@@ -184,7 +184,7 @@ jobs:
       working-directory: accessibility-checker-extension
     - name: Clear Puppeteer cache
       run: rm -rf ~/.cache/puppeteer
-     - run: npm install
+    - run: npm install
       working-directory: accessibility-checker-extension/test
     - name: Install Puppeteer browsers
       run: npx puppeteer browsers install chrome
