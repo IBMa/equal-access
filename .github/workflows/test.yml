@@ -552,10 +552,10 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
+    - name: Clear Puppeteer cache
+      run: rm -rf ~/.cache/puppeteer
     - run: npm ci
       working-directory: accessibility-checker-extension/test
-      env:
-        PUPPETEER_SKIP_DOWNLOAD: 'true'
     - name: Setup and start rule server (build only)
       shell: bash
       run: |
