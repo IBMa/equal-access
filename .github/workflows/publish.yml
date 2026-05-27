@@ -14,6 +14,9 @@ jobs:
 ####
   accessibility-checker-engine-publish:
       runs-on: ubuntu-22.04
+      permissions:
+        contents: read
+        id-token: write
 
       strategy:
         matrix:
@@ -25,6 +28,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
         working-directory: accessibility-checker-engine
       - run: npm install
@@ -48,11 +52,12 @@ jobs:
       - run: npm test
         working-directory: accessibility-checker/test-act-w3
       - run: gitactions/publish/achecker-engine.sh
-        env: 
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accessibility-checker-publish:
       runs-on: ubuntu-22.04
+      permissions:
+        contents: read
+        id-token: write
 
       strategy:
         matrix:
@@ -64,6 +69,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
         working-directory: accessibility-checker
       - run: npm install
@@ -73,11 +79,12 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
       - run: gitactions/publish/achecker.sh
-        env: 
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   karma-accessibility-checker-publish:
       runs-on: ubuntu-22.04
+      permissions:
+        contents: read
+        id-token: write
 
       strategy:
         matrix:
@@ -89,6 +96,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
         working-directory: report-react
       - run: npm install
@@ -98,11 +106,12 @@ jobs:
       - run: npm run build
         working-directory: karma-accessibility-checker
       - run: gitactions/publish/karma-achecker.sh
-        env: 
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   cypress-accessibility-checker-publish:
       runs-on: ubuntu-22.04
+      permissions:
+        contents: read
+        id-token: write
 
       strategy:
         matrix:
@@ -114,6 +123,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
         working-directory: report-react
       - run: npm install
@@ -125,11 +135,12 @@ jobs:
       - run: npm run package:npm
         working-directory: cypress-accessibility-checker
       - run: gitactions/publish/cypress-achecker.sh
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   vitest-accessibility-checker-publish:
       runs-on: ubuntu-22.04
+      permissions:
+        contents: read
+        id-token: write
 
       strategy:
         matrix:
@@ -141,6 +152,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
         working-directory: report-react
       - run: npm install
@@ -152,8 +164,6 @@ jobs:
       - run: npm run package:npm
         working-directory: vitest-accessibility-checker
       - run: gitactions/publish/vitest-achecker.sh
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   extension-build:
     runs-on: ubuntu-22.04
@@ -172,7 +182,12 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
-    - run: npm install
+    - name: Clear Puppeteer cache
+      run: rm -rf ~/.cache/puppeteer
+     - run: npm install
+      working-directory: accessibility-checker-extension/test
+    - name: Install Puppeteer browsers
+      run: npx puppeteer browsers install chrome
       working-directory: accessibility-checker-extension/test
     - run: npm install
       working-directory: rule-server
