@@ -182,7 +182,7 @@ letter-spacing: 0.16px;
         max-width: 66.66%;
     }
 }
-bx-code-snippet[type="multi"]::after {
+cds-code-snippet[type="multi"]::after {
     height: 0px;
 }
 
