@@ -76,8 +76,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         os: ubuntu
-    - name: Clear Puppeteer cache
-      run: rm -rf ~/.cache/puppeteer
     - run: npm install
       working-directory: accessibility-checker
     - run: npm run build
@@ -120,9 +118,6 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
-      - name: Clear Puppeteer cache
-        run: Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $env:USERPROFILE\.cache\puppeteer
-        shell: pwsh
       - run: npm install
         working-directory: accessibility-checker
         
@@ -168,8 +163,6 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
-      - name: Clear Puppeteer cache
-        run: rm -rf ~/.cache/puppeteer
       - run: npm install
         working-directory: accessibility-checker
         
@@ -215,8 +208,6 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
-      - name: Clear Puppeteer cache
-        run: rm -rf ~/.cache/puppeteer
       - run: npm install
         working-directory: accessibility-checker
         
@@ -256,8 +247,6 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
-      - name: Clear Puppeteer cache
-        run: rm -rf ~/.cache/puppeteer
       - run: npm install
         working-directory: accessibility-checker
         
@@ -563,8 +552,6 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
-    - name: Clear Puppeteer cache
-      run: rm -rf ~/.cache/puppeteer
     - run: npm ci
       working-directory: accessibility-checker-extension/test
     - name: Setup and start rule server (build only)
