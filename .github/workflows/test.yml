@@ -554,6 +554,8 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: npm ci
       working-directory: accessibility-checker-extension/test
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: 'true'
     - name: Setup and start rule server (build only)
       shell: bash
       run: |
