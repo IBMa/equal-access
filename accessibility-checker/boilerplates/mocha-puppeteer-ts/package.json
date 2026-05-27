@@ -14,7 +14,7 @@
     "accessibility-checker": "*",
     "chai": "^4.3.0",
     "mocha": "^11",
-    "puppeteer": "^24.10.0",
+    "puppeteer": "^25.1.0",
     "typescript": "^5.7.3"
   }
 }
