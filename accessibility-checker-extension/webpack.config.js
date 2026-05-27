@@ -185,16 +185,8 @@ module.exports = {
                     if (/[/\\]doc[/\\]/.test(resourcePath)) {
                         return false;
                     }
-                    // Exclude 2020.* versions
-                    if (/[/\\]2020\.[^/\\]*[/\\]/.test(resourcePath)) {
-                        return false;
-                    }
-                    // Exclude 2021.* versions
-                    if (/[/\\]2021\.[^/\\]*[/\\]/.test(resourcePath)) {
-                        return false;
-                    }
-                    // Exclude 2022.* versions
-                    if (/[/\\]2022\.[^/\\]*[/\\]/.test(resourcePath)) {
+                    // Exclude 2020-2022.* versions
+                    if (/[/\\](2020|2021|2022)\.[^/\\]*[/\\]/.test(resourcePath)) {
                         return false;
                     }
                     // Exclude 2023.01.* through 2023.04.* versions
