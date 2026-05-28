@@ -68,6 +68,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@github.com/IBMa/equal-access/accessibility-checker-extension"
+        "url": "https://github.com/IBMa/equal-access.git"
 	}
 }
