@@ -10,7 +10,7 @@
     "test:ui": "npm run build:common && vitest --ui --config=test/vitest.config.js",
     "test:start-http": "http-server -c-1 --silent",
     "build:common": "cd ../common/module && npm run build && cd ../../vitest-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
-    "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R src/* package/ && cp README.md package/",
+    "package:common": "npm run build:common && rm -rf package && mkdir package && cp -R src/* package/",
     "package:zip": "npm run package:common && cd package && npm pack",
     "package:npm": "npm run package:common",
     "postinstall": "ibmtelemetry --config=telemetry.yml"
