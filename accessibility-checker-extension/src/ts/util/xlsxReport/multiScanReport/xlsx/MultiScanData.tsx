@@ -18,7 +18,7 @@ import { IReport, IIssue, ISettings, StoredScanData } from "../../../../interfac
 
 
 // From https://github.com/darkskyapp/string-hash/blob/master/index.js
-function stringHash(str) {
+function stringHash(str: string) {
     var hash = 5381,
         i = str.length;
 
