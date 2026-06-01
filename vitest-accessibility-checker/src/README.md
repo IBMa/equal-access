@@ -16,6 +16,16 @@ Accessibility testing plugin for Vitest that integrates IBM Equal Access Accessi
 npm install --save-dev vitest-accessibility-checker
 ```
 
+### Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+
+```bash
+npm install --save-dev exceljs
+```
+
+Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Usage
 
 ### 1. Configure Vitest with Browser Mode

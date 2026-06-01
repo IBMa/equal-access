@@ -43,9 +43,15 @@
   ],
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "peerDependencies": {
+    "exceljs": "^4.3.0"
+  },
+  "peerDependenciesMeta": {
+    "exceljs": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "microdiff": "^1.4.0",
-    "exceljs": "^4.3.0",
     "js-yaml": "4.1.1",
     "karma": "6.3.18",
     "karma-accessibility-checker": "file:package/karma-accessibility-checker",

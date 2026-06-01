@@ -33,7 +33,13 @@
   ],
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0"
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0",
+    "exceljs": "^4.4.0"
+  },
+  "peerDependenciesMeta": {
+    "exceljs": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@vitest/browser": "^4.1.6",
@@ -50,9 +56,7 @@
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
     "axios": "^1.7.9",
-    "exceljs": "^4.3.0",
-    "js-yaml": "^4.1.0",
-    "microdiff": "^1.4.0",
-    "string-hash": "^1.1.3"
+    "js-yaml": "^4.2.0",
+    "microdiff": "^1.5.0"
   }
 }

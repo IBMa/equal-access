@@ -29,6 +29,16 @@ Install the package as a devDependency.
 npm install cypress-accessibility-checker --save-dev
 ```
 
+### Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+
+```bash
+npm install exceljs --save-dev
+```
+
+Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Configuration
 
 The configuration for the plugin is driven by a configuration file called `.achecker.yml` that you will need to put in the same directory as your `cypress.json` file. See details on the syntax of this file [here](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md#configuring-accessibility-checker).
