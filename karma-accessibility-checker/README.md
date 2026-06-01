@@ -30,6 +30,16 @@ All bugs or issues related to the karma-accessibility-checker code can be create
 
 * [Node Version 22](https://nodejs.org/en/download/).
 
+## Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+
+```bash
+$ npm install exceljs
+```
+
+Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Running Locally
 
 To run tests locally:

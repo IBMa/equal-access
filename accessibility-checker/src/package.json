@@ -28,11 +28,10 @@
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
     "chromedriver": "*",
-    "microdiff": "^1.4.0",
-    "exceljs": "^4.3.0",
-    "js-yaml": "^4.1.0",
-    "puppeteer": "^25.1.0",
-    "string-hash": "^1.1.3"
+    "microdiff": "^1.5.0",
+    "exceljs": "^4.4.0",
+    "js-yaml": "^4.2.0",
+    "puppeteer": "^25.1.0"
   },
   "repository": {
     "type": "git",

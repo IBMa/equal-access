@@ -22,11 +22,18 @@
   "engines": {
     "node": ">=16"
   },
+  "peerDependencies": {
+    "exceljs": "^4.3.0"
+  },
+  "peerDependenciesMeta": {
+    "exceljs": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "chromedriver": "*",
-    "microdiff": "^1.4.0",
-    "exceljs": "^4.3.0",
-    "js-yaml": "^4.1.0",
+    "microdiff": "^1.5.0",
+    "js-yaml": "^4.2.0",
     "puppeteer": "^25.1.0"
   },
   "devDependencies": {
