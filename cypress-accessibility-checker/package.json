@@ -32,7 +32,7 @@
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
       "cypress": "^13.2.0 || ^15",
-      "exceljs": "^4.3.0"
+      "exceljs": "^4.4.0"
     },
     "peerDependenciesMeta": {
       "exceljs": {

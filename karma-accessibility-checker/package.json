@@ -44,7 +44,7 @@
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "exceljs": "^4.3.0"
+    "exceljs": "^4.4.0"
   },
   "peerDependenciesMeta": {
     "exceljs": {

@@ -23,7 +23,7 @@
     "node": ">=16"
   },
   "peerDependencies": {
-    "exceljs": "^4.3.0"
+    "exceljs": "^4.4.0"
   },
   "peerDependenciesMeta": {
     "exceljs": {
