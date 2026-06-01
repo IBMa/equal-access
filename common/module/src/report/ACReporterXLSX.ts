@@ -26,7 +26,9 @@ let exceljsWarningShown = false;
 
 function loadExcelJS(): Promise<any> {
     if (!exceljsLoadPromise) {
-        exceljsLoadPromise = import("exceljs")
+        // Use dynamic import with a variable to avoid TypeScript checking the module at compile time
+        const moduleName = "exceljs";
+        exceljsLoadPromise = import(/* webpackIgnore: true */ moduleName)
             .then(module => module)
             .catch(e => null);
     }
