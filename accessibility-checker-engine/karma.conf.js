@@ -48,7 +48,7 @@
                 //{ pattern: 'test/v2/checker/accessibility/rules/aria_role_valid_ruleunit/td_attribute_invalid_copy.html', watched: true },
                 //{ pattern: 'test/v2/checker/accessibility/rules/text_block_heading_ruleunit/Headings-noneUsedEmphasizedText.html', watched: true },
                 //{ pattern: 'test/v2/checker/accessibility/rules/aria_landmark_name_unique_ruleunit/*.html', watched: true },
-                // { pattern: 'test/v2/checker/accessibility/rules/aria_parent_required_ruleunit/webComponentPass2.html', watched: true },
+                //{ pattern: 'test/v2/checker/accessibility/rules/aria_article_label_unique_ruleunit/article_nested.html', watched: true },
     
     
                 { pattern: 'test/**/*_ruleunit/*.html', watched: true },
