@@ -13,12 +13,12 @@
     },
     "author": "",
     "dependencies": {
-        "@ibm-cloud/cloudant": "^0.12.16",
+        "@ibm-cloud/cloudant": "^0.12.22",
         "body-parser": "^1.20.3",
         "compression": "^1.8.1",
         "cors": "^2.8.5",
         "express": "^4.21.2",
-        "multer": "^2.1.1",
+        "multer": "^2.2.0",
         "tsoa": "^5.1.1",
         "typescript": "^5.8.3"
     },
