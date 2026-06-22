@@ -41,17 +41,17 @@
     },
     "devDependencies": {
         "cypress": "^15.9.0",
-        "eslint": "^8.4.1",
+        "eslint": "^10.5.0",
         "eslint-plugin-cypress": "^2.12.1",
         "http-server": "^14.1.1",
         "prettier": "^2.5.1",
-        "shx": "^0.3.3",
+        "shx": "^0.4.0",
         "start-server-and-test": "^2.0.0"
     },
     "dependencies": {
       "axios": "^1.7.9",
       "@ibm/telemetry-js": "^1.9.1",
       "microdiff": "^1.5.0",
-      "js-yaml": "^4.2.0"
+      "js-yaml": "^5.0.0"
     }
 }
