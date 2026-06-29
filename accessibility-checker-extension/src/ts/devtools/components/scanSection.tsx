@@ -19,6 +19,7 @@ import ReactDOM from 'react-dom';
 import { IIssue, IReport, UIIssue, eFilterLevel } from '../../interfaces/interfaces';
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { PathMatcher } from '../../util/PathMatcher';
 import { getDevtoolsController, ScanningState, ViewState } from '../devtoolsController';
 import { getBGController, issueBaselineMatch, TabChangeType } from '../../background/backgroundController';
 import { 
@@ -259,7 +260,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             for (const issue of issues) {
                 let sing = UtilIssue.valueToStringSingular(issue.value);
                 ++counts[sing as eLevel].total;
-                if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
+                if (!this.state.selectedPath || PathMatcher.matchesPath(issue.path.dom, this.state.selectedPath)) {
                     ++counts[sing as eLevel].focused;
                 }
             }
@@ -268,12 +269,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             for (const ignoredIssue of this.state.ignoredIssues) {
                 if (!issues.some(issue => issueBaselineMatch(issue, ignoredIssue))) continue;
                 ++counts["Hidden" as eLevel].total;
-                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                if (!this.state.selectedPath || PathMatcher.matchesPath(ignoredIssue.path.dom, this.state.selectedPath)) {
                     ++counts["Hidden" as eLevel].focused;
                 }
                 let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
                 --counts[sing as eLevel].total;
-                if (!this.state.selectedPath || ignoredIssue.path.dom.startsWith(this.state.selectedPath)) {
+                if (!this.state.selectedPath || PathMatcher.matchesPath(ignoredIssue.path.dom, this.state.selectedPath)) {
                     --counts[sing as eLevel].focused;
                 }
             }
@@ -300,7 +301,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
                         || !this.state.selectedPath
-                        || issue.path.dom.startsWith(this.state.selectedPath)
+                        || PathMatcher.matchesPath(issue.path.dom, this.state.selectedPath)
                     )
                 );
                 return retVal;

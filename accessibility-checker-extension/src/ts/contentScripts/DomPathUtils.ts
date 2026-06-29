@@ -113,8 +113,12 @@ export default class DomPathUtils {
                 let slotParts = parts[2].match(/(slot\[\d+\])\/([^[]*)\[(\d+)\]/)!;
                 let slot = this.docDomPathToElement(doc, parts[1]+slotParts[1]);
                 let count = parseInt(slotParts[3]);
-                for (let slotIdx=0; slotIdx < (slot as any).assignedNodes().length; ++slotIdx) {
-                    let slotNode = (slot as any).assignedNodes()[slotIdx];
+                // Use assignedElements() if available, otherwise filter assignedNodes() for element nodes
+                let assignedElems = (slot as any).assignedElements
+                    ? (slot as any).assignedElements()
+                    : (slot as any).assignedNodes().filter((n: Node) => n.nodeType === 1);
+                for (let slotIdx=0; slotIdx < assignedElems.length; ++slotIdx) {
+                    let slotNode = assignedElems[slotIdx];
                     if (slotNode.nodeName.toLowerCase() === slotParts[2].toLowerCase()) {
                         --count;
                         if (count === 0) {

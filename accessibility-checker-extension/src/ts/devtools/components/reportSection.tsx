@@ -26,6 +26,7 @@ import {
     MenuItemSelectable
 } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
+import { PathMatcher } from '../../util/PathMatcher';
 
 import {
     Information
@@ -190,11 +191,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             reportIssues = reportIssues.filter((issue: UIIssue) => {
                 issue.ignored = this.state.ignoredIssues.some(ignoredIssue => issueBaselineMatch(ignoredIssue, issue));
                 const checked = this.devtoolsAppController.getLevelFilters();
-                let retVal = ( ((checked["Hidden"] && issue.ignored) || checked[UtilIssue.valueToStringSingular(issue.value) as eFilterLevel]) 
+                let retVal = ( ((checked["Hidden"] && issue.ignored) || checked[UtilIssue.valueToStringSingular(issue.value) as eFilterLevel])
                     && (!this.state.focusMode
                         || !this.state.selectedPath
-                        || issue.path.dom.startsWith(this.state.selectedPath)
-                    ) 
+                        || PathMatcher.matchesPath(issue.path.dom, this.state.selectedPath)
+                    )
                 );
                 if (!checked["Hidden"] && issue.ignored) {
                     return false; // JCH is this an override

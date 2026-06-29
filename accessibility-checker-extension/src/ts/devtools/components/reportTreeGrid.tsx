@@ -40,6 +40,7 @@ import { ePanel, getDevtoolsController, ViewState } from '../devtoolsController'
 import { UtilIssue } from '../../util/UtilIssue';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getBGController, issueBaselineMatch } from '../../background/backgroundController';
+import { PathMatcher } from '../../util/PathMatcher';
 
 export interface IRowGroup {
     id: string;
@@ -783,7 +784,7 @@ export class ReportTreeGrid<RowType extends IRowGroup> extends React.Component<R
                         let selectedNode: boolean = !!this.props.selectedPath
                             && this.props.selectedPath === thisIssue.path.dom;
                         let selectedDescendant: boolean = !!this.props.selectedPath
-                            && thisIssue.path.dom.startsWith(this.props.selectedPath);
+                            && PathMatcher.matchesPath(thisIssue.path.dom, this.props.selectedPath);
                         let focused: boolean = this.state.tabRowId === rowId
                         bodyContent.push(
                             <Grid

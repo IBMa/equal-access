@@ -151,57 +151,111 @@ export class DevtoolsAppController {
     }
 
     public hookSelectionChange() {
-        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
-            chrome.devtools.inspectedWindow.eval(`((node) => {
-                let countNode = (node) => { 
-                    let count = 0;
-                    let findName = node.nodeName;
-                    while (node) { 
-                        if (node.nodeName === findName) {
-                            ++count;
+        const injectPathGenerator = () => {
+            chrome.devtools.inspectedWindow.eval(`
+                window.__getACEPath = function(node) {
+                    function getIndex(n) {
+                        let count = 1;
+                        let sib = n.previousElementSibling;
+                        while (sib) {
+                            if (sib.localName === n.localName) count++;
+                            sib = sib.previousElementSibling;
                         }
-                        node = node.previousElementSibling; 
+                        return "/" + n.localName + "[" + count + "]";
                     }
-                    return "/"+findName.toLowerCase()+"["+count+"]";
-                }
-                try {
-                    let retVal = "";
-                    while (node && node.nodeType === 1) {
-                        retVal = countNode(node)+retVal;
-                        if (node.parentElement) {
-                            node = node.parentElement;
-                        } else {
-                            let parentElement = null;
-                            try {
-                                // Check if we're in a shadow DOM
-                                if (node.parentNode && node.parentNode.nodeType === 11) {
-                                    parentElement = node.parentNode.host;
-                                    retVal = "/#document-fragment[1]"+retVal;
+                    
+                    function getSlotIndex(slot) {
+                        const slotName = slot.getAttribute('name') || '';
+                        let count = 1;
+                        let sib = slot.previousElementSibling;
+                        while (sib) {
+                            if (sib.localName === 'slot') {
+                                const sibName = sib.getAttribute('name') || '';
+                                if (sibName === slotName) count++;
+                            }
+                            sib = sib.previousElementSibling;
+                        }
+                        return count;
+                    }
+                    
+                    try {
+                        let segments = "";
+                        let current = node;
+                        
+                        while (current && current.nodeType === 1) {
+                            const assignedSlot = current.assignedSlot;
+                            
+                            if (assignedSlot) {
+                                segments = getIndex(current) + segments;
+                                const slotIdx = getSlotIndex(assignedSlot);
+                                segments = "/slot[" + slotIdx + "]" + segments;
+                                const slotRoot = assignedSlot.getRootNode();
+                                if (slotRoot.nodeType === 11) {
+                                    segments = "/#document-fragment[1]" + segments;
+                                    current = slotRoot.host;
                                 } else {
-                                    // Check if we're in an iframe
-                                    let parentWin = node.ownerDocument.defaultView.parent;
-                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
-                                    for (const iframe of iframes) {
-                                        try {
-                                            if (iframe.contentDocument === node.ownerDocument) {
-                                                parentElement = iframe;
-                                                break;
-                                            }
-                                        } catch (e) {}
-                                    }
+                                    break;
                                 }
-                            } catch (e) {}
-                            node = parentElement;
+                            } else {
+                                segments = getIndex(current) + segments;
+                                let parent = current.parentNode;
+                                
+                                if (!parent) {
+                                    // Check if we're in an iframe
+                                    try {
+                                        const currentDoc = current.ownerDocument;
+                                        const parentWin = currentDoc.defaultView.parent;
+                                        if (parentWin !== currentDoc.defaultView) {
+                                            const iframes = parentWin.document.querySelectorAll("iframe");
+                                            for (const iframe of iframes) {
+                                                try {
+                                                    if (iframe.contentDocument === currentDoc) {
+                                                        current = iframe;
+                                                        parent = current.parentNode;
+                                                        break;
+                                                    }
+                                                } catch (e) {}
+                                            }
+                                        }
+                                    } catch (e) {}
+                                    
+                                    if (!parent) break;
+                                }
+                                
+                                if (parent.nodeType === 11) {
+                                    segments = "/#document-fragment[1]" + segments;
+                                    current = parent.host;
+                                } else if (parent.nodeType === 9) {
+                                    break;
+                                } else if (parent.nodeType === 1) {
+                                    current = parent;
+                                } else {
+                                    break;
+                                }
+                            }
                         }
+                        
+                        return segments;
+                    } catch(err) {
+                        return "";
                     }
-                    return retVal;
-                } catch (err) {
-                    console.error(err);
-                }
-            })($0)`, async (result: string) => {
-                await this.devToolsController.setSelectedElementPath(result, true);
-            });
+                };
+            `);
+        };
+
+        injectPathGenerator();
+        chrome.devtools.network.onNavigated.addListener(() => {
+            injectPathGenerator();
         });
+        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
+            chrome.devtools.inspectedWindow.eval(
+                `window.__getACEPath($0)`,
+                async (result: string) => {
+                    await this.devToolsController.setSelectedElementPath(result, true);
+                }
+            );
+        });
+
         chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
 
