@@ -28,11 +28,17 @@
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
     "chromedriver": "*",
-    "microdiff": "^1.4.0",
-    "exceljs": "^4.3.0",
-    "js-yaml": "^4.1.0",
-    "puppeteer": "^22.14.0",
-    "string-hash": "^1.1.3"
+    "microdiff": "^1.5.0",
+    "js-yaml": "^4.2.0",
+    "puppeteer": "^25.1.0"
+  },
+  "peerDependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "peerDependenciesMeta": {
+    "exceljs": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",

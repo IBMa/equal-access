@@ -478,6 +478,139 @@ describe('Region Landmark Screen Reader Tests', function() {
             ]);
         });
     });
+
+    describe("Header and Footer Landmarks", function() {
+        
+        it("Should render header landmark", function() {
+            let fixture = `<div id='fixture'>
+                <header>
+                    <h1>Site Title</h1>
+                    <nav aria-label='Main navigation'>
+                        <a href='/'>Home</a>
+                    </nav>
+                </header>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "[banner region] Site Title", "heading": "", "item": "[banner region]", "tab_focus": "", "image": "", "selector": "#fixture > header" },
+                { "region": "", "heading": `["Site Title", heading level 1]`, "item": "[heading level 1] Site Title", "tab_focus": "", "image": "", "selector": "#fixture > header > h1" },
+                { "region": `["Main navigation", navigation region]`, "heading": "", "item": `["Main navigation", navigation region]`, "tab_focus": "", "image": "", "selector": "#fixture > header > nav[aria-label=\"Main\\ navigation\"]" },
+                { "region": "", "heading": "", "item": "[link] Home", "tab_focus": "Home [link]", "image": "", "selector": "#fixture > header > nav > a" },
+                { "region": "", "heading": "", "item": "[out of navigation region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[out of banner region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should render footer landmark", function() {
+            let fixture = `<div id='fixture'>
+                <footer>
+                    <p>Copyright 2026</p>
+                    <nav aria-label='Footer links'>
+                        <a href='/privacy'>Privacy</a>
+                    </nav>
+                </footer>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "[content info region] Copyright 2026", "heading": "", "item": "[content info region]", "tab_focus": "", "image": "", "selector": "#fixture > footer" },
+                { "region": "", "heading": "", "item": "Copyright 2026", "tab_focus": "", "image": "", "selector": "#fixture > footer > p" },
+                { "region": `["Footer links", navigation region]`, "heading": "", "item": `["Footer links", navigation region]`, "tab_focus": "", "image": "", "selector": "#fixture > footer > nav[aria-label=\"Footer\\ links\"]" },
+                { "region": "", "heading": "", "item": "[link] Privacy", "tab_focus": "Privacy [link]", "image": "", "selector": "#fixture > footer > nav > a" },
+                { "region": "", "heading": "", "item": "[out of navigation region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[out of content info region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should render header with aria-label", function() {
+            let fixture = `<div id='fixture'>
+                <header aria-label='Site header'>
+                    <p>Welcome</p>
+                </header>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": `["Site header", banner region]`, "heading": "", "item": `["Site header", banner region]`, "tab_focus": "", "image": "", "selector": "#fixture > header[aria-label=\"Site\\ header\"]" },
+                { "region": "", "heading": "", "item": "Welcome", "tab_focus": "", "image": "", "selector": "#fixture > header > p" },
+                { "region": "", "heading": "", "item": "[out of banner region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should render footer with aria-label", function() {
+            let fixture = `<div id='fixture'>
+                <footer aria-label='Site footer'>
+                    <p>Contact us</p>
+                </footer>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": `["Site footer", content info region]`, "heading": "", "item": `["Site footer", content info region]`, "tab_focus": "", "image": "", "selector": "#fixture > footer[aria-label=\"Site\\ footer\"]" },
+                { "region": "", "heading": "", "item": "Contact us", "tab_focus": "", "image": "", "selector": "#fixture > footer > p" },
+                { "region": "", "heading": "", "item": "[out of content info region]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should NOT render nested header as banner", function() {
+            let fixture = `<div id='fixture'>
+                <article>
+                    <header>
+                        <h2>Article Title</h2>
+                    </header>
+                </article>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": "[article]", "tab_focus": "", "image": "", "selector": "#fixture > article" },
+                { "region": "", "heading": `["Article Title", heading level 2]`, "item": "[heading level 2] Article Title", "tab_focus": "", "image": "", "selector": "#fixture > article > header > h2" },
+                { "region": "", "heading": "", "item": "[out of article]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+
+        it("Should NOT render nested footer as contentinfo", function() {
+            let fixture = `<div id='fixture'>
+                <article>
+                    <footer>
+                        <p>Article footer</p>
+                    </footer>
+                </article>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+            
+            let result = trimRegions(ace.SRController.renderStructure(document));
+            
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": "", "item": "[article]", "tab_focus": "", "image": "", "selector": "#fixture > article" },
+                { "region": "", "heading": "", "item": "Article footer", "tab_focus": "", "image": "", "selector": "#fixture > article > footer > p" },
+                { "region": "", "heading": "", "item": "[out of article]", "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+    });
 });
 
 // Made with Bob
