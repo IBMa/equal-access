@@ -19,14 +19,19 @@
  */
 export class PathMatcher {
     /**
-     * Check if a child path matches or is a descendant of a parent path.
-     * 
-     * @param childPath - The path to check (e.g., issue path from scanner)
-     * @param parentPath - The parent path to match against (e.g., selected element path)
-     * @returns true if childPath matches or is a descendant of parentPath
+     * Returns true if the issue element is the selected element or a descendant
+     * of it — i.e. the issue path equals the selected path or starts with it.
+     *
+     * Ancestor matching (selectedPath.startsWith(issuePath)) is intentionally
+     * excluded: when the user selects a specific element they only want to see
+     * issues on that element and its children, not on its ancestors.
+     *
+     * @param issuePath    - The DOM path of the issue (from the scanner result)
+     * @param selectedPath - The DOM path of the currently selected element
      */
-    static matchesPath(childPath: string, parentPath: string): boolean {
-        return childPath === parentPath || childPath.startsWith(parentPath + "/");
+    static matchesPath(issuePath: string, selectedPath: string): boolean {
+        return issuePath === selectedPath
+            || issuePath.startsWith(selectedPath + "/");
     }
 }
 

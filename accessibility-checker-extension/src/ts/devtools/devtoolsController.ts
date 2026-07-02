@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import { getBGController, issueBaselineMatch, TabChangeType } from "../background/backgroundController";
+import { PathMatcher } from "../util/PathMatcher";
 import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta, UIIssue } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
@@ -431,36 +432,38 @@ export class DevtoolsController extends Controller {
      */
     public async setSelectedElementPath(path: string | null, fromElemChange?: boolean) : Promise<void> {
         return this.hook("setSelectedElementPath", { path, fromElemChange }, async () => {
+            const previousPath = devtoolsState!.lastElementPath;
             devtoolsState!.lastElementPath = path;
             if (fromElemChange === true) {
-                // This path came from the Elements panel selection changing
-                if (!this.programmaticInspect) {
-                    // User clicked on this
-                    if (Config.ELEM_FOCUS_MODE) {
-                        await this.setFocusMode(true);
-                    }
-                    if (path && path !== devtoolsState!.lastElementPath) {
-                    // if (path) {
-                        let report = await this.getReport();
-                        if (report) {
-                            let newIssue : IIssue | null = null;
-                            for (const issue of report.results) {
-                                if (issue.value[1] !== "PASS" && issue.path.dom === path) {
-                                    newIssue = issue;
-                                    break;
-                                } else if (!newIssue && issue.value[1] !== "PASS" && issue.path.dom.startsWith(path)) {
-                                    newIssue = issue;
-                                }
-                            }
-                            await this.setSelectedIssue(newIssue);
-                        }
-                    }
-                } else {
-                    // Side effect of inspectPath
-                    this.programmaticInspect = false;
+                // This path came from the Elements panel selection changing.
+                // Always activate focus mode and update the selected element path.
+                // The programmaticInspect flag only suppresses auto-selecting a new
+                // issue — it must not block focus mode, because inspectPath is called
+                // precisely WHEN the user already has an issue selected and we want
+                // to keep showing the filtered view for that element.
+                if (Config.ELEM_FOCUS_MODE) {
+                    await this.setFocusMode(true);
                 }
-            } else {
-                // Called by some other process
+                if (this.programmaticInspect) {
+                    // Echo from inspectPath's own inspect(element) call — clear flag,
+                    // do not auto-select a different issue.
+                    this.programmaticInspect = false;
+                } else if (path && path !== previousPath) {
+                    // Genuine user navigation — auto-select the nearest matching issue.
+                    let report = await this.getReport();
+                    if (report) {
+                        let newIssue : IIssue | null = null;
+                        for (const issue of report.results) {
+                            if (issue.value[1] !== "PASS" && issue.path.dom === path) {
+                                newIssue = issue;
+                                break;
+                            } else if (!newIssue && issue.value[1] !== "PASS" && PathMatcher.matchesPath(issue.path.dom, path)) {
+                                newIssue = issue;
+                            }
+                        }
+                        await this.setSelectedIssue(newIssue);
+                    }
+                }
             }
             setTimeout(() => {
                 this.notifyEventListeners("DT_onSelectedElementPath", this.ctrlDest.tabId, path);

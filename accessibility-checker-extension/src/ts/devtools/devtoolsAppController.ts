@@ -153,93 +153,106 @@ export class DevtoolsAppController {
     public hookSelectionChange() {
         const injectPathGenerator = () => {
             chrome.devtools.inspectedWindow.eval(`
-                window.__getACEPath = function(node) {
-                    function getIndex(n) {
-                        let count = 1;
-                        let sib = n.previousElementSibling;
-                        while (sib) {
-                            if (sib.localName === n.localName) count++;
-                            sib = sib.previousElementSibling;
-                        }
-                        return "/" + n.localName + "[" + count + "]";
-                    }
-                    
-                    function getSlotIndex(slot) {
-                        const slotName = slot.getAttribute('name') || '';
-                        let count = 1;
-                        let sib = slot.previousElementSibling;
-                        while (sib) {
-                            if (sib.localName === 'slot') {
-                                const sibName = sib.getAttribute('name') || '';
-                                if (sibName === slotName) count++;
-                            }
-                            sib = sib.previousElementSibling;
-                        }
-                        return count;
-                    }
-                    
-                    try {
-                        let segments = "";
-                        let current = node;
-                        
-                        while (current && current.nodeType === 1) {
-                            const assignedSlot = current.assignedSlot;
-                            
-                            if (assignedSlot) {
-                                segments = getIndex(current) + segments;
-                                const slotIdx = getSlotIndex(assignedSlot);
-                                segments = "/slot[" + slotIdx + "]" + segments;
-                                const slotRoot = assignedSlot.getRootNode();
-                                if (slotRoot.nodeType === 11) {
-                                    segments = "/#document-fragment[1]" + segments;
-                                    current = slotRoot.host;
-                                } else {
-                                    break;
-                                }
-                            } else {
-                                segments = getIndex(current) + segments;
-                                let parent = current.parentNode;
-                                
-                                if (!parent) {
-                                    // Check if we're in an iframe
-                                    try {
-                                        const currentDoc = current.ownerDocument;
-                                        const parentWin = currentDoc.defaultView.parent;
-                                        if (parentWin !== currentDoc.defaultView) {
-                                            const iframes = parentWin.document.querySelectorAll("iframe");
-                                            for (const iframe of iframes) {
-                                                try {
-                                                    if (iframe.contentDocument === currentDoc) {
-                                                        current = iframe;
-                                                        parent = current.parentNode;
-                                                        break;
-                                                    }
-                                                } catch (e) {}
-                                            }
-                                        }
-                                    } catch (e) {}
-                                    
-                                    if (!parent) break;
-                                }
-                                
-                                if (parent.nodeType === 11) {
-                                    segments = "/#document-fragment[1]" + segments;
-                                    current = parent.host;
-                                } else if (parent.nodeType === 9) {
-                                    break;
-                                } else if (parent.nodeType === 1) {
-                                    current = parent;
-                                } else {
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        return segments;
-                    } catch(err) {
-                        return "";
-                    }
-                };
+   window.__getACEPath = function(node) {
+    function getIndex(n) {
+        if (n.assignedSlot) {
+            const assigned = n.assignedSlot.assignedElements
+                ? n.assignedSlot.assignedElements()
+                : Array.from(n.assignedSlot.assignedNodes()).filter(x => x.nodeType === 1);
+            let count = 0;
+            for (const el of assigned) {
+                if (el === n) break;
+                if (el.localName === n.localName) count++;
+            }
+            return "/" + n.localName + "[" + (count + 1) + "]";
+        }
+        const parent = n.parentNode;
+        if (!parent) return "/" + n.localName + "[1]";
+        let count = 0;
+        const children = parent.children;
+        for (let i = 0; i < children.length; i++) {
+            if (children[i] === n) break;
+            if (children[i].localName === n.localName) count++;
+        }
+        return "/" + n.localName + "[" + (count + 1) + "]";
+    }
+
+    function getSlotIndex(slot) {
+        let count = 1;
+        let sib = slot.previousElementSibling;
+        while (sib) {
+            if (sib.localName === 'slot') count++;
+            sib = sib.previousElementSibling;
+        }
+        return count;
+    }
+
+    try {
+        let current = node;
+
+        // If $0 is a slot, use first assigned element or walk to host
+        while (current && current.localName === 'slot') {
+            const assigned = current.assignedElements
+                ? current.assignedElements()
+                : Array.from(current.assignedNodes()).filter(n => n.nodeType === 1);
+            if (assigned.length > 0) {
+                current = assigned[0];
+            } else {
+                const parent = current.parentNode;
+                if (!parent) break;
+                if (parent.nodeType === 11) current = parent.host;
+                else if (parent.nodeType === 1) current = parent;
+                else break;
+            }
+        }
+
+        if (!current || current.nodeType !== 1) return "";
+
+        let segments = "";
+
+        while (current && current.nodeType === 1) {
+            const assignedSlot = current.assignedSlot;
+
+            if (assignedSlot) {
+                segments = getIndex(current) + segments;
+                segments = "/slot[" + getSlotIndex(assignedSlot) + "]" + segments;
+                const slotParent = assignedSlot.parentNode;
+                if (!slotParent) break;
+                if (slotParent.nodeType === 11) {
+                    segments = "/#document-fragment[1]" + segments;
+                    current = slotParent.host;
+                } else if (slotParent.nodeType === 9) {
+                    segments = "/html[1]" + segments;
+                    break;
+                } else if (slotParent.nodeType === 1) {
+                    current = slotParent;
+                } else {
+                    break;
+                }
+            } else {
+                segments = getIndex(current) + segments;
+                const parent = current.parentNode;
+                if (!parent) break;
+
+                if (parent.nodeType === 11) {
+                    segments = "/#document-fragment[1]" + segments;
+                    current = parent.host;
+                } else if (parent.nodeType === 9) {
+                    // parent is the document — current is <html>. Stop; /html[1] is already in segments.
+                    break;
+                } else if (parent.nodeType === 1) {
+                    current = parent;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return segments;
+    } catch(err) {
+        return "";
+    }
+};
             `);
         };
 
@@ -247,6 +260,7 @@ export class DevtoolsAppController {
         chrome.devtools.network.onNavigated.addListener(() => {
             injectPathGenerator();
         });
+
         chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
             chrome.devtools.inspectedWindow.eval(
                 `window.__getACEPath($0)`,
@@ -255,8 +269,6 @@ export class DevtoolsAppController {
                 }
             );
         });
-
-        chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
 
     ///////////////////////////////////////////////////////////////////////////

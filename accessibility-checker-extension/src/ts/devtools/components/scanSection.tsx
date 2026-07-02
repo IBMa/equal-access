@@ -177,6 +177,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         })
         this.devtoolsController.addSelectedElementPathListener(async (newPath) => {
             this.setState( { selectedElemPath: newPath });
+            this.setPath(newPath);
         })
         this.devtoolsController.addFocusModeListener(async (newValue) => {
             this.setState({ focusMode: newValue })
@@ -197,10 +198,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             }
         })
         this.reportListener((await this.devtoolsController.getReport())!);
-        this.setState({ 
-            viewState: (await this.devtoolsController.getViewState())!, 
+        const currentPath = (await this.devtoolsController.getSelectedElementPath())!;
+        this.setState({
+            viewState: (await this.devtoolsController.getViewState())!,
             storeReports: (await this.devtoolsController.getStoreReports()),
-            selectedElemPath: (await this.devtoolsController.getSelectedElementPath())! || "/html",
+            selectedElemPath: currentPath || "/html",
+            selectedPath: currentPath || null,
             focusMode: (await this.devtoolsController.getFocusMode()),
             storedReportsCount: (await this.devtoolsController.getStoredReportsMeta()).length,
             canScan: (await this.bgController.getTabInfo(tabId)).canScan
