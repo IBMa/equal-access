@@ -74,6 +74,16 @@ See the [Baseline basics in the Wiki](https://github.com/IBMa/equal-access/wiki#
 $ npm install
 ```
 
+### Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+
+```bash
+$ npm install exceljs
+```
+
+Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ### Build & Package
 
 ```bash

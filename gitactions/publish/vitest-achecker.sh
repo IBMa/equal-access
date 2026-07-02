@@ -17,13 +17,15 @@
 #   *****************************************************************************/
 
 # Publish vitest-accessibility-checker to npm
-
-cd vitest-accessibility-checker/package
-
-# Set npm token
-echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
-# Publish to npm
-npm publish --access public
-
-cd ../..
+if [ -n "${GITHUB_REF:10}" ]; then
+    cd ./vitest-accessibility-checker/package;
+    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >.npmrc;
+    NPM_VERSION="${GITHUB_REF:10}";
+    echo "Deploy vitest-accessibility-checker version ${NPM_VERSION}...";
+    npm --no-git-tag-version version ${NPM_VERSION};
+    if [[ "${NPM_VERSION}" =~ "-rc" ]]; then
+        npm publish --tag next;
+    else
+        npm publish;
+    fi;
+fi

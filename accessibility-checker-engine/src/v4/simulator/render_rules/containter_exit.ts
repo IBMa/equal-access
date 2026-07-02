@@ -1,6 +1,6 @@
 import { SRRendererRule } from "../SRRendererRule";
 import { SRCursor } from "../SRCursor";
-import { quoteNamePadAfter } from "./common";
+import { quoteNamePadAfter, getRoleDescription } from "./common";
 
 export let RULES: SRRendererRule[] = [
     // Single role rules - alphabetically sorted
@@ -12,8 +12,8 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[out of article region]`;
+                const roleDesc = getRoleDescription(cursor, "article");
+                return `[out of ${roleDesc}]`;
             }
         ]
     }),
@@ -25,8 +25,8 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[out of banner region]`;
+                const roleDesc = getRoleDescription(cursor, "banner region");
+                return `[out of ${roleDesc}]`;
             }
         ]
     }),
@@ -58,8 +58,8 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[out of complementary region]`;
+                const roleDesc = getRoleDescription(cursor, "complementary region");
+                return `[out of ${roleDesc}]`;
             }
         ]
     }),
@@ -71,8 +71,8 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[out of content info region]`;
+                const roleDesc = getRoleDescription(cursor, "content info region");
+                return `[out of ${roleDesc}]`;
             }
         ]
     }),
@@ -144,7 +144,10 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item"],
         tests: [
-            (_cursor: SRCursor) => `[out of main region]`
+            (cursor: SRCursor) => {
+                const roleDesc = getRoleDescription(cursor, "main region");
+                return `[out of ${roleDesc}]`;
+            }
         ]
     }),
 
@@ -164,7 +167,10 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item"],
         tests: [
-            (_cursor: SRCursor) => `[out of navigation region]`
+            (cursor: SRCursor) => {
+                const roleDesc = getRoleDescription(cursor, "navigation region");
+                return `[out of ${roleDesc}]`;
+            }
         ]
     }),
 
@@ -186,7 +192,8 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.getNameInfo() === null) return null;
-                else return "[out of region]";
+                const roleDesc = getRoleDescription(cursor, "region");
+                return `[out of ${roleDesc}]`;
             }
         ]
     }),
@@ -197,7 +204,10 @@ export let RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item"],
         tests: [
-            (_cursor: SRCursor) => `[out of search region]`
+            (cursor: SRCursor) => {
+                const roleDesc = getRoleDescription(cursor, "search region");
+                return `[out of ${roleDesc}]`;
+            }
         ]
     }),
 

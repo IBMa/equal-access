@@ -162,7 +162,7 @@ async function processACConfig(ACConfig: IConfigInternal) {
         }
         ruleArchiveParse = await fetch_get(ruleArchiveFile);
     } catch (err) {
-        console.log(err);
+        console.error(err, ruleArchiveFile);
         throw new Error(err);
     }
     let ruleArchivePath = null;

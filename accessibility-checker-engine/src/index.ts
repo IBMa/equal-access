@@ -25,16 +25,6 @@ export { SRController } from "./v4/simulator/SRController";
 export { SRCursor } from "./v4/simulator/SRCursor";
 export { SRViewer } from "./v4/simulator/SRViewer";
 
-String.prototype.startsWith = String.prototype.startsWith || function (str) {
-    return this.indexOf(str) === 0;
-}
-String.prototype.includes = String.prototype.includes || function (str) {
-    return this.indexOf(str) !== -1;
-}
-Array.prototype.includes = Array.prototype.includes || function (str) {
-    return this.indexOf(str) !== -1;
-}
-
 export function checkDemo(timeout?: number) {
     if (!timeout) timeout = 0;
     let checker = new Checker();

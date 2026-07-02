@@ -90,7 +90,7 @@ customElements.define(
             this.innerHTML = "";
             // const shadowRoot = this.attachShadow({mode: 'open'});
             const shadowRoot = this;
-            let snip = document.createElement("bx-code-snippet");
+            let snip = document.createElement("cds-code-snippet");
             snip.setAttribute("type", "multi");
             snip.innerHTML = oldCode.replace(/</g, "&lt;")
             shadowRoot.appendChild(snip);

@@ -5,3 +5,5 @@ package/
 coverage/
 dist/
 src/lib/common/
+results
+.vitest-attachments

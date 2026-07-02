@@ -1,9 +1,10 @@
 import { SRRendererRule } from "../SRRendererRule";
 import { SRCursor } from "../SRCursor";
 import { SRTableUtil } from "../SRTableUtil";
-import { quoteNamePadAfter, quoteNamePadBefore } from "./common";
+import { quoteNamePadAfter, quoteNamePadBefore, getRoleDescription } from "./common";
 import { AriaUtil } from "../../util/AriaUtil";
 import { ARIADefinitions } from "../../../v2/aria/ARIADefinitions";
+import { CommonUtil } from "../../util/CommonUtil";
 
 /**
  * Generates the announcement text when entering a table cell
@@ -46,11 +47,12 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["article"],
         elems: [],
-        modes: ["item", "region", "article"],
+        modes: ["item", "article", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[${quoteNamePadAfter(cursor)}(cursor)article region]`;
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                const roleDesc = getRoleDescription(cursor, "article");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}]`;
             }
         ]
     }),
@@ -59,11 +61,12 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["banner"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
-                return `[${quoteNamePadAfter(cursor)}banner region]`;
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                const roleDesc = getRoleDescription(cursor, "banner region");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}]`;
             }
         ]
     }),
@@ -112,10 +115,10 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["complementary"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
                 return `[${quoteNamePadAfter(cursor)}complementary region]`;
             }
         ]
@@ -125,10 +128,10 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["contentinfo"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
-                if (cursor.getNameInfo() === null) return null;
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
                 return `[${quoteNamePadAfter(cursor)}content info region]`;
             }
         ]
@@ -254,9 +257,12 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["main"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}main region]`
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                return `[${quoteNamePadAfter(cursor)}main region]`;
+            }
         ]
     }),
 
@@ -287,9 +293,13 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["navigation"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}navigation region]`
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                const roleDesc = getRoleDescription(cursor, "navigation region");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}]`;
+            }
         ]
     }),
 
@@ -311,11 +321,13 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["region"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => {
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.getNameInfo() === null) return null;
-                return `[${quoteNamePadAfter(cursor)}region]`;
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                const roleDesc = getRoleDescription(cursor, "region");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}]`;
             }
         ]
     }),
@@ -344,9 +356,13 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["search"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}search region]`
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                const roleDesc = getRoleDescription(cursor, "search region");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}]`;
+            }
         ]
     }),
 
@@ -393,9 +409,12 @@ export let RULES: SRRendererRule[] = [
     new SRRendererRule({
         roles: ["toolbar"],
         elems: [],
-        modes: ["item", "region"],
+        modes: ["item", "region", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}toolbar]`
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (mode === "tab_focus" && !CommonUtil.isTabbable(cursor.getNode())) return null;
+                return `[${quoteNamePadAfter(cursor)}toolbar]`;
+            }
         ]
     }),
 
