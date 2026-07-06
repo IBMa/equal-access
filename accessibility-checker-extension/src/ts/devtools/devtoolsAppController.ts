@@ -153,7 +153,8 @@ export class DevtoolsAppController {
     public hookSelectionChange() {
         const injectPathGenerator = () => {
             chrome.devtools.inspectedWindow.eval(`
-   window.__getACEPath = function(node) {
+   Object.defineProperty(window, '__getACEPath', {
+    value: function(node) {
     function getIndex(n) {
         if (n.assignedSlot) {
             const assigned = n.assignedSlot.assignedElements
@@ -230,7 +231,30 @@ export class DevtoolsAppController {
                     segments = "/#document-fragment[1]" + segments;
                     current = slotParent.host;
                 } else if (slotParent.nodeType === 9) {
-                    segments = "/html[1]" + segments;
+                    // Slot's parent is a document — check if it belongs to a same-origin
+                    // <iframe> and prepend that iframe's path prefix, exactly as the
+                    // non-slot branch does.
+                    try {
+                        const parentWin = slotParent.defaultView;
+                        if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                            const parentDoc = parentWin.parent.document;
+                            const iframes = parentDoc.querySelectorAll("iframe");
+                            let iframeElem = null;
+                            for (const iframe of iframes) {
+                                try {
+                                    if (iframe.contentDocument === slotParent) {
+                                        iframeElem = iframe;
+                                        break;
+                                    }
+                                } catch (e) {}
+                            }
+                            if (iframeElem) {
+                                segments = getIframePrefixPath(iframeElem) + segments;
+                            }
+                        }
+                    } catch (e) {
+                        // Cross-origin parent window access denied — stop here.
+                    }
                     break;
                 } else if (slotParent.nodeType === 1) {
                     current = slotParent;
@@ -297,13 +321,12 @@ export class DevtoolsAppController {
 
         chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
             chrome.devtools.inspectedWindow.eval(
-                `window.__getACEPath($0)`,
+                `window.__getACEPath && window.__getACEPath($0)`,
                 async (result: string) => {
                     await this.devToolsController.setSelectedElementPath(result, true);
                 }
             );
         });
-        chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
 
     ///////////////////////////////////////////////////////////////////////////
