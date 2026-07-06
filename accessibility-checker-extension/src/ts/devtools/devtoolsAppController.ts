@@ -187,28 +187,36 @@ export class DevtoolsAppController {
         return count;
     }
 
-    try {
-        let current = node;
-
-        // If $0 is a slot, use first assigned element or walk to host
-        while (current && current.localName === 'slot') {
-            const assigned = current.assignedElements
-                ? current.assignedElements()
-                : Array.from(current.assignedNodes()).filter(n => n.nodeType === 1);
-            if (assigned.length > 0) {
-                current = assigned[0];
+    // Walk from an <iframe> element up to the top-level document, returning
+    // the path prefix for everything above the iframe boundary.
+    // Same-origin only: cross-origin contentDocument access throws and is caught.
+    function getIframePrefixPath(iframeElem) {
+        let prefix = "";
+        let current = iframeElem;
+        while (current && current.nodeType === 1) {
+            prefix = getIndex(current) + prefix;
+            const parent = current.parentNode;
+            if (!parent) break;
+            if (parent.nodeType === 9) {
+                // Reached the top-level document — stop.
+                break;
+            } else if (parent.nodeType === 11) {
+                prefix = "/#document-fragment[1]" + prefix;
+                current = parent.host;
+            } else if (parent.nodeType === 1) {
+                current = parent;
             } else {
-                const parent = current.parentNode;
-                if (!parent) break;
-                if (parent.nodeType === 11) current = parent.host;
-                else if (parent.nodeType === 1) current = parent;
-                else break;
+                break;
             }
         }
+        return prefix;
+    }
 
-        if (!current || current.nodeType !== 1) return "";
+    try {
+        if (!node || node.nodeType !== 1) return "";
 
         let segments = "";
+        let current = node;
 
         while (current && current.nodeType === 1) {
             const assignedSlot = current.assignedSlot;
@@ -238,7 +246,33 @@ export class DevtoolsAppController {
                     segments = "/#document-fragment[1]" + segments;
                     current = parent.host;
                 } else if (parent.nodeType === 9) {
-                    // parent is the document — current is <html>. Stop; /html[1] is already in segments.
+                    // Reached a document boundary. Check if this document belongs
+                    // to a same-origin <iframe> so we can prepend its path prefix.
+                    try {
+                        const parentWin = parent.defaultView;
+                        if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                            // We are inside a nested document. Find the <iframe> in
+                            // the parent window whose contentDocument is this document.
+                            const parentDoc = parentWin.parent.document;
+                            const iframes = parentDoc.querySelectorAll("iframe");
+                            let iframeElem = null;
+                            for (const iframe of iframes) {
+                                try {
+                                    if (iframe.contentDocument === parent) {
+                                        iframeElem = iframe;
+                                        break;
+                                    }
+                                } catch (e) {
+                                    // Cross-origin iframe — skip silently.
+                                }
+                            }
+                            if (iframeElem) {
+                                segments = getIframePrefixPath(iframeElem) + segments;
+                            }
+                        }
+                    } catch (e) {
+                        // Cross-origin parent window access denied — stop here.
+                    }
                     break;
                 } else if (parent.nodeType === 1) {
                     current = parent;
@@ -269,6 +303,7 @@ export class DevtoolsAppController {
                 }
             );
         });
+        chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
 
     ///////////////////////////////////////////////////////////////////////////
