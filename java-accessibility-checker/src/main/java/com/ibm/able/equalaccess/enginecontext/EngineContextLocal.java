@@ -41,6 +41,7 @@ public class EngineContextLocal implements IEngineContext {
             // Creates and enters a Context. The Context stores information
             // about the execution environment of a script.
             engine = Context.enter();
+            engine.setLanguageVersion(Context.VERSION_ES6);
 
             // Initialize the standard objects (Object, Function, etc.)
             // This must be done before scripts can be executed. Returns
@@ -92,13 +93,14 @@ public class EngineContextLocal implements IEngineContext {
             // Creates and enters a Context. The Context stores information
             // about the execution environment of a script.
             engine = Context.enter();
+            engine.setLanguageVersion(Context.VERSION_ES6);
 
             // Initialize the standard objects (Object, Function, etc.)
             // This must be done before scripts can be executed. Returns
             // a scope object that we use in later calls.
             engineScope = engine.initStandardObjects();
         }
-        String scriptStr = String.format("encodeURIComponent(`%s`)", s.replace("\"", "\\\""));
+        String scriptStr = String.format("encodeURIComponent(%s)", gson.toJson(s));
         return engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
     }
 
@@ -109,7 +111,7 @@ public class EngineContextLocal implements IEngineContext {
 
     @Override
     public String getHelp(String ruleId, String reasonId, String helpRoot) {
-        String scriptStr = String.format("ace_checker.engine.getHelp(`%s`,`%s`,`%s`)", ruleId, reasonId, helpRoot);
+        String scriptStr = String.format("ace_checker.engine.getHelp(%s,%s,%s)", gson.toJson(ruleId), gson.toJson(reasonId), gson.toJson(helpRoot));
         return engine.evaluateString(engineScope, scriptStr, "<cmd>", 1, null).toString();
     }
 }
