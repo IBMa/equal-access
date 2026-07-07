@@ -279,19 +279,38 @@ export namespace SRNavigator {
             }
             if (elem.nodeName.toUpperCase() === "BODY") return retVal = { skipCurrent: false, skipChildren: false };
 
-            // Skip labels that are associated with controls - they'll be read with the related input
+            // Skip labels that are associated with controls - they'll be read with the related input.
+            // Keep children so interactive content (e.g. links) inside the label still appears in
+            // reading/tab order.
             if (elem.nodeName.toUpperCase() === "LABEL") {
                 if (
                     elem.hasAttribute("for")
                     && document.getElementById(elem.getAttribute("for"))
                     && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
                 ) {
-                    return retVal = { skipCurrent: true, skipChildren: true };
+                    return retVal = { skipCurrent: true, skipChildren: false };
                 } else {
                     const nestedControl = elem.querySelector("input, select, textarea, button, [role='checkbox'], [role='combobox'], [role='listbox'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='radio'], [role='searchbox'], [role='slider'], [role='spinbutton'], [role='switch'], [role='textbox']");
                     if (nestedControl && (nestedControl as HTMLElement).getAttribute("type") !== "hidden") {
                         return retVal = { skipCurrent: true, skipChildren: false };
                     }
+                }
+            }
+
+            // Skip non-interactive content that is a descendant of a for-linked label.
+            // Such content is already surfaced as part of the associated control's announcement.
+            // Interactive descendants (links, buttons, etc.) are allowed through.
+            {
+                const labelFor = elem.closest("label[for]") as HTMLElement | null;
+                const labelForTarget = labelFor && labelFor.getAttribute("for");
+                if (
+                    labelFor
+                    && labelForTarget
+                    && document.getElementById(labelForTarget)
+                    && document.getElementById(labelForTarget).getAttribute("type") !== "hidden"
+                    && !elem.closest("a[href], [role='link'], button, [role='button']")
+                ) {
+                    return retVal = { skipCurrent: true, skipChildren: nodeType === 1 };
                 }
             }
 
@@ -349,14 +368,33 @@ export namespace SRNavigator {
         if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
         // We have an elemenet
         if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
-        // Skip label fors - they'll be read with the related input
+        // Skip label fors - they'll be read with the related input.
+        // Keep children so interactive content (e.g. links) inside the label still appears in
+        // reading/tab order.
         if (
-            elem.nodeName.toUpperCase() === "LABEL" 
-            && elem.hasAttribute("for") 
+            elem.nodeName.toUpperCase() === "LABEL"
+            && elem.hasAttribute("for")
             && document.getElementById(elem.getAttribute("for"))
             && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
         ) {
-            return { skipCurrent: true, skipChildren: true };
+            return { skipCurrent: true, skipChildren: false };
+        }
+
+        // Skip non-interactive content that is a descendant of a for-linked label.
+        // Such content is already surfaced as part of the associated control's announcement.
+        // Interactive descendants (links, buttons, etc.) are allowed through.
+        {
+            const labelFor = elem.closest("label[for]") as HTMLElement | null;
+            const labelForTarget = labelFor && labelFor.getAttribute("for");
+            if (
+                labelFor
+                && labelForTarget
+                && document.getElementById(labelForTarget)
+                && document.getElementById(labelForTarget).getAttribute("type") !== "hidden"
+                && !elem.closest("a[href], [role='link'], button, [role='button']")
+            ) {
+                return { skipCurrent: true, skipChildren: nodeType === 1 };
+            }
         }
 
         const role = cursor.getRole();
