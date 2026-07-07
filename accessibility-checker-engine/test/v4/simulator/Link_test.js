@@ -330,4 +330,33 @@ describe('Link Component Screen Reader Tests', function() {
             ]);
         });
     });
+
+    describe("Link Within Label", function() {
+
+        it("Should render checkbox with aria-label and a linked label containing a link and aria-hidden spans", function() {
+            let fixture = `<div id='fixture'>
+                <h2>Regular order</h2>
+                <div>
+                    <input type="checkbox" id="terms" name="terms" required aria-label="I have read and accept the terms and conditions."/>
+                    <label id="chkLabel" for="terms">
+                        <span aria-hidden="true">I have read and accept the </span>
+                        <a href="#" target="_blank">terms and conditions</a>
+                        <span aria-hidden="true">.</span>
+                    </label>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
+            let result = trimItems(ace.SRController.renderStructure(document));
+
+            expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
+                { "region": "", "heading": `["Regular order", heading level 2]`, "item": `[heading level 2] Regular order`, "tab_focus": "", "image": "", "selector": "#fixture > h2" },
+                { "region": "", "heading": "", "item": `[checkbox, not checked, required, "I have read and accept the terms and conditions."]`, "tab_focus": "", "image": "", "selector": "#fixture > div" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `[checkbox, not checked, required, "I have read and accept the terms and conditions."]`, "image": "", "selector": "#terms" },
+                { "region": "", "heading": "", "item": "[same page link] terms and conditions", "tab_focus": "terms and conditions [same page link]", "image": "", "selector": `#chkLabel > a` },
+                { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
+            ]);
+        });
+    });
 });
