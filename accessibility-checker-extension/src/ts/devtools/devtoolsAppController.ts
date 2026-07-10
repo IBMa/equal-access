@@ -151,157 +151,107 @@ export class DevtoolsAppController {
     }
 
     public hookSelectionChange() {
-        const injectPathGenerator = () => {
-            chrome.devtools.inspectedWindow.eval(`
-   window.__getACEPath = function(node) {
-    function getIndex(n) {
-        if (n.assignedSlot) {
-            const assigned = n.assignedSlot.assignedElements
-                ? n.assignedSlot.assignedElements()
-                : Array.from(n.assignedSlot.assignedNodes()).filter(x => x.nodeType === 1);
-            let count = 0;
-            for (const el of assigned) {
-                if (el === n) break;
-                if (el.localName === n.localName) count++;
-            }
-            return "/" + n.localName + "[" + (count + 1) + "]";
-        }
-        const parent = n.parentNode;
-        if (!parent) return "/" + n.localName + "[1]";
-        let count = 0;
-        const children = parent.children;
-        for (let i = 0; i < children.length; i++) {
-            if (children[i] === n) break;
-            if (children[i].localName === n.localName) count++;
-        }
-        return "/" + n.localName + "[" + (count + 1) + "]";
-    }
-
-    function getSlotIndex(slot) {
-        let count = 1;
-        let sib = slot.previousElementSibling;
-        while (sib) {
-            if (sib.localName === 'slot') count++;
-            sib = sib.previousElementSibling;
-        }
-        return count;
-    }
-
-    // Walk from an <iframe> element up to the top-level document, returning
-    // the path prefix for everything above the iframe boundary.
-    // Same-origin only: cross-origin contentDocument access throws and is caught.
-    function getIframePrefixPath(iframeElem) {
-        let prefix = "";
-        let current = iframeElem;
-        while (current && current.nodeType === 1) {
-            prefix = getIndex(current) + prefix;
-            const parent = current.parentNode;
-            if (!parent) break;
-            if (parent.nodeType === 9) {
-                // Reached the top-level document — stop.
-                break;
-            } else if (parent.nodeType === 11) {
-                prefix = "/#document-fragment[1]" + prefix;
-                current = parent.host;
-            } else if (parent.nodeType === 1) {
-                current = parent;
-            } else {
-                break;
-            }
-        }
-        return prefix;
-    }
-
-    try {
-        if (!node || node.nodeType !== 1) return "";
-
-        let segments = "";
-        let current = node;
-
-        while (current && current.nodeType === 1) {
-            const assignedSlot = current.assignedSlot;
-
-            if (assignedSlot) {
-                segments = getIndex(current) + segments;
-                segments = "/slot[" + getSlotIndex(assignedSlot) + "]" + segments;
-                const slotParent = assignedSlot.parentNode;
-                if (!slotParent) break;
-                if (slotParent.nodeType === 11) {
-                    segments = "/#document-fragment[1]" + segments;
-                    current = slotParent.host;
-                } else if (slotParent.nodeType === 9) {
-                    segments = "/html[1]" + segments;
-                    break;
-                } else if (slotParent.nodeType === 1) {
-                    current = slotParent;
-                } else {
-                    break;
-                }
-            } else {
-                segments = getIndex(current) + segments;
-                const parent = current.parentNode;
-                if (!parent) break;
-
-                if (parent.nodeType === 11) {
-                    segments = "/#document-fragment[1]" + segments;
-                    current = parent.host;
-                } else if (parent.nodeType === 9) {
-                    // Reached a document boundary. Check if this document belongs
-                    // to a same-origin <iframe> so we can prepend its path prefix.
-                    try {
-                        const parentWin = parent.defaultView;
-                        if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
-                            // We are inside a nested document. Find the <iframe> in
-                            // the parent window whose contentDocument is this document.
-                            const parentDoc = parentWin.parent.document;
-                            const iframes = parentDoc.querySelectorAll("iframe");
-                            let iframeElem = null;
-                            for (const iframe of iframes) {
-                                try {
-                                    if (iframe.contentDocument === parent) {
-                                        iframeElem = iframe;
-                                        break;
-                                    }
-                                } catch (e) {
-                                    // Cross-origin iframe — skip silently.
-                                }
-                            }
-                            if (iframeElem) {
-                                segments = getIframePrefixPath(iframeElem) + segments;
-                            }
-                        }
-                    } catch (e) {
-                        // Cross-origin parent window access denied — stop here.
-                    }
-                    break;
-                } else if (parent.nodeType === 1) {
-                    current = parent;
-                } else {
-                    break;
-                }
-            }
-        }
-
-        return segments;
-    } catch(err) {
-        return "";
-    }
-};
-            `);
-        };
-
-        injectPathGenerator();
-        chrome.devtools.network.onNavigated.addListener(() => {
-            injectPathGenerator();
-        });
-
         chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
-            chrome.devtools.inspectedWindow.eval(
-                `window.__getACEPath($0)`,
-                async (result: string) => {
+            chrome.devtools.inspectedWindow.eval(`((node) => {
+                function getIndex(n) {
+                    if (n.assignedSlot) {
+                        const assigned = n.assignedSlot.assignedElements
+                            ? n.assignedSlot.assignedElements()
+                            : Array.from(n.assignedSlot.assignedNodes()).filter(x => x.nodeType === 1);
+                        let count = 0;
+                        for (const el of assigned) {
+                            if (el === n) break;
+                            if (el.localName === n.localName) count++;
+                        }
+                        return "/" + n.localName + "[" + (count + 1) + "]";
+                    }
+                    const parent = n.parentNode;
+                    if (!parent) return "/" + n.localName + "[1]";
+                    let count = 0;
+                    const children = parent.children;
+                    for (let i = 0; i < children.length; i++) {
+                        if (children[i] === n) break;
+                        if (children[i].localName === n.localName) count++;
+                    }
+                    return "/" + n.localName + "[" + (count + 1) + "]";
+                }
+                function getSlotIndex(slot) {
+                    let count = 1;
+                    let sib = slot.previousElementSibling;
+                    while (sib) {
+                        if (sib.localName === 'slot') count++;
+                        sib = sib.previousElementSibling;
+                    }
+                    return count;
+                }
+                function getIframePrefixPath(iframeElem) {
+                    let prefix = "";
+                    let current = iframeElem;
+                    while (current && current.nodeType === 1) {
+                        prefix = getIndex(current) + prefix;
+                        const parent = current.parentNode;
+                        if (!parent) break;
+                        if (parent.nodeType === 9) break;
+                        else if (parent.nodeType === 11) { prefix = "/#document-fragment[1]" + prefix; current = parent.host; }
+                        else if (parent.nodeType === 1) current = parent;
+                        else break;
+                    }
+                    return prefix;
+                }
+                try {
+                    if (!node || node.nodeType !== 1) return "";
+                    let segments = "";
+                    let current = node;
+                    while (current && current.nodeType === 1) {
+                        const assignedSlot = current.assignedSlot;
+                        if (assignedSlot) {
+                            segments = getIndex(current) + segments;
+                            segments = "/slot[" + getSlotIndex(assignedSlot) + "]" + segments;
+                            const slotParent = assignedSlot.parentNode;
+                            if (!slotParent) break;
+                            if (slotParent.nodeType === 11) { segments = "/#document-fragment[1]" + segments; current = slotParent.host; }
+                            else if (slotParent.nodeType === 9) {
+                                try {
+                                    const parentWin = slotParent.defaultView;
+                                    if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                                        const iframes = parentWin.parent.document.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try { if (iframe.contentDocument === slotParent) { segments = getIframePrefixPath(iframe) + segments; break; } } catch(e) {}
+                                        }
+                                    }
+                                } catch(e) {}
+                                break;
+                            }
+                            else if (slotParent.nodeType === 1) current = slotParent;
+                            else break;
+                        } else {
+                            segments = getIndex(current) + segments;
+                            const parent = current.parentNode;
+                            if (!parent) break;
+                            if (parent.nodeType === 11) { segments = "/#document-fragment[1]" + segments; current = parent.host; }
+                            else if (parent.nodeType === 9) {
+                                try {
+                                    const parentWin = parent.defaultView;
+                                    if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                                        const iframes = parentWin.parent.document.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try { if (iframe.contentDocument === parent) { segments = getIframePrefixPath(iframe) + segments; break; } } catch(e) {}
+                                        }
+                                    }
+                                } catch(e) {}
+                                break;
+                            }
+                            else if (parent.nodeType === 1) current = parent;
+                            else break;
+                        }
+                    }
+                    return segments;
+                } catch(err) { return ""; }
+            })($0)`, async (result: string) => {
+                if (result) {
                     await this.devToolsController.setSelectedElementPath(result, true);
                 }
-            );
+            });
         });
         chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
     }
