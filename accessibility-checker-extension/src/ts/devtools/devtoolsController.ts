@@ -461,7 +461,7 @@ export class DevtoolsController extends Controller {
                                 newIssue = issue;
                             }
                         }
-                        await this.setSelectedIssue(newIssue);
+                        if (newIssue) await this.setSelectedIssue(newIssue);
                     }
                 }
             }
