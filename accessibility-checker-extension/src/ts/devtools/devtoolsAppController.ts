@@ -153,53 +153,104 @@ export class DevtoolsAppController {
     public hookSelectionChange() {
         chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
             chrome.devtools.inspectedWindow.eval(`((node) => {
-                let countNode = (node) => { 
-                    let count = 0;
-                    let findName = node.nodeName;
-                    while (node) { 
-                        if (node.nodeName === findName) {
-                            ++count;
+                function getIndex(n) {
+                    if (n.assignedSlot) {
+                        const assigned = n.assignedSlot.assignedElements
+                            ? n.assignedSlot.assignedElements()
+                            : Array.from(n.assignedSlot.assignedNodes()).filter(x => x.nodeType === 1);
+                        let count = 0;
+                        for (const el of assigned) {
+                            if (el === n) break;
+                            if (el.localName === n.localName) count++;
                         }
-                        node = node.previousElementSibling; 
+                        return "/" + n.localName + "[" + (count + 1) + "]";
                     }
-                    return "/"+findName.toLowerCase()+"["+count+"]";
+                    const parent = n.parentNode;
+                    if (!parent) return "/" + n.localName + "[1]";
+                    let count = 0;
+                    const children = parent.children;
+                    for (let i = 0; i < children.length; i++) {
+                        if (children[i] === n) break;
+                        if (children[i].localName === n.localName) count++;
+                    }
+                    return "/" + n.localName + "[" + (count + 1) + "]";
+                }
+                function getSlotIndex(slot) {
+                    let count = 1;
+                    let sib = slot.previousElementSibling;
+                    while (sib) {
+                        if (sib.localName === 'slot') count++;
+                        sib = sib.previousElementSibling;
+                    }
+                    return count;
+                }
+                function getIframePrefixPath(iframeElem) {
+                    let prefix = "";
+                    let current = iframeElem;
+                    while (current && current.nodeType === 1) {
+                        prefix = getIndex(current) + prefix;
+                        const parent = current.parentNode;
+                        if (!parent) break;
+                        if (parent.nodeType === 9) break;
+                        else if (parent.nodeType === 11) { prefix = "/#document-fragment[1]" + prefix; current = parent.host; }
+                        else if (parent.nodeType === 1) current = parent;
+                        else break;
+                    }
+                    return prefix;
                 }
                 try {
-                    let retVal = "";
-                    while (node && node.nodeType === 1) {
-                        retVal = countNode(node)+retVal;
-                        if (node.parentElement) {
-                            node = node.parentElement;
-                        } else {
-                            let parentElement = null;
-                            try {
-                                // Check if we're in a shadow DOM
-                                if (node.parentNode && node.parentNode.nodeType === 11) {
-                                    parentElement = node.parentNode.host;
-                                    retVal = "/#document-fragment[1]"+retVal;
-                                } else {
-                                    // Check if we're in an iframe
-                                    let parentWin = node.ownerDocument.defaultView.parent;
-                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
-                                    for (const iframe of iframes) {
-                                        try {
-                                            if (iframe.contentDocument === node.ownerDocument) {
-                                                parentElement = iframe;
-                                                break;
-                                            }
-                                        } catch (e) {}
+                    if (!node || node.nodeType !== 1) return "";
+                    let segments = "";
+                    let current = node;
+                    while (current && current.nodeType === 1) {
+                        const assignedSlot = current.assignedSlot;
+                        if (assignedSlot) {
+                            segments = getIndex(current) + segments;
+                            segments = "/slot[" + getSlotIndex(assignedSlot) + "]" + segments;
+                            const slotParent = assignedSlot.parentNode;
+                            if (!slotParent) break;
+                            if (slotParent.nodeType === 11) { segments = "/#document-fragment[1]" + segments; current = slotParent.host; }
+                            else if (slotParent.nodeType === 9) {
+                                try {
+                                    const parentWin = slotParent.defaultView;
+                                    if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                                        const iframes = parentWin.parent.document.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try { if (iframe.contentDocument === slotParent) { segments = getIframePrefixPath(iframe) + segments; break; } } catch(e) {}
+                                        }
                                     }
-                                }
-                            } catch (e) {}
-                            node = parentElement;
+                                } catch(e) {}
+                                break;
+                            }
+                            else if (slotParent.nodeType === 1) current = slotParent;
+                            else break;
+                        } else {
+                            segments = getIndex(current) + segments;
+                            const parent = current.parentNode;
+                            if (!parent) break;
+                            if (parent.nodeType === 11) { segments = "/#document-fragment[1]" + segments; current = parent.host; }
+                            else if (parent.nodeType === 9) {
+                                try {
+                                    const parentWin = parent.defaultView;
+                                    if (parentWin && parentWin.parent && parentWin.parent !== parentWin) {
+                                        const iframes = parentWin.parent.document.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try { if (iframe.contentDocument === parent) { segments = getIframePrefixPath(iframe) + segments; break; } } catch(e) {}
+                                        }
+                                    }
+                                } catch(e) {}
+                                break;
+                            }
+                            else if (parent.nodeType === 1) current = parent;
+                            else break;
                         }
                     }
-                    return retVal;
-                } catch (err) {
-                    console.error(err);
-                }
+                    return segments;
+                } catch(err) { return ""; }
             })($0)`, async (result: string) => {
-                await this.devToolsController.setSelectedElementPath(result, true);
+                if (result) {
+                    await this.devToolsController.setSelectedElementPath(result, true);
+                }
             });
         });
         chrome.devtools.inspectedWindow.eval(`inspect(document.documentElement);`);
