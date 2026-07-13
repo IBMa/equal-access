@@ -52,6 +52,6 @@
       "axios": "^1.7.9",
       "@ibm/telemetry-js": "^1.9.1",
       "microdiff": "^1.5.0",
-      "js-yaml": "^4.2.0"
+      "js-yaml": "^5.2.1"
     }
 }
