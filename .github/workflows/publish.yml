@@ -53,7 +53,7 @@ jobs:
         working-directory: accessibility-checker/test-act-w3
       - run: gitactions/publish/achecker-engine.sh
         env:
-          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
 
   accessibility-checker-publish:
       runs-on: ubuntu-22.04
@@ -82,7 +82,7 @@ jobs:
         working-directory: accessibility-checker
       - run: gitactions/publish/achecker.sh
         env:
-          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
 
   karma-accessibility-checker-publish:
       runs-on: ubuntu-22.04
@@ -111,7 +111,7 @@ jobs:
         working-directory: karma-accessibility-checker
       - run: gitactions/publish/karma-achecker.sh
         env:
-          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
 
   cypress-accessibility-checker-publish:
       runs-on: ubuntu-22.04
@@ -142,7 +142,7 @@ jobs:
         working-directory: cypress-accessibility-checker
       - run: gitactions/publish/cypress-achecker.sh
         env:
-          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
 
   vitest-accessibility-checker-publish:
       runs-on: ubuntu-22.04
@@ -173,7 +173,7 @@ jobs:
         working-directory: vitest-accessibility-checker
       - run: gitactions/publish/vitest-achecker.sh
         env:
-          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
 
   extension-build:
     runs-on: ubuntu-22.04

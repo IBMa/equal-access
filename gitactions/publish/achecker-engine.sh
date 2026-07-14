@@ -5,6 +5,7 @@ if [ -n "${GITHUB_REF:10}" ]; then
     cp ../../accessibility-checker/test-act-w3/act-report-v2.json ./
     cp ../../accessibility-checker/test-act-w3/act-report-v2.txt ./
     echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >.npmrc;
+    export NODE_AUTH_TOKEN=$NPM_TOKEN;
     NPM_VERSION="${GITHUB_REF:10}";
     echo "Deploy accessibility-checker-engine version ${NPM_VERSION}...";
     npm --no-git-tag-version version ${NPM_VERSION};
