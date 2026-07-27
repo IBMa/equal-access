@@ -20,10 +20,6 @@
  * Includes tests for option exposure and announcement
  */
 
-// !!!NOTE!!! This test suite is currently disabled. 
-// - Item and tab behavior for combobox's are inconsistent between screen readers. 
-//   Need to define what behavior we want
-
 let ace = require('../../../src/index');
 
 // Helper function to trim region fields in results
@@ -91,8 +87,8 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `["Color:", list box, "Red"]`, "tab_focus": "", "image": "", "selector": "#fixture" },
-                { "region": "", "heading": "", "item": "", "tab_focus": `["Color:", list box, "Red"]`, "image": "", "selector": "#color" },
+                { "region": "", "heading": "", "item": `["Color:", list box]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Color:", list box]`, "image": "", "selector": "#color" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -200,7 +196,7 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `Choose fruit: ["Choose fruit:", combo box, collapsed] Apple`, "tab_focus": `["Choose fruit:", combo box, collapsed]`, "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": `["Choose fruit:", combo box, collapsed, "Apple"]`, "tab_focus": `["Choose fruit:", combo box, collapsed, "Apple"]`, "image": "", "selector": `#fixture > div[role="combobox"]` },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -223,12 +219,7 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `Select item: ["Select item:", combo box, expanded] Item 1`, "tab_focus": `["Select item:", combo box, expanded]`, "image": "", "selector": "#fixture" },
-                { "region": "", "heading": "", "item": `[list box]`, "tab_focus": "", "image": "", "selector": "#listbox2" },
-                { "region": "", "heading": "", "item": `[option, selected] Item 1`, "tab_focus": "", "image": "", "selector": "#listbox2 > li[role=\"option\"]:nth-of-type(1)" },
-                { "region": "", "heading": "", "item": `[option] Item 2`, "tab_focus": "", "image": "", "selector": "#listbox2 > li[role=\"option\"]:nth-of-type(2)" },
-                { "region": "", "heading": "", "item": `[option] Item 3`, "tab_focus": "", "image": "", "selector": "#listbox2 > li[role=\"option\"]:nth-of-type(3)" },
-                { "region": "", "heading": "", "item": `[out of list box]`, "tab_focus": "", "image": "" },
+                { "region": "", "heading": "", "item": `["Select item:", combo box, expanded, "Item 1"]`, "tab_focus": `["Select item:", combo box, expanded, "Item 1"]`, "image": "", "selector": `#fixture > div[role="combobox"]` },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -245,8 +236,8 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `["Search:", combo box, collapsed, edit]`, "tab_focus": "", "image": "", "selector": "#fixture" },
-                { "region": "", "heading": "", "item": "", "tab_focus": `["Search:", combo box, collapsed, edit]`, "image": "", "selector": "#search-combo" },
+                { "region": "", "heading": "", "item": `["Search:", combo box, collapsed, has auto complete, editable, opens list]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Search:", combo box, collapsed, has auto complete, editable, opens list]`, "image": "", "selector": "#search-combo" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -264,7 +255,7 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `Pick one: ["Pick one:", combo box, collapsed] None selected`, "tab_focus": `["Pick one:", combo box, collapsed]`, "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": `["Pick one:", combo box, collapsed, "None selected"]`, "tab_focus": `["Pick one:", combo box, collapsed, "None selected"]`, "image": "", "selector": "#fixture > div[role=\"combobox\"]" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -287,8 +278,8 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `["Select multiple:", list box, "Option 2"]`, "tab_focus": "", "image": "", "selector": "#fixture" },
-                { "region": "", "heading": "", "item": "", "tab_focus": `["Select multiple:", list box, "Option 2"]`, "image": "", "selector": "#multi" },
+                { "region": "", "heading": "", "item": `["Select multiple:", list box, "Option 2", "Option 3"]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Select multiple:", list box, "Option 2", "Option 3"]`, "image": "", "selector": "#multi" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });
@@ -328,8 +319,8 @@ describe('Combobox Component Screen Reader Tests', function() {
             
             expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
                 { "region": "", "heading": "", "item": "[Start of document]", "tab_focus": "", "image": "", "selector": "body" },
-                { "region": "", "heading": "", "item": `["Required field:", combo box, collapsed, required, "Select..."]`, "tab_focus": "", "image": "", "selector": "#fixture" },
-                { "region": "", "heading": "", "item": "", "tab_focus": `["Required field:", combo box, collapsed, required, "Select..."]`, "image": "", "selector": "#required" },
+                { "region": "", "heading": "", "item": `["Required field:", combo box, collapsed, required, invalid entry, "Select..."]`, "tab_focus": "", "image": "", "selector": "#fixture" },
+                { "region": "", "heading": "", "item": "", "tab_focus": `["Required field:", combo box, collapsed, required, invalid entry, "Select..."]`, "image": "", "selector": "#required" },
                 { "region": "", "heading": "", "item": "[End of document]", "tab_focus": "", "image": "" }
             ]);
         });

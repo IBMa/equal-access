@@ -294,6 +294,13 @@ export namespace SRNavigator {
                     if (nestedControl && (nestedControl as HTMLElement).getAttribute("type") !== "hidden") {
                         return retVal = { skipCurrent: true, skipChildren: false };
                     }
+                    // A <label> with no `for` and no nested control, used purely as an aria-labelledby
+                    // target by another element, should be suppressed — it will be read as part of the
+                    // widget's accessible name announcement.
+                    const id = elem.getAttribute("id");
+                    if (id && document.querySelector(`[aria-labelledby~="${id}"]`)) {
+                        return retVal = { skipCurrent: true, skipChildren: false };
+                    }
                 }
             }
 
@@ -315,6 +322,17 @@ export namespace SRNavigator {
             }
 
             const role = cursorStart.getRole();
+
+            // A div/span combobox (role="combobox" on a non-input, non-select element) announces
+            // its value directly from text content or the controlled listbox, so skip its children
+            // to avoid double-announcing the inner text.
+            if (role === "combobox"
+                && elem.nodeName.toUpperCase() !== "SELECT"
+                && elem.nodeName.toUpperCase() !== "INPUT"
+                && !cursor.isEndTag()
+            ) {
+                return retVal = { skipCurrent: false, skipChildren: true };
+            }
 
             // If we have presentational children, read the element, skip the children
             if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
@@ -347,6 +365,20 @@ export namespace SRNavigator {
             if (elem.closest(".ibma-sr-overlay")) {
                 return retVal = { skipCurrent: true, skipChildren: true };
             }
+
+            // Skip popup elements (listbox, tree, grid, dialog) that are owned by a combobox
+            // via aria-controls. In a real SR these are only reachable via aria-activedescendant,
+            // not by DOM traversal, so they should not appear as reading stops.
+            if (nodeType === 1 && !cursor.isEndTag()) {
+                const id = elem.getAttribute("id");
+                if (id) {
+                    const owner = document.querySelector(`[aria-controls~="${id}"]`) as HTMLElement | null;
+                    if (owner && AriaUtil.getResolvedRole(owner) === "combobox") {
+                        return retVal = { skipCurrent: true, skipChildren: true };
+                    }
+                }
+            }
+
             return retVal = null;
         } finally {
             DEBUG && console.log("SKIP_ITEM retVal:", retVal);
