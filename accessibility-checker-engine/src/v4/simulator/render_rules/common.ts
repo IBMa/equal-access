@@ -136,6 +136,11 @@ function getStateAnnouncements(elem: HTMLElement): string {
     // Check for required state (both attribute and aria-required)
     if (elem.hasAttribute("required") || elem.getAttribute("aria-required") === "true") {
         states += ", required";
+        // A required <select> whose selected value is "" is implicitly invalid —
+        // JAWS and NVDA announce "invalid entry" in this case.
+        if (elem.nodeName.toUpperCase() === "SELECT" && (elem as HTMLSelectElement).validity.valueMissing) {
+            states += ", invalid entry";
+        }
     }
 
     // Check for invalid state (aria-invalid)
@@ -347,20 +352,72 @@ export const RULES: SRRendererRule[] = [
                     }
                     state += getStateAnnouncements(elem);
                     return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
-                } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT" && !cursor.getElement().hasAttribute("role")) {
-                    state = getStateAnnouncements(elem);
-                    return `[${quoteNamePadAfter(cursor)}${roleDesc}, has auto complete, editable, opens list${state}]`;
+                } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT") {
+                    if (elem.hasAttribute("aria-expanded")) {
+                        state = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
+                    }
+                    state += getStateAnnouncements(elem);
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}, has auto complete, editable, opens list]`;
                 } else {
                     if (elem.hasAttribute("aria-expanded")) {
                         state = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                         if (elem.hasAttribute("aria-autocomplete")) {
                             state += `, has auto complete`;
                         }
-                        state += `, editable, opens list`
                     }
                     state += getStateAnnouncements(elem);
-                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}]`;
+
+                    // Determine the current value to announce:
+                    // 1. If expanded and aria-controls points to a listbox, use the aria-selected option text
+                    // 2. Otherwise use the combobox element's own text content
+                    let valueStr = "";
+                    const controlsId = elem.getAttribute("aria-controls");
+                    const popup = controlsId ? document.getElementById(controlsId) : null;
+                    if (popup) {
+                        const selectedOption = popup.querySelector("[role='option'][aria-selected='true']") as HTMLElement | null;
+                        if (selectedOption) {
+                            valueStr = `, "${(selectedOption.textContent || "").trim()}"`;
+                        }
+                    }
+                    if (!valueStr) {
+                        const textContent = (elem.textContent || "").trim();
+                        if (textContent) {
+                            valueStr = `, "${textContent}"`;
+                        }
+                    }
+
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
                 }
+            }
+        ]
+    }),
+
+    // Listbox role - covers <select size> / <select multiple>
+    new SRRendererRule({
+        roles: ["listbox"],
+        elems: [],
+        modes: ["item", "combo", "tab_focus"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (cursor.isEndTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "list box");
+                const elem = cursor.getElement();
+                let state = "";
+
+                if (cursor.getNode().nodeName.toUpperCase() === "SELECT") {
+                    const selectElem = cursor.getElement() as HTMLSelectElement;
+                    const selectedOptions = Array.from(selectElem.options).filter(o => o.selected);
+                    const valueStr = selectedOptions
+                        .map(o => quoteNamePadBefore(new SRCursor(o, false), ", "))
+                        .join("");
+                    state += getStateAnnouncements(elem);
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
+                }
+                // ARIA listbox (non-select)
+                state += getStateAnnouncements(elem);
+                const textContent = (elem.textContent || "").trim();
+                const valueStr = textContent ? `, "${textContent}"` : "";
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
             }
         ]
     }),
