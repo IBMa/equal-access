@@ -53,9 +53,11 @@ export declare function accessibilityCheckerPlugin(options?: AccessibilityChecke
 
 export default accessibilityCheckerPlugin;
 
+export { eAssertResult, eRuleLevel } from './lib/common/config/IConfig.js';
+
 // Re-export common types for convenience
 export type { IBaselineReport, IBaselineResult, IEngineReport, SummaryCounts } from './lib/common/engine/IReport.js';
-export type { IConfig, eAssertResult, eRuleLevel } from './lib/common/config/IConfig.js';
+export type { IConfig } from './lib/common/config/IConfig.js';
 
 /**
  * Browser-side accessibility checker functions
