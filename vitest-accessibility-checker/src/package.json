@@ -3,10 +3,17 @@
   "version": "3.0.0",
   "description": "Accessibility Checker for Vitest",
   "main": "index.js",
+  "types": "index.d.ts",
   "exports": {
-    ".": "./index.js",
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
     "./commands": "./commands.js",
-    "./matchers": "./matchers.js"
+    "./matchers": {
+      "types": "./matchers.d.ts",
+      "default": "./matchers.js"
+    }
   },
   "scripts": {
     "postinstall": "ibmtelemetry --config=telemetry.yml"
