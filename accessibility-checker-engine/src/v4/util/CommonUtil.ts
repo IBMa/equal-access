@@ -138,7 +138,8 @@ export class CommonUtil {
             }
             return retVal;
         } else {
-            if (element.hasAttribute("contenteditable")) return true;
+            const ce = element.getAttribute("contenteditable");
+            if (ce === "true" || ce === "") return true;
             return false;
         }
     }
