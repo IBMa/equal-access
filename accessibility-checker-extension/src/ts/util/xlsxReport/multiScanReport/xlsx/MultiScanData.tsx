@@ -17,7 +17,20 @@
 import { IReport, IIssue, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
 
 
-const stringHash = require("string-hash");
+// From https://github.com/darkskyapp/string-hash/blob/master/index.js
+function stringHash(str: string) {
+    var hash = 5381,
+        i = str.length;
+
+    while (i) {
+        hash = (hash * 33) ^ str.charCodeAt(--i);
+    }
+
+    /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+        * integers. Since we want the results to be always positive, convert the
+        * signed int to an unsigned by doing an unsigned bitshift. */
+    return hash >>> 0;
+}
 
 interface XLSXProps {
     settings: ISettings,

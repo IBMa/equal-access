@@ -17,17 +17,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com/IBMa/equal-access/accessibility-checker"
+    "url": "https://github.com/IBMa/equal-access.git"
   },
   "engines": {
     "node": ">=16"
   },
+  "peerDependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "peerDependenciesMeta": {
+    "exceljs": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "chromedriver": "*",
-    "microdiff": "^1.4.0",
-    "exceljs": "^4.3.0",
-    "js-yaml": "^4.1.0",
-    "puppeteer": "^22.14.0"
+    "microdiff": "^1.5.0",
+    "js-yaml": "^4.2.0",
+    "puppeteer": "^25.1.0"
   },
   "devDependencies": {
     "@ibm/telemetry-js": "^1.9.1",

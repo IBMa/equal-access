@@ -19,7 +19,29 @@ import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline.js";
 import { CompressedReport } from "../engine/IReport.js";
 import { eRuleConfidence } from "../engine/IRule.js";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
-import * as ExcelJS from "exceljs";
+
+// Lazy load exceljs - will be null if not installed
+let exceljsLoadPromise: Promise<any> | null = null;
+let exceljsWarningShown = false;
+
+function loadExcelJS(): Promise<any> {
+    if (!exceljsLoadPromise) {
+        // Use dynamic import with a variable to avoid TypeScript checking the module at compile time
+        const moduleName = "exceljs";
+        exceljsLoadPromise = import(/* webpackIgnore: true */ moduleName)
+            .then(module => module)
+            .catch(e => null);
+    }
+    return exceljsLoadPromise;
+}
+
+function showExcelJSWarning() {
+    if (!exceljsWarningShown) {
+        exceljsWarningShown = true;
+        console.warn("Warning: exceljs is not installed. XLSX report generation is disabled.");
+        console.warn("To enable XLSX reports, install exceljs: npm install exceljs");
+    }
+}
 
 type PolicyInfo = {
     tkLevels: eToolkitLevel[]
@@ -76,8 +98,13 @@ export class ACReporterXLSX implements IReporter {
         return {
             summaryPath: reportFilename,
             summary: async (filename?: string) => {
+                const ExcelJSModule = await loadExcelJS();
+                if (!ExcelJSModule) {
+                    showExcelJSWarning();
+                    return;
+                }
                 // @ts-ignore
-                const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ filename, useStyles: true });
+                const workbook = new ExcelJSModule.stream.xlsx.WorkbookWriter({ filename, useStyles: true });
 //                const workbook = new ExcelJS.Workbook({ useStyles: true });
                 ACReporterXLSX.createOverviewSheet(config, summaryData, workbook);
                 ACReporterXLSX.createScanSummarySheet(config, summaryData, workbook);
@@ -89,7 +116,7 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static createOverviewSheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
+    private static createOverviewSheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: any) {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
@@ -241,7 +268,7 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static createScanSummarySheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
+    private static createScanSummarySheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: any) {
 
         const worksheet = workbook.addWorksheet("Scan summary");
 
@@ -350,7 +377,7 @@ export class ACReporterXLSX implements IReporter {
         worksheet.commit();
     }
 
-    private static buildIssueSummaryLevel(worksheet: ExcelJS.Worksheet, fillColor: string, title: string, levelCount: number, levelrowValues) {
+    private static buildIssueSummaryLevel(worksheet: any, fillColor: string, title: string, levelCount: number, levelrowValues: any) {
         //       Level 1 Violation title
         const level1ViolationRow = worksheet.addRow(["", 0]);
         level1ViolationRow.height = 18; // target is 21
@@ -419,7 +446,7 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static buildIssueSummaryTKLevel(worksheet: ExcelJS.Worksheet, title: string, levelCounts: number[], levelVrowValues, levelNRrowValues, levelRrowValues, levelArowValues) {
+    private static buildIssueSummaryTKLevel(worksheet: any, title: string, levelCounts: number[], levelVrowValues: any, levelNRrowValues: any, levelRrowValues: any, levelArowValues: any) {
         /////////////////////////////
         // build Level title
         /////////////////////////////
@@ -447,7 +474,7 @@ export class ACReporterXLSX implements IReporter {
         }
     }
 
-    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
+    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: any) {
 
         let violations = 0;
         let needsReviews = 0;
@@ -662,7 +689,7 @@ export class ACReporterXLSX implements IReporter {
         worksheet.commit();
     }
 
-    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: ExcelJS.Workbook) {
+    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: any) {
         const valueMap: { [key: string]: { [key2: string]: string } } = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",

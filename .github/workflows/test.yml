@@ -76,7 +76,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         os: ubuntu
+    - name: Clear Puppeteer cache
+      run: rm -rf ~/.cache/puppeteer
     - run: npm install
+      working-directory: accessibility-checker
+    - name: Install Puppeteer browsers
+      run: npx puppeteer browsers install chrome
       working-directory: accessibility-checker
     - run: npm run build
       working-directory: accessibility-checker
@@ -118,7 +123,13 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
+      - name: Clear Puppeteer cache
+        run: Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $env:USERPROFILE\.cache\puppeteer
+        shell: pwsh
       - run: npm install
+        working-directory: accessibility-checker
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -163,7 +174,12 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
+      - name: Clear Puppeteer cache
+        run: rm -rf ~/.cache/puppeteer
       - run: npm install
+        working-directory: accessibility-checker
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -208,7 +224,12 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
+      - name: Clear Puppeteer cache
+        run: rm -rf ~/.cache/puppeteer
       - run: npm install
+        working-directory: accessibility-checker
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -247,7 +268,12 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: report-react
+      - name: Clear Puppeteer cache
+        run: rm -rf ~/.cache/puppeteer
       - run: npm install
+        working-directory: accessibility-checker
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -356,10 +382,10 @@ jobs:
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Chrome 147 (stable with Selenium 4.23.0)
+    - name: Chrome 138 (stable with Selenium 4.34.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: 147
+        chrome-version: 138
         install-chromedriver: true
       id: setup-chrome
     - name: Setup and start rule server
@@ -387,10 +413,10 @@ jobs:
       with:
         distribution: 'semeru' # See 'Supported distributions' for available options
         java-version: '17'
-    - name: Chrome 147 (stable with Selenium 4.23.0)
+    - name: Chrome 138 (stable with Selenium 4.34.0)
       uses: browser-actions/setup-chrome@v1
       with:
-        chrome-version: 147
+        chrome-version: 138
         install-chromedriver: true
       id: setup-chrome
     - name: Setup and start rule server
@@ -552,7 +578,12 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
+    - name: Clear Puppeteer cache
+      run: rm -rf ~/.cache/puppeteer
     - run: npm ci
+      working-directory: accessibility-checker-extension/test
+    - name: Install Puppeteer browsers
+      run: npx puppeteer browsers install chrome
       working-directory: accessibility-checker-extension/test
     - name: Setup and start rule server (build only)
       shell: bash

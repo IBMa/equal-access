@@ -15,11 +15,14 @@
     "@types/chai": "^4.3.11",
     "accessibility-checker": "^4",
     "chai": "^5.0.3",
-    "puppeteer": "^24.10.0",
+    "puppeteer": "^25.1.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
     "ts-node": "^10.9.2"
+  },
+  "overrides": {
+    "uuid": "^14"
   }
 }

@@ -46,6 +46,25 @@ export function quoteName(cursor: SRCursor, quoteCharBefore?: string, quoteCharA
 }
 
 /**
+ * Get the role description for an element, using aria-roledescription if present
+ * Falls back to the provided default role name if aria-roledescription is not specified or empty
+ * @param cursor The cursor positioned at the element
+ * @param defaultRole The default role name to use if aria-roledescription is not present
+ * @returns The role description (either custom or default)
+ */
+export function getRoleDescription(cursor: SRCursor, defaultRole: string): string {
+    const elem = cursor.getElement();
+    if (!elem) return defaultRole;
+    
+    const roleDescription = elem.getAttribute("aria-roledescription");
+    if (roleDescription && roleDescription.trim().length > 0) {
+        return roleDescription.trim();
+    }
+    
+    return defaultRole;
+}
+
+/**
  * Generate the screen reader announcement for a link element
  * Distinguishes between same-page links (anchors) and regular links
  * @param cursor The cursor positioned at the link element
@@ -117,6 +136,11 @@ function getStateAnnouncements(elem: HTMLElement): string {
     // Check for required state (both attribute and aria-required)
     if (elem.hasAttribute("required") || elem.getAttribute("aria-required") === "true") {
         states += ", required";
+        // A required <select> whose selected value is "" is implicitly invalid —
+        // JAWS and NVDA announce "invalid entry" in this case.
+        if (elem.nodeName.toUpperCase() === "SELECT" && (elem as HTMLSelectElement).validity.valueMissing) {
+            states += ", invalid entry";
+        }
     }
 
     // Check for invalid state (aria-invalid)
@@ -181,14 +205,29 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "button", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNode() as HTMLElement).getAttribute("aria-pressed") === "true") ?
-                `[toggle button, pressed${quoteNamePadBefore(cursor)}]` : null,
-            (cursor: SRCursor) => (cursor.isStartTag() && (cursor.getNode() as HTMLElement).getAttribute("aria-pressed") === "false") ?
-                `[toggle button, not pressed${quoteNamePadBefore(cursor)}]` : null,
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (!cursor.isStartTag()) return null;
+                const elem = cursor.getNode() as HTMLElement;
+                const roleDesc = getRoleDescription(cursor, "button");
+                if (elem.getAttribute("aria-pressed") === "true") {
+                    return `[toggle ${roleDesc}, pressed${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(elem, mode)}]`;
+                }
+                return null;
+            },
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (!cursor.isStartTag()) return null;
+                const elem = cursor.getNode() as HTMLElement;
+                const roleDesc = getRoleDescription(cursor, "button");
+                if (elem.getAttribute("aria-pressed") === "false") {
+                    return `[toggle ${roleDesc}, not pressed${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(elem, mode)}]`;
+                }
+                return null;
+            },
             (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isEndTag()) return undefined;
                 let expandStr = "";
                 const elem = cursor.getElement();
+                const roleDesc = getRoleDescription(cursor, "button");
                 if (["menu", "true"].includes(elem.getAttribute("aria-haspopup"))) {
                     expandStr += ", menu";
                 }
@@ -196,7 +235,7 @@ export const RULES: SRRendererRule[] = [
                     expandStr += `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                 }
                 expandStr += getStateAnnouncements(elem);
-                return `[${quoteNamePadAfter(cursor)}button${expandStr}${getDescribedByAnnouncements(elem, mode)}]`;
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}${expandStr}${getDescribedByAnnouncements(elem, mode)}]`;
             },
             (cursor: SRCursor) => { if (cursor.isEndTag()) return ""; }
         ]
@@ -211,6 +250,7 @@ export const RULES: SRRendererRule[] = [
             (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag()) {
                     const elem = cursor.getNode() as HTMLInputElement;
+                    const roleDesc = getRoleDescription(cursor, "checkbox");
                     let stateStr = "";
                     if (elem.getAttribute("aria-checked") === "mixed") {
                         stateStr = "half checked";
@@ -224,10 +264,67 @@ export const RULES: SRRendererRule[] = [
                         stateStr = bChecked ? "checked" : "not checked";
                     }
                     stateStr += getStateAnnouncements(cursor.getElement());
-                    return `[checkbox, ${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
+                    return `[${roleDesc}, ${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
                 } else {
                     return "";
                 }
+            }
+        ]
+    }),
+
+    // Cell, Columnheader, and Rowheader roles
+    new SRRendererRule({
+        roles: ["cell", "columnheader", "rowheader"],
+        elems: [],
+        modes: ["item", "table"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (!cursor.isStartTag()) return null;
+                
+                // Get the cell element
+                const cellElem = cursor.getElement();
+                if (!cellElem) return null;
+                
+                // Check if the cell has any visible content by checking:
+                // 1. Text content (trimmed)
+                // 2. Child elements with roles (buttons, links, etc.)
+                // 3. Images with alt text
+                
+                const textContent = cellElem.textContent?.trim() || "";
+                
+                // Check for child elements with interactive roles or content
+                const walker = new DOMWalker(cellElem, false, cellElem, false);
+                let hasContent = textContent.length > 0;
+                
+                if (!hasContent) {
+                    // Check for elements that would have content (buttons, links, images, etc.)
+                    while (walker.nextNode()) {
+                        if (walker.node.nodeType === 1 && !walker.bEndTag) {
+                            const elem = walker.node as HTMLElement;
+                            const role = AriaUtil.getResolvedRole(elem);
+                            
+                            // Check for interactive elements or elements with accessible names
+                            if (role && ARIADefinitions.designPatterns[role]) {
+                                hasContent = true;
+                                break;
+                            }
+                            
+                            // Check for images with alt text
+                            if (elem.nodeName.toUpperCase() === "IMG" && elem.hasAttribute("alt")) {
+                                hasContent = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // If the cell is empty, return "[blank]"
+                if (!hasContent) {
+                    return "[blank]";
+                }
+                
+                // Otherwise, return null to let default rendering continue
+                return null;
             }
         ]
     }),
@@ -240,6 +337,8 @@ export const RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 if (cursor.isEndTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "combo box");
+                const elem = cursor.getElement();
                 let state = "";
                 if (cursor.getNode().nodeName.toUpperCase() === "SELECT") {
                     state = ", collapsed";
@@ -251,20 +350,74 @@ export const RULES: SRRendererRule[] = [
                         let temp = new SRCursor(valueElem, false);
                         valueStr = quoteNamePadBefore(temp, ", ");
                     }
-                    return `[${quoteNamePadAfter(cursor)}combo box${state}${valueStr}]`;
-                } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT" && !cursor.getElement().hasAttribute("role")) {
-                    return `[${quoteNamePadAfter(cursor)}combo box, has auto complete, editable, opens list]`;
+                    state += getStateAnnouncements(elem);
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
+                } else if (cursor.getNode().nodeName.toUpperCase() === "INPUT") {
+                    if (elem.hasAttribute("aria-expanded")) {
+                        state = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
+                    }
+                    state += getStateAnnouncements(elem);
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}, has auto complete, editable, opens list]`;
                 } else {
-                    const elem = cursor.getElement();
                     if (elem.hasAttribute("aria-expanded")) {
                         state = `, ${elem.getAttribute("aria-expanded") === "true" ? "expanded" : "collapsed"}`;
                         if (elem.hasAttribute("aria-autocomplete")) {
                             state += `, has auto complete`;
                         }
-                        state += `, editable, opens list`
                     }
-                    return `[combo box${state}]`;
+                    state += getStateAnnouncements(elem);
+
+                    // Determine the current value to announce:
+                    // 1. If expanded and aria-controls points to a listbox, use the aria-selected option text
+                    // 2. Otherwise use the combobox element's own text content
+                    let valueStr = "";
+                    const controlsId = elem.getAttribute("aria-controls");
+                    const popup = controlsId ? document.getElementById(controlsId) : null;
+                    if (popup) {
+                        const selectedOption = popup.querySelector("[role='option'][aria-selected='true']") as HTMLElement | null;
+                        if (selectedOption) {
+                            valueStr = `, "${(selectedOption.textContent || "").trim()}"`;
+                        }
+                    }
+                    if (!valueStr) {
+                        const textContent = (elem.textContent || "").trim();
+                        if (textContent) {
+                            valueStr = `, "${textContent}"`;
+                        }
+                    }
+
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
                 }
+            }
+        ]
+    }),
+
+    // Listbox role - covers <select size> / <select multiple>
+    new SRRendererRule({
+        roles: ["listbox"],
+        elems: [],
+        modes: ["item", "combo", "tab_focus"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (cursor.isEndTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "list box");
+                const elem = cursor.getElement();
+                let state = "";
+
+                if (cursor.getNode().nodeName.toUpperCase() === "SELECT") {
+                    const selectElem = cursor.getElement() as HTMLSelectElement;
+                    const selectedOptions = Array.from(selectElem.options).filter(o => o.selected);
+                    const valueStr = selectedOptions
+                        .map(o => quoteNamePadBefore(new SRCursor(o, false), ", "))
+                        .join("");
+                    state += getStateAnnouncements(elem);
+                    return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
+                }
+                // ARIA listbox (non-select)
+                state += getStateAnnouncements(elem);
+                const textContent = (elem.textContent || "").trim();
+                const valueStr = textContent ? `, "${textContent}"` : "";
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}${state}${valueStr}]`;
             }
         ]
     }),
@@ -609,6 +762,7 @@ export const RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
                 if (cursor.isStartTag()) {
+                    const roleDesc = getRoleDescription(cursor, "radio button");
                     let bChecked = false;
                     if (cursor.getElement().hasAttribute("aria-checked")) {
                         bChecked = cursor.getElement().getAttribute("aria-checked") === "true";
@@ -616,7 +770,7 @@ export const RULES: SRRendererRule[] = [
                         bChecked = (cursor.getNode() as any).checked;
                     }
                     let stateStr = getStateAnnouncements(cursor.getElement());
-                    return `[radio button, ${bChecked ? "checked" : "not checked"}${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
+                    return `[${roleDesc}, ${bChecked ? "checked" : "not checked"}${stateStr}${quoteNamePadBefore(cursor)}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`
                 } else {
                     return "";
                 }
@@ -650,7 +804,16 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}slider, ${(cursor.getNode() as any).value}${getDescribedByAnnouncements(cursor.getElement(), mode)}]` : ""
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (!cursor.isStartTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "slider");
+                const elem = cursor.getElement();
+                // Check for aria-valuenow first, then fall back to native value property
+                const value = elem.hasAttribute("aria-valuenow")
+                    ? elem.getAttribute("aria-valuenow")
+                    : (cursor.getNode() as any).value;
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}, ${value}${getDescribedByAnnouncements(cursor.getElement(), mode)}]`;
+            }
         ]
     }),
 
@@ -660,7 +823,11 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => cursor.isStartTag() ? `[${quoteNamePadAfter(cursor)}spinbutton, editable${getDescribedByAnnouncements(cursor.getElement(), mode)}]` : ""
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (!cursor.isStartTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "spinbutton");
+                return `[${quoteNamePadAfter(cursor)}${roleDesc}, editable${getDescribedByAnnouncements(cursor.getElement(), mode)}]`;
+            }
         ]
     }),
 
@@ -670,7 +837,11 @@ export const RULES: SRRendererRule[] = [
         elems: [],
         modes: ["item", "tab_focus"],
         tests: [
-            (cursor: SRCursor) => (cursor.isStartTag() && `[tab${(cursor.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected" : ""}${quoteNamePadBefore(cursor)}]`) || ""
+            (cursor: SRCursor) => {
+                if (!cursor.isStartTag()) return "";
+                const roleDesc = getRoleDescription(cursor, "tab");
+                return `[${roleDesc}${(cursor.getNode() as HTMLElement).getAttribute("aria-selected") === "true" ? ", selected" : ""}${quoteNamePadBefore(cursor)}]`;
+            }
         ]
     }),
 
@@ -752,7 +923,7 @@ export const RULES: SRRendererRule[] = [
                     }
     
                     let attributes = "";
-                    if (elem.hasAttribute("placeholder")) {
+                    if (elem.hasAttribute("placeholder") && elem.getAttribute("placeholder").trim().length > 0) {
                         attributes += `, placeholder: ${elem.getAttribute("placeholder")}`;
                     }
                     attributes += getStateAnnouncements(elem);

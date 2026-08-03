@@ -1,6 +1,14 @@
 # vitest-accessibility-checker
 
-Accessibility testing plugin for Vitest that integrates IBM Equal Access Accessibility Checker.
+**⚠️ Important: This package requires Vitest Browser Mode**
+
+Accessibility testing plugin for Vitest that integrates IBM Equal Access Accessibility Checker. This package is designed specifically for [Vitest Browser Mode](https://vitest.dev/guide/browser/) and requires a real browser environment to run accessibility scans.
+
+## Requirements
+
+- **Vitest 2.0+** with [Browser Mode](https://vitest.dev/guide/browser/) enabled
+- A browser provider (Playwright, WebdriverIO, or Puppeteer)
+- Node.js 16 or higher
 
 ## Installation
 
@@ -8,11 +16,21 @@ Accessibility testing plugin for Vitest that integrates IBM Equal Access Accessi
 npm install --save-dev vitest-accessibility-checker
 ```
 
+### Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+
+```bash
+npm install --save-dev exceljs
+```
+
+Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Usage
 
-### 1. Configure Vitest
+### 1. Configure Vitest with Browser Mode
 
-Add the plugin to your `vitest.config.js`:
+**Browser Mode is required.** Add the plugin to your `vitest.config.js` and ensure browser mode is enabled:
 
 ```javascript
 import { defineConfig } from 'vitest/config'

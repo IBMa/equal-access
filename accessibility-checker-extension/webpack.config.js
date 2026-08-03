@@ -176,13 +176,24 @@ module.exports = {
             {
                 from: path.join(archivePath, "archives"),
                 to: path.join(distRootPath, "archives"),
-                globOptions: {
-                    ignore: [
-                        path.join("**", "ace-*.js"),
-                        path.join("**", "doc"),
-                        path.join("**", "2020.*", "**", "*"),
-                        path.join("**", "2021.*", "**", "*"),
-                    ]
+                filter: (resourcePath) => {
+                    // Exclude ace-*.js files and their LICENSE.txt files
+                    if (/[/\\]ace-[^/\\]*\.js(\.LICENSE\.txt)?$/.test(resourcePath)) {
+                        return false;
+                    }
+                    // Exclude doc directories
+                    if (/[/\\]doc[/\\]/.test(resourcePath)) {
+                        return false;
+                    }
+                    // Exclude 2020-2022.* versions
+                    if (/[/\\](2020|2021|2022)\.[^/\\]*[/\\]/.test(resourcePath)) {
+                        return false;
+                    }
+                    // Exclude 2023.01.* through 2023.04.* versions
+                    if (/[/\\]2023\.(01|02|03|04|05|06|07)\.[^/\\]*[/\\]/.test(resourcePath)) {
+                        return false;
+                    }
+                    return true;
                 }
             }
         ]}),

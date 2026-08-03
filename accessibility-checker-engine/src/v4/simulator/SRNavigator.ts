@@ -97,7 +97,7 @@ export namespace SRNavigator {
             const bElem = b.getElement();
             const aTabindex = getExplicitTabindex(aElem) || 0;
             const bTabindex = getExplicitTabindex(bElem) || 0;
-            if (aTabindex !== bTabindex) return aTabindex - bTabindex;
+            if (aTabindex !== bTabindex) return bTabindex - aTabindex;
             return SRCursor.compare(a, b);
         });
 
@@ -279,23 +279,60 @@ export namespace SRNavigator {
             }
             if (elem.nodeName.toUpperCase() === "BODY") return retVal = { skipCurrent: false, skipChildren: false };
 
-            // Skip labels that are associated with controls - they'll be read with the related input
+            // Skip labels that are associated with controls - they'll be read with the related input.
+            // Keep children so interactive content (e.g. links) inside the label still appears in
+            // reading/tab order.
             if (elem.nodeName.toUpperCase() === "LABEL") {
                 if (
                     elem.hasAttribute("for")
                     && document.getElementById(elem.getAttribute("for"))
                     && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
                 ) {
-                    return retVal = { skipCurrent: true, skipChildren: true };
+                    return retVal = { skipCurrent: true, skipChildren: false };
                 } else {
                     const nestedControl = elem.querySelector("input, select, textarea, button, [role='checkbox'], [role='combobox'], [role='listbox'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='radio'], [role='searchbox'], [role='slider'], [role='spinbutton'], [role='switch'], [role='textbox']");
                     if (nestedControl && (nestedControl as HTMLElement).getAttribute("type") !== "hidden") {
                         return retVal = { skipCurrent: true, skipChildren: false };
                     }
+                    // A <label> with no `for` and no nested control, used purely as an aria-labelledby
+                    // target by another element, should be suppressed — it will be read as part of the
+                    // widget's accessible name announcement.
+                    const id = elem.getAttribute("id");
+                    if (id && document.querySelector(`[aria-labelledby~="${id}"]`)) {
+                        return retVal = { skipCurrent: true, skipChildren: false };
+                    }
+                }
+            }
+
+            // Skip non-interactive content that is a descendant of a for-linked label.
+            // Such content is already surfaced as part of the associated control's announcement.
+            // Interactive descendants (links, buttons, etc.) are allowed through.
+            {
+                const labelFor = elem.closest("label[for]") as HTMLElement | null;
+                const labelForTarget = labelFor && labelFor.getAttribute("for");
+                if (
+                    labelFor
+                    && labelForTarget
+                    && document.getElementById(labelForTarget)
+                    && document.getElementById(labelForTarget).getAttribute("type") !== "hidden"
+                    && !elem.closest("a[href], [role='link'], button, [role='button']")
+                ) {
+                    return retVal = { skipCurrent: true, skipChildren: nodeType === 1 };
                 }
             }
 
             const role = cursorStart.getRole();
+
+            // A div/span combobox (role="combobox" on a non-input, non-select element) announces
+            // its value directly from text content or the controlled listbox, so skip its children
+            // to avoid double-announcing the inner text.
+            if (role === "combobox"
+                && elem.nodeName.toUpperCase() !== "SELECT"
+                && elem.nodeName.toUpperCase() !== "INPUT"
+                && !cursor.isEndTag()
+            ) {
+                return retVal = { skipCurrent: false, skipChildren: true };
+            }
 
             // If we have presentational children, read the element, skip the children
             if (AriaUtil.containsPresentationalChildrenOnly(elem)) {
@@ -328,6 +365,20 @@ export namespace SRNavigator {
             if (elem.closest(".ibma-sr-overlay")) {
                 return retVal = { skipCurrent: true, skipChildren: true };
             }
+
+            // Skip popup elements (listbox, tree, grid, dialog) that are owned by a combobox
+            // via aria-controls. In a real SR these are only reachable via aria-activedescendant,
+            // not by DOM traversal, so they should not appear as reading stops.
+            if (nodeType === 1 && !cursor.isEndTag()) {
+                const id = elem.getAttribute("id");
+                if (id) {
+                    const owner = document.querySelector(`[aria-controls~="${id}"]`) as HTMLElement | null;
+                    if (owner && AriaUtil.getResolvedRole(owner) === "combobox") {
+                        return retVal = { skipCurrent: true, skipChildren: true };
+                    }
+                }
+            }
+
             return retVal = null;
         } finally {
             DEBUG && console.log("SKIP_ITEM retVal:", retVal);
@@ -349,14 +400,33 @@ export namespace SRNavigator {
         if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
         // We have an elemenet
         if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
-        // Skip label fors - they'll be read with the related input
+        // Skip label fors - they'll be read with the related input.
+        // Keep children so interactive content (e.g. links) inside the label still appears in
+        // reading/tab order.
         if (
-            elem.nodeName.toUpperCase() === "LABEL" 
-            && elem.hasAttribute("for") 
+            elem.nodeName.toUpperCase() === "LABEL"
+            && elem.hasAttribute("for")
             && document.getElementById(elem.getAttribute("for"))
             && document.getElementById(elem.getAttribute("for")).getAttribute("type") !== "hidden"
         ) {
-            return { skipCurrent: true, skipChildren: true };
+            return { skipCurrent: true, skipChildren: false };
+        }
+
+        // Skip non-interactive content that is a descendant of a for-linked label.
+        // Such content is already surfaced as part of the associated control's announcement.
+        // Interactive descendants (links, buttons, etc.) are allowed through.
+        {
+            const labelFor = elem.closest("label[for]") as HTMLElement | null;
+            const labelForTarget = labelFor && labelFor.getAttribute("for");
+            if (
+                labelFor
+                && labelForTarget
+                && document.getElementById(labelForTarget)
+                && document.getElementById(labelForTarget).getAttribute("type") !== "hidden"
+                && !elem.closest("a[href], [role='link'], button, [role='button']")
+            ) {
+                return { skipCurrent: true, skipChildren: nodeType === 1 };
+            }
         }
 
         const role = cursor.getRole();

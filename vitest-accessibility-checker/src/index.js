@@ -24,9 +24,14 @@
 // Only export the plugin for Vitest configuration
 // Do NOT export browser-side functions here as Vite will try to bundle them
 const { accessibilityCheckerPlugin } = require('./plugin');
+const IConfig = require('./lib/common/config/IConfig');
+const eRuleLevel = IConfig.eRuleLevel;
+const eAssertResult = IConfig.eAssertResult;
 
 module.exports = {
-    accessibilityCheckerPlugin
+    accessibilityCheckerPlugin,
+    eRuleLevel,
+    eAssertResult
 };
 
 // Default export for ES modules

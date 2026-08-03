@@ -1457,6 +1457,16 @@ export class AriaUtil {
                 let pair = AccNameUtil.computeAccessibleName(elem);
                 if (pair && pair.name && pair.name.trim().length > 0)
                     name = pair.name.trim();
+
+                // check neested landmark to calculate the accessible name
+                const ancestors = [...landmarkElems].filter((e) => e.contains(elem) && e !== elem);
+                if (ancestors.length > 1) {
+                    ancestors.forEach((ancestor) => {
+                        const ancestor_pair = AccNameUtil.computeAccessibleName(ancestor);
+                        if (ancestor_pair && ancestor_pair.name && ancestor_pair.name.trim().length > 0)
+                            name = ancestor_pair.name.trim() + " " + name;
+                    });
+                }
                 
                 const role = AriaUtil.getResolvedRole(elem);
                 nameMap.push({"elem" : elem, "role" : role, "name": name});    
