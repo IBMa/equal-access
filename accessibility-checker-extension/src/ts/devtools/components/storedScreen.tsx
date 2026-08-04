@@ -40,6 +40,7 @@ interface IStoredScreenState {
     storedReports: IStoredReportMeta[]
     deleteSelectedRows?: IStoredReportMeta[]
     detailSelectedRow?: number
+    returnFocusToRow?: number
 }
 
 interface IStoredScreenProps {
@@ -48,8 +49,27 @@ interface IStoredScreenProps {
 export default class StoredScreen extends React.Component<IStoredScreenProps, IStoredScreenState> {
     private devtoolsAppController = getDevtoolsAppController();
     private devtoolsController = getDevtoolsController(this.devtoolsAppController.toolTabId);
+    private tableRef = React.createRef<HTMLDivElement>();
     state: IStoredScreenState = {
         storedReports: []
+    }
+
+    componentDidUpdate(_prevProps: IStoredScreenProps, prevState: IStoredScreenState) {
+        // Focus management: when returning from detail view, restore focus to the
+        // detail button for the row that was opened, or fall back to the search field.
+        if (prevState.detailSelectedRow !== undefined && this.state.detailSelectedRow === undefined && this.state.returnFocusToRow !== undefined) {
+            const rowId = this.state.returnFocusToRow;
+            // Try the detail button for the originating row first
+            const detailBtn = this.tableRef.current?.querySelector<HTMLElement>(`[data-detail-row="${rowId}"]`);
+            if (detailBtn) {
+                detailBtn.focus();
+            } else {
+                // Fall back to the search field
+                const searchInput = this.tableRef.current?.querySelector<HTMLElement>('input[id="table_filter"]');
+                searchInput?.focus();
+            }
+            this.setState({ returnFocusToRow: undefined });
+        }
     }
 
     async componentDidMount(): Promise<void> {
@@ -95,7 +115,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                 <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                     <h2>Stored scans</h2>
                     <div style={{marginTop: "1rem"}} />
-                    <div style={{
+                    <div ref={this.tableRef} style={{
                         display: (this.state.deleteSelectedRows || detailRow) ? "none": "block"
                     }}>
                         <BasicTable
@@ -135,8 +155,9 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                             data={this.state.storedReports}
                             className="StoredReportsTable"
                             onRow={async (rowId: string) => {
-                                this.setState({ detailSelectedRow: parseInt(rowId)})
+                                this.setState({ detailSelectedRow: parseInt(rowId), returnFocusToRow: parseInt(rowId) })
                             }}
+                            detailButtonProps={(rowId: string) => ({ "data-detail-row": rowId })}
                             fieldMapper={this.fieldMapper}
                         />
                     </div>
@@ -167,8 +188,9 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                     </>}
                     { detailRow && <>
                         <div>
-                            <Link onClick={() => {
-                                this.setState({ detailSelectedRow: undefined })
+                            <Link href="#" onClick={(e: React.MouseEvent) => {
+                                e.preventDefault();
+                                this.setState({ detailSelectedRow: undefined });
                             }}>Back to stored scans</Link>
                         </div>
                         <Grid className="storedScreen">
@@ -180,10 +202,11 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                 <div><strong>Page title: </strong>{detailRow.pageTitle}</div>
                                 <div><strong>Scan time: </strong>{new Date(detailRow.timestamp).toLocaleString()}</div>
                                 <div style={{marginTop: ".5rem"}} />
-                                <TextInput 
+                                <TextInput
+                                    id={`detail_label_${this.state.detailSelectedRow}`}
                                     style={{backgroundColor: "white"}}
-                                    labelText="Scan label" 
-                                    value={detailRow.label} 
+                                    labelText="Scan label"
+                                    value={detailRow.label}
                                     onChange={(evt: any) => {
                                         this.updateLabel(this.state.detailSelectedRow!, evt.target.value);
                                     }}
