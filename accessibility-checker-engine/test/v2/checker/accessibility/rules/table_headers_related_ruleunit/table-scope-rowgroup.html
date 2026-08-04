@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2026- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>table_headers_related scope="rowgroup" test cases</title>
+</head>
+
+<body>
+    <h2>Test case: table-scope-rowgroup.html</h2>
+
+    <p>A complex table using scope="rowgroup" on spanning row-group headers must not trigger a violation.</p>
+
+    <!-- Valid: th with scope="rowgroup" spans multiple rows; data cells use headers attribute -->
+    <table id="valid-rowgroup">
+        <thead>
+            <tr>
+                <th scope="col" id="rg-name">Name</th>
+                <th scope="col" id="rg-score">Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="rowgroup" rowspan="2" id="rg-group-a">Group A</th>
+                <th scope="row" id="rg-alice">Alice</th>
+                <td headers="rg-group-a rg-alice rg-score">90</td>
+            </tr>
+            <tr>
+                <th scope="row" id="rg-bob">Bob</th>
+                <td headers="rg-group-a rg-bob rg-score">85</td>
+            </tr>
+            <tr>
+                <th scope="rowgroup" rowspan="2" id="rg-group-b">Group B</th>
+                <th scope="row" id="rg-carol">Carol</th>
+                <td headers="rg-group-b rg-carol rg-score">92</td>
+            </tr>
+            <tr>
+                <th scope="row" id="rg-dave">Dave</th>
+                <td headers="rg-group-b rg-dave rg-score">88</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["table_headers_related"],
+            results: [{
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/thead[1]/tr[1]/th[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/columnheader[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/thead[1]/tr[1]/th[2]",
+                    "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/columnheader[2]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/rowheader[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[2]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/rowheader[2]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/cell[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/th[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[2]/rowheader[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[2]/cell[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/th[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[3]/rowheader[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/th[2]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[3]/rowheader[2]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[3]/cell[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[4]/th[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[4]/rowheader[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }, {
+                "ruleId": "table_headers_related",
+                "value": ["INFORMATION", "PASS"],
+                "path": {
+                    "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[4]/td[1]",
+                    "aria": "/document[1]/table[1]/rowgroup[2]/row[4]/cell[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }]
+        }
+    </script>
+</body>
+
+</html>
