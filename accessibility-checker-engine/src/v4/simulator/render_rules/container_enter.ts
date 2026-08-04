@@ -170,15 +170,26 @@ export let RULES: SRRendererRule[] = [
         modes: ["item", "region"],
         tests: [
             (cursor: SRCursor) => {
+                if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
+                    const elem = cursor.getElement();
+                    const hasSummary = Array.from(elem.children).some(
+                        c => c.nodeName.toUpperCase() === "SUMMARY"
+                    );
+                    if (hasSummary) {
+                        // The <summary> child speaks as the disclosure button; suppress
+                        // the container-enter announcement entirely.
+                        return "";
+                    }
+                    // No explicit <summary>: in a real browser the UA injects a default
+                    // "Details" summary.  jsdom does not, so we announce the widget here
+                    // as a fallback using the same default label a real browser would use.
+                    return `["Details", button, ${elem.hasAttribute("open") ? "expanded" : "collapsed"}]`;
+                }
                 if (cursor.getNameInfo() === null) return null;
                 if (cursor.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
                     return "";
                 }
-                if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
-                    return `[button, ${cursor.getElement().hasAttribute("open") ? "expanded": "collapsed"}]`;
-                } else {
-                    return `[grouping${quoteNamePadBefore(cursor)}]`;
-                }
+                return `[grouping${quoteNamePadBefore(cursor)}]`;
             }
         ]
     }),
@@ -190,15 +201,23 @@ export let RULES: SRRendererRule[] = [
         modes: ["tab_focus"],
         tests: [
             (cursor: SRCursor) => {
+                if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
+                    const elem = cursor.getElement();
+                    const hasSummary = Array.from(elem.children).some(
+                        c => c.nodeName.toUpperCase() === "SUMMARY"
+                    );
+                    if (hasSummary) {
+                        // <summary> is the tab stop, not <details> itself.
+                        return null;
+                    }
+                    // No <summary>: <details> itself is focusable (UA default behaviour).
+                    return `["Details", button, ${elem.hasAttribute("open") ? "expanded" : "collapsed"}]`;
+                }
                 if (cursor.getNameInfo() === null) return null;
                 if (cursor.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
                     return "";
                 }
-                if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
-                    return `[button, ${cursor.getElement().hasAttribute("open") ? "expanded": "collapsed"}]`;
-                } else {
-                    return ``;
-                }
+                return ``;
             }
         ]
     }),
