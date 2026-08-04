@@ -96,6 +96,11 @@ export const table_headers_related: Rule = {
                             // scope is not enough.
                             if (!CommonUtil.attributeNonEmpty(gridCell, "axis"))
                                 lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
+                        } else if (gridCell.getAttribute("scope") == "rowgroup") {
+                            // If there's an axis attribute, it must be referred to by headers,
+                            // scope is not enough.
+                            if (!CommonUtil.attributeNonEmpty(gridCell, "axis"))
+                                lookup[CacheUtil.getCache(gridCell, "table_headers_related", null)] = true;
                         } else if (gridCell.getAttribute("scope") == "col") {
                             scopedCols[j] = true;
                             // If there's an axis attribute, it must be referred to by headers,

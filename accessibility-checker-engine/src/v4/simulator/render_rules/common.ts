@@ -456,6 +456,54 @@ export const RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Contenteditable (editable region) - elements with contenteditable="true" (or "")
+    // Must come before the generic/document rule so it takes precedence.
+    // Screen readers (JAWS/NVDA) announce these as an editable section when entering
+    // and "out of section" when leaving.
+    // We use a broad element list (covering the most common host elements) plus
+    // "generic" and "paragraph" roles so both bare <div> and labelled variants are caught.
+    // The test function always checks the attribute and bails out when:
+    //   - the attribute is absent or "false"
+    //   - an explicit ARIA role overrides the semantics (e.g. role="textbox")
+    new SRRendererRule({
+        roles: ["generic", "paragraph"],
+        elems: ["DIV", "SPAN", "P", "SECTION", "ARTICLE", "HEADER", "FOOTER", "MAIN", "ASIDE", "NAV", "LI", "TD", "TH", "PRE", "BLOCKQUOTE", "FIGURE", "FIGCAPTION", "DETAILS", "SUMMARY"],
+        modes: ["item", "tab_focus"],
+        tests: [
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                const elem = cursor.getElement();
+                if (!elem) return null;
+                const ce = elem.getAttribute("contenteditable");
+                if (ce !== "true" && ce !== "") return null;
+                // Defer to the explicit-role rule when an author provides a concrete ARIA role
+                // (e.g. role="textbox") — those roles carry richer semantics and their own rules.
+                if (elem.hasAttribute("role")) return null;
+                // <p> retains its "paragraph" semantics even when editable.
+                const isParagraph = cursor.getRole() === "paragraph" || elem.nodeName.toUpperCase() === "P";
+                if (cursor.isEndTag()) {
+                    return mode === "item" ? (isParagraph ? "[out of paragraph]" : "[out of section]") : "";
+                }
+                // aria-readonly is not a supported state on contenteditable elements —
+                // screen readers (JAWS/NVDA) ignore it entirely, so we exclude it here.
+                // Only disabled is meaningful (it overrides the editable semantics).
+                let stateAnnouncements = "";
+                if (elem.hasAttribute("disabled") || elem.getAttribute("aria-disabled") === "true") {
+                    stateAnnouncements = ", disabled";
+                }
+                const containerWord = isParagraph ? "paragraph" : "section";
+                // In tab_focus mode, only append textContent when the accessible name
+                // is extrinsic (aria-label / aria-labelledby, i.e. nameFrom ≠ "content"/"text").
+                // When nameFrom IS "content", jumpCurrentEnd already walks children so
+                // appending again would duplicate the text.
+                const nameInfo = cursor.getNameInfo();
+                const nameFromContent = !nameInfo || ["content", "text"].includes(nameInfo.nameFrom);
+                const textContent = (mode === "tab_focus" && !nameFromContent) ? elem.textContent?.trim() : "";
+                const contentSuffix = textContent ? ` ${textContent}` : "";
+                return `[${quoteNamePadAfter(cursor)}${containerWord}, editable${stateAnnouncements}]${contentSuffix}`;
+            }
+        ]
+    }),
+
     // Document role
     new SRRendererRule({
         roles: ["document", "generic"],
@@ -1277,6 +1325,45 @@ export const RULES: SRRendererRule[] = [
                 if (mn === "2") return `${mi} [squared]`;
                 if (mn === "3") return `${mi} [cubed]`;
                 return `${mi} [to the ${mn}]`;
+            }
+        ]
+    }),
+
+    // Summary element — the disclosure button for a <details> widget.
+    // <summary> has implicitRole: null in ARIADefinitions so no role-based
+    // button rule fires.  We add an explicit element rule that announces it as
+    // a button with the collapsed / expanded state from the parent <details>.
+    new SRRendererRule({
+        roles: [],
+        elems: ["SUMMARY"],
+        modes: ["item", "button", "tab_focus"],
+        tests: [
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (cursor.isEndTag()) return "";
+                const summaryElem = cursor.getElement();
+                if (!summaryElem) return null;
+                // Only the first <summary> that is a direct child of <details>
+                // acts as the disclosure button.
+                const detailsParent = summaryElem.parentElement;
+                if (!detailsParent || detailsParent.nodeName.toUpperCase() !== "DETAILS") return null;
+                const firstSummary = Array.from(detailsParent.children).find(
+                    c => c.nodeName.toUpperCase() === "SUMMARY"
+                );
+                if (!firstSummary || !firstSummary.isSameNode(summaryElem)) return null;
+                const stateStr = detailsParent.hasAttribute("open") ? "expanded" : "collapsed";
+                // <summary> has implicitRole: null so AccNameUtil may not compute a name;
+                // read aria-label first, then fall back to visible text content.
+                const ariaLabel = summaryElem.getAttribute("aria-label")?.trim();
+                const textContent = summaryElem.textContent?.trim() || "";
+                const label = ariaLabel || textContent;
+                const labelStr = label ? `"${label}", ` : "";
+                // Description: prefer explicit aria-describedby; when aria-label is the
+                // name source, the subtree text becomes the description (accname-1.2 §4.3).
+                let descStr = getDescribedByAnnouncements(summaryElem, mode);
+                if (!descStr && ariaLabel && textContent) {
+                    descStr = mode === "item" ? `, \u0001${textContent}\u0002` : `, "${textContent}"`;
+                }
+                return `[${labelStr}button, ${stateStr}${descStr}]`;
             }
         ]
     }),
