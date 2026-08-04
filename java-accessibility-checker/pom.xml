@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
-            <version>1.7.15</version>
+            <version>1.7.15.1</version>
         </dependency>
         <!-- Selenium 4.34.0 has built-in CDP support up to Chrome 138. Selenium Manager handles
              chromedriver resolution automatically. Keep chrome-version in .github/workflows/test.yml
