@@ -10,7 +10,7 @@
   },
   "license": "See LICENCSE.md",
   "devDependencies": {
-    "@cucumber/cucumber": "^10.3.1",
+    "@cucumber/cucumber": "^11.0.0",
     "@cucumber/pretty-formatter": "^1.0.0",
     "@types/chai": "^4.3.11",
     "accessibility-checker": "^4",
@@ -23,6 +23,7 @@
     "ts-node": "^10.9.2"
   },
   "overrides": {
-    "uuid": "^14"
+    "uuid": "^14",
+    "tmp": "^0.2.7"
   }
 }
