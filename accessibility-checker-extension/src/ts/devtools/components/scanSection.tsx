@@ -270,14 +270,20 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         }
         if (this.state.ignoredIssues) {
             for (const ignoredIssue of this.state.ignoredIssues) {
-                if (!issues.some(issue => issueBaselineMatch(issue, ignoredIssue))) continue;
+                // Find the matching issue in the current scan results. The match
+                // is keyed on ruleId/reasonId/path/messageArgs — not on value
+                // (severity level). Use the fresh issue's value for the decrement
+                // so that a level re-classification between scans cannot drive a
+                // bucket negative.
+                const matchingIssue = issues.find(issue => issueBaselineMatch(issue, ignoredIssue));
+                if (!matchingIssue) continue;
                 ++counts["Hidden" as eLevel].total;
-                if (!this.state.selectedPath || PathMatcher.matchesPath(ignoredIssue.path.dom, this.state.selectedPath)) {
+                if (!this.state.selectedPath || PathMatcher.matchesPath(matchingIssue.path.dom, this.state.selectedPath)) {
                     ++counts["Hidden" as eLevel].focused;
                 }
-                let sing = UtilIssue.valueToStringSingular(ignoredIssue.value);
+                let sing = UtilIssue.valueToStringSingular(matchingIssue.value);
                 --counts[sing as eLevel].total;
-                if (!this.state.selectedPath || PathMatcher.matchesPath(ignoredIssue.path.dom, this.state.selectedPath)) {
+                if (!this.state.selectedPath || PathMatcher.matchesPath(matchingIssue.path.dom, this.state.selectedPath)) {
                     --counts[sing as eLevel].focused;
                 }
             }

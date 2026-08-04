@@ -40,6 +40,7 @@ interface BasicTableProps<IRowRecord extends IBasicTableRowRecord> {
     hideHeaders?: boolean
     totalRows?: boolean
     onRow?: (id: string) => Promise<void>
+    detailButtonProps?: (rowId: string) => Record<string, any>
     fieldMapper?: (rowId: string, cellId: string, cellValue: string) => any
 }
 
@@ -190,7 +191,7 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                                                     { hasBatchActions && <TableSelectRow {...getSelectionProps({ row })} />}
                                                     {row.cells.map((cell: any) => {
                                                         if ((cell.id as string).endsWith(":") && this.props.onRow) {
-                                                            return <TableCell key={`${row.id}:detail`} className="rowReport" onClick={() => this.props.onRow && this.props.onRow(row.id)}><ChooseItem /></TableCell>;
+                                                            return <TableCell key={`${row.id}:detail`} className="rowReport"><div role="button" tabIndex={0} aria-label="View details" {...(this.props.detailButtonProps ? this.props.detailButtonProps(row.id) : {})} onClick={() => this.props.onRow && this.props.onRow(row.id)} onKeyDown={(e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.props.onRow && this.props.onRow(row.id); } }}><ChooseItem aria-hidden={true} /></div></TableCell>;
                                                         }
                                                         if (this.props.fieldMapper) {
                                                             const mappedValue = this.props.fieldMapper(row.id, cell.id.split(":")[1], cell.value);
