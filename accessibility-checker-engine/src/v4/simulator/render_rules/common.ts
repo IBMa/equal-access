@@ -1329,6 +1329,45 @@ export const RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Summary element — the disclosure button for a <details> widget.
+    // <summary> has implicitRole: null in ARIADefinitions so no role-based
+    // button rule fires.  We add an explicit element rule that announces it as
+    // a button with the collapsed / expanded state from the parent <details>.
+    new SRRendererRule({
+        roles: [],
+        elems: ["SUMMARY"],
+        modes: ["item", "button", "tab_focus"],
+        tests: [
+            (cursor: SRCursor, _oldCursor?: SRCursor, mode?: string) => {
+                if (cursor.isEndTag()) return "";
+                const summaryElem = cursor.getElement();
+                if (!summaryElem) return null;
+                // Only the first <summary> that is a direct child of <details>
+                // acts as the disclosure button.
+                const detailsParent = summaryElem.parentElement;
+                if (!detailsParent || detailsParent.nodeName.toUpperCase() !== "DETAILS") return null;
+                const firstSummary = Array.from(detailsParent.children).find(
+                    c => c.nodeName.toUpperCase() === "SUMMARY"
+                );
+                if (!firstSummary || !firstSummary.isSameNode(summaryElem)) return null;
+                const stateStr = detailsParent.hasAttribute("open") ? "expanded" : "collapsed";
+                // <summary> has implicitRole: null so AccNameUtil may not compute a name;
+                // read aria-label first, then fall back to visible text content.
+                const ariaLabel = summaryElem.getAttribute("aria-label")?.trim();
+                const textContent = summaryElem.textContent?.trim() || "";
+                const label = ariaLabel || textContent;
+                const labelStr = label ? `"${label}", ` : "";
+                // Description: prefer explicit aria-describedby; when aria-label is the
+                // name source, the subtree text becomes the description (accname-1.2 §4.3).
+                let descStr = getDescribedByAnnouncements(summaryElem, mode);
+                if (!descStr && ariaLabel && textContent) {
+                    descStr = mode === "item" ? `, \u0001${textContent}\u0002` : `, "${textContent}"`;
+                }
+                return `[${labelStr}button, ${stateStr}${descStr}]`;
+            }
+        ]
+    }),
+
     // Multiple roles rules - placed at the bottom
     
     // Default mode rules - Container elements (multiple roles)
