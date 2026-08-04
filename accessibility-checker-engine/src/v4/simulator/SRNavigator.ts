@@ -362,6 +362,31 @@ export namespace SRNavigator {
             if (elem && elem.nodeName.toUpperCase() === "MSUP") {
                 return retVal = { skipCurrent: false, skipChildren: true };
             }
+
+            // <summary> is a self-announcing disclosure button — its children
+            // are folded into the ["label", button, collapsed] announcement,
+            // so skip traversal into them.
+            if (!cursor.isEndTag() && elem.nodeName.toUpperCase() === "SUMMARY") {
+                const detailsParent = elem.parentElement;
+                if (detailsParent && detailsParent.nodeName.toUpperCase() === "DETAILS") {
+                    return retVal = { skipCurrent: false, skipChildren: true };
+                }
+            }
+
+            // Skip non-summary children of a closed <details> element.
+            // Browsers hide those children via UA stylesheet (display:none), so
+            // they must not appear as reading stops when the widget is collapsed.
+            // Exempt the <details> element itself and <summary> (always visible).
+            if (!cursor.isEndTag()
+                && elem.nodeName.toUpperCase() !== "DETAILS"
+                && !elem.closest("summary")
+            ) {
+                const detailsAncestor = elem.closest("details");
+                if (detailsAncestor && !detailsAncestor.hasAttribute("open")) {
+                    return retVal = { skipCurrent: true, skipChildren: true };
+                }
+            }
+
             if (elem.closest(".ibma-sr-overlay")) {
                 return retVal = { skipCurrent: true, skipChildren: true };
             }

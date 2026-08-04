@@ -110,11 +110,16 @@ export let RULES: SRRendererRule[] = [
         modes: ["item"],
         tests: [
             (cursor: SRCursor) => {
+                // <details> uses the group role but has its own disclosure widget semantics;
+                // SRs do not announce "out of grouping" when leaving a details element.
+                if (cursor.getNode().nodeName.toUpperCase() === "DETAILS") {
+                    return "";
+                }
                 if (cursor.getNameInfo() === null) return null;
                 if (cursor.getCurrentOrParentByRoleClone(["combobox"], ["select"])?.getNode().nodeName.toUpperCase() === "SELECT") {
                     return "";
                 }
-                else return "[out of grouping]";
+                return "[out of grouping]";
             }
         ]
     }),
