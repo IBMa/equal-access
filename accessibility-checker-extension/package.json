@@ -68,6 +68,7 @@
 		"url": "https://github.com/IBMa/equal-access.git"
 	},
 	"overrides": {
-		"uuid": "^14"
+		"uuid": "^14",
+		"tmp": "^0.2.7"
 	}
 }

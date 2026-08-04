@@ -10,14 +10,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@wdio/cli": "^8.11.2",
-    "@wdio/local-runner": "^8.11.2",
-    "@wdio/mocha-framework": "^8.11.0",
-    "@wdio/spec-reporter": "^8.11.2",
+    "@wdio/cli": "^9.0.0",
+    "@wdio/local-runner": "^9.0.0",
+    "@wdio/mocha-framework": "^9.0.0",
+    "@wdio/spec-reporter": "^9.0.0",
     "accessibility-checker": "file:../../src",
     "chromedriver": "*",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
     "wdio-chromedriver-service": "^8.1.1"
+  },
+  "overrides": {
+    "tmp": "^0.2.7"
   }
 }
