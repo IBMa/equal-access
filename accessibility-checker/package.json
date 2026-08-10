@@ -33,14 +33,14 @@
   "dependencies": {
     "chromedriver": "*",
     "microdiff": "^1.5.0",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^5.2.3",
     "puppeteer": "^25.1.0"
   },
   "devDependencies": {
     "@ibm/telemetry-js": "^1.9.1",
     "@playwright/test": "^1.21.1",
     "@types/node": "^20.17.24",
-    "adm-zip": "^0.5.9",
+    "adm-zip": "^0.6.0",
     "chai": "^4.3.4",
     "eslint": "^8.4.1",
     "express": "^4.17.1",

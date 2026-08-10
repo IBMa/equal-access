@@ -52,13 +52,13 @@
     }
   },
   "dependencies": {
-    "js-yaml": "4.3.0",
+    "js-yaml": "4.3.1",
     "karma": "6.3.18",
     "karma-accessibility-checker": "file:package/karma-accessibility-checker",
     "microdiff": "^1.5.0"
   },
   "devDependencies": {
-    "adm-zip": "^0.5.9",
+    "adm-zip": "^0.6.0",
     "chai": "^4.3.4",
     "decache": "^4.6.1",
     "difflet": "^1.0.1",
