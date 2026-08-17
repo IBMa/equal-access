@@ -32,6 +32,12 @@ export class SRCursor {
     private name: AccessibleNameResult;
     /** The underlying DOM walker that handles node traversal */
     private walker: DOMWalker;
+    /**
+     * When the cursor is positioned at a text node inside a preformatted segment
+     * (e.g. <pre>), this index identifies which newline-delimited line is the
+     * current reading position.  undefined means "not in a preformatted context".
+     */
+    public preLineIndex: number | undefined;
     
     /**
      * Creates a new SRCursor positioned at the specified element
@@ -55,6 +61,7 @@ export class SRCursor {
         let retVal = new SRCursor(this.walker.node, this.walker.bEndTag);
         retVal.role = this.role;
         retVal.name = this.name;
+        retVal.preLineIndex = this.preLineIndex;
         return retVal;
     }
 
@@ -357,6 +364,23 @@ export class SRCursor {
         if (!nodeOne && !nodeTwo) return 0;
         if (!nodeOne) return 1;
         if (!nodeTwo) return -1;
+
+        // When both cursors are at the same <pre> element and at least one has a
+        // preLineIndex, use line index ordering so virtual per-line stops are sequenced
+        // correctly.  preLineIndex=undefined means the block-enter stop, which comes
+        // before all numbered lines (undefined < 0 < 1 < 2 …).
+        if (nodeOne === nodeTwo && !one.walker.bEndTag && !two.walker.bEndTag) {
+            const lineOneUndefined = one.preLineIndex === undefined;
+            const lineTwoUndefined = two.preLineIndex === undefined;
+            if (!lineOneUndefined || !lineTwoUndefined) {
+                // At least one cursor has a line index
+                if (lineOneUndefined) return -1;  // undefined (block-enter) sorts before all lines
+                if (lineTwoUndefined) return 1;   // two is block-enter; one (a numbered line) is after
+                if (one.preLineIndex !== two.preLineIndex) {
+                    return one.preLineIndex < two.preLineIndex ? -1 : 1;
+                }
+            }
+        }
         
         let docPosition = nodeOne.compareDocumentPosition(nodeTwo);
         

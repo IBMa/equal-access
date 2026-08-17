@@ -274,6 +274,16 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Preformatted text (<pre>)
+    new SRRendererRule({
+        roles: [],
+        elems: ["PRE"],
+        modes: ["item"],
+        tests: [
+            (_cursor: SRCursor) => `[out of preformatted text]`
+        ]
+    }),
+
     // Multiple roles rules - placed at the bottom
     
     // Region mode rules - ignore container elements in region and heading mode
