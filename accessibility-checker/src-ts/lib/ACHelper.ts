@@ -305,10 +305,12 @@ setTimeout(function() {
         // We don't want to mess with baseline functions, but pass results can break the response object
         report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
         cb(report);
-    })
+    }).catch(function(e) {
+        cb({ error: true, message: e && e.message || String(e) });
+    });
 },0)
 } catch (e) {
-cb(e);
+cb({ error: true, message: e && e.message || String(e) });
 }`
         let manage = browser.manage();
         if (manage.timeouts) {
@@ -320,6 +322,13 @@ cb(e);
         }
 
         let report : IEngineReport = await browser.executeAsyncScript(scriptStr);
+        // The browser-side script calls cb() with an error-shaped object when the checker
+        // fails (e.g. window.ace_ibma.Checker is not a function, CSP block, etc.).
+        // executeAsyncScript treats that as a successful return value, so we log it here
+        // before the code crashes further downstream with a misleading error.
+        if (report && (report as any).error) {
+            console.error(`[aChecker] Selenium checker script failed in browser for label "${label}": ${(report as any).message}`);
+        }
         const getPolicies = "return new window.ace_ibma.Checker().rulesetIds;";
         if (curPol != null && !checkPolicy) {
             checkPolicy = true;
@@ -329,7 +338,7 @@ cb(e);
 
         // If there is something to report...
         let finalReport : IBaselineReport;
-        if (report.results) {
+        if (report && report.results) {
             // Add URL to the result object
             const url = await browser.getCurrentUrl();
             const title = await browser.getTitle();
@@ -346,7 +355,7 @@ cb(e);
             "webdriver": parsed
         }
     } catch (err) {
-        console.error(err);
+        console.error(`[aChecker] Selenium getCompliance failed for label "${label}":`, err);
         return Promise.reject(err);
     };
 }
@@ -417,6 +426,8 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
                         report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                         resolve(report);
                         done(report);
+                    }).catch(function (e) {
+                        reject(e);
                     })
                 }, 0)
             })
@@ -451,7 +462,7 @@ async function getComplianceHelperWebDriverIO(label, parsed, curPol) : Promise<I
             "puppeteer": parsed
         };
     } catch (err) {
-        console.error(err);
+        console.error(`[aChecker] WebDriverIO getCompliance failed for label "${label}":`, err);
         return Promise.reject(err);
     };
 }
@@ -519,6 +530,8 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                         // We don't want to mess with baseline functions, but pass results can break the response object
                         report.results = report.results.filter(result => reportLevels.includes(result.level) || result.level !== "pass");
                         resolve(report);
+                    }).catch(function (e) {
+                        reject(e);
                     })
                 }, 0)
             })
@@ -554,7 +567,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
             "puppeteer": parsed
         };
     } catch (err) {
-        console.error(err);
+        console.error(`[aChecker] Puppeteer/Playwright getCompliance failed for label "${label}":`, err);
         return Promise.reject(err);
     };
 }
@@ -641,7 +654,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
             "report": finalReport
         };
     } catch (err) {
-        console.error(err);
+        console.error(`[aChecker] Local getCompliance failed for label "${label}":`, err);
         return Promise.reject(err);
     };
 }
