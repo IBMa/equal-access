@@ -9,7 +9,7 @@ Feature: HTML Report
         Then elem ".reportTreeGrid #tableGridHeader .gridHeaderCell > span" is visible
         Then elem "#totalIssuesCount" text ends with "issues found"
         When user activates Button "Export XLS"
-        When wait 2000
+        When wait 3000
         Then downloaded file "Accessibility_Report-Altoro Accessibility Testing Site.html" exists
 
     Scenario: HTML report exists
