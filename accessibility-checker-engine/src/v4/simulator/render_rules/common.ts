@@ -1082,6 +1082,30 @@ export const RULES: SRRendererRule[] = [
     }),
 
     // HTML Element rules
+
+    // Preformatted text line rendering: when cursor is at a <pre> element with
+    // preLineIndex set, render only that line of the pre's text content.
+    // This rule fires inside renderRange for per-line item stops.
+    new SRRendererRule({
+        roles: [],
+        elems: ["PRE"],
+        modes: ["item"],
+        tests: [
+            (cursor: SRCursor) => {
+                if (cursor.isEndTag()) return "";
+                if (cursor.preLineIndex === undefined) return null; // let container_enter handle it
+                const fullText = (cursor.getNode() as HTMLElement).textContent ?? "";
+                const rawLines = fullText.split("\n");
+                let start = 0;
+                while (start < rawLines.length && rawLines[start].trim() === "") start++;
+                let end = rawLines.length - 1;
+                while (end >= start && rawLines[end].trim() === "") end--;
+                const lines = rawLines.slice(start, end + 1);
+                return lines[cursor.preLineIndex] ?? "";
+            }
+        ]
+    }),
+
     new SRRendererRule({
         roles: [],
         elems: ["BODY"],
