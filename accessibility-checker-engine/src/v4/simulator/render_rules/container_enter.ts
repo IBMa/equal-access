@@ -470,6 +470,16 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Preformatted text (<pre>)
+    new SRRendererRule({
+        roles: [],
+        elems: ["PRE"],
+        modes: ["item"],
+        tests: [
+            (cursor: SRCursor) => `[${quoteNamePadAfter(cursor)}preformatted text]`
+        ]
+    }),
+
     // Multiple roles rules - placed at the bottom
 
     // Heading mode rules - ignore container elements in heading mode (multiple roles)

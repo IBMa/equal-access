@@ -35,6 +35,34 @@ export namespace SRNavigator {
         return ["block", "flex", "grid", "list-item"].includes(disp);
     }
 
+    /**
+     * Collect all logical lines from a <pre> element by walking its entire subtree
+     * (via DOMWalker, shadow-DOM safe) and concatenating text node content, splitting
+     * on newlines.  Only inline-context nodes are included — any descendant block
+     * element would be unusual inside <pre> and is ignored.
+     *
+     * Returns the trimmed, non-empty lines.
+     */
+    export function getPreLines(preElem: HTMLElement): string[] {
+        // Concatenate all text inside the <pre>, preserving inline structure
+        let fullText = preElem.textContent ?? "";
+        const rawLines = fullText.split("\n");
+        // Trim leading and trailing blank lines
+        let start = 0;
+        while (start < rawLines.length && rawLines[start].trim() === "") start++;
+        let end = rawLines.length - 1;
+        while (end >= start && rawLines[end].trim() === "") end--;
+        return rawLines.slice(start, end + 1);
+    }
+
+    /**
+     * Returns true if node is a <pre> element (the item-level cursor position for
+     * preformatted lines uses the <pre> element itself with preLineIndex set).
+     */
+    function isPreElement(node: Node): boolean {
+        return node.nodeType === 1 && (node as HTMLElement).nodeName.toUpperCase() === "PRE";
+    }
+
     function getExplicitTabindex(node: Node): number | null {
         if (!node || node.nodeType !== 1) return null;
         const elem = node as HTMLElement;
@@ -162,8 +190,12 @@ export namespace SRNavigator {
             case "dom":
                 return () => true;
             case "item":
-                return (_role: string, bStartTag: boolean, node: Node) => {
+                return (cursor: SRCursor | any, bStartTag: boolean, node: Node) => {
                     if (!bStartTag) return false;
+                    // A <pre> element with preLineIndex set is a virtual per-line item.
+                    // The initial encounter (preLineIndex undefined) is also a match so
+                    // jumpNext can set preLineIndex=0 on it.
+                    if (isPreElement(node)) return true;
                     if (isBlockElement(node)) return true;
                     const temp = new DOMWalker(node, !bStartTag);
                     if (temp.prevNode() && temp.bEndTag) {
@@ -536,6 +568,19 @@ export namespace SRNavigator {
      */
     export function jumpCurrentEnd(mode: NavigationMode, walker: SRCursor) : SRCursor[] {
         if (mode === "item") {
+            // For any <pre> item (block-enter stop or per-line stop), the render range
+            // must end at the next virtual line cursor (same <pre> node, next index) so
+            // that renderRange never walks into <pre>'s children.
+            if (isPreElement(walker.getNode()) && !walker.isEndTag()) {
+                const lines = getPreLines(walker.getNode() as HTMLElement);
+                const nextIdx = walker.preLineIndex === undefined ? 0 : walker.preLineIndex + 1;
+                // Use nextIdx as the end sentinel — even if it equals lines.length (past
+                // the last line), compare() will still correctly stop renderRange before
+                // any child node because children are contained within <pre>.
+                const endCursor = walker.clone();
+                endCursor.preLineIndex = nextIdx;
+                return [endCursor];
+            }
             const itemEnd = jumpNext(mode, walker);
             return itemEnd ? [itemEnd] : [];
         } else {
@@ -589,10 +634,53 @@ export namespace SRNavigator {
                 }
             }
 
+            if (mode === "item" && isPreElement(walker.getNode()) && !walker.isEndTag()) {
+                const lines = getPreLines(walker.getNode() as HTMLElement);
+
+                if (walker.preLineIndex === undefined) {
+                    // At the block-enter stop — jump to the first line item
+                    if (lines.length > 0) {
+                        let retVal = walker.clone();
+                        retVal.preLineIndex = 0;
+                        return retVal;
+                    }
+                    // Empty <pre> — fall through to DOM traversal past </pre>
+                } else {
+                    // At a line item — advance to the next line or past </pre>
+                    const currentLineIdx = walker.preLineIndex;
+                    if (currentLineIdx + 1 < lines.length) {
+                        let retVal = walker.clone();
+                        retVal.preLineIndex = currentLineIdx + 1;
+                        return retVal;
+                    }
+                    // All lines exhausted — move past </pre> to the next DOM item.
+                    // Always land on the block-enter stop (preLineIndex=undefined) so the
+                    // caller gets a chance to render the container-enter announcement before
+                    // advancing to the first line.
+                    let retVal = walker.clone();
+                    retVal.setEndTag(true);
+                    const matchFunc = getStartFunc(mode);
+                    const skipFunc = getSkipFunc(mode);
+                    if (retVal.next(matchFunc, skipFunc)) {
+                        if (isPreElement(retVal.getNode()) && !retVal.isEndTag()) {
+                            retVal.preLineIndex = undefined; // block-enter stop
+                        }
+                        return retVal;
+                    }
+                    return null;
+                }
+            }
+
             let retVal = walker.clone();
             const matchFunc = getStartFunc(mode);
             const skipFunc = getSkipFunc(mode);
             if (retVal.next(matchFunc, skipFunc)) {
+                // Landing on <pre> via DOM traversal always starts at the block-enter stop
+                // (preLineIndex=undefined).  The per-line items are returned on subsequent
+                // calls via the isPreElement early-return above.
+                if (mode === "item" && isPreElement(retVal.getNode()) && !retVal.isEndTag()) {
+                    retVal.preLineIndex = undefined;
+                }
                 DEBUG && console.log("SRNavigator::jumpNext result", retVal);
                 return retVal;
             } else {
@@ -636,10 +724,32 @@ export namespace SRNavigator {
             return null;
         }
 
+        if (mode === "item" && isPreElement(walker.getNode()) && !walker.isEndTag()) {
+            if (walker.preLineIndex === undefined) {
+                // At the block-enter stop — go to the previous DOM item (before <pre>)
+                // fall through to normal previous() traversal below
+            } else if (walker.preLineIndex === 0) {
+                // At the first line — step back to the block-enter stop
+                let retVal = walker.clone();
+                retVal.preLineIndex = undefined;
+                return retVal;
+            } else {
+                // Step back one line
+                let retVal = walker.clone();
+                retVal.preLineIndex = walker.preLineIndex - 1;
+                return retVal;
+            }
+        }
+
         let retVal = walker.clone();
         const matchFunc = getStartFunc(mode);
         const skipFunc = getSkipFunc(mode);
         if (retVal.previous(matchFunc, skipFunc)) {
+            // If we just landed on a <pre> element, position at its last line
+            if (mode === "item" && isPreElement(retVal.getNode()) && !retVal.isEndTag()) {
+                const lines = getPreLines(retVal.getNode() as HTMLElement);
+                retVal.preLineIndex = lines.length > 0 ? lines.length - 1 : undefined;
+            }
             return retVal;
         } else {
             return null;
