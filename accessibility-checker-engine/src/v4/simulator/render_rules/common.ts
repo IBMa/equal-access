@@ -1112,20 +1112,34 @@ export const RULES: SRRendererRule[] = [
         modes: ["item", "tab_focus"],
         tests: [
             (cursor: SRCursor) => {
+                // Suppress [Start/End of document] for iframe subdocument bodies.
+                // When the inner body is entered from an <iframe>, diffContainers emits
+                // the ["name", frame] container-enter announcement instead. Suppressing
+                // the document title announcements here avoids double-announcements.
+                const body = cursor.getNode() as HTMLElement;
+                if (body.ownerDocument !== document) return "";
                 const titleStr = cursor.getNode().ownerDocument.title;
                 return cursor.isEndTag() ? `[End of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]` : `[Start of document${titleStr.trim().length > 0 ? ": " + titleStr.trim() : ""}]`
             }
         ]
     }),
 
+    // Inline frame (<iframe>) — tab_focus mode: announces the frame as a tab stop.
+    // A titled iframe announces its accessible name; an untitled one announces just "frame".
+    // (The item-mode announcement is handled by diffContainers emitting the container_enter
+    // IFRAME rule when crossing into the subdocument — no separate SR_RULE needed for item mode.)
+    // When role="none" or role="presentation" is set, screen readers treat the frame as a
+    // generic grouping — announce "grouping" instead of "frame".
     new SRRendererRule({
         roles: [],
         elems: ["IFRAME"],
-        modes: ["item", "tab_focus"],
+        modes: ["tab_focus"],
         tests: [
             (cursor: SRCursor) => {
-                const accessWarning = canAccessFrame(cursor.getNode()) ? "" : "{Emulator unable to access frame}"
-                return cursor.isEndTag() ? "" : accessWarning;
+                if (cursor.isEndTag()) return null;
+                const role = (cursor.getElement() as HTMLElement).getAttribute("role");
+                const label = (role === "none" || role === "presentation") ? "grouping" : "frame";
+                return `[${quoteNamePadAfter(cursor)}${label}]`;
             }
         ]
     }),

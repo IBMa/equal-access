@@ -274,6 +274,21 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Inline frame (<iframe>)
+    // When role="none" or role="presentation" is set, screen readers treat the frame
+    // as a generic grouping — announce "out of grouping" instead of "out of frame".
+    new SRRendererRule({
+        roles: [],
+        elems: ["IFRAME"],
+        modes: ["item"],
+        tests: [
+            (cursor: SRCursor) => {
+                const role = (cursor.getElement() as HTMLElement).getAttribute("role");
+                return (role === "none" || role === "presentation") ? `[out of grouping]` : `[out of frame]`;
+            }
+        ]
+    }),
+
     // Preformatted text (<pre>)
     new SRRendererRule({
         roles: [],

@@ -14,7 +14,7 @@ export namespace SRNavigator {
      */
     function isBlockElement(node: Node) {
         if (node.nodeType !== 1) return false;
-        if (node.nodeName.toLowerCase() === "br") return true;
+        if (["br", "iframe"].includes(node.nodeName.toLowerCase())) return true;
         const elem = node as HTMLElement;
         const mywin = elem.ownerDocument.defaultView;
         const disp = mywin.getComputedStyle(elem)?.display;
@@ -192,6 +192,9 @@ export namespace SRNavigator {
             case "item":
                 return (cursor: SRCursor | any, bStartTag: boolean, node: Node) => {
                     if (!bStartTag) return false;
+                    // <iframe> content is inlined by the IFRAME SR_RULE into the
+                    // parent block's rendering — the iframe itself is not an item stop.
+                    if (node.nodeType === 1 && (node as HTMLElement).nodeName.toUpperCase() === "IFRAME") return false;
                     // A <pre> element with preLineIndex set is a virtual per-line item.
                     // The initial encounter (preLineIndex undefined) is also a match so
                     // jumpNext can set preLineIndex=0 on it.
@@ -263,7 +266,7 @@ export namespace SRNavigator {
 
             // We have an element
 
-            // Make sure we're within the body element
+            // Make sure we're within the body element (or shadow DOM, or an iframe subdocument)
             if (!elem.closest("body") && !isInShadowDOM(elem)) return retVal = { skipCurrent: true, skipChildren: false };
 
             // Make sure we're not in a script or style
@@ -455,8 +458,14 @@ export namespace SRNavigator {
         // Only visit elements and text nodes
         if (nodeType !== 1 && nodeType !== 3) return { skipCurrent: true, skipChildren: false };
         if (nodeType === 3) return VisUtil.isNodeHiddenFromAT(elem) ? { skipCurrent: true, skipChildren: false } : null;
-        // We have an elemenet
+        // We have an element
         if (VisUtil.isNodeHiddenFromAT(elem)) return { skipCurrent: true, skipChildren: true };
+        // Skip the inner document of an <iframe> — screen readers render the
+        // accessible name as the tab_focus label; the subdocument body should
+        // not contribute additional reading stops during renderRange traversal.
+        if (elem.nodeName.toUpperCase() === "IFRAME" && !cursor.isEndTag()) {
+            return { skipCurrent: false, skipChildren: true };
+        }
         // Skip label fors - they'll be read with the related input.
         // Keep children so interactive content (e.g. links) inside the label still appears in
         // reading/tab order.
