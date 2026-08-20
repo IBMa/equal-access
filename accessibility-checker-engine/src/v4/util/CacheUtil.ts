@@ -11,6 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export interface CacheDocument extends Document {
@@ -66,6 +67,40 @@ export class CacheUtil {
             delete (nw.node as CacheElement).aceCache;
             nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
         } while (nw.nextNode());
+        if (cacheRoot !== cacheRoot.ownerDocument?.documentElement) {
+            // Start the walker at the documentElement of cacheRoot's immediate document.
+            // ownerDocument is guaranteed non-null here because the if-guard above
+            // checks cacheRoot.ownerDocument?.documentElement.
+            let nwDoc = new DOMWalker(cacheRoot.ownerDocument!.documentElement, false, undefined, true);
+            // cacheRoot may be inside a shadow root or an iframe, which are themselves
+            // nested inside ancestor documents. Walk up from cacheRoot across any
+            // frame/shadow boundaries (DOMWalker.parentElement handles ownerElement
+            // links set by the walker) to find the outermost ancestor element, then
+            // reposition the walker there so the second pass covers every containing
+            // document as well.
+            {
+                let tempElem: Element = nwDoc.node as Element;
+                let parentElem: Element | null;
+                while (parentElem = DOMWalker.parentElement(tempElem)) {
+                    tempElem = parentElem;
+                }
+                nwDoc.node = tempElem;
+            }
+            do {
+                // On the start-tag visit of cacheRoot, skip its entire subtree —
+                // it was already cleared and counted in the first pass above.
+                // Setting bEndTag=true makes the next nextNode() call emit cacheRoot's
+                // end-tag and then advance to its next sibling without descending into
+                // its children.
+                if (!nwDoc.bEndTag && DOMUtil.sameNode(cacheRoot, nwDoc.node)) {
+                    nwDoc.bEndTag = true;
+                    continue;
+                }
+                delete (nwDoc.node as any).aceCache;
+                nwDoc.node.ownerDocument && delete (nwDoc.node.ownerDocument as any).aceCache;
+            } while (nwDoc.nextNode());
+        }
+
         return numNodesVisited;
     }
 }
