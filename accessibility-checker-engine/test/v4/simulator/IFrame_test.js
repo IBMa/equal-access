@@ -431,6 +431,28 @@ describe('IFrame Screen Reader Tests', function () {
             });
         });
 
+        it('TC-13: Should suppress grouping messages for an untitled iframe with role="none"', function (done) {
+            // When role="none"/"presentation" is combined with no accessible name, the
+            // grouping landmark is completely anonymous — screen readers suppress the
+            // container-enter/exit announcements and the tab_focus stop entirely.
+            // The inner content is still traversed and read; only the wrapper labels
+            // ("[grouping]", "[out of grouping]") are omitted.
+            document.body.insertAdjacentHTML('afterbegin',
+                `<div id='fixture'><iframe role='none' srcdoc="${SRCDOC_ROLENONE}"></iframe></div>`);
+
+            waitForFrames(done, function () {
+                let result = trimItems(ace.SRController.renderStructure(document));
+
+                // No tab_focus row for the iframe, no container-enter on the inner body,
+                // no "[out of grouping]" prefix — just the inner paragraph content.
+                expect(result).withContext(JSON.stringify(result, null, 2)).toEqual([
+                    { region: '', heading: '', item: '[Start of document]',                               tab_focus: '', image: '', selector: 'body' },
+                    { region: '', heading: '', item: 'Frame with role=none — should still be announced.', tab_focus: '', image: '', selector: 'html > body > p' },
+                    { region: '', heading: '', item: '[End of document]',                                 tab_focus: '', image: '' }
+                ]);
+            });
+        });
+
     });
 
 });

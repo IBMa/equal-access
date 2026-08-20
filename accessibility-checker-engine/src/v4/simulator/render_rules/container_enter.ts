@@ -483,7 +483,11 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 const role = (cursor.getElement() as HTMLElement).getAttribute("role");
-                const label = (role === "none" || role === "presentation") ? "grouping" : "frame";
+                const isPresentation = role === "none" || role === "presentation";
+                // An untitled presentational iframe has no meaningful grouping label to
+                // announce — suppress the container-enter entirely.
+                if (isPresentation && !cursor.getName()) return null;
+                const label = isPresentation ? "grouping" : "frame";
                 return `[${quoteNamePadAfter(cursor)}${label}]`;
             }
         ]

@@ -277,6 +277,8 @@ export let RULES: SRRendererRule[] = [
     // Inline frame (<iframe>)
     // When role="none" or role="presentation" is set, screen readers treat the frame
     // as a generic grouping — announce "out of grouping" instead of "out of frame".
+    // Exception: an untitled presentational iframe produces no container-enter label, so
+    // the matching container-exit must also be suppressed to avoid a stray "[out of grouping]".
     new SRRendererRule({
         roles: [],
         elems: ["IFRAME"],
@@ -284,7 +286,9 @@ export let RULES: SRRendererRule[] = [
         tests: [
             (cursor: SRCursor) => {
                 const role = (cursor.getElement() as HTMLElement).getAttribute("role");
-                return (role === "none" || role === "presentation") ? `[out of grouping]` : `[out of frame]`;
+                const isPresentation = role === "none" || role === "presentation";
+                if (isPresentation && !cursor.getName()) return null;
+                return isPresentation ? `[out of grouping]` : `[out of frame]`;
             }
         ]
     }),

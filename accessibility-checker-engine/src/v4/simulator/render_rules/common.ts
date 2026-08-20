@@ -1138,7 +1138,11 @@ export const RULES: SRRendererRule[] = [
             (cursor: SRCursor) => {
                 if (cursor.isEndTag()) return null;
                 const role = (cursor.getElement() as HTMLElement).getAttribute("role");
-                const label = (role === "none" || role === "presentation") ? "grouping" : "frame";
+                const isPresentation = role === "none" || role === "presentation";
+                // An untitled presentational iframe produces no meaningful tab stop label —
+                // suppress it entirely so it does not appear in the tab_focus column.
+                if (isPresentation && !cursor.getName()) return null;
+                const label = isPresentation ? "grouping" : "frame";
                 return `[${quoteNamePadAfter(cursor)}${label}]`;
             }
         ]
