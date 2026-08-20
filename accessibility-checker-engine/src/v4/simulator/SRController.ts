@@ -6,6 +6,7 @@ import { SRNavigator } from "./SRNavigator";
 import { CacheUtil } from "../util/CacheUtil";
 import { SRUtil } from "./SRUtil";
 import { VisUtil } from "../util/VisUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 /**
  * SRController class for managing screen reader simulation
@@ -408,13 +409,66 @@ export class SRController {
      * @param oldWalker The previous node we were at
      * @returns Array of container change messages
      */
+    /**
+     * Walk up from a node in an iframe subdocument to find the host <iframe> element
+     * in the nearest ancestor document.  Returns null if the node is not in a subdocument.
+     */
+    private static hostIframe(node: Node): HTMLIFrameElement | null {
+        const doc = node.ownerDocument;
+        if (!doc || doc === document) return null;
+        // contentWindow.frameElement is the <iframe> in the parent document
+        try {
+            return DOMUtil.getAncestor(node, ["iframe"]) as HTMLIFrameElement | null;
+        } catch {
+            return null;
+        }
+    }
+
     public static diffContainers(mode: NavigationMode | "focus", newWalker: SRCursor, oldWalker?: SRCursor): { leaving: string[], entering: string[] } {
         const DEBUG = false;
         DEBUG && console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        DEBUG && console.log("A)", oldWalker.getNode().nodeName, newWalker.getNode().nodeName);
+        DEBUG && console.log("A)", oldWalker?.getNode().nodeName, newWalker.getNode().nodeName);
         let leaving: string[] = [];
         let entering: string[] = [];
         try {
+            const newDoc = newWalker?.getNode().ownerDocument ?? document;
+            const oldDoc = oldWalker?.getNode().ownerDocument ?? document;
+
+            // ── Cross-document iframe boundary ──────────────────────────────────
+            // When the navigation crosses into or out of an <iframe> subdocument
+            // the normal commonParent walk cannot span document boundaries.
+            // We detect this and manually inject the container-enter/exit for the
+            // <iframe> element itself.
+            if (newDoc !== oldDoc) {
+                const newIframe = SRController.hostIframe(newWalker.getNode());
+                const oldIframe = SRController.hostIframe(oldWalker?.getNode());
+
+                if (newIframe && !oldIframe) {
+                    // Entering an iframe subdocument — emit the frame container-enter.
+                    const iframeCursor = new SRCursor(newIframe, false);
+                    const enter = SRRenderer.renderEnter(mode, iframeCursor, oldWalker);
+                    if (enter && enter.trim()) entering.push(enter.trim());
+                } else if (!newIframe && oldIframe) {
+                    // Leaving an iframe subdocument — emit the frame container-exit.
+                    const iframeCursor = new SRCursor(oldIframe, true);
+                    const leave = SRRenderer.renderLeave(mode as NavigationMode, iframeCursor, oldWalker);
+                    if (leave && leave.trim()) leaving.push(leave.trim());
+                } else if (newIframe && oldIframe && newIframe !== oldIframe) {
+                    // Moving between two different iframes — exit old, enter new.
+                    const oldCursor = new SRCursor(oldIframe, true);
+                    const leave = SRRenderer.renderLeave(mode as NavigationMode, oldCursor, oldWalker);
+                    if (leave && leave.trim()) leaving.push(leave.trim());
+                    const newCursor = new SRCursor(newIframe, false);
+                    const enter = SRRenderer.renderEnter(mode, newCursor, oldWalker);
+                    if (enter && enter.trim()) entering.push(enter.trim());
+                }
+                // After injecting iframe boundary announcements, also run the normal
+                // within-document diffContainers for each side independently so that
+                // landmarks inside the iframe are announced correctly.
+                return { leaving, entering };
+            }
+
+            // ── Same-document path (original logic) ─────────────────────────────
             const docRoot = newWalker ?
                 (newWalker.getNode().ownerDocument.body || newWalker.getNode().ownerDocument.documentElement) :
                 oldWalker ?
@@ -552,7 +606,10 @@ export class SRController {
             if (hasValue) {
                 const elem = next.getElement();
                 const selector = elem && SRUtil.getUniqueSelector(elem);
-                if (selector && doc.querySelector(selector)) {
+                // Use the element's own document for querySelector so that elements
+                // inside iframe subdocuments resolve correctly.
+                const elemDoc = elem?.ownerDocument ?? doc;
+                if (selector && elemDoc.querySelector(selector)) {
                     nextItem.selector = selector;
                 }
                 retVal.push(nextItem);

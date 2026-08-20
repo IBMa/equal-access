@@ -470,6 +470,29 @@ export let RULES: SRRendererRule[] = [
         ]
     }),
 
+    // Inline frame (<iframe>)
+    // Only fires in item mode (where it produces the container-enter label on the parent
+    // block stop). In tab_focus mode the iframe element itself is the stop and the
+    // IFRAME SR_RULE in common.ts supplies the label directly — no container-enter needed.
+    // When role="none" or role="presentation" is set, screen readers treat the frame
+    // as a generic grouping — announce "grouping" instead of "frame".
+    new SRRendererRule({
+        roles: [],
+        elems: ["IFRAME"],
+        modes: ["item"],
+        tests: [
+            (cursor: SRCursor) => {
+                const role = (cursor.getElement() as HTMLElement).getAttribute("role");
+                const isPresentation = role === "none" || role === "presentation";
+                // An untitled presentational iframe has no meaningful grouping label to
+                // announce — suppress the container-enter entirely.
+                if (isPresentation && !cursor.getName()) return null;
+                const label = isPresentation ? "grouping" : "frame";
+                return `[${quoteNamePadAfter(cursor)}${label}]`;
+            }
+        ]
+    }),
+
     // Preformatted text (<pre>)
     new SRRendererRule({
         roles: [],
