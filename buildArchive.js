@@ -45,7 +45,10 @@ const archiveId = `${paddedDate}${monthStr}${now.getFullYear()}`;
     // **Pull from Git**: Ensure we have the latest from Git
     await myExec("git fetch");
     await myExec("git pull origin main-4.x");
-    await myExec("git merge origin/main-4.x")
+    await myExec("git merge origin/main-4.x");
+    // **Branch**: Create a dated archive branch
+    const branchDate = `${now.getFullYear()}-${(""+(now.getMonth()+1)).padStart(2,'0')}-${paddedDate}`;
+    await myExec(`git checkout -b archive-${branchDate}`);
     // **Install**: In `accessibility-checker-engine` and `rule-server` run `npm install`
     await myExec("pushd accessibility-checker-engine && npm install && popd");
     await myExec("pushd rule-server && npm install && popd");
@@ -56,6 +59,18 @@ const archiveId = `${paddedDate}${monthStr}${now.getFullYear()}`;
     await myExec(`npx shx mv rule-server/dist/static/archives/preview rule-server/src/static/archives/${archiveDir}`);
     // **Metadata**: Add an entry to `rule-server/src/static/archives.json`. See other entries for examples. Ensure that you move the `latest` property to the new archive.
     const archives = JSON.parse(readFileSync("rule-server/src/static/archives.json"));
+    // **Hide old archives**: Mark any entry more than three years old as hidden
+    const threeYearsAgo = new Date(now);
+    threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
+    for (const archive of archives) {
+        const match = /^(\d{2})([A-Za-z]+)(\d{4})$/.exec(archive.id);
+        if (match) {
+            const archiveDate = new Date(`${match[2]} ${match[1]}, ${match[3]}`);
+            if (!isNaN(archiveDate) && archiveDate < threeYearsAgo) {
+                archive.hidden = true;
+            }
+        }
+    }
     let existArchiveIdx = archives.findIndex(archive => archive.id === archiveId);
     if (existArchiveIdx !== -1) {
         archives.splice(existArchiveIdx, 1);
