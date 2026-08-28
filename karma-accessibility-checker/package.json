@@ -44,10 +44,10 @@
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "exceljs": "^4.4.0"
+    "write-excel-file": "^4.1.1"
   },
   "peerDependenciesMeta": {
-    "exceljs": {
+    "write-excel-file": {
       "optional": true
     }
   },

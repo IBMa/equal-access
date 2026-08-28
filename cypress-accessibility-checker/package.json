@@ -32,13 +32,13 @@
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
       "cypress": "^13.2.0 || ^15",
-      "exceljs": "^4.4.0"
-    },
-    "peerDependenciesMeta": {
-      "exceljs": {
-        "optional": true
-      }
-    },
+        "write-excel-file": "^4.1.1"
+      },
+      "peerDependenciesMeta": {
+        "write-excel-file": {
+          "optional": true
+        }
+      },
     "devDependencies": {
         "cypress": "^15.9.0",
         "eslint": "^8.4.1",

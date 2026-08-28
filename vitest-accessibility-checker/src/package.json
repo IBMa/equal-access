@@ -37,10 +37,10 @@
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
     "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "exceljs": "^4.4.0"
+    "write-excel-file": "^4.1.1"
   },
   "peerDependenciesMeta": {
-    "exceljs": {
+    "write-excel-file": {
       "optional": true
     }
   },

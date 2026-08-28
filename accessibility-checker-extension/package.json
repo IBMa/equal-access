@@ -20,7 +20,7 @@
 		"@carbon/react": "^1.72.0",
 		"@carbon/themes": "^11.17.0",
 		"dotenv-webpack": "^7.0.3",
-		"exceljs": "^4.4.0",
+		"write-excel-file": "^4.1.1",
 		"markdown-to-jsx": "^7.5.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",

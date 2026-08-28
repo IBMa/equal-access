@@ -23,10 +23,10 @@
     "typescript": "^5.1.3"
   },
   "peerDependencies": {
-    "exceljs": "^4.4.0"
+    "write-excel-file": "^4.1.1"
   },
   "peerDependenciesMeta": {
-    "exceljs": {
+    "write-excel-file": {
       "optional": true
     }
   },
