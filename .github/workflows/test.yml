@@ -591,10 +591,6 @@ jobs:
         npm install
         npm run build
       working-directory: rule-server
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.min.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: npm run package:browser
