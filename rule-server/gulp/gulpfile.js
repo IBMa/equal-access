@@ -1,5 +1,17 @@
 const gulp = require("gulp");
-const modifyFile = require('gulp-modify-file');
+const through2 = require('through2');
+
+function modifyFileContents(transformFn) {
+    return through2.obj(function(file, enc, cb) {
+        if (file.isBuffer()) {
+            const content = file.contents.toString(enc);
+            const path = file.path;
+            const modified = transformFn(content, path, file);
+            file.contents = Buffer.from(modified, enc);
+        }
+        cb(null, file);
+    });
+}
 
 const license = 
 `/******************************************************************************
@@ -60,7 +72,7 @@ const archivePolicies = () => {
     }
     // Adds the policy ids to the archive file
     return gulp.src(["../src/static/archives.json"])
-        .pipe(modifyFile((content, path, file) => {
+        .pipe(modifyFileContents((content, path, file) => {
             let archives = JSON.parse(content);
             let latestPol = [];
             let latestRS = {};

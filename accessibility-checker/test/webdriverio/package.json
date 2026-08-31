@@ -17,10 +17,11 @@
     "accessibility-checker": "file:../../src",
     "chromedriver": "*",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
-    "wdio-chromedriver-service": "^8.1.1"
+    "typescript": "^5.1.6"
   },
   "overrides": {
+    "deepmerge-ts": "^8.0.2",
+    "serialize-javascript": "^7.0.5",
     "tmp": "^0.2.7"
   }
 }
