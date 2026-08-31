@@ -33,8 +33,8 @@
   "dependencies": {
     "adm-zip": "^0.5.9",
     "chromedriver": "*",
-    "microdiff": "^1.5.0",
     "js-yaml": "^4.2.0",
+    "microdiff": "^1.5.0",
     "puppeteer": "^25.1.0"
   },
   "devDependencies": {

@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run build:common && vitest run --config=test/vitest.config.js",
+    "test:node": "npm run build:common && vitest run --config=test/vitest.node.config.mjs",
     "test:ui": "npm run build:common && vitest --ui --config=test/vitest.config.js",
     "test:start-http": "http-server -c-1 --silent",
     "build:common": "cd ../common/module && npm run build && cd ../../vitest-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
@@ -45,6 +46,7 @@
     "@vitest/browser": "^4.1.6",
     "@vitest/browser-playwright": "^4.1.6",
     "@vitest/ui": "^4.1.6",
+    "adm-zip": "^0.5.18",
     "eslint": "^8.4.1",
     "http-server": "^14.1.1",
     "playwright": "^1.40.0",

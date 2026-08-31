@@ -145,7 +145,11 @@ jobs:
         working-directory: accessibility-checker
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
         working-directory: accessibility-checker
-    
+      - run: npm install write-excel-file
+        working-directory: accessibility-checker
+      - run: npx mocha --timeout 30000 -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.XLSX.test.mjs
+        working-directory: accessibility-checker
+
 ###############################################################################
 # Node basic test
 ####
@@ -194,6 +198,10 @@ jobs:
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.mjs
         working-directory: accessibility-checker
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
+        working-directory: accessibility-checker
+      - run: npm install write-excel-file
+        working-directory: accessibility-checker
+      - run: npx mocha --timeout 30000 -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.XLSX.test.mjs
         working-directory: accessibility-checker
 
 ###############################################################################
@@ -551,10 +559,14 @@ jobs:
         working-directory: vitest-accessibility-checker
       - run: npx playwright install chromium
         working-directory: vitest-accessibility-checker
+      - run: npm install write-excel-file
+        working-directory: vitest-accessibility-checker
       - run: npm run build:common
         working-directory: vitest-accessibility-checker
       - run: npx vitest run
         working-directory: vitest-accessibility-checker/test
+      - run: npm run test:node
+        working-directory: vitest-accessibility-checker
 
 ###############################################################################
 # Extension Build verification and test
