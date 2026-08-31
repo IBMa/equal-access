@@ -108,6 +108,16 @@ $ npm install
 $ npm run test:browser
 ```
 
+## Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, install `write-excel-file` and `adm-zip` as additional dependencies:
+
+```bash
+$ npm install --save-dev write-excel-file adm-zip
+```
+
+Without these packages installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Known issues and workarounds
 
 1. **Browser not found error**: If you see "Executable doesn't exist" errors, install Playwright browsers:

@@ -31,13 +31,13 @@ npm install cypress-accessibility-checker --save-dev
 
 ### Optional: XLSX Report Format
 
-If you want to generate reports in XLSX format, you need to install `exceljs` as an additional dependency:
+If you want to generate reports in XLSX format, install `write-excel-file` and `adm-zip` as additional dependencies:
 
 ```bash
-npm install exceljs --save-dev
+npm install write-excel-file adm-zip --save-dev
 ```
 
-Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+Without these packages installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
 
 ## Configuration
 

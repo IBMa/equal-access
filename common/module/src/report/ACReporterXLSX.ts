@@ -19,7 +19,6 @@ import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline.js";
 import { CompressedReport } from "../engine/IReport.js";
 import { eRuleConfidence } from "../engine/IRule.js";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
-
 // Lazy-load write-excel-file — will be null if not installed
 let writeExcelLoadPromise: Promise<any> | null = null;
 let writeExcelWarningShown = false;
@@ -71,7 +70,7 @@ function headerCell(value: string | number, columnSpan?: number): any {
     const cell: any = {
         value,
         backgroundColor: "#403151",
-        color: "#FFFFFF",
+        textColor: "#FFFFFF",
         fontFamily: "Calibri",
         fontSize: 16,
         alignVertical: "center",
@@ -88,7 +87,7 @@ function dataCell(value: string | number | null, opts?: any): any {
         value,
         fontFamily: "Calibri",
         fontSize: 12,
-        color: "#000000",
+        textColor: "#000000",
         ...opts
     };
 }
@@ -99,11 +98,118 @@ function borderedCell(value: string | number | null, opts?: any): any {
         value,
         fontFamily: "Calibri",
         fontSize: 12,
-        color: "#000000",
+        textColor: "#000000",
         borderColor: "#A6A6A6",
         borderStyle: "thin",
         ...opts
     };
+}
+
+// ─── XLSX table injection ──────────────────────────────────────────────────────
+// write-excel-file has no native Excel table API. We post-process the output
+// file: unzip it with Node's built-in zlib, inject the table definition XML,
+// wire the sheet to reference it, and re-zip.
+//
+// The Issues sheet is always sheet index 3 (0-based) → sheetId "4".
+// TableStyleMedium2 + showRowStripes matches the original ExcelJS output.
+
+const ISSUES_SHEET_ID = "4";
+const ISSUES_TABLE_ID = "1";
+const ISSUES_COL_COUNT = 14;
+const ISSUES_COL_NAMES = [
+    "Page title","Page URL","Scan label","Issue ID","Issue type",
+    "Toolkit level","Checkpoint","WCAG level","Rule","Issue",
+    "Element","Code","Xpath","Help",
+];
+
+function buildTableXml(rowCount: number): string {
+    const lastCol = "ABCDEFGHIJKLMN"[ISSUES_COL_COUNT - 1];
+    const ref = `A1:${lastCol}${rowCount}`;
+    const cols = ISSUES_COL_NAMES.map((name, i) =>
+        `<tableColumn id="${i + 1}" name="${name}"/>`
+    ).join("");
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"` +
+        ` id="${ISSUES_TABLE_ID}" name="IssuesTable" displayName="IssuesTable" ref="${ref}" headerRowCount="1">` +
+        `<autoFilter ref="${ref}"/>` +
+        `<tableColumns count="${ISSUES_COL_COUNT}">${cols}</tableColumns>` +
+        `<tableStyleInfo name="TableStyleMedium2" showFirstColumn="0"` +
+        ` showLastColumn="0" showRowStripes="1" showColumnStripes="0"/>` +
+        `</table>`;
+}
+
+function unzipFile(filePath: string): { [name: string]: Buffer } {
+    const AdmZip = require("adm-zip");
+    const zip = new AdmZip(filePath);
+    const entries: { [name: string]: Buffer } = {};
+    for (const entry of zip.getEntries()) {
+        entries[entry.entryName] = entry.getData();
+    }
+    return entries;
+}
+
+async function injectTableIntoFile(filePath: string, issueRowCount: number): Promise<void> {
+    // We use adm-zip (a common Node XLSX-ecosystem dep) if available,
+    // otherwise fall back to the JSZip that write-excel-file itself bundles.
+    let AdmZip: any;
+    try {
+        AdmZip = require("adm-zip");
+    } catch {
+        // adm-zip not available — skip table injection gracefully
+        return;
+    }
+
+    const zip = new AdmZip(filePath);
+
+    // 1. Add xl/tables/table1.xml
+    const tableXml = buildTableXml(issueRowCount);
+    zip.addFile(`xl/tables/table${ISSUES_TABLE_ID}.xml`, Buffer.from(tableXml, "utf8"));
+
+    // 2. Patch xl/worksheets/_rels/sheet4.xml.rels
+    const relsPath = `xl/worksheets/_rels/sheet${ISSUES_SHEET_ID}.xml.rels`;
+    const relsEntry = zip.getEntry(relsPath);
+    const tableRel = `<Relationship Id="rIdTbl"` +
+        ` Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table"` +
+        ` Target="../tables/table${ISSUES_TABLE_ID}.xml"/>`;
+    if (relsEntry) {
+        const existing = relsEntry.getData().toString("utf8");
+        zip.updateFile(relsPath, Buffer.from(
+            existing.replace("</Relationships>", tableRel + "</Relationships>"),
+            "utf8"
+        ));
+    } else {
+        zip.addFile(relsPath, Buffer.from(
+            `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+            `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+            tableRel + `</Relationships>`,
+            "utf8"
+        ));
+    }
+
+    // 3. Patch xl/worksheets/sheet4.xml — add <tableParts> before </worksheet>
+    const sheetPath = `xl/worksheets/sheet${ISSUES_SHEET_ID}.xml`;
+    const sheetXml = zip.getEntry(sheetPath).getData().toString("utf8");
+    zip.updateFile(sheetPath, Buffer.from(
+        sheetXml.replace(
+            "</worksheet>",
+            `<tableParts count="1"><tablePart r:id="rIdTbl"/></tableParts></worksheet>`
+        ),
+        "utf8"
+    ));
+
+    // 4. Patch [Content_Types].xml
+    const ctPath = "[Content_Types].xml";
+    const ctXml = zip.getEntry(ctPath).getData().toString("utf8");
+    zip.updateFile(ctPath, Buffer.from(
+        ctXml.replace(
+            "</Types>",
+            `<Override ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml"` +
+            ` PartName="/xl/tables/table${ISSUES_TABLE_ID}.xml"/></Types>`
+        ),
+        "utf8"
+    ));
+
+    zip.writeZip(filePath);
 }
 
 export class ACReporterXLSX implements IReporter {
@@ -150,14 +256,19 @@ export class ACReporterXLSX implements IReporter {
                     showWriteExcelWarning();
                     return;
                 }
+                const issuesSheet = ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData);
+                const issueRowCount: number = issuesSheet._issueRowCount;
+                delete issuesSheet._issueRowCount;
+
                 const sheets = [
                     ACReporterXLSX.createOverviewSheet(config, summaryData),
                     ACReporterXLSX.createScanSummarySheet(config, summaryData),
                     ACReporterXLSX.createIssueSummarySheet(config, policyInfo, summaryData),
-                    ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData),
+                    issuesSheet,
                     ACReporterXLSX.createDefinitionsSheet(),
                 ];
                 await writeExcelFile(sheets).toFile(filename);
+                await injectTableIntoFile(filename, issueRowCount);
             }
         }
     }
@@ -202,7 +313,7 @@ export class ACReporterXLSX implements IReporter {
 
         // Row 1: Title spanning 5 cols
         data.push([
-            { value: "Accessibility Scan Report", backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
+            { value: "Accessibility Scan Report", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
             null, null, null, null
         ]);
 
@@ -210,7 +321,7 @@ export class ACReporterXLSX implements IReporter {
         for (const row of rowData) {
             data.push([
                 dataCell(row.key1, { align: "left", height: 12 }),
-                { value: row.key2, fontFamily: "Calibri", fontSize: 12, color: "#000000", align: "left", columnSpan: 4 },
+                { value: row.key2, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", columnSpan: 4 },
                 null, null, null
             ]);
         }
@@ -226,17 +337,17 @@ export class ACReporterXLSX implements IReporter {
 
         // Row 11: "Summary" title spanning 5 cols
         data.push([
-            { value: "Summary", backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
+            { value: "Summary", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
             null, null, null, null
         ]);
 
         // Row 12: column headers
         data.push([
-            borderedCell("Total issues",     { align: "center", alignVertical: "center", backgroundColor: "#000000", color: "#FFFFFF", height: 16 }),
-            borderedCell("Violations",       { align: "center", alignVertical: "center", backgroundColor: "#E4AAAF", color: "#000000" }),
-            borderedCell("Needs review",     { align: "center", alignVertical: "center", backgroundColor: "#F4E08A", color: "#000000" }),
-            borderedCell("Recommendations",  { align: "center", alignVertical: "center", backgroundColor: "#96A9D7", color: "#000000" }),
-            borderedCell("Archived",         { align: "center", alignVertical: "center", backgroundColor: "#FFFFFF", color: "#000000" }),
+            borderedCell("Total issues",     { align: "center", alignVertical: "center", backgroundColor: "#000000", textColor: "#FFFFFF", height: 16 }),
+            borderedCell("Violations",       { align: "center", alignVertical: "center", backgroundColor: "#E4AAAF", textColor: "#000000" }),
+            borderedCell("Needs review",     { align: "center", alignVertical: "center", backgroundColor: "#F4E08A", textColor: "#000000" }),
+            borderedCell("Recommendations",  { align: "center", alignVertical: "center", backgroundColor: "#96A9D7", textColor: "#000000" }),
+            borderedCell("Archived",         { align: "center", alignVertical: "center", backgroundColor: "#FFFFFF", textColor: "#000000" }),
         ]);
 
         // Row 13: values
@@ -264,7 +375,7 @@ export class ACReporterXLSX implements IReporter {
             { width: 17.17 },
         ];
 
-        const headerStyle = { backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", height: 39 };
+        const headerStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", height: 39 };
         const countHeaderStyle = { ...headerStyle, align: "center", wrap: true };
 
         const data: any[][] = [];
@@ -274,10 +385,10 @@ export class ACReporterXLSX implements IReporter {
             { value: "Page title",      ...headerStyle, align: "left" },
             { value: "Page url",        ...headerStyle, align: "left" },
             { value: "Scan label",      ...headerStyle, align: "left" },
-            { value: "Violations",                    ...countHeaderStyle, backgroundColor: "#E4AAAF", color: "#000000" },
-            { value: "Needs review",                  ...countHeaderStyle, backgroundColor: "#F4E08A", color: "#000000" },
-            { value: "Recommendations",               ...countHeaderStyle, backgroundColor: "#96A9D7", color: "#000000" },
-            { value: "Archived",                      ...countHeaderStyle, backgroundColor: "#FFFFFF", color: "#000000" },
+            { value: "Violations",                    ...countHeaderStyle, backgroundColor: "#E4AAAF", textColor: "#000000" },
+            { value: "Needs review",                  ...countHeaderStyle, backgroundColor: "#F4E08A", textColor: "#000000" },
+            { value: "Recommendations",               ...countHeaderStyle, backgroundColor: "#96A9D7", textColor: "#000000" },
+            { value: "Archived",                      ...countHeaderStyle, backgroundColor: "#FFFFFF", textColor: "#000000" },
             { value: "% elements without violations", ...countHeaderStyle },
             { value: "% elements without violations or items to review", ...countHeaderStyle },
         ]);
@@ -285,7 +396,7 @@ export class ACReporterXLSX implements IReporter {
         for (const compressedScan of compressedScans) {
             let storedScan = ReporterManager.uncompressReport(compressedScan);
             let counts = storedScan.engineReport.summary.counts;
-            const textStyle = { fontFamily: "Calibri", fontSize: 12, color: "#000000", alignVertical: "center", height: 37, wrap: true };
+            const textStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", height: 37, wrap: true };
             const numStyle = { ...textStyle, align: "center", borderColor: "#A6A6A6", borderStyle: "thin" };
             data.push([
                 { value: storedScan.pageTitle, ...textStyle, align: "left" },
@@ -308,8 +419,8 @@ export class ACReporterXLSX implements IReporter {
 
         // Level type title row (e.g. "Violations")
         rows.push([
-            { value: `     ${title}`, backgroundColor: fillColor, color: textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 18 },
-            { value: levelCount, backgroundColor: fillColor, color: textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+            { value: `     ${title}`, backgroundColor: fillColor, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 18 },
+            { value: levelCount, backgroundColor: fillColor, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
         ]);
 
         // Individual issue message rows, sorted descending by count
@@ -321,8 +432,8 @@ export class ACReporterXLSX implements IReporter {
 
         for (const [msg, count] of rowArray) {
             rows.push([
-                { value: msg, fontFamily: "Calibri", fontSize: 12, color: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 14 },
-                { value: count, fontFamily: "Calibri", fontSize: 12, color: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+                { value: msg, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 14 },
+                { value: count, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
             ]);
         }
 
@@ -334,8 +445,8 @@ export class ACReporterXLSX implements IReporter {
 
         // Level title row (e.g. "Level 1 - the most essential...")
         rows.push([
-            { value: title, backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
-            { value: levelCounts[0], backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+            { value: title, backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+            { value: levelCounts[0], backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
         ]);
 
         rows.push(...ACReporterXLSX.buildIssueSummaryLevelRows("#E4AAAF", "#000000", "Violation",     levelCounts[1], levelVrowValues));
@@ -451,26 +562,26 @@ export class ACReporterXLSX implements IReporter {
 
         // Row 1: "Issue summary" title spanning 2 cols
         data.push([
-            { value: "Issue summary", backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 2 },
+            { value: "Issue summary", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 2 },
             null
         ]);
 
         // Row 2: description spanning 2 cols
         data.push([
-            { value: "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.", fontFamily: "Calibri", fontSize: 12, color: "#000000", alignVertical: "center", align: "left", height: 20, columnSpan: 2 },
+            { value: "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.", fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", align: "left", height: 20, columnSpan: 2 },
             null
         ]);
 
         // Row 3: "Total issues found:" with value
         data.push([
-            { value: "Total issues found:", backgroundColor: "#000000", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
-            { value: totalIssues, backgroundColor: "#000000", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+            { value: "Total issues found:", backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+            { value: totalIssues, backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
         ]);
 
         // Row 4: "Number of issues" label
         data.push([
             { value: null, borderColor: "#A6A6A6", borderStyle: "thin", height: 20 },
-            { value: "Number of issues", fontFamily: "Calibri", fontSize: 12, color: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+            { value: "Number of issues", fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
         ]);
 
         data.push(...ACReporterXLSX.buildIssueSummaryTKLevelRows("Level 1 - the most essential issues to address",          level1Counts, level1VrowValues, level1NRrowValues, level1RrowValues, level1ArowValues));
@@ -520,7 +631,9 @@ export class ACReporterXLSX implements IReporter {
             { width: 17.17 },
         ];
 
-        const hStyle = { backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", align: "center", alignVertical: "center", wrap: true, height: 24 };
+        // Header and data row colors are intentionally omitted — the Excel table
+        // (TableStyleMedium2 + showRowStripes) applied by injectTableIntoFile() provides all coloring.
+        const hStyle = { fontFamily: "Calibri", fontSize: 12, align: "center", alignVertical: "center", wrap: true, height: 24 };
 
         const data: any[][] = [];
 
@@ -558,7 +671,7 @@ export class ACReporterXLSX implements IReporter {
                 let cpStrs = dropDupes(cps.map(cp => `${cp.num} ${cp.name}`));
                 cpStrs.sort();
 
-                const dStyle = { fontFamily: "Calibri", fontSize: 12, color: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", height: 14 };
+                const dStyle = { fontFamily: "Calibri", fontSize: 12, height: 14 };
                 data.push([
                     { value: storedScan.pageTitle,                                                          ...dStyle, align: "left",   alignVertical: "center" },
                     { value: storedScan.engineReport.summary.URL,                                           ...dStyle, align: "left",   alignVertical: "center" },
@@ -578,7 +691,7 @@ export class ACReporterXLSX implements IReporter {
             }
         }
 
-        return { data, sheet: "Issues", columns };
+        return { data, sheet: "Issues", columns, stickyRowsCount: 1, _issueRowCount: data.length };
     }
 
     private static createDefinitionsSheet(): any {
@@ -587,10 +700,10 @@ export class ACReporterXLSX implements IReporter {
             { width: 119.51 },
         ];
 
-        const titleStyle = { backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 20, alignVertical: "center", align: "left" };
-        const sectionStyle = { backgroundColor: "#403151", color: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left" };
-        const subHeaderStyle = { backgroundColor: "#CCC0DA", color: "#000000", fontFamily: "Calibri", fontSize: 16, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left" };
-        const dataStyle = { fontFamily: "Calibri", fontSize: 12, color: "#000000", align: "left", height: 12 };
+        const titleStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 20, alignVertical: "center", align: "left" };
+        const sectionStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left" };
+        const subHeaderStyle = { backgroundColor: "#CCC0DA", textColor: "#000000", fontFamily: "Calibri", fontSize: 16, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left" };
+        const dataStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", height: 12 };
 
         const summaryRowData = [
             { key1: 'Page', key2: 'Identifies the page or html file that was scanned.' },

@@ -119,6 +119,16 @@ $ npm install -g accessibility-checker
 $ achecker
 ```
 
+## Optional: XLSX Report Format
+
+If you want to generate reports in XLSX format, install `write-excel-file` and `adm-zip` as additional dependencies:
+
+```bash
+$ npm install --save-dev write-excel-file adm-zip
+```
+
+Without these packages installed, all other report formats (JSON, HTML, CSV) will work normally, but XLSX format will be disabled with a warning message.
+
 ## Setup
 
 1. Setup and Initialize - Follow the [Prerequisites](#prerequisites) and [Install](#install) instructions.

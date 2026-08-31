@@ -23,10 +23,14 @@
     "typescript": "^5.1.3"
   },
   "peerDependencies": {
-    "write-excel-file": "^4.1.1"
+    "write-excel-file": "^4.1.1",
+    "adm-zip": "^0.5.9"
   },
   "peerDependenciesMeta": {
     "write-excel-file": {
+      "optional": true
+    },
+    "adm-zip": {
       "optional": true
     }
   },

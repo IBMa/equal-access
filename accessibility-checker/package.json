@@ -31,6 +31,7 @@
     }
   },
   "dependencies": {
+    "adm-zip": "^0.5.9",
     "chromedriver": "*",
     "microdiff": "^1.5.0",
     "js-yaml": "^4.2.0",
@@ -40,7 +41,6 @@
     "@ibm/telemetry-js": "^1.9.1",
     "@playwright/test": "^1.21.1",
     "@types/node": "^20.17.24",
-    "adm-zip": "^0.5.9",
     "chai": "^4.3.4",
     "eslint": "^8.4.1",
     "express": "^4.17.1",
