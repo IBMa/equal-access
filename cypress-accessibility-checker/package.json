@@ -31,13 +31,7 @@
     ],
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
-        "cypress": "^13.2.0 || ^15",
-        "write-excel-file": "^4.1.1"
-    },
-    "peerDependenciesMeta": {
-        "write-excel-file": {
-            "optional": true
-        }
+        "cypress": "^13.2.0 || ^15"
     },
     "devDependencies": {
         "adm-zip": "^0.5.9",
@@ -53,6 +47,7 @@
         "@ibm/telemetry-js": "^1.9.1",
         "axios": "^1.7.9",
         "js-yaml": "^4.2.0",
-        "microdiff": "^1.5.0"
+        "microdiff": "^1.5.0",
+        "write-excel-file": "^4.1.1"
     }
 }

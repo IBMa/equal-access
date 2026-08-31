@@ -145,8 +145,6 @@ jobs:
         working-directory: accessibility-checker
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
         working-directory: accessibility-checker
-      - run: npm install write-excel-file
-        working-directory: accessibility-checker
       - run: npx mocha --timeout 30000 -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.XLSX.test.mjs
         working-directory: accessibility-checker
 
@@ -198,8 +196,6 @@ jobs:
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.mjs
         working-directory: accessibility-checker
       - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.mjs
-        working-directory: accessibility-checker
-      - run: npm install write-excel-file
         working-directory: accessibility-checker
       - run: npx mocha --timeout 30000 -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.XLSX.test.mjs
         working-directory: accessibility-checker
@@ -518,8 +514,6 @@ jobs:
         working-directory: common/module
       - run: npm install
         working-directory: cypress-accessibility-checker
-      - run: npm install write-excel-file
-        working-directory: cypress-accessibility-checker
       - run: npm run build:common
         working-directory: cypress-accessibility-checker
       - run: npm run test:start-http &
@@ -560,8 +554,6 @@ jobs:
       - run: npm install
         working-directory: vitest-accessibility-checker
       - run: npx playwright install chromium
-        working-directory: vitest-accessibility-checker
-      - run: npm install write-excel-file
         working-directory: vitest-accessibility-checker
       - run: npm run build:common
         working-directory: vitest-accessibility-checker
