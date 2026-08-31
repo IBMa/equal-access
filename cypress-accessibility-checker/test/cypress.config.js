@@ -71,9 +71,11 @@ module.exports = defineConfig({
         on('task', {
             accessibilityChecker: require('../plugin'),
             readXlsxCell({ filePath, sheetName, cellRef }) {
+                if (!fs.existsSync(filePath)) throw new Error(`XLSX file not found: ${filePath}`)
                 return readXlsxCell(filePath, sheetName, cellRef)
             },
             xlsxSheetExists({ filePath, sheetName }) {
+                if (!fs.existsSync(filePath)) return false
                 const zip = new AdmZip(filePath)
                 const wbXml = zip.getEntry('xl/workbook.xml').getData().toString('utf8')
                 // Simple presence check — attribute order doesn't matter here
