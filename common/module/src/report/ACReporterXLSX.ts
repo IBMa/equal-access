@@ -138,22 +138,12 @@ function buildTableXml(rowCount: number): string {
         `</table>`;
 }
 
-function unzipFile(filePath: string): { [name: string]: Buffer } {
-    const AdmZip = require("adm-zip");
-    const zip = new AdmZip(filePath);
-    const entries: { [name: string]: Buffer } = {};
-    for (const entry of zip.getEntries()) {
-        entries[entry.entryName] = entry.getData();
-    }
-    return entries;
-}
-
 async function injectTableIntoFile(filePath: string, issueRowCount: number): Promise<void> {
-    // We use adm-zip (a common Node XLSX-ecosystem dep) if available,
-    // otherwise fall back to the JSZip that write-excel-file itself bundles.
     let AdmZip: any;
     try {
-        AdmZip = require("adm-zip");
+        // webpackIgnore prevents Cypress/webpack from trying to bundle this Node-only module.
+        // The try/catch ensures graceful degradation if adm-zip is not installed.
+        AdmZip = require(/* webpackIgnore: true */ "adm-zip");
     } catch {
         // adm-zip not available — skip table injection gracefully
         return;
