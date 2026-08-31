@@ -31,15 +31,10 @@
     ],
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "peerDependencies": {
-      "cypress": "^13.2.0 || ^15",
-        "write-excel-file": "^4.1.1"
-      },
-      "peerDependenciesMeta": {
-        "write-excel-file": {
-          "optional": true
-        }
-      },
+        "cypress": "^13.2.0 || ^15"
+    },
     "devDependencies": {
+        "adm-zip": "^0.5.9",
         "cypress": "^15.9.0",
         "eslint": "^8.4.1",
         "eslint-plugin-cypress": "^2.12.1",
@@ -49,9 +44,10 @@
         "start-server-and-test": "^2.0.0"
     },
     "dependencies": {
-      "axios": "^1.7.9",
-      "@ibm/telemetry-js": "^1.9.1",
-      "microdiff": "^1.5.0",
-      "js-yaml": "^4.2.0"
+        "@ibm/telemetry-js": "^1.9.1",
+        "axios": "^1.7.9",
+        "js-yaml": "^4.2.0",
+        "microdiff": "^1.5.0",
+        "write-excel-file": "^4.1.1"
     }
 }

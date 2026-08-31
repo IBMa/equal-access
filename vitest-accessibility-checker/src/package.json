@@ -36,19 +36,14 @@
   ],
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "write-excel-file": "^4.1.1"
-  },
-  "peerDependenciesMeta": {
-    "write-excel-file": {
-      "optional": true
-    }
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
     "axios": "^1.7.9",
     "js-yaml": "^4.2.0",
-    "microdiff": "^1.5.0"
+    "microdiff": "^1.5.0",
+    "write-excel-file": "^4.1.1"
   },
   "publishConfig": {
     "access": "public"

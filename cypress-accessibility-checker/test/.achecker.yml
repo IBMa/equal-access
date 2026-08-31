@@ -64,6 +64,9 @@ label:
 # Default: results
 outputFolder: results
 
+# optional - Disable timestamp in output filenames for deterministic test paths
+outputFilenameTimestamp: false
+
 # optional - Where the baseline results should be loaded from
 # Default: baselines
 baselineFolder: baselines

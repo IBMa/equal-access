@@ -22,24 +22,13 @@
   "engines": {
     "node": ">=16"
   },
-  "peerDependencies": {
-    "write-excel-file": "^4.1.1"
-  },
-  "peerDependenciesMeta": {
-    "write-excel-file": {
-      "optional": true
-    }
-  },
-  "overrides": {
-    "diff": "^8.0.3",
-    "serialize-javascript": "^7.0.5"
-  },
   "dependencies": {
     "adm-zip": "^0.6.0",
     "chromedriver": "*",
-    "microdiff": "^1.5.0",
     "js-yaml": "^4.2.0",
-    "puppeteer": "^25.1.0"
+    "microdiff": "^1.5.0",
+    "puppeteer": "^25.1.0",
+    "write-excel-file": "^4.1.1"
   },
   "devDependencies": {
     "@ibm/telemetry-js": "^1.9.1",
