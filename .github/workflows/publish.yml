@@ -203,10 +203,6 @@ jobs:
       working-directory: rule-server
     - run: npm run build
       working-directory: rule-server
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.min.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: |
@@ -239,7 +235,6 @@ jobs:
           else
             EXT_VERSION="${NPM_VERSION}.9999"
           fi;
-          sed -i'.old' -e 's/"version": "3.0.0",/"version": "'"${EXT_VERSION}"'",/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old

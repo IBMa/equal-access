@@ -119,6 +119,10 @@ $ npm install -g accessibility-checker
 $ achecker
 ```
 
+## XLSX Report Format
+
+XLSX report format is included automatically — no additional installation required.
+
 ## Setup
 
 1. Setup and Initialize - Follow the [Prerequisites](#prerequisites) and [Install](#install) instructions.
