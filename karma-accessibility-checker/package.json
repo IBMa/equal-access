@@ -43,22 +43,15 @@
   ],
   "author": "Tom Brunet <thbrunet@us.ibm.com>",
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
-  "peerDependencies": {
-    "exceljs": "^4.4.0"
-  },
-  "peerDependenciesMeta": {
-    "exceljs": {
-      "optional": true
-    }
-  },
   "dependencies": {
-    "js-yaml": "4.3.0",
+    "js-yaml": "4.3.2",
     "karma": "6.3.18",
     "karma-accessibility-checker": "file:package/karma-accessibility-checker",
-    "microdiff": "^1.5.0"
+    "microdiff": "^1.5.0",
+    "write-excel-file": "^4.1.1"
   },
   "devDependencies": {
-    "adm-zip": "^0.5.9",
+    "adm-zip": "^0.6.0",
     "chai": "^4.3.4",
     "decache": "^4.6.1",
     "difflet": "^1.0.1",
@@ -81,7 +74,7 @@
     "karma-jasmine-html-reporter": "^1.7.0",
     "karma-spec-reporter": "^0.0.32",
     "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
+    "nyc": "^18.0.0",
     "serve-index": "^1.9.1",
     "shx": "^0.3.4",
     "sinon": "^12.0.1"

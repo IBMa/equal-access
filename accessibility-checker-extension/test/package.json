@@ -19,7 +19,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "exceljs": "^4.4.0",
+    "read-excel-file": "^9.3.10",
     "ts-node": "^10.9.2"
   },
   "overrides": {

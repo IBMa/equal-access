@@ -11,6 +11,8 @@ export default defineConfig({
     root: __dirname,
     plugins: [accessibilityCheckerPlugin()],
     test: {
+        // Explicitly exclude the Node-only XLSX test (runs via vitest.node.config.mjs instead)
+        exclude: ['src/achecker-xlsx.test.js'],
         browser: {
             enabled: true,
             instances: [

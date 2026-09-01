@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run build:common && vitest run --config=test/vitest.config.js",
+    "test:node": "npm run build:common && vitest run --config=test/vitest.node.config.mjs",
     "test:ui": "npm run build:common && vitest --ui --config=test/vitest.config.js",
     "test:start-http": "http-server -c-1 --silent",
     "build:common": "cd ../common/module && npm run build && cd ../../vitest-accessibility-checker && shx rm -rf ./src/lib/common && shx cp -R ../common/module/dist/cjs ./src/lib/common",
@@ -33,13 +34,7 @@
   ],
   "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
   "peerDependencies": {
-    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "exceljs": "^4.4.0"
-  },
-  "peerDependenciesMeta": {
-    "exceljs": {
-      "optional": true
-    }
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
     "@vitest/browser": "^4.1.6",
@@ -55,8 +50,10 @@
   },
   "dependencies": {
     "@ibm/telemetry-js": "^1.9.1",
+    "adm-zip": "^0.5.18",
     "axios": "^1.7.9",
     "js-yaml": "^4.2.0",
-    "microdiff": "^1.5.0"
+    "microdiff": "^1.5.0",
+    "write-excel-file": "^4.1.1"
   }
 }

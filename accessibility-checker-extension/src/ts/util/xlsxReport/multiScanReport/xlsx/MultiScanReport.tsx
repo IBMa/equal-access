@@ -15,2085 +15,535 @@
  *****************************************************************************/
 
 import ReportUtil from "../../reportUtil";
-// import ReportSummaryUtil from '../../../util/reportSummaryUtil';
-
-import ExcelJS from "exceljs"
+import writeExcelFile from "write-excel-file/browser";
+import { unzipSync, strFromU8, strToU8, zipSync } from "fflate";
 import { IArchiveDefinition, IStoredReportMeta, StoredScanData } from "../../../../interfaces/interfaces";
+
+// ─── XLSX table injection ──────────────────────────────────────────────────────
+//
+// write-excel-file has no native Excel table API. We post-process the Blob it
+// produces: unzip it with fflate (already a transitive dep), inject the table
+// definition XML, wire the sheet to reference it, and re-zip.
+//
+// The Issues sheet is always sheet index 3 (0-based) → sheetId "4".
+// The table covers A1:<lastCol><lastRow> where lastCol = "N" (14 columns).
+// TableStyleMedium2 + showRowStripes matches the original ExcelJS output.
+
+const ISSUES_SHEET_ID = "4";
+const TABLE_ID = "1";
+const TABLE_COL_COUNT = 14;
+const COL_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N"];
+
+function colLetter(n: number): string { return COL_LETTERS[n - 1] ?? "A"; }
+
+function tableXml(rowCount: number): string {
+    const lastCol = colLetter(TABLE_COL_COUNT);
+    const ref = `A1:${lastCol}${rowCount}`;
+    const cols = [
+        "Page title","Page URL","Scan label","Issue ID","Issue type",
+        "Toolkit level","Checkpoint","WCAG level","Rule","Issue",
+        "Element","Code","Xpath","Help",
+    ].map((name, i) =>
+        `<tableColumn id="${i+1}" name="${name}"/>`
+    ).join("");
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"` +
+        ` id="${TABLE_ID}" name="IssuesTable" displayName="IssuesTable" ref="${ref}"` +
+        ` headerRowCount="1">` +
+        `<autoFilter ref="${ref}"/>` +
+        `<tableColumns count="${TABLE_COL_COUNT}">${cols}</tableColumns>` +
+        `<tableStyleInfo name="TableStyleMedium2" showFirstColumn="0"` +
+        ` showLastColumn="0" showRowStripes="1" showColumnStripes="0"/>` +
+        `</table>`;
+}
+
+function tableRelsXml(): string {
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+        `<Relationship Id="rId1"` +
+        ` Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table"` +
+        ` Target="../tables/table${TABLE_ID}.xml"/>` +
+        `</Relationships>`;
+}
+
+async function injectTable(blob: Blob, issueRowCount: number): Promise<Blob> {
+    // 1. Unzip
+    const arrayBuf = await blob.arrayBuffer();
+    const files = unzipSync(new Uint8Array(arrayBuf));
+
+    // 2. Add xl/tables/table1.xml
+    files[`xl/tables/table${TABLE_ID}.xml`] = strToU8(tableXml(issueRowCount));
+
+    // 3. Patch (or create) xl/worksheets/_rels/sheet4.xml.rels to add the table relationship
+    const relsKey = `xl/worksheets/_rels/sheet${ISSUES_SHEET_ID}.xml.rels`;
+    const existingRels = files[relsKey] ? strFromU8(files[relsKey]) : null;
+    if (existingRels && existingRels.includes("<Relationships")) {
+        // Insert before closing tag
+        files[relsKey] = strToU8(existingRels.replace(
+            "</Relationships>",
+            `<Relationship Id="rIdTbl"` +
+            ` Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table"` +
+            ` Target="../tables/table${TABLE_ID}.xml"/>` +
+            `</Relationships>`
+        ));
+    } else {
+        files[relsKey] = strToU8(tableRelsXml());
+    }
+
+    // 4. Patch xl/worksheets/sheet4.xml to add <tableParts> before </worksheet>
+    const sheetKey = `xl/worksheets/sheet${ISSUES_SHEET_ID}.xml`;
+    const sheetXml = strFromU8(files[sheetKey]);
+    files[sheetKey] = strToU8(sheetXml.replace(
+        "</worksheet>",
+        `<tableParts count="1"><tablePart r:id="rIdTbl"/></tableParts></worksheet>`
+    ));
+
+    // 5. Patch [Content_Types].xml to register the table XML content type
+    const ctKey = "[Content_Types].xml";
+    const ctXml = strFromU8(files[ctKey]);
+    files[ctKey] = strToU8(ctXml.replace(
+        "</Types>",
+        `<Override ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml"` +
+        ` PartName="/xl/tables/table${TABLE_ID}.xml"/></Types>`
+    ));
+
+    // 6. Re-zip and return as Blob
+    const zipped = zipSync(files);
+    return new Blob([zipped], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+}
 
 function perc(a: number, b: number) {
     return parseInt((((a) / b) * 100).toFixed(0));
 }
 
+// ─── Cell style helpers ────────────────────────────────────────────────────────
+
+function hdr(value: any, extra: any = {}): any {
+    return { value, backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", ...extra };
+}
+
+function colHdr(value: any, bg: string, textColor = "#000000", extra: any = {}): any {
+    return { value, backgroundColor: bg, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "center", ...extra };
+}
+
+function bd(value: any, extra: any = {}): any {
+    return { value, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", ...extra };
+}
+
+// ─── Sheet builders ────────────────────────────────────────────────────────────
+
+function buildOverviewSheet(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]): any {
+    let violations = 0, needsReviews = 0, recommendations = 0, hidden = 0;
+    for (const s of storedScans) {
+        violations    += (s.counts.Violation        || 0);
+        needsReviews  += (s.counts["Needs review"]  || 0);
+        recommendations += (s.counts.Recommendation || 0);
+        hidden        += (s.counts.Hidden            || 0);
+    }
+    const totalIssues = violations + needsReviews + recommendations;
+    const lastScan = storedScans[storedScans.length - 1];
+    const uniqueURLs = new Set(storedScans.map(s => s.pageURL)).size;
+
+    const columns = [
+        { width: 15.1 }, { width: 15.9 }, { width: 16.23 }, { width: 19.4 }, { width: 15.9 }
+    ];
+
+    const rowMeta = [
+        { key1: "Tool:",        key2: "IBM Equal Access Accessibility Checker" },
+        { key1: "Version:",     key2: chrome.runtime.getManifest().version },
+        // @ts-ignore
+        { key1: "Rule set:",    key2: (lastScan.ruleset === "Latest Deployment") ? archives[1].name : lastScan.ruleset },
+        { key1: "Guidelines:",  key2: lastScan.guideline },
+        { key1: "Report date:", key2: new Date(lastScan.timestamp) },
+        { key1: "Platform:",    key2: navigator.userAgent },
+        { key1: "Scans:",       key2: storedScans.length },
+        { key1: "Pages:",       key2: uniqueURLs },
+    ];
+
+    const data: any[][] = [];
+
+    // Row 1: title spanning 5 cols
+    data.push([hdr("Accessibility Scan Report", { height: 27, columnSpan: 5 }), null, null, null, null]);
+
+    // Rows 2–9: metadata (key in col A, value spanning B–D)
+    for (let i = 0; i < rowMeta.length; i++) {
+        const h = i === 5 ? 36 : 12; // Platform row is taller
+        data.push([
+            { value: rowMeta[i].key1, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", height: h },
+            { value: rowMeta[i].key2, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", wrap: i === 5, columnSpan: 4 },
+            null, null, null
+        ]);
+    }
+
+    // Row 10: blank
+    data.push([null]);
+
+    // Row 11: "Summary" title
+    data.push([hdr("Summary", { height: 27, columnSpan: 5 }), null, null, null, null]);
+
+    // Row 12: column headers
+    data.push([
+        colHdr("Issues",           "#000000", "#FFFFFF", { height: 16 }),
+        colHdr("Violations",       "#E4AAAF"),
+        colHdr("Needs review",     "#F4E08A"),
+        colHdr("Recommendations",  "#96A9D7"),
+        colHdr("Hidden",           "#BFBFBF"),
+    ]);
+
+    // Row 13: values
+    data.push([
+        bd(totalIssues,     { align: "center", height: 27 }),
+        bd(violations,      { align: "center" }),
+        bd(needsReviews,    { align: "center" }),
+        bd(recommendations, { align: "center" }),
+        bd(hidden,          { align: "center" }),
+    ]);
+
+    return { data, sheet: "Overview", columns };
+}
+
+function buildScanSummarySheet(storedScans: IStoredReportMeta[]): any {
+    const columns = [
+        { width: 27.0 }, { width: 46.0 }, { width: 20.17 }, { width: 18.5 },
+        { width: 17.17 }, { width: 17.17 }, { width: 17.17 }, { width: 17.17 },
+        { width: 17.17 }, { width: 17.17 },
+    ];
+
+    const hBase = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", height: 39 };
+
+    const data: any[][] = [];
+
+    data.push([
+        { value: "Page title",    ...hBase, align: "left" },
+        { value: "Page url",      ...hBase, align: "left" },
+        { value: "Scan label",    ...hBase, align: "left" },
+        { value: "Base scan",     ...hBase, align: "left" },
+        colHdr("Violations",      "#E4AAAF", "#000000", { height: 39 }),
+        colHdr("Needs review",    "#F4E08A", "#000000", { height: 39 }),
+        colHdr("Recommendations", "#96A9D7", "#000000", { height: 39 }),
+        colHdr("Hidden",          "#BFBFBF", "#000000", { height: 39 }),
+        colHdr("% elements without violations",                        "#000000", "#FFFFFF", { height: 39, wrap: true }),
+        colHdr("% elements without violations or items to review",     "#000000", "#FFFFFF", { height: 39, wrap: true }),
+    ]);
+
+    for (const storedScan of storedScans) {
+        const violations = storedScan.storedScanData.filter((r: StoredScanData) => r[4] === "Violation");
+        const potentials = storedScan.storedScanData.filter((r: StoredScanData) => r[4] === "Needs review");
+        const violationXpaths = violations.map((r: StoredScanData) => r[12]);
+        const reviewXpaths    = potentials.map((r: StoredScanData) => r[12]);
+        const violationPlusPotentialXpaths = violationXpaths.concat(reviewXpaths);
+        const violationUniqueElements = new Set(violationXpaths).size;
+        const violationPlusPotentialUniqueElements = new Set(violationPlusPotentialXpaths).size;
+        const tested = (storedScan.testedUniqueElements || 0);
+
+        const tStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", height: 37, wrap: true };
+        const nStyle = { ...tStyle, align: "center", borderColor: "#A6A6A6", borderStyle: "thin" };
+        data.push([
+            { value: storedScan.pageTitle, ...tStyle, align: "left" },
+            { value: storedScan.pageURL,   ...tStyle, align: "left" },
+            { value: storedScan.label,     ...tStyle, align: "left" },
+            { value: "none",               ...tStyle, align: "left" },
+            { value: storedScan.counts["Violation"]     || 0, ...nStyle },
+            { value: storedScan.counts["Needs review"]  || 0, ...nStyle },
+            { value: storedScan.counts["Recommendation"]|| 0, ...nStyle },
+            { value: storedScan.counts["Hidden"]        || 0, ...nStyle },
+            { value: perc(tested - violationUniqueElements, tested),                         ...nStyle },
+            { value: perc(tested - violationPlusPotentialUniqueElements, tested),            ...nStyle },
+        ]);
+    }
+
+    return { data, sheet: "Scan summary", columns };
+}
+
+// ─── Issue summary helpers ─────────────────────────────────────────────────────
+
+type IssueDef = { issueDef: string; hidden: boolean };
+
+function countDuplicatesInArray(array: IssueDef[]): { [key: string]: [number, number] } {
+    const dup: { [k: string]: number } = {};
+    const hid: { [k: string]: number } = {};
+    for (const item of array) {
+        if (!item.hidden) {
+            dup[item.issueDef] = (dup[item.issueDef] || 0) + 1;
+            hid[item.issueDef] = (hid[item.issueDef] || 0);
+        } else {
+            dup[item.issueDef] = (dup[item.issueDef] || 0);
+            hid[item.issueDef] = (hid[item.issueDef] || 0) + 1;
+        }
+    }
+    const final: { [k: string]: [number, number] } = {};
+    for (const k of Object.keys({ ...dup, ...hid })) {
+        final[k] = [dup[k] || 0, hid[k] || 0];
+    }
+    return final;
+}
+
+function levelSubRows(bg: string, textColor: string, label: string,
+    count: number, hiddenCount: number,
+    rowValues: { [k: string]: [number, number] }): any[][] {
+    const rows: any[][] = [];
+
+    // Sub-header row
+    rows.push([
+        { value: `     ${label}`, backgroundColor: bg, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 18 },
+        { value: count,       backgroundColor: bg, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+        { value: hiddenCount, backgroundColor: bg, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "center" },
+    ]);
+
+    // Individual issue rows sorted desc by visible count
+    const sorted = Object.entries(rowValues).sort((a, b) => b[1][0] - a[1][0]);
+    for (const [msg, [vis, hid]] of sorted) {
+        rows.push([
+            { value: "     " + msg, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 14 },
+            { value: vis,           fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+            { value: hid,           fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "center" },
+        ]);
+    }
+    return rows;
+}
+
+function levelRows(title: string, counts: number[],
+    V: IssueDef[], NR: IssueDef[], R: IssueDef[]): any[][] {
+    const rows: any[][] = [];
+    const hiddenCount = counts[4];
+
+    // Level header row
+    rows.push([
+        { value: title, backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+        { value: counts[0], backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+        { value: hiddenCount, backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "center", borderColor: "#A6A6A6", borderStyle: "thin" },
+    ]);
+
+    const vValues  = countDuplicatesInArray(V);
+    const nrValues = countDuplicatesInArray(NR);
+    const rValues  = countDuplicatesInArray(R);
+
+    const hiddenV  = Object.values(vValues).reduce((s, [,h]) => s + h, 0);
+    const hiddenNR = Object.values(nrValues).reduce((s, [,h]) => s + h, 0);
+    const hiddenR  = Object.values(rValues).reduce((s, [,h]) => s + h, 0);
+
+    rows.push(...levelSubRows("#E4AAAF", "#000000", "Violation",     counts[1], hiddenV,  vValues));
+    rows.push(...levelSubRows("#F4E08A", "#000000", "Needs review",  counts[2], hiddenNR, nrValues));
+    rows.push(...levelSubRows("#96A9D7", "#000000", "Recommendation",counts[3], hiddenR,  rValues));
+
+    return rows;
+}
+
+function buildIssueSummarySheet(storedScans: IStoredReportMeta[]): any {
+    const columns = [{ width: 155.51 }, { width: 21.16 }, { width: 18.0 }];
+
+    const lvl = [1,2,3,4].map(() => ({ counts: [0,0,0,0,0], V: [] as IssueDef[], NR: [] as IssueDef[], R: [] as IssueDef[] }));
+
+    for (const storedScan of storedScans) {
+        for (const row of storedScan.storedScanData) {
+            const lv = row[5];
+            if (lv < 1 || lv > 4) continue;
+            const L = lvl[lv - 1];
+            const isHidden = !!row[14];
+            if (!isHidden) L.counts[0]++;
+            if (row[4] === "Violation")     { if (!isHidden) L.counts[1]++; L.V.push({issueDef: row[9], hidden: isHidden}); }
+            if (row[4] === "Needs review")  { if (!isHidden) L.counts[2]++; L.NR.push({issueDef: row[9], hidden: isHidden}); }
+            if (row[4] === "Recommendation"){ if (!isHidden) L.counts[3]++; L.R.push({issueDef: row[9], hidden: isHidden}); }
+            if (isHidden) L.counts[4]++;
+        }
+    }
+
+    const totalIssues = lvl.reduce((s, l) => s + l.counts[0], 0);
+    const totalHidden = lvl.reduce((s, l) => s + l.counts[4], 0);
+
+    const data: any[][] = [];
+
+    // Row 1: title
+    data.push([
+        { value: "Issue summary", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 3 },
+        null, null
+    ]);
+
+    // Row 2: description + column headers
+    data.push([
+        { value: "     In the IBM Equal Access Toolkit, issues are divided into four levels (1-3). Tackle the levels in order to address some of the most impactful issues first.", fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", align: "left", height: 20 },
+        { value: "Issues", backgroundColor: "#E3E3E3", textColor: "#000000", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+        { value: "Hidden issues", backgroundColor: "#E3E3E3", textColor: "#000000", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "center" },
+    ]);
+
+    // Row 3: totals
+    data.push([
+        { value: "Issues found:", backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+        { value: totalIssues, backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+        { value: totalHidden, backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "center", borderColor: "#A6A6A6", borderStyle: "thin" },
+    ]);
+
+    // Row 4: blank header row with "Number of issues" label
+    data.push([
+        { value: null, borderColor: "#A6A6A6", borderStyle: "thin", height: 20 },
+        null, null
+    ]);
+
+    // Levels 1–4
+    const titles = [
+        "Level 1 - the most essential issues to address",
+        "Level 2 - the next most important issues",
+        "Level 3 - necessary to meet requirements",
+        "Level 4 - further recommended improvements to accessibility",
+    ];
+    for (let i = 0; i < 4; i++) {
+        data.push(...levelRows(titles[i], lvl[i].counts, lvl[i].V, lvl[i].NR, lvl[i].R));
+    }
+
+    return { data, sheet: "Issue summary", columns };
+}
+
+function buildIssuesSheet(storedScans: IStoredReportMeta[]): any {
+    const columns = [
+        { width: 18.0 }, { width: 20.5 }, { width: 21.0 }, { width: 18.5 },
+        { width: 23.0 }, { width: 17.17 }, { width: 17.17 }, { width: 17.17 },
+        { width: 17.17 }, { width: 17.17 }, { width: 14.0 }, { width: 17.17 },
+        { width: 43.0 }, { width: 17.17 },
+    ];
+
+    const hStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", align: "center", alignVertical: "center", wrap: true, height: 24 };
+
+    const data: any[][] = [];
+
+    data.push([
+        { value: "Page title",    ...hStyle },
+        { value: "Page URL",      ...hStyle },
+        { value: "Scan label",    ...hStyle },
+        { value: "Issue ID",      ...hStyle },
+        { value: "Issue type",    ...hStyle },
+        { value: "Toolkit level", ...hStyle },
+        { value: "Checkpoint",    ...hStyle },
+        { value: "WCAG level",    ...hStyle },
+        { value: "Rule",          ...hStyle },
+        { value: "Issue",         ...hStyle },
+        { value: "Element",       ...hStyle },
+        { value: "Code",          ...hStyle },
+        { value: "Xpath",         ...hStyle },
+        { value: "Help",          ...hStyle },
+    ]);
+
+    for (const storedScan of storedScans) {
+        for (const r of storedScan.storedScanData) {
+            const dStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", height: 14, alignVertical: "center" };
+            data.push([
+                { value: r[0],  ...dStyle, align: "left" },
+                { value: r[1],  ...dStyle, align: "left" },
+                { value: storedScan.label, ...dStyle, align: "center" },
+                { value: r[3],  ...dStyle, align: "left" },
+                { value: r[14] ? "Hidden:" + r[4] : r[4], ...dStyle, align: "center" },
+                { value: Number.isNaN(r[5]) ? "n/a" : r[5],  ...dStyle, align: "center" },
+                { value: r[6],  ...dStyle, align: "left" },
+                { value: Number.isNaN(r[5]) ? "n/a" : r[7],  ...dStyle, align: "center" },
+                { value: r[8],  ...dStyle, align: "left" },
+                { value: r[9],  ...dStyle, align: "left" },
+                { value: r[10], ...dStyle, align: "center" },
+                { value: r[11], ...dStyle, align: "left" },
+                { value: r[12], ...dStyle, align: "left" },
+                { value: r[13], ...dStyle, align: "left" },
+            ]);
+        }
+    }
+
+    // stickyRowsCount freezes the header row while scrolling.
+    // Row banding and autofilter come from the real Excel table injected in injectTable().
+    return { data, sheet: "Issues", columns, stickyRowsCount: 1, _issueRowCount: data.length };
+}
+
+function buildDefinitionsSheet(): any {
+    const columns = [{ width: 41.51 }, { width: 119.51 }];
+
+    const titleStyle   = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 20, alignVertical: "center", align: "left" };
+    const sectionStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left" };
+    const subHdrStyle  = { backgroundColor: "#CCC0DA", textColor: "#000000", fontFamily: "Calibri", fontSize: 16, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left" };
+    const dataStyle    = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", height: 12 };
+
+    const summaryDefs = [
+        { key1: "Page",            key2: "Identifies the page or html file that was scanned." },
+        { key1: "Scan label",      key2: "Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing." },
+        { key1: "Base scan",       key2: "Scan label for a previous scan against which this scan was compared. Only new issues are reported when a base scan is used." },
+        { key1: "Violations",      key2: "Accessibility failures that need to be corrected." },
+        { key1: "Needs review",    key2: "Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem." },
+        { key1: "Recommendations", key2: "Opportunities to apply best practices to further improve accessibility." },
+        { key1: "Hidden",          key2: "Issues the user has selected to be hidden from view and subtracted from the issue counts." },
+        { key1: "% elements without violations",                      key2: "Percentage of elements on the page that had no violations found." },
+        { key1: "% elements without violations or items to review",   key2: "Percentage of elements on the page that had no violations found and no items to review." },
+        { key1: "Level 1,2,3",     key2: "Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details." },
+    ];
+
+    const issuesDefs = [
+        { key1: "Page",            key2: "Identifies the page or html file that was scanned." },
+        { key1: "Scan label",      key2: "Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing." },
+        { key1: "Issue ID",        key2: "Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. " },
+        { key1: "Issue type",      key2: "Violation, needs review, or recommendation" },
+        { key1: "Toolkit level",   key2: "1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details" },
+        { key1: "Checkpoint",      key2: "Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into." },
+        { key1: "WCAG level",      key2: "A, AA or AAA. WCAG level for this issue." },
+        { key1: "Rule",            key2: "Name of the accessibility test rule that detected this issue." },
+        { key1: "Issue",           key2: "Message describing the issue." },
+        { key1: "Element",         key2: "Type of HTML element where the issue is found." },
+        { key1: "Code",            key2: "Actual HTML element where the issue is found." },
+        { key1: "Xpath",           key2: "Xpath of the HTML element where the issue is found." },
+        { key1: "Help",            key2: "Link to a more detailed description of the issue and suggested solutions." },
+    ];
+
+    const data: any[][] = [];
+
+    data.push([{ value: "Definition of fields", ...titleStyle, height: 36, columnSpan: 2 }, null]);
+    data.push([{ value: null, height: 12, columnSpan: 2 }, null]);
+    data.push([{ value: "Scan summary and Issue summary", ...sectionStyle, height: 20, columnSpan: 2 }, null]);
+    data.push([{ value: "Field", ...subHdrStyle, height: 16 }, { value: "Definition", ...subHdrStyle }]);
+    for (const row of summaryDefs) {
+        data.push([{ value: row.key1, ...dataStyle }, { value: row.key2, ...dataStyle }]);
+    }
+    data.push([{ value: null, height: 12, columnSpan: 2 }, null]);
+    data.push([{ value: "Issues", ...sectionStyle, height: 20, columnSpan: 2 }, null]);
+    data.push([{ value: "Field", ...subHdrStyle, height: 16 }, { value: "Definition", ...subHdrStyle }]);
+    for (const row of issuesDefs) {
+        data.push([{ value: row.key1, ...dataStyle }, { value: row.key2, ...dataStyle }]);
+    }
+
+    return { data, sheet: "Definition of fields", columns };
+}
+
+// ─── Public API ────────────────────────────────────────────────────────────────
+
 export default class MultiScanReport {
 
     public static async multiScanXlsxDownload(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]) {
-        // create workbook
-        let reportWorkbook = await MultiScanReport.generateWorkbook(storedScans, archives);
-
-        // create binary buffer
-        const buffer = await reportWorkbook.xlsx.writeBuffer();
-
-        // create xlsx blob
-        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        const blob = new Blob([buffer], { type: fileType });
-
-        // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
+        const blob = await MultiScanReport.generateBlob(storedScans, archives);
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
-
-        // download file
         ReportUtil.download_file(blob, fileName);
     }
 
+    public static async generateBlob(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]): Promise<Blob> {
+        const issuesSheet = buildIssuesSheet(storedScans);
+        const issueRowCount: number = issuesSheet._issueRowCount;
+        delete issuesSheet._issueRowCount;
+
+        const sheets = [
+            buildOverviewSheet(storedScans, archives),
+            buildScanSummarySheet(storedScans),
+            buildIssueSummarySheet(storedScans),
+            issuesSheet,
+            buildDefinitionsSheet(),
+        ];
+        const blob = await writeExcelFile(sheets).toBlob();
+        return injectTable(blob, issueRowCount);
+    }
+
+    /** @deprecated Use generateBlob() instead */
     public static async generateWorkbook(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]) {
-        let msReport = new MultiScanReport(storedScans, archives);
-        return msReport.getWorkbook();
-    }
-
-    // @ts-ignore
-    private workbook = new ExcelJS.Workbook({ useStyles: true });
-
-    /**
-     * @param storedScans 
-     * @param scanType 
-     * @param storedScanCount 
-     * @param archives 
-     * @returns 
-     */
-    private constructor(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]) {
-        // create worksheets
-        this.createOverviewSheet(storedScans, archives);
-        this.createScanSummarySheet(storedScans);
-        this.createIssueSummarySheet(storedScans);
-        this.createIssuesSheet(storedScans);
-        this.createDefinitionsSheet();
-    }
-
-    private getWorkbook() {
-        return this.workbook;
-    }
-
-    private createOverviewSheet(storedScans: IStoredReportMeta[], archives: IArchiveDefinition[]) {
-
-        let violations = 0;
-        let needsReviews = 0;
-        let recommendations = 0;
-        let hidden = 0;
-
-        for (const storedScan of storedScans) {
-            violations += (storedScan.counts.Violation || 0);
-            needsReviews += (storedScan.counts["Needs review"] || 0);
-            recommendations += (storedScan.counts.Recommendation || 0);
-            hidden += (storedScan.counts.Hidden || 0);
-        }
-        let totalIssues = violations + needsReviews + recommendations;
-
-        let lastScan = storedScans[storedScans.length - 1];
-        const worksheet = this.workbook.addWorksheet("Overview");
-
-        // Report Title
-        worksheet.mergeCells('A1', "E1");
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 27;
-
-        const cellA1 = worksheet.getCell('A1');
-        cellA1.value = "Accessibility Scan Report";
-        cellA1.alignment = { vertical: "middle", horizontal: "left" };
-        cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // what are column widths - can't get it till you set it
-        const colWidthData = [
-            { col: 'A', width: 15.1 },
-            { col: 'B', width: 15.9 },
-            { col: 'C', width: 16.23 },
-            { col: 'D', width: 19.4 },
-            { col: 'E', width: 15.9 },
-        ]
-
-        for (let i = 0; i < 5; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-
-        // set row height for rows 2-10
-        for (let i = 2; i < 11; i++) {
-            if (i == 7) {
-                worksheet.getRow(i).height = 36;
-            } else {
-                worksheet.getRow(i).height = 12; // results in a row height of 16
-            }
-        }
-
-        let uniqueURLs = new Set(storedScans.map(scan => scan.pageURL)).size;
-
-        // note except for Report Date this is the same for all scans
-        const rowData = [
-            { key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker' },
-            { key1: 'Version:', key2: chrome.runtime.getManifest().version },
-            //@ts-ignore
-            { key1: 'Rule set:', key2: (lastScan.ruleset === "Latest Deployment") ? archives[1].name : lastScan.ruleset },
-            { key1: 'Guidelines:', key2: lastScan.guideline },
-            { key1: 'Report date:', key2: new Date(lastScan.timestamp) }, // do we need to get actual date?
-            { key1: 'Platform:', key2: navigator.userAgent },
-            { key1: 'Scans:', key2: storedScans.length }, // *** NEED TO FIX FOR selected
-            { key1: 'Pages:', key2: uniqueURLs }
-        ];
-
-        worksheet.mergeCells('B2', "D2");
-        worksheet.mergeCells('B3', "D3");
-        worksheet.mergeCells('B4', "D4");
-        worksheet.mergeCells('B5', "D5");
-        worksheet.mergeCells('B6', "D6");
-        worksheet.mergeCells('B7', "D7");
-        worksheet.mergeCells('B8', "D8");
-        worksheet.mergeCells('B9', "D9");
-        worksheet.mergeCells('A10', "D10");
-
-
-        for (let i = 2; i < 10; i++) {
-            worksheet.getRow(i).getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = { horizontal: "left" };
-            worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
-            if (i == 7) {
-                worksheet.getRow(i).getCell(1).alignment = { vertical: "top" };
-                worksheet.getRow(i).getCell(2).alignment = { wrapText: true };
-            }
-        }
-        for (let i = 2; i < 10; i++) {
-            worksheet.getRow(i).getCell(1).value = rowData[i - 2].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 2].key2;
-        }
-
-        // Summary Title
-        worksheet.mergeCells('A11', "E11");
-
-        const summaryRow = worksheet.getRow(11);
-        summaryRow.height = 27;
-
-        const cellA11 = worksheet.getCell('A11');
-        cellA11.value = "Summary";
-        cellA11.alignment = { vertical: "middle", horizontal: "left" };
-        cellA11.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA11.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // Scans info Headers
-        worksheet.getRow(12).height = 16; // actual height is
-
-        const cellA12 = worksheet.getCell('A12'); cellA12.value = "Issues";
-        const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
-        const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
-        const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
-        const cellE12 = worksheet.getCell('E12'); cellE12.value = "Hidden";
-
-        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12, cellE12];
-
-        for (let i = 0; i < 5; i++) {
-            cellObjects1[i].alignment = { vertical: "middle", horizontal: "center" };
-            if (i == 1 || i == 2 || i == 3 || i == 4) {
-                cellObjects1[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            } else {
-                cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            }
-
-            // cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-            cellObjects1[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        cellA12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-        cellB12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        cellC12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        cellD12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        cellE12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
-
-
-        // Scans info Values
-        worksheet.getRow(13).height = 27; // actual height is
-
-        const cellA13 = worksheet.getCell('A13'); cellA13.value = totalIssues;
-        const cellB13 = worksheet.getCell('B13'); cellB13.value = violations;
-        const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReviews;
-        const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendations;
-        const cellE13 = worksheet.getCell('E13'); cellE13.value = hidden;
-
-        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13, cellE13];
-
-        for (let i = 0; i < 5; i++) {
-            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center" };
-            cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            cellObjects2[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-    }
-
-    private createScanSummarySheet(storedScans: IStoredReportMeta[]) {
-
-        const worksheet = this.workbook.addWorksheet("Scan summary");
-
-        // Scans info Headers
-        worksheet.getRow(1).height = 39; // actual height is 52
-
-        const colWidthData = [
-            { col: 'A', width: 27.0 },
-            { col: 'B', width: 46.0 },
-            { col: 'C', width: 20.17 },
-            { col: 'D', width: 18.5 },
-            { col: 'E', width: 17.17 },
-            { col: 'F', width: 17.17 },
-            { col: 'G', width: 17.17 },
-            { col: 'H', width: 17.17 },
-            { col: 'I', width: 17.17 },
-            { col: 'J', width: 17.17 },
-        ]
-
-        for (let i = 0; i < 10; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        const cellA1 = worksheet.getCell('A1'); cellA1.value = "Page title";
-        const cellB1 = worksheet.getCell('B1'); cellB1.value = "Page url";
-        const cellC1 = worksheet.getCell('C1'); cellC1.value = "Scan label";
-        const cellD1 = worksheet.getCell('D1'); cellD1.value = "Base scan";
-
-        const cellObjects1 = [cellA1, cellB1, cellC1, cellD1];
-
-        for (let i = 0; i < 4; i++) {
-            cellObjects1[i].alignment = { vertical: "middle", horizontal: "left" };
-            cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-            cellObjects1[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        const cellE1 = worksheet.getCell('E1'); cellE1.value = "Violations";
-        const cellF1 = worksheet.getCell('F1'); cellF1.value = "Needs review";
-        const cellG1 = worksheet.getCell('G1'); cellG1.value = "Recommendations";
-        const cellH1 = worksheet.getCell('H1'); cellH1.value = "Hidden";
-        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations";
-        const cellJ1 = worksheet.getCell('J1'); cellJ1.value = "% elements without violations or items to review";
-
-        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1, cellJ1];
-
-        for (let i = 0; i < 6; i++) {
-            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            if (i == 0 || i == 1 || i == 2 || i == 3) {
-                cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            } else {
-                cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            }
-
-            // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-            cellObjects2[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        cellE1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        cellF1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        cellG1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
-        cellI1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-        cellJ1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-
-
-        // if current scan use last scan, if 
-        // if current scan use only the last scan otherwise loop through each scan an create row
-        for (const storedScan of storedScans) {
-            // JCH find unique elements that have violations and needs review issues
-            let violations = storedScan && storedScan.storedScanData.filter((result: StoredScanData) => {
-                return result[4] === "Violation";
-            }) || []
-
-            let potentials = storedScan && storedScan.storedScanData.filter((result: StoredScanData) => {
-                return result[4] === "Needs review";
-            }) || []
-
-            let violationXpaths: string[] = violations.map(result => result[12]);
-            let reviewXpaths: string[] = potentials.map(result => result[12]);
-            let violationPlusPotentialXpaths = violationXpaths.concat(reviewXpaths);
-            let violationUniqueElements = new Set(violationXpaths).size;
-            let violationPlusPotentialUniqueElements = new Set(violationPlusPotentialXpaths).size;
-            let testedElements = (storedScan && storedScan.testedUniqueElements || 0);
-
-            let row = worksheet.addRow(
-                [storedScan.pageTitle,
-                storedScan.pageURL,
-                storedScan.label,
-                    "none",
-                storedScan.counts["Violation"],
-                storedScan.counts["Needs review"],
-                storedScan.counts["Recommendation"],
-                storedScan.counts["Hidden"],
-                perc(testedElements-violationUniqueElements, testedElements),
-                perc(testedElements-violationPlusPotentialUniqueElements, testedElements)
-            ]);
-            row.height = 37; // actual height is
-            for (let i = 1; i < 5; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
-            }
-            for (let i = 5; i < 11; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
-                // row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-                row.getCell(i).border = {
-                    top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
+        // Returns a pseudo-workbook whose only capability is xlsx.writeBuffer(),
+        // preserved for any callers that may still call this method.
+        return {
+            xlsx: {
+                writeBuffer: async () => {
+                    const blob = await MultiScanReport.generateBlob(storedScans, archives);
+                    return await blob.arrayBuffer();
                 }
             }
-        }
+        };
     }
-
-    private createIssueSummarySheet(storedScans: IStoredReportMeta[]) {
-
-        // let violations = 0;
-        // let needsReviews = 0;
-        // let recommendations = 0;
-        // let hidden = 0;
-        // let totalIssues = 0;
-
-        // for (const scan of storedScans) {
-        //     violations += scan.counts["Violation"];
-        //     needsReviews += scan.counts["Needs review"];
-        //     recommendations += scan.counts.Recommendation;
-        //     hidden += scan.counts.Hidden;
-        // }
-        // totalIssues = violations + needsReviews + recommendations;
-
-        // counts
-        let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations, hidden
-        let level2Counts = [0, 0, 0, 0, 0];
-        let level3Counts = [0, 0, 0, 0, 0];
-        let level4Counts = [0, 0, 0, 0, 0];
-        let level1V: {issueDef:string, hidden:boolean}[] = []; let level2V: {issueDef:string, hidden:boolean}[] = []; let level3V: {issueDef:string, hidden:boolean}[] = []; let level4V: {issueDef:string, hidden:boolean}[] = [];
-        let level1NR: {issueDef:string, hidden:boolean}[] = []; let level2NR: {issueDef:string, hidden:boolean}[] = []; let level3NR: {issueDef:string, hidden:boolean}[] = []; let level4NR: {issueDef:string, hidden:boolean}[] = [];
-        let level1R: {issueDef:string, hidden:boolean}[] = []; let level2R: {issueDef:string, hidden:boolean}[] = []; let level3R: {issueDef:string, hidden:boolean}[] = []; let level4R: {issueDef:string, hidden:boolean}[] = [];
-        for (const storedScan of storedScans) {
-            const myStoredData = storedScan.storedScanData;
-            for (let i = 0; i < myStoredData.length; i++) { // for each issue row
-                if (myStoredData[i][5] == 1) { // if level 1
-                    if (!myStoredData[i][14]) {
-                        level1Counts[0]++;  // Level 1 issue count
-                    }
-                    if (myStoredData[i][4] === "Violation") {
-                        if (!myStoredData[i][14]) {
-                            level1Counts[1]++;
-                        }
-                        level1V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        if (!myStoredData[i][14]) {
-                            level1Counts[2]++;
-                        }
-                        level1NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        if (!myStoredData[i][14]) {
-                            level1Counts[3]++;
-                        }
-                        level1R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][14] === true) { // we have a level 1 hidden
-                        level1Counts[4]++;
-                    }
-                }
-                if (myStoredData[i][5] == 2) { // if level 2
-                    if (!myStoredData[i][14]) {
-                        level2Counts[0]++;
-                    }
-                    if (myStoredData[i][4] === "Violation") {
-                        if (!myStoredData[i][14]) {
-                            level2Counts[1]++;
-                        }
-                        level2V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        if (!myStoredData[i][14]) {
-                            level2Counts[2]++;
-                        }
-                        level2NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        if (!myStoredData[i][14]) {
-                            level2Counts[3]++;
-                        }
-                        level2R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][14] === true) { // we have a level 2 hidden
-                        level2Counts[4]++;
-                    }
-                }
-                if (myStoredData[i][5] == 3) { // if level 3
-                    if (!myStoredData[i][14]) {
-                        level3Counts[0]++;
-                    }
-                    if (myStoredData[i][4] === "Violation") {
-                        if (!myStoredData[i][14]) {
-                            level3Counts[1]++;
-                        }
-                        level3V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        if (!myStoredData[i][14]) {
-                            level3Counts[2]++;
-                        }
-                        level3NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        if (!myStoredData[i][14]) {
-                            level3Counts[3]++;
-                        }
-                        level3R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][14] === true) { // we have a level 3 hidden
-                        level3Counts[4]++;
-                    }
-                }
-                if (myStoredData[i][5] == 4) { // if level 4
-                    if (!myStoredData[i][14]) {
-                        level4Counts[0]++;
-                    }
-                    if (myStoredData[i][4] === "Violation") {
-                        if (!myStoredData[i][14]) {
-                            level4Counts[1]++;
-                        }
-                        level4V.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        if (!myStoredData[i][14]) {
-                            level4Counts[2]++;
-                        }
-                        level4NR.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        if (!myStoredData[i][14]) {
-                            level4Counts[3]++;
-                        }
-                        level4R.push({"issueDef":myStoredData[i][9], "hidden":myStoredData[i][14]});
-                    }
-                    if (myStoredData[i][14] === true) { // we have a level 4 hidden
-                        level4Counts[4]++;
-                    }
-                }
-            }
-        }
-        
-        let level1VrowValues = MultiScanReport.countDuplicatesInArray(level1V); // note this returns an object
-        let level1NRrowValues = MultiScanReport.countDuplicatesInArray(level1NR);
-        let level1RrowValues = MultiScanReport.countDuplicatesInArray(level1R);
-
-        let level2VrowValues = MultiScanReport.countDuplicatesInArray(level2V); // note this returns an object
-        let level2NRrowValues = MultiScanReport.countDuplicatesInArray(level2NR);
-        let level2RrowValues = MultiScanReport.countDuplicatesInArray(level2R);
-
-        let level3VrowValues = MultiScanReport.countDuplicatesInArray(level3V); // note this returns an object
-        let level3NRrowValues = MultiScanReport.countDuplicatesInArray(level3NR);
-        let level3RrowValues = MultiScanReport.countDuplicatesInArray(level3R);
-
-        let level4VrowValues = MultiScanReport.countDuplicatesInArray(level4V); // note this returns an object
-        let level4NRrowValues = MultiScanReport.countDuplicatesInArray(level4NR);
-        let level4RrowValues = MultiScanReport.countDuplicatesInArray(level4R);
-
-        let totalIssues = level1Counts[0]+level2Counts[0]+level3Counts[0]+level4Counts[0];
-        let hidden = level1Counts[4]+level2Counts[4]+level3Counts[4]+level4Counts[4];
-
-        const worksheet = this.workbook.addWorksheet("Issue summary");
-
-        // Approach:
-        // 1. sort by levels
-        // 2. for each level sort by V, NR and R
-        // 3. for each V, NR, and R in a level get issue dup counts
-        // 4. build the rows
-
-        // build Issue summary title
-        worksheet.mergeCells('A1', 'B1', 'C1');
-
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 27; // actual is 36
-
-        const cellA1 = worksheet.getCell('A1');
-        cellA1.value = "Issue summary";
-        cellA1.alignment = { vertical: "middle", horizontal: "left" };
-        cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        const cellC1 = worksheet.getCell('C1');
-        cellC1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const colWidthData = [
-            { col: 'A', width: 155.51 }, // note .84 added to actual width
-            { col: 'B', width: 21.16 },
-            { col: 'C', width: 18.00 },
-        ]
-
-        for (let i = 0; i < 3; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        // build Description title
-        // worksheet.mergeCells('A2', 'B2');
-
-        const descriptionRow = worksheet.getRow(2);
-        descriptionRow.height = 20.25; // actual is 27
-
-        const cellA2 = worksheet.getCell("A2");
-        cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into four levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
-        cellA2.alignment = { vertical: "middle", horizontal: "left" };
-        cellA2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
-
-        const cellB2 = worksheet.getCell("B2");
-        cellB2.value = "Issues";
-        cellB2.alignment = { vertical: "middle", horizontal: "right" };
-        cellB2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellB2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3E3E3' } };
-        cellB2.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        const cellC2 = worksheet.getCell("C2");
-        cellC2.value = "Hidden issues";
-        cellC2.alignment = { vertical: "middle", horizontal: "center" };
-        cellC2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellC2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3E3E3' } };
-        cellC2.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        const totalIssuesRow = worksheet.getRow(3);
-        totalIssuesRow.height = 27; // actual is 36
-
-        const cellA3 = worksheet.getCell("A3");
-        cellA3.value = "Issues found:";
-        cellA3.alignment = { vertical: "middle", horizontal: "left" };
-        cellA3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-
-        const cellB3 = worksheet.getCell("B3");
-        cellB3.value = totalIssues;
-        cellB3.alignment = { vertical: "middle", horizontal: "right" };
-        cellB3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellB3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-
-        const cellC3 = worksheet.getCell("C3");
-        cellC3.value = hidden;
-        cellC3.alignment = { vertical: "middle", horizontal: "center" };
-        cellC3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellC3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-        cellC3.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // build Number of issues title
-        const numberOfIssuesRow = worksheet.getRow(4);
-        numberOfIssuesRow.height = 20.25; // actual is 27
-
-
-        const cellA4 = worksheet.getCell("A4");
-        // no value
-        cellA4.alignment = { vertical: "middle", horizontal: "left" };
-        cellA4.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
-        };
-
-        
-
-        
-
-        /////////////////////////////
-        // build Level 1 title
-        /////////////////////////////
-
-        const level1Row = worksheet.getRow(5);
-        level1Row.height = 27; // actual is 36
-
-        const cellA5 = worksheet.getCell("A5");
-        cellA5.value = "Level 1 - the most essential issues to address";
-        cellA5.alignment = { vertical: "middle", horizontal: "left" };
-        cellA5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const cellB5 = worksheet.getCell("B5");
-        cellB5.value = level1Counts[0]; // total Level 1 issues
-        cellB5.alignment = { vertical: "middle", horizontal: "right" };
-        cellB5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellB5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const cellC5 = worksheet.getCell("C5");
-        cellC5.value = level1Counts[4]; // Level 1 hidden counts
-        cellC5.alignment = { vertical: "middle", horizontal: "center" };
-        cellC5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellC5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        cellC5.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        //       Level 1 Violation title
-        const level1ViolationRow = worksheet.getRow(6);
-        level1ViolationRow.height = 18; // target is 21
-
-        const cellA6 = worksheet.getCell("A6");
-        cellA6.value = "     Violation";
-        cellA6.alignment = { vertical: "middle", horizontal: "left" };
-        cellA6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellA6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level1ViolationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        const cellB6 = worksheet.getCell("B6");
-        cellB6.value = level1Counts[1]; // total level 1 violations
-        cellB6.alignment = { vertical: "middle", horizontal: "right" };
-        cellB6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellB6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level1ViolationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 1 violations
-        let level1HiddenVCounts = 0;
-        for (const property in level1VrowValues) {
-            level1HiddenVCounts += level1VrowValues[property][1];
-        }
-        
-        const cellC6 = worksheet.getCell("C6");
-        cellC6.value = level1HiddenVCounts; // hidden level 1 violations
-        cellC6.alignment = { vertical: "middle", horizontal: "center" };
-        cellC6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellC6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level1ViolationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 1 Violation Rows
-
-        // build rows
-        let rowArray = [];
-
-        for (const property in level1VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1VrowValues[property][0]}`), parseInt(`${level1VrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-       
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-        
-
-        // add array of rows
-
-        let rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        // Level 1 Needs review title
-        const level1NeedsReviewRow = worksheet.addRow(["", 0]);
-        level1NeedsReviewRow.height = 18; // target is 21
-
-        level1NeedsReviewRow.getCell(1).value = "     Needs review";
-        level1NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level1NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level1NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level1NeedsReviewRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level1NeedsReviewRow.getCell(2).value = level1Counts[2]; // total level 1 needs review
-        level1NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level1NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level1NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level1NeedsReviewRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 1 needs review
-        let level1HiddenNRCounts = 0;
-        for (const property in level1NRrowValues) {
-            level1HiddenNRCounts += level1NRrowValues[property][1];
-        }
-
-        level1NeedsReviewRow.getCell(3).value = level1HiddenNRCounts; // hidden level 1 needs review
-        level1NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level1NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level1NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level1NeedsReviewRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 1 Needs review Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level1NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1NRrowValues[property][0]}`), parseInt(`${level1NRrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-        // Level 1 Recommendation title
-        const level1RecommendationRow = worksheet.addRow(["", 0]);
-        level1RecommendationRow.height = 18; // target is 21
-
-        level1RecommendationRow.getCell(1).value = "     Recommendation";
-        level1RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level1RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level1RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level1RecommendationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level1RecommendationRow.getCell(2).value = level1Counts[3]; // total level 1 recommendations
-        level1RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level1RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level1RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level1RecommendationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 1 recommendations
-        let level1HiddenRCounts = 0;
-        for (const property in level1RrowValues) {
-            level1HiddenRCounts += level1RrowValues[property][1];
-        }
-
-        level1RecommendationRow.getCell(3).value = level1HiddenRCounts; // hidden level 1 recommendations
-        level1RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level1RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level1RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level1RecommendationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-
-        // Level 1 Recommendation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level1RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level1RrowValues[property][0]}`), parseInt(`${level1RrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        /////////////////////////////
-        // build Level 2 title
-        /////////////////////////////
-
-        const level2Row = worksheet.addRow(["", 0]);
-        level2Row.height = 27; // actual is 36
-
-        level2Row.getCell(1).value = "Level 2 - the next most important issues";
-        level2Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level2Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level2Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-       
-        level2Row.getCell(2).value = level2Counts[0]; // total Level 2 issues
-        level2Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level2Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level2Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        
-        level2Row.getCell(3).value = level2Counts[4]; // Level 2 hidden counts
-        level2Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level2Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level2Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        level2Row.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-
-        //       Level 2 Violation title
-        const level2ViolationRow = worksheet.addRow(["", 0]);
-        level2ViolationRow.height = 18; // target is 21
-
-        level2ViolationRow.getCell(1).value = "     Violation";
-        level2ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level2ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level2ViolationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level2ViolationRow.getCell(2).value = level2Counts[1]; // total level 2 violations
-        level2ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level2ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level2ViolationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 2 violations
-        let level2HiddenVCounts = 0;
-        for (const property in level2VrowValues) {
-            level2HiddenVCounts += level2VrowValues[property][1];
-        }
-
-        level2ViolationRow.getCell(3).value = level2HiddenVCounts; // hidden level 2 violations
-        level2ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level2ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level2ViolationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 2 Violation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level2VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2VrowValues[property][0]}`), parseInt(`${level2VrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        // Level 2 Needs review title
-        const level2NeedsReviewRow = worksheet.addRow(["", 0]);
-        level2NeedsReviewRow.height = 18; // target is 21
-
-        level2NeedsReviewRow.getCell(1).value = "     Needs review";
-        level2NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level2NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level2NeedsReviewRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level2NeedsReviewRow.getCell(2).value = level2Counts[2]; // total level 2 needs review
-        level2NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level2NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level2NeedsReviewRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 2 needs review
-        let level2HiddenNRCounts = 0;
-        for (const property in level2NRrowValues) {
-            level2HiddenNRCounts += level2NRrowValues[property][1];
-        }
-
-        level2NeedsReviewRow.getCell(3).value = level2HiddenNRCounts; // hidden level 2 needs review
-        level2NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level2NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level2NeedsReviewRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 2 Needs review Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level2NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2NRrowValues[property][0]}`), parseInt(`${level2NRrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-        // Level 2 Recommendation title
-        const level2RecommendationRow = worksheet.addRow(["", 0]);
-        level2RecommendationRow.height = 18; // target is 21
-
-        level2RecommendationRow.getCell(1).value = "     Recommendation";
-        level2RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level2RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level2RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level2RecommendationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level2RecommendationRow.getCell(2).value = level2Counts[3]; // total level 2 recommendations
-        level2RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level2RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level2RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level2RecommendationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 2 recommendations
-        let level2HiddenRCounts = 0;
-        for (const property in level2RrowValues) {
-            level2HiddenRCounts += level2RrowValues[property][1];
-        }
-
-        level2RecommendationRow.getCell(3).value = level2HiddenRCounts; // hidden level 2 recommendations
-        level2RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level2RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level2RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level2RecommendationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 2 Recommendation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level2RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level2RrowValues[property][0]}`), parseInt(`${level2RrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-        /////////////////////////////
-        // build Level 3 title
-        /////////////////////////////
-
-        const level3Row = worksheet.addRow(["", 0]);
-        level3Row.height = 27; // actual is 36
-
-        level3Row.getCell(1).value = "Level 3 - necessary to meet requirements";
-        level3Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level3Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level3Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        level3Row.getCell(2).value = level3Counts[0]; // total Level 3 issues
-        level3Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level3Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level3Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        level3Row.getCell(3).value = level3Counts[4]; // Level 1 hidden counts
-        level3Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level3Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level3Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        level3Row.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        //       Level 3 Violation title
-        const level3ViolationRow = worksheet.addRow(["", 0]);
-        level3ViolationRow.height = 18; // target is 21
-
-        level3ViolationRow.getCell(1).value = "     Violation";
-        level3ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level3ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level3ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level3ViolationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level3ViolationRow.getCell(2).value = level3Counts[1]; // total level 3 violations
-        level3ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level3ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level3ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level3ViolationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 3 violations
-        let level3HiddenVCounts = 0;
-        for (const property in level3VrowValues) {
-            level3HiddenVCounts += level3VrowValues[property][1];
-        }
-
-        level3ViolationRow.getCell(3).value = level3HiddenVCounts; // hidden level 3 violations
-        level3ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level3ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level3ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level3ViolationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 3 Violation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level3VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3VrowValues[property][0]}`), parseInt(`${level3VrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        // Level 3 Needs review title
-        const level3NeedsReviewRow = worksheet.addRow(["", 0]);
-        level3NeedsReviewRow.height = 18; // target is 21
-
-        level3NeedsReviewRow.getCell(1).value = "     Needs review";
-        level3NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level3NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level3NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level3NeedsReviewRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level3NeedsReviewRow.getCell(2).value = level3Counts[2]; // total level 3 needs review
-        level3NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level3NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level3NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level3NeedsReviewRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 3 needs review
-        let level3HiddenNRCounts = 0;
-        for (const property in level3NRrowValues) {
-            level3HiddenNRCounts += level3NRrowValues[property][1];
-        }
-
-        level3NeedsReviewRow.getCell(3).value = level3HiddenNRCounts; // hidden level 3 needs review
-        level3NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level3NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level3NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level3NeedsReviewRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 3 Needs review Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level3NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3NRrowValues[property][0]}`), parseInt(`${level3NRrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-        // Level 3 Recommendation title
-        const level3RecommendationRow = worksheet.addRow(["", 0]);
-        level3RecommendationRow.height = 18; // target is 21
-
-        level3RecommendationRow.getCell(1).value = "     Recommendation";
-        level3RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level3RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level3RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level3RecommendationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level3RecommendationRow.getCell(2).value = level3Counts[3]; // total level 3 recommendations
-        level3RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level3RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level3RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level3RecommendationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 3 recommendations
-        let level3HiddenRCounts = 0;
-        for (const property in level3RrowValues) {
-            level3HiddenRCounts += level3RrowValues[property][1];
-        }
-
-        level3RecommendationRow.getCell(3).value = level3HiddenRCounts; // hidden level 3 recommendations
-        level3RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level3RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level3RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level3RecommendationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 3 Recommendation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level3RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level3RrowValues[property][0]}`), parseInt(`${level3RrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        /////////////////////////////
-        // build Level 4 title
-        /////////////////////////////
-
-        const level4Row = worksheet.addRow(["", 0]);
-        level4Row.height = 27; // actual is 36
-
-        level4Row.getCell(1).value = "Level 4 - further recommended improvements to accessibility";
-        level4Row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level4Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level4Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        level4Row.getCell(2).value = level4Counts[0]; // total Level 4 issues
-        level4Row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level4Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level4Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        level4Row.getCell(3).value = level4Counts[4]; // Level 1 hidden counts
-        level4Row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level4Row.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        level4Row.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-        level4Row.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        //       Level 4 Violation title
-        const level4ViolationRow = worksheet.addRow(["", 0]);
-        level4ViolationRow.height = 18; // target is 21
-
-        level4ViolationRow.getCell(1).value = "     Violation";
-        level4ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level4ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level4ViolationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level4ViolationRow.getCell(2).value = level4Counts[1]; // total level 4 violations
-        level4ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level4ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level4ViolationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 4 violations
-        let level4HiddenVCounts = 0;
-        for (const property in level4VrowValues) {
-            level4HiddenVCounts += level4VrowValues[property][1];
-        }
-
-        level4ViolationRow.getCell(3).value = level4HiddenVCounts; // total level 4 violations
-        level4ViolationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level4ViolationRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4ViolationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        level4ViolationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 4 Violation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level4VrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4VrowValues[property][0]}`), parseInt(`${level4VrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-
-        // Level 4 Needs review title
-        const level4NeedsReviewRow = worksheet.addRow(["", 0]);
-        level4NeedsReviewRow.height = 18; // target is 21
-
-        level4NeedsReviewRow.getCell(1).value = "     Needs review";
-        level4NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level4NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level4NeedsReviewRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level4NeedsReviewRow.getCell(2).value = level4Counts[2]; // total level 4 needs review
-        level4NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level4NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level4NeedsReviewRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 4 needs review
-        let level4HiddenNRCounts = 0;
-        for (const property in level4NRrowValues) {
-            level4HiddenNRCounts += level4NRrowValues[property][1];
-        }
-
-        level4NeedsReviewRow.getCell(3).value = level4HiddenNRCounts; // total level 4 needs review
-        level4NeedsReviewRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level4NeedsReviewRow.getCell(3).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4NeedsReviewRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        level4NeedsReviewRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 4 Needs review Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level4NRrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4NRrowValues[property][0]}`), parseInt(`${level4NRrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            //row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            //row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-        // Level 4 Recommendation title
-        const level4RecommendationRow = worksheet.addRow(["", 0]);
-        level4RecommendationRow.height = 18; // target is 21
-
-        level4RecommendationRow.getCell(1).value = "     Recommendation";
-        level4RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        level4RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        level4RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level4RecommendationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
-
-        level4RecommendationRow.getCell(2).value = level4Counts[3]; // total level 4 recommendations
-        level4RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-        level4RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level4RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level4RecommendationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // hidden counts for level 4 recommendations
-        let level4HiddenRCounts = 0;
-        for (const property in level4RrowValues) {
-            level4HiddenRCounts += level4RrowValues[property][1];
-        }
-
-        level4RecommendationRow.getCell(3).value = level4HiddenRCounts; // total level 4 recommendations
-        level4RecommendationRow.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-        level4RecommendationRow.getCell(3).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-        level4RecommendationRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        level4RecommendationRow.getCell(3).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 4 Recommendation Rows
-
-        // build rows
-        rowArray = [];
-
-        for (const property in level4RrowValues) {
-            let row = ["     " + `${property}`, parseInt(`${level4RrowValues[property][0]}`), parseInt(`${level4RrowValues[property][1]}`)
-            ];
-            rowArray.push(row);
-        }
-
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        rows = [];
-
-        rows = worksheet.addRows(rowArray);
-
-        rows.forEach((row: any) => {
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.getCell(3).alignment = { vertical: "middle", horizontal: "center" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.getCell(3).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-        });
-
-    }
-
-    private createIssuesSheet(storedScans: IStoredReportMeta[]) {
-        const worksheet = this.workbook.addWorksheet("Issues");
-
-        // build rows
-        let rowArray = [];
-        for (const storedScan of storedScans) {
-            const myStoredData = storedScan.storedScanData;
-            for (let i = 0; i < myStoredData.length; i++) {
-                let row = [myStoredData[i][0], myStoredData[i][1], storedScan.label,
-                myStoredData[i][3], myStoredData[i][14] ? "Hidden:"+myStoredData[i][4] : myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
-                myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8],
-                myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
-                myStoredData[i][12], myStoredData[i][13]
-                ];
-                rowArray.push(row);
-            }
-        }
-
-        // column widths
-        const colWidthData : Array<{
-            col: string,
-            width: number,
-            alignment: Partial<ExcelJS.Alignment>
-        }> = [
-            { col: 'A', width: 18.0, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'B', width: 20.5, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'C', width: 21.0, alignment: { vertical: "middle", horizontal: "center" } },
-            { col: 'D', width: 18.5, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'E', width: 23.0, alignment: { vertical: "middle", horizontal: "center" } },
-            { col: 'F', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
-            { col: 'G', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'H', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
-            { col: 'I', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'J', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'K', width: 14.00, alignment: { vertical: "middle", horizontal: "center" } },
-            { col: 'L', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'M', width: 43.00, alignment: { vertical: "middle", horizontal: "left" } },
-            { col: 'N', width: 17.17, alignment: { vertical: "middle", horizontal: "fill" } },
-        ]
-
-        for (let i = 0; i < 14; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-            worksheet.getColumn(colWidthData[i].col).alignment = colWidthData[i].alignment;
-        }
-
-        // set font and alignment for the header cells
-        for (let i = 1; i < 15; i++) {
-            worksheet.getRow(1).getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            worksheet.getRow(1).getCell(i).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            worksheet.getRow(1).getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-            worksheet.getRow(1).getCell(i).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        // height for header row
-        worksheet.getRow(1).height = 24;
-
-        // add table to a sheet
-        worksheet.addTable({
-            name: 'MyTable',
-            ref: 'A1',
-            headerRow: true,
-            // totalsRow: true,
-            style: {
-                theme: 'TableStyleMedium2',
-                showRowStripes: true,
-            },
-            columns: [
-                { name: 'Page title', filterButton: true },
-                { name: 'Page URL', filterButton: true },
-                { name: 'Scan label', filterButton: true },
-                { name: 'Issue ID', filterButton: true },
-                { name: 'Issue type', filterButton: true },
-                { name: 'Toolkit level', filterButton: true },
-                { name: 'Checkpoint', filterButton: true },
-                { name: 'WCAG level', filterButton: true },
-                { name: 'Rule', filterButton: true },
-                { name: 'Issue', filterButton: true },
-                { name: 'Element', filterButton: true },
-                { name: 'Code', filterButton: true },
-                { name: 'Xpath', filterButton: true },
-                { name: 'Help', filterButton: true },
-
-            ],
-            rows: rowArray
-        });
-
-        for (let i = 2; i <= rowArray.length + 1; i++) {
-            worksheet.getRow(i).height = 14;
-            for (let j = 1; j <= 14; j++) {
-                worksheet.getRow(i).getCell(j).border = {
-                    top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-                }
-            }
-        }
-    }
-
-    private createDefinitionsSheet() {
-
-        const worksheet = this.workbook.addWorksheet("Definition of fields");
-
-        // "Definition of fields" title
-        worksheet.mergeCells('A1', "B1");
-
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 36; // actual is 48
-
-        titleRow.getCell(1).value = "Definition of fields";
-        titleRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        titleRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 20 };
-        titleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const colWidthData = [
-            { col: 'A', width: 41.51 }, // note .84 added to actual width
-            { col: 'B', width: 119.51 },
-        ]
-
-        for (let i = 0; i < 2; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        // blank row
-        worksheet.mergeCells('A2', "B2");
-        const blankRow = worksheet.getRow(2);
-        blankRow.height = 12; // actual is 16
-
-        // "Scan summary and Issue summary" title
-        worksheet.mergeCells('A3', "B3");
-
-        const summaryRow = worksheet.getRow(3);
-        summaryRow.height = 20; // actual is 26.75
-
-        summaryRow.getCell(1).value = "Scan summary and Issue summary";
-        summaryRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        summaryRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        summaryRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // row 4 Field / Definition
-        const row4 = worksheet.getRow(4);
-        row4.height = 16; // actual is 
-
-        row4.getCell(1).value = "Field";
-        row4.getCell(2).value = "Definition";
-        row4.getCell(1).alignment = row4.getCell(2).alignment = { vertical: "middle", horizontal: "left" };
-        row4.getCell(1).font = row4.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 16 };
-        row4.getCell(1).fill = row4.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCC0DA' } };
-        row4.getCell(1).border = row4.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // rows 5-13
-
-        // set row height for rows 5-13
-        for (let i = 5; i < 14; i++) {
-            worksheet.getRow(i).height = 12; // results in a row height of 16
-        }
-
-        let rowData = [
-            { key1: 'Page', key2: 'Identifies the page or html file that was scanned.' },
-            { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
-            { key1: 'Base scan', key2: 'Scan label for a previous scan against which this scan was compared. Only new issues are reported when a base scan is used.' },
-            { key1: 'Violations', key2: 'Accessibility failures that need to be corrected.' },
-            { key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.' },
-            { key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.' },
-            { key1: 'Hidden', key2: 'Issues the user has selected to be hidden from view and subtracted from the issue counts.' },
-            { key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.' },
-            { key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.' },
-            { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
-        ];
-
-        for (let i = 5; i < 14; i++) {
-            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
-
-        }
-        for (let i = 5; i < 14; i++) {
-            worksheet.getRow(i).getCell(1).value = rowData[i - 5].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 5].key2;
-        }
-
-        // "Scan summary and Issue summary" title
-        worksheet.mergeCells('A14', "B14");
-
-        const issuesRow = worksheet.getRow(14);
-        issuesRow.height = 20; // actual is 26.75
-
-        issuesRow.getCell(1).value = "Issues";
-        issuesRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        issuesRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        issuesRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // row 15 Field / Definition
-        const row15 = worksheet.getRow(15);
-        row15.height = 16; // actual is 
-
-        row15.getCell(1).value = "Field";
-        row15.getCell(2).value = "Definition";
-        row15.getCell(1).alignment = row15.getCell(2).alignment = { vertical: "middle", horizontal: "left" };
-        row15.getCell(1).font = row15.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 16 };
-        row15.getCell(1).fill = row15.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCC0DA' } };
-        row15.getCell(1).border = row15.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // rows 16-28
-
-        // set row height for rows 16-28
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).height = 12; // results in a row height of 16
-        }
-
-        rowData = [];
-
-        rowData = [
-            { key1: 'Page', key2: 'Identifies the page or html file that was scanned.' },
-            { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
-            { key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. ' },
-            { key1: 'Issue type', key2: 'Violation, needs review, or recommendation' },
-            { key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details' },
-            { key1: 'Checkpoint', key2: 'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.' },
-            { key1: 'WCAG level', key2: 'A, AA or AAA. WCAG level for this issue.' },
-            { key1: 'Rule', key2: 'Name of the accessibility test rule that detected this issue.' },
-            { key1: 'Issue', key2: 'Message describing the issue.' },
-            { key1: 'Element', key2: 'Type of HTML element where the issue is found.' },
-            { key1: 'Code', key2: 'Actual HTML element where the issue is found.' },
-            { key1: 'Xpath', key2: 'Xpath of the HTML element where the issue is found.' },
-            { key1: 'Help', key2: 'Link to a more detailed description of the issue and suggested solutions.' },
-        ];
-
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
-
-        }
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).getCell(1).value = rowData[i - 16].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 16].key2;
-        }
-
-    }
-
-    private static countDuplicatesInArray(array: {issueDef: string; hidden: boolean;}[]) { // count issues with duplicate description string
-        let dupCount : {
-            [key: string]: number
-        } = {};
-        let hidCount : {
-            [key: string]: number
-        } = {};
-        let finalCount: {
-            [key: string]: [number,number]
-        } = {};
-        for (const item of array) {
-            if (!item.hidden) {
-                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 1;
-                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 0;
-            } else {
-                dupCount[item.issueDef] = (dupCount[item.issueDef] || 0) + 0;
-                hidCount[item.issueDef] = (hidCount[item.issueDef] || 0) + 1;
-            }
-            finalCount[item.issueDef] = [dupCount[item.issueDef], hidCount[item.issueDef]]
-        }
-        return finalCount;
-    }    
 }

@@ -5,11 +5,6 @@ popd
 pushd accessibility-checker-extension
 npm install
 
-pushd node_modules/exceljs/dist
-sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.js
-sed -i'.old' -e "s/[\"|']use strict[\"|']//g" ./exceljs.min.js
-popd
-
 cp -f ./manifest_Firefox.json ./src/manifest.json
 
 pushd src

@@ -108,6 +108,10 @@ $ npm install
 $ npm run test:browser
 ```
 
+## XLSX Report Format
+
+XLSX report format is included automatically — no additional installation required.
+
 ## Known issues and workarounds
 
 1. **Browser not found error**: If you see "Executable doesn't exist" errors, install Playwright browsers:

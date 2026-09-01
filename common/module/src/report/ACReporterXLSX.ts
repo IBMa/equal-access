@@ -19,27 +19,25 @@ import { Checkpoint, Guideline, eToolkitLevel } from "../engine/IGuideline.js";
 import { CompressedReport } from "../engine/IReport.js";
 import { eRuleConfidence } from "../engine/IRule.js";
 import { GenSummReturn, IReporter, ReporterManager } from "./ReporterManager.js";
+// Lazy-load write-excel-file — will be null if not installed
+let writeExcelLoadPromise: Promise<any> | null = null;
+let writeExcelWarningShown = false;
 
-// Lazy load exceljs - will be null if not installed
-let exceljsLoadPromise: Promise<any> | null = null;
-let exceljsWarningShown = false;
-
-function loadExcelJS(): Promise<any> {
-    if (!exceljsLoadPromise) {
-        // Use dynamic import with a variable to avoid TypeScript checking the module at compile time
-        const moduleName = "exceljs";
-        exceljsLoadPromise = import(/* webpackIgnore: true */ moduleName)
-            .then(module => module)
-            .catch(e => null);
+function loadWriteExcel(): Promise<any> {
+    if (!writeExcelLoadPromise) {
+        const moduleName = "write-excel-file/node";
+        writeExcelLoadPromise = import(/* webpackIgnore: true */ moduleName)
+            .then(module => module.default ?? module)
+            .catch(() => null);
     }
-    return exceljsLoadPromise;
+    return writeExcelLoadPromise;
 }
 
-function showExcelJSWarning() {
-    if (!exceljsWarningShown) {
-        exceljsWarningShown = true;
-        console.warn("Warning: exceljs is not installed. XLSX report generation is disabled.");
-        console.warn("To enable XLSX reports, install exceljs: npm install exceljs");
+function showWriteExcelWarning() {
+    if (!writeExcelWarningShown) {
+        writeExcelWarningShown = true;
+        console.warn("Warning: write-excel-file is not installed. XLSX report generation is disabled.");
+        console.warn("To enable XLSX reports, install write-excel-file: npm install write-excel-file");
     }
 }
 
@@ -58,6 +56,152 @@ function dropDupes<T>(arr: T[]): T[] {
         }
     })
 }
+
+// Convert ExcelJS-style ARGB (FFRRGGBB) to 6-digit hex (#RRGGBB)
+function argbToHex(argb: string): string {
+    if (!argb || argb.length < 6) return "#000000";
+    // Strip leading alpha if 8 chars
+    const rgb = argb.length === 8 ? argb.slice(2) : argb;
+    return `#${rgb}`;
+}
+
+// Helper: cell with dark purple header style
+function headerCell(value: string | number, columnSpan?: number): any {
+    const cell: any = {
+        value,
+        backgroundColor: "#403151",
+        textColor: "#FFFFFF",
+        fontFamily: "Calibri",
+        fontSize: 16,
+        alignVertical: "center",
+        align: "left",
+        height: 36,
+    };
+    if (columnSpan && columnSpan > 1) cell.columnSpan = columnSpan;
+    return cell;
+}
+
+// Helper: standard data cell
+function dataCell(value: string | number | null, opts?: any): any {
+    return {
+        value,
+        fontFamily: "Calibri",
+        fontSize: 12,
+        textColor: "#000000",
+        ...opts
+    };
+}
+
+// Helper: bordered cell
+function borderedCell(value: string | number | null, opts?: any): any {
+    return {
+        value,
+        fontFamily: "Calibri",
+        fontSize: 12,
+        textColor: "#000000",
+        borderColor: "#A6A6A6",
+        borderStyle: "thin",
+        ...opts
+    };
+}
+
+// ─── XLSX table injection ──────────────────────────────────────────────────────
+// write-excel-file has no native Excel table API. We post-process the output
+// file: unzip it with Node's built-in zlib, inject the table definition XML,
+// wire the sheet to reference it, and re-zip.
+//
+// The Issues sheet is always sheet index 3 (0-based) → sheetId "4".
+// TableStyleMedium2 + showRowStripes matches the original ExcelJS output.
+
+const ISSUES_SHEET_ID = "4";
+const ISSUES_TABLE_ID = "1";
+const ISSUES_COL_COUNT = 14;
+const ISSUES_COL_NAMES = [
+    "Page title","Page URL","Scan label","Issue ID","Issue type",
+    "Toolkit level","Checkpoint","WCAG level","Rule","Issue",
+    "Element","Code","Xpath","Help",
+];
+
+function buildTableXml(rowCount: number): string {
+    const lastCol = "ABCDEFGHIJKLMN"[ISSUES_COL_COUNT - 1];
+    const ref = `A1:${lastCol}${rowCount}`;
+    const cols = ISSUES_COL_NAMES.map((name, i) =>
+        `<tableColumn id="${i + 1}" name="${name}"/>`
+    ).join("");
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"` +
+        ` id="${ISSUES_TABLE_ID}" name="IssuesTable" displayName="IssuesTable" ref="${ref}" headerRowCount="1">` +
+        `<autoFilter ref="${ref}"/>` +
+        `<tableColumns count="${ISSUES_COL_COUNT}">${cols}</tableColumns>` +
+        `<tableStyleInfo name="TableStyleMedium2" showFirstColumn="0"` +
+        ` showLastColumn="0" showRowStripes="1" showColumnStripes="0"/>` +
+        `</table>`;
+}
+
+async function injectTableIntoFile(filePath: string, issueRowCount: number): Promise<void> {
+    let AdmZip: any;
+    try {
+        // webpackIgnore prevents Cypress/webpack from trying to bundle this Node-only module.
+        // The try/catch ensures graceful degradation if adm-zip is not installed.
+        AdmZip = require(/* webpackIgnore: true */ "adm-zip");
+    } catch {
+        // adm-zip not available — skip table injection gracefully
+        return;
+    }
+
+    const zip = new AdmZip(filePath);
+
+    // 1. Add xl/tables/table1.xml
+    const tableXml = buildTableXml(issueRowCount);
+    zip.addFile(`xl/tables/table${ISSUES_TABLE_ID}.xml`, Buffer.from(tableXml, "utf8"));
+
+    // 2. Patch xl/worksheets/_rels/sheet4.xml.rels
+    const relsPath = `xl/worksheets/_rels/sheet${ISSUES_SHEET_ID}.xml.rels`;
+    const relsEntry = zip.getEntry(relsPath);
+    const tableRel = `<Relationship Id="rIdTbl"` +
+        ` Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table"` +
+        ` Target="../tables/table${ISSUES_TABLE_ID}.xml"/>`;
+    if (relsEntry) {
+        const existing = relsEntry.getData().toString("utf8");
+        zip.updateFile(relsPath, Buffer.from(
+            existing.replace("</Relationships>", tableRel + "</Relationships>"),
+            "utf8"
+        ));
+    } else {
+        zip.addFile(relsPath, Buffer.from(
+            `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+            `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+            tableRel + `</Relationships>`,
+            "utf8"
+        ));
+    }
+
+    // 3. Patch xl/worksheets/sheet4.xml — add <tableParts> before </worksheet>
+    const sheetPath = `xl/worksheets/sheet${ISSUES_SHEET_ID}.xml`;
+    const sheetXml = zip.getEntry(sheetPath).getData().toString("utf8");
+    zip.updateFile(sheetPath, Buffer.from(
+        sheetXml.replace(
+            "</worksheet>",
+            `<tableParts count="1"><tablePart r:id="rIdTbl"/></tableParts></worksheet>`
+        ),
+        "utf8"
+    ));
+
+    // 4. Patch [Content_Types].xml
+    const ctPath = "[Content_Types].xml";
+    const ctXml = zip.getEntry(ctPath).getData().toString("utf8");
+    zip.updateFile(ctPath, Buffer.from(
+        ctXml.replace(
+            "</Types>",
+            `<Override ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml"` +
+            ` PartName="/xl/tables/table${ISSUES_TABLE_ID}.xml"/></Types>`
+        ),
+        "utf8"
+    ));
+
+    zip.writeZip(filePath);
+}
+
 export class ACReporterXLSX implements IReporter {
     public name(): string {
         return "xlsx";
@@ -89,7 +233,6 @@ export class ACReporterXLSX implements IReporter {
             policyInfo[ruleId].tkLevels.sort();
         }
 
-        // const buffer: any = await workbook.xlsx.writeBuffer();
         let startScan = new Date(storedReport.engineReport.summary.startScan);
         let reportFilename = `results_${startScan.toISOString().replace(/:/g,"-")}.xlsx`;
         if (config.outputFilenameTimestamp === false) {
@@ -98,36 +241,36 @@ export class ACReporterXLSX implements IReporter {
         return {
             summaryPath: reportFilename,
             summary: async (filename?: string) => {
-                const ExcelJSModule = await loadExcelJS();
-                if (!ExcelJSModule) {
-                    showExcelJSWarning();
+                const writeExcelFile = await loadWriteExcel();
+                if (!writeExcelFile) {
+                    showWriteExcelWarning();
                     return;
                 }
-                // @ts-ignore
-                const workbook = new ExcelJSModule.stream.xlsx.WorkbookWriter({ filename, useStyles: true });
-//                const workbook = new ExcelJS.Workbook({ useStyles: true });
-                ACReporterXLSX.createOverviewSheet(config, summaryData, workbook);
-                ACReporterXLSX.createScanSummarySheet(config, summaryData, workbook);
-                ACReporterXLSX.createIssueSummarySheet(config, policyInfo, summaryData, workbook);
-                ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData, workbook);
-                ACReporterXLSX.createDefinitionsSheet(workbook);
-                workbook.commit();
+                const issuesSheet = ACReporterXLSX.createIssuesSheet(config, policyInfo, summaryData);
+                const issueRowCount: number = issuesSheet._issueRowCount;
+                delete issuesSheet._issueRowCount;
+
+                const sheets = [
+                    ACReporterXLSX.createOverviewSheet(config, summaryData),
+                    ACReporterXLSX.createScanSummarySheet(config, summaryData),
+                    ACReporterXLSX.createIssueSummarySheet(config, policyInfo, summaryData),
+                    issuesSheet,
+                    ACReporterXLSX.createDefinitionsSheet(),
+                ];
+                await writeExcelFile(sheets).toFile(filename);
+                await injectTableIntoFile(filename, issueRowCount);
             }
         }
     }
 
-    private static createOverviewSheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: any) {
+    private static createOverviewSheet(config: IConfigInternal, compressedScans: CompressedReport[]): any {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
         let archived = 0;
         let totalIssues = 0;
-
         let startScan = 0;
-        // BIG QUESTION: is report 
-        //               1. for current scan (from menu)
-        //               2. all stored scans (from menu)
-        //               3. selected stored scans (from scan manager)
+
         for (const compressedScan of compressedScans) {
             let storedScan = ReporterManager.uncompressReport(compressedScan)
             if (startScan === 0) startScan = storedScan.engineReport.summary.startScan;
@@ -139,343 +282,174 @@ export class ACReporterXLSX implements IReporter {
         }
         totalIssues = violations + needsReviews + recommendations + archived;
 
-
-        const worksheet = workbook.addWorksheet("Overview");
-
-        // Report Title
-        worksheet.mergeCells('A1', "E1");
-
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 27;
-
-        const cellA1 = worksheet.getCell('A1');
-        cellA1.value = "Accessibility Scan Report";
-        cellA1.alignment = { vertical: "middle", horizontal: "left" };
-        cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // what are column widths - can't get it till you set it
-
-        const colWidthData = [
-            { col: 'A', width: 15.1 },
-            { col: 'B', width: 15.9 },
-            { col: 'C', width: 16.23 },
-            { col: 'D', width: 19.4 },
-        ]
-
-        for (let i = 0; i < 4; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        // note except for Report Date this is the same for all scans
-        const rowData: Array<{ key1: string, key2: string }> = [
-            { key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker' },
-            // {key1: 'Version:', key2: "chrome.runtime.getManifest().version"},
-            { key1: 'Version:', key2: config.toolID },
-            //@ts-ignore
-            // {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
-            { key1: 'Rule set:', key2: config.ruleArchiveLabel },
-            { key1: 'Guidelines:', key2: config.policies.join(", ") },
-            { key1: 'Report date:', key2: new Date(startScan).toLocaleString() }, // do we need to get actual date?
-            { key1: 'Scans:', key2: "" + compressedScans.length }, // *** NEED TO FIX FOR selected
-            // { key1: 'Pages:', key2: "" }
+        const columns = [
+            { width: 15.1 },
+            { width: 15.9 },
+            { width: 16.23 },
+            { width: 19.4 },
+            { width: 15 },
         ];
 
-        for (let idx = 0; idx < rowData.length; ++idx) {
-            worksheet.mergeCells(`B${idx + 2}`, `E${idx + 2}`);
+        const rowData: Array<{ key1: string, key2: string }> = [
+            { key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker' },
+            { key1: 'Version:', key2: config.toolID },
+            { key1: 'Rule set:', key2: config.ruleArchiveLabel },
+            { key1: 'Guidelines:', key2: config.policies.join(", ") },
+            { key1: 'Report date:', key2: new Date(startScan).toLocaleString() },
+            { key1: 'Scans:', key2: "" + compressedScans.length },
+        ];
 
-            let i = idx + 2;
-            worksheet.getRow(i).height = 12; // results in a row height of 16
-            worksheet.getRow(i).getCell(1).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = { horizontal: "left" };
-            worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
-            // if (i == 7) {
-            //     worksheet.getRow(i).getCell(1).alignment = { vertical: "top" };
-            //     worksheet.getRow(i).getCell(2).alignment = { wrapText: true };
-            // }
+        const data: any[][] = [];
 
-            worksheet.getRow(i).getCell(1).value = rowData[i - 2].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 2].key2;
+        // Row 1: Title spanning 5 cols
+        data.push([
+            { value: "Accessibility Scan Report", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
+            null, null, null, null
+        ]);
+
+        // Rows 2–7: metadata key/value pairs
+        for (const row of rowData) {
+            data.push([
+                dataCell(row.key1, { align: "left", height: 12 }),
+                { value: row.key2, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", columnSpan: 4 },
+                null, null, null
+            ]);
         }
 
-        // Summary Title
-        worksheet.mergeCells('A11', "E11");
+        // Row 8: blank spacer
+        data.push([null]);
 
-        const summaryRow = worksheet.getRow(11);
-        summaryRow.height = 27;
+        // Row 9: blank spacer
+        data.push([null]);
 
-        const cellA11 = worksheet.getCell('A11');
-        cellA11.value = "Summary";
-        cellA11.alignment = { vertical: "middle", horizontal: "left" };
-        cellA11.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA11.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        // Row 10: blank spacer
+        data.push([null]);
 
-        // Scans info Headers
-        worksheet.getRow(12).height = 16; // actual height is
+        // Row 11: "Summary" title spanning 5 cols
+        data.push([
+            { value: "Summary", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 5 },
+            null, null, null, null
+        ]);
 
-        const cellA12 = worksheet.getCell('A12'); cellA12.value = "Total issues";
-        const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
-        const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
-        const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
-        const cellE12 = worksheet.getCell('E12'); cellE12.value = "Archived";
+        // Row 12: column headers
+        data.push([
+            borderedCell("Total issues",     { align: "center", alignVertical: "center", backgroundColor: "#000000", textColor: "#FFFFFF", height: 16 }),
+            borderedCell("Violations",       { align: "center", alignVertical: "center", backgroundColor: "#E4AAAF", textColor: "#000000" }),
+            borderedCell("Needs review",     { align: "center", alignVertical: "center", backgroundColor: "#F4E08A", textColor: "#000000" }),
+            borderedCell("Recommendations",  { align: "center", alignVertical: "center", backgroundColor: "#96A9D7", textColor: "#000000" }),
+            borderedCell("Archived",         { align: "center", alignVertical: "center", backgroundColor: "#FFFFFF", textColor: "#000000" }),
+        ]);
 
-        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12, cellE12];
+        // Row 13: values
+        data.push([
+            borderedCell(totalIssues,     { align: "center", alignVertical: "center", height: 27 }),
+            borderedCell(violations,      { align: "center", alignVertical: "center" }),
+            borderedCell(needsReviews,    { align: "center", alignVertical: "center" }),
+            borderedCell(recommendations, { align: "center", alignVertical: "center" }),
+            borderedCell(archived,        { align: "center", alignVertical: "center" }),
+        ]);
 
-        for (let i = 0; i < cellObjects1.length; i++) {
-            cellObjects1[i].alignment = { vertical: "middle", horizontal: "center" };
-            if (i == 1 || i == 2 || i == 3 || i === 4) {
-                cellObjects1[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            } else {
-                cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            }
-
-            // cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-            cellObjects1[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        cellA12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-        cellB12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        cellC12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        cellD12.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-
-
-        // Scans info Values
-        worksheet.getRow(13).height = 27; // actual height is
-
-        const cellA13 = worksheet.getCell('A13'); cellA13.value = totalIssues;
-        const cellB13 = worksheet.getCell('B13'); cellB13.value = violations;
-        const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReviews;
-        const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendations;
-        const cellE13 = worksheet.getCell('E13'); cellE13.value = archived;
-
-        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13, cellE13];
-
-        for (let i = 0; i < cellObjects2.length; i++) {
-            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center" };
-            cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            cellObjects2[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
+        return { data, sheet: "Overview", columns };
     }
 
-    private static createScanSummarySheet(config: IConfigInternal, compressedScans: CompressedReport[], workbook: any) {
+    private static createScanSummarySheet(config: IConfigInternal, compressedScans: CompressedReport[]): any {
+        const columns = [
+            { width: 27.0 },
+            { width: 46.0 },
+            { width: 20.17 },
+            { width: 18.5 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+        ];
 
-        const worksheet = workbook.addWorksheet("Scan summary");
+        const headerStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", height: 39 };
+        const countHeaderStyle = { ...headerStyle, align: "center", wrap: true };
 
-        // Scans info Headers
-        worksheet.getRow(1).height = 39; // actual height is 52
+        const data: any[][] = [];
 
-        const colWidthData = [
-            { col: 'A', width: 27.0 },
-            { col: 'B', width: 46.0 },
-            { col: 'C', width: 20.17 },
-            { col: 'D', width: 18.5 },
-            { col: 'E', width: 17.17 },
-            { col: 'F', width: 17.17 },
-            { col: 'G', width: 17.17 },
-            { col: 'H', width: 17.17 },
-            { col: 'I', width: 17.17 },
-        ]
-
-        for (let i = 0; i < 9; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        const cellA1 = worksheet.getCell('A1'); cellA1.value = "Page title";
-        const cellB1 = worksheet.getCell('B1'); cellB1.value = "Page url";
-        const cellC1 = worksheet.getCell('C1'); cellC1.value = "Scan label";
-
-        const cellObjects1 = [cellA1, cellB1, cellC1];
-
-        for (let i = 0; i < cellObjects1.length; i++) {
-            cellObjects1[i].alignment = { vertical: "middle", horizontal: "left" };
-            cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-            cellObjects1[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        const cellD1 = worksheet.getCell('D1'); cellD1.value = "Violations";
-        const cellE1 = worksheet.getCell('E1'); cellE1.value = "Needs review";
-        const cellF1 = worksheet.getCell('F1'); cellF1.value = "Recommendations";
-        const cellG1 = worksheet.getCell('G1'); cellG1.value = "Archived";
-        const cellH1 = worksheet.getCell('H1'); cellH1.value = "% elements without violations";
-        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations or items to review";
-
-        const cellObjects2 = [cellD1, cellE1, cellF1, cellG1, cellH1, cellI1];
-
-        for (let i = 0; i < cellObjects2.length; i++) {
-            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            if (i == 0 || i == 1 || i == 2 || i == 3) {
-                cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            } else {
-                cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            }
-
-            // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-            cellObjects2[i].border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        cellD1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE4AAAF' } };
-        cellE1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4E08A' } };
-        cellF1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF96A9D7' } };
-        cellG1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
-        cellH1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-        cellI1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
+        // Row 1: header row
+        data.push([
+            { value: "Page title",      ...headerStyle, align: "left" },
+            { value: "Page url",        ...headerStyle, align: "left" },
+            { value: "Scan label",      ...headerStyle, align: "left" },
+            { value: "Violations",                    ...countHeaderStyle, backgroundColor: "#E4AAAF", textColor: "#000000" },
+            { value: "Needs review",                  ...countHeaderStyle, backgroundColor: "#F4E08A", textColor: "#000000" },
+            { value: "Recommendations",               ...countHeaderStyle, backgroundColor: "#96A9D7", textColor: "#000000" },
+            { value: "Archived",                      ...countHeaderStyle, backgroundColor: "#FFFFFF", textColor: "#000000" },
+            { value: "% elements without violations", ...countHeaderStyle },
+            { value: "% elements without violations or items to review", ...countHeaderStyle },
+        ]);
 
         for (const compressedScan of compressedScans) {
             let storedScan = ReporterManager.uncompressReport(compressedScan);
             let counts = storedScan.engineReport.summary.counts;
-            let row = worksheet.addRow([
-                storedScan.pageTitle,
-                storedScan.engineReport.summary.URL,
-                storedScan.label,
-                counts.violation,
-                counts.potentialviolation + counts.manual,
-                counts.recommendation + counts.potentialrecommendation,
-                counts.ignored,
-                (100 * (counts.elements - counts.elementsViolation) / counts.elements).toFixed(0),
-                (100 * (counts.elements - counts.elementsViolationReview) / counts.elements).toFixed(0),
+            const textStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", height: 37, wrap: true };
+            const numStyle = { ...textStyle, align: "center", borderColor: "#A6A6A6", borderStyle: "thin" };
+            data.push([
+                { value: storedScan.pageTitle, ...textStyle, align: "left" },
+                { value: storedScan.engineReport.summary.URL, ...textStyle, align: "left" },
+                { value: storedScan.label, ...textStyle, align: "left" },
+                { value: counts.violation, ...numStyle },
+                { value: counts.potentialviolation + counts.manual, ...numStyle },
+                { value: counts.recommendation + counts.potentialrecommendation, ...numStyle },
+                { value: counts.ignored, ...numStyle },
+                { value: counts.elements > 0 ? parseFloat((100 * (counts.elements - counts.elementsViolation) / counts.elements).toFixed(0)) : 0, ...numStyle },
+                { value: counts.elements > 0 ? parseFloat((100 * (counts.elements - counts.elementsViolationReview) / counts.elements).toFixed(0)) : 0, ...numStyle },
             ]);
-            row.height = 37; // actual height is
-            for (let i = 1; i < 4; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
-            }
-            for (let i = 4; i < 10; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: 12 };
-                // row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-                row.getCell(i).border = {
-                    top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-                }
-            }
-            row.commit();
         }
-        worksheet.commit();
+
+        return { data, sheet: "Scan summary", columns };
     }
 
-    private static buildIssueSummaryLevel(worksheet: any, fillColor: string, title: string, levelCount: number, levelrowValues: any) {
-        //       Level 1 Violation title
-        const level1ViolationRow = worksheet.addRow(["", 0]);
-        level1ViolationRow.height = 18; // target is 21
+    private static buildIssueSummaryLevelRows(fillColor: string, textColor: string, title: string, levelCount: number, levelrowValues: { [key: string]: any }): any[][] {
+        const rows: any[][] = [];
 
-        const cellA6 = level1ViolationRow.getCell(1);
-        cellA6.value = `     ${title}`;
-        cellA6.alignment = { vertical: "middle", horizontal: "left" };
-        cellA6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellA6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fillColor } };
-        level1ViolationRow.getCell(1).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        };
+        // Level type title row (e.g. "Violations")
+        rows.push([
+            { value: `     ${title}`, backgroundColor: fillColor, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 18 },
+            { value: levelCount, backgroundColor: fillColor, textColor, fontFamily: "Calibri", fontSize: 12, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+        ]);
 
-        const cellB6 = level1ViolationRow.getCell(2);
-        cellB6.value = levelCount; // total level violations
-        cellB6.alignment = { vertical: "middle", horizontal: "right" };
-        cellB6.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellB6.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fillColor } };
-        level1ViolationRow.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // Level 1 Violation Rows
-
-        // build rows
-        let rowArray: any = [];
-        // let row:any =[];
+        // Individual issue message rows, sorted descending by count
+        const rowArray: [string, number][] = [];
         for (const property in levelrowValues) {
-            let row: any = ["     " + `${property}`, parseInt(`${levelrowValues[property]}`)
-            ];
-            rowArray.push(row);
+            rowArray.push(["     " + property, parseInt(`${levelrowValues[property]}`)]);
+        }
+        rowArray.sort((a, b) => b[1] - a[1]);
+
+        for (const [msg, count] of rowArray) {
+            rows.push([
+                { value: msg, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left", height: 14 },
+                { value: count, fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+            ]);
         }
 
-        // sort array according to count
-        rowArray.sort((a, b) => (a[1] < b[1]) ? 1 : -1);
-
-        // add array of rows
-
-        for (const rowInfo of rowArray) {
-            const row = worksheet.addRow(rowInfo);
-            row.height = 14;
-            row.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-            row.getCell(2).alignment = { vertical: "middle", horizontal: "right" };
-            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            // row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            // row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-            row.getCell(1).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-            };
-            row.getCell(2).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            };
-            row.commit();
-        }
+        return rows;
     }
 
-    private static buildIssueSummaryTKLevel(worksheet: any, title: string, levelCounts: number[], levelVrowValues: any, levelNRrowValues: any, levelRrowValues: any, levelArowValues: any) {
-        /////////////////////////////
-        // build Level title
-        /////////////////////////////
+    private static buildIssueSummaryTKLevelRows(title: string, levelCounts: number[], levelVrowValues: any, levelNRrowValues: any, levelRrowValues: any, levelArowValues: any): any[][] {
+        const rows: any[][] = [];
 
-        const level1Row = worksheet.addRow(["", 0]);
-        level1Row.height = 27; // actual is 36
+        // Level title row (e.g. "Level 1 - the most essential...")
+        rows.push([
+            { value: title, backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+            { value: levelCounts[0], backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+        ]);
 
-        const cellA5 = level1Row.getCell(1);
-        cellA5.value = title;
-        cellA5.alignment = { vertical: "middle", horizontal: "left" };
-        cellA5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const cellB5 = level1Row.getCell(2);
-        cellB5.value = levelCounts[0]; // total Level 1 issues
-        cellB5.alignment = { vertical: "middle", horizontal: "right" };
-        cellB5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellB5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        ACReporterXLSX.buildIssueSummaryLevel(worksheet, "FFE4AAAF", "Violation", levelCounts[1], levelVrowValues);
-        ACReporterXLSX.buildIssueSummaryLevel(worksheet, "FFF4E08A", "Needs review", levelCounts[2], levelNRrowValues);
-        ACReporterXLSX.buildIssueSummaryLevel(worksheet, "FF96A9D7", "Recommendation", levelCounts[3], levelRrowValues);
+        rows.push(...ACReporterXLSX.buildIssueSummaryLevelRows("#E4AAAF", "#000000", "Violation",     levelCounts[1], levelVrowValues));
+        rows.push(...ACReporterXLSX.buildIssueSummaryLevelRows("#F4E08A", "#000000", "Needs review",  levelCounts[2], levelNRrowValues));
+        rows.push(...ACReporterXLSX.buildIssueSummaryLevelRows("#96A9D7", "#000000", "Recommendation",levelCounts[3], levelRrowValues));
         if (levelCounts[4] > 0) {
-            ACReporterXLSX.buildIssueSummaryLevel(worksheet, "FFCCCCCC", "Archived", levelCounts[4], levelArowValues);
+            rows.push(...ACReporterXLSX.buildIssueSummaryLevelRows("#CCCCCC", "#000000", "Archived",  levelCounts[4], levelArowValues));
         }
+
+        return rows;
     }
 
-    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: any) {
-
+    private static createIssueSummarySheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[]): any {
         let violations = 0;
         let needsReviews = 0;
         let recommendations = 0;
@@ -491,51 +465,31 @@ export class ACReporterXLSX implements IReporter {
         }
         totalIssues = violations + needsReviews + recommendations;
 
-        // counts
-        let level1Counts = [0, 0, 0, 0, 0]; // level 1 total issues, violations, needs reviews, recommendations
+        let level1Counts = [0, 0, 0, 0, 0];
         let level2Counts = [0, 0, 0, 0, 0];
         let level3Counts = [0, 0, 0, 0, 0];
         let level4Counts = [0, 0, 0, 0, 0];
         let level1V: any = []; let level2V: any = []; let level3V: any = []; let level4V: any = []
         let level1NR: any = []; let level2NR: any = []; let level3NR: any = []; let level4NR: any = [];
         let level1R: any = []; let level2R: any = []; let level3R: any = []; let level4R: any = [];
-        let level1A: any = []; let level2A: any = []; let level3A: any = []; let level4A: any = []
+        let level1A: any = []; let level2A: any = []; let level3A: any = []; let level4A: any = [];
+
         for (const compressedScan of compressedScans) {
             let scan = ReporterManager.uncompressReport(compressedScan);
             for (const issue of scan.engineReport.results) {
                 if (!(issue.ruleId in policyInfo)) {
-                    policyInfo[issue.ruleId] = {
-                        tkLevels: [],
-                        cps: []
-                    }
+                    policyInfo[issue.ruleId] = { tkLevels: [], cps: [] }
                 }
                 let levelCounts, levelV, levelNR, levelR, levelA;
-
                 const issuePolicyInfo = policyInfo[issue.ruleId];
                 if (issuePolicyInfo.tkLevels.includes(eToolkitLevel.LEVEL_ONE)) {
-                    levelCounts = level1Counts;
-                    levelV = level1V;
-                    levelNR = level1NR;
-                    levelR = level1R;
-                    levelA = level1A;
+                    levelCounts = level1Counts; levelV = level1V; levelNR = level1NR; levelR = level1R; levelA = level1A;
                 } else if (issuePolicyInfo.tkLevels.includes(eToolkitLevel.LEVEL_TWO)) {
-                    levelCounts = level2Counts;
-                    levelV = level2V;
-                    levelNR = level2NR;
-                    levelR = level2R;
-                    levelA = level2A;
+                    levelCounts = level2Counts; levelV = level2V; levelNR = level2NR; levelR = level2R; levelA = level2A;
                 } else if (issuePolicyInfo.tkLevels.includes(eToolkitLevel.LEVEL_THREE)) {
-                    levelCounts = level3Counts;
-                    levelV = level3V;
-                    levelNR = level3NR;
-                    levelR = level3R;
-                    levelA = level3A;
+                    levelCounts = level3Counts; levelV = level3V; levelNR = level3NR; levelR = level3R; levelA = level3A;
                 } else if (issuePolicyInfo.tkLevels.includes(eToolkitLevel.LEVEL_FOUR)) {
-                    levelCounts = level4Counts;
-                    levelV = level4V;
-                    levelNR = level4NR;
-                    levelR = level4R;
-                    levelA = level4A;
+                    levelCounts = level4Counts; levelV = level4V; levelNR = level4NR; levelR = level4R; levelA = level4A;
                 }
                 if (issue.value[1] !== eRuleConfidence.PASS) {
                     ++levelCounts[0];
@@ -557,139 +511,78 @@ export class ACReporterXLSX implements IReporter {
         }
 
         // @ts-ignore
-        let level1VrowValues: { [index: string]: any } = this.countDuplicatesInArray(level1V); // note this returns an object
+        let level1VrowValues  = ACReporterXLSX.countDuplicatesInArray(level1V);
         // @ts-ignore
-        let level1NRrowValues: { [index: string]: any } = this.countDuplicatesInArray(level1NR);
+        let level1NRrowValues = ACReporterXLSX.countDuplicatesInArray(level1NR);
         // @ts-ignore
-        let level1RrowValues: { [index: string]: any } = this.countDuplicatesInArray(level1R);
+        let level1RrowValues  = ACReporterXLSX.countDuplicatesInArray(level1R);
         // @ts-ignore
-        let level1ArowValues: { [index: string]: any } = this.countDuplicatesInArray(level1A);
-
+        let level1ArowValues  = ACReporterXLSX.countDuplicatesInArray(level1A);
         // @ts-ignore
-        let level2VrowValues: { [index: string]: any } = this.countDuplicatesInArray(level2V); // note this returns an object
+        let level2VrowValues  = ACReporterXLSX.countDuplicatesInArray(level2V);
         // @ts-ignore
-        let level2NRrowValues: { [index: string]: any } = this.countDuplicatesInArray(level2NR);
+        let level2NRrowValues = ACReporterXLSX.countDuplicatesInArray(level2NR);
         // @ts-ignore
-        let level2RrowValues: { [index: string]: any } = this.countDuplicatesInArray(level2R);
+        let level2RrowValues  = ACReporterXLSX.countDuplicatesInArray(level2R);
         // @ts-ignore
-        let level2ArowValues: { [index: string]: any } = this.countDuplicatesInArray(level2A);
-
+        let level2ArowValues  = ACReporterXLSX.countDuplicatesInArray(level2A);
         // @ts-ignore
-        let level3VrowValues: { [index: string]: any } = this.countDuplicatesInArray(level3V); // note this returns an object
+        let level3VrowValues  = ACReporterXLSX.countDuplicatesInArray(level3V);
         // @ts-ignore
-        let level3NRrowValues: { [index: string]: any } = this.countDuplicatesInArray(level3NR);
+        let level3NRrowValues = ACReporterXLSX.countDuplicatesInArray(level3NR);
         // @ts-ignore
-        let level3RrowValues: { [index: string]: any } = this.countDuplicatesInArray(level3R);
+        let level3RrowValues  = ACReporterXLSX.countDuplicatesInArray(level3R);
         // @ts-ignore
-        let level3ArowValues: { [index: string]: any } = this.countDuplicatesInArray(level3A);
-
+        let level3ArowValues  = ACReporterXLSX.countDuplicatesInArray(level3A);
         // @ts-ignore
-        let level4VrowValues: { [index: string]: any } = this.countDuplicatesInArray(level4V); // note this returns an object
+        let level4VrowValues  = ACReporterXLSX.countDuplicatesInArray(level4V);
         // @ts-ignore
-        let level4NRrowValues: { [index: string]: any } = this.countDuplicatesInArray(level4NR);
+        let level4NRrowValues = ACReporterXLSX.countDuplicatesInArray(level4NR);
         // @ts-ignore
-        let level4RrowValues: { [index: string]: any } = this.countDuplicatesInArray(level4R);
+        let level4RrowValues  = ACReporterXLSX.countDuplicatesInArray(level4R);
         // @ts-ignore
-        let level4ArowValues: { [index: string]: any } = this.countDuplicatesInArray(level4A);
+        let level4ArowValues  = ACReporterXLSX.countDuplicatesInArray(level4A);
 
+        const columns = [
+            { width: 155.51 },
+            { width: 21.16 },
+        ];
 
+        const data: any[][] = [];
 
-        const worksheet = workbook.addWorksheet("Issue summary");
+        // Row 1: "Issue summary" title spanning 2 cols
+        data.push([
+            { value: "Issue summary", backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27, columnSpan: 2 },
+            null
+        ]);
 
-        // Approach:
-        // 1. sort by levels
-        // 2. for each level sort by V, NR and R
-        // 3. for each V, NR, and R in a level get issue dup counts
-        // 4. build the rows
+        // Row 2: description spanning 2 cols
+        data.push([
+            { value: "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.", fontFamily: "Calibri", fontSize: 12, textColor: "#000000", alignVertical: "center", align: "left", height: 20, columnSpan: 2 },
+            null
+        ]);
 
-        // build Issue summary title
-        worksheet.mergeCells('A1', "B1");
+        // Row 3: "Total issues found:" with value
+        data.push([
+            { value: "Total issues found:", backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left", height: 27 },
+            { value: totalIssues, backgroundColor: "#000000", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "right" },
+        ]);
 
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 27; // actual is 36
+        // Row 4: "Number of issues" label
+        data.push([
+            { value: null, borderColor: "#A6A6A6", borderStyle: "thin", height: 20 },
+            { value: "Number of issues", fontFamily: "Calibri", fontSize: 12, textColor: "#000000", borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "right" },
+        ]);
 
-        const cellA1 = worksheet.getCell('A1');
-        cellA1.value = "Issue summary";
-        cellA1.alignment = { vertical: "middle", horizontal: "left" };
-        cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
+        data.push(...ACReporterXLSX.buildIssueSummaryTKLevelRows("Level 1 - the most essential issues to address",          level1Counts, level1VrowValues, level1NRrowValues, level1RrowValues, level1ArowValues));
+        data.push(...ACReporterXLSX.buildIssueSummaryTKLevelRows("Level 2 - the next most important issues",                level2Counts, level2VrowValues, level2NRrowValues, level2RrowValues, level2ArowValues));
+        data.push(...ACReporterXLSX.buildIssueSummaryTKLevelRows("Level 3 - necessary to meet requirements",               level3Counts, level3VrowValues, level3NRrowValues, level3RrowValues, level3ArowValues));
+        data.push(...ACReporterXLSX.buildIssueSummaryTKLevelRows("Level 4 - further recommended improvements to accessibility", level4Counts, level4VrowValues, level4NRrowValues, level4RrowValues, level4ArowValues));
 
-        const colWidthData = [
-            { col: 'A', width: 155.51 }, // note .84 added to actual width
-            { col: 'B', width: 21.16 },
-        ]
-
-        for (let i = 0; i < 2; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        // build Description title
-        worksheet.mergeCells('A2', "B2");
-
-        const descriptionRow = worksheet.getRow(2);
-        descriptionRow.height = 20.25; // actual is 27
-
-        const cellA2 = worksheet.getCell("A2");
-        cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
-        cellA2.alignment = { vertical: "middle", horizontal: "left" };
-        cellA2.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        // cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
-
-
-
-
-        // build Total issues found: title
-        // worksheet.mergeCells('A3', "B3");
-
-        const totalIssuesRow = worksheet.getRow(3);
-        totalIssuesRow.height = 27; // actual is 36
-
-        const cellA3 = worksheet.getCell("A3");
-        cellA3.value = "Total issues found:";
-        cellA3.alignment = { vertical: "middle", horizontal: "left" };
-        cellA3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellA3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-
-        const cellB3 = worksheet.getCell("B3");
-        cellB3.value = totalIssues;
-        cellB3.alignment = { vertical: "middle", horizontal: "right" };
-        cellB3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        cellB3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF000000' } };
-
-        // build Number of issues title
-        const numberOfIssuesRow = worksheet.getRow(4);
-        numberOfIssuesRow.height = 20.25; // actual is 27
-
-
-        const cellA4 = worksheet.getCell("A4");
-        // no value
-        cellA4.alignment = { vertical: "middle", horizontal: "left" };
-        cellA4.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
-        };
-
-        const cellB4 = worksheet.getCell("B4");
-        cellB4.value = "Number of issues";
-        cellB4.alignment = { vertical: "middle", horizontal: "right" };
-        cellB4.font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-        cellB4.border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 1 - the most essential issues to address", level1Counts, level1VrowValues, level1NRrowValues, level1RrowValues, level1ArowValues);
-        ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 2 - the next most important issues", level2Counts, level2VrowValues, level2NRrowValues, level2RrowValues, level2ArowValues);
-        ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 3 - necessary to meet requirements", level3Counts, level3VrowValues, level3NRrowValues, level3RrowValues, level3ArowValues);
-        ACReporterXLSX.buildIssueSummaryTKLevel(worksheet, "Level 4 - further recommended improvements to accessibility", level4Counts, level4VrowValues, level4NRrowValues, level4RrowValues, level4ArowValues);
-        worksheet.commit();
+        return { data, sheet: "Issue summary", columns };
     }
 
-    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[], workbook: any) {
+    private static createIssuesSheet(config: IConfigInternal, policyInfo: { [ruleId: string]: PolicyInfo }, compressedScans: CompressedReport[]): any {
         const valueMap: { [key: string]: { [key2: string]: string } } = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",
@@ -711,249 +604,98 @@ export class ACReporterXLSX implements IReporter {
             }
         };
 
-        const worksheet = workbook.addWorksheet("Issues");
+        const columns = [
+            { width: 18.0 },
+            { width: 20.5 },
+            { width: 21.0 },
+            { width: 18.5 },
+            { width: 17.0 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 17.17 },
+            { width: 14.00 },
+            { width: 17.17 },
+            { width: 43.00 },
+            { width: 17.17 },
+        ];
 
-        // build rows
-        let rowArray: any = [];
+        // Header and data row colors are intentionally omitted — the Excel table
+        // (TableStyleMedium2 + showRowStripes) applied by injectTableIntoFile() provides all coloring.
+        const hStyle = { fontFamily: "Calibri", fontSize: 12, align: "center", alignVertical: "center", wrap: true, height: 24 };
+
+        const data: any[][] = [];
+
+        // Header row
+        data.push([
+            { value: "Page title",   ...hStyle },
+            { value: "Page URL",     ...hStyle },
+            { value: "Scan label",   ...hStyle },
+            { value: "Issue ID",     ...hStyle },
+            { value: "Issue type",   ...hStyle },
+            { value: "Toolkit level",...hStyle },
+            { value: "Checkpoint",   ...hStyle },
+            { value: "WCAG level",   ...hStyle },
+            { value: "Rule",         ...hStyle },
+            { value: "Issue",        ...hStyle },
+            { value: "Element",      ...hStyle },
+            { value: "Code",         ...hStyle },
+            { value: "Xpath",        ...hStyle },
+            { value: "Help",         ...hStyle },
+        ]);
+
         for (const compressedScan of compressedScans) {
             let storedScan = ReporterManager.uncompressReport(compressedScan);
             for (const item of storedScan.engineReport.results) {
                 if (!(item.ruleId in policyInfo)) {
-                    policyInfo[item.ruleId] = {
-                        tkLevels: [],
-                        cps: []
-                    }
+                    policyInfo[item.ruleId] = { tkLevels: [], cps: [] }
                 }
                 let polInfo = policyInfo[item.ruleId];
                 let cps = polInfo.cps.filter(cp => {
                     let ruleInfo = cp.rules.find(ruleInfo => ruleInfo.id === item.ruleId && (!ruleInfo.reasonCodes || ruleInfo.reasonCodes.includes(""+item.reasonId)));
                     return !!ruleInfo;
-                })
+                });
                 let wcagLevels = dropDupes(cps.map(cp => cp.wcagLevel));
                 wcagLevels.sort();
                 let cpStrs = dropDupes(cps.map(cp => `${cp.num} ${cp.name}`));
                 cpStrs.sort();
-                let row = [
-                    storedScan.pageTitle,
-                    storedScan.engineReport.summary.URL,
-                    storedScan.label,
-                    this.stringHash(item.ruleId + item.path.dom),
-                    `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,
-                    polInfo.tkLevels.join(", "),
-                    cpStrs.join("; "),
-                    wcagLevels.join(", "),
-                    item.ruleId,
-                    item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
-                    this.get_element(item.snippet),
-                    item.snippet.substring(0, 32767),
-                    item.path.dom,
-                    item.help,
-                    item.source
-                    // engine_end_point + '/tools/help/' + item.ruleId
-                ]
 
-                // let row = [myStoredData[i][0], myStoredData[i][1], storedScans[j].label,
-                // myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5],
-                // myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8],
-                // myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
-                // myStoredData[i][12], myStoredData[i][13]
-                // ];
-                rowArray.push(row);
+                const dStyle = { fontFamily: "Calibri", fontSize: 12, height: 14 };
+                data.push([
+                    { value: storedScan.pageTitle,                                                          ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: storedScan.engineReport.summary.URL,                                           ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: storedScan.label,                                                              ...dStyle, align: "center", alignVertical: "center" },
+                    { value: ACReporterXLSX.stringHash(item.ruleId + item.path.dom),                        ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: `${valueMap[item.value[0]][item.value[1]]}${item.ignored ? ` (Archived)` : ``}`,...dStyle, align: "center", alignVertical: "center" },
+                    { value: polInfo.tkLevels.join(", "),                                                   ...dStyle, align: "center", alignVertical: "center" },
+                    { value: cpStrs.join("; "),                                                             ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: wcagLevels.join(", "),                                                         ...dStyle, align: "center", alignVertical: "center" },
+                    { value: item.ruleId,                                                                   ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: item.message.substring(0, 32767),                                              ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: ACReporterXLSX.get_element(item.snippet),                                      ...dStyle, align: "center", alignVertical: "center" },
+                    { value: item.snippet.substring(0, 32767),                                              ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: item.path.dom,                                                                 ...dStyle, align: "left",   alignVertical: "center" },
+                    { value: item.help,                                                                     ...dStyle, align: "left",   alignVertical: "center" },
+                ]);
             }
         }
 
-        // column widths
-        const colWidthData: Array<{
-            col: string,
-            width: number,
-            alignment: {
-                vertical: "middle",
-                horizontal: "left" | "center" | "fill"
-            }
-        }> = [
-                { col: 'A', width: 18.0, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'B', width: 20.5, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'C', width: 21.0, alignment: { vertical: "middle", horizontal: "center" } },
-                { col: 'D', width: 18.5, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'E', width: 17.0, alignment: { vertical: "middle", horizontal: "center" } },
-                { col: 'F', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
-                { col: 'G', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'H', width: 17.17, alignment: { vertical: "middle", horizontal: "center" } },
-                { col: 'I', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'J', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'K', width: 14.00, alignment: { vertical: "middle", horizontal: "center" } },
-                { col: 'L', width: 17.17, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'M', width: 43.00, alignment: { vertical: "middle", horizontal: "left" } },
-                { col: 'N', width: 17.17, alignment: { vertical: "middle", horizontal: "fill" } },
-            ]
-
-        for (let i = 0; i < 14; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-            worksheet.getColumn(colWidthData[i].col).alignment = colWidthData[i].alignment;
-        }
-        
-        // add table to a sheet
-        let headRow = worksheet.addRow([ 
-            "Page title",
-            "Page URL",
-            "Scan label",
-            "Issue ID",
-            "Issue type",
-            "Toolkit level",
-            "Checkpoint",
-            "WCAG level",
-            "Rule",
-            "Issue",
-            "Element",
-            "Code",
-            "Xpath",
-            "Help",
-            ""
-        ]);
-
-        // set font and alignment for the header cells
-        for (let i = 1; i < 15; i++) {
-            headRow.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            headRow.getCell(i).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 12 };
-            headRow.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-            headRow.getCell(i).border = {
-                top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-            }
-        }
-
-        // height for header row
-        headRow.height = 24;
-        
-        headRow.commit();
-        for (const rowInfo of rowArray) {
-            const row = worksheet.addRow(rowInfo);
-            row.height = 14;
-            for (let j = 1; j <= 14; j++) {
-                row.getCell(j).border = {
-                    top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-                    right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-                }
-            }
-            row.commit();
-        }
-        for (const key in worksheet) {
-            if (typeof worksheet[key] === "function") {
-                console.log(key);
-            }
-        }
-        // worksheet.addTable({
-        //     name: 'MyTable',
-        //     ref: 'A1',
-        //     headerRow: true,
-        //     // totalsRow: true,
-        //     style: {
-        //         theme: 'TableStyleMedium2',
-        //         showRowStripes: true,
-        //     },
-        //     columns: [
-        //         { name: 'Page title', filterButton: true },
-        //         { name: 'Page URL', filterButton: true },
-        //         { name: 'Scan label', filterButton: true },
-        //         { name: 'Issue ID', filterButton: true },
-        //         { name: 'Issue type', filterButton: true },
-        //         { name: 'Toolkit level', filterButton: true },
-        //         { name: 'Checkpoint', filterButton: true },
-        //         { name: 'WCAG level', filterButton: true },
-        //         { name: 'Rule', filterButton: true },
-        //         { name: 'Issue', filterButton: true },
-        //         { name: 'Element', filterButton: true },
-        //         { name: 'Code', filterButton: true },
-        //         { name: 'Xpath', filterButton: true },
-        //         { name: 'Help', filterButton: true },
-
-        //     ],
-        //     rows: rowArray
-        // });
-
-        // for (let i = 2; i <= rowArray.length + 1; i++) {
-        //     worksheet.getRow(i).height = 14;
-        //     for (let j = 1; j <= 14; j++) {
-        //         worksheet.getRow(i).getCell(j).border = {
-        //             top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-        //             left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-        //             bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-        //             right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        //         }
-        //     }
-        //     worksheet.getRow(i).commit();
-        // }
-        worksheet.commit();
+        return { data, sheet: "Issues", columns, stickyRowsCount: 1, _issueRowCount: data.length };
     }
 
-    private static createDefinitionsSheet(workbook: any) {
+    private static createDefinitionsSheet(): any {
+        const columns = [
+            { width: 41.51 },
+            { width: 119.51 },
+        ];
 
-        const worksheet = workbook.addWorksheet("Definition of fields");
+        const titleStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 20, alignVertical: "center", align: "left" };
+        const sectionStyle = { backgroundColor: "#403151", textColor: "#FFFFFF", fontFamily: "Calibri", fontSize: 16, alignVertical: "center", align: "left" };
+        const subHeaderStyle = { backgroundColor: "#CCC0DA", textColor: "#000000", fontFamily: "Calibri", fontSize: 16, borderColor: "#A6A6A6", borderStyle: "thin", alignVertical: "center", align: "left" };
+        const dataStyle = { fontFamily: "Calibri", fontSize: 12, textColor: "#000000", align: "left", height: 12 };
 
-        // "Definition of fields" title
-        worksheet.mergeCells('A1', "B1");
-
-        const titleRow = worksheet.getRow(1);
-        titleRow.height = 36; // actual is 48
-
-        titleRow.getCell(1).value = "Definition of fields";
-        titleRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        titleRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "20" };
-        titleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        const colWidthData = [
-            { col: 'A', width: '41.51' }, // note .84 added to actual width
-            { col: 'B', width: '119.51' },
-        ]
-
-        for (let i = 0; i < 2; i++) {
-            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
-        }
-
-        // blank row
-        worksheet.mergeCells('A2', "B2");
-        const blankRow = worksheet.getRow(2);
-        blankRow.height = 12; // actual is 16
-
-        // "Scan summary and Issue summary" title
-        worksheet.mergeCells('A3', "B3");
-
-        const summaryRow = worksheet.getRow(3);
-        summaryRow.height = 20; // actual is 26.75
-
-        summaryRow.getCell(1).value = "Scan summary and Issue summary";
-        summaryRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        summaryRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        summaryRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // row 4 Field / Definition
-        const row4 = worksheet.getRow(4);
-        row4.height = 16; // actual is 
-
-        row4.getCell(1).value = "Field";
-        row4.getCell(2).value = "Definition";
-        row4.getCell(1).alignment = row4.getCell(2).alignment = { vertical: "middle", horizontal: "left" };
-        row4.getCell(1).font = row4.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 16 };
-        row4.getCell(1).fill = row4.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCC0DA' } };
-        row4.getCell(1).border = row4.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // rows 5-13
-
-        // set row height for rows 5-13
-        for (let i = 5; i < 14; i++) {
-            worksheet.getRow(i).height = 12; // results in a row height of 16
-        }
-
-        let rowData = [
+        const summaryRowData = [
             { key1: 'Page', key2: 'Identifies the page or html file that was scanned.' },
             { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
             { key1: 'Violations', key2: 'Accessibility failures that need to be corrected.' },
@@ -964,52 +706,7 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan/overview#pace-of-completion for details.' }
         ];
 
-        for (let i = 5; i < rowData.length + 5; i++) {
-            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
-
-        }
-        for (let i = 5; i < rowData.length + 5; i++) {
-            worksheet.getRow(i).getCell(1).value = rowData[i - 5].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 5].key2;
-        }
-
-        // "Scan summary and Issue summary" title
-        worksheet.mergeCells('A14', "B14");
-
-        const issuesRow = worksheet.getRow(14);
-        issuesRow.height = 20; // actual is 26.75
-
-        issuesRow.getCell(1).value = "Issues";
-        issuesRow.getCell(1).alignment = { vertical: "middle", horizontal: "left" };
-        issuesRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: 16 };
-        issuesRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF403151' } };
-
-        // row 15 Field / Definition
-        const row15 = worksheet.getRow(15);
-        row15.height = 16; // actual is 
-
-        row15.getCell(1).value = "Field";
-        row15.getCell(2).value = "Definition";
-        row15.getCell(1).alignment = row15.getCell(2).alignment = { vertical: "middle", horizontal: "left" };
-        row15.getCell(1).font = row15.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 16 };
-        row15.getCell(1).fill = row15.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCC0DA' } };
-        row15.getCell(1).border = row15.getCell(2).border = {
-            top: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            left: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            bottom: { style: 'thin', color: { argb: 'FFA6A6A6' } },
-            right: { style: 'thin', color: { argb: 'FFA6A6A6' } }
-        };
-
-        // rows 16-28
-
-        // set row height for rows 16-28
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).height = 12; // results in a row height of 16
-        }
-
-        rowData = [];
-
-        rowData = [
+        const issuesRowData = [
             { key1: 'Page', key2: 'Identifies the page or html file that was scanned.' },
             { key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.' },
             { key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. ' },
@@ -1025,23 +722,66 @@ export class ACReporterXLSX implements IReporter {
             { key1: 'Help', key2: 'Link to a more detailed description of the issue and suggested solutions.' },
         ];
 
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: 12 };
-            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left" };
+        const data: any[][] = [];
 
+        // Row 1: "Definition of fields" title spanning 2 cols
+        data.push([
+            { value: "Definition of fields", ...titleStyle, height: 36, columnSpan: 2 },
+            null
+        ]);
+
+        // Row 2: blank
+        data.push([{ value: null, height: 12, columnSpan: 2 }, null]);
+
+        // Row 3: "Scan summary and Issue summary" section header
+        data.push([
+            { value: "Scan summary and Issue summary", ...sectionStyle, height: 20, columnSpan: 2 },
+            null
+        ]);
+
+        // Row 4: "Field / Definition" subheader
+        data.push([
+            { value: "Field", ...subHeaderStyle, height: 16 },
+            { value: "Definition", ...subHeaderStyle },
+        ]);
+
+        // Rows 5–12: scan summary definitions
+        for (const row of summaryRowData) {
+            data.push([
+                { value: row.key1, ...dataStyle },
+                { value: row.key2, ...dataStyle },
+            ]);
         }
-        for (let i = 16; i < 29; i++) {
-            worksheet.getRow(i).getCell(1).value = rowData[i - 16].key1; worksheet.getRow(i).getCell(2).value = rowData[i - 16].key2;
+
+        // Row 13: blank (separator between sections) — kept simple
+        data.push([{ value: null, height: 12, columnSpan: 2 }, null]);
+
+        // Row 14: "Issues" section header
+        data.push([
+            { value: "Issues", ...sectionStyle, height: 20, columnSpan: 2 },
+            null
+        ]);
+
+        // Row 15: "Field / Definition" subheader
+        data.push([
+            { value: "Field", ...subHeaderStyle, height: 16 },
+            { value: "Definition", ...subHeaderStyle },
+        ]);
+
+        // Rows 16–28: issues definitions
+        for (const row of issuesRowData) {
+            data.push([
+                { value: row.key1, ...dataStyle },
+                { value: row.key2, ...dataStyle },
+            ]);
         }
-        worksheet.commit();
+
+        return { data, sheet: "Definition of fields", columns };
     }
 
     private static countDuplicatesInArray(array: []) {
         let count = {};
-        // let result = [];
-
         array.forEach(item => {
-
             if (count[item]) {
                 //@ts-ignore
                 count[item] += 1
@@ -1053,21 +793,17 @@ export class ACReporterXLSX implements IReporter {
         return count;
     }
 
-
     private static get_element(code: string) {
-
         if (code) {
             const ind_s = code.indexOf(' ');
             const ind_br = code.indexOf('>');
             return (ind_s > 0 && ind_s < ind_br) ? code.substring(1, ind_s) : code.substring(1, ind_br)
         }
-
         return '';
     }
 
     private static format_date(timestamp: string) {
         var date = new Date(timestamp);
-
         return date.getFullYear() + '-' + ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
             ("00" + date.getDate()).slice(-2) + "-" +
             ("00" + date.getHours()).slice(-2) + "-" +
@@ -1079,15 +815,9 @@ export class ACReporterXLSX implements IReporter {
     private static stringHash(str) {
         var hash = 5381,
             i = str.length;
-
         while (i) {
             hash = (hash * 33) ^ str.charCodeAt(--i);
         }
-
-        /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
-         * integers. Since we want the results to be always positive, convert the
-         * signed int to an unsigned by doing an unsigned bitshift. */
         return hash >>> 0;
     }
-
 }

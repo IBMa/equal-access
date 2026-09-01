@@ -21,6 +21,11 @@
     "wdio-chromedriver-service": "^8.1.1"
   },
   "overrides": {
-    "tmp": "^0.2.7"
+    "deepmerge-ts": "^8.0.2",
+    "serialize-javascript": "^7.0.5",
+    "tmp": "^0.2.7",
+    "wdio-chromedriver-service": {
+      "webdriverio": "^9.31.5"
+    }
   }
 }
