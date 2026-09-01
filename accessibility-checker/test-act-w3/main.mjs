@@ -69,16 +69,21 @@ import * as fs from "fs";
                                 console.log(err);
                             }
                         }
-                    } else {
-                        await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
-                    }
-                    // Detect Cloudflare bot challenge page - fall back to GitHub raw content
-                    const pageTitle = await pupPage.title();
-                    if (pageTitle === 'Just a moment...') {
+                    } else if (testcase.relativePath) {
+                        // W3C testcase files: fetch from GitHub raw to avoid Cloudflare timeouts,
+                        // then inject into the page so the URL context is preserved.
                         const ghRawUrl = `https://raw.githubusercontent.com/w3c/wcag-act-rules/main/content-assets/wcag-act-rules/${testcase.relativePath}`;
                         const resp = await fetch(ghRawUrl);
                         const html = await resp.text();
+                        // Navigate to the canonical W3C URL first (fast, no wait) so that
+                        // page.url() and relative resource paths resolve correctly, then
+                        // replace the content with the real HTML.
+                        try {
+                            await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded', timeout: 5000 });
+                        } catch (_) { /* ignore timeout - we'll overwrite with setContent anyway */ }
                         await pupPage.setContent(html, { waitUntil: 'networkidle2' });
+                    } else {
+                        await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }
                 }
 
