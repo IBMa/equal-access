@@ -45,6 +45,10 @@
     "sass": "^1.50.1"
   },
   "overrides": {
+    "inline-source": "^8.0.3",
+    "serialize-javascript": "^7.0.5",
+    "terser": "^5.39.0",
+    "underscore": "^1.13.7",
     "uuid": "^14"
   }
 }
