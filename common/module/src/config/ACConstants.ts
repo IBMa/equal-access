@@ -81,12 +81,12 @@ export const ACConstants : IConfigInternal = {
     // The node module, require will load js or json depending on which one is present, in the case
     // both json and js are present it loads js first.
     configFiles: [
-        ".achecker.yml", ".achecker.yaml", 
-        "achecker.js", "achecker", "achecker.json", 
-        "aceconfig.js", "aceconfig", "aceconfig.json",
-        pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), 
-        pathLib.join(".config", "achecker.js"), pathLib.join(".config", "achecker"), pathLib.join(".config", "achecker.json"), 
-        pathLib.join(".config", "aceconfig.js"), pathLib.join(".config", "aceconfig"), pathLib.join(".config", "aceconfig.json")
+        ".achecker.yml", ".achecker.yaml",
+        "achecker.mjs", "achecker.js", "achecker", "achecker.json",
+        "aceconfig.mjs", "aceconfig.js", "aceconfig", "aceconfig.json",
+        pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"),
+        pathLib.join(".config", "achecker.mjs"), pathLib.join(".config", "achecker.js"), pathLib.join(".config", "achecker"), pathLib.join(".config", "achecker.json"),
+        pathLib.join(".config", "aceconfig.mjs"), pathLib.join(".config", "aceconfig.js"), pathLib.join(".config", "aceconfig"), pathLib.join(".config", "aceconfig.json")
     ],
 
     ignoreHTTPSErrors: false,

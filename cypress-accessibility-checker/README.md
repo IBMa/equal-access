@@ -43,6 +43,8 @@ Without `exceljs` installed, all other report formats (JSON, HTML, CSV) will wor
 
 The configuration for the plugin is driven by a configuration file called `.achecker.yml` that you will need to put in the same directory as your `cypress.json` file. See details on the syntax of this file [here](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md#configuring-accessibility-checker).
 
+If your project uses ES modules (`"type": "module"` in `package.json`), use an `achecker.mjs` file with a default export instead of `.achecker.yml` or `achecker.js`. See the [ES module configuration example](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md#configuring-accessibility-checker) in the accessibility-checker README.
+
 ## Setup Cypress
 
 There are two setup steps you must complete in order for the [Cypress](https://www.npmjs.com/package/cypress) tests to be able to use the commands.

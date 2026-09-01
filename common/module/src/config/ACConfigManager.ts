@@ -342,6 +342,18 @@ async function loadConfigFromYAMLorJSONFile() {
                 // Load in as yml or yaml file and return this object
                 return YAML.load(fs.readFileSync(fileToCheck), 'utf8');
             }
+        } else if (fileExtension === "mjs") {
+            // ES module config file — use dynamic import() directly (require() unavailable in ESM contexts)
+            if (fs.existsSync(fileToCheck)) {
+                ACConstants.DEBUG && console.log("File: " + fileToCheck + " exists loading it.");
+                ACConstants.DEBUG && console.log("Loading as ES module file.");
+                try {
+                    const mod = await import(pathLib.resolve(fileToCheck));
+                    return (mod as any).default || mod;
+                } catch (err) {
+                    ACConstants.DEBUG && console.log("Failed to load mjs config file: " + err);
+                }
+            }
         } else {
             ACConstants.DEBUG && console.log("Trying to load as json or js.");
 

@@ -12,8 +12,9 @@ import * as fs from "fs";
     }
     
     // Setup the Puppeteer test environment
-    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true, args: ['--disable-blink-features=AutomationControlled'] });
     let pupPage = await browser.newPage();
+    await pupPage.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {
         if (request.isNavigationRequest() && request.redirectChain().length)
@@ -21,8 +22,8 @@ import * as fs from "fs";
         else
             request.continue();
     });
-    pupPage.on('console', message =>
-        !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+    // pupPage.on('console', message =>
+    //     !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
     await pupPage.setCacheEnabled(true);
     await pupPage.setViewport({ width: 1280, height: 1024 });
 
@@ -52,13 +53,8 @@ import * as fs from "fs";
                 console.group(`+ ${testcase.testcaseTitle}${testcase.approved ? "" : " [not approved]" }: ${testcase.url}`);
                 // Special handling for meta refresh
                 if (ext === ".html" || ext === ".xhtml") {
-                    if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a") 
+                    if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a")
                     {
-                    //     testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
-                    //     || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4"
-                    //     || testcase.testcaseId === "d1bbcc895f6e11010b033578d073138e7c4fc57e"
-                    //     || testcase.testcaseId === "d789ff3d0c087c77117a02527e71a646a343d4a3")
-                    // {
                         let succeeded = false;
                         while (!succeeded) {
                             try {
@@ -75,6 +71,14 @@ import * as fs from "fs";
                         }
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
+                    }
+                    // Detect Cloudflare bot challenge page - fall back to GitHub raw content
+                    const pageTitle = await pupPage.title();
+                    if (pageTitle === 'Just a moment...') {
+                        const ghRawUrl = `https://raw.githubusercontent.com/w3c/wcag-act-rules/main/content-assets/wcag-act-rules/${testcase.relativePath}`;
+                        const resp = await fetch(ghRawUrl);
+                        const html = await resp.text();
+                        await pupPage.setContent(html, { waitUntil: 'networkidle2' });
                     }
                 }
 
