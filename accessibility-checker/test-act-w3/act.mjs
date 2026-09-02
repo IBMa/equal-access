@@ -86,15 +86,16 @@ async function getAssertion(ruleId, aceRules, result) {
             scs = scs.concat(ruleset.checkpoints
                 // Get checkpoints that have this rule
                 .filter(cp => (
-                    cp.rules 
+                    cp.rules
                     && cp.rules.filter(rule => (
                         // Checkpoint refers to a rule mapping that has the ruleid
                         rule.id === ruleId
                         // and either maps to all reasons, or one the these reasons is selected
                         && (!rule.reasonCodes || rule.reasonCodes.filter(code => aceRule.reasonIds.includes(code)))
                     )).length > 0
-                // Replace with the scId
-                )).map(cp => cp.scId).filter(scId => scId.length > 0));            
+                // Keep checkpoints with a non-empty scId, or whose num is ARIA or HTML
+                )).filter(cp => cp.scId.length > 0 || cp.num === "ARIA" || cp.num === "HTML")
+                .map(cp => cp.scId));
         }
     }
     return {

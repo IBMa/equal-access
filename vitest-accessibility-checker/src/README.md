@@ -264,6 +264,27 @@ outputFormat:
 label: vitest-accessibility-tests
 ```
 
+If your project uses ES modules (`"type": "module"` in `package.json`), Node.js cannot load a CommonJS `achecker.js` file. Use an `achecker.mjs` file with a default export instead:
+
+```js
+// achecker.mjs
+export default {
+    ruleArchive: "latest",
+    policies: ["IBM_Accessibility"],
+    failLevels: ["violation"],
+    reportLevels: [
+        "violation",
+        "potentialviolation",
+        "recommendation",
+        "potentialrecommendation",
+        "manual",
+    ],
+    outputFolder: "results",
+    outputFormat: ["json", "html"],
+    label: "vitest-accessibility-tests"
+};
+```
+
 ## Reports
 
 Reports are generated in the `results` folder (configurable) with:

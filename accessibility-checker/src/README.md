@@ -260,6 +260,31 @@ module.exports = {
 };
 ```
 
+If your project uses ES modules (`"type": "module"` in `package.json`), Node.js cannot load a CommonJS `aceconfig.js` or `achecker.js` file. Use an `aceconfig.mjs` (or `achecker.mjs`) file with a default export instead:
+
+```js
+export default {
+    ruleArchive: "latest",
+    policies: ["IBM_Accessibility"],
+    failLevels: ["violation", "potentialviolation"],
+    reportLevels: [
+        "violation",
+        "potentialviolation",
+        "recommendation",
+        "potentialrecommendation",
+        "manual",
+        "pass",
+    ],
+    outputFormat: ["json"],
+    outputFilenameTimestamp: true,
+    label: [process.env.TRAVIS_BRANCH],
+    outputFolder: "results",
+    baselineFolder: "test/baselines",
+    cacheFolder: "/tmp/accessibility-checker",
+    puppeteerArgs: [ "--no-sandbox", "--disable-setuid-sandbox" ]
+};
+```
+
 ## APIs
 
 ### async aChecker.getCompliance(`content`, `label` : string)

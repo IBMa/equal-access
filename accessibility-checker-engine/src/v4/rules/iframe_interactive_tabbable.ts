@@ -67,6 +67,14 @@ export const iframe_interactive_tabbable: Rule = {
         if (!iframElem || !iframElem.contentDocument || !iframElem.contentDocument.documentElement)
             return null;
 
+        // If the iframe is blocked by an open modal dialog it is effectively inert — inapplicable
+        const doc = ruleContext.ownerDocument;
+        if (doc) {
+            const dialogs = Array.from(doc.querySelectorAll("dialog"));
+            const blockedByModal = dialogs.some(d => d.matches(":modal") && !d.contains(ruleContext));
+            if (blockedByModal) return null;
+        }
+
         const count = CommonUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RuleFail("fail_invalid");

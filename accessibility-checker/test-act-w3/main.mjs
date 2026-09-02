@@ -10,10 +10,45 @@ import * as fs from "fs";
         "@context": "https://act-rules.github.io/earl-context.json",
         "@graph": []
     }
-    
+
+    // Pre-fetch all HTML testcase content from GitHub raw in parallel (bounded concurrency).
+    // This collapses ~1169 serial network fetches into one parallel batch before the browser
+    // loop starts, avoiding repeated round-trips during scanning.
+    const GH_RAW_BASE = "https://raw.githubusercontent.com/w3c/wcag-act-rules/publication/content-assets/wcag-act-rules/";
+    const FETCH_CONCURRENCY = 20;
+    const htmlCache = new Map(); // relativePath -> html string
+
+    const allFetchable = [];
+    for (const ruleId in ruleTestInfo) {
+        for (const testcase of ruleTestInfo[ruleId].testcases) {
+            const ext = testcase.url.substring(testcase.url.lastIndexOf("."));
+            if ((ext === ".html" || ext === ".xhtml") && testcase.relativePath
+                    && testcase.ruleId !== "bisz58" && testcase.ruleId !== "bc659a") {
+                allFetchable.push(testcase.relativePath);
+            }
+        }
+    }
+    // Deduplicate (same file can appear in multiple rule entries)
+    const uniquePaths = [...new Set(allFetchable)];
+    console.error(`Pre-fetching ${uniquePaths.length} testcase files from GitHub...`);
+    const fetchStart = Date.now();
+    for (let i = 0; i < uniquePaths.length; i += FETCH_CONCURRENCY) {
+        const batch = uniquePaths.slice(i, i + FETCH_CONCURRENCY);
+        await Promise.all(batch.map(async (relPath) => {
+            try {
+                const resp = await fetch(GH_RAW_BASE + relPath);
+                htmlCache.set(relPath, await resp.text());
+            } catch (err) {
+                console.error(`Failed to pre-fetch ${relPath}: ${err.message}`);
+            }
+        }));
+    }
+    console.error(`Pre-fetch complete in ${((Date.now() - fetchStart) / 1000).toFixed(1)}s`);
+
     // Setup the Puppeteer test environment
-    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true });
+    let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true, args: ['--disable-blink-features=AutomationControlled'] });
     let pupPage = await browser.newPage();
+    await pupPage.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
     await pupPage.setRequestInterception(true);
     pupPage.on('request', request => {
         if (request.isNavigationRequest() && request.redirectChain().length)
@@ -21,8 +56,8 @@ import * as fs from "fs";
         else
             request.continue();
     });
-    pupPage.on('console', message =>
-        !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+    // pupPage.on('console', message =>
+    //     !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
     await pupPage.setCacheEnabled(true);
     await pupPage.setViewport({ width: 1280, height: 1024 });
 
@@ -52,13 +87,8 @@ import * as fs from "fs";
                 console.group(`+ ${testcase.testcaseTitle}${testcase.approved ? "" : " [not approved]" }: ${testcase.url}`);
                 // Special handling for meta refresh
                 if (ext === ".html" || ext === ".xhtml") {
-                    if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a") 
+                    if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a")
                     {
-                    //     testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
-                    //     || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4"
-                    //     || testcase.testcaseId === "d1bbcc895f6e11010b033578d073138e7c4fc57e"
-                    //     || testcase.testcaseId === "d789ff3d0c087c77117a02527e71a646a343d4a3")
-                    // {
                         let succeeded = false;
                         while (!succeeded) {
                             try {
@@ -73,6 +103,17 @@ import * as fs from "fs";
                                 console.log(err);
                             }
                         }
+                    } else if (testcase.relativePath) {
+                        // W3C testcase files: served from the pre-fetched in-memory cache.
+                        // If the HTML references external sub-resources (iframe src, img src, etc.)
+                        // pass the canonical URL as the base and wait for networkidle2 so those
+                        // loads settle. Otherwise domcontentloaded is enough and much faster.
+                        const html = htmlCache.get(testcase.relativePath) || "";
+                        const hasExternalRefs = /\s(?:src|href|data)\s*=\s*["'][^"'#]/i.test(html);
+                        await pupPage.setContent(html, {
+                            waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
+                            ...(hasExternalRefs ? { url: testcase.url } : {})
+                        });
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }

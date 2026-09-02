@@ -51,7 +51,7 @@ export const aria_accessiblename_exists: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_ONE,
         reasonCodes: ["fail_no_accessible_name_image"]
     }],
-    act: [{"23a2a8": {"fail_no_accessible_name_image": "fail"}}],
+    act: [{"23a2a8": { "fail_no_accessible_name_image": "fail"}}],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
