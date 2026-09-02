@@ -105,8 +105,15 @@ import * as fs from "fs";
                         }
                     } else if (testcase.relativePath) {
                         // W3C testcase files: served from the pre-fetched in-memory cache.
+                        // If the HTML references external sub-resources (iframe src, img src, etc.)
+                        // pass the canonical URL as the base and wait for networkidle2 so those
+                        // loads settle. Otherwise domcontentloaded is enough and much faster.
                         const html = htmlCache.get(testcase.relativePath) || "";
-                        await pupPage.setContent(html, { waitUntil: 'networkidle2' });
+                        const hasExternalRefs = /\s(?:src|href|data)\s*=\s*["'][^"'#]/i.test(html);
+                        await pupPage.setContent(html, {
+                            waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
+                            ...(hasExternalRefs ? { url: testcase.url } : {})
+                        });
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }
