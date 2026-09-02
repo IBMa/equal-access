@@ -10,7 +10,41 @@ import * as fs from "fs";
         "@context": "https://act-rules.github.io/earl-context.json",
         "@graph": []
     }
-    
+
+    // Pre-fetch all HTML testcase content from GitHub raw in parallel (bounded concurrency).
+    // This collapses ~1169 serial network fetches into one parallel batch before the browser
+    // loop starts, avoiding repeated round-trips during scanning.
+    const GH_RAW_BASE = "https://raw.githubusercontent.com/w3c/wcag-act-rules/publication/content-assets/wcag-act-rules/";
+    const FETCH_CONCURRENCY = 20;
+    const htmlCache = new Map(); // relativePath -> html string
+
+    const allFetchable = [];
+    for (const ruleId in ruleTestInfo) {
+        for (const testcase of ruleTestInfo[ruleId].testcases) {
+            const ext = testcase.url.substring(testcase.url.lastIndexOf("."));
+            if ((ext === ".html" || ext === ".xhtml") && testcase.relativePath
+                    && testcase.ruleId !== "bisz58" && testcase.ruleId !== "bc659a") {
+                allFetchable.push(testcase.relativePath);
+            }
+        }
+    }
+    // Deduplicate (same file can appear in multiple rule entries)
+    const uniquePaths = [...new Set(allFetchable)];
+    console.error(`Pre-fetching ${uniquePaths.length} testcase files from GitHub...`);
+    const fetchStart = Date.now();
+    for (let i = 0; i < uniquePaths.length; i += FETCH_CONCURRENCY) {
+        const batch = uniquePaths.slice(i, i + FETCH_CONCURRENCY);
+        await Promise.all(batch.map(async (relPath) => {
+            try {
+                const resp = await fetch(GH_RAW_BASE + relPath);
+                htmlCache.set(relPath, await resp.text());
+            } catch (err) {
+                console.error(`Failed to pre-fetch ${relPath}: ${err.message}`);
+            }
+        }));
+    }
+    console.error(`Pre-fetch complete in ${((Date.now() - fetchStart) / 1000).toFixed(1)}s`);
+
     // Setup the Puppeteer test environment
     let browser = await puppeteer.launch({ headless: 'shell', ignoreHTTPSErrors: true, args: ['--disable-blink-features=AutomationControlled'] });
     let pupPage = await browser.newPage();
@@ -70,17 +104,8 @@ import * as fs from "fs";
                             }
                         }
                     } else if (testcase.relativePath) {
-                        // W3C testcase files: fetch from GitHub raw to avoid Cloudflare timeouts,
-                        // then inject into the page so the URL context is preserved.
-                        const ghRawUrl = `https://raw.githubusercontent.com/w3c/wcag-act-rules/main/content-assets/wcag-act-rules/${testcase.relativePath}`;
-                        const resp = await fetch(ghRawUrl);
-                        const html = await resp.text();
-                        // Navigate to the canonical W3C URL first (fast, no wait) so that
-                        // page.url() and relative resource paths resolve correctly, then
-                        // replace the content with the real HTML.
-                        try {
-                            await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded', timeout: 5000 });
-                        } catch (_) { /* ignore timeout - we'll overwrite with setContent anyway */ }
+                        // W3C testcase files: served from the pre-fetched in-memory cache.
+                        const html = htmlCache.get(testcase.relativePath) || "";
                         await pupPage.setContent(html, { waitUntil: 'networkidle2' });
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
