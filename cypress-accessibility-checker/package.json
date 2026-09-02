@@ -46,7 +46,7 @@
         "@ibm/telemetry-js": "^1.9.1",
         "adm-zip": "^0.5.9",
         "axios": "^1.7.9",
-        "js-yaml": "^4.2.0",
+        "js-yaml": "^5.4.1",
         "microdiff": "^1.5.0",
         "write-excel-file": "^4.1.1"
     }

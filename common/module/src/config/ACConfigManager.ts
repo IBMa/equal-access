@@ -340,7 +340,7 @@ async function loadConfigFromYAMLorJSONFile() {
                 ACConstants.DEBUG && console.log("Loading as YAML file.");
 
                 // Load in as yml or yaml file and return this object
-                return YAML.load(fs.readFileSync(fileToCheck), 'utf8');
+                return YAML.load(fs.readFileSync(fileToCheck, 'utf8'));
             }
         } else if (fileExtension === "mjs") {
             // ES module config file — use dynamic import() directly (require() unavailable in ESM contexts)
