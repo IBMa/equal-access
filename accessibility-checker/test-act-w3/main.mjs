@@ -106,7 +106,7 @@ import * as fs from "fs";
                     } else if (testcase.relativePath) {
                         // W3C testcase files: served from the pre-fetched in-memory cache.
                         const html = htmlCache.get(testcase.relativePath) || "";
-                        await pupPage.setContent(html, { waitUntil: 'networkidle2' });
+                        await pupPage.setContent(html, { waitUntil: 'domcontentloaded' });
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }
