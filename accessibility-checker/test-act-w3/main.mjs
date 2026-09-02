@@ -105,11 +105,14 @@ import * as fs from "fs";
                         }
                     } else if (testcase.relativePath) {
                         // W3C testcase files: served from the pre-fetched in-memory cache.
-                        // Only use networkidle2 when the HTML contains absolute http(s) sub-resource
-                        // references — relative paths and data URIs settle with domcontentloaded.
-                        // Cap networkidle2 at 10 s so a stalled resource load never blocks the run.
+                        // Use networkidle2 when the page has sub-resources that need to load:
+                        //   - absolute http(s) src/data attributes
+                        //   - iframe src (relative or absolute) — the checker scans iframe content
+                        // href is never fetched on load (<a> links), so it is excluded.
+                        // Cap networkidle2 at 10 s so a stalled resource never blocks the run.
                         const html = htmlCache.get(testcase.relativePath) || "";
-                        const hasExternalRefs = /\s(?:src|href|data)\s*=\s*["']https?:\/\//i.test(html);
+                        const hasExternalRefs = /\s(?:src|data)\s*=\s*["']https?:\/\//i.test(html)
+                            || /<iframe[^>]+src\s*=\s*["'][^"']/i.test(html);
                         try {
                             await pupPage.setContent(html, {
                                 waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
