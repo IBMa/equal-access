@@ -1,12 +1,10 @@
 <html lang="en">
 	<head>
-		<title>Page with some content</title>
+		<title>180 degree rotation does not lock orientation</title>
 		<style>
 			@media (orientation: portrait) {
-				html {
-					rotate: 90deg;
-					width: min(100vw, 100vh);
-					height: min(100vw, 100vh);
+				body {
+					transform: rotate(180deg);
 				}
 			}
 		</style>
@@ -17,26 +15,24 @@
             UnitTest = {
               ruleIds: ["element_orientation_unlocked"],
               results: [
-              {
+			  {
             "ruleId": "element_orientation_unlocked",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
-              "dom": "/html[1]",
+              "dom": "/html[1]/body[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "fail_locked",
-            "message": "The element <html> is restricted to either landscape or portrait orientation using CSS transform property",
-            "messageArgs": [
-              "html"
-            ],
+            "reasonId": "pass",
+            "message": "The element is not restricted to either landscape or portrait orientation using CSS transform property",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
-        ]
-        }
+              ]
+            }
         </script>
 	</body>
 </html>

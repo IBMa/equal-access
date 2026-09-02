@@ -1,0 +1,27 @@
+<html lang="en">
+	<head>
+		<title>Empty decorative div with orientation-locked transform</title>
+		<style>
+			@media (orientation: portrait) {
+				.decorative {
+					transform: rotate(90deg);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<p>Page Content</p>
+		<!-- Empty div used purely for decoration; no visible content means orientation lock is irrelevant -->
+		<div class="decorative"></div>
+
+        <script>
+            UnitTest = {
+              ruleIds: ["element_orientation_unlocked"],
+              results: [
+                /* body and p have inner content but are not matched by the CSS selector,
+                   and the empty div has no content so the rule should return null for it */
+              ]
+            }
+        </script>
+	</body>
+</html>
