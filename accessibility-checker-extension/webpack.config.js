@@ -190,7 +190,7 @@ module.exports = {
                         return false;
                     }
                     // Exclude 2023.01.* through 2023.04.* versions
-                    if (/[/\\]2023\.(01|02|03|04|05|06|07)\.[^/\\]*[/\\]/.test(resourcePath)) {
+                    if (/[/\\]2023\.(01|02|03|04|05|06|07|08)\.[^/\\]*[/\\]/.test(resourcePath)) {
                         return false;
                     }
                     return true;
