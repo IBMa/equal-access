@@ -105,15 +105,27 @@ import * as fs from "fs";
                         }
                     } else if (testcase.relativePath) {
                         // W3C testcase files: served from the pre-fetched in-memory cache.
-                        // If the HTML references external sub-resources (iframe src, img src, etc.)
-                        // pass the canonical URL as the base and wait for networkidle2 so those
-                        // loads settle. Otherwise domcontentloaded is enough and much faster.
+                        // Use networkidle2 when the page has sub-resources that need to load:
+                        //   - absolute http(s) src/data attributes
+                        //   - iframe src (relative or absolute) — the checker scans iframe content
+                        // href is never fetched on load (<a> links), so it is excluded.
+                        // Cap networkidle2 at 10 s so a stalled resource never blocks the run.
                         const html = htmlCache.get(testcase.relativePath) || "";
-                        const hasExternalRefs = /\s(?:src|href|data)\s*=\s*["'][^"'#]/i.test(html);
-                        await pupPage.setContent(html, {
-                            waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
-                            ...(hasExternalRefs ? { url: testcase.url } : {})
-                        });
+                        const hasExternalRefs = /\s(?:src|data)\s*=\s*["']https?:\/\//i.test(html)
+                            || /<iframe[^>]+src\s*=\s*["'][^"']/i.test(html);
+                        try {
+                            await pupPage.setContent(html, {
+                                waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
+                                timeout: hasExternalRefs ? 10000 : 30000,
+                                ...(hasExternalRefs ? { url: testcase.url } : {})
+                            });
+                        } catch (err) {
+                            if (err.name === 'TimeoutError') {
+                                // Page partially loaded; continue with whatever is in the DOM
+                            } else {
+                                throw err;
+                            }
+                        }
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }
