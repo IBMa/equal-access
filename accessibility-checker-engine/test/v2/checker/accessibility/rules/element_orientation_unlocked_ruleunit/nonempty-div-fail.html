@@ -1,42 +1,42 @@
 <html lang="en">
 	<head>
-		<title>Page with some content</title>
+		<title>Non-empty div with 90 degree rotation still fails</title>
 		<style>
 			@media (orientation: portrait) {
-				html {
-					rotate: 90deg;
-					width: min(100vw, 100vh);
-					height: min(100vw, 100vh);
+				.content-div {
+					transform: rotate(90deg);
 				}
 			}
 		</style>
 	</head>
 	<body>
-		Page Content
+		<!-- div has text content so the orientation lock is a real violation -->
+		<div class="content-div">Some text</div>
+
         <script>
             UnitTest = {
               ruleIds: ["element_orientation_unlocked"],
               results: [
-              {
+			  {
             "ruleId": "element_orientation_unlocked",
             "value": [
               "INFORMATION",
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]",
+              "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]"
             },
             "reasonId": "fail_locked",
-            "message": "The element <html> is restricted to either landscape or portrait orientation using CSS transform property",
+            "message": "The element <div> is restricted to either landscape or portrait orientation using CSS transform property",
             "messageArgs": [
-              "html"
+              "div"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           }
-        ]
-        }
+              ]
+            }
         </script>
 	</body>
 </html>

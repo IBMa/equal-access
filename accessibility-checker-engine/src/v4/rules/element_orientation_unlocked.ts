@@ -54,6 +54,12 @@ export const element_orientation_unlocked: Rule = {
         if (CommonUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
+        // Skip elements that have no meaningful visible content (no text, no img with alt).
+        // Orientation lock on a purely decorative or empty element is not a WCAG violation
+        // because there is no content whose orientation matters to the user.
+        if (!CommonUtil.hasInnerContent(ruleContext))
+            return null;
+
         const nodeName = ruleContext.nodeName.toLowerCase();
         
         // cache the orientation result for all the elements in the page
@@ -116,11 +122,15 @@ export const element_orientation_unlocked: Rule = {
                 degree += page_degree;
             }    
             
-            // When degree is 1 turn (360 degree), it is not considered an orientation lock
-            // allow 1 degree floating range for the right angle
-            if (Math.abs(degree - 360) % 360 > 1)
+            // 180° rotation is a vertical flip — it does not swap portrait and landscape,
+            // so it does not lock orientation in the WCAG 1.3.4 sense.
+            // 360° (full turn) is also not a lock (already normalised to 0 above).
+            // Allow 1° floating-point tolerance around both 0° and 180°.
+            const normalised = degree % 180;
+            if (normalised <= 1 || normalised >= 179)
+                ret.push(RulePass("pass"));
+            else
                 ret.push(RuleFail("fail_locked", [nodeName]));
-            else ret.push(RulePass("pass"));
         }
         if (ret.length > 0)  
             return ret;
