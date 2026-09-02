@@ -105,8 +105,24 @@ import * as fs from "fs";
                         }
                     } else if (testcase.relativePath) {
                         // W3C testcase files: served from the pre-fetched in-memory cache.
+                        // Only use networkidle2 when the HTML contains absolute http(s) sub-resource
+                        // references — relative paths and data URIs settle with domcontentloaded.
+                        // Cap networkidle2 at 10 s so a stalled resource load never blocks the run.
                         const html = htmlCache.get(testcase.relativePath) || "";
-                        await pupPage.setContent(html, { waitUntil: 'networkidle2' });
+                        const hasExternalRefs = /\s(?:src|href|data)\s*=\s*["']https?:\/\//i.test(html);
+                        try {
+                            await pupPage.setContent(html, {
+                                waitUntil: hasExternalRefs ? 'networkidle2' : 'domcontentloaded',
+                                timeout: hasExternalRefs ? 10000 : 30000,
+                                ...(hasExternalRefs ? { url: testcase.url } : {})
+                            });
+                        } catch (err) {
+                            if (err.name === 'TimeoutError') {
+                                // Page partially loaded; continue with whatever is in the DOM
+                            } else {
+                                throw err;
+                            }
+                        }
                     } else {
                         await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                     }
