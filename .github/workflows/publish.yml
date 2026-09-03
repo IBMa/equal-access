@@ -235,6 +235,7 @@ jobs:
           else
             EXT_VERSION="${NPM_VERSION}.9999"
           fi;
+          sed -i'.old' -e 's/"version": "3.0.0",/"version": "'"${EXT_VERSION}"'",/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old
