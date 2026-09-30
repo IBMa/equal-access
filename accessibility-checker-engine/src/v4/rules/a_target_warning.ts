@@ -13,6 +13,7 @@
 
 import { CommonUtil } from "../util/CommonUtil";
 import { VisUtil } from "../util/VisUtil";
+import { AccNameUtil } from "../util/AccNameUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
@@ -67,6 +68,17 @@ export const a_target_warning: Rule = {
             let textStr = CommonUtil.getInnerText(ruleContext);
             if (ruleContext.hasAttribute("title"))
                 textStr += " " + ruleContext.getAttribute("title");
+
+            // Check the accessible name (aria-label, aria-labelledby, area alt)
+            const accName = AccNameUtil.computeAccessibleName(ruleContext);
+            if (accName && accName.name)
+                textStr += " " + accName.name;
+
+            // Check text alternatives of the content, such as an img alt or an
+            // svg title, which the innerText above does not include
+            const contentName = AccNameUtil.computeAccessibleNameFromChildren(ruleContext);
+            if (contentName && contentName.name)
+                textStr += " " + contentName.name;
             
             // Check aria-describedby for warning text
             if (ruleContext.hasAttribute("aria-describedby")) {
@@ -82,6 +94,7 @@ export const a_target_warning: Rule = {
                 }
             }
             
+            textStr = textStr.toLowerCase();
             for (let i = 0; !passed && i < params.paramWinText.value.length; ++i)
                 if (textStr.indexOf(params.paramWinText.value[i]) != -1) passed = true;
         }
