@@ -44,7 +44,7 @@ export const a_target_warning: Rule = {
     },
     rulesets: [{
         id: [ "IBM_Accessibility", "IBM_Accessibility_next", "WCAG_2_0", "WCAG_2_1", "WCAG_2_2"],
-        num: "3.2.2", // num: [ "2.4.4", "x.y.z" ] also allowed
+        num: "2.4.4",
         level: eRulePolicy.RECOMMENDATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
     }],
