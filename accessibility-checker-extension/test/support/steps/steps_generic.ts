@@ -5,6 +5,9 @@ import { strict as assert } from "assert";
 import { PupUtil } from "../util/pup";
 import { existsSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { promisify } from 'util';
+
+const sleep = promisify(setTimeout);
 
 Given("{string} page {string} and panel {string}", async function(widthKey, pageKey, panelKey) {
     const browser : BrowserWrapper = this.browser;
@@ -25,6 +28,19 @@ Then("downloaded file {string} exists", async function(file: string) {
         console.info(readdirSync(PupUtil.getTempDownloadFolder()))
     }
     assert.strictEqual(bExists, true);
+});
+
+Then("downloaded file {string} exists within {int}ms", async function(file: string, timeoutMs: number) {
+    const deadline = Date.now() + timeoutMs;
+    const filePath = join(PupUtil.getTempDownloadFolder(), file);
+    while (!existsSync(filePath)) {
+        if (Date.now() >= deadline) {
+            console.info(readdirSync(PupUtil.getTempDownloadFolder()));
+            assert.strictEqual(false, true, `File "${file}" not found after ${timeoutMs}ms`);
+            return;
+        }
+        await sleep(200);
+    }
 });
 
 Then("Banner is loaded", function() {
