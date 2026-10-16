@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2026- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>a_target_warning accessible name test cases</title>
+</head>
+
+<body>
+    <h2>Test case: accessible-name.html</h2>
+
+    <p>Testing that the new window hint is found in the accessible name of the link (Issue #1951)</p>
+
+    <!-- Test 1: hint in the alt text of a child image (should PASS) -->
+    <a href="https://example.com" target="_blank">Some link<img alt="opens in new window" src=""></a>
+
+    <!-- Test 2: hint in the title of a child svg icon (should PASS) -->
+    <a href="https://example.com" target="_blank">Another link
+        <svg width="16" height="16" viewBox="0 0 16 16"><title>Opens in a new tab</title><path d="M2 2h12v12H2z"></path></svg>
+    </a>
+
+    <!-- Test 3: hint in the aria-label of a child svg icon (should PASS) -->
+    <a href="https://example.com" target="_blank">Third link
+        <svg aria-label="opens in a new tab" role="img" width="16" height="16" viewBox="0 0 16 16"><path d="M2 2h12v12H2z"></path></svg>
+    </a>
+
+    <!-- Test 4: hint in the aria-label of the link itself (should PASS) -->
+    <a href="https://example.com" target="_blank" aria-label="Design system on GitHub, Opens in a New Tab">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M2 2h12v12H2z"></path></svg>
+    </a>
+
+    <!-- Test 5: child image and aria-label without any hint (should trigger POTENTIAL) -->
+    <a href="https://example.com" target="_blank" aria-label="Design system on GitHub">Last link<img alt="GitHub logo" src=""></a>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["a_target_warning"],
+            results: [{
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[1]",
+                    "aria": "/document[1]/link[1]"
+                },
+                "reasonId": "pass",
+                "message": "The user is warned in advance that the input action opens a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[2]",
+                    "aria": "/document[1]/link[2]"
+                },
+                "reasonId": "pass",
+                "message": "The user is warned in advance that the input action opens a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[3]",
+                    "aria": "/document[1]/link[3]"
+                },
+                "reasonId": "pass",
+                "message": "The user is warned in advance that the input action opens a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[4]",
+                    "aria": "/document[1]/link[4]"
+                },
+                "reasonId": "pass",
+                "message": "The user is warned in advance that the input action opens a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "a_target_warning",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "POTENTIAL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[5]",
+                    "aria": "/document[1]/link[5]"
+                },
+                "reasonId": "potential_warn",
+                "message": "Inform the user when their input action will open a new window",
+                "messageArgs": [],
+                "apiArgs": []
+            }]
+        }
+    </script>
+</body>
+
+</html>
