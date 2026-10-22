@@ -361,54 +361,51 @@ export class AriaUtil {
     /**
      * WAI-ARIA’s role attribute may have a list of values, but only the first valid and supported WAI-ARIA role is used
      * https://www.w3.org/TR/wai-aria-implementation/#mapping_role_table
-     * This function is responsible for retrieving the resoled role for an element.
+     * Resolve the semantic role independently of author-conformance restrictions.
+     * Use getInvalidRoles to validate which roles an author may assign to an element.
      * @parm {HTMLElement} ele - element for which to find role.
      *
      * @return string - resolved role for the element:
-     *       explicit role: resoled from the list of values
-     *       implicit role: if not explicitely specified, or none of the specified role values is allowed for the element
-     *       null: if none of the specified role values is allowed for the element, neither implicit role exists
+     *       explicit role: the first supported role in the list of values
+     *       implicit role: if no supported explicit role exists, or a presentational role is ignored
+     *       null: if no role is resolved (implicit roles may be disabled)
      *       
      * @memberOf AriaUtil
      */
     public static getResolvedRole(elem: Element, considerImplicitRoles: boolean = true): string {
         if (!elem) return null;
-        let role = CacheUtil.getCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", null);
-        if (role === null) {
-            const roles = AriaUtil.getUserDefinedRoles(elem); 
-            let tagProperty = AriaUtil.getElementAriaProperty(elem);
-            let allowedRoles = AriaUtil.getAllowedAriaRoles(elem, tagProperty);
-            let containsGeneric = false;
-            if (roles && roles.length > 0 && allowedRoles && allowedRoles.length > 0) {
-                for (let i = 0; i < roles.length; i++) {
-                    if (allowedRoles.includes("any") || allowedRoles.includes(roles[i])) {
-                        if (allowedRoles.includes("any") && roles[i] === 'generic') {
-                            containsGeneric = true;
-                            continue;
-                        }
-                        
-                        role = roles[i];
-                        if (role === "presentation" || role === "none") {
-                            // If element is focusable, then presentation roles are to be ignored
-                            if (CommonUtil.isFocusable(elem)) {
-                                //reset rule to null
-                                role = null;
-                                continue;
-                            }
-                        }
-                        break;
-                    }
-                }
-                if (containsGeneric) role = 'generic';
+        const cacheKey = considerImplicitRoles ? "RPTUTIL_ELEMENT_RESOLVED_ROLE" : "RPTUTIL_ELEMENT_EXPLICIT_ROLE";
+        let role = CacheUtil.getCache(elem, cacheKey, undefined);
+        if (role !== undefined) return role;
+
+        role = null;
+        for (const candidate of AriaUtil.getUserDefinedRoles(elem)) {
+            // Unknown and abstract roles are not supported by the engine.
+            if (!Object.prototype.hasOwnProperty.call(ARIADefinitions.designPatterns, candidate)) continue;
+
+            if (candidate === "presentation" || candidate === "none") {
+                // Ignore the selected role on focusable elements or elements with
+                // global ARIA attributes. Do not select a later fallback token.
+                const hasGlobalAttribute = ARIADefinitions.globalProperties.some(attribute => elem.hasAttribute(attribute));
+                // CommonUtil.isFocusable currently tests tab order, so also
+                // account for elements focusable through a negative tabindex.
+                const hasNegativeTabIndex = parseInt(elem.getAttribute("tabindex"), 10) < 0;
+                const canReceiveProgrammaticFocus = hasNegativeTabIndex && VisUtil.isNodeVisible(elem)
+                    && !elem.matches(":disabled") && !elem.hasAttribute("inert")
+                    && !DOMUtil.getAncestorWithAttribute(elem, "inert", "");
+                if (CommonUtil.isFocusable(elem) || canReceiveProgrammaticFocus || hasGlobalAttribute) break;
             }
-            
-            if (role === null && considerImplicitRoles) {
-                const implicitRole = AriaUtil.getImplicitRole(elem);
-                role = implicitRole && implicitRole.length > 0 ? implicitRole[0] : undefined;
-            }
-            CacheUtil.setCache(elem, "RPTUTIL_ELEMENT_RESOLVED_ROLE", role);
+
+            role = candidate;
+            break;
         }
-        return role !== undefined ? role : null;
+
+        if (role === null && considerImplicitRoles) {
+            const implicitRoles = AriaUtil.getImplicitRole(elem);
+            role = implicitRoles && implicitRoles.length > 0 ? implicitRoles[0] : null;
+        }
+        CacheUtil.setCache(elem, cacheKey, role);
+        return role;
     }
 
     /**

@@ -60,9 +60,11 @@
             ruleId: "1153",
             passedXpaths: [],
             failedXpaths: [
-                //"/html/body/ul[1]",
+                // Supported explicit roles retain their semantic effect even
+                // when an author-conformance rule also rejects their use here.
+                "/html/body/ul[1]",
                 "/html/body/div/ul/li",
-                //"/html/body/ul[2]/li"
+                "/html/body/ul[2]/li"
             ]
         }, ];
         //]]>
