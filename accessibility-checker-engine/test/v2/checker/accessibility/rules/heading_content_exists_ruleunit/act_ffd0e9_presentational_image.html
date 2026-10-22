@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+Licensed under the Apache License, Version 2.0.
+SPDX-License-Identifier: Apache-2.0
+-->
+<html lang="en">
+<head><title>ACT ffd0e9 Failed Example 4: presentational image</title></head>
+<body>
+    <!-- https://www.w3.org/WAI/standards-guidelines/act/rules/ffd0e9/proposed/#failed-example-4 -->
+    <h1><img alt="ACT rules" role="presentation"></h1>
+    <script>
+        UnitTest = {
+            ruleIds: ["heading_content_exists", "aria_accessiblename_exists"],
+            results: [{
+                ruleId: "heading_content_exists",
+                value: ["INFORMATION", "FAIL"],
+                path: {dom: "/html[1]/body[1]/h1[1]", aria: "/document[1]/heading[1]"},
+                reasonId: "Fail_1",
+                message: "Heading element has no descriptive content",
+                messageArgs: [], apiArgs: [], category: "Accessibility"
+            }, {
+                ruleId: "aria_accessiblename_exists",
+                value: ["INFORMATION", "FAIL"],
+                path: {dom: "/html[1]/body[1]/h1[1]", aria: "/document[1]/heading[1]"},
+                reasonId: "fail_no_accessible_name",
+                message: "Element <h1> with \"heading\" role has no accessible name",
+                messageArgs: ["h1", "heading"], apiArgs: [], category: "Accessibility"
+            }]
+        };
+    </script>
+</body>
+</html>
