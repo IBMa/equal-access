@@ -24,6 +24,7 @@ import { genReport } from "../util/htmlReport/genReport";
 import { getTabIdSync } from "../util/tabId";
 import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
 import MultiScanReport from "../util/xlsxReport/multiScanReport/xlsx/MultiScanReport";
+import ReportUtil from "../util/xlsxReport/reportUtil";
 
 let devtoolsState : {
     storeReports: boolean
@@ -668,10 +669,10 @@ export class DevtoolsController extends Controller {
     public async exportXLS(type: "last" | "all" | "selected") {
         return this.hook("exportXLS", type, async () => {
             if (type === "all" || type === "selected") {
-                this.xlsxReportHandler(type);
+                await this.xlsxReportHandler(type);
             } else {
-                this.htmlReportHandler();
-                this.xlsxReportHandler("current");
+                await this.htmlReportHandler();
+                await this.xlsxReportHandler("current");
             }
         });
         
@@ -720,13 +721,8 @@ export class DevtoolsController extends Controller {
             //replace illegal characters in file name
             filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
 
-            let fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
-            let a = document.createElement('a');
-            a.href = fileContent;
-            a.download = filename;
-            let e = document.createEvent('MouseEvents');
-            e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(e);
+            let blob = new Blob([genReport(reportObj)], { type: "text/html;charset=utf-8" });
+            ReportUtil.download_file(blob, filename);
         }
     }
 
