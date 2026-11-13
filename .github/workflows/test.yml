@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -101,7 +101,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -156,7 +156,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
 
       steps:
       - uses: actions/checkout@v4
@@ -208,7 +208,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
 
       steps:
       - uses: actions/checkout@v4
@@ -252,7 +252,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
 
       steps:
       - uses: actions/checkout@v4
@@ -297,7 +297,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -335,7 +335,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -378,7 +378,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -409,7 +409,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -443,7 +443,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
           # test-file: [karma.conf1.js, karma.conf1b.js, karma.conf2.js, karma.conf2b.js, karma.conf3.js] // conf1 and conf2 fail a lot
           test-file: [karma.conf1b.js, karma.conf2b.js, karma.conf3.js]
 
@@ -490,7 +490,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
 
       steps:
       - uses: actions/checkout@v4
@@ -529,7 +529,7 @@ jobs:
 
       strategy:
         matrix:
-          node-version: [24.x]
+          node-version: [26.x]
 
       steps:
       - uses: actions/checkout@v4
@@ -570,7 +570,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -624,7 +624,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
 
     steps:
     - uses: actions/checkout@v4

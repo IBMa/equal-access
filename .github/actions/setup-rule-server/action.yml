@@ -4,7 +4,7 @@ inputs:
   node-version:
     description: 'Node.js version to use'
     required: false
-    default: '22.x'
+    default: '26.x'
   os:
     description: 'Operating system (ubuntu or windows)'
     required: false
